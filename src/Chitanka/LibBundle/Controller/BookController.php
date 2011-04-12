@@ -55,6 +55,15 @@ class BookController extends Controller
 			case 'fb2.zip':
 			case 'epub':
 				return $this->urlRedirect($this->processDownload($id, $_format));
+			case 'txt':
+				Setup::doSetup($this->container);
+				return $this->displayText($book->getContentAsTxt(), array('Content-Type' => 'text/plain'));
+			case 'fb2':
+				Setup::doSetup($this->container);
+				return $this->displayText($book->getContentAsFb2(), array('Content-Type' => 'application/xml'));
+			case 'sfb':
+				Setup::doSetup($this->container);
+				return $this->displayText($book->getContentAsSfb(), array('Content-Type' => 'text/plain'));
 		}
 
 		$this->view = array(

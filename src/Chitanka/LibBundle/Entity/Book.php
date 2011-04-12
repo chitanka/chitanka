@@ -301,11 +301,11 @@ class Book extends BaseWork
 		if ( ! isset($this->translators) ) {
 			$this->translators = array();
 			$seen = array();
-			foreach ($this->getTextsById() as $text) {
+			foreach ($this->getTexts() as $text) {
 				foreach ($text->getTranslators() as $translator) {
-					if ( ! in_array($translator['id'], $seen) ) {
+					if ( ! in_array($translator->getId(), $seen) ) {
 						$this->translators[] = $translator;
-						$seen[] = $translator['id'];
+						$seen[] = $translator->getId();
 					}
 				}
 			}
@@ -512,7 +512,7 @@ class Book extends BaseWork
 	{
 		$images = array();
 
-		foreach ($this->getTextsById() as $text) {
+		foreach ($this->getTexts() as $text) {
 			$images = array_merge($images, $text->getImages());
 		}
 
@@ -523,7 +523,7 @@ class Book extends BaseWork
 	{
 		$images = array();
 
-		foreach ($this->getTextsById() as $text) {
+		foreach ($this->getTexts() as $text) {
 			$images = array_merge($images, $text->getThumbImages());
 		}
 
@@ -534,8 +534,10 @@ class Book extends BaseWork
 	{
 		$labels = array();
 
-		foreach ($this->getTextsById() as $text) {
-			$labels = array_merge($labels, $text->getLabels());
+		foreach ($this->getTexts() as $text) {
+			foreach ($text->getLabels() as $label) {
+				$labels[] = $label->getName();
+			}
 		}
 
 		$labels = array_unique($labels);
@@ -765,7 +767,7 @@ class Book extends BaseWork
 		$conv->setSrcLang(empty($orig_lang) ? '?' : $orig_lang);
 
 		foreach ($this->getTranslators() as $translator) {
-			$conv->addTranslator($translator['name']);
+			$conv->addTranslator($translator->getName());
 		}
 
 		$conv->setDocId($this->getDocId());
@@ -838,7 +840,10 @@ class Book extends BaseWork
 	{
 		if ( empty($this->textsById) ) {
 			foreach ($this->getTextIds() as $id) {
-				$this->textsById[$id] = Text::newFromId($id);
+				$this->textsById[$id] = null;
+			}
+			foreach ($this->getTexts() as $text) {
+				$this->textsById[$text->getId()] = $text;
 			}
 		}
 
@@ -868,7 +873,7 @@ class Book extends BaseWork
 	{
 		$info = array();
 		foreach ($this->getTranslators() as $translator) {
-			$info[] = $translator['name'];
+			$info[] = $translator->getName();
 		}
 
 		return sprintf('Превод: %s', implode(', ', $info));
@@ -881,7 +886,7 @@ class Book extends BaseWork
 	##################
 
 	const
-		ID_SKIP = 636,
+		ID_SKIP = 700,
 		MIRRORS_FILE = 'MIRRORS',
 		INFO_FILE = 'INFO',
 		THUMB_DIR = 'thumb',
