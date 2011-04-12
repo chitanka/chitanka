@@ -1428,14 +1428,14 @@ div.poem-middle .subheader {
 	font-weight: normal;
 }
 .subheader,
-.sign,
-.sign p {
+.frame,
+.frame p {
 	font-weight: bold;
 	font-style: normal;
 	text-align: center;
 	text-indent: 0;
 }
-.sign {
+.frame {
 	margin: 1em auto;
 	padding: .5em;
 	width: 50%;
