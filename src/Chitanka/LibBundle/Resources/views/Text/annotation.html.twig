@@ -1,0 +1,6 @@
+{% if text.hasanno %}
+<fieldset id="annotation">
+	<legend>Анотация</legend>
+	{{ text.annotationhtml(asset('/'))|raw }}
+</fieldset>
+{% endif %}

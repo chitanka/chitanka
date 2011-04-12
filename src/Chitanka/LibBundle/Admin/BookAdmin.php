@@ -1,0 +1,69 @@
+<?php
+
+namespace Chitanka\LibBundle\Admin;
+
+use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+
+use Chitanka\LibBundle\Util\Language;
+
+class BookAdmin extends Admin
+{
+	protected $baseRouteName = 'book';
+
+	protected $list = array(
+		'title' => array('identifier' => true),
+		'slug',
+		'type',
+		'sequence',
+		'_action' => array(
+			'actions' => array(
+				'delete' => array(),
+				'edit' => array()
+			)
+		),
+	);
+
+	protected $form = array(
+		'slug',
+		'title',
+		'subtitle',
+		'title_extra',
+		'orig_title',
+		'lang',
+		'orig_lang',
+		'year',
+		'trans_year',
+		'type' => array(
+			'type' => 'choice',
+			'form_field_options' => array(
+				'choices' => array(
+					'book' => 'Обикновена книга',
+					'collection' => 'Сборник',
+					'poetry' => 'Стихосбирка',
+					'anthology' => 'Антология',
+					'pic' => 'Разкази в картинки',
+					'djvu' => 'DjVu',
+				)
+			)
+		),
+		'sequence' => array('form_field_options' => array('required' => false)),
+		'seqnr',
+		'category',
+	);
+
+	protected $filter = array(
+		'title',
+		'subtitle',
+		'type',
+	);
+
+
+	protected function configureFormFields(FormMapper $form)
+	{
+		$form->add('lang', array('choices' => Language::getLangs()), array('type' => 'choice'));
+		$form->add('orig_lang', array('choices' => Language::getLangs()), array('type' => 'choice'));
+	}
+}

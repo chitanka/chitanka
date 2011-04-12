@@ -1,0 +1,13 @@
+*_local.yml
+/app/cache/*
+/app/logs/*
+/web/content/*
+/web/cache/*
+/web/tor/*
+/web/bundles/*
+/vendor/*
+*.cache
+*.min.js
+*.php~
+.DS_Store
+!.gitignore

@@ -1,0 +1,7 @@
+{% macro authors_plain(persons) %}
+	{% for person in persons %}
+		{{ person.name }}{{ loop.last ? '' : ',' }}
+	{% else %}
+		Неизвестен автор
+	{% endfor %}
+{% endmacro %}

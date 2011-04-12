@@ -1,0 +1,51 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title %}
+	{% if authors|length %}
+		{% import 'LibBundle::link.html.twig' as link %}
+		<span class="author-title">{{ link.persons_comma(authors) }}</span><br>
+	{% endif %}
+	<span class="text-title">{{ text.title }}
+		{% if text.hastitlenote %}
+			<sup id="ref_{{ obj_count }}-0" class="ref"><a href="#note_{{ obj_count }}-0">[0]</a></sup>
+		{% endif %}
+	</span>
+	{% if part > 1 or next_part > 1 %}
+		<small>({{ part }})</small>
+	{% endif %}
+{% endset %}
+{% if text.subtitle %}
+	{% set subtitle = text.subtitle %}
+{% endif %}
+
+{% block content %}
+	{% include 'LibBundle:Text:info.html.twig' %}
+
+	{% if part <= 1 %}
+		{% include 'LibBundle:Text:extra_info.html.twig' %}
+		{% include 'LibBundle:Text:annotation.html.twig' %}
+	{% endif %}
+
+	{% include 'LibBundle:Text:toc.html.twig' %}
+
+	{% if text.mode == 'private' %}
+		<p class="error">Текстът е свален от библиотеката.</p>
+	{% else %}
+		{% include 'LibBundle:Text:content.html.twig' %}
+	{% endif %}
+
+	{% include 'LibBundle:Text:end_message.html.twig' %}
+{% endblock %}
+
+{% set download_links %}
+	{% import 'LibBundle::text.html.twig' as texttools %}
+	{{ texttools.download_links(text) }}
+{% endset %}
+{% set navextra = navextra|merge({'Сваляне': download_links}) %}
+{% set inline_js %}
+	/*mgSettings = $.extend(mgSettings, {
+		"textId": {{ text.id }},
+		"chunkId": {{ part }},
+		"nextChunkId": {{ next_part }}
+	});*/
+{% endset %}

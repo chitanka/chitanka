@@ -1,0 +1,78 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% block navigation %}
+	{% render 'LibBundle:User:personalTools' with {}, {'standalone': true} %}
+	{% include 'LibBundle::search_form.html.twig' %}
+{% endblock %}
+
+{% block content %}
+	<h1 class="welcome">Добре дошли в <em>Моята библиотека</em>!</h1>
+	<div class="dashboard">
+		<ul>
+			<li class="dashboard-author"><span></span><a href="{{ path('authors') }}">Автори</a></li>
+			<li class="dashboard-translator"><span></span><a href="{{ path('translators') }}">Преводачи</a></li>
+			<li class="dashboard-book"><span></span><a href="{{ path('books') }}">Книги</a></li>
+			<li class="dashboard-title"><span></span><a href="{{ path('texts') }}">Творби</a></li>
+			<li class="dashboard-series"><span></span><a href="{{ path('series') }}">Поредици</a></li>
+			<li class="dashboard-history"><span></span><a href="{{ path('new') }}">Ново</a></li>
+			<li class="dashboard-workroom"><span></span><a href="{{ path('workroom') }}">Ателие</a></li>
+		</ul>
+	</div>
+
+	<section class="box box3 bookbox">
+		<h2><a href="{{ path('featured_books') }}">Прочетете</a></h2>
+		{% render 'LibBundle:FeaturedBook:book' with {}, {'standalone': true} %}
+	</section>
+	<section class="box box3 bookbox">
+		<h2><a href="{{ path('foreign_books') }}">Купете си</a></h2>
+		{% render 'LibBundle:ForeignBook:book' with {}, {'standalone': true} %}
+	</section>
+	<section class="box box3 bookbox">
+		<h2><a href="{{ path('featured_books') }}">Прочетете</a></h2>
+		{% render 'LibBundle:FeaturedBook:book' with {'id': 1}, {'standalone': true} %}
+	</section>
+	<div class="separator"></div>
+
+	<section class="box box2">
+		<h2>Нови книги</h2>
+		{% render 'LibBundle:Main:lastBooks' with {}, {'standalone': true} %}
+		<div class="more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
+	</section>
+	<section class="box box2 textbox">
+		<h2>Нови произведения</h2>
+		{% render 'LibBundle:Main:lastTexts' with {}, {'standalone': true} %}
+		<div class="more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
+	</section>
+	<div class="separator"></div>
+
+	<section class="box box2 commentbox">
+		<h2>Читателите казват</h2>
+		{% render 'LibBundle:TextComment:latest' with {}, {'standalone': true} %}
+	</section>
+	<section class="box box2 forumbox">
+		<h2>От форума</h2>
+		{% render 'LibBundle:Feed:lastForumPosts' with {}, {'standalone': true} %}
+	</section>
+	<div class="separator"></div>
+
+	<section class="box liternewsbox">
+		<h2>Литературни новини</h2>
+		{% render 'LibBundle:Feed:lastLiternews' with {}, {'standalone': true} %}
+	</section>
+	<section class="box box3 insidenews">
+		<h2>Вътрешни новини</h2>
+		{% render 'LibBundle:Feed:lastInsideNews' with {}, {'standalone': true} %}
+	</section>
+	<section class="box box3">
+		<h2>Потърсено</h2>
+		{% render 'LibBundle:Search:latest' with {'limit': 20}, {'standalone': true} %}
+	</section>
+	<div class="separator"></div>
+
+	<section>
+		<h2>Ново в ателието</h2>
+		{% render 'LibBundle:Workroom:latest' with {}, {'standalone': true} %}
+		<div class="more">Към <a href="{{ path('workroom') }}">работното ателие</a></div>
+	</section>
+
+{% endblock %}

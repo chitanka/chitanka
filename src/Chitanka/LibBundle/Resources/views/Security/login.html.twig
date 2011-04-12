@@ -1,0 +1,34 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Вход' %}
+{% block content %}
+
+<p>Ако все още не сте се регистрирали, можете да го <a href="{{ path('register') }}">направите</a> за секунди.</p>
+
+{% if error %}
+    <div>{{ error }}</div>
+{% endif %}
+
+<form action="{{ path('login_check') }}" method="post" name="login_form">
+	<fieldset style="width:38em; margin:1em auto" align="center">
+		<input type="hidden" name="returnto" value="" />
+	<legend>Влизане</legend>
+	<table>
+	<tr>
+		<td class="fieldname-left"><label for="username">Потребителско име:</label></td>
+		<td><input type="text" name="_username" id="username" size="25" maxlength="255" value="{{ last_username }}" tabindex="1" /> <a href="{{ path('request_username') }}">Забравено име</a></td>
+
+	</tr><tr>
+		<td class="fieldname-left"><label for="password">Парола:</label></td>
+		<td><input type="password" name="_password" id="password" size="25" maxlength="40" value="" tabindex="2" /> <a href="{{ path('request_password') }}">Забравена парола</a></td>
+	</tr><tr>
+		<td class="fieldname-left"><input type="checkbox" name="remember" id="remember" tabindex="3" checked="checked" /></td>
+		<td><label for="remember">Запомняне на паролата</label></td>
+	</tr><tr>
+
+		<td colspan="2" style="text-align:center"><input type="submit" value="Влизане" tabindex="4" name="submitButton" /></td>
+	</tr>
+	</table>
+	</fieldset>
+</form>
+{% endblock content %}

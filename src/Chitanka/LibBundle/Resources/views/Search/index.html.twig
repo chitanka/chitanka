@@ -1,0 +1,34 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Търсене' ~ (query ? ' на „'~query~'“' : '') %}
+{% block content %}
+
+	{% if persons|length %}
+		<h2>Личности</h2>
+		{% include 'LibBundle:Person:authors_list_with_country.html.twig' with {'authors': persons} %}
+	{% endif %}
+
+	{% if texts|length %}
+		<h2>Произведения</h2>
+		{% include 'LibBundle:Text:texts_list.html.twig' %}
+	{% endif %}
+
+	{% if books|length %}
+		<h2>Книги</h2>
+		{% include 'LibBundle:Book:books_list.html.twig' %}
+	{% endif %}
+
+	{% if series|length %}
+		<h2>Поредици</h2>
+		{% include 'LibBundle:Series:series_list.html.twig' %}
+	{% endif %}
+
+	{% if not found %}
+		<p class="no-items">Нямате късмет. Не открихме нищо за „{{ query }}“.</p>
+	{% endif %}
+
+	{% if message is defined %}
+		<p class="messages">{{ message }}</p>
+	{% endif %}
+
+{% endblock %}

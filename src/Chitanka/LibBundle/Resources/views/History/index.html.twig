@@ -1,0 +1,13 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Ново в библиотеката' %}
+{% block content %}
+	<div class="history-wrapper">
+		<h2><a href="{{ path('new_books') }}">Нови книги</a></h2>
+		{% include 'LibBundle:History:books_list.html.twig' %}
+		<div class="more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
+		<h2><a href="{{ path('new_texts') }}">Нови произведения</a></h2>
+		{% include 'LibBundle:History:texts_list.html.twig' %}
+		<div class="more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
+	</div>
+{% endblock %}

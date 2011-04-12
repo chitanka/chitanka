@@ -1,0 +1,36 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Пясъчник' %}
+{% set css %}
+	.epigraph em,
+	.dedication em,
+	.letter em,
+	.cite em,
+	.poem em {
+		color: red;
+		background-color: white;
+	}
+{% endset %}
+
+{% block content %}
+
+{% if html_content is defined %}
+	{{ html_content|raw }}
+	<hr style="clear:both">
+{% endif %}
+
+<p>Тук може да изпробвате как ще се покаже в библиотеката даден текст във формат SFB.</p>
+<form action="{{ path('sandbox') }}" method="post">
+	<div>
+		<label for="image_dir">Път за картинките:</label>
+		<input type="text" name="image_dir" id="image_dir" size="60" maxlength="255" value="{{ image_dir }}" />
+	</div>
+	<div>
+		<label for="content">Съдържание:</label>
+		<textarea name="content" id="content" cols="80" rows="30" tabindex="0" style="width: 95%">{{ content }}</textarea>
+	</div>
+
+	<div><input type="submit" value="Преглед"></div>
+</form>
+
+{% endblock %}

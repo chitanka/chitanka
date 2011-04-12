@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>{% block title '' %} — Моята библиотека</title>
+		<atom:link href="{{ url(current_route, {'_format': 'rss'}) }}" rel="self" type="application/rss+xml" />
+		<link>{{ url('homepage') }}</link>
+		<description>{{ block('title') }} от Моята библиотека, универсална електронна библиотека</description>
+		<language>bg</language>
+		{% if last_date is defined %}
+			<lastBuildDate>{{ last_date.format('r') }}</lastBuildDate>
+		{% endif %}
+		<generator>mylib</generator>
+		{% block image %}
+			<image>
+				<link>{{ url('homepage') }}</link>
+				<title>{{ block('title') }} — Моята библиотека</title>
+				<url>{{ asset('img/banner/mylib-mandor.gif') }}</url>
+				<width>88</width>
+			</image>
+		{% endblock %}
+		{% block content '' %}
+	</channel>
+</rss>

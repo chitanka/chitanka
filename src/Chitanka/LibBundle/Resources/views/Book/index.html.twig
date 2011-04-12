@@ -1,0 +1,6 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Книги' %}
+{% block content %}
+	{% include 'LibBundle:Book:category_tree.html.twig' with {'level': 0} %}
+{% endblock %}

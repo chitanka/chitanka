@@ -1,0 +1,16 @@
+{% macro list_item(sequence) %}
+	<dl>
+		<dt>
+			<a href="{{ path('sequence_show', {'slug': sequence.slug}) }}">{{ sequence.name }}</a>
+		</dt>
+		<dd>{{ sequence.publisher }}</dd>
+	</dl>
+{% endmacro %}
+
+<ul class="superlist sequence-list">
+{% for sequence in sequences %}
+	<li>{{ _self.list_item(sequence) }}</li>
+{% else %}
+	<li class="no-items">Няма намерени поредици.</li>
+{% endfor %}
+</ul>

@@ -1,0 +1,10 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title %}Нови книги за {% trans 'month.'~month %} {{year}}{% endset %}
+{% block content %}
+	<div class="history-wrapper">
+		{% include 'LibBundle:History:toc.html.twig' with {'route': 'new_books_by_month'} %}
+		{% include 'LibBundle:History:books_list.html.twig' %}
+		{% include 'LibBundle::pager.html.twig' %}
+	</div>
+{% endblock %}

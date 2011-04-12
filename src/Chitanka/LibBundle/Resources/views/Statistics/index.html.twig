@@ -1,0 +1,15 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Статистика' %}
+{% block content %}
+	<div style="float:left; width:33%">
+		{% include 'LibBundle:Statistics:base.html.twig' %}
+	</div>
+	<div style="float:left; width:33%">
+		{% include 'LibBundle:Statistics:authors.html.twig' %}
+	</div>
+	<div style="float:left; width:33%">
+		{% include 'LibBundle:Statistics:texts.html.twig' %}
+	</div>
+	<div style="clear:left"></div>
+{% endblock %}

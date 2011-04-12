@@ -1,0 +1,15 @@
+<fieldset class="infobox">
+	<legend>Допълнителна информация<a href="#after-extrainfobox" class="assistive"> (Прескачане на допълнителната информация)</a></legend>
+
+	{% if text.hascover %}
+		<span class="cover">
+			<a href="{{ asset(text.cover) }}"><img src="{{ asset(text.cover) }}" alt="Корица" width="250"></a>
+		</span>
+	{% endif %}
+
+	{{ text.extrainfohtml(asset('/'))|raw }}
+
+	<hr>
+	<p>Последна редакция: {{ text.currev.date|humandate }}</p>
+</fieldset>
+<div id="after-extrainfobox" class="assistive"><!-- FIXME redundant --></div>

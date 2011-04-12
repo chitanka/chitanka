@@ -1,0 +1,25 @@
+{% extends 'LibBundle::layout.rss.twig' %}
+
+{% block title 'Нови читателски коментари' %}
+{% block content %}
+	{% import 'LibBundle::person.html.twig' as persontools %}
+	{% for comment in comments %}
+		<item>
+			<title>
+				За „{{ comment.text.title }}“
+				{% if comment.text.authors|length %}
+					от {{ persontools.authors_plain(comment.text.authors) }}
+				{% endif %}
+			</title>
+			<dc:creator>{{ comment.rname }}</dc:creator>
+			{% set link = url('text_comments', {'id': comment.text.id}) ~ '#e' ~ comment.id %}
+			<link>{{ link }}</link>
+			<pubDate>{{ comment.time.format('r') }}</pubDate>
+			<guid>{{ link }}</guid>
+			<description>{{ comment.content|striptags }}</description>
+			<content:encoded><![CDATA[
+				{{ comment.content|user_markup|raw }}
+			]]></content:encoded>
+		</item>
+	{% endfor %}
+{% endblock %}

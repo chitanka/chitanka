@@ -1,0 +1,14 @@
+{% extends ajax ? 'LibBundle::layout.js.twig' : 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Добавяне на нов етикет' %}
+{% block content %}
+<form action="{{ path('text_label_new', {'id': text.id}) }}" method="post" class="new-form">
+	{{ form_errors(form) }}
+	<div>
+		{{ form_label(form.label, '') }}
+		{{ form_field(form.label) }}
+		{{ form_hidden(form) }}
+		<input type="submit" value="Добавяне">
+	</div>
+</form>
+{% endblock %}

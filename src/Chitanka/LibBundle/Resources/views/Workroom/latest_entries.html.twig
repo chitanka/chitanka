@@ -1,0 +1,21 @@
+<table class="content sortable">
+<thead>
+	<tr>
+		<th>Дата</th>
+		<th></th>
+		<th></th>
+		<th></th>
+		<th style="width: 25%">Заглавие</th>
+		<th>Автор</th>
+		<th>Етап на работата</th>
+		<th>Потребител</th>
+	</tr>
+</thead>
+<tbody>
+{% for entry in entries %}
+	<tr class="{{ cycle(['even', 'odd'], loop.index) }} {{ entry.is_frozen ? 'frozen' : '' }}" id="e{{ entry.id }}">
+		{% include 'LibBundle:Workroom:entry.html.twig' %}
+	</tr>
+{% endfor %}
+</tbody>
+</table>

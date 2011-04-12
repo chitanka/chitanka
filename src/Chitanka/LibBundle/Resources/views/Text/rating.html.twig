@@ -1,0 +1,12 @@
+<form action="{{ path('text_rating', {'text': rating.text.id}) }}" method="post" class="inline" onsubmit="return saveRating(this)">
+	<fieldset>
+		{{ form_field(form.rating, {'onchange': 'if (this.value) saveRating(this.form)'}) }}
+		{{ form_hidden(form) }}
+		<span class="extra indicator">
+			{% if rating.date is defined %}
+				(Дадена на {{ rating.date|humandate }})
+			{% endif %}
+		</span>
+		<noscript><input type="submit" value="Гласуване"></noscript>
+	</fieldset>
+</form>

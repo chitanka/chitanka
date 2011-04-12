@@ -1,0 +1,10 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Търси се…' %}
+{% block content %}
+	{% if books is empty %}
+		<p class="no-items">В момента няма търсени книги.</p>
+	{% else %}
+		{% include 'LibBundle:Wanted:books_list.html.twig' %}
+	{% endif %}
+{% endblock %}

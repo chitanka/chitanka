@@ -1,0 +1,5 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = page.title()|replace({'<br>': ' — '})|striptags %}
+{% block heading %}<h1>{{ page.title()|raw }}</h1>{% endblock %}
+{% block content page.getFullContent()|raw %}

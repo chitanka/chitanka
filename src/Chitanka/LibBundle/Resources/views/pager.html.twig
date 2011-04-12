@@ -1,0 +1,27 @@
+{% if pager.show %}
+	<dl class="menu buttonmenu">
+	<dt>Страници</dt>
+	<dd><ul>
+		{% if pager.has_prev %}
+			<li class="prev"><a href="{{ path(route, route_params|merge({'page': pager.prev})) }}">Предишна</a></li>
+		{% endif %}
+		{% if pager.has_next %}
+			<li class="next"><a href="{{ path(route, route_params|merge({'page': pager.next})) }}">Следваща</a></li>
+		{% endif %}
+
+		{% set prev_page = 0 %}
+		{% for page, is_active in pager.pages %}
+			{% if prev_page < page - 1 %}
+				<li class="elipsis">…</li>
+			{% endif %}
+
+			{% if is_active %}
+				<li class="selected">{{ page }}</li>
+			{% else %}
+				<li><a href="{{ path(route, route_params|merge({'page': page})) }}">{{ page }}</a></li>
+			{% endif %}
+			{% set prev_page = page %}
+		{% endfor %}
+	</ul></dd>
+	</dl>
+{% endif %}

@@ -1,0 +1,34 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title %}{% trans 'authors.by.country' %}: {% trans 'country.' ~ country %}{% endset %}
+{% block content %}
+
+{% if authors is empty %}
+
+	<p class="no-items">Няма намерени автори.</p>
+
+{% else %}
+
+	<ul class="superlist">
+	{% for author in authors %}
+	<li>
+		<dl>
+			{% if author.person is defined %}
+				<dt>{{ author.name|name_format(by)|raw }} &rarr; <a href="{{ path('person_show', {'slug': author.person.slug}) }}">{{ author.person.name|name_format(by)|raw }}</a></dt>
+				<dd class="orig-name">{{ author.orig_name ? author.orig_name|name_format(by)|raw : '—' }}</dd>
+				<dd class="country">{% trans 'country.' ~ author.person.country %}</dd>
+			{% else %}
+				<dt><a href="{{ path('person_show', {'slug': author.slug}) }}">{{ author.name|name_format(by)|raw }}</a></dt>
+				<dd class="orig-name">{{ author.orig_name ? author.orig_name|name_format(by)|raw : '—' }}</dd>
+				<dd class="country">{% trans 'country.' ~ author.country %}</dd>
+			{% endif %}
+		</dl>
+	</li>
+	{% endfor %}
+	</ul>
+
+{% endif %}
+
+{% include 'LibBundle::pager.html.twig' %}
+
+{% endblock %}

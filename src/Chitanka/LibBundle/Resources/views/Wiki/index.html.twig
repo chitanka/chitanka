@@ -1,0 +1,9 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title %}{% trans 'wiki.title.' ~ page %}{% endset %}
+{% block content %}
+	<div class="wikidata">
+		{{ contents|raw }}
+	</div>
+	<div class="info"><br><i>(<a href="{{ wiki_page }}">Оригиналната страница се намира в уикито на библиотеката</a>.)</i></div>
+{% endblock %}

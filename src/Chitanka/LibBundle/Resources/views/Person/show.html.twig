@@ -1,0 +1,38 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = person.name %}
+{% set subtitle = is_author ? (is_translator ? 'автор и преводач' : 'автор') : 'преводач' %}
+{% block content %}
+	{% include 'LibBundle:Person:info.html.twig' %}
+
+	{% if books is defined %}
+		<h2 id="books">Книги</h2>
+		{% include 'LibBundle:Book:books_list.html.twig' %}
+	{% endif %}
+
+	{% if is_author %}
+		{% if is_translator %}
+			<h2 id="author">Авторски произведения</h2>
+		{% elseif books is defined %}
+			<h2 id="author">Произведения</h2>
+		{% endif %}
+		{% for series in texts_as_author %}
+			{% include 'LibBundle:Person:text_list_author.html.twig' with {'series': series.data, 'texts': series.texts} %}
+		{% endfor %}
+	{% endif %}
+
+	{% if is_translator %}
+		{% if is_author or books is defined %}
+			<h2 id="translator">Преводни произведения</h2>
+		{% endif %}
+		{% for series in texts_as_translator %}
+			{% include 'LibBundle:Person:text_list_translator.html.twig' with {'series': series.data, 'texts': series.texts} %}
+		{% endfor %}
+	{% endif %}
+
+	{% include 'LibBundle::color_legend.html.twig' %}
+{% endblock %}
+
+{% set inline_js %}
+	$("fieldset.infobox,fieldset.filters").boxcollapse();
+{% endset %}

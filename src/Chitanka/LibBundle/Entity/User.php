@@ -1,0 +1,557 @@
+<?php
+
+namespace Chitanka\LibBundle\Entity;
+
+use Symfony\Component\Security\Core\User\UserInterface;
+#use FOS\UserBundle\Entity\User as BaseUser;
+use Chitanka\LibBundle\Legacy\Setup;
+use Chitanka\LibBundle\Legacy\Legacy;
+
+/**
+* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\UserRepository")
+* @orm:HasLifecycleCallbacks
+* @orm:Table(name="user",
+*	indexes={
+*		@orm:Index(name="realname_idx", columns={"realname"})}
+* )
+*/
+class User /*extends BaseUser*/ implements UserInterface
+{
+	/**
+	* @var integer $id
+	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	*/
+	private $id;
+
+	/**
+	* @var string $username
+	* @orm:Column(type="string", length=100, unique=true)
+	*/
+	private $username = '~anon';
+
+	/**
+	* @var string $realname
+	* @orm:Column(type="string", length=120)
+	*/
+	private $realname;
+
+	/**
+	* @var string $password
+	* @orm:Column(type="string", length=40)
+	*/
+	private $password;
+
+	/**
+	* @var string
+	* @orm:Column(type="string", length=100, nullable=true)
+	*/
+	private $algorithm;
+
+	/**
+	* @var string $newpassword
+	* @orm:Column(type="string", length=40, nullable=true)
+	*/
+	private $newpassword;
+
+	/**
+	* @var string $email
+	* @orm:Column(type="string", length=100, nullable=true)
+	*/
+	private $email;
+
+	/**
+	* @var boolean $allowemail
+	* @orm:Column(type="boolean")
+	*/
+	private $allowemail = false;
+
+	/**
+	* @var array
+	* @orm:Column(type="array")
+	*/
+	private $groups = array();
+
+	/**
+	* @var boolean $news
+	* @orm:Column(type="boolean")
+	*/
+	private $news = false;
+
+	/**
+	* @var array $opts
+	* @orm:Column(type="array")
+	*/
+	private $opts = array();
+
+	/**
+	* @var integer $login_tries
+	* @orm:Column(type="smallint")
+	*/
+	private $login_tries = 0;
+
+	/**
+	* @var datetime $registration
+	* @orm:Column(type="datetime")
+	*/
+	private $registration;
+
+	/**
+	* @var datetime $touched
+	* @orm:Column(type="datetime")
+	*/
+	private $touched;
+
+
+	/** FIXME doctrine:schema:create does not allow this relation
+	* @var array
+	* @orm:ManyToMany(targetEntity="Text", mappedBy="readers")
+	* @orm:JoinTable(name="user_text_read",
+	*	joinColumns={@orm:JoinColumn(name="user_id")},
+	*	inverseJoinColumns={@orm:JoinColumn(name="text_id")})
+	*/
+	private $readTexts;
+
+	public function __construct()
+	{
+		$this->registration = $this->touched = new \DateTime;
+	}
+
+	public function getId() { return $this->id; }
+
+	public function setUsername($username) { $this->username = $username; }
+	public function getUsername() { return $this->username; }
+
+	public function setRealname($realname) { $this->realname = $realname; }
+	public function getRealname() { return $this->realname; }
+
+	public function setPassword($password, $plain = true)
+	{
+		$this->password = $plain ? $this->encodePasswordDB($password) : $password;
+		$this->algorithm = null;
+	}
+	public function getPassword() { return $this->password; }
+	public function getSalt() { return $this->username; }
+
+	public function setNewpassword($password, $plain = true)
+	{
+		$this->newpassword = $plain ? $this->encodePasswordDB($password) : $password;
+	}
+	public function getNewpassword() { return $this->newpassword; }
+
+	public function setEmail($email) { $this->email = $email; }
+	public function getEmail() { return $this->email; }
+
+	public function setAllowemail($allowemail) { $this->allowemail = $allowemail; }
+	public function getAllowemail() { return $this->allowemail; }
+	public function allowsEmail() { return $this->allowemail; }
+
+	public function setGroups($groups) { $this->groups = $groups; }
+	public function getGroups() { return $this->groups; }
+	public function addGroup($group) { $this->groups[] = $group; }
+	public function inGroup($group)
+	{
+		foreach ((array) $group as $g) {
+			if (in_array($g, $this->groups)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public function setNews($news) { $this->news = $news; }
+	public function getNews() { return $this->news; }
+
+	public function setOpts($opts) { $this->opts = $opts; }
+	public function getOpts() { return $this->opts; }
+
+	public function setLoginTries($loginTries) { $this->login_tries = $loginTries; }
+	public function getLoginTries() { return $this->login_tries; }
+	public function incLoginTries()
+	{
+		$this->login_tries++;
+	}
+
+	public function setRegistration($registration) { $this->registration = $registration; }
+	public function getRegistration() { return $this->registration; }
+
+	public function setTouched($touched) { $this->touched = $touched; }
+	public function getTouched() { return $this->touched; }
+
+
+
+	public function __toString()
+	{
+		return $this->getUsername();
+	}
+
+	public function getRoles()
+	{
+		return array();
+	}
+
+	public function eraseCredentials()
+	{
+		$this->id = null;
+		$this->username = '~anon';
+		$this->password = null;
+		$this->logout();
+	}
+
+	public function equals(UserInterface $account)
+	{
+		return $account->getUsername() === $this->username;
+	}
+
+
+	public function isAnonymous()
+	{
+		return is_null($this->id);
+	}
+
+	public function isAuthenticated()
+	{
+		return ! $this->isAnonymous();
+	}
+
+
+	public function toArray()
+	{
+		return array(
+			'id' => $this->id,
+			'username' => $this->username,
+			'realname' => $this->realname,
+			'password' => $this->password,
+			'algorithm' => $this->algorithm,
+			'newpassword' => $this->newpassword,
+			'email' => $this->email,
+			'allowemail' => $this->allowemail,
+			'groups' => $this->groups,
+			'news' => $this->news,
+			'opts' => $this->opts,
+			'login_tries' => $this->login_tries,
+			'registration' => $this->registration,
+			'touched' => $this->touched,
+		);
+	}
+
+	/** @orm:PrePersist */
+	public function preInsert()
+	{
+		$this->groups[] = 'n';
+	}
+
+	/** @orm:PreUpdate */
+	public function preUpdate()
+	{
+		if (empty($this->email)) {
+			$this->allowemail = false;
+		}
+	}
+
+
+	public static $defOptions = array(
+		'skin' => 'orange',
+		'nav' => 'right', // navigation position
+		'news' => false, // receive montly newsletter
+		'allowemail' => true, // allow email from other users
+		'dlformat' => 'txt.zip', // default format for batch downloading
+	);
+
+	protected
+		$rights = array(), $options = array(),
+		$dlTexts = array(),
+		$isHuman = false;
+
+
+
+
+
+
+
+	/** Cookie name for the user ID */
+	const UID_COOKIE = 'mli';
+	/** Cookie name for the encrypted user password */
+	const TOKEN_COOKIE = 'mlt';
+	/** Cookie name for the user options */
+	const OPTS_COOKIE = 'mlo';
+	/** Session key for the User object */
+	const U_SESSION = 'user';
+
+
+	public static function initUser($repo)
+	{
+		if ( self::isSetSession() ) {
+			$user = self::newFromSession();
+		} else if ( self::isSetCookie() ) {
+			$user = self::newFromCookie($repo);
+			$_SESSION[self::U_SESSION] = $user->toArray();
+		} else {
+			$user = new User;
+		}
+
+		return $user;
+	}
+
+	/** @return bool */
+	protected static function isSetSession() {
+		return isset($_SESSION[self::U_SESSION]);
+	}
+
+
+	/** @return bool */
+	protected static function isSetCookie() {
+		return isset($_COOKIE[self::UID_COOKIE]) && isset($_COOKIE[self::TOKEN_COOKIE]);
+	}
+
+	protected static function newFromArray($data)
+	{
+		$user = new User;
+		foreach ($data as $field => $value) {
+			$user->$field = $value;
+		}
+
+		return $user;
+	}
+
+	/** @return User */
+	protected static function newFromSession() {
+		return self::newFromArray($_SESSION[self::U_SESSION]);
+	}
+
+	/** @return User */
+	protected static function newFromCookie($repo) {
+		$user = $repo->find($_COOKIE[self::UID_COOKIE]);
+		if ( $user->validateToken($_COOKIE[self::TOKEN_COOKIE], $user->getPassword()) ) {
+			return $user;
+		}
+
+		return new User;
+	}
+
+
+
+
+
+	public static function randomPassword($passLength = 16) {
+		$chars = 'abcdefghijkmnopqrstuvwxyz123456789';
+		$max = strlen($chars) - 1;
+		$password = '';
+		for ($i = 0; $i < $passLength; $i++) {
+			$password .= $chars{mt_rand(0, $max)};
+		}
+
+		return $password;
+	}
+
+
+	/**
+		Check a user name for invalid chars.
+
+		@param string $username
+		@return mixed true if the user name is ok, or the invalid character
+	*/
+	public static function isValidUsername($username) {
+		$forbidden = '/+#"(){}[]<>!?|~*$&%=\\';
+		$len = strlen($forbidden);
+		for ($i=0; $i < $len; $i++) {
+			if ( strpos($username, $forbidden{$i}) !== false ) {
+				return $forbidden{$i};
+			}
+		}
+		return true;
+	}
+
+
+
+	public static function getDataByName($username) {
+		return self::getData( array('username' => $username) );
+	}
+
+	public static function getDataById($userId) {
+		return self::getData( array('id' => $userId) );
+	}
+
+	public static function getData($dbkey) {
+		$db = Setup::db();
+		$res = $db->select(DBT_USER, $dbkey);
+		if ( $db->numRows($res) ==  0) return array();
+		return $db->fetchAssoc($res);
+	}
+
+
+
+	public function showName() {
+		return empty($this->realname) ? $this->username : $this->realname;
+	}
+	public function userName() {
+		return $this->username;
+	}
+
+	public function set($field, $val) {
+		if ( !isset($this->$field) ) return;
+		$this->$field = $val;
+	}
+
+
+	public function options() {
+		return $this->opts;
+	}
+
+	public function option($opt, $default = '') {
+		return isset($this->opts[$opt]) ? $this->opts[$opt] : $default;
+	}
+
+	public function setOption($name, $val) {
+		$this->opts[$name] = $val;
+	}
+
+
+	public function canExecute($action) {
+		return true;
+	}
+
+	public function isSuperUser() {
+		return in_array('a', $this->groups);
+	}
+
+	public function isHuman() {
+		return $this->isHuman;
+	}
+
+	public function setIsHuman($isHuman) {
+		$this->isHuman = $isHuman;
+	}
+
+
+
+	/**
+	* Encode a password in order to save it in the database.
+	*
+	* @param string $password
+	* @return string Encoded password
+	*/
+	public function encodePasswordDB($plainPassword)
+	{
+		return sha1(str_repeat($plainPassword . $this->username, 2));
+	}
+
+
+	/**
+	* Encode a password in order to save it in a cookie.
+	*
+	* @param string $password
+	* @param bool $plainpass Is this a real password or one already stored
+	*                        encoded in the database
+	* @return string Encoded password
+	*/
+	public function encodePasswordCookie($password, $plainpass = true)
+	{
+		if ($plainpass) {
+			$password = $this->encodePasswordDB($password);
+		}
+
+		return Legacy::sha1_loop(str_repeat($password, 10), 10);
+	}
+
+
+	/**
+	* Validate an entered password.
+	* Encodes an entered password and compares it to the password from the database.
+	*
+	* @param string $inputPass The password from the input
+	* @param string $dbPass The password stored in the database
+	* @return bool
+	*/
+	public function validatePassword($inputPass)
+	{
+		if (empty($this->algorithm)) {
+			$encodedPass = $this->encodePasswordDB($inputPass);
+		} else {
+			eval('$encodedPass = ' . preg_replace('/\$\w+/', "'$inputPass'", $this->algorithm) . ';');
+		}
+
+		return strcmp($encodedPass, $this->password) === 0;
+	}
+
+	public function validateNewPassword($inputPass)
+	{
+		return strcmp($this->encodePasswordDB($inputPass), $this->newpassword) === 0;
+	}
+
+	/**
+	* Validate a token from a cookie.
+	* Properly encodes the password from the database and compares it to the token.
+	*
+	* @param string $cookieToken The token from the cookie
+	* @param string $dbPass The password stored in the database
+	* @return bool
+	*/
+	public function validateToken($cookieToken, $dbPass) {
+		$enc = $this->encodePasswordCookie($dbPass, false);
+
+		return strcmp($enc, $cookieToken) === 0;
+	}
+
+
+	public function activateNewPassword()
+	{
+		$this->setPassword($this->getNewpassword(), true);
+	}
+
+
+
+	public function login($remember = false)
+	{
+		// delete a previously generated new password, login_tries
+		$this->setNewpassword(null, false);
+		$this->setLoginTries(0);
+		$_COOKIE[self::UID_COOKIE] = $this->getId();
+		$_COOKIE[self::TOKEN_COOKIE] = $this->encodePasswordCookie($this->getPassword(), false);
+
+		$cookieExpire = $remember ? null /* default */ : 0 /* end of session */;
+		$request = Setup::request();
+		$request->setCookie(self::UID_COOKIE, $_COOKIE[self::UID_COOKIE], $cookieExpire);
+		$request->setCookie(self::TOKEN_COOKIE, $_COOKIE[self::TOKEN_COOKIE], $cookieExpire);
+
+		return $_SESSION[self::U_SESSION] = $this->toArray();
+	}
+
+
+	public function logout() {
+		unset($_SESSION[self::U_SESSION]);
+		unset($_COOKIE[self::UID_COOKIE]);
+		unset($_COOKIE[self::TOKEN_COOKIE]);
+		$request = Setup::request();
+		$request->deleteCookie(self::UID_COOKIE);
+		$request->deleteCookie(self::TOKEN_COOKIE);
+	}
+
+
+	public function updateSession() {
+		$_SESSION[self::U_SESSION] = $this->toArray();
+	}
+
+
+	public static function packOptions( $options ) {
+		return serialize($options);
+	}
+
+
+	public static function unpackOptions( $opts_data ) {
+		if ( ! empty($opts_data) ) {
+			return unserialize($opts_data);
+		}
+
+		return array();
+	}
+
+
+	public function getSkinPreference()
+	{
+		$skin = $this->option('skin', 'orange');
+		$nav = $this->option('nav', 'right');
+
+		return "$skin,$nav";
+	}
+}

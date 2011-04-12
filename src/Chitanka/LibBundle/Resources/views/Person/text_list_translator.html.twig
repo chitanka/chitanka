@@ -1,0 +1,11 @@
+{% import 'LibBundle::text.html.twig' as text_lister %}
+<fieldset class="superlist">
+	<legend>
+		{% if series.slug is defined %}
+			<a href="{{ path('series_show', {'slug': series.slug}) }}">{{ series.name }}</a>
+		{% else %}
+			{% trans 'text.type.plular.' ~ series.name %}
+		{% endif %}
+	</legend>
+	{{ text_lister.text_list_with_author(texts) }}
+</fieldset>

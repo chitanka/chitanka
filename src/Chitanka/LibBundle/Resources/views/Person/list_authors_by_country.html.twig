@@ -1,0 +1,10 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title %}{% trans 'authors.by.country' %}: {% trans 'country.' ~ country %}{% endset %}
+{% block content %}
+
+	{% include 'LibBundle:Person:authors_list.html.twig' %}
+
+	{% include 'LibBundle::pager.html.twig' %}
+
+{% endblock %}

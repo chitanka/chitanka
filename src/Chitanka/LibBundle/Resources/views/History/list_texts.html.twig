@@ -1,0 +1,9 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Нови произведения' %}
+{% block content %}
+	<div class="history-wrapper">
+		{% include 'LibBundle:History:toc.html.twig' with {'route': 'new_texts_by_month'} %}
+		{% include 'LibBundle:History:texts_list.html.twig' %}
+	</div>
+{% endblock %}

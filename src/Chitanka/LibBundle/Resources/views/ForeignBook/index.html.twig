@@ -1,0 +1,10 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Нови книги в други сайтове' %}
+{% block content %}
+	<ul class="bookshelf">
+	{% for book in books %}
+		<li>{% include 'LibBundle:ForeignBook:book.html.twig' %}</li>
+	{% endfor %}
+	</ul>
+{% endblock %}

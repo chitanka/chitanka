@@ -1,0 +1,5 @@
+<ul>
+{% for string in strings %}
+	<li><a href="{{ path('search', {'q': string.name}) }}">{{ string.name }}</a></li>
+{% endfor %}
+</ul>

@@ -1,0 +1,11 @@
+{% import 'LibBundle::text.html.twig' as textinfo %}
+{% if text.headers|length %}
+	<div id="toc" class="collapsed" role="navigation">
+		<p class="assistive"><a href="#after-toc">(Прескачане на съдържанието)</a></p>
+		<h3>Съдържание</h3>
+		{{ textinfo.toc(text, part, part == 0) }}
+		<hr>
+		<p class="standalone"><a href="{{ path('text_show_part', {'id': text.id, 'part': 0}) }}">Пълен текст</a></p>
+		<div id="after-toc" class="assistive"></div>
+	</div>
+{% endif %}

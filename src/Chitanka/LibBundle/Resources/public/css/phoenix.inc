@@ -1,0 +1,83 @@
+<?php
+$mainFgColor = '#000000';
+$mainBgColor = '#F9F6E6';
+
+$headerFgColor = 'white';
+$headerBgColor = '#CF4040';
+$headerBordColor = '#CC0000';
+$headerShadowColor = 'black';
+
+$linkFgColor = '#8F1700';
+$alinkFgColor = '#AF0C00';
+$vlinkFgColor = '#4F1C00';
+
+$fieldsetBordColor = $headerBordColor;
+$legendFgColor = '#D03030';
+
+$formElemFgColor = $mainFgColor;
+$formElemBgColor = $mainBgColor;
+$formElemFocusBgColor = '#FFFFFF';
+
+$submitButtonFgColor = $mainFgColor;
+$submitButtonBgColor = '#FDED6D';
+
+$logoFgColor = '#CC0000';
+$logoBgColor = $mainBgColor;
+$logoImg = 'logo-phoenix.png';
+
+$toolbarFgColor = $mainFgColor;
+$toolbarBgColor = '#FFDFDF';
+$toolbarBordColor = '#FFBFBF';
+
+$navFgColor = $mainFgColor;
+$navBgColor = $mainBgColor;
+$navTitleFgColor = '#FFFFFF';
+$navTitleShadowColor = 'black';
+$navTitleBgColor = $logoFgColor;
+$navLinkFgColor = '#6F3C00';
+
+$tocFgColor = $mainFgColor;
+$tocBgColor = '#FFFCEF';
+$tocBordColor = $fieldsetBordColor;
+
+$buttonLinksFgColor = $headerBgColor;
+$buttonLinksBgColor = $tocBgColor;
+
+$footerFgColor = $toolbarFgColor;
+$footerBgColor = $toolbarBgColor;
+$footerBordColor = $toolbarBordColor;
+
+$readMarkFgColor = $mainFgColor;
+$readMarkBgColor = 'inherit';
+
+$codeFgColor = '#003300';
+$codeBgColor = '#FCFCFC';
+$codeBordColor = '#C0C0C0';
+
+$errorFgColor = '#CC0000';
+$extraInfoFgColor = '#333333';
+$extLinkFgColor = '#006F4E';
+$insBgColor = '#DDFFDD';
+$delBgColor = '#FFCCCC';
+
+$oddFgColor = $mainFgColor;
+$oddBgColor = $mainBgColor;
+$evenFgColor = $mainFgColor;
+$evenBgColor = '#F8E8E8';
+
+$cloudFgColor = '#2F2200';
+$cloudBordColor = $toolbarBordColor;
+$cloudFgHoverColor = $headerFgColor;
+$cloudBgHoverColor = $headerBgColor;
+$cloudBg1Color = '#FFEFEF';
+$cloudBg2Color = '#FFDFDF';
+$cloudBg3Color = '#FFCFCF';
+$cloudBg4Color = '#EFE0E0';
+$cloudBg5Color = '#EFD1D1';
+$cloudBg6Color = '#EFC2C2';
+
+$dashboardBorderColor = '#DF7D7D #EF5959 #EF4A4A #EF5959';
+$dashboardBgColor = 'rgba(204, 0, 0, 0.8)';
+$dashboardBg1Color = 'rgba(159, 0, 0, 0.8)';
+$dashboardBg2Color = 'rgba(255, 143, 143, 0.9)';
+$dashboardBoxShadowColor = 'rgba(204, 0, 0, 0.3)';

@@ -1,0 +1,42 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title %}
+	{% if authors|length %}
+		{% import 'LibBundle::link.html.twig' as link %}
+		{{ link.persons_comma(authors) }}<br>
+	{% endif %}
+	{{ book.title|replace({'.': '<br>'})|raw }}
+{% endset %}
+{% if book.subtitle %}
+	{% set subtitle = book.subtitle|replace({'.': '<br>'}) %}
+{% endif %}
+
+{% block content %}
+
+	{% if book.type == 'pic' %}
+		{% include 'LibBundle:Book:show_pic.html.twig' %}
+	{% elseif book.type == 'djvu' %}
+		{% include 'LibBundle:Book:show_djvu.html.twig' %}
+	{% else %}
+		{% include 'LibBundle:Book:show_text.html.twig' %}
+	{% endif %}
+
+{% endblock %}
+
+{% if book.type == 'pic' %}
+	{% set css_extra = ['css/pic.css'] %}
+	{% set js_extra = ['jquery-galleriffic', 'jquery-hotkeys', 'pic'] %}
+	{% set inline_js %}
+		$("#help-instructions").html("\
+			<p>Разглеждането на изображенията може да се управлява и чрез клавиатурата:</p>\
+			<ul>\
+				<li>CTRL + дясна стрелка — едно напред</li>\
+				<li>CTRL + лява стрелка — едно назад</li>\
+				<li><b>f</b> — включване/изключване на режим „Пълен екран“</li>\
+			</ul>");
+	{% endset %}
+{% else %}
+	{% set inline_js %}
+		$(":header.inline-text").parent().addClass("collapsed").boxcollapse(false);
+	{% endset %}
+{% endif %}

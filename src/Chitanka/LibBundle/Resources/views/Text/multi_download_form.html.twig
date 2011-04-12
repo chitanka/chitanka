@@ -1,0 +1,23 @@
+{% macro radio_button(texts, format, default) %}
+	<label><input type="radio" name="textId" value="{{ texts|keys|join(',') }}.{{ format }}" {{ format == default ? 'checked="checked"' : '' }}>Като {{ format }}</label>
+{% endmacro %}
+
+<form action="{{ path('text_show_multi') }}" method="get">
+<div class="standalone download-form">
+	<input type="hidden" name="filename" value="{{ filename|default('file') }}">
+	{% if series is defined %}
+		{% set button %}{% spaceless %}
+			Сваляне на всички от „{% if series.slug is defined %}{{ series.name }}{% else %}{% trans 'text.type.plular.' ~ series.name %}{% endif %}“
+		{% endspaceless %}{% endset %}
+	{% else %}
+		{% set button = 'Сваляне на всички показани произведения' %}
+	{% endif %}
+	<input type="submit" value="{{ button }}">
+	<ul class="menu">
+		<li>{{ _self.radio_button(texts, 'fb2.zip', 'fb2.zip') }}</li>
+		<li>{{ _self.radio_button(texts, 'epub', 'fb2.zip') }}</li>
+		<li>{{ _self.radio_button(texts, 'txt.zip', 'fb2.zip') }}</li>
+		<li>{{ _self.radio_button(texts, 'sfb.zip', 'fb2.zip') }}</li>
+	</ul>
+</div>
+</form>

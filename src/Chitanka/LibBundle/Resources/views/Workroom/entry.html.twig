@@ -1,0 +1,29 @@
+<td class="date" title="{{ entry.date|humandate }}">{{ entry.date.format('d.m.Y') }}</td>
+<td>
+	<span class="{{ entry.type == 1 ? 'multiuser' : 'singleuser' }}"><span>{% trans 'workroom.type.' ~ entry.type %}</span></span>
+</td>
+<td>
+	{% if entry.comment %}
+		<span class="act-info tooltip" title="{{ entry.comment }}"><span>Инфо</span></span>
+	{% endif %}
+</td>
+<td>
+	{% if entry.tmpfiles %}
+		<a href="{{ entry.tmpfiles }}" class="save"><span>Файл</span></a>
+	{% endif %}
+</td>
+<td><a href="{{ path('workroom_entry_edit', {'id': entry.id}) }}"><i>{{ entry.title }}</i></a></td>
+<td>{{ entry.author }}</td>
+<td>
+	{% if entry.progress %}
+		{{ progressbar(entry.progress)|raw }}
+	{% else %}
+		<span class="progress progress-{{ entry.status }}">{% trans 'workroom.status.' ~ entry.status %}</span>
+	{% endif %}
+	{% if entry.is_frozen %}
+		<span title="Подготовката е замразена">(замразена)</span>
+	{% endif %}
+</td>
+<td>
+	<a href="{{ path('user_show', {'username': entry.user.username}) }}">{{ entry.user.username }}</a>&#160;{% if entry.user.allowemail %}<a href="{{ path('user_email', {'username': entry.user.username}) }}" title="Пращане на писмо на {{ entry.user.username }}" class="email"><span>Е-поща</span></a>{% endif %}
+</td>

@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # remove trailing slash
+#   RewriteCond %{REQUEST_FILENAME} !-d
+#   RewriteCond %{REQUEST_URI} ^(.*)/$
+#   RewriteRule ^(.*)/$ /$1 [R=301,L]
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>

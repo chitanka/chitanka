@@ -1,0 +1,25 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Редактиране на етикета „' ~ label.name ~ '“' %}
+{% block content %}
+<form action="" method="post" class="edit-form main-form">
+	{{ form_errors(form) }}
+
+	<dl>
+		<dt>{{ form_label(form.slug, 'Идентификатор') }}</dt>
+		<dd>{{ form_field(form.slug) }}</dd>
+		<dt>{{ form_label(form.name, 'Име') }}</dt>
+		<dd>{{ form_field(form.name) }}</dd>
+		<dt>{{ form_label(form.parent, 'Родител') }}</dt>
+		<dd>{{ form_field(form.parent) }}</dd>
+	</dl>
+
+	<div>
+		{{ form_hidden(form) }}
+		<ul class="actions">
+			<li class="submit"><input type="submit" value="Запис"></li>
+			<li class="cancel"><a href="{{ path('labels') }}">Всички етикети</a></li>
+		</ul>
+	</div>
+</form>
+{% endblock %}

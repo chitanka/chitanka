@@ -1,0 +1,12 @@
+{% import 'LibBundle::text.html.twig' as texttools %}
+{% import 'LibBundle::link.html.twig' as link %}
+<ul class="superlist">
+{% for revision in revisions %}
+	<li class="title t-{{ revision.text.type }}">
+		<dl>
+			<dt>{{ link.text(revision.text) }}</dt>
+			<dd class="tauthor">{{ texttools.author_list(revision.text.authors) }}</dd>
+		</dl>
+	</li>
+{% endfor %}
+</ul>

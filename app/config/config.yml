@@ -1,0 +1,251 @@
+# imports:
+#     - { resource: security.yml }
+
+
+framework:
+    charset:       UTF-8
+    error_handler: null
+    router:        { resource: "%kernel.root_dir%/config/routing.yml" }
+    validation:    { enabled: true, annotations: true }
+    templating:    { engines: ['twig'] } #assets_version: SomeVersionScheme
+    translator:    { fallback: en }
+    session:
+        default_locale: bg
+        lifetime:       3600
+        auto_start:     true
+        name:           _CHITANKA
+    esi:
+        enabled: true
+
+
+services:
+    twig.extension.chitanka:
+        class: Chitanka\LibBundle\Twig\Extension
+        tags:
+            - { name: twig.extension }
+
+#     kernel.listener.chitanka:
+#         class: Chitanka\LibBundle\Listener\Listener
+#         tags:
+#             - { name: kernel.listener, event: core.security, method: run }
+
+    doctrine.listener:
+        class: Chitanka\LibBundle\Listener\DoctrineListener
+        tags:
+            - { name: doctrine.dbal.default_event_listener }
+            #- { name: doctrine.common.event_listener }
+
+    chitanka.admin.person:
+        class: Chitanka\LibBundle\Admin\PersonAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: person }
+        arguments: [Chitanka\LibBundle\Entity\Person, LibBundle:PersonAdmin]
+    chitanka.admin.book:
+        class: Chitanka\LibBundle\Admin\BookAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: book }
+        arguments: [Chitanka\LibBundle\Entity\Book, LibBundle:BookAdmin]
+    chitanka.admin.text:
+        class: Chitanka\LibBundle\Admin\TextAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: text }
+        arguments: [Chitanka\LibBundle\Entity\Text, LibBundle:TextAdmin]
+    chitanka.admin.series:
+        class: Chitanka\LibBundle\Admin\SeriesAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: series }
+        arguments: [Chitanka\LibBundle\Entity\Series, LibBundle:SeriesAdmin]
+    chitanka.admin.label:
+        class: Chitanka\LibBundle\Admin\LabelAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: label }
+        arguments: [Chitanka\LibBundle\Entity\Label, LibBundle:LabelAdmin]
+    chitanka.admin.category:
+        class: Chitanka\LibBundle\Admin\CategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: category }
+        arguments: [Chitanka\LibBundle\Entity\Category, LibBundle:CategoryAdmin]
+    chitanka.admin.sequence:
+        class: Chitanka\LibBundle\Admin\SequenceAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: sequence }
+        arguments: [Chitanka\LibBundle\Entity\Sequence, LibBundle:SequenceAdmin]
+
+    chitanka.admin.wanted_book:
+        class: Chitanka\LibBundle\Admin\WantedBookAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: wantedbook }
+        arguments: [Chitanka\LibBundle\Entity\WantedBook, LibBundle:WantedBookAdmin]
+    chitanka.admin.featured_book:
+        class: Chitanka\LibBundle\Admin\FeaturedBookAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: featuredbook }
+        arguments: [Chitanka\LibBundle\Entity\FeaturedBook, LibBundle:FeaturedBookAdmin]
+    chitanka.admin.foreign_book:
+        class: Chitanka\LibBundle\Admin\ForeignBookAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: foreignbook }
+        arguments: [Chitanka\LibBundle\Entity\ForeignBook, LibBundle:ForeignBookAdmin]
+    chitanka.admin.site:
+        class: Chitanka\LibBundle\Admin\SiteAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: site }
+        arguments: [Chitanka\LibBundle\Entity\Site, LibBundle:SiteAdmin]
+    chitanka.admin.book_site:
+        class: Chitanka\LibBundle\Admin\BookSiteAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: booksite }
+        arguments: [Chitanka\LibBundle\Entity\BookSite, LibBundle:BookAdmin]
+    chitanka.admin.wiki_site:
+        class: Chitanka\LibBundle\Admin\WikiSiteAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: wikisite }
+        arguments: [Chitanka\LibBundle\Entity\WikiSite, LibBundle:WikiSiteAdmin]
+    chitanka.admin.question:
+        class: Chitanka\LibBundle\Admin\QuestionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: question }
+        arguments: [Chitanka\LibBundle\Entity\Question, LibBundle:QuestionAdmin]
+    chitanka.admin.license:
+        class: Chitanka\LibBundle\Admin\LicenseAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: license }
+        arguments: [Chitanka\LibBundle\Entity\License, LibBundle:LicenseAdmin]
+#     chitanka.admin.work_entry:
+#         class: Chitanka\LibBundle\Admin\WorkEntryAdmin
+#         tags:
+#             - { name: sonata.admin, manager_type: orm, group: library, label: workentry }
+#         arguments: [Chitanka\LibBundle\Entity\WorkEntry, LibBundle:WorkEntryAdmin]
+#     chitanka.admin.user:
+#         class: Chitanka\LibBundle\Admin\UserAdmin
+#         tags:
+#             - { name: sonata.admin, manager_type: orm, group: library, label: user }
+#         arguments: [Chitanka\LibBundle\Entity\User, LibBundle:UserAdmin]
+
+
+# Twig Configuration
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+
+
+# Assetic Configuration
+# assetic:
+#     debug:          %kernel.debug%
+#     use_controller: false
+#     filters:
+#         cssrewrite: ~
+        # closure:
+        #     jar: %kernel.root_dir%/java/compiler.jar
+        # yui_css:
+        #     jar: %kernel.root_dir%/java/yuicompressor-2.4.2.jar
+
+
+# Doctrine Configuration
+doctrine:
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        default_entity_manager: default
+        entity_managers:
+            default:
+                mappings:
+                    #FOSUserBundle: ~
+                    LibBundle: ~
+
+# jms_security_extra:
+#     secure_controllers:  true
+#     secure_all_services: false
+
+
+parameters:
+    sitename:    Моята библиотека
+
+    mirror_sites: ~
+    mirror_sites_graphic: ~
+
+    webroot: ~
+    docroot: ~
+    server:     http://localhost
+    style_url:  http://localhost/chitanka/css/FILE.css
+    script_url: http://localhost/chitanka/js/FILE.css
+
+    # Следните променливи се ползват при пращането на електронна поща
+    admin:        Администратор
+    admin_email:  { admin@localhost: Администратор }
+    site_email:   contact@localhost
+    work_email:   work@localhost
+
+    # This must be a valid timezone constant
+    # See “List of Supported Timezones” [http://php.net/manual/en/timezones.php]
+    default_timezone: Europe/Sofia
+
+    tmp_dir: /tmp
+
+    # Път до библиотеката jQuery. По подразбиране false.
+    # При false, се ползва локалното копие
+    script_library: false
+
+    # Облици
+    skins:
+        blackwhite: Белчо
+        purple:     Люляк
+        olive:      Маслинова нощ
+        neg:        Негортокал
+        orange:     Портокал
+        pink:       Роза
+        blue:       Синева
+        phoenix:    Феникс
+
+    # Позиция на навигационното меню
+    navpos:
+        right: Вдясно
+        left:  Вляво
+
+    download_formats: [txt.zip, fb2.zip, epub, sfb.zip]
+
+    download_file: AUTHOR - SERIES - SERNO. TITLE-ID
+
+    workroom_remote: false
+    workroom_root: ~
+
+    wanted: ~
+
+    wiki_url: http://wiki.chitanka.info/$1
+
+    menu:
+        Читалня:
+            authors:
+                text: Автори
+                title: Начална страница за преглед на авторите
+            translators:
+                text: Преводачи
+                title: Начална страница за преглед на преводачите
+            books:
+                text: Книги
+                title: Начална страница за преглед на книгите
+            texts:
+                text: Произведения
+                title: Начална страница за преглед на произведенията
+            text_random:
+                text: Случайна творба
+                title: Показване на случайно произведение
+            series:
+                text: Поредици
+                title: Начална страница за преглед на поредиците
+#         Беседка:
+#             texts_comments:
+#                 text: Читателски мнения
+#                 title: Читателски коментари за произведенията
+        Работилница:
+            new:
+                text: Новодобавено
+                title: Списък на произведенията по месец на добавяне
+            workroom:
+                text: Работно ателие
+                title: Списък на произведения, подготвящи се за добавяне
+            torrents:
+                text: Торенти
+                title: ~
+            statistics:
+                text: Статистика
+                title: ~

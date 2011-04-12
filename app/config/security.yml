@@ -1,0 +1,68 @@
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\User: sha1
+        #@Chitanka/LibBundle/Entity/User: sha512
+
+    providers:
+#         fos_user:
+#             id: fos_user.user_manager
+        main:
+            entity: { class: Chitanka\LibBundle\Entity\User, property: username }
+
+    firewalls:
+        profiler:
+            pattern:  ^/_profiler
+            security: false
+
+        wdt:
+            pattern:  ^/_wdt
+            security: false
+
+#         login:
+#             pattern:  ^/demo/secured/login$
+#             security: false
+
+#         secured_area:
+#             pattern:    ^/demo/secured/
+#             form_login:
+#                 check_path: /demo/secured/login_check
+#                 login_path: /demo/secured/login
+#             logout:
+#                 path:   /demo/secured/logout
+#                 target: /demo/
+            #anonymous: ~
+            #http_basic:
+            #    realm: "Secured Demo Area"
+
+
+        backend:
+            pattern:    /admin/.*
+            form-login: true
+            logout:     true
+        public:
+            pattern:     /.*
+            form_login:  true
+            anonymous:   true
+            logout:      true
+            switch_user: true
+#         main:
+#             form_login:
+#                 provider: fos_userbundle
+
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    access_control:
+        #- { path: /login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+#        - { path: /admin/.*, role: ROLE_ADMIN }
+        - { path: /.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+
+# fos_user.config:
+#     db_driver: orm
+#     provider_key: main
+#     class:
+#         model:
+#             user: Chitanka\LibBundle\Entity\User

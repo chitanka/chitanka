@@ -1,0 +1,129 @@
+{% extends '::base.html.twig' %}
+
+{% if title is defined and pager is defined and pager.has_prev %}
+	{% set suffix = 'страница '~pager.page %}
+	{% set subtitle = subtitle is defined ? subtitle ~' — '~ suffix : suffix %}
+{% endif %}
+
+{% block title %}
+	{% if title is defined %}
+		{{ title|doctitle }}
+		{% if subtitle is defined %}
+			— {{ subtitle|doctitle }}
+		{% endif %}
+		— {{ parent() }}
+	{% else %}
+		{{ parent() }}
+	{% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+	{#% if stylesheet %#}
+		{% render 'LibBundle:User:stylesheet' with {}, {'standalone': true} %}
+	{#% endif %#}
+	{% if css_extra is defined %}
+		{% for extra_stylesheet in css_extra %}
+			<link rel="stylesheet" href="{{ asset(extra_stylesheet) }}">
+		{% endfor %}
+	{% endif %}
+	{% if css is defined %}
+		<style>{{ css|raw }}</style>
+	{% endif %}
+{% endblock %}
+
+{% block body %}
+
+	{% include 'LibBundle::jumpto_links.html.twig' %}
+
+	{% include 'LibBundle::projects_toolbar.html.twig' %}
+
+	<div id="content-wrapper" class="p_{{ current_route }}">
+
+		<div id="main-content-wrapper">
+			<div id="main-content" role="main">
+				{% render 'LibBundle:Wanted:stripe' %}
+
+				<div id="first-heading">
+					{% if subtitle is defined %}
+						<hgroup>
+							<h1>{{ title|raw }}</h1>
+							<h2><span>({{ subtitle|raw }})</span></h2>
+						</hgroup>
+					{% elseif title is defined %}
+						<h1>{{ title|raw }}</h1>
+					{% endif %}
+				</div>
+
+				{% if app.session.hasFlash('error') %}
+					<div class="messages error">{{ app.session.flash('error')|raw }}</div>
+					{{ app.session.removeFlash('error') }}
+				{% endif %}
+				{% if app.session.hasFlash('notice') %}
+					<div class="messages">{{ app.session.flash('notice')|raw }}</div>
+					{{ app.session.removeFlash('notice') }}
+				{% endif %}
+
+				{% block content '' %}
+			</div>
+		</div>
+
+
+		<div id="navigation" role="navigation">
+		{% block navigation %}
+			<h2 class="assistive">Навигация</h2>
+
+			<div id="logo" role="banner">
+				<a href="{{ path('homepage') }}" title="Към началната страница">Моята библиотека<span></span></a>
+			</div>
+
+			{% block personal_tools %}
+				{% render 'LibBundle:User:personalTools' with {}, {'standalone': true} %}
+			{% endblock %}
+
+			{% block navlinks %}
+				{% include 'LibBundle::navlinks.html.twig' %}
+			{% endblock %}
+
+			{% block search_form %}
+				{% include 'LibBundle::search_form.html.twig' %}
+			{% endblock %}
+
+			{% block navextra %}
+				{% include 'LibBundle::navextra.html.twig' %}
+			{% endblock %}
+
+		{% endblock %}
+		</div>
+
+	</div>
+
+	<div id="footer" role="contentinfo">
+	{% block footer %}
+		<h2 class="assistive">Завършваща част</h2>
+		<ul>
+			<li><a href="{{ path('about') }}">За Моята библиотека</a></li>
+			<li><a href="{{ path('rules') }}">Правила</a></li>
+			<li><a href="{{ path('feedback') }}" title="Връзка с администраторите на библиотеката">Връзка с екипа</a></li>
+		</ul>
+	{% endblock %}
+	</div>
+
+{% endblock body %}
+
+{% block javascripts %}
+	{% set scripts = [] %}
+	{% if script_library %}
+		<script src="{{ script_library }}"></script>
+	{% else %}
+		{% set scripts = ['jquery'] %}
+	{% endif %}
+	{% set scripts = scripts|merge(['jquery-hoverIntent', 'jquery-cluetip', 'jquery-myplugins', 'main']) %}
+	<script src="{{ asset('js/'~ scripts|join(',') ~'.js') }}"></script>
+	{% if js_extra is defined %}
+		<script src="{{ asset('js/'~ js_extra|join(',') ~'.js') }}"></script>
+	{% endif %}
+
+	{% if inline_js is defined %}
+		<script>{{ inline_js|raw }}</script>
+	{% endif %}
+{% endblock %}

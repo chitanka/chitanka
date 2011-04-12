@@ -1,0 +1,10 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Препоръчани книги' %}
+{% block content %}
+	<ul class="bookshelf">
+	{% for book in books %}
+		<li>{% include 'LibBundle:FeaturedBook:book.html.twig' %}</li>
+	{% endfor %}
+	</ul>
+{% endblock %}

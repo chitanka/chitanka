@@ -1,0 +1,10 @@
+<div id="toc" role="navigation">
+	<h3>По месец</h3>
+	<p class="assistive"><a href="#after-toc">(Прескачане на месечното меню)</a></p>
+	<ul>
+	{% for date in dates %}
+		<li><a href="{{ path(route, {'year': date.year, 'month': date.month}) }}">{% trans 'month.'~date.month %} {{ date.year }} ({{ date.count }})</a></li>
+	{% endfor %}
+	</ul>
+	<div id="after-toc" class="assistive"></div>
+</div>

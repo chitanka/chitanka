@@ -1,0 +1,79 @@
+{% import 'LibBundle::text.html.twig' as textinfo %}
+{% import 'LibBundle::link.html.twig' as link %}
+<fieldset class="infobox">
+	<legend>Информация<a href="#after-infobox" class="assistive"> (Прескачане на информацията)</a></legend>
+	<ul>
+		{% if text.series.slug is defined %}
+			<li>
+			Поредица: {{ link.series(text.series) }}
+			{% if text.sernr %}
+				({{ text.sernr }})
+			{% endif %}
+			</li>
+		{% endif %}
+		{% if text.books|length %}
+			<li>
+			{% if text.books|length == 1 %}
+				Част от книгата „{{ link.book(text.books.0) }}“
+			{% elseif text.books|length > 1 %}
+				Част от книгите:
+				<ul class="simplelist">
+					{% for book in text.books %}
+					<li>„{{ link.book(book) }}“</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+			</li>
+		{% endif %}
+		<li>
+			{% if text.origlang == text.lang %}
+				<span title="Година на написване или първа публикация">Година</span>: {{ textinfo.year(text) }}
+			{% else %}
+				Оригинално заглавие: <em>{{ textinfo.orig_title(text) }}</em>,
+				<span title="Година на написване или първа публикация">{{ textinfo.year(text) }}</span>
+			{% endif %}
+			({{ textinfo.license(text.origlicense) }})
+		</li>
+		{% if text.origlang != text.lang %}
+			<li>
+			Превод от {% trans 'lang.' ~ text.origlang %}: {{ textinfo.translator(text) }}, {{ textinfo.trans_year(text) }}
+			({{ textinfo.license(text.translicense) }})
+			</li>
+		{% endif %}
+		<li>
+			Етикети:
+			<ul class="simplelist with-actions">
+			{% for label in text.labels %}
+				<li>
+					{{ link.label(label) }}
+					{% include 'LibBundle:Text:label_delete_form.html.twig' with {'label': label} %}
+				</li>
+			{% else %}
+				<li class="no-items">Няма</li>
+			{% endfor %}
+			</ul>
+			<a href="{{ path('text_label_new', {'id': text.id}) }}" class="action-new" title="Добавяне на нов етикет"><span>Нов</span></a>
+		</li>
+		<li>
+			<a href="{{ path('text_comments', {'id': text.id}) }}">
+			{% if text.commentcount > 1 %}
+				Има <b>{{ text.commentcount }}</b> читателски мнения за произведението
+			{% elseif text.commentcount == 1 %}
+				Има <b>едно</b> читателско мнение за произведението
+			{% else %}
+				Все още не са дадени читателски мнения за произведението
+			{% endif %}
+			</a>
+		</li>
+		<li>Оценка: {{ textinfo.rating_expanded(text) }}</li>
+		<li>Вашата оценка:
+			{% render 'LibBundle:Text:rating' with {'id': text.id}, {'standalone': true} %}
+		</li>
+		{# TODO user cache
+		{% if text_is_read %}
+			<li>Произведението е отбелязано като прочетено.</li>
+		{% endif %}
+		#}
+	</ul>
+</fieldset>
+<div id="after-infobox" class="assistive"></div>

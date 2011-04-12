@@ -1,0 +1,187 @@
+{% macro year(text) %}
+	{% if text.year is empty %}
+		<a href="{{ path('text_suggest_info', {'id': text.id, 'object': 'orig_year'}) }}">????</a>
+	{% elseif text.year < 0 %}
+		{{ -1 * text.year }}{{ text.year2 > 0 ? '–' ~ text.year2 : '' }} пр.н.е.
+	{% else %}
+		{{ text.year }}{{ text.year2 > 0 ? '–' ~ text.year2 : '' }}
+	{% endif %}
+{% endmacro %}
+
+{% macro trans_year(text) %}
+	{% if text.trans_year is empty %}
+		<a href="{{ path('text_suggest_info', {'id': text.id, 'object': 'trans_year'}) }}">????</a>
+	{% else %}
+		{{ text.trans_year }}
+	{% endif %}
+{% endmacro %}
+
+{% macro orig_title(text) %}
+	{% spaceless %}
+	{% if text.orig_title %}
+		{{ text.orig_title }}
+		{% if text.orig_subtitle %}
+			({{ text.orig_subtitle }})
+		{% endif %}
+	{% else %}
+		[не е въведено; <a href="{{ path('text_suggest_info', {'id': text.id, 'object': 'orig_title'}) }}">помогнете</a> за добавянето му]
+	{% endif %}
+	{% endspaceless %}
+{% endmacro %}
+
+{% macro translator(text) %}
+	{% import 'LibBundle::link.html.twig' as link %}
+	{% spaceless %}
+	{% if text.translators|length %}
+		{{ link.persons(text.translators) }}
+	{% else %}
+		[Няма данни за преводача; <a href="{{ path('text_suggest_info', {'id': text.id, 'object': 'translator'}) }}">помогнете</a> за добавянето му]
+	{% endif %}
+	{% endspaceless %}
+{% endmacro %}
+
+{% macro license(license) %}
+{% spaceless %}
+	{% if license.uri is empty %}
+		{{ license.fullname }}
+	{% else %}
+		<a href="{{ license.uri }}" rel="license">{{ license.fullname }}</a>
+	{% endif %}
+{% endspaceless %}
+{% endmacro %}
+
+{% macro rating(text) %}
+	<a href="{{ path('text_ratings', {'id': text.id}) }}" title="Оценка: {{ text.rating|rating_format }} (× {{ text.votes }} {{ text.votes == 1 ? 'глас' : 'гласа' }})" class="rating rating-{{ text.rating|rating_class }}"><span>{{ text.rating|rating_format }}</span></a>
+{% endmacro %}
+
+{% macro rating_expanded(text) %}
+	{% if text.votes %}
+		<a href="{{ path('text_ratings', {'id': text.id}) }}">{{ text.rating|rating_format }} (× {{ text.votes }} {{ text.votes == 1 ? 'глас' : 'гласа' }})</a>
+	{% else %}
+		няма
+	{% endif %}
+{% endmacro %}
+
+
+{% macro text_with_author(text) %}
+	{% import 'LibBundle::link.html.twig' as link %}
+<dl>
+	<dt>
+		{{ _self.rating(text) }}
+		{% if text.series is defined %}
+			<a href="{{ path('series_show', {'slug': text.series.slug}) }}" title="{{ text.series.name }}">{{ text.series.name|acronym }}</a>:
+		{% endif %}
+		{{ link.text(text) }}
+	</dt>
+	<dd class="tauthor">{{ _self.author_list(text.authors) }}</dd>
+	<!--<dd class="extra">{#{{ _self.text_extra_info(text) }}#}</dd>-->
+	<dd class="download">{{ _self.download_links(text) }}</dd>
+</dl>
+{% endmacro %}
+
+
+{% macro text(text) %}
+	{% import 'LibBundle::link.html.twig' as link %}
+<dl>
+	<dt>
+		{{ _self.rating(text) }}
+		{% if text.sernr %}{{ text.sernr }}.{% endif %}
+		{{ link.text(text) }}
+	</dt>
+	<dd class="extra">{{ _self.text_extra_info(text) }}</dd>
+	<dd class="download">{{ _self.download_links(text) }}</dd>
+</dl>
+{% endmacro %}
+
+
+{% macro text_extra_info(text) %}
+	{% if text.orig_title %}
+		<em>{{ text.orig_title }}</em>{% if text.year is defined %}, {{ text.year }}{% endif %}
+	{% elseif text.year is defined %}
+		{{ text.year }}
+	{% endif %}
+{% endmacro %}
+
+
+{% macro author_list(authors, prefix) %}
+	{% if authors|length == 1 %}
+		{{ prefix|default('от') }} <a href="{{ path('person_show', {'slug': authors[0].slug}) }}">{{ authors[0].name }}</a>
+	{% elseif authors|length > 1 %}
+		{{ prefix|default('от') }} <ul class="simplelist">
+		{% for author in authors %}
+			<li><a href="{{ path('person_show', {'slug': author.slug}) }}">{{ author.name }}</a></li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+{% endmacro %}
+
+
+{% macro download_link(text, format, size) %}
+	{% spaceless %}
+	<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug, '_format': format}) }}" title="Сваляне във формат {{ format }}{% if size %} ({{ size }} KiB){% endif %}" class="dl dl-{{ format|replace({'.zip': ''}) }}"><span>{{ format }}{% if size %} ({{ size }} KiB){% endif %}</span></a>
+	{% endspaceless %}
+{% endmacro %}
+
+{% macro download_links(text) %}
+	<ul class="dl-list">
+		<li>{{ _self.download_link(text, 'fb2.zip') }}</li>
+		<li>{{ _self.download_link(text, 'epub') }}</li>
+		<li>{{ _self.download_link(text, 'txt.zip', text.zsize) }}</li>
+		<li>{{ _self.download_link(text, 'sfb.zip') }}</li>
+	</ul>
+{% endmacro %}
+
+
+{% macro text_list_with_author(texts) %}
+	<ul class="superlist">
+	{% for text in texts %}
+		<li class="title t-{{ text.type }}">{{ _self.text_with_author(text) }}</li>
+	{% endfor %}
+	</ul>
+{% endmacro %}
+
+
+{% macro text_list(texts) %}
+	<ul class="superlist">
+	{% for text in texts %}
+		<li class="title t-{{ text.type }}">{{ _self.text(text) }}</li>
+	{% endfor %}
+	</ul>
+{% endmacro %}
+
+
+{% macro toc(text, cur_part, is_full_text) %}
+	{% set prevlev = 0 %}
+	{% for header in text.headers %}
+		{{ _self.toc_item(header, prevlev, cur_part, text, is_full_text|default(false)) }}
+		{% set prevlev = header.level %}
+	{% endfor %}
+
+	</li>
+	{{ '</ul></li>'|repeat(prevlev-1)|raw }}
+	</ul>
+{% endmacro %}
+
+{% macro toc_item(header, prevlev, cur_part, text, is_full_text) %}
+	{% if prevlev < header.level %}
+		<ul>{{ '<li><ul>'|repeat(header.level - 1 - prevlev)|raw }}
+	{% elseif prevlev > header.level %}
+		</li>{{ '</ul></li>'|repeat(prevlev - header.level)|raw }}
+	{% else %}
+		</li>
+	{% endif %}
+	<li>
+
+	{% if is_full_text %}
+		<a href="#t-{{ anchor_name(header.name) }}">{{ header.name }}</a>
+	{% else %}
+		{% if cur_part - 1 == header.nr %}
+			{% set rel = 'prev' %}
+		{% elseif cur_part + 1 == header.nr %}
+			{% set rel = 'next' %}
+		{% else %}
+			{% set rel = '' %}
+		{% endif %}
+		<a href="{{ path('text_show_part', {'id': text.id, 'part': header.nr}) }}#textstart" class="{{ cur_part == header.nr ? 'selected' : '' }}" rel="{{ rel }}">{{ header.name }}</a>
+	{% endif %}
+{% endmacro %}

@@ -1,0 +1,47 @@
+{% macro book(book) %}
+	{% import 'LibBundle::link.html.twig' as link %}
+	<dl>
+		<dt>
+			<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}">{{ _self.cover(book, 90) }}<br> <i>{{ book.title }}</i>{% if book.subtitle is defined %}<br>{{ book.subtitle }}{% endif %}</a>
+		</dt>
+		<dd>
+		{% if book.authors|length %}
+			<span class="bookauthor">{{ link.persons_comma(book.authors) }}</span>
+		{% endif %}
+		{% if book.sequence is defined %}
+			<br><span class="bookseq">{{ link.sequence(book.sequence) }}{% if book.seqnr is defined %}, №&nbsp;{{ book.seqnr }}{% endif %}</span>
+		{% endif %}
+		{% if book.category is defined %}
+			<br><span class="bookcat">{{ link.category(book.category) }}</span>
+		{% endif %}
+		</dd>
+		<dd class="download">{{ _self.download_links(book) }}</dd>
+	</dl>
+{% endmacro %}
+
+{% macro download_link(book, format) %}
+	{% spaceless %}
+	<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug, '_format': format}) }}" title="Сваляне във формат {{ format }}" class="dl dl-{{ format|replace({'.zip': ''}) }}"><span>{{ format }}</span></a>
+	{% endspaceless %}
+{% endmacro %}
+
+{% macro download_links(book, class) %}
+	<ul class="{{ class|default('dl-list') }}">
+		{% if book.type == 'pic' %}
+			{% set formats = [] %}
+		{% elseif book.type == 'djvu' %}
+			{% set formats = ['djvu'] %}
+		{% else %}
+			{% set formats = ['fb2.zip', 'epub', 'txt.zip', 'sfb.zip'] %}
+		{% endif %}
+		{% for format in formats %}
+			<li>{{ _self.download_link(book, format) }}</li>
+		{% else %}
+			<li></li>
+		{% endfor %}
+	</ul>
+{% endmacro %}
+
+{% macro cover(book, width) %}
+	<div class="cover"><img src="{{ asset(book.has_cover ? cover(book.id, width) : 'images/nocover.png') }}" alt="Корица" width="{{ width }}"></div>
+{% endmacro %}

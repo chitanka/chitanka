@@ -1,0 +1,49 @@
+{% macro person(person) %}
+	<a href="{{ path('person_show', {'slug': person.slug}) }}">{{ person.name }}</a>
+{% endmacro %}
+
+{% macro persons(persons) %}
+	{% if persons|length == 1 %}
+		{{ _self.person(persons.0) }}
+	{% else %}
+		<ul class="simplelist">
+		{% for person in persons %}
+			<li>{{ _self.person(person) }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+{% endmacro %}
+
+{% macro persons_comma(persons) %}
+	{% for person in persons %}
+		<a href="{{ path('person_show', {'slug': person.slug}) }}">{{ person.name }}</a>{{ loop.last ? '' : ',' }}
+	{% endfor %}
+{% endmacro %}
+
+{% macro authors_by_country(country) %}
+	<a href="{{ path('authors_by_country', {'country': country}) }}">{% trans 'country.' ~ country %}</a>
+{% endmacro %}
+
+{% macro series(series) %}
+	<a href="{{ path('series_show', {'slug': series.slug}) }}"><i>{{ series.name }}</i></a>
+{% endmacro %}
+
+{% macro text(text) %}
+{% spaceless %}<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}"><i>{{ text.title }}</i></a>{% endspaceless %}
+{% endmacro %}
+
+{% macro book(book) %}
+{% spaceless %}<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}"><i>{{ book.title }}</i></a>{% endspaceless %}
+{% endmacro %}
+
+{% macro sequence(sequence) %}
+{% spaceless %}<a href="{{ path('sequence_show', {'slug': sequence.slug}) }}" rel="category">{{ sequence.name }}</a>{% endspaceless %}
+{% endmacro %}
+
+{% macro category(category) %}
+	<a href="{{ path('books_by_category', {'slug': category.slug}) }}" rel="category tag">{{ category.name }}</a>
+{% endmacro %}
+
+{% macro label(label) %}
+{% spaceless %}<a href="{{ path('texts_by_type', {'type': label.slug}) }}" rel="tag">{{ label.name }}</a>{% endspaceless %}
+{% endmacro %}

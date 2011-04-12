@@ -1,0 +1,11 @@
+{% if book is defined %}
+	<div id="wanted-book">
+		<p><a href="{{ path('wanted') }}">Търси се</a>:
+		{% if put_link %}
+			<b><a href="{{ path('wanted') }}">{{ book.description }}</a></b>
+		{% else %}
+			<b>{{ book.description|raw }}</b>
+		{% endif %}
+		</p>
+	</div>
+{% endif %}

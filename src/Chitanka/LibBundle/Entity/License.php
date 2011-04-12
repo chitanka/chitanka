@@ -1,0 +1,188 @@
+<?php
+
+namespace Chitanka\LibBundle\Entity;
+
+/**
+* @orm:Entity
+* @orm:Table(name="license")
+*/
+class License
+{
+	/**
+	* @var integer $id
+	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	*/
+	private $id;
+
+	/**
+	* @var string $code
+	* @orm:Column(type="string", length=20, unique=true)
+	*/
+	private $code;
+
+	/**
+	* @var string $name
+	* @orm:Column(type="string", length=15)
+	*/
+	private $name;
+
+	/**
+	* @var string $fullname
+	* @orm:Column(type="string", length=255)
+	*/
+	private $fullname;
+
+	/**
+	* @var boolean $free
+	* @orm:Column(type="boolean")
+	*/
+	private $free;
+
+	/**
+	* @var boolean $copyright
+	* @orm:Column(type="boolean")
+	*/
+	private $copyright;
+
+	/**
+	* @var string $uri
+	* @orm:Column(type="string", length=255)
+	*/
+	private $uri;
+
+	/**
+	* Get id
+	*
+	* @return integer $id
+	*/
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	* Set code
+	*
+	* @param string $code
+	*/
+	public function setCode($code)
+	{
+		$this->code = $code;
+	}
+
+	/**
+	* Get code
+	*
+	* @return string $code
+	*/
+	public function getCode()
+	{
+		return $this->code;
+	}
+
+	/**
+	* Set name
+	*
+	* @param string $name
+	*/
+	public function setName($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
+	* Get name
+	*
+	* @return string $name
+	*/
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	* Set fullname
+	*
+	* @param string $fullname
+	*/
+	public function setFullname($fullname)
+	{
+		$this->fullname = $fullname;
+	}
+
+	/**
+	* Get fullname
+	*
+	* @return string $fullname
+	*/
+	public function getFullname()
+	{
+		return $this->fullname;
+	}
+
+	/**
+	* Set free
+	*
+	* @param boolean $free
+	*/
+	public function setFree($free)
+	{
+		$this->free = $free;
+	}
+
+	/**
+	* Get free
+	*
+	* @return boolean $free
+	*/
+	public function getFree()
+	{
+		return $this->free;
+	}
+
+	/**
+	* Set copyright
+	*
+	* @param boolean $copyright
+	*/
+	public function setCopyright($copyright)
+	{
+		$this->copyright = $copyright;
+	}
+
+	/**
+	* Get copyright
+	*
+	* @return boolean $copyright
+	*/
+	public function getCopyright()
+	{
+		return $this->copyright;
+	}
+
+	/**
+	* Set uri
+	*
+	* @param string $uri
+	*/
+	public function setUri($uri)
+	{
+		$this->uri = $uri;
+	}
+
+	/**
+	* Get uri
+	*
+	* @return string $uri
+	*/
+	public function getUri()
+	{
+		return $this->uri;
+	}
+
+
+	public function __toString()
+	{
+		return $this->name;
+	}
+}

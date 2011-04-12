@@ -1,0 +1,34 @@
+<form action="/lib/comment#e4225" method="post" id="postform">
+	<fieldset style="margin-top:2em">
+		<div id="commentrules" class="writingrules">
+			<p>Уважаеми посетители на сайта, всеки е добре дошъл да изкаже мнението си относно дадено произведение. Имайте предвид, че модераторите ще изтрият коментара или част от него, ако той съдържа обидни и груби нападки към другите, както и ако рекламира собствени възгледи, които не са в контекста на произведението. Ако сте съгласни с това условие, моля, продължете към изпращането на коментара си.</p>
+
+			<p>Задължително е попълването на всички полета, както и писането с кирилица. Коментарите с латиница най-вероятно ще бъдат изтрити.</p>
+
+			<p>Спазвайте елементарни правописни правила:</p>
+			<ul>
+				<li>Започвайте изреченията с главна буква;</li>
+				<li>Оставяйте <span title="Синоними: шпация, пауза">интервал</span> след препинателния знак, а не преди него!</li>
+			</ul>
+			<dl class="instruct"><dt>Разрешени са следните етикети</dt><dd><ul><li>&lt;em&gt;</li><li>&lt;strong&gt;</li></ul></dd>
+			</dl>
+		</div>
+
+		<legend>Нов коментар</legend>
+		<input type="hidden" name="textId" value="3" />
+		<input type="hidden" name="chunkId" value="1" />
+		<input type="hidden" name="viewType" value="tree" />
+		<input type="hidden" name="replyto" value="0" />
+		<br>
+		<label for="commenttext">Коментар:</label><br>
+
+		<textarea name="commenttext" id="commenttext" cols="77" rows="20" onkeypress="postform_changed = true"></textarea>
+		<div><label for="reader">Име: </label><input type="text" name="reader" id="reader" size="40" maxlength="160" value="" /></div>
+		<div><input type="hidden" name="captchaQuestion" value="2" /><input type="hidden" name="captchaQuestionT" value="Колко прави 2 по 4 (словом)?" /><input type="hidden" name="captchaTries" value="0" /><label for="captchaAnswer">Колко прави 2 по 4 (словом)?</label> <input type="text" name="captchaAnswer" id="captchaAnswer" size="30" maxlength="60" /><br></div>
+
+		<div>
+			<input type="submit" value="Предварителен преглед" tabindex="0" onclick="if ( ! postform_changed ) { return false; } postform_changed = false; return makePreview(this.form, this.form.commenttext.value, this.form.reader.value)" name="preview" />
+			<input type="submit" value="Пращане" tabindex="0" name="send" />
+		</div>
+	</fieldset>
+</form>

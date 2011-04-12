@@ -1,0 +1,60 @@
+{% extends 'LibBundle::layout.rss.twig' %}
+
+{% block title 'Нови книги' %}
+{% block content %}
+
+	{% macro download_link(book, format) %}
+		<a href="{{ url('book_show', {'id': book.id, '_format': format}) }}">{{ format }}</a>
+	{% endmacro %}
+
+	{% macro download_links(book) %}
+		<ul>
+			<li>{{ _self.download_link(book, 'txt.zip') }}</li>
+			<li>{{ _self.download_link(book, 'fb2.zip') }}</li>
+			<li>{{ _self.download_link(book, 'epub') }}</li>
+			<li>{{ _self.download_link(book, 'sfb.zip') }}</li>
+		</ul>
+	{% endmacro %}
+
+	{% import 'LibBundle::book.html.twig' as booktools %}
+	{% import 'LibBundle::person.html.twig' as persontools %}
+	{% import 'LibBundle::abslink.html.twig' as link %}
+	{% for revisions in book_revisions_by_date %}
+		{% for revision in revisions %}
+			{% set book = revision.book %}
+			{% set title = book.title ~ (book.subtitle is defined ? '. ' ~ book.subtitle : '') %}
+			{% set author = persontools.authors_plain(book.authors) %}
+			<item>
+				<title>{{ title }}</title>
+				<dc:creator>{{ author }} (Моята библиотека)</dc:creator>
+				<link>{{ url('book_show', {'id': book.id}) }}</link>
+				<!--<comments>{{ url('book_comments', {'id': book.id}) }}</comments>-->
+				<pubDate>{{ revision.date.format('r') }}</pubDate>
+				<category>{{ book.category.name }}</category>
+				<guid>{{ url('book_show', {'id': book.id}) }}#{{ revision.id }}</guid>
+				<description>„{{ title }}“ от {{ author }}</description>
+				<content:encoded><![CDATA[
+	{% if book.has_cover %}
+		{{ booktools.cover(book, 90) }}
+	{% endif %}
+	<div>„<a href="{{ url('book_show', {'id': book.id}) }}"><i>{{ title }}</i></a>“
+		{% if book.authors|length %}
+			от {{ link.persons_comma(book.authors) }}
+		{% endif %}
+	</div>
+	{% if book.sequence is defined %}
+		<div>Поредица: {{ link.sequence(book.sequence) }}{% if book.seqnr is defined %}, № {{ book.seqnr }}{% endif %}</div>
+	{% endif %}
+	{% if book.category is defined %}
+		<div>Категория: {{ link.category(book.category) }}</div>
+	{% endif %}
+	{% if book.type != 'pic' %}
+		<div>Сваляне: {{ _self.download_links(book) }}</div>
+	{% endif %}
+				]]></content:encoded>
+				<!--<wfw:commentRss>{{ url('book_comments', {'id': book.id, '_format': 'rss'}) }}</wfw:commentRss>-->
+
+			</item>
+		{% endfor %}
+	{% endfor %}
+{% endblock %}

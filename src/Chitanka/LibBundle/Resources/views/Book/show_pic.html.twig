@@ -1,0 +1,37 @@
+<div class="breadcrumbs">
+	<li><a href="{{ path('sequences') }}">Поредици</a></li>
+	{% if book.sequence %}
+		{% import 'LibBundle::link.html.twig' as link %}
+		<li>{{ link.sequence(book.sequence) }}{%if book.seqnr %} №&nbsp;{{ book.seqnr }}{%endif%}</li>
+	{% endif %}
+</div>
+
+{% if info %}
+	<fieldset class="infobox">
+		<legend>Допълнителна информация</legend>
+		{{ info|raw }}
+	</fieldset>
+{% endif %}
+
+<div id="help-instructions"></div>
+
+<div id="gallery-wrapper">
+	<div id="gallery" class="gal-content">
+		<div id="com-loading" class="loader"></div>
+		<div id="com-slideshow" class="slideshow"></div>
+		<div id="com-controls" class="controls buttonmenu"></div>
+	</div>
+
+	<div id="comics" class="gal-navigation">
+		{% include 'LibBundle:Book:pic_list.html.twig' %}
+	</div>
+</div>
+
+<p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p>
+<p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p>
+<p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p>
+<p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p>
+<p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p>
+<p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p>
+<p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p>
+<p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p>

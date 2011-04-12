@@ -1,0 +1,21 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Читателски коментари' %}
+{% set subtitle %}
+{% spaceless %}
+	{% import 'LibBundle::link.html.twig' as link %}
+	{% import 'LibBundle::text.html.twig' as texttools %}
+	за „{{ link.text(text) }}“
+	{{ texttools.author_list(text.authors) }}
+{% endspaceless %}
+{% endset %}
+
+{% block content %}
+	{{ page.getFullContent()|raw }}
+	{#
+	{% for comment in comments %}
+		{% include 'LibBundle:TextComment:comment.html.twig' with {'standalone': false} %}
+	{% endfor %}
+	{% include 'LibBundle:TextComment:comment_form.html.twig' %}
+	#}
+{% endblock %}

@@ -1,0 +1,37 @@
+<form action="{{ path('feedback') }}" method="post" class="main-form" onsubmit="return validateFeedbackForm(this)">
+	{{ form_errors(form) }}
+
+	<dl>
+		<dt>{{ form_label(form.comment, 'Kоментар') }}</dt>
+		<dd>{{ form_errors(form.comment) }}{{ form_field(form.comment) }}</dd>
+		<dt>{{ form_label(form.subject, 'Тема') }}</dt>
+		<dd>{{ form_errors(form.subject) }}{{ form_field(form.subject) }}</dd>
+		<dt>{{ form_label(form.name, 'Име') }}</dt>
+		<dd>{{ form_errors(form.name) }}{{ form_field(form.name) }}</dd>
+		<dt>{{ form_label(form.email, 'Е-поща') }}</dt>
+		<dd>{{ form_errors(form.email) }}{{ form_field(form.email) }}</dd>
+	</dl>
+
+	<div>
+		{{ form_hidden(form) }}
+		<ul class="actions">
+			<li class="submit"><input type="submit" value="Пращане"></li>
+		</ul>
+	</div>
+</form>
+<script>
+var validateFeedbackForm = (function() {
+	var hasNotice = false;
+
+	return (function(form) {
+		if (form.elements['feedback[email]'].value == "" && ! hasNotice) {
+			alert("Не сте посочили електронна поща и заради това няма да можем да ви отговорим. (Това съобщение няма да ви бъде показвано повече.)");
+			hasNotice = true;
+
+			return false;
+		}
+
+		return true;
+	});
+})();
+</script>

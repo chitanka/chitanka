@@ -1,0 +1,7 @@
+{% set img_dir = book.getWebImageDir() %}
+{% set thumb_dir = book.getWebThumbDir() %}
+<ul class="thumbs noscript">
+{% for page, file in book.getFiles() %}
+	<li><a class="thumb" href="{{ asset(img_dir~'/'~file) }}"><img src="{{ asset(thumb_dir~'/'~book.getThumbFile(page)) }}" width="80" height="80" alt="Страница {{ page }}" class="{{ book.getThumbClass(page) }}"></a></li>
+{% endfor %}
+</ul>

@@ -1,0 +1,22 @@
+{% import 'LibBundle::text.html.twig' as text_lister %}
+<fieldset class="superlist">
+	<legend>
+		{% if series.slug is defined %}
+			<a href="{{ path('series_show', {'slug': series.slug}) }}">{{ series.name }}</a>
+		{% else %}
+			{% trans 'text.type.plular.' ~ series.name %}
+		{% endif %}
+	</legend>
+	{{ text_lister.text_list(texts) }}
+	{% if texts|length > 1 %}
+		{% set filename %}{% spaceless %}
+			{{ person .slug}} -
+			{% if series.slug is defined %}
+				{{ series.slug }}
+			{% else %}
+				{% trans 'text.type.plular.' ~ series.name %}
+			{% endif %}
+		{% endspaceless %}{% endset %}
+		{% include 'LibBundle:Text:multi_download_form.html.twig' with {'filename': filename} %}
+	{% endif %}
+</fieldset>

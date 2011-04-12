@@ -1,0 +1,11 @@
+<fieldset class="infobox collapsed">
+	<legend>Информация</legend>
+	{% if info is defined %}
+		{% if info_intro %}
+			<p class="intro">{{ info_intro|replace({'$1': person.name})|raw }}</p>
+		{% endif %}
+		<div class="wikiinfo">{{ info|raw }}</div>
+	{% else %}
+		<p><i>Няма биографична информация за {{ person.name }}.</i> <!--<a href="{{ path('person_suggest', {'slug': person.slug}) }}">Предложете такава!</a>--></p>
+	{% endif %}
+</fieldset>

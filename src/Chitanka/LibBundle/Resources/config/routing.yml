@@ -1,0 +1,447 @@
+homepage:
+    pattern:        /
+    defaults:       { _controller: LibBundle:Main:index }
+    requirements:   { _method: get }
+
+
+# # #   PERSONS   # # #
+
+authors:
+    pattern:        /authors
+    defaults:       { _controller: LibBundle:Person:indexAuthors }
+    requirements:   { _method: get }
+
+author:
+    pattern:        /author
+    defaults:       { _controller: LibBundle:Main:redirect, route: authors }
+    requirements:   { _method: get }
+
+authors_by_country:
+    pattern:        /authors/by-country/{country}/{page}
+    defaults:       { _controller: LibBundle:Person:listAuthorsByCountry, page: 1 }
+    requirements:   { _method: get }
+
+authors_by_letter:
+    pattern:        /authors/{letter}/{page}
+    defaults:       { _controller: LibBundle:Person:listAuthors, page: 1 }
+    requirements:   { _method: get }
+
+
+translators:
+    pattern:        /translators
+    defaults:       { _controller: LibBundle:Person:indexTranslators }
+    requirements:   { _method: get }
+
+translator:
+    pattern:        /translator
+    defaults:       { _controller: LibBundle:Main:redirect, route: translators }
+    requirements:   { _method: get }
+
+translators_by_letter:
+    pattern:        /translators/{letter}/{page}
+    defaults:       { _controller: LibBundle:Person:listTranslators, page: 1 }
+    requirements:   { _method: get }
+
+
+person_show:
+    pattern:        /person/{slug}
+    defaults:       { _controller: LibBundle:Person:show }
+    requirements:   { _method: get }
+
+person_suggest:
+    pattern:        /person/{slug}/suggest
+    defaults:       { _controller: LibBundle:Person:suggest }
+
+# legacy url
+author_show:
+    pattern:        /author/{name}
+    defaults:       { _controller: LibBundle:Person:showRedirect }
+    requirements:   { _method: get }
+
+# legacy url
+translator_show:
+    pattern:        /translator/{name}
+    defaults:       { _controller: LibBundle:Person:showRedirect }
+    requirements:   { _method: get }
+
+
+# # #   SERIES   # # #
+
+series:
+    pattern:        /series
+    defaults:       { _controller: LibBundle:Series:index }
+    requirements:   { _method: get }
+
+serie:
+    pattern:        /serie
+    defaults:       { _controller: LibBundle:Main:redirect, route: series }
+    requirements:   { _method: get }
+
+series_by_letter:
+    pattern:        /series/{letter}/{page}
+    defaults:       { _controller: LibBundle:Series:list, page: 1 }
+    requirements:   { _method: get }
+
+series_show:
+    pattern:        /serie/{slug}
+    defaults:       { _controller: LibBundle:Series:show }
+    requirements:   { _method: get }
+
+
+# # #   BOOKS   # # #
+
+books:
+    pattern:        /books
+    defaults:       { _controller: LibBundle:Book:index }
+    requirements:   { _method: get }
+
+book:
+    pattern:        /book
+    defaults:       { _controller: LibBundle:Main:redirect, route: books }
+    requirements:   { _method: get }
+
+books_by_category:
+    pattern:        /books/{slug}/{page}
+    defaults:       { _controller: LibBundle:Book:list, page: 1 }
+    requirements:   { _method: get }
+
+book_random:
+    pattern:        /book/random
+    defaults:       { _controller: LibBundle:Book:random }
+    requirements:   { _method: get }
+
+book_show:
+    pattern:        /book/{id}.{_format}
+    defaults:       { _controller: LibBundle:Book:show, _format: html }
+    requirements:   { _method: get, _format: html|sfb|sfb\.zip|fb2|fb2\.zip|txt|txt\.zip|epub|djvu }
+
+book_comments:
+    pattern:        /book/{id}/comments.{_format}
+    defaults:       { _controller: LibBundle:Book:comments, _format: html }
+
+# book_suggest_info:
+#     pattern:        /book/{id}/suggest/{object}
+#     defaults:       { _controller: LibBundle:Book:suggest }
+
+category_edit:
+    pattern:        /admin/category/edit/{id}
+    defaults:       { _controller: LibBundle:Category:edit }
+
+
+# # #   BOOK SEQUENCES   # # #
+
+sequences:
+    pattern:        /sequences
+    defaults:       { _controller: LibBundle:Sequence:index }
+    requirements:   { _method: get }
+
+sequence:
+    pattern:        /sequence
+    defaults:       { _controller: LibBundle:Main:redirect, route: sequences }
+    requirements:   { _method: get }
+
+sequences_by_letter:
+    pattern:        /sequences/{letter}/{page}
+    defaults:       { _controller: LibBundle:Sequence:list, page: 1 }
+    requirements:   { _method: get }
+
+sequence_show:
+    pattern:        /sequence/{slug}
+    defaults:       { _controller: LibBundle:Sequence:show }
+    requirements:   { _method: get }
+
+
+# # #   TEXTS   # # #
+
+texts_comments:
+    pattern:        /texts/comments.{_format}/{page}
+    defaults:       { _controller: LibBundle:TextComment:index, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|rss }
+
+texts:
+    pattern:        /texts
+    defaults:       { _controller: LibBundle:Text:index }
+    requirements:   { _method: get }
+
+text:
+    pattern:        /text
+    defaults:       { _controller: LibBundle:Main:redirect, route: texts }
+    requirements:   { _method: get }
+
+texts_by_type:
+    pattern:        /texts/{type}/{page}
+    defaults:       { _controller: LibBundle:Text:list, page: 1 }
+    requirements:   { _method: get }
+
+text_label_new:
+    pattern:        /text/{id}/label/new
+    defaults:       { _controller: LibBundle:Text:newLabel }
+text_label_delete:
+    pattern:        /text/{id}/label/{labelId}
+    defaults:       { _controller: LibBundle:Text:deleteLabel }
+    requirements:   { _method: delete }
+
+# texts_by_type:
+#     pattern:        /texts-by-type/{type}/{page}
+#     defaults:       { _controller: LibBundle:Text:listByType, page: 1 }
+#     requirements:   { _method: get }
+
+text_random:
+    pattern:        /text/random
+    defaults:       { _controller: LibBundle:Text:random }
+    requirements:   { _method: get }
+
+text_comments:
+    pattern:        /text/{id}/comments.{_format}
+    defaults:       { _controller: LibBundle:TextComment:listForText, _format: html }
+
+text_ratings:
+    pattern:        /text/{id}/ratings
+    defaults:       { _controller: LibBundle:Text:ratings }
+
+text_rating:
+    pattern:        /text/{text}/rating
+    defaults:       { _controller: LibBundle:Text:rating }
+
+text_similar:
+    pattern:        /text/{id}/similar
+    defaults:       { _controller: LibBundle:Text:similar }
+    requirements:   { _method: get }
+
+text_suggest_info:
+    pattern:        /text/{id}/suggest/{object}
+    defaults:       { _controller: LibBundle:Text:suggest }
+
+text_read:
+    pattern:        /text/{id}/read
+    defaults:       { _controller: LibBundle:Text:markRead }
+    requirements:   { _method: post, id: \d+ }
+
+text_bookmark:
+    pattern:        /text/{id}/mark
+    defaults:       { _controller: LibBundle:Text:addBookmark }
+    requirements:   { _method: post, id: \d+ }
+
+text_show:
+    pattern:        /text/{id}.{_format}
+    defaults:       { _controller: LibBundle:Text:show, slug: test, _format: html }
+    requirements:   { _method: get, _format: html|sfb|fb2|sfb\.zip|fb2\.zip|txt|txt\.zip|epub|clue }
+
+text_show_part:
+    pattern:        /text/{id}/{part}
+    defaults:       { _controller: LibBundle:Text:showPart, part: 1 }
+    requirements:   { part: \d+ }
+
+text_show_multi:
+    pattern:        /text-multi
+    defaults:       { _controller: LibBundle:Text:showMulti, _format: txt.zip }
+    requirements:   { _format: sfb\.zip|fb2\.zip|txt\.zip|epub }
+
+
+
+about:
+    pattern:   /about
+    defaults: { _controller: LibBundle:Wiki:index, page: about }
+rules:
+    pattern:   /rules
+    defaults: { _controller: LibBundle:Wiki:index, page: rules }
+blacklist:
+    pattern:   /blacklist
+    defaults: { _controller: LibBundle:Wiki:index, page: blacklist }
+links:
+    pattern:   /links
+    defaults: { _controller: LibBundle:Wiki:index, page: links }
+
+search:
+    pattern:   /search
+    defaults: { _controller: LibBundle:Search:index }
+
+sandbox:
+    pattern:   /sandbox
+    defaults: { _controller: LibBundle:Sandbox:index }
+
+sitemap:
+    pattern:   /sitemap
+    defaults: { _controller: LibBundle:Sitemap:index }
+
+feedback:
+    pattern:   /feedback
+    defaults: { _controller: LibBundle:Feedback:index }
+
+statistics:
+    pattern:   /statistics
+    defaults: { _controller: LibBundle:Statistics:index }
+
+opensearchdesc:
+    pattern:   /osd/{object}
+    defaults: { _controller: LibBundle:Opensearchdesc:index }
+
+
+comment:
+    pattern:   /comments
+    defaults: { _controller: LibBundle:Comment:index }
+
+torrents:
+    pattern:   /torrents
+    defaults: { _controller: LibBundle:Torrent:index }
+
+wanted:
+    pattern:   /wanted
+    defaults: { _controller: LibBundle:Wanted:index }
+
+
+new:
+    pattern:   /new
+    defaults: { _controller: LibBundle:History:index }
+
+new_books:
+    pattern:   /new-books.{_format}
+    defaults: { _controller: LibBundle:History:listBooks, _format: html }
+    requirements:   { _method: get, _format: html|rss }
+
+new_books_by_month:
+    pattern:   /new-books/{year}/{month}/{page}
+    defaults: { _controller: LibBundle:History:listBooksByMonth, page: 1 }
+    requirements:
+        _method: get
+        year: \d+
+        month: \d+
+        page: \d+
+
+new_texts:
+    pattern:   /new-texts.{_format}
+    defaults: { _controller: LibBundle:History:listTexts, _format: html }
+    requirements:   { _method: get, _format: html|rss }
+
+new_texts_by_month:
+    pattern:   /new-texts/{year}/{month}/{page}
+    defaults: { _controller: LibBundle:History:listTextsByMonth, page: 1 }
+    requirements:
+        _method: get
+        year: \d+
+        month: \d+
+        page: \d+
+
+
+user_email:
+    pattern:   /user/{username}/email
+    defaults: { _controller: LibBundle:User:email }
+# settings
+user_edit:
+    pattern:   /user/{username}/edit
+    defaults: { _controller: LibBundle:User:edit }
+user_show:
+    pattern:   /user/{username}
+    defaults: { _controller: LibBundle:User:show }
+    requirements: { _method: get }
+# old edituserpage
+user_page_edit:
+    pattern:   /user/{username}/page
+    defaults: { _controller: LibBundle:User:page }
+
+user_comments:
+    pattern:   /user/{username}/comments
+    defaults: { _controller: LibBundle:User:comments }
+    requirements: { _method: get }
+
+user_ratings:
+    pattern:   /user/{username}/ratings
+    defaults: { _controller: LibBundle:User:ratings }
+    requirements: { _method: get }
+
+user_contribs:
+    pattern:   /user/{username}/contribs/{page}
+    defaults: { _controller: LibBundle:User:contribs, page: 1 }
+
+user_read_list:
+    pattern:   /user/{username}/read/{page}
+    defaults: { _controller: LibBundle:User:readList, page: 1 }
+
+
+register:
+    pattern:   /register
+    defaults: { _controller: LibBundle:Security:register }
+login:
+    pattern:   /login
+    defaults: { _controller: LibBundle:Security:login }
+login_check:
+    pattern:   /login_check
+# logout:
+#     pattern:   /logout
+logout:
+    pattern:   /signout
+    defaults: { _controller: LibBundle:Security:logout }
+
+request_password:
+    pattern:   /request-password
+    defaults: { _controller: LibBundle:Security:requestPassword }
+request_username:
+    pattern:   /request-username
+    defaults: { _controller: LibBundle:Security:requestUsername }
+
+
+workroom_entry_new:
+    pattern:   /workroom/entry
+    defaults: { _controller: LibBundle:Workroom:new }
+    requirements: { _method: get }
+workroom_entry_create:
+    pattern:   /workroom/entry
+    defaults: { _controller: LibBundle:Workroom:create }
+    requirements: { _method: post }
+workroom_entry_edit:
+    pattern:   /workroom/entry/{id}
+    defaults: { _controller: LibBundle:Workroom:edit }
+    requirements: { _method: get }
+workroom_entry_update:
+    pattern:   /workroom/entry/{id}
+    defaults: { _controller: LibBundle:Workroom:update }
+    requirements: { _method: put }
+workroom_entry_delete:
+    pattern:   /workroom/entry/{id}
+    defaults: { _controller: LibBundle:Workroom:delete }
+    requirements: { _method: delete }
+
+workroom_contrib:
+    pattern:   /workroom/contributors
+    defaults: { _controller: LibBundle:Workroom:listContributors }
+    requirements: { _method: get }
+
+workroom_contrib_delete:
+    pattern:   /workroom/contrib/{id}
+    defaults: { _controller: LibBundle:Workroom:deleteContrib }
+    requirements: { _method: delete }
+
+workroom:
+    pattern:   /workroom/{status}/{page}
+    defaults: { _controller: LibBundle:Workroom:index, status: all, page: 1 }
+    requirements: { page: \d+ }
+
+workroom_rss:
+    pattern:   /workroom.rss
+    defaults: { _controller: LibBundle:Workroom:rss }
+    requirements: { _method: get }
+
+
+featured_books:
+    pattern:   /featured-books
+    defaults: { _controller: LibBundle:FeaturedBook:index }
+
+foreign_books:
+    pattern:   /foreign-books
+    defaults: { _controller: LibBundle:ForeignBook:index }
+
+
+_internal:
+    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
+    prefix:   /_50m3th1ng_w1ck3d_c0m35_th15_way
+
+test:
+    pattern:   /t
+    defaults: { _controller: LibBundle:User:personalTools }
+
+# fos_user_security:
+    # resource: @FOSUserBundle/Resources/config/routing/security.xml
+
+# default:
+#     pattern:   /{action}
+#     defaults: { _controller: LibBundle:Main:default }

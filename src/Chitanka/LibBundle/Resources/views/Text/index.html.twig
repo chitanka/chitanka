@@ -1,0 +1,9 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Произведения' %}
+{% block content %}
+	<h2>По етикет</h2>
+	{% include 'LibBundle:Text:label_tree.html.twig' %}
+	<h2>По форма</h2>
+	{% include 'LibBundle:Text:type_list.html.twig' %}
+{% endblock %}

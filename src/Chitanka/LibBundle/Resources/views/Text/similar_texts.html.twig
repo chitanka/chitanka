@@ -1,0 +1,7 @@
+{% import 'LibBundle::text.html.twig' as text_lister %}
+<fieldset class="superlist">
+	<legend>
+		Читателите на „{{ text.title }}“ са прочели и:
+	</legend>
+	{{ text_lister.text_list_with_author(texts) }}
+</fieldset>

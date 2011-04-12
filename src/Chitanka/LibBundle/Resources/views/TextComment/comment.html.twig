@@ -1,0 +1,30 @@
+<article class="readercomment" id="e{{ comment.id }}">
+	{% if standalone %}
+		{% import 'LibBundle::link.html.twig' as link %}
+		{% import 'LibBundle::text.html.twig' as texttools %}
+		<h1>
+			За „{{ link.text(comment.text) }}“
+			{{ texttools.author_list(comment.text.authors) }}
+		</h1>
+	{% endif %}
+
+	<div class="commenttext">
+		{{ comment.content|user_markup|raw }}
+	</div>
+
+	<footer>
+		<ul class="menu" style="float:right">
+			<li><a href="{{ path('text_comments', {'id': comment.text.id, 'replyto': comment.id}) }}#e{{ comment.id }}" title="Отговор на коментара" class="js" onclick="return initReply({{ comment.id }})">Отговор</a></li>
+			<li><a href="{{ path('text_comments', {'id': comment.text.id}) }}" title="Всички коментари за произведението">Всички коментари</a></li>
+		</ul>
+		<strong>
+			{% if comment.user is defined %}
+				<a href="{{ path('user_show', {'username': comment.user.username}) }}">{{ comment.user.username }}</a>
+			{% else %}
+				{{ comment.rname }}
+			{% endif %}
+		</strong>
+		<time datetime="{{ comment.time.format('c') }}" pubdate>({{ comment.time|humandate }})</time>
+	</footer>
+	<div id="replyto{{ comment.id }}"><!-- TODO remove --></div>
+</article>
