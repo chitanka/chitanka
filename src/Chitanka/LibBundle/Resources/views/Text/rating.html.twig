@@ -1,4 +1,4 @@
-<form action="{{ path('text_rating', {'text': rating.text.id}) }}" method="post" class="inline" onsubmit="return saveRating(this)">
+<form action="{{ path('text_rating', {'id': rating.text.id}) }}" method="post" class="inline" onsubmit="return saveRating(this)">
 	<fieldset>
 		{{ form_field(form.rating, {'onchange': 'if (this.value) saveRating(this.form)'}) }}
 		{{ form_hidden(form) }}

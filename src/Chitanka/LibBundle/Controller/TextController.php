@@ -173,9 +173,10 @@ class TextController extends Controller
 	{
 		$text = $this->getRepository('Text')->find($id);
 
-		$rating = $this->getRepository('TextRating')->getByTextAndUser($text, $this->getUser());
+		$user = $this->getEntityManager()->merge($this->getUser());
+		$rating = $this->getRepository('TextRating')->getByTextAndUser($text, $user);
 		if ( ! $rating) {
-			$rating = new TextRating($text, $this->getUser());
+			$rating = new TextRating($text, $user);
 		}
 		$form = TextRatingForm::create($this->get('form.context'), 'rating', array('em' => $this->getEntityManager()));
 

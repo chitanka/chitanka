@@ -200,7 +200,7 @@ text_ratings:
     defaults:       { _controller: LibBundle:Text:ratings }
 
 text_rating:
-    pattern:        /text/{text}/rating
+    pattern:        /text/{id}/rating
     defaults:       { _controller: LibBundle:Text:rating }
 
 text_similar:

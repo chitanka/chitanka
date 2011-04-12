@@ -48,7 +48,7 @@ abstract class EntityForm extends Form
 			$object->process();
 		} else if ($this->hasOption('em')) {
 			$em = $this->getOption('em');
-			$em->persist($tl);
+			$em->persist($object);
 			$em->flush();
 		}
 	}
