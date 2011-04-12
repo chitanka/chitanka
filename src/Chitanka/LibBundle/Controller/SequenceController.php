@@ -6,8 +6,6 @@ use Chitanka\LibBundle\Pagination\Pager;
 
 class SequenceController extends Controller
 {
-	protected $repository = 'Sequence';
-
 	public function indexAction()
 	{
 		return $this->display('index');
@@ -16,7 +14,7 @@ class SequenceController extends Controller
 	public function listAction($letter, $page)
 	{
 		$page = (int)$page;
-		$repo = $this->getRepository();
+		$repo = $this->getRepository('Sequence');
 		$limit = 50;
 
 		$prefix = $letter == '-' ? null : $letter;
@@ -38,7 +36,7 @@ class SequenceController extends Controller
 
 	public function showAction($slug)
 	{
-		$sequence = $this->getRepository()->findBySlug($slug);
+		$sequence = $this->getRepository('Sequence')->findBySlug($slug);
 
 		$this->view = array(
 			'sequence' => $sequence,
@@ -46,29 +44,6 @@ class SequenceController extends Controller
 		);
 
 		return $this->display('show');
-	}
-
-
-	public function createAction()
-	{
-	}
-
-	public function editAction($id)
-	{
-		$sequence = $this->getRepository()->find($id);
-		$form = new SequenceForm('sequence', $sequence, $this->get('validator'));
-		$form->setEm($this->getEntityManager())->setup();
-
-		$this->view = array(
-			'sequence' => $sequence,
-			'form' => $form,
-		);
-
-		if ('POST' === $this->get('request')->getMethod()) {
-			$form->bindAndProcess($this->get('request')->request);
-		}
-
-		return $this->display('edit');
 	}
 
 }

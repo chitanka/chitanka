@@ -7,15 +7,13 @@ use Chitanka\LibBundle\Form\LabelForm;
 
 class LabelController extends Controller
 {
-	protected $repository = 'Label';
-
 	public function createAction()
 	{
 	}
 
 	public function editAction($id)
 	{
-		$label = $this->getRepository()->find($id);
+		$label = $this->getRepository('Label')->find($id);
 		$form = new LabelForm('label', $label, $this->get('validator'));
 		$form->setEm($this->getEntityManager())->setup();
 

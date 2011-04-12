@@ -8,8 +8,6 @@ use Chitanka\LibBundle\Legacy\Legacy;
 
 class PersonController extends Controller
 {
-	protected $repository = 'Person';
-
 	public function indexAuthorsAction()
 	{
 		return $this->display('index_authors');
@@ -27,7 +25,7 @@ class PersonController extends Controller
 		$country = $request->get('country', '');
 		$limit = 100;
 
-		$repo = $this->getRepository()->asAuthor();
+		$repo = $this->getRepository('Person')->asAuthor();
 		$filters = array(
 			'by'      => $by,
 			'prefix'  => $letter,
@@ -53,7 +51,7 @@ class PersonController extends Controller
 		$by      = $request->get('by', 'first');
 		$limit = 100;
 
-		$repo = $this->getRepository()->asAuthor();
+		$repo = $this->getRepository('Person')->asAuthor();
 		$filters = array(
 			'by'      => $by,
 			'country' => $country,
@@ -80,7 +78,7 @@ class PersonController extends Controller
 		$country = $request->get('country', '');
 		$limit = 100;
 
-		$repo = $this->getRepository()->asTranslator();
+		$repo = $this->getRepository('Person')->asTranslator();
 		$filters = array(
 			'by'      => $by,
 			'prefix'  => $letter,
@@ -104,10 +102,10 @@ class PersonController extends Controller
 
 	public function showAction($slug)
 	{
-		$person = $this->getRepository()->findOneBy(array('slug' => $slug));
+		$person = $this->getRepository('Person')->findOneBy(array('slug' => $slug));
 
 		if ( ! $person) {
-			$person = $this->getRepository()->findOneBy(array('name' => $slug));
+			$person = $this->getRepository('Person')->findOneBy(array('name' => $slug));
 			if ($person) {
 				return $this->urlRedirect($this->generateUrl('person_show', array('slug' => $person->getSlug())), true);
 			}
@@ -139,7 +137,7 @@ class PersonController extends Controller
 
 	public function showRedirectAction($name)
 	{
-		$person = $this->getRepository()->findOneBy(array('name' => $name));
+		$person = $this->getRepository('Person')->findOneBy(array('name' => $name));
 		if ($person) {
 			return $this->urlRedirect($this->generateUrl('person_show', array('slug' => $person->getSlug())), true);
 		}

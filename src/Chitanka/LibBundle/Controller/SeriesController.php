@@ -7,8 +7,6 @@ use Chitanka\LibBundle\Pagination\Pager;
 
 class SeriesController extends Controller
 {
-	protected $repository = 'Series';
-
 	public function indexAction()
 	{
 		return $this->display('index');
@@ -17,7 +15,7 @@ class SeriesController extends Controller
 	public function listAction($letter, $page)
 	{
 		$page = (int)$page;
-		$repo = $this->getRepository();
+		$repo = $this->getRepository('Series');
 		$limit = 50;
 
 		$prefix = $letter == '-' ? null : $letter;
@@ -39,7 +37,7 @@ class SeriesController extends Controller
 
 	public function showAction($slug)
 	{
-		$series = $this->getRepository()->findBySlug($slug);
+		$series = $this->getRepository('Series')->findBySlug($slug);
 
 		$this->view = array(
 			'series' => $series,
@@ -56,7 +54,7 @@ class SeriesController extends Controller
 
 	public function editAction($id)
 	{
-		$label = $this->getRepository()->find($id);
+		$label = $this->getRepository('Series')->find($id);
 		$form = new SeriesForm('label', $label, $this->get('validator'));
 		$form->setEm($this->getEntityManager())->setup();
 
