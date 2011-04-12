@@ -45,12 +45,12 @@ class SeriesRepository extends EntityRepository
 	}
 
 
-	public function getByNames($name, $limit = 20)
+	public function getByNames($name, $limit = null)
 	{
 		return $this->getQueryBuilder()
 			->where('s.name LIKE ?1 OR s.orig_name LIKE ?1')
 			->setParameter(1, "%$name%")
-			->getQuery()->setMaxResults($limit)
+			->getQuery()//->setMaxResults($limit)
 			->getArrayResult();
 	}
 

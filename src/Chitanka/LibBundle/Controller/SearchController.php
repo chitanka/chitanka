@@ -29,14 +29,15 @@ class SearchController extends Controller
 		$texts = $this->getRepository('Text')->getByTitles($query);
 		$books = $this->getRepository('Book')->getByTitles($query);
 		$series = $this->getRepository('Series')->getByNames($query);
+		$sequences = $this->getRepository('Sequence')->getByNames($query);
 
-		$found = count($persons) > 0 || count($texts) > 0 || count($books) > 0 || count($series) > 0;
+		$found = count($persons) > 0 || count($texts) > 0 || count($books) > 0 || count($series) > 0 || count($sequences) > 0;
 
 		if ($found) {
 			$this->logSearch($query);
 		}
 
-		$this->view = compact('query', 'persons', 'texts', 'books', 'series', 'found');
+		$this->view = compact('query', 'persons', 'texts', 'books', 'series', 'sequences', 'found');
 
 		$response = $this->display('index');
 

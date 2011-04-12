@@ -23,6 +23,11 @@
 		{% include 'LibBundle:Series:series_list.html.twig' %}
 	{% endif %}
 
+	{% if sequences|length %}
+		<h2>Издателски поредици</h2>
+		{% include 'LibBundle:Sequence:sequences_list.html.twig' %}
+	{% endif %}
+
 	{% if not found %}
 		<p class="no-items">Нямате късмет. Не открихме нищо за „{{ query }}“.</p>
 	{% endif %}
