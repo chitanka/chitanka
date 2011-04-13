@@ -1123,8 +1123,7 @@ a.dl:hover {
 }*/
 a.dl {
 	position: relative;
-	padding-left: 1.7em;
-	/*background: yellow url(<?php echo $sprites['rating']?>) no-repeat top left;*/
+	padding-left: 20px;
 	background-repeat: no-repeat;
 }
 .dl-txt { background-image: url(<?php echo $imgDir ?>dl03-txt.png); }
@@ -1135,7 +1134,7 @@ a.dl {
 
 .dl-list, .dl-list li {
 	display: inline;
-	margin: 0;
+	margin: 0 .5em 0 0;
 	padding: 0;
 }
 
@@ -2146,24 +2145,35 @@ ul.two-columns {
 	margin-left: 2em;
 }
 
-.delete-form {
+.image-form {
 	display: inline;
 }
-.delete-form button {
-	background: none;
+.image-form button span {
+	display: none;
+}
+.image-form button {
+	margin-top: 2px;
+	vertical-align: top;
 	height: 16px;
 	width: 16px;
 	border: none;
+	-moz-border-radius: 0;
 	box-shadow: none;
 	-moz-box-shadow: none;
+	background: none;
 }
 .with-actions li:hover .delete-form button,
 .delete-form button:focus,
 .delete-form button:hover {
 	background: url(images/002-delete.png) no-repeat 0 0;
 }
-.delete-form button span {
-	display: none;
+.bookmark-form button {
+	background: url(images/bookmark.png) no-repeat 0 0;
+}
+.bookmark-form button[disabled],
+.bookmark-form button:focus,
+.bookmark-form button:hover {
+	background: url(images/bookmark_active.png) no-repeat 0 0;
 }
 
 #project-links ul {

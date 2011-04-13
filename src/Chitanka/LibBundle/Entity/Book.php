@@ -192,7 +192,20 @@ class Book extends BaseWork
 	public function getMode() { return $this->mode; }
 
 	public function getAuthors() { return $this->authors; }
-	public function addAuthor($author) { $this->authors[] = $author; }
+	public function getAuthorsPlain($separator = ', ')
+	{
+		$authors = array();
+		foreach ($this->getAuthors() as $author) {
+			$authors[] = $author->getName();
+		}
+
+		return implode($separator, $authors);
+	}
+
+	public function addAuthor($author)
+	{
+		$this->authors[] = $author;
+	}
 
 	public function getTexts() { return $this->texts; }
 
@@ -238,24 +251,6 @@ class Book extends BaseWork
 		return $this->title_author;
 	}
 
-
-	public function getAuthorsOld()
-	{
-		if ( ! isset($this->authors) ) {
-			$this->authors = array();
-			$seen = array();
-			foreach ($this->getTextsById() as $text) {
-				foreach ($text->getAuthors() as $author) {
-					if ( ! in_array($author['id'], $seen) ) {
-						$this->authors[] = $author;
-						$seen[] = $author['id'];
-					}
-				}
-			}
-		}
-
-		return $this->authors;
-	}
 
 	public function getMainAuthors()
 	{
@@ -555,6 +550,44 @@ class Book extends BaseWork
 	}
 
 
+	protected $headingRepl = array(
+		'>' => array(
+			"\n>" => "\n>>",
+			"\n>>" => "\n>>>",
+			"\n>>>" => "\n>>>>",
+			"\n>>>>" => "\n>>>>>",
+			"\n>>>>>" => "\n#",
+		),
+		'>>' => array(
+			"\n>" => "\n>>>",
+			"\n>>" => "\n>>>>",
+			"\n>>>" => "\n>>>>>",
+			"\n>>>>" => "\n#",
+			"\n>>>>>" => "\n#",
+		),
+		'>>>' => array(
+			"\n>" => "\n>>>>",
+			"\n>>" => "\n>>>>>",
+			"\n>>>" => "\n#",
+			"\n>>>>" => "\n#",
+			"\n>>>>>" => "\n#",
+		),
+		'>>>>' => array(
+			"\n>" => "\n>>>>>",
+			"\n>>" => "\n#",
+			"\n>>>" => "\n#",
+			"\n>>>>" => "\n#",
+			"\n>>>>>" => "\n#",
+		),
+		'>>>>>' => array(
+			"\n>" => "\n#",
+			"\n>>" => "\n#",
+			"\n>>>" => "\n#",
+			"\n>>>>" => "\n#",
+			"\n>>>>>" => "\n#",
+		),
+	);
+
 	public function getMainBodyAsSfb()
 	{
 		if ( isset($this->_mainBodyAsSfb) ) {
@@ -562,43 +595,6 @@ class Book extends BaseWork
 		}
 
 		$nextHeading = \Sfblib_SfbConverter::TITLE_1;
-		$headingRepl = array(
-			'>' => array(
-				"\n>" => "\n>>",
-				"\n>>" => "\n>>>",
-				"\n>>>" => "\n>>>>",
-				"\n>>>>" => "\n>>>>>",
-				"\n>>>>>" => "\n#",
-			),
-			'>>' => array(
-				"\n>" => "\n>>>",
-				"\n>>" => "\n>>>>",
-				"\n>>>" => "\n>>>>>",
-				"\n>>>>" => "\n#",
-				"\n>>>>>" => "\n#",
-			),
-			'>>>' => array(
-				"\n>" => "\n>>>>",
-				"\n>>" => "\n>>>>>",
-				"\n>>>" => "\n#",
-				"\n>>>>" => "\n#",
-				"\n>>>>>" => "\n#",
-			),
-			'>>>>' => array(
-				"\n>" => "\n>>>>>",
-				"\n>>" => "\n#",
-				"\n>>>" => "\n#",
-				"\n>>>>" => "\n#",
-				"\n>>>>>" => "\n#",
-			),
-			'>>>>>' => array(
-				"\n>" => "\n#",
-				"\n>>" => "\n#",
-				"\n>>>" => "\n#",
-				"\n>>>>" => "\n#",
-				"\n>>>>>" => "\n#",
-			),
-		);
 
 		$template = $this->getTemplate();
 		$div = str_repeat(\Sfblib_SfbConverter::EOL, 2);
@@ -607,30 +603,31 @@ class Book extends BaseWork
 		foreach (explode("\n", $template) as $line) {
 			if (empty($line)) {
 				$sfb .= \Sfblib_SfbConverter::EOL;
-			} else if ($line[0] == '>') {
-				list($marker) = explode("\t", $line);
-				switch ($marker) {
-					case '>' : $nextHeading = '>>'; break;
-					case '>>' : $nextHeading = '>>>'; break;
-					case '>>>' : $nextHeading = '>>>>'; break;
-					case '>>>>' : $nextHeading = '>>>>>'; break;
-				}
-				$sfb .= $line . \Sfblib_SfbConverter::EOL;
-			} else if (substr($line, 0, 2) == "\t{") {
-				$text = $texts[ (preg_replace('/\D/', '', $line)) ];
-
-				$authors = $this->getTextAuthorIfNotInTitle($text);
-				if ( ! empty($authors) ) {
-					$authors = $nextHeading . \Sfblib_SfbConverter::CMD_DELIM . $authors . \Sfblib_SfbConverter::EOL;
-				}
-				$title = $text->getTitleAsSfb();
-				$title = strtr($title, array(\Sfblib_SfbConverter::HEADER => $nextHeading));
-				$sfb .= $authors . $title . $div
-					. ltrim(strtr("\n".$text->getRawContent(), $headingRepl[$nextHeading]), "\n") . $div;
-			} else if (trim($line) == '----') {
-				$nextHeading = \Sfblib_SfbConverter::TITLE_1;
 			} else {
-				$sfb .= $line . \Sfblib_SfbConverter::EOL;
+				list($command, $content) = explode("\t", $line);
+				if ($content[0] == '{') {
+					if (preg_match('/(text|file):(\d+)/', $content, $matches)) {
+						$text = $texts[$matches[2]];
+						if ($matches[1] == 'text') {
+							$authors = implode(', ', $this->getTextAuthorIfNotInTitle($text));
+							if ( ! empty($authors) ) {
+								$authors = $command . \Sfblib_SfbConverter::CMD_DELIM . $authors . \Sfblib_SfbConverter::EOL;
+							}
+							$title = $text->getTitleAsSfb();
+							$title = strtr($title, array(\Sfblib_SfbConverter::HEADER => $command));
+							$sfb .= $authors . $title . $div . ltrim(strtr("\n".$text->getRawContent(), $this->headingRepl[$command]), "\n");
+						} else { // file:
+							if (empty($command)) {
+								$sfb .= $text->getRawContent();
+							} else {
+								$sfb .= ltrim(strtr("\n".$text->getRawContent(), $this->headingRepl[$command]), "\n");
+							}
+						}
+						$sfb .= $div;
+					}
+				} else {
+					$sfb .= $line . \Sfblib_SfbConverter::EOL;
+				}
 			}
 		}
 
@@ -656,20 +653,15 @@ class Book extends BaseWork
 	*/
 	public function getTextAuthorIfNotInTitle($text)
 	{
-		$authors = $text->authors;
-		$names = array();
-		foreach ($authors as $i => $author) {
-			$names[] = $author['name'];
-			if ( strpos($this->title_author, $author['name']) !== false ) {
-				unset($authors[$i]);
+		$bookAuthorsIds = $this->getAuthorIds();
+		$authors = array();
+		foreach ($text->getAuthors() as $author) {
+			if ( ! in_array($author->getId(), $bookAuthorsIds)) {
+				$authors[] = $author;
 			}
 		}
 
-		if (empty($authors)) {
-			return '';
-		}
-
-		return implode(', ', $names);
+		return $authors;
 	}
 
 
@@ -678,8 +670,8 @@ class Book extends BaseWork
 		$sfb = '';
 		$prefix = \Sfblib_SfbConverter::HEADER . \Sfblib_SfbConverter::CMD_DELIM;
 
-		if ( ! empty($this->title_author) ) {
-			$sfb .= $prefix . $this->title_author . \Sfblib_SfbConverter::EOL;
+		if ('' != $authors = $this->getAuthorsPlain()) {
+			$sfb .= $prefix . $authors . \Sfblib_SfbConverter::EOL;
 		}
 
 		$sfb .= $prefix . $this->title . \Sfblib_SfbConverter::EOL;
@@ -705,6 +697,8 @@ class Book extends BaseWork
 	/* TODO remove: there should not be any annotations by texts */
 	public function getTextAnnotations()
 	{
+		return '';
+
 		$annotations = array();
 		foreach ($this->getTextsById() as $text) {
 			$annotation = $text->getAnnotation();
@@ -828,7 +822,7 @@ class Book extends BaseWork
 	public function getTextIds()
 	{
 		if ( empty($this->textIds) ) {
-			preg_match_all('/\{(text|file):(\d+)\}/', $this->getTemplate(), $matches);
+			preg_match_all('/\{(text|file):(\d+)/', $this->getTemplate(), $matches);
 			$this->textIds = $matches[2];
 		}
 
@@ -844,6 +838,12 @@ class Book extends BaseWork
 			}
 			foreach ($this->getTexts() as $text) {
 				$this->textsById[$text->getId()] = $text;
+			}
+			foreach ($this->textsById as $id => $text) {
+				if (is_null($text)) {
+					$text = new Text($id);
+					$this->textsById[$id] = $text;
+				}
 			}
 		}
 

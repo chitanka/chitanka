@@ -319,8 +319,7 @@ class TextController extends Controller
 
 	public function addBookmarkAction($id)
 	{
-		$user = $this->getUser();
-		if ( ! $user->isAuthenticated()) {
+		if ( ! $this->getUser()->isAuthenticated()) {
 			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
 		}
 
@@ -328,13 +327,24 @@ class TextController extends Controller
 		if ( ! $text) {
 			throw new NotFoundHttpException("Няма текст с номер $id.");
 		}
+	
+		$em = $this->getEntityManager();
+		$user = $em->merge($this->getUser());
 
 		$folder = $this->getRepository('BookmarkFolder')->getOrCreateForUser($user, 'favorities');
-		$user->addBookmark(new Bookmark(compact('folder', 'text', 'user')));
+		$bookmark = new Bookmark(compact('folder', 'text', 'user'));
+		$user->addBookmark($bookmark);
 
-		$em = $this->getEntityManager();
+		$em->persist($folder);
+		$em->persist($bookmark);
 		$em->persist($user);
 		$em->flush();
+
+		if ($this->get('request')->isXmlHttpRequest()) {
+			return $this->displayJson($bookmark);
+		} else {
+			return $this->redirectToText($text);
+		}
 	}
 
 

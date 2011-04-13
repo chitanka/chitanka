@@ -357,6 +357,10 @@ user_read_list:
     pattern:   /user/{username}/read/{page}
     defaults: { _controller: LibBundle:User:readList, page: 1 }
 
+user_bookmarks:
+    pattern:   /user/{username}/bookmarks/{page}
+    defaults: { _controller: LibBundle:User:bookmarks, page: 1 }
+
 
 register:
     pattern:   /register

@@ -111,6 +111,12 @@ class User /*extends BaseUser*/ implements UserInterface
 	*/
 	private $readTexts;
 
+	/**
+	* @orm:OneToMany(targetEntity="Bookmark", mappedBy="user")
+	*/
+	private $bookmarks;
+
+
 	public function __construct()
 	{
 		$this->registration = $this->touched = new \DateTime;
@@ -178,6 +184,7 @@ class User /*extends BaseUser*/ implements UserInterface
 	public function setTouched($touched) { $this->touched = $touched; }
 	public function getTouched() { return $this->touched; }
 
+	public function addBookmark($bookmark) { $this->bookmarks[] = $bookmark; }
 
 
 	public function __toString()
@@ -238,7 +245,7 @@ class User /*extends BaseUser*/ implements UserInterface
 	/** @orm:PrePersist */
 	public function preInsert()
 	{
-		$this->groups[] = 'n';
+		$this->groups[] = 'user';
 	}
 
 	/** @orm:PreUpdate */
@@ -412,7 +419,7 @@ class User /*extends BaseUser*/ implements UserInterface
 	}
 
 	public function isSuperUser() {
-		return in_array('a', $this->groups);
+		return $this->inGroup('superuser');
 	}
 
 	public function isHuman() {

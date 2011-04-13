@@ -122,8 +122,15 @@
 	{% endspaceless %}
 {% endmacro %}
 
+{% macro bookmark_form(text) %}
+<form class="bookmark-form image-form action-form" action="{{ path('text_bookmark', {'id': text.id}) }}" method="post" data-credentials="user">
+	<button type="submit" title="Добавяне на отметка към текста"><span>Отметка</span></button>
+</form>
+{% endmacro %}
+
 {% macro download_links(text) %}
 	<ul class="dl-list">
+		<li>{{ _self.bookmark_form(text) }}</li>
 		<li>{{ _self.download_link(text, 'fb2.zip') }}</li>
 		<li>{{ _self.download_link(text, 'epub') }}</li>
 		<li>{{ _self.download_link(text, 'txt.zip', text.zsize) }}</li>

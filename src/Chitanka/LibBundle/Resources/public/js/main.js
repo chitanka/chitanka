@@ -31,6 +31,16 @@ function showEditForm(link)
 	});
 }
 
+
+function submitForm(form)
+{
+	var $form = $(form);
+	var $button = $(":submit", $form).addClass("loading");
+	$.post(form.action, $form.serialize(), function(data){
+		$button.removeClass("loading").disable();
+	});
+}
+
 function submitNewForm(form)
 {
 	var $form = $(form);
@@ -107,6 +117,15 @@ function enhanceModifying()
 				if (confirm("Наистина ли да се изтрие? Връщане назад няма.")) {
 					submitDeleteForm(this);
 				}
+			} else {
+				alert("Нямате необходимите права за това действие.");
+			}
+
+			return false;
+		})
+		.delegate("form.action-form", "submit", function(){
+			if (user.canTakeAction(this)) {
+				submitForm(this);
 			} else {
 				alert("Нямате необходимите права за това действие.");
 			}

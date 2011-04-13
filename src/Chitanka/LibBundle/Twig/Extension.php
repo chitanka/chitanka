@@ -137,9 +137,18 @@ class Extension extends \Twig_Extension
 		return str_repeat($string, $count);
 	}
 
-	public function replaceVar($string, $var, $value)
+	/**
+	* @param mixed   $string     Base string to work with
+	* @param string  $vars       Array with strings or a string
+	* @param string  $value      A replacement value
+	*/
+	public function replaceVar($string, $vars, $value)
 	{
-		return str_replace('{'.$var.'}', $value, $string);
+		foreach ((array) $vars as $var) {
+			$string = str_replace('{'.$var.'}', $value, $string);
+		}
+
+		return $string;
 	}
 
 	public function joinLists($string)

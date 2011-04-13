@@ -2,6 +2,7 @@
 
 namespace Chitanka\LibBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Chitanka\LibBundle\Pagination\Pager;
 
@@ -17,6 +18,8 @@ class UserController extends Controller
 
 	public function showAction($username)
 	{
+		$this->responseAge = 0;
+
 		$_REQUEST['username'] = $username;
 
 		$this->view['js_extra'][] = 'jquery-tooltip';
@@ -74,11 +77,11 @@ class UserController extends Controller
 	public function readListAction($username, $page)
 	{
 		if ($this->getUser()->getUsername() != $username) {
-			throw new NotFoundHttpException();
+			throw new HttpException(401);
 		}
 
 		$limit = 50;
-		$user = $this->getRepository('User')->findOneby(array('username' => $username));
+		$user = $this->getRepository('User')->findOneBy(array('username' => $username));
 		$repo = $this->getRepository('UserTextRead');
 
 		$this->view = array(
@@ -94,6 +97,32 @@ class UserController extends Controller
 		);
 
 		return $this->display('read_list');
+	}
+
+
+	public function bookmarksAction($username, $page)
+	{
+		if ($this->getUser()->getUsername() != $username) {
+			throw new HttpException(401);
+		}
+
+		$limit = 50;
+		$user = $this->getRepository('User')->findOneBy(array('username' => $username));
+		$repo = $this->getRepository('Bookmark');
+
+		$this->view = array(
+			'user' => $user,
+			'bookmarks' => $repo->getByUser($user, $page, $limit),
+			'pager'    => new Pager(array(
+				'page'  => $page,
+				'limit' => $limit,
+				'total' => $repo->countByUser($user)
+			)),
+			'route' => 'user_bookmarks',
+			'route_params' => array('username' => $username),
+		);
+
+		return $this->display('bookmarks');
 	}
 
 

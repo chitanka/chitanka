@@ -267,14 +267,14 @@ class Text extends BaseWork
 	* @orm:JoinTable(name="book_text",
 	*	joinColumns={@orm:JoinColumn(name="text_id", referencedColumnName="id")},
 	*	inverseJoinColumns={@orm:JoinColumn(name="book_id", referencedColumnName="id")})
-
-	orderBy={@orm:orderByField(name="created_at", direction="DESC")}
+	* @orm:OrderBy({"title" = "ASC"})
 	*/
 	private $books;
 
 	/**
 	* @var array
 	* @orm:ManyToMany(targetEntity="Label", inversedBy="texts")
+	* @orm:OrderBy({"name" = "ASC"})
 	*/
 	private $labels;
 
@@ -300,8 +300,9 @@ class Text extends BaseWork
 	private $userContribs;
 
 
-	public function __construct()
+	public function __construct($id)
 	{
+		$this->id = $id;
 		$this->textAuthors = new ArrayCollection;
 		$this->textTranslators = new ArrayCollection;
 		$this->authors = new ArrayCollection;

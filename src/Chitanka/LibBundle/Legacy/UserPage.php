@@ -43,6 +43,7 @@ class UserPage extends Page {
 
 		if ($this->user->getId() == $this->shown_user->getId()) {
 			$o .= $this->makeReadList();
+			$o .= $this->makeBookmarksList();
 		}
 
 		return $o;
@@ -153,13 +154,29 @@ EOS;
 		if ( ! $count) {
 			return '';
 		}
-		$h = '<h2>Прочетени произведения</h2>';
+		$h = '<h2>Последни прочетени произведения</h2>';
 
 		return $h . $this->controller->renderView('LibBundle:User:read_texts_list.html.twig', array(
 			'user' => $this->shown_user,
 			'read_texts' => $repo->getLatestByUser($this->shown_user, 20),
 		))
-		. sprintf('<p><a href="%s">Всички</a></p>', $this->controller->generateUrl('user_read_list', array('username' => $this->shown_user->getUsername())));
+		. sprintf('<p class="more"><a href="%s">Всички</a></p>', $this->controller->generateUrl('user_read_list', array('username' => $this->shown_user->getUsername())));
+	}
+
+
+	protected function makeBookmarksList() {
+		$repo = $this->controller->getRepository('Bookmark');
+		$count = $repo->countByUser($this->shown_user);
+		if ( ! $count) {
+			return '';
+		}
+		$h = '<h2>Последни избрани произведения</h2>';
+
+		return $h . $this->controller->renderView('LibBundle:User:bookmarks_list.html.twig', array(
+			'user' => $this->shown_user,
+			'bookmarks' => $repo->getLatestByUser($this->shown_user, 20),
+		))
+		. sprintf('<p class="more"><a href="%s">Всички</a></p>', $this->controller->generateUrl('user_bookmarks', array('username' => $this->shown_user->getUsername())));
 	}
 
 

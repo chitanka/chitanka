@@ -1,0 +1,7 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Избрани произведения' %}
+{% block content %}
+	{% include 'LibBundle:User:bookmarks_list.html.twig' %}
+	{% include 'LibBundle::pager.html.twig' %}
+{% endblock %}

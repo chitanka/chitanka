@@ -4,7 +4,9 @@ namespace Chitanka\LibBundle\Entity;
 
 /**
 * @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\BookmarkRepository")
-* @orm:Table(name="bookmark"
+* @orm:HasLifecycleCallbacks
+* @orm:Table(name="bookmark",
+*	uniqueConstraints={@orm:UniqueConstraint(name="uniq_key", columns={"folder_id", "text_id", "user_id"})}
 * )
 */
 class Bookmark
@@ -63,5 +65,11 @@ class Bookmark
 
 	public function setCreatedAt($created_at) { $this->created_at = $created_at; }
 	public function getCreatedAt() { return $this->created_at; }
+
+	/** @orm:PrePersist */
+	public function preInsert()
+	{
+		$this->setCreatedAt(new \DateTime);
+	}
 
 }

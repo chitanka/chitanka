@@ -1,0 +1,7 @@
+<p>Само вие може да виждате този списък.</p>
+<ul class="superlist">
+{% import 'LibBundle::text.html.twig' as texttools %}
+{% for bookmark in bookmarks %}
+	<li class="title t-{{ bookmark.text.type }}">{{ texttools.text_with_author(bookmark.text) }}</li>
+{% endfor %}
+</ul>

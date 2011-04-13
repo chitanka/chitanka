@@ -2,12 +2,11 @@
 
 namespace Chitanka\LibBundle\Entity;
 
-class UserTextReadRepository extends EntityRepository
+class BookmarkRepository extends EntityRepository
 {
-
 	public function getLatestByUser($user, $limit = null)
 	{
-		return $this->getByUser($user, 1, $limit, 'e.date DESC');
+		return $this->getByUser($user, 1, $limit, 'e.created_at DESC');
 	}
 
 
