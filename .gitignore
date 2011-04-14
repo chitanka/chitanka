@@ -4,6 +4,7 @@
 /web/content/*
 /web/cache/*
 /web/tor/*
+/web/todo/*
 /web/bundles/*
 /vendor/*
 *.cache
