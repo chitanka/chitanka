@@ -3,7 +3,7 @@ namespace Chitanka\LibBundle\Util;
 
 class Language
 {
-	private static $langs = array(
+	static private $langs = array(
 		'' => '(Неизвестен)',
 		'sq' => 'Албански',
 		'en' => 'Английски',

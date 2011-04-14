@@ -5,12 +5,12 @@ use Chitanka\LibBundle\Legacy\Legacy;
 
 class String
 {
-	public static function isSpam($cont, $lc = 2) {
+	static public function isSpam($cont, $lc = 2) {
 		return substr_count($cont, 'http://') > $lc;
 	}
 
 
-	public static function limitLength($str, $len = 80) {
+	static public function limitLength($str, $len = 80) {
 		if ( strlen($str) > $len ) {
 			return substr($str, 0, $len - 1) . '…';
 		}
@@ -20,7 +20,7 @@ class String
 	/**
 		Escape meta-characters used in regular expressions
 	*/
-	public static function prepareStringForPreg($string)
+	static public function prepareStringForPreg($string)
 	{
 		return strtr($string, array(
 			// in a regexp a backslash can be escaped with four backslashes - \\\\
@@ -43,9 +43,9 @@ class String
 	}
 
 
-	private static $allowableTags = array('em', 'strong');
+	static private $allowableTags = array('em', 'strong');
 
-	public static function escapeInput($text) {
+	static public function escapeInput($text) {
 		$text = self::myhtmlentities($text);
 		$repl = array();
 		foreach (self::$allowableTags as $allowable) {
@@ -57,15 +57,15 @@ class String
 	}
 
 
-	public static function myhtmlentities( $text ) {
+	static public function myhtmlentities( $text ) {
 		return htmlentities( $text, ENT_QUOTES, 'UTF-8');
 	}
 
-	public static function myhtmlspecialchars( $text ) {
+	static public function myhtmlspecialchars( $text ) {
 		return htmlspecialchars($text, ENT_COMPAT, 'UTF-8');
 	}
 
-	public static function pretifyInput($text) {
+	static public function pretifyInput($text) {
 		$patterns = array(
 			// link in brackets
 			'!(?<=[\s>])\((http://[^]\s,<]+)\)!e' => "'(<a href=\"$1\" title=\"'.urldecode('$1').'\">'.urldecode('$1').'</a>)'",
@@ -78,7 +78,7 @@ class String
 	}
 
 
-	public static function splitPersonName($name)
+	static public function splitPersonName($name)
 	{
 		preg_match('/([^,]+) ([^,]+)(, .+)?/', $name, $m);
 
@@ -92,7 +92,7 @@ class String
 		);
 	}
 
-	public static function getMachinePersonName($name)
+	static public function getMachinePersonName($name)
 	{
 		$parts = self::splitPersonName($name);
 		$machineName = isset($parts['lastname'])
@@ -103,7 +103,7 @@ class String
 	}
 
 
-	public static function slugify($name, $maxlength = 40)
+	static public function slugify($name, $maxlength = 40)
 	{
 		$name = strtr($name, array(
 			' ' => '_', '/' => '_',
@@ -122,11 +122,11 @@ class String
 	}
 
 
-	public static function cb_quotes($matches) {
+	static public function cb_quotes($matches) {
 		return '„'. strtr($matches[1], array('„'=>'«', '“'=>'»', '«'=>'„', '»'=>'“')) .'“';
 	}
 
-	public static function my_replace($cont) {
+	static public function my_replace($cont) {
 		$chars = array("\r" => '',
 			'„' => '"', '“' => '"', '”' => '"', '«' => '"', '»' => '"', '&quot;' => '"',
 			'&bdquo;' => '"', '&ldquo;' => '"', '&rdquo;' => '"', '&laquo;' => '"',
@@ -167,7 +167,7 @@ class String
 	}
 
 
-	private static function log_error($s, $loud = false) {
+	static private function log_error($s, $loud = false) {
 		#file_put_contents('./log/error', date('d-m-Y H:i:s'). "  $s\n", FILE_APPEND);
 		if ($loud) { echo $s."\n"; }
 	}

@@ -257,7 +257,7 @@ class User /*extends BaseUser*/ implements UserInterface
 	}
 
 
-	public static $defOptions = array(
+	static public $defOptions = array(
 		'skin' => 'orange',
 		'nav' => 'right', // navigation position
 		'news' => false, // receive montly newsletter
@@ -286,7 +286,7 @@ class User /*extends BaseUser*/ implements UserInterface
 	const U_SESSION = 'user';
 
 
-	public static function initUser($repo)
+	static public function initUser($repo)
 	{
 		if ( self::isSetSession() ) {
 			$user = self::newFromSession();
@@ -301,17 +301,17 @@ class User /*extends BaseUser*/ implements UserInterface
 	}
 
 	/** @return bool */
-	protected static function isSetSession() {
+	static protected function isSetSession() {
 		return isset($_SESSION[self::U_SESSION]);
 	}
 
 
 	/** @return bool */
-	protected static function isSetCookie() {
+	static protected function isSetCookie() {
 		return isset($_COOKIE[self::UID_COOKIE]) && isset($_COOKIE[self::TOKEN_COOKIE]);
 	}
 
-	protected static function newFromArray($data)
+	static protected function newFromArray($data)
 	{
 		$user = new User;
 		foreach ($data as $field => $value) {
@@ -322,12 +322,12 @@ class User /*extends BaseUser*/ implements UserInterface
 	}
 
 	/** @return User */
-	protected static function newFromSession() {
+	static protected function newFromSession() {
 		return self::newFromArray($_SESSION[self::U_SESSION]);
 	}
 
 	/** @return User */
-	protected static function newFromCookie($repo) {
+	static protected function newFromCookie($repo) {
 		$user = $repo->find($_COOKIE[self::UID_COOKIE]);
 		if ( $user->validateToken($_COOKIE[self::TOKEN_COOKIE], $user->getPassword()) ) {
 			return $user;
@@ -340,7 +340,7 @@ class User /*extends BaseUser*/ implements UserInterface
 
 
 
-	public static function randomPassword($passLength = 16) {
+	static public function randomPassword($passLength = 16) {
 		$chars = 'abcdefghijkmnopqrstuvwxyz123456789';
 		$max = strlen($chars) - 1;
 		$password = '';
@@ -358,7 +358,7 @@ class User /*extends BaseUser*/ implements UserInterface
 		@param string $username
 		@return mixed true if the user name is ok, or the invalid character
 	*/
-	public static function isValidUsername($username) {
+	static public function isValidUsername($username) {
 		$forbidden = '/+#"(){}[]<>!?|~*$&%=\\';
 		$len = strlen($forbidden);
 		for ($i=0; $i < $len; $i++) {
@@ -371,15 +371,15 @@ class User /*extends BaseUser*/ implements UserInterface
 
 
 
-	public static function getDataByName($username) {
+	static public function getDataByName($username) {
 		return self::getData( array('username' => $username) );
 	}
 
-	public static function getDataById($userId) {
+	static public function getDataById($userId) {
 		return self::getData( array('id' => $userId) );
 	}
 
-	public static function getData($dbkey) {
+	static public function getData($dbkey) {
 		$db = Setup::db();
 		$res = $db->select(DBT_USER, $dbkey);
 		if ( $db->numRows($res) ==  0) return array();
@@ -540,12 +540,12 @@ class User /*extends BaseUser*/ implements UserInterface
 	}
 
 
-	public static function packOptions( $options ) {
+	static public function packOptions( $options ) {
 		return serialize($options);
 	}
 
 
-	public static function unpackOptions( $opts_data ) {
+	static public function unpackOptions( $opts_data ) {
 		if ( ! empty($opts_data) ) {
 			return unserialize($opts_data);
 		}

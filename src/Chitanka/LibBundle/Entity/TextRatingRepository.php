@@ -6,7 +6,7 @@ use Doctrine\ORM\NoResultException;
 
 class TextRatingRepository extends EntityRepository
 {
-	public static $ratings = array(
+	static public $ratings = array(
 		6 => '6 — Шедьовър',
 		5 => '5 — Много добро',
 		4 => '4 — Добро',

@@ -10,7 +10,7 @@ class BaseWork
 
 	const TITLE_NEW_LINE = "<br>\n";
 
-	public static
+	static public
 		$ratings = array(
 			6 => 'Шедьовър',
 			5 => 'Много добро',
@@ -20,10 +20,10 @@ class BaseWork
 			1 => 'Отвратително',
 		);
 
-	protected static
+	static protected
 		$exts = array('.jpg', '.png');
 
-	protected static
+	static protected
 		$_minRating = null, $_maxRating = null;
 
 
@@ -131,7 +131,7 @@ class BaseWork
 	* @param $defCover Default covers if there aren’t any for $id
 	* @param $key 'cover' or 'book-cover'
 	*/
-	public static function getCovers($id, $defCover = null, $key = 'cover')
+	static public function getCovers($id, $defCover = null, $key = 'cover')
 	{
 		$bases = array( Legacy::getContentFilePath($key, $id) );
 		if ( !empty($defCover) ) {
@@ -158,7 +158,7 @@ class BaseWork
 	}
 
 
-	public static function clearSfbMarkers($sfbContent)
+	static public function clearSfbMarkers($sfbContent)
 	{
 		$sfbContent = strtr($sfbContent, array(
 			">\t" => "\t",
@@ -197,7 +197,7 @@ class BaseWork
 	}
 
 
-	public static function renameCover($cover, $newname) {
+	static public function renameCover($cover, $newname) {
 		$rexts = strtr(implode('|', self::$exts), array('.'=>'\.'));
 		return preg_replace("/\d+(-\d+)?($rexts)/", "$newname$1$2", $cover);
 	}
@@ -367,7 +367,7 @@ class BaseWork
 	}
 
 
-	public static function getBom($withEncoding = true)
+	static public function getBom($withEncoding = true)
 	{
 		$bom = "\xEF\xBB\xBF"; // Byte order mark for some windows software
 

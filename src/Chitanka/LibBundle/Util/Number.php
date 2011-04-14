@@ -3,7 +3,7 @@ namespace Chitanka\LibBundle\Util;
 
 class Number
 {
-	public static function normInt($val, $max, $min = 1)
+	static public function normInt($val, $max, $min = 1)
 	{
 		if ($val > $max) {
 			$val = $max;
@@ -14,7 +14,7 @@ class Number
 		return (int) $val;
 	}
 
-	public static function formatNumber($num, $decPl = 2, $decPoint = ',', $tousandDelim = ' ') {
+	static public function formatNumber($num, $decPl = 2, $decPoint = ',', $tousandDelim = ' ') {
 		return number_format($num, $decPl, $decPoint, $tousandDelim);
 	}
 }

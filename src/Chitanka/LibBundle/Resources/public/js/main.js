@@ -163,7 +163,9 @@ function showBookmarks()
 
 
 $(function(){
-	showBookmarks();
+	if (user.isAuthenticated()) {
+		showBookmarks();
+	}
 	enhanceModifying();
 });
 

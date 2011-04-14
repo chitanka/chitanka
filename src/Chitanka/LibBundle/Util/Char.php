@@ -3,7 +3,7 @@ namespace Chitanka\LibBundle\Util;
 
 class Char
 {
-	private static
+	static private
 		$cyrUppers = 'А Б В Г Д Е Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ю Я',
 		$cyrLowers = 'а б в г д е ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ю я',
 		$cyrlats = array(
@@ -29,36 +29,36 @@ class Char
 		);
 		//$latcyrs = array_flip($cyrlats);
 
-	public static function mystrtolower($s) {
+	static public function mystrtolower($s) {
 		return str_replace(explode(' ', self::$cyrUppers), explode(' ', self::$cyrLowers), $s);
 	}
 
-	public static function mystrtoupper($s) {
+	static public function mystrtoupper($s) {
 		return str_replace(explode(' ', self::$cyrLowers), explode(' ', self::$cyrUppers), $s);
 	}
 
 
-	public static function myucfirst($s) {
+	static public function myucfirst($s) {
 		$ls = '#'. strtr(self::$cyrLowers, array(' ' => ' #'));
 		return str_replace(explode(' ', $ls), explode(' ', self::$cyrUppers), '#'.$s);
 	}
 
 
-	public static function cyr2lat($s) {
+	static public function cyr2lat($s) {
 		return strtr($s, self::$cyrlats);
 	}
 
-	public static function lat2cyr($s) {
+	static public function lat2cyr($s) {
 		return strtr($s, array_flip(self::$latcyrs));
 	}
 
 
-	public static function getCyrUppers($asArray = true)
+	static public function getCyrUppers($asArray = true)
 	{
 		return $asArray ? explode(' ', self::$cyrUppers) : self::$cyrUppers;
 	}
 
-	public static function getCyrLowers($asArray = true)
+	static public function getCyrLowers($asArray = true)
 	{
 		return $asArray ? explode(' ', self::$cyrLowers) : self::$cyrLowers;
 	}
@@ -71,7 +71,7 @@ class Char
 	* кодиране, което означава, че кирилицата ще се вижда хем при cp866, хем при MIK.
 	* Въобще не прави пълно прекодиране между двете кодови таблици.
 	*/
-	public static function cp8662mik($s)
+	static public function cp8662mik($s)
 	{
 		return strtr($s, array(
 			chr(0xB0) => chr(0xE0),

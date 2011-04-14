@@ -897,7 +897,7 @@ EOS;
 	}
 
 
-	public static function getMinRating() {
+	static public function getMinRating() {
 		if ( is_null( self::$_minRating ) ) {
 			self::$_minRating = min( array_keys( self::$ratings ) );
 		}
@@ -905,7 +905,7 @@ EOS;
 	}
 
 
-	public static function getMaxRating() {
+	static public function getMaxRating() {
 		if ( is_null( self::$_maxRating ) ) {
 			self::$_maxRating = max( array_keys( self::$ratings ) );
 		}
@@ -913,7 +913,7 @@ EOS;
 	}
 
 
-	public static function getRatings($id) {
+	static public function getRatings($id) {
 		return Setup::db()->getFields(DBT_TEXT,
 			array('id' => $id),
 			array('rating', 'votes'));
@@ -1046,26 +1046,26 @@ EOS;
 	}
 
 
-	public static function newFromId($id, $reader = 0) {
+	static public function newFromId($id, $reader = 0) {
 		return self::newFromDB( array('t.id' => $id), $reader );
 	}
 
-	public static function newFromTitle($title, $reader = 0) {
+	static public function newFromTitle($title, $reader = 0) {
 		return self::newFromDB( array('t.title' => $title), $reader );
 	}
 
 
-	public static function incReadCounter($id) {
+	static public function incReadCounter($id) {
 		return; // disable
 		Setup::db()->update(DBT_TEXT, array('read_count=read_count+1'), compact('id'));
 	}
 
-	public static function incDlCounter($id) {
+	static public function incDlCounter($id) {
 		return; // disable
 		Setup::db()->update(DBT_TEXT, array('dl_count=dl_count+1'), compact('id'));
 	}
 
-	protected static function newFromDB($dbkey, $reader = 0) {
+	static protected function newFromDB($dbkey, $reader = 0) {
 		$db = Setup::db();
 		//$dbkey['mode'] = 'public';
 		$qa = array(

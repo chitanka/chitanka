@@ -222,7 +222,7 @@ class EpubFile
 	}
 
 
-	public static function getCreatorTag($name, $role)
+	static public function getCreatorTag($name, $role)
 	{
 		return sprintf('<dc:creator opf:file-as="%s" opf:role="%s">%s</dc:creator>',
 			String::getMachinePersonName($name), $role, $name);

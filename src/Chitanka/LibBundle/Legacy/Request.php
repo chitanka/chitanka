@@ -190,13 +190,13 @@ class Request {
 	}
 
 
-	public static function isXhr()
+	static public function isXhr()
 	{
 		return isset($_SERVER['HTTP_X_REQUESTED_WITH'])
 			&& $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
 	}
 
-	public static function isAjax()
+	static public function isAjax()
 	{
 		return self::isXhr();
 	}

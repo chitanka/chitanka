@@ -268,7 +268,7 @@ class Book extends BaseWork
 		return $this->mainAuthors;
 	}
 
-	public static function isMainWorkType($type)
+	static public function isMainWorkType($type)
 	{
 		return ! in_array($type, array('intro', 'outro'/*, 'interview', 'article'*/));
 	}
@@ -368,7 +368,7 @@ class Book extends BaseWork
 	}
 
 
-	public static function newFromId($id)
+	static public function newFromId($id)
 	{
 		$db = Setup::db();
 		$res = $db->select(DBT_BOOK, array('id' => $id));
@@ -382,7 +382,7 @@ class Book extends BaseWork
 	}
 
 
-	public static function newFromArray($fields)
+	static public function newFromArray($fields)
 	{
 		$book = new Book;
 		foreach ($fields as $field => $value) {
@@ -393,22 +393,29 @@ class Book extends BaseWork
 	}
 
 
+	public function withAutohide()
+	{
+		return strpos($this->getTemplate(), '<!--AUTOHIDE-->') !== false;
+	}
+
 	public function getTemplate()
 	{
-		$file = Legacy::getContentFilePath('book', $this->id);
-		$content = '';
-		if ( file_exists($file) ) {
-			$content = file_get_contents($file);
+		if ( ! isset($this->_template)) {
+			$file = Legacy::getContentFilePath('book', $this->id);
+			$this->_template = '';
+			if ( file_exists($file) ) {
+				$this->_template = file_get_contents($file);
+			}
 		}
 
-		return $content;
+		return $this->_template;
 	}
 
 	public function getTemplateAsXhtml()
 	{
 		$template = $this->getTemplate();
 		if ($template) {
-			$imgDir = Legacy::getContentFilePath('book-img', $this->id).'/';
+			$imgDir = '/' . Legacy::getContentFilePath('book-img', $this->id).'/';
 			$converter = new \Sfblib_SfbToHtmlConverter($template, $imgDir);
 			$content = $converter->convert()->getContent();
 			//$content = preg_replace('|<p>\n\{(\d+)\}\n</p>|', '{$1}', $content);

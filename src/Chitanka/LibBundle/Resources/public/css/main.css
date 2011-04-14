@@ -717,17 +717,26 @@ dd.country {
 .book-content {
 	clear: both;
 }
-.book-content h2 {
+.book-content h2,
+.book-content h3,
+.book-content h4,
+.book-content h5,
+.book-content h6 {
 	margin: 0;
-	padding-left: 4em;
+	padding: .3em 0 0 2em;
 	-moz-box-shadow: none;
 	font-size: 1.1em;
 	text-align: left;
 }
-.book-content h2.inner-text {
-	padding-left: 2.1em;
+.book-content h2.inner-text,
+.book-content h3.inner-text,
+.book-content h4.inner-text,
+.book-content h5.inner-text,
+.book-content h6.inner-text {
+	padding-left: .1em;
 }
 .book-content h2.inline-text {
+	margin-top: 1.5em;
 	font-weight: bold;
 }
 .book-content .collapsed h2.inline-text {
@@ -1385,7 +1394,7 @@ div.example {
 	font-variant: small-caps;
 }
 .epigraph {
-	margin: 3em 6em 3em 8em;
+	margin: 1.5em 6em 2em 8em;
 }
 .author {
 	font-style: normal;

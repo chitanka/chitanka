@@ -412,7 +412,7 @@ class mlDatabase {
 	}
 
 
-	public static function isWriteQuery($query)
+	static public function isWriteQuery($query)
 	{
 		return preg_match('/UPDATE|INSERT|REPLACE|DELETE|START|COMMIT|ALTER/', $query);
 	}

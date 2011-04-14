@@ -3,7 +3,7 @@ namespace Chitanka\LibBundle\Util;
 
 class Datetime
 {
-	public static function endOfMonth($month)
+	static public function endOfMonth($month)
 	{
 		list($y, $m) = explode('-', $month);
 		$lastday = $m == 2

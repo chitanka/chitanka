@@ -8,7 +8,7 @@ use Chitanka\LibBundle\Util\Ary;
 class Legacy
 {
 
-	private static
+	static private
 		$months = array(
 			1 => 'Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни',
 			'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'
@@ -16,7 +16,7 @@ class Legacy
 
 
 
-	private static $types = array(
+	static private $types = array(
 		// code => array(singular, plural, sing. article, pl. article)
 		'anecdote' => array('Анекдот', 'Анекдоти', 'анекдота', 'анекдотите'),
 		'fable' => array('Басня', 'Басни', 'баснята', 'басните'),
@@ -55,17 +55,17 @@ class Legacy
 		'other' => array('Разни', 'Разни', 'творбата', 'творбите'),
 	);
 
-	public static function workType($code, $singular = true) {
+	static public function workType($code, $singular = true) {
 		if ( !array_key_exists($code, self::$types) ) return '';
 		return $singular ? self::$types[$code][0] : self::$types[$code][1];
 	}
 
-	public static function workTypeArticle($code, $singular = true) {
+	static public function workTypeArticle($code, $singular = true) {
 		if ( !array_key_exists($code, self::$types) ) return '';
 		return $singular ? self::$types[$code][2] : self::$types[$code][3];
 	}
 
-	public static function workTypes($singular = true) {
+	static public function workTypes($singular = true) {
 		$ntypes = array();
 		foreach (self::$types as $code => $name) {
 			$ntypes[$code] = $singular ? self::$types[$code][0] : self::$types[$code][1];
@@ -73,16 +73,16 @@ class Legacy
 		return $ntypes;
 	}
 
-	private static $picTypes = array(
+	static private $picTypes = array(
 		'magazine' => 'Списание'
 	);
-	public static function picType($code) {
+	static public function picType($code) {
 		if ( !array_key_exists($code, self::$picTypes) ) return '';
 		return self::$picTypes[$code];
 	}
 
 
-	private static $seriesTypes = array(
+	static private $seriesTypes = array(
 		// code => array(singular, plural, sing. article, pl. article)
 		'newspaper' => array('вестник', 'вестници', 'вестника', 'вестниците'),
 		'series' => array('поредица', 'поредици', 'поредицата', 'поредиците'),
@@ -90,31 +90,31 @@ class Legacy
 		'poetry' => array('стихосбирка', 'стихосбирки', 'стихосбирката', 'стихосбирките'),
 	);
 
-	private static $pseudoSeries = array('collection', 'poetry');
+	static private $pseudoSeries = array('collection', 'poetry');
 
-	public static function seriesSuffix($code) {
+	static public function seriesSuffix($code) {
 		return $code == 'series' || empty(self::$seriesTypes[$code][0])
 			? ''
 			: ' ('. self::$seriesTypes[$code][0] .')';
 	}
 
-	public static function seriesType($code, $singular = true) {
+	static public function seriesType($code, $singular = true) {
 		if ( !array_key_exists($code, self::$seriesTypes) ) return '';
 		return $singular ? self::$seriesTypes[$code][0] : self::$seriesTypes[$code][1];
 	}
 
-	public static function seriesTypeArticle($code, $singular = true) {
+	static public function seriesTypeArticle($code, $singular = true) {
 		if ( !array_key_exists($code, self::$seriesTypes) ) return '';
 		return $singular ? self::$seriesTypes[$code][2] : self::$seriesTypes[$code][3];
 	}
 
 
-	public static function isPseudoSeries($type) {
+	static public function isPseudoSeries($type) {
 		return in_array($type, self::$pseudoSeries);
 	}
 
 
-	public static function humanDate($isodate = '')
+	static public function humanDate($isodate = '')
 	{
 		$format = 'Y-m-d H:i:s';
 		if ( empty($isodate) ) {
@@ -138,25 +138,25 @@ class Legacy
 	}
 
 
-	public static function fillOnEmpty(&$var, $value) {
+	static public function fillOnEmpty(&$var, $value) {
 		if ( empty($var) ) {
 			$var = $value;
 		}
 	}
 
-	public static function fillOnNull(&$var, $value) {
+	static public function fillOnNull(&$var, $value) {
 		if ( is_null($var) ) {
 			$var = $value;
 		}
 	}
 
-	public static function monthName($m, $asUpper = true) {
+	static public function monthName($m, $asUpper = true) {
 		$name = self::$months[(int)$m];
 
 		return $asUpper ? $name : Char::mystrtolower($name);
 	}
 
-	public static function header_encode($header)
+	static public function header_encode($header)
 	{
 		return '=?utf-8?B?'.base64_encode($header).'?=';
 	}
@@ -168,31 +168,31 @@ class Legacy
 	* @param $defVal Default value
 	* @return $val if it exists in $data, otherwise $defVal
 	*/
-	public static function normVal($val, $data, $defVal = null) {
+	static public function normVal($val, $data, $defVal = null) {
 		self::fillOnNull($defVal, @$data[0]);
 		return in_array($val, $data) ? $val : $defVal;
 	}
 
 
-	private static $regPatterns = array(
+	static private $regPatterns = array(
 		'/\[\[(.+)\|(.+)\]\]/Us' => '<a href="$1" title="$1 — $2">$2</a>',
 		'#(?<=[\s>])(\w+://[^])\s"<]+)([^])\s"<,.;!?])#' => '<a href="$1$2" title="$1$2">$1$2</a>',
 	);
-	public static function wiki2html($s) {
+	static public function wiki2html($s) {
 		$s = preg_replace(array_keys(self::$regPatterns), array_values(self::$regPatterns), $s);
 
 		return $s;
 	}
 
 
-	private static $templates = array(
+	static private $templates = array(
 		'{SITENAME}' => '{SITENAME}',
 	);
 
-	public static function expandTemplates($s) {
+	static public function expandTemplates($s) {
 		return strtr($s, self::$templates);
 	}
-	public static function addTemplate($key, $val) {
+	static public function addTemplate($key, $val) {
 		self::$templates['{'.$key.'}'] = $val;
 	}
 
@@ -200,7 +200,7 @@ class Legacy
 	/**
 	* Never run this function on a string with cyrillic letters: they all get converted to "Y"
 	*/
-	public static function removeDiacritics($s) {
+	static public function removeDiacritics($s) {
 		return strtr(utf8_decode($s),
 			utf8_decode(
 			'ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ'),
@@ -209,24 +209,24 @@ class Legacy
 
 
 	/** bytes to kibibytes */
-	public static function int_b2k($bytes) {
+	static public function int_b2k($bytes) {
 		$k = $bytes >> 10; // divide by 2^10 w/o rest
 		return $k > 0 ? $k : 1;
 	}
 	/** bytes to mebibytes */
-	public static function int_b2m($bytes) {
+	static public function int_b2m($bytes) {
 		$m = $bytes >> 20; // divide by 2^20 w/o rest
 		return $m > 0 ? $m : 1;
 	}
 
 	/** bytes to gibibytes */
-	public static function int_b2g($bytes) {
+	static public function int_b2g($bytes) {
 		$m = $bytes >> 30; // divide by 2^30 w/o rest
 		return $m > 0 ? $m : 1;
 	}
 
 	/** bytes to human readable */
-	public static function int_b2h($bytes) {
+	static public function int_b2h($bytes) {
 		if ( $bytes < ( 1 << 10 ) ) return $bytes . ' B';
 		if ( $bytes < ( 1 << 20 ) ) return self::int_b2k( $bytes ) . ' KiB';
 		if ( $bytes < ( 1 << 30 ) ) return self::int_b2m( $bytes ) . ' MiB';
@@ -237,7 +237,7 @@ class Legacy
 		Convert a php.ini value to an integer
 		(copied from php.net)
 	*/
-	public static function ini_bytes($val) {
+	static public function ini_bytes($val) {
 		$val = trim($val);
 		$last = strtolower($val{strlen($val)-1});
 		switch ($last) {
@@ -255,19 +255,19 @@ class Legacy
 	/**
 		Removes trailing zeros after the decimal sign
 	*/
-	public static function rmTrailingZeros($number, $decPoint = ',') {
+	static public function rmTrailingZeros($number, $decPoint = ',') {
 		$number = rtrim($number, '0');
 		$number = rtrim($number, $decPoint); // remove the point too
 		return $number;
 	}
 
 
-	public static function getMaxUploadSizeInMiB() {
+	static public function getMaxUploadSizeInMiB() {
 		return self::int_b2m( self::ini_bytes( ini_get('upload_max_filesize') ) );
 	}
 
 
-	public static function chooseGrammNumber($num, $sing, $plur, $null = '') {
+	static public function chooseGrammNumber($num, $sing, $plur, $null = '') {
 		settype($num, 'int');
 		if ($num > 1) {
 			return $plur;
@@ -279,13 +279,13 @@ class Legacy
 	}
 
 
-	public static function isUrl($string)
+	static public function isUrl($string)
 	{
 		return strpos($string, 'http://') === 0;
 	}
 
 
-	public static function getAcronym($words) {
+	static public function getAcronym($words) {
 		$acronym = '';
 		$words = preg_replace('/[^a-zA-Z\d ]/', '', $words);
 		foreach ( explode(' ', $words) as $word ) {
@@ -295,7 +295,7 @@ class Legacy
 	}
 
 
-	public static function extract2object($assocArray, &$object) {
+	static public function extract2object($assocArray, &$object) {
 		foreach ( (array) $assocArray as $key => $val ) {
 			if ( ctype_alnum($key[0]) ) {
 				$object->$key = $val;
@@ -304,7 +304,7 @@ class Legacy
 	}
 
 
-	private static $contentDirs = array(
+	static private $contentDirs = array(
 		'text' => 'content/text/',
 		'text-info' => 'content/text-info/',
 		'text-anno' => 'content/text-anno/',
@@ -321,8 +321,8 @@ class Legacy
 		'pic' => 'content/pic/',
 	);
 
-	public static function getContentFile($key, $num) {
-		$file = __DIR__ .'/../../../../web/'. self::getContentFilePath($key, $num);
+	static public function getContentFile($key, $num) {
+		$file = __DIR__ .'/../../../../web'. self::getContentFilePath($key, $num);
 		if ( file_exists($file) ) {
 			return file_get_contents($file);
 		}
@@ -330,13 +330,14 @@ class Legacy
 		return false;
 	}
 
-	public static function getContentFilePath($key, $num, $full = true) {
+	static public function getContentFilePath($key, $num, $full = true) {
 		$pref = Ary::arrVal(self::$contentDirs, $key, $key .'/');
+
 		return $pref . self::makeContentFilePath($num, $full);
 	}
 
 	// use this for sfbzip too
-	public static function makeContentFilePath($num, $full = true) {
+	static public function makeContentFilePath($num, $full = true) {
 		$realnum = $num;
 		$num = (int) $num;
 		$word = 4; // a word is four bytes long
@@ -354,7 +355,7 @@ class Legacy
 
 
 	/** Handles only JPEG */
-	public static function genThumbnail($filename, $width = 250)
+	static public function genThumbnail($filename, $width = 250)
 	{
 		if ( ! preg_match('/\.jpe?g$/', $filename) ) {
 			return $filename;
@@ -379,7 +380,7 @@ class Legacy
 
 
 
-	public static function getFromUrl($url, $postData = array())
+	static public function getFromUrl($url, $postData = array())
 	{
 		$ch = curl_init();
 
@@ -405,7 +406,7 @@ class Legacy
 	}
 
 
-	public static function getFromUrlOrCache($url, $cacheTime = 0)
+	static public function getFromUrlOrCache($url, $cacheTime = 0)
 	{
 		$id = md5($url);
 		$action = 'url';
@@ -423,7 +424,7 @@ class Legacy
 	}
 
 
-	public static function getMwContent($url)
+	static public function getMwContent($url)
 	{
 		$id = md5($url);
 		$action = 'info';
@@ -442,7 +443,7 @@ class Legacy
 	}
 
 
-	protected static function processMwContent($content, $url)
+	static protected function processMwContent($content, $url)
 	{
 		$up = parse_url($url);
 		$server = "$up[scheme]://$up[host]";
@@ -471,7 +472,7 @@ class Legacy
 		@param string $input E-mail address to be validated
 		@return int 1 if valid, 0 if not valid, -1 if valid but strange
 	*/
-	public static function validateEmailAddress($input, $allowEmpty = true) {
+	static public function validateEmailAddress($input, $allowEmpty = true) {
 		if ( empty($input) ) {
 			return $allowEmpty ? 1 : 0;
 		}
@@ -486,7 +487,7 @@ class Legacy
 	}
 
 
-	public static function sha1_loop($pass, $loops = 1) {
+	static public function sha1_loop($pass, $loops = 1) {
 		for ($i=0; $i < $loops; $i++) {
 			$pass = sha1($pass);
 		}

@@ -9,16 +9,16 @@ class Ary
 	* @param $defKey Default key
 	* @return $key if it exists as key in $data, otherwise $defKey
 	*/
-	public static function normKey($key, $data, $defKey = '') {
+	static public function normKey($key, $data, $defKey = '') {
 		return array_key_exists($key, $data) ? $key : $defKey;
 	}
 
 
-	public static function arrVal($arr, $key, $defVal = null) {
+	static public function arrVal($arr, $key, $defVal = null) {
 		return array_key_exists($key, $arr) ? $arr[$key] : $defVal;
 	}
 
-	public static function cartesianProduct($arr1, $arr2) {
+	static public function cartesianProduct($arr1, $arr2) {
 		$prod = array();
 		foreach ($arr1 as $val1) {
 			foreach ($arr2 as $val2) {

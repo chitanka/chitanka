@@ -5,10 +5,10 @@
 		{% import 'LibBundle::link.html.twig' as link %}
 		{{ link.persons_comma(authors) }}<br>
 	{% endif %}
-	{{ book.title|replace({'.': '<br>'})|raw }}
+	{{ book.title|replace({'. ': '<br>'})|raw }}
 {% endset %}
 {% if book.subtitle %}
-	{% set subtitle = book.subtitle|replace({'.': '<br>'}) %}
+	{% set subtitle = book.subtitle|replace({'. ': '<br>'}) %}
 {% endif %}
 
 {% block content %}
@@ -35,7 +35,7 @@
 				<li><b>f</b> — включване/изключване на режим „Пълен екран“</li>\
 			</ul>");
 	{% endset %}
-{% else %}
+{% elseif book.withAutohide() %}
 	{% set inline_js %}
 		$(":header.inline-text").parent().addClass("collapsed").boxcollapse(false);
 	{% endset %}

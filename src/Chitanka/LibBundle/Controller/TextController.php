@@ -767,7 +767,7 @@ class TextController extends Controller
 	}
 
 
-	public static function getTextFileStart()
+	static public function getTextFileStart()
 	{
 		return "\xEF\xBB\xBF" . // Byte order mark for some windows software
 			"\t[Kodirane UTF-8]\n\n";

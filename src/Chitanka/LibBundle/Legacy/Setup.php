@@ -5,11 +5,11 @@ namespace Chitanka\LibBundle\Legacy;
 
 class Setup {
 
-	private static
+	static private
 		$setupDone = false,
 		$config = null;
 
-	private static
+	static private
 		/** @var Request */      $request,
 		/** @var mlDatabase */   $db,
 		/** @var OutputMaker */  $outputMaker;
@@ -17,7 +17,7 @@ class Setup {
 
 
 
-	public static function getPage($name, $controller, $container, $execute = true)
+	static public function getPage($name, $controller, $container, $execute = true)
 	{
 		self::doSetup($container);
 
@@ -42,7 +42,7 @@ class Setup {
 
 
 
-	public static function doSetup($container)
+	static public function doSetup($container)
 	{
 		if ( self::$setupDone ) {
 			return;
@@ -58,7 +58,7 @@ class Setup {
 	}
 
 
-	public static function defineConstants()
+	static public function defineConstants()
 	{
 		define('BASEDIR', __DIR__ . '/../../../../web'); // TODO remove
 
@@ -74,29 +74,29 @@ class Setup {
 	}
 
 
-	public static function setting($settingName)
+	static public function setting($settingName)
 	{
 		return self::$config->getParameter($settingName);
 	}
 
-	public static function request()
+	static public function request()
 	{
 		return self::setupRequest();
 	}
 
 
-	public static function db()
+	static public function db()
 	{
 		return self::setupDb();
 	}
 
-	public static function outputMaker($forceNew = false)
+	static public function outputMaker($forceNew = false)
 	{
 		return self::setupOutputMaker($forceNew);
 	}
 
 
-	private static function setupDb()
+	static private function setupDb()
 	{
 		if ( ! isset(self::$db) ) {
 			$conn = self::$config->get('doctrine.dbal.default_connection');
@@ -114,7 +114,7 @@ class Setup {
 	}
 
 
-	private static function setupRequest()
+	static private function setupRequest()
 	{
 		if ( ! isset(self::$request) ) {
 			self::$request = new Request();
@@ -123,7 +123,7 @@ class Setup {
 	}
 
 
-	private static function setupOutputMaker($forceNew)
+	static private function setupOutputMaker($forceNew)
 	{
 		if ( $forceNew || ! isset(self::$outputMaker) ) {
 			self::$outputMaker = new OutputMaker();
@@ -132,7 +132,7 @@ class Setup {
 	}
 
 
-	private static function defineDbTableConsts($prefix = '')
+	static private function defineDbTableConsts($prefix = '')
 	{
 		$tables = array(
 			'AUTHOR_OF'     => 'text_author',

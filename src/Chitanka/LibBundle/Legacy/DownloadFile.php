@@ -9,7 +9,7 @@ use Chitanka\LibBundle\Entity\BaseWork;
 class DownloadFile
 {
 
-	private static $_dlDir = 'cache/dl';
+	static private $_dlDir = 'cache/dl';
 	private $_zipFile = null;
 
 
@@ -313,12 +313,12 @@ class DownloadFile
 
 
 
-	public static function getDlCache($textIds, $format = '')
+	static public function getDlCache($textIds, $format = '')
 	{
 		return self::getDlFileByHash( self::getHashForTextIds($textIds, $format) );
 	}
 
-	public static function setDlCache($textIds, $file, $format = '')
+	static public function setDlCache($textIds, $file, $format = '')
 	{
 		$db = Setup::db();
 		$pk = self::getHashForTextIds($textIds, $format);
@@ -336,12 +336,12 @@ class DownloadFile
 	}
 
 
-	public static function getDlFileByHash($hash)
+	static public function getDlFileByHash($hash)
 	{
 		return Setup::db()->getFields(DBT_DL_CACHE, array("id = $hash"), 'file');
 	}
 
-	protected static function getHashForTextIds($textIds, $format = '')
+	static protected function getHashForTextIds($textIds, $format = '')
 	{
 		if ( is_array($textIds) ) {
 			$textIds = implode(',', $textIds);
@@ -351,7 +351,7 @@ class DownloadFile
 
 
 
-	public static function getDlFile($fname)
+	static public function getDlFile($fname)
 	{
 		$file = self::getFullDlFileName($fname);
 		if ( file_exists($file) && filesize($file) ) {
@@ -363,13 +363,13 @@ class DownloadFile
 	}
 
 
-	public static function setDlFile($fname, $fcontent)
+	static public function setDlFile($fname, $fcontent)
 	{
 		return File::myfile_put_contents(self::getFullDlFileName($fname), $fcontent);
 	}
 
 
-	public static function getFullDlFileName($filename)
+	static public function getFullDlFileName($filename)
 	{
 		return /*BASEDIR .'/'. */self::$_dlDir .'/'. $filename;
 	}
