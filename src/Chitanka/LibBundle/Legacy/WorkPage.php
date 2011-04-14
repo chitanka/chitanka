@@ -206,16 +206,13 @@ class WorkPage extends Page {
 			'is_frozen' => $this->is_frozen,
 			'status'=>$this->status,
 			'progress' => $this->progress,
-			'tmpfiles' => strtr(rawurlencode($this->tmpfiles), array(
-				'%2F' => '/',
-				'%3A' => ':',
-			)),	#strpos($this->tmpfiles, '%') === false ? $this->tmpfiles : rawurldecode($this->tmpfiles),
+			'tmpfiles' => self::rawurlencode($this->tmpfiles),	#strpos($this->tmpfiles, '%') === false ? $this->tmpfiles : rawurldecode($this->tmpfiles),
 			'tfsize' => $this->tfsize
 		);
 		if ( $this->handleUpload() && !empty($this->uplfile) ) {
 			$set['uplfile'] = $this->uplfile;
 			if ( $this->isMultiUser() ) {
-				$set['tmpfiles'] = $this->makeTmpFilePath(rawurlencode($this->uplfile));
+				$set['tmpfiles'] = $this->makeTmpFilePath(self::rawurlencode($this->uplfile));
 				$set['tfsize'] = Legacy::int_b2m(filesize($this->absTmpDir . $this->uplfile));
 			}
 		}
@@ -285,7 +282,7 @@ class WorkPage extends Page {
 		if ( !is_uploaded_file($tmpfile) ) {
 			return false;
 		}
-		$dest = $$this->absTmpDir . $this->uplfile;
+		$dest = $this->absTmpDir . $this->uplfile;
 		if ( file_exists($dest) ) {
 			rename($dest, $dest .'-'. time());
 		}
@@ -746,7 +743,7 @@ EOS;
 		$maxFileSize = $this->out->makeMaxFileSizeField();
 		$maxUploadSizeInMiB = Legacy::getMaxUploadSizeInMiB();
 
-		$tmpfiles = $this->out->textField('tmpfiles', '', $this->tmpfiles, 50, 255)
+		$tmpfiles = $this->out->textField('tmpfiles', '', rawurldecode($this->tmpfiles), 50, 255)
 			. ' &#160; '.$this->out->label('Размер: ', 'tfsize') .
 				$this->out->textField('tfsize', '', $this->tfsize, 2, 4) .
 				'<abbr title="Мегабайта">MB</abbr>';
@@ -830,7 +827,7 @@ EOS;
 					. $this->out->hiddenField('entry_status', $this->status);
 				$is_frozen = '';
 			}
-			$tmpfiles = $this->out->textField('tmpfiles', '', $this->tmpfiles, 50, 255);
+			$tmpfiles = $this->out->textField('tmpfiles', '', rawurldecode($this->tmpfiles), 50, 255);
 			$tmpfiles .= ' &#160; '.$this->out->label('Размер: ', 'tfsize') .
 				$this->out->textField('tfsize', '', $this->tfsize, 2, 4) .
 				'<abbr title="Мегабайта">MB</abbr>';
@@ -1325,13 +1322,10 @@ EOS;
 
 	protected function makeTmpFilePath($file = '') {
 		if ( strpos($file, 'http://') !== false ) {
-			return strtr(rawurlencode($file), array(
-				'%2F' => '/',
-				'%3A' => ':',
-			));
+			return $file;
 		}
 
-		return Setup::setting('workroom_root').'/'.$this->tmpDir . rawurlencode($file);
+		return Setup::setting('workroom_root').'/'.$this->tmpDir . $file;
 	}
 
 
@@ -1348,6 +1342,14 @@ EOS;
 			array('class' => 'save'));
 	}
 
+
+	static public function rawurlencode($file)
+	{
+		return strtr(rawurlencode($file), array(
+			'%2F' => '/',
+			'%3A' => ':',
+		));
+	}
 
 	protected function deleteEntryFiles($entry)
 	{
