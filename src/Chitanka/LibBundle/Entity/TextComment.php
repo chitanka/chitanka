@@ -62,7 +62,7 @@ class TextComment
 
 	/**
 	* @var integer $replyto
-	* @orm:ManyToOne(targetEntity="Comment")
+	* @orm:ManyToOne(targetEntity="TextComment")
 	*/
 	private $replyto;
 

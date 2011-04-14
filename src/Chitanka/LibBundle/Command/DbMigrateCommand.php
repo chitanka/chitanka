@@ -61,7 +61,7 @@ EOT
 		$this->fillCommentCountByTexts($output, $em);
 		$this->fillSlugFields($output, $em);
 		$this->convertPersonInfoField($output, $em);
-		$this->convertUserOptions($output, $em);
+		$this->convertUserOptions($output, $em, $olddb);
 		$this->fillHasCoverByBooks($output, $em);
 		$this->insertBookPersonRelations($output, $em);
 		$this->fillUserTextContribDates($output, $em);
@@ -237,13 +237,13 @@ EOT
 	}
 
 
-	protected function convertUserOptions(OutputInterface $output, $em)
+	protected function convertUserOptions(OutputInterface $output, $em, $olddb)
 	{
 		$output->writeln('Converting user options');
 
 		$queries = array();
 		$conn = $em->getConnection();
-		$sql = 'SELECT id, opts FROM mylib.user';
+		$sql = "SELECT id, opts FROM $olddb.user";
 		foreach ($conn->fetchAll($sql) as $user) {
 			if ( ! empty($user['opts']) ) {
 				$opts = @gzinflate($user['opts']);
@@ -254,10 +254,10 @@ EOT
 			}
 		}
 
-		$queries[] = 'UPDATE user SET opts = NULL WHERE opts = ""';
+		$queries[] = 'UPDATE user SET opts = "a:0:{}" WHERE opts = ""';
 		$groups = array(
-			'a' => array('admin', 'workroom-admin'),
-			'wa' => array('workroom-admin'),
+			'a' => array('user', 'workroom-admin', 'admin'),
+			'wa' => array('user', 'workroom-admin'),
 			'nu' => array('user'),
 		);
 		foreach ($groups as $oldGroup => $newGroups) {
@@ -345,7 +345,7 @@ EOT
 			'INSERT INTO `book` (slug, title, sequence_id, seqnr, year, trans_year, lang, orig_lang, created_at, type, has_cover, category_id) SELECT id, name, series, sernr, year, trans_year, lang, orig_lang, created_at, "pic", 1, 2 FROM `%olddb%`.`pic`',
 			'INSERT INTO `series` (id, slug, name, orig_name, type) SELECT id, name, name, orig_name, type FROM `%olddb%`.`series`',
 			'INSERT INTO `license` SELECT * FROM `%olddb%`.`license`',
-			'ALTER TABLE text DROP FOREIGN KEY text_ibfk_5',
+			'ALTER TABLE text DROP FOREIGN KEY text_ibfk_4',
 			'INSERT INTO `text` (id, title, subtitle, lang, trans_year, trans_year2, orig_title, orig_subtitle, orig_lang, year, year2, orig_license_id, trans_license_id, type, series_id, sernr, sernr2, headlevel, size, zsize, created_at, cur_rev_id, dl_count, read_count, comment_count, rating, votes, has_anno, mode) SELECT id, title, subtitle, lang, trans_year, trans_year2, orig_title, orig_subtitle, orig_lang, year, year2, license_orig, license_trans, type, series, sernr, floor((sernr - floor(sernr) ) * 10), headlevel, size, zsize, entrydate, lastedit, dl_count, read_count, comment_count, rating, votes, has_anno, mode FROM `%olddb%`.`text`',
 			'INSERT INTO `text_revision` SELECT * FROM `%olddb%`.`edit_history`',
 			'ALTER TABLE text ADD FOREIGN KEY (cur_rev_id) REFERENCES text_revision(id)',
@@ -364,7 +364,7 @@ EOT
 			'INSERT INTO `text_author` (person_id, text_id, pos, year) SELECT * FROM `%olddb%`.`author_of`',
 			'INSERT INTO `text_label` (text_id, label_id) SELECT text, label FROM `%olddb%`.`text_label`',
 			'INSERT INTO `text_rating` (text_id, user_id, rating, date) SELECT * FROM `%olddb%`.`text_rating`',
-			'INSERT INTO `user_text_read` (user_id, text_id, date) SELECT * FROM `%olddb%`.`reader_of`',
+			'INSERT INTO `user_text_read` (user_id, text_id, created_at) SELECT * FROM `%olddb%`.`reader_of`',
 			'INSERT INTO `text_translator` (person_id, text_id, pos, year) SELECT * FROM `%olddb%`.`translator_of`',
 			'INSERT INTO `work_entry` (id, type, title, author, user_id, comment, date, status, progress, is_frozen, tmpfiles, tfsize, uplfile) SELECT * FROM `%olddb%`.`work`',
 			'INSERT INTO `work_contrib` (id, entry_id, user_id, comment, progress, is_frozen, date, uplfile) SELECT * FROM `%olddb%`.`work_multi`',

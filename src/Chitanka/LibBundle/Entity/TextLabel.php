@@ -2,7 +2,7 @@
 
 namespace Chitanka\LibBundle\Entity;
 
-/**
+/** FIXME doctrine:schema:create does not allow this entity table
 * @orm:Entity
 * @orm:Table(name="text_label",
 *	indexes={
