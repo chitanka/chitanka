@@ -18,8 +18,11 @@
 
 require dirname(__FILE__) . '/index.inc';
 
-//$cacheDir = dirname(__FILE__) . '/../cache'; // non-Symfony
-$cacheDir = __DIR__ . '/../../../../../../web/cache';
+if (strpos(realpath(dirname(__FILE__)), 'LibBundle') === false) {
+	$cacheDir = dirname(__FILE__) . '/../cache'; // non-Symfony
+} else {
+	$cacheDir = __DIR__ . '/../../../../../../web/cache';
+}
 
 $query = $_SERVER['QUERY_STRING'];
 // remove bad symbols from query
