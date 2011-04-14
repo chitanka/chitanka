@@ -11,3 +11,4 @@
 *.php~
 .DS_Store
 !.gitignore
+!.gitkeep
