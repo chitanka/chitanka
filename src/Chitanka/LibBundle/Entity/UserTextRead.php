@@ -4,11 +4,13 @@ namespace Chitanka\LibBundle\Entity;
 
 /**
 * @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\UserTextReadRepository")
+* @orm:HasLifecycleCallbacks
 * @orm:Table(name="user_text_read",
 *	uniqueConstraints={@orm:UniqueConstraint(name="user_text_uniq", columns={"user_id", "text_id"})},
 *	indexes={
 *		@orm:Index(name="text_idx", columns={"text_id"})}
 * )
+* TODO replace this entity with a new "read" bookmark folder
 */
 class UserTextRead
 {
@@ -31,10 +33,10 @@ class UserTextRead
 	private $text;
 
 	/**
-	* @var date $date
-	* @orm:Column(type="date")
+	* @var datetime
+	* @orm:Column(type="datetime")
 	*/
-	private $date;
+	private $created_at;
 
 
 	public function getId() { return $this->id; }
@@ -45,17 +47,12 @@ class UserTextRead
 	public function setText($text) { $this->text = $text; }
 	public function getText() { return $this->text; }
 
-	public function setDate($date) { $this->date = $date; }
-	public function getDate() { return $this->date; }
+	public function setCreatedAt($date) { $this->date = $date; }
+	public function getCreatedAt() { return $this->date; }
 
-	public function setCurrentDate()
+	/** @orm:PrePersist */
+	public function preInsert()
 	{
-		$this->setDate(new \DateTime);
-	}
-
-	/** @orm:PreUpdate */
-	public function preUpdate()
-	{
-		$this->setCurrentDate();
+		$this->setCreatedAt(new \DateTime);
 	}
 }

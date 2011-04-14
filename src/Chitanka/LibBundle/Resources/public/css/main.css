@@ -771,7 +771,7 @@ span.frozen {
 }
 .ok,
 .read {
-	background-position: 2% -262px;
+	background-position: 1px -262px;
 }
 .edit {
 	background-position: 0 0px;
@@ -2170,7 +2170,7 @@ ul.two-columns {
 .bookmark-form button {
 	background: url(images/bookmark.png) no-repeat 0 0;
 }
-.bookmark-form button[disabled],
+.bookmark-form button.active,
 .bookmark-form button:focus,
 .bookmark-form button:hover {
 	background: url(images/bookmark_active.png) no-repeat 0 0;

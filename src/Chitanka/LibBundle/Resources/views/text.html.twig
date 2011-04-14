@@ -65,7 +65,7 @@
 
 {% macro text_with_author(text) %}
 	{% import 'LibBundle::link.html.twig' as link %}
-<dl>
+<dl class="text-entity" data-id="{{ text.id }}">
 	<dt>
 		{{ _self.rating(text) }}
 		{% if text.series is defined %}
@@ -82,7 +82,7 @@
 
 {% macro text(text) %}
 	{% import 'LibBundle::link.html.twig' as link %}
-<dl>
+<dl class="text-entity" data-id="{{ text.id }}">
 	<dt>
 		{{ _self.rating(text) }}
 		{% if text.sernr %}{{ text.sernr }}.{% endif %}

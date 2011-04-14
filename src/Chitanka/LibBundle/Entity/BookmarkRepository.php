@@ -33,6 +33,29 @@ class BookmarkRepository extends EntityRepository
 	}
 
 
+	/**
+	* @RawSql
+	*/
+	public function getValidTextIds($user, $textIds)
+	{
+		if (is_array($textIds)) {
+			$textIds = implode(',', $textIds);
+		} else {
+			$textIds = preg_replace('/[^\d,]/', '', $textIds);
+			$textIds = preg_replace('/,,+/', ',', trim($textIds, ','));
+		}
+
+		if (empty($textIds)) {
+			return array();
+		}
+
+		$sql = sprintf('SELECT text_id FROM %s WHERE user_id = %d AND text_id IN (%s)', $this->getClassMetadata()->getTableName(), $user->getId(), $textIds);
+		$validTextIds = $this->_em->getConnection()->executeQuery($sql)->fetchAll(\PDO::FETCH_COLUMN);
+
+		return $validTextIds;
+	}
+
+
 	public function getQueryBuilder($orderBys = null)
 	{
 		return parent::getQueryBuilder($orderBys)

@@ -361,6 +361,10 @@ user_bookmarks:
     pattern:   /user/{username}/bookmarks/{page}
     defaults: { _controller: LibBundle:User:bookmarks, page: 1 }
 
+user_special_texts:
+    pattern:   /user-special-texts
+    defaults: { _controller: LibBundle:User:specialTexts }
+
 
 register:
     pattern:   /register

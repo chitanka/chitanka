@@ -54,6 +54,7 @@
 					{% endif %}
 				</div>
 
+				{#
 				{% if app.session.hasFlash('error') %}
 					<div class="messages error">{{ app.session.flash('error')|raw }}</div>
 					{{ app.session.removeFlash('error') }}
@@ -62,6 +63,7 @@
 					<div class="messages">{{ app.session.flash('notice')|raw }}</div>
 					{{ app.session.removeFlash('notice') }}
 				{% endif %}
+				#}
 
 				{% block content '' %}
 			</div>
@@ -111,6 +113,11 @@
 {% endblock body %}
 
 {% block javascripts %}
+	<script>
+		var _GLOBALS = {
+			scriptname: "{{ path('homepage') }}"
+		};
+	</script>
 	{% set scripts = [] %}
 	{% if script_library %}
 		<script src="{{ script_library }}"></script>

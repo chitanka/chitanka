@@ -2,6 +2,6 @@
 <ul class="superlist">
 {% import 'LibBundle::text.html.twig' as texttools %}
 {% for read_text in read_texts %}
-	<li class="title t-{{ read_text.text.type }}" title="{{ read_text.date|humandate }}">{{ texttools.text_with_author(read_text.text) }}</li>
+	<li class="title t-{{ read_text.text.type }}" title="{{ read_text.created_at|humandate }}">{{ texttools.text_with_author(read_text.text) }}</li>
 {% endfor %}
 </ul>

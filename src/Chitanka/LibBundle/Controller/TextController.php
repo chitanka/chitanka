@@ -265,7 +265,11 @@ class TextController extends Controller
 		$em->remove($textLabel);
 		$em->flush();
 
-		return $this->urlRedirect($this->generateUrl('text_show', array('id' => $id)));
+		if ($this->get('request')->isXmlHttpRequest()) {
+			return $this->displayText(1);
+		} else {
+			return $this->urlRedirect($this->generateUrl('text_show', array('id' => $id)));
+		}
 	}
 
 	public function ratingsAction($id)
@@ -305,7 +309,7 @@ class TextController extends Controller
 		$textReader = new UserTextRead;
 		$textReader->setUser($em->merge($this->getUser()));
 		$textReader->setText($text);
-		$textReader->setCurrentDate();
+		//$textReader->setCurrentDate();
 		$em->persist($textReader);
 		$em->flush();
 
@@ -327,21 +331,32 @@ class TextController extends Controller
 		if ( ! $text) {
 			throw new NotFoundHttpException("Няма текст с номер $id.");
 		}
-	
+
 		$em = $this->getEntityManager();
 		$user = $em->merge($this->getUser());
 
 		$folder = $this->getRepository('BookmarkFolder')->getOrCreateForUser($user, 'favorities');
-		$bookmark = new Bookmark(compact('folder', 'text', 'user'));
-		$user->addBookmark($bookmark);
+		$bookmark = $this->getRepository('Bookmark')->findOneBy(array(
+			'folder' => $folder->getId(),
+			'text' => $text->getId(),
+			'user' => $user->getId(),
+		));
+		if ($bookmark) { // an existing bookmark, remove it
+			$em->remove($bookmark);
+			$response = array('removeClass' => 'active');
+		} else {
+			$bookmark = new Bookmark(compact('folder', 'text', 'user'));
+			$user->addBookmark($bookmark);
 
-		$em->persist($folder);
-		$em->persist($bookmark);
-		$em->persist($user);
+			$em->persist($folder);
+			$em->persist($bookmark);
+			$em->persist($user);
+			$response = array('addClass' => 'active');
+		}
 		$em->flush();
 
 		if ($this->get('request')->isXmlHttpRequest()) {
-			return $this->displayJson($bookmark);
+			return $this->displayJson($response);
 		} else {
 			return $this->redirectToText($text);
 		}

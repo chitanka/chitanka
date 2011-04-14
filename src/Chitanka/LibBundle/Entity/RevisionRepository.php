@@ -61,6 +61,7 @@ class RevisionRepository extends EntityRepository
 
 	/**
 	* Uses raw SQL and DATE_FORMAT, a MySQL specific function
+	* @RawSql
 	*/
 	public function getMonths()
 	{

@@ -9,6 +9,9 @@ class CategoryRepository extends EntityRepository
 		return $this->findOneBy(array('slug' => $slug));
 	}
 
+	/**
+	* @RawSql
+	*/
 	public function getAllAsTree()
 	{
 		$labels = $this->_em->getConnection()->fetchAll('SELECT * FROM category ORDER BY name');

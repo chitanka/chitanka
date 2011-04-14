@@ -29,7 +29,7 @@
 {% endmacro %}
 
 {% macro text(text) %}
-{% spaceless %}<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}"><i>{{ text.title }}</i></a>{% endspaceless %}
+{% spaceless %}<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}" class="textlink"><i>{{ text.title }}</i></a>{% endspaceless %}
 {% endmacro %}
 
 {% macro book(book) %}

@@ -39,7 +39,9 @@
 
 {% set download_links %}
 	{% import 'LibBundle::text.html.twig' as texttools %}
-	{{ texttools.download_links(text) }}
+	<div class="text-entity" data-id="{{ text.id }}">
+		{{ texttools.download_links(text) }}
+	</div>
 {% endset %}
 {% set navextra = navextra|merge({'Сваляне': download_links}) %}
 {% set inline_js %}

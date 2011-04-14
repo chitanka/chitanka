@@ -36,9 +36,14 @@ function submitForm(form)
 {
 	var $form = $(form);
 	var $button = $(":submit", $form).addClass("loading");
-	$.post(form.action, $form.serialize(), function(data){
-		$button.removeClass("loading").disable();
-	});
+	$.post(form.action, $form.serialize(), function(response){
+		$button.removeClass("loading").blur();
+		if (response.addClass) {
+			$button.addClass(response.addClass);
+		} else if (response.removeClass) {
+			$button.removeClass(response.removeClass);
+		}
+	}, "json");
 }
 
 function submitNewForm(form)
@@ -135,11 +140,30 @@ function enhanceModifying()
 		.delegate("button.cancel", "click", function(){
 			$(this.form).prev().show().end().remove();
 		});
+
 }
 
 
+function showBookmarks()
+{
+	var $texts = $(".text-entity");
+	var textIds = $texts.map(function(){ return $(this).data("id") }).get().join(",");
+	$.get(_GLOBALS.scriptname + "user-special-texts", {texts: textIds}, function(response){
+		$texts.each(function(){
+			var id = $(this).data("id");
+			if (typeof response.read[id] == "number") {
+				$("a.textlink", this).addClass("read");
+			}
+			if (typeof response.favorities[id] == "number") {
+				$("form.bookmark-form button", this).addClass("active");
+			}
+		});
+	}, "json");
+}
+
 
 $(function(){
+	showBookmarks();
 	enhanceModifying();
 });
 

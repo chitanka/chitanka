@@ -126,6 +126,25 @@ class UserController extends Controller
 	}
 
 
+	/**
+	* Tell if any of the requested texts are special for the current user
+	* i.e. the user has bookmarked it or read it
+	*/
+	public function specialTextsAction()
+	{
+		if ($this->getUser()->isAnonymous()) {
+			throw new HttpException(401);
+		}
+
+		$texts = $this->get('request')->query->get('texts');
+
+		return $this->displayJson(array(
+			'read' => array_flip($this->getRepository('UserTextRead')->getValidTextIds($this->getUser(), $texts)),
+			'favorities' => array_flip($this->getRepository('Bookmark')->getValidTextIds($this->getUser(), $texts)),
+		));
+	}
+
+
 	public function editAction($username)
 	{
 		$styleUrl = '/css/SKIN,NAV.css';
