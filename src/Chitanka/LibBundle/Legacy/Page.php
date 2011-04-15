@@ -357,7 +357,7 @@ EOS;
 
 	protected function makeUserLinkWithEmail($username, $email, $allowemail) {
 		$mlink = '';
-		if ( !empty($email) && $allowemail == 'true' ) {
+		if ( ! empty($email) && $allowemail) {
 			$mlink = sprintf('&#160; <a href="%s" class="email" title="Пращане на писмо на %s"><span>Е-поща</span></a>',
 				$this->controller->generateUrl('user_email', array('username' => $username)),
 				String::myhtmlentities($username));
