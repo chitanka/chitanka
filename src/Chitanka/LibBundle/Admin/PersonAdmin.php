@@ -43,18 +43,18 @@ class PersonAdmin extends Admin
 			),
 		),
 		'info',
-		'type' => array(
-			'type' => 'choice',
-			'form_field_options' => array(
-				'choices' => array(
-					'p' => 'Псевдоним',
-					'r' => 'Истинско име',
-					'a' => 'Алтернативно изписване',
-				),
-				'expanded' => true,
-			),
-		),
-		'person' => array('form_field_options' => array('required' => false)),
+// 		'type' => array(
+// 			'type' => 'choice',
+// 			'form_field_options' => array(
+// 				'choices' => array(
+// 					'p' => 'Псевдоним',
+// 					'r' => 'Истинско име',
+// 					'a' => 'Алтернативно изписване',
+// 				),
+// 				'expanded' => true,
+// 			),
+// 		),
+// 		'person' => array('form_field_options' => array('required' => false)),
 	);
 
 	protected $filter = array(
