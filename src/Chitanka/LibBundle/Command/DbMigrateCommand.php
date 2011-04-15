@@ -59,6 +59,7 @@ EOT
 		$this->convertTextSize($output, $em);
 		$this->fillTextCountByLabels($output, $em);
 		$this->fillCommentCountByTexts($output, $em);
+		$this->fillBookCountByCategories($output, $em);
 		$this->fillSlugFields($output, $em);
 		$this->convertPersonInfoField($output, $em);
 		$this->convertUserOptions($output, $em, $olddb);
@@ -151,6 +152,20 @@ EOT
 		$this->executeUpdates($queries, $conn);
 	}
 
+
+	protected function fillBookCountByCategories(OutputInterface $output, $em)
+	{
+		$output->writeln('Calculating book count by categories');
+
+		$queries = array();
+		$conn = $em->getConnection();
+		$sql = 'SELECT category_id, COUNT(id) count FROM book GROUP BY category_id';
+		foreach ($conn->fetchAll($sql) as $data) {
+			$queries[] = sprintf('UPDATE category SET nr_of_books = %d WHERE id = %d', $data['count'], $data['category_id']);
+		}
+
+		$this->executeUpdates($queries, $conn);
+	}
 
 	protected function fillSlugFields(OutputInterface $output, $em)
 	{
