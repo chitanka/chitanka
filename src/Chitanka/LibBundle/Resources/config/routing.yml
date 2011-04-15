@@ -233,7 +233,7 @@ text_show_part:
     requirements:   { part: \d+ }
 
 text_show_multi:
-    pattern:        /text-multi
+    pattern:        /text-multi/{id}.{_format}
     defaults:       { _controller: LibBundle:Text:showMulti, _format: txt.zip }
     requirements:   { _format: sfb\.zip|fb2\.zip|txt\.zip|epub }
 

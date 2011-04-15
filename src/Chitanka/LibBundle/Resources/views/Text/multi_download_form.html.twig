@@ -1,15 +1,15 @@
-{% macro download_link(texts, format, filename) %}
-	<a href="{{ path('text_show_multi', {'id': texts|keys|join(',')~'.'~format, 'filename': filename|default('file'), '_format': format}) }}" title="Сваляне на всички във формат {{ format }}" class="dl dl-{{ format|replace({'.zip': ''}) }}"><span>{{ format }}</span></a>
+{% macro download_link(texts, format) %}
+	<a href="{{ path('text_show_multi', {'id': texts|keys|join(','), '_format': format, 'filename': 'file'}) }}" title="Сваляне на всички във формат {{ format }}" class="dl dl-{{ format|replace({'.zip': ''}) }}"><span>{{ format }}</span></a>
 {% endmacro %}
 
 <dl class="download-multi">
 	<dt>Сваляне на всички:</dt>
 	<dd class="download">
 		<ul class="dl-list">
-			<li>{{ _self.download_link(texts, 'fb2.zip', filename) }}</li>
-			<li>{{ _self.download_link(texts, 'epub', filename) }}</li>
-			<li>{{ _self.download_link(texts, 'txt.zip', filename) }}</li>
-			<li>{{ _self.download_link(texts, 'sfb.zip', filename) }}</li>
+			<li>{{ _self.download_link(texts, 'fb2.zip') }}</li>
+			<li>{{ _self.download_link(texts, 'epub') }}</li>
+			<li>{{ _self.download_link(texts, 'txt.zip') }}</li>
+			<li>{{ _self.download_link(texts, 'sfb.zip') }}</li>
 		</ul>
 	</dd>
 </dl>
