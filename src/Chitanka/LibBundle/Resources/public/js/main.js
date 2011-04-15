@@ -147,18 +147,20 @@ function enhanceModifying()
 function showBookmarks()
 {
 	var $texts = $(".text-entity");
-	var textIds = $texts.map(function(){ return $(this).data("id") }).get().join(",");
-	$.get(_GLOBALS.scriptname + "user-special-texts", {texts: textIds}, function(response){
-		$texts.each(function(){
-			var id = $(this).data("id");
-			if (typeof response.read[id] == "number") {
-				$("a.textlink", this).addClass("read");
-			}
-			if (typeof response.favorities[id] == "number") {
-				$("form.bookmark-form button", this).addClass("active");
-			}
-		});
-	}, "json");
+	if ($texts.length) {
+		var textIds = $texts.map(function(){ return $(this).data("id") }).get().join(",");
+		$.get(_GLOBALS.scriptname + "user-special-texts", {texts: textIds}, function(response){
+			$texts.each(function(){
+				var id = $(this).data("id");
+				if (typeof response.read[id] == "number") {
+					$("a.textlink", this).addClass("read");
+				}
+				if (typeof response.favorities[id] == "number") {
+					$("form.bookmark-form button", this).addClass("active");
+				}
+			});
+		}, "json");
+	}
 }
 
 
