@@ -69,6 +69,7 @@ class RevisionRepository extends EntityRepository
 				DISTINCT DATE_FORMAT(r.date, "%%Y-%%m") AS month,
 				COUNT(*) AS count
 			FROM %s r
+			WHERE r.date != "0000-00-00"
 			GROUP BY month', $this->getClassMetadata()->getTableName());
 
 		return $this->_em->getConnection()->fetchAll($sql);
