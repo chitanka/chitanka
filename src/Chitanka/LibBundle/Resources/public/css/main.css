@@ -680,6 +680,17 @@ dd.download {
 	float: right;
 	max-width: 24%;
 }
+dl.download-multi {
+	padding-top: .3em;
+}
+dl.download-multi dt {
+	width: 83%;
+	max-width: 83%;
+	text-align: right;
+	font-style: italic;
+}
+dl.download-multi dd.download {
+}
 dd.orig-name {
 	width: 20em;
 	max-width: 33%;
@@ -1130,7 +1141,7 @@ a.dl:hover {
 .navbody a.dl {
 	display: block;
 }*/
-a.dl {
+.dl {
 	position: relative;
 	padding-left: 20px;
 	background-repeat: no-repeat;

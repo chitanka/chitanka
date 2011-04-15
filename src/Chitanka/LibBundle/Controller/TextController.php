@@ -144,7 +144,7 @@ class TextController extends Controller
 	{
 		$request = $this->get('request')->query;
 
-		$mirror = $this->tryMirrorRedirect($request->get('textId'));
+		$mirror = $this->tryMirrorRedirect($request->get('id'));
 		$filename = $request->get('filename');
 		if ( ! empty( $filename ) ) {
 			$mirror .= '&filename=' . urlencode($filename);

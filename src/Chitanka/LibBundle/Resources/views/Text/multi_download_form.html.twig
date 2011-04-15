@@ -1,23 +1,15 @@
-{% macro radio_button(texts, format, default) %}
-	<label><input type="radio" name="textId" value="{{ texts|keys|join(',') }}.{{ format }}" {{ format == default ? 'checked="checked"' : '' }}>Като {{ format }}</label>
+{% macro download_link(texts, format, filename) %}
+	<a href="{{ path('text_show_multi', {'id': texts|keys|join(',')~'.'~format, 'filename': filename|default('file'), '_format': format}) }}" title="Сваляне на всички във формат {{ format }}" class="dl dl-{{ format|replace({'.zip': ''}) }}"><span>{{ format }}</span></a>
 {% endmacro %}
 
-<form action="{{ path('text_show_multi') }}" method="get">
-<div class="standalone download-form">
-	<input type="hidden" name="filename" value="{{ filename|default('file') }}">
-	{% if series is defined %}
-		{% set button %}{% spaceless %}
-			Сваляне на всички от „{% if series.slug is defined %}{{ series.name }}{% else %}{% trans 'text.type.plular.' ~ series.name %}{% endif %}“
-		{% endspaceless %}{% endset %}
-	{% else %}
-		{% set button = 'Сваляне на всички показани произведения' %}
-	{% endif %}
-	<input type="submit" value="{{ button }}">
-	<ul class="menu">
-		<li>{{ _self.radio_button(texts, 'fb2.zip', 'fb2.zip') }}</li>
-		<li>{{ _self.radio_button(texts, 'epub', 'fb2.zip') }}</li>
-		<li>{{ _self.radio_button(texts, 'txt.zip', 'fb2.zip') }}</li>
-		<li>{{ _self.radio_button(texts, 'sfb.zip', 'fb2.zip') }}</li>
-	</ul>
-</div>
-</form>
+<dl class="download-multi">
+	<dt>Сваляне на всички:</dt>
+	<dd class="download">
+		<ul class="dl-list">
+			<li>{{ _self.download_link(texts, 'fb2.zip', filename) }}</li>
+			<li>{{ _self.download_link(texts, 'epub', filename) }}</li>
+			<li>{{ _self.download_link(texts, 'txt.zip', filename) }}</li>
+			<li>{{ _self.download_link(texts, 'sfb.zip', filename) }}</li>
+		</ul>
+	</dd>
+</dl>
