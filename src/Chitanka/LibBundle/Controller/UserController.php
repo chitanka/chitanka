@@ -30,6 +30,8 @@ class UserController extends Controller
 
 	public function pageAction($username)
 	{
+		$this->responseAge = 0;
+
 		$_REQUEST['username'] = $username;
 
 		return $this->legacyPage('EditUserPage');
@@ -147,6 +149,12 @@ class UserController extends Controller
 
 	public function editAction($username)
 	{
+		if ($this->getUser()->getUsername() != $username) {
+			throw new HttpException(401);
+		}
+
+		$this->responseAge = 0;
+
 		$styleUrl = '/css/SKIN,NAV.css';
 		$this->view['inline_js'] = <<<EOS
 	var nav = "", skin = "";

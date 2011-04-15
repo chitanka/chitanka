@@ -8,6 +8,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class WorkroomController extends Controller
 {
 	protected $repository = 'WorkEntry';
+	protected $responseAge = 0;
 
 	public function indexAction($status, $page)
 	{
@@ -18,8 +19,6 @@ class WorkroomController extends Controller
 			'js_extra' => array('jquery-tablesorter', 'jquery-tooltip'),
 			'inline_js' => 'initTableSorter(); $(".tooltip").tooltip({showURL: false, showBody: "<br />"});',
 		);
-
-		$this->responseAge = 0;
 
 		return $this->legacyPage('Work');
 	}
