@@ -281,6 +281,7 @@ class Text extends BaseWork
 	/**
 	* @var array
 	* @orm:OneToMany(targetEntity="TextHeader", mappedBy="text")
+	* @orm:OrderBy({"id" = "ASC"})
 	*/
 	private $headers;
 
