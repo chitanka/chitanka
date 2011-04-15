@@ -679,17 +679,21 @@ dd.extra {
 dd.download {
 	float: right;
 	max-width: 24%;
+	margin-right: .6em;
 }
-dl.download-multi {
-	padding-top: .3em;
+dl.download-multi dt,
+dl.download-multi dd {
+	padding-top: .4em;
 }
 dl.download-multi dt {
-	width: 83%;
-	max-width: 83%;
+	width: 82%;
+	max-width: 82%;
 	text-align: right;
 	font-style: italic;
 }
 dl.download-multi dd.download {
+	border-top: 1px solid <?php echo $fieldsetBordColor ?>;
+	padding-left: 20px;
 }
 dd.orig-name {
 	width: 20em;
@@ -1154,8 +1158,13 @@ a.dl:hover {
 
 .dl-list, .dl-list li {
 	display: inline;
-	margin: 0 .5em 0 0;
 	padding: 0;
+}
+.dl-list li {
+	margin: 0 .5em 0 0;
+}
+.dl-list li:last-child {
+	margin-right: 0;
 }
 
 /* менюта, обикновено чрез списъци */
