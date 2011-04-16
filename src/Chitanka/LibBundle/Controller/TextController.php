@@ -334,7 +334,10 @@ class TextController extends Controller
 		));
 		if ($bookmark) { // an existing bookmark, remove it
 			$em->remove($bookmark);
-			$response = array('removeClass' => 'active');
+			$response = array(
+				'removeClass' => 'active',
+				'setTitle' => 'Добавяне в отметките',
+			);
 		} else {
 			$bookmark = new Bookmark(compact('folder', 'text', 'user'));
 			$user->addBookmark($bookmark);
@@ -342,7 +345,10 @@ class TextController extends Controller
 			$em->persist($folder);
 			$em->persist($bookmark);
 			$em->persist($user);
-			$response = array('addClass' => 'active');
+			$response = array(
+				'addClass' => 'active',
+				'setTitle' => 'Премахване от отметките',
+			);
 		}
 		$em->flush();
 

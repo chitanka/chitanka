@@ -43,6 +43,9 @@ function submitForm(form)
 		} else if (response.removeClass) {
 			$button.removeClass(response.removeClass);
 		}
+		if (response.setTitle) {
+			$button.attr("title", response.setTitle);
+		}
 	}, "json");
 }
 
@@ -156,7 +159,8 @@ function showBookmarks()
 					$("a.textlink", this).addClass("read");
 				}
 				if (typeof response.favorities[id] == "number") {
-					$("form.bookmark-form button", this).addClass("active");
+					$("form.bookmark-form button", this).addClass("active").attr("title", "Премахване от отметките");
+;
 				}
 			});
 		}, "json");
