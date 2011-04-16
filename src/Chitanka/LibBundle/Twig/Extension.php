@@ -162,7 +162,7 @@ class Extension extends \Twig_Extension
 	}
 
 
-	private $_anchorNames = array();
+	private $_xmlElementCreator = null;
 
 	/**
 	* Generate an anchor name for a given string.
@@ -173,7 +173,11 @@ class Extension extends \Twig_Extension
 	*/
 	public function getAnchorName($text, $unique = true)
 	{
-		return \Sfblib_XmlElement($text, $unique);
+		if (is_null($this->_xmlElementCreator)) {
+			$this->_xmlElementCreator = new \Sfblib_XmlElement;
+		}
+
+		return $this->_xmlElementCreator->getAnchorName($text, $unique);
 	}
 
 
