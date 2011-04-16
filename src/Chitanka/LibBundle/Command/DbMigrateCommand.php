@@ -69,6 +69,9 @@ EOT
 	}
 
 
+	/**
+	* @RawSql
+	*/
 	protected function copyTables(OutputInterface $output, $em, $olddb)
 	{
 		$output->writeln('Copying database tables');
@@ -81,6 +84,9 @@ EOT
 	}
 
 
+	/**
+	* @RawSql
+	*/
 	protected function convertBooleanColumns(OutputInterface $output, $em)
 	{
 		$output->writeln('Converting boolean columns');
@@ -105,6 +111,9 @@ EOT
 	}
 
 
+	/**
+	* @RawSql
+	*/
 	protected function convertTextSize(OutputInterface $output, $em)
 	{
 		$output->writeln('Converting text size to kibibytes');
@@ -123,6 +132,9 @@ EOT
 	}
 
 
+	/**
+	* @RawSql
+	*/
 	protected function fillTextCountByLabels(OutputInterface $output, $em)
 	{
 		$output->writeln('Calculating text counts by labels');
@@ -138,6 +150,9 @@ EOT
 	}
 
 
+	/**
+	* @RawSql
+	*/
 	protected function fillCommentCountByTexts(OutputInterface $output, $em)
 	{
 		$output->writeln('Calculating comments count by texts');
@@ -153,6 +168,9 @@ EOT
 	}
 
 
+	/**
+	* @RawSql
+	*/
 	protected function fillBookCountByCategories(OutputInterface $output, $em)
 	{
 		$output->writeln('Calculating book count by categories');
@@ -167,6 +185,9 @@ EOT
 		$this->executeUpdates($queries, $conn);
 	}
 
+	/**
+	* @RawSql
+	*/
 	protected function fillSlugFields(OutputInterface $output, $em)
 	{
 		$output->writeln('Filling slug fields');
@@ -206,6 +227,9 @@ EOT
 	}
 
 
+	/**
+	* @RawSql
+	*/
 	protected function fillHasCoverByBooks(OutputInterface $output, $em)
 	{
 		$output->writeln('Setting the "has_cover" field by books');
@@ -225,6 +249,9 @@ EOT
 	}
 
 
+	/**
+	* @RawSql
+	*/
 	protected function insertBookPersonRelations(OutputInterface $output, $em)
 	{
 		$output->writeln('Initializing missing book-author relations');
@@ -244,6 +271,9 @@ EOT
 	}
 
 
+	/**
+	* @RawSql
+	*/
 	protected function convertPersonInfoField(OutputInterface $output, $em)
 	{
 		$output->writeln('Converting info field by persons');
@@ -252,6 +282,9 @@ EOT
 	}
 
 
+	/**
+	* @RawSql
+	*/
 	protected function convertUserOptions(OutputInterface $output, $em, $olddb)
 	{
 		$output->writeln('Converting user options');
@@ -283,6 +316,9 @@ EOT
 	}
 
 
+	/**
+	* @RawSql
+	*/
 	protected function fillUserTextContribDates(OutputInterface $output, $em)
 	{
 		$output->writeln('Filling dates by user_text_contrib');
@@ -315,6 +351,9 @@ EOT
 
 
 
+	/**
+	* @RawSql
+	*/
 	protected function nullifyColumnsIfNeeded(OutputInterface $output, $em, $olddb)
 	{
 		$queries = array(
@@ -348,6 +387,9 @@ EOT
 		}
 	}
 
+	/**
+	* @RawSql
+	*/
 	protected function getRawCopyQueries()
 	{
 		return array(
