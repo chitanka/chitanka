@@ -1161,6 +1161,10 @@ a.dl:hover {
 	display: inline;
 	padding: 0;
 }
+.navbody .dl-list {
+	display: block;
+	text-align: center;
+}
 .dl-list li {
 	margin: 0 .5em 0 0;
 }
