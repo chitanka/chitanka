@@ -47,8 +47,8 @@ class UserTextRead
 	public function setText($text) { $this->text = $text; }
 	public function getText() { return $this->text; }
 
-	public function setCreatedAt($date) { $this->date = $date; }
-	public function getCreatedAt() { return $this->date; }
+	public function setCreatedAt($created_at) { $this->created_at = $created_at; }
+	public function getCreatedAt() { return $this->created_at; }
 
 	/** @orm:PrePersist */
 	public function preInsert()
