@@ -138,6 +138,8 @@ class UserController extends Controller
 			throw new HttpException(401);
 		}
 
+		$this->responseAge = 0;
+
 		$texts = $this->get('request')->query->get('texts');
 
 		return $this->displayJson(array(
