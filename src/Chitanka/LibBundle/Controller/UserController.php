@@ -140,7 +140,7 @@ class UserController extends Controller
 
 		$this->responseAge = 0;
 
-		$texts = $this->get('request')->query->get('texts');
+		$texts = $this->get('request')->get('texts');
 
 		return $this->displayJson(array(
 			'read' => array_flip($this->getRepository('UserTextRead')->getValidTextIds($this->getUser(), $texts)),

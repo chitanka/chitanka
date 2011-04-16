@@ -149,7 +149,7 @@ function showBookmarks()
 	var $texts = $(".text-entity");
 	if ($texts.length) {
 		var textIds = $texts.map(function(){ return $(this).data("id") }).get().join(",");
-		$.get(_GLOBALS.scriptname + "user-special-texts", {texts: textIds}, function(response){
+		$.post(_GLOBALS.scriptname + "user-special-texts", {texts: textIds}, function(response){
 			$texts.each(function(){
 				var id = $(this).data("id");
 				if (typeof response.read[id] == "number") {
