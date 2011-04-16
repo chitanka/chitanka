@@ -60,8 +60,10 @@ class LoginPage extends RegisterPage {
 		$user->login($this->remember);
 		$this->controller->setUser($user);
 
-		if ( ! empty($this->returnto) ) {
-			$this->addMessage(sprintf('Обратно към <a href="%s">предишната страница</a>', $this->returnto));
+		if (empty($this->returnto)) {
+			$this->redirect = $this->controller->generateUrl('homepage');
+		} else {
+			$this->redirect = $this->returnto;
 		}
 
 		return '';
