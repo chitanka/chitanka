@@ -193,8 +193,6 @@ class TextRepository extends EntityRepository
 			->addOrderBy('s.name, t.sernr, t.type, t.title')
 			->getQuery()->getArrayResult();
 
-		#$this->addTranslatorsForTexts($texts);
-
 		if ($groupBySeries) {
 			$texts = $this->groupTexts($texts);
 		}
