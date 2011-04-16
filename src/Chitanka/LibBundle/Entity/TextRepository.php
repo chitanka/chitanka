@@ -165,6 +165,22 @@ class TextRepository extends EntityRepository
 	}
 
 
+	/**
+	* @RawSql
+	*/
+	public function deleteTextLabel($text, $label)
+	{
+		if ($text instanceof Text) {
+			$text = $text->getId();
+		}
+		if ($label instanceof Label) {
+			$label = $label->getId();
+		}
+		$this->_em->getConnection()->executeUpdate(sprintf('DELETE FROM text_label WHERE text_id = %d AND label_id = %d', $text, $label));
+
+		return $this;
+	}
+
 	public function findByAuthor($author, $groupBySeries = true)
 	{
 		$texts = $this->_em->createQueryBuilder()

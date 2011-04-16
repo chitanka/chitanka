@@ -6,6 +6,10 @@ use Doctrine\ORM\EntityRepository as DoctrineEntityRepository;
 
 abstract class EntityRepository extends DoctrineEntityRepository
 {
+	public function flush()
+	{
+		$this->_em->flush();
+	}
 
 	public function getCount($where = null)
 	{

@@ -254,9 +254,7 @@ class TextController extends Controller
 			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
 		}
 
-		$em = $this->getEntityManager();
-		$em->getConnection()->executeUpdate(sprintf('DELETE FROM text_label WHERE text_id = %d AND label_id = %d', $id, $labelId));
-		$em->flush();
+		$this->getRepository('Text')->deleteTextLabel($id, $labelId)->flush();
 
 		if ($this->get('request')->isXmlHttpRequest()) {
 			return $this->displayText(1);
