@@ -482,12 +482,12 @@ h2 a:visited {
 	padding-left: .6em;
 	list-style-type: none;
 }
-#navigation .navbody li:hover,
-#navigation .navbody li:hover a {
+#navigation .navbody .textmenu li:hover,
+#navigation .navbody .textmenu li:hover a {
 	color: <?php echo $headerFgColor?>;
 	background-color: <?php echo $headerBgColor?>;
 }
-#navigation .navbody li:last-child {
+#navigation .navbody .textmenu li:last-child {
 	border-radius: 0 0 .6em .6em;
 	-moz-border-radius: 0 0 .6em .6em;
 	-webkit-border-radius: 0 0 .6em .6em;

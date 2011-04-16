@@ -2,7 +2,7 @@
 	{% for section, links in menu %}
 	<div class="navbody">
 		<h3>{{ section }}</h3>
-		<ul>
+		<ul class="textmenu">
 		{% for route, data in links %}
 			<li class="{{ route == current_route ? 'selected' : '' }}"><a href="{{ route is url ? route : path(route) }}">{{ data.text }}</a></li>
 		{% endfor %}
