@@ -9,9 +9,11 @@
 		<li><a href="{{ path('series_by_letter', {'letter': series.name|first_char}) }}">{{ series.name|first_char }}</a></li>
 		<li><em>{{ series.name }}</em> {{ text_lister.author_list(series.authors) }}</li>
 	</ul>
+	<div class="superlist">
 	{{ text_lister.text_list(texts) }}
 	{% if texts|length > 1 %}
 		{% include 'LibBundle:Text:multi_download_form.html.twig' %}
 	{% endif %}
+	</div>
 	{% include 'LibBundle::color_legend.html.twig' %}
 {% endblock %}

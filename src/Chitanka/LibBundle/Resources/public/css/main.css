@@ -690,6 +690,7 @@ dl.download-multi dt {
 	max-width: 82%;
 	text-align: right;
 	font-style: italic;
+	font-weight: normal;
 }
 dl.download-multi dd.download {
 	border-top: 1px solid <?php echo $fieldsetBordColor ?>;
