@@ -184,13 +184,16 @@ class TextRepository extends EntityRepository
 	public function findByAuthor($author, $groupBySeries = true)
 	{
 		$texts = $this->_em->createQueryBuilder()
-			->select('t', 's')
+			->select('t', 's', 'tr')
 			->from($this->getEntityName(), 't')
 			->leftJoin('t.textAuthors', 'ta')
+			->leftJoin('t.translators', 'tr')
 			->leftJoin('t.series', 's')
 			->where('ta.person = ?1')->setParameter(1, $author->getId())
 			->addOrderBy('s.name, t.sernr, t.type, t.title')
 			->getQuery()->getArrayResult();
+
+		#$this->addTranslatorsForTexts($texts);
 
 		if ($groupBySeries) {
 			$texts = $this->groupTexts($texts);
@@ -198,6 +201,7 @@ class TextRepository extends EntityRepository
 
 		return $texts;
 	}
+
 
 	public function findByTranslator($translator)
 	{
