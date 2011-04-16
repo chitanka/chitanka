@@ -80,16 +80,18 @@
 {% endmacro %}
 
 
-{% macro text(text) %}
+{% macro text(text, options) %}
 	{% import 'LibBundle::link.html.twig' as link %}
 <dl class="text-entity" data-id="{{ text.id }}">
 	<dt>
 		{{ _self.rating(text) }}
-		{% if text.sernr %}{{ text.sernr }}.{% endif %}
+		{% if options.sernr is defined and text.sernr %}{{ text.sernr }}.{% endif %}
 		{{ link.text(text) }}
 	</dt>
 	<dd class="extra">{{ _self.text_extra_info(text) }}</dd>
-	<dd class="download">{{ _self.download_links(text) }}</dd>
+	{% if options.download_links is defined %}
+		<dd class="download">{{ _self.download_links(text) }}</dd>
+	{% endif %}
 </dl>
 {% endmacro %}
 
@@ -151,7 +153,7 @@
 {% macro text_list(texts) %}
 	<ul class="superlist">
 	{% for text in texts %}
-		<li class="title t-{{ text.type }}">{{ _self.text(text) }}</li>
+		<li class="title t-{{ text.type }}">{{ _self.text(text, {'sernr': 1, 'download_links': 1}) }}</li>
 	{% endfor %}
 	</ul>
 {% endmacro %}
