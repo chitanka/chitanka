@@ -41,7 +41,7 @@ class WorkPage extends Page {
 			self::STATUS_3 => 'Коригира се',
 			self::STATUS_4 => 'Иска се SFB',
 			self::STATUS_5 => 'Чака проверка',
-			self::STATUS_6 => 'За валидация',
+			self::STATUS_6 => 'Проверен',
 			self::STATUS_7 => 'За добавяне',
 		),
 		$viewLists = array(
