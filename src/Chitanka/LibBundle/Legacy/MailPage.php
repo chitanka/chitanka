@@ -100,7 +100,9 @@ class MailPage extends Page {
 		return $mail;
 	}
 
-	protected function makeSubmissionReturn() { return ''; }
+	protected function makeSubmissionReturn() {
+		return $this->mailSuccessMessage;
+	}
 
 	protected function makeForm() { return ''; }
 

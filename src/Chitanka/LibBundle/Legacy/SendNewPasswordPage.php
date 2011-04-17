@@ -52,7 +52,6 @@ class SendNewPasswordPage extends MailPage {
 		return parent::processSubmission();
 	}
 
-
 	protected function makeForm() {
 		$username = $this->out->textField('username', '', $this->username, 25, 255, 2);
 		$submit = $this->out->submitButton('Изпращане на нова парола', '', 3);
