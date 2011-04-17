@@ -687,16 +687,16 @@ class Text extends BaseWork
 
 	public function getPlainSeriesInfo()
 	{
-		if (empty($this->seriesId)) {
+		if (empty($this->series)) {
 			return null;
 		}
 
-		return sprintf('Част %d от „%s“', $this->sernr, $this->series);
+		return sprintf('Част %d от „%s“', $this->sernr, $this->series->getName());
 	}
 
 
 	public function getNextFromSeries() {
-		if ( empty($this->seriesId) ) {
+		if ( empty($this->series) ) {
 			return false;
 		}
 		$dbkey = array('series_id' => $this->seriesId);
@@ -771,7 +771,7 @@ class Text extends BaseWork
 			$year = empty( $data['year'] ) ? $this->trans_year : $data['year'];
 			$translators .= "\n|Преводач     = $data[name] [&$year]";
 		}
-		$series = empty($this->series) ? Legacy::workType($this->type, false) : $this->series;
+		$series = empty($this->series) ? Legacy::workType($this->type, false) : $this->series->getName();
 		if ( ! empty($this->series) && ! empty( $this->sernr ) ) {
 			$series .= " [$this->sernr]";
 		}
@@ -810,7 +810,7 @@ EOS;
 		if ( ! empty( $subtitle ) ) {
 			$title .= ' (' . trim($subtitle, '()') . ')';
 		}
-		$series = $this->seriesOrigName;
+		$series = $this->series->getOrigName();
 		if ( ! empty($series) && ! empty( $this->sernr ) ) {
 			$series .= " [$this->sernr]";
 		}
@@ -887,7 +887,7 @@ EOS;
 	{
 		$filename = strtr(Setup::setting('download_file'), array(
 			'AUTHOR' => $this->getAuthorNameEscaped(),
-			'SERIES' => empty($this->series) ? '' : Legacy::getAcronym(Char::cyr2lat($this->series)),
+			'SERIES' => empty($this->series) ? '' : Legacy::getAcronym(Char::cyr2lat($this->series->getName())),
 			'SERNO' => empty($this->sernr) ? '' : $this->sernr,
 			'TITLE' => Char::cyr2lat($this->title),
 			'ID' => $this->id,
@@ -1011,7 +1011,7 @@ EOS;
 		}
 
 		if ( ! empty($this->series) ) {
-			$conv->addSequence($this->series, $this->sernr);
+			$conv->addSequence($this->series->getName(), $this->sernr);
 		}
 
 		if ( $this->lang != $this->orig_lang ) {
@@ -1026,8 +1026,8 @@ EOS;
 			$conv->setSrcTitle(empty($this->orig_title) ? '(no data for original title)' : '');
 			$conv->setSrcSubtitle($this->orig_subtitle);
 
-			if ( ! empty($this->seriesOrigName) ) {
-				$conv->addSrcSequence($this->seriesOrigName, $this->sernr);
+			if ($this->series->getOrigName()) {
+				$conv->addSrcSequence($this->series->getOrigName(), $this->sernr);
 			}
 		}
 
