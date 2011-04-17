@@ -46,7 +46,7 @@ class SendNewPasswordPage extends MailPage {
 
 		$this->mailSubject = "Нова парола за $this->sitename";
 		$loginurl = $this->controller->generateUrl('login');
-		return $this->mailSuccessMessage = "Нова парола беше изпратена на електронната поща на <strong>$this->username</strong>. Моля, <a href=\"$loginurl\">влезте отново</a>, след като я получите.";
+		$this->mailSuccessMessage = "Нова парола беше изпратена на електронната поща на <strong>$this->username</strong>. Моля, <a href=\"$loginurl\">влезте отново</a>, след като я получите.";
 		$this->mailFailureMessage = 'Изпращането на новата парола не сполучи.';
 
 		return parent::processSubmission();
@@ -78,7 +78,7 @@ EOS;
 Здравейте!
 
 Някой (най-вероятно вие) поиска да ви изпратим нова парола за
-влизане в $this->sitename ($this->purl). Ако все пак
+влизане в $this->sitename (http://chitanka.info). Ако все пак
 не сте били вие, можете да не обръщате внимание на това писмо и да
 продължите да ползвате сегашната си парола.
 
