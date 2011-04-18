@@ -97,6 +97,11 @@ class WorkEntry
 	*/
 	private $deleted_at;
 
+	/**
+	* @orm:OneToMany(targetEntity="WorkContrib", mappedBy="entry")
+	*/
+	private $contribs;
+
 
 	public function getId() { return $this->id; }
 
@@ -137,8 +142,8 @@ class WorkEntry
 	public function getUplfile() { return $this->uplfile; }
 
 	public function setDeletedAt($deleted_at) { $this->deleted_at = $deleted_at; }
-	public function delete() 
-	{ 
-		$this->setDeletedAt(new \DateTime); 
+	public function delete()
+	{
+		$this->setDeletedAt(new \DateTime);
 	}
 }

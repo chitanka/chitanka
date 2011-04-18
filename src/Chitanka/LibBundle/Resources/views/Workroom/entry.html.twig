@@ -25,5 +25,11 @@
 	{% endif %}
 </td>
 <td>
-	<a href="{{ path('user_show', {'username': entry.user.username}) }}">{{ entry.user.username }}</a>&#160;{% if entry.user.allowemail %}<a href="{{ path('user_email', {'username': entry.user.username}) }}" title="Пращане на писмо на {{ entry.user.username }}" class="email"><span>Е-поща</span></a>{% endif %}
+	{% import 'LibBundle::link.html.twig' as link %}
+	<ul class="simplelist">
+		<li>{{ link.user_with_email(entry.user) }}</li>
+		{% for contrib in entry.contribs %}
+			<li>{{ link.user_with_email(contrib.user) }}<span class="act-info tooltip" title="{{ contrib.comment }}"><span>Инфо</span></span></li>
+		{% endfor %}
+	</ul>
 </td>

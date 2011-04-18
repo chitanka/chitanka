@@ -32,8 +32,10 @@ class WorkEntryRepository extends EntityRepository
 	public function getQueryBuilder($orderBys = null)
 	{
 		$qb = parent::getQueryBuilder($orderBys)
-			->select('e', 'u')
-			->leftJoin('e.user', 'u');
+			->select('e', 'u', 'c', 'cu')
+			->leftJoin('e.user', 'u')
+			->leftJoin('e.contribs', 'c')
+			->leftJoin('c.user', 'cu');
 
 		return $qb;
 	}
