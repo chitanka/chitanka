@@ -14,15 +14,11 @@
 		{% if text.books|length %}
 			<li>
 			{% if text.books|length == 1 %}
-				Част от книгата „{{ link.book(text.books.0) }}“
+				Част от книгата
 			{% elseif text.books|length > 1 %}
 				Част от книгите:
-				<ul class="simplelist">
-					{% for book in text.books %}
-					<li>„{{ link.book(book) }}“</li>
-					{% endfor %}
-				</ul>
 			{% endif %}
+			{% include 'LibBundle:Book:books_list.html.twig' with {'books': text.books} %}
 			</li>
 		{% endif %}
 		<li>

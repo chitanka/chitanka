@@ -1,10 +1,9 @@
 <fieldset class="infobox">
 	<legend>Допълнителна информация<a href="#after-extrainfobox" class="assistive"> (Прескачане на допълнителната информация)</a></legend>
 
-	{% if text.hascover %}
-		<span class="cover">
-			<a href="{{ asset(text.cover) }}"><img src="{{ asset(text.cover) }}" alt="Корица" width="250"></a>
-		</span>
+	{% if text.book and text.book.has_cover %}
+		{% import 'LibBundle::book.html.twig' as booktools %}
+		{{ booktools.cover(text.book, 200) }}
 	{% endif %}
 
 	{{ text.extrainfohtml(asset('/'))|raw }}

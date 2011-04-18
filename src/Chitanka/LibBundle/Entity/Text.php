@@ -444,6 +444,24 @@ class Text extends BaseWork
 	public function addBook(Book $book) { $this->books[] = $book; }
 	public function getBooks() { return $this->books; }
 
+	/**
+	* Return the main book for the text
+	*/
+	public function getBook()
+	{
+		if ( ! isset($this->_book)) {
+			$this->_book = false;
+			foreach ($this->bookTexts as $bookText) {
+				if ($bookText->getShareInfo()) {
+					$this->_book = $bookText->getBook();
+					break;
+				}
+			}
+		}
+
+		return $this->_book;
+	}
+
 	public function addLabel(Label $label) { $this->labels[] = $label; }
 	public function getLabels() { return $this->labels; }
 
