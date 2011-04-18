@@ -1,12 +1,12 @@
 [submodule "src/Sonata/jQueryBundle"]
 	path = src/Sonata/jQueryBundle
-	url = git@github.com:sonata-project/jQueryBundle.git
+	url = git://github.com/sonata-project/jQueryBundle.git
 [submodule "src/Sonata/BluePrintBundle"]
 	path = src/Sonata/BluePrintBundle
-	url = git@github.com:sonata-project/BluePrintBundle.git
+	url = git://github.com/sonata-project/BluePrintBundle.git
 [submodule "src/Sonata/AdminBundle"]
 	path = src/Sonata/AdminBundle
-	url = git@github.com:sonata-project/AdminBundle.git
+	url = git://github.com/sonata-project/AdminBundle.git
 [submodule "src/Knplabs/MenuBundle"]
 	path = src/Knplabs/MenuBundle
-	url = git@github.com:sonata-project/MenuBundle.git
+	url = git://github.com/sonata-project/MenuBundle.git
