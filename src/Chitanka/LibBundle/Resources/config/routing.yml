@@ -260,9 +260,9 @@ sandbox:
     pattern:   /sandbox
     defaults: { _controller: LibBundle:Sandbox:index }
 
-sitemap:
-    pattern:   /sitemap
-    defaults: { _controller: LibBundle:Sitemap:index }
+# sitemap:
+#     pattern:   /sitemap
+#     defaults: { _controller: LibBundle:Sitemap:index }
 
 feedback:
     pattern:   /feedback
@@ -272,14 +272,10 @@ statistics:
     pattern:   /statistics
     defaults: { _controller: LibBundle:Statistics:index }
 
-opensearchdesc:
-    pattern:   /osd/{object}
-    defaults: { _controller: LibBundle:Opensearchdesc:index }
+# opensearchdesc:
+#     pattern:   /osd/{object}
+#     defaults: { _controller: LibBundle:Opensearchdesc:index }
 
-
-comment:
-    pattern:   /comments
-    defaults: { _controller: LibBundle:Comment:index }
 
 torrents:
     pattern:   /torrents
