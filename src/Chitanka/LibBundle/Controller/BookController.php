@@ -64,6 +64,8 @@ class BookController extends Controller
 			case 'sfb':
 				Setup::doSetup($this->container);
 				return $this->displayText($book->getContentAsSfb(), array('Content-Type' => 'text/plain'));
+			case 'clue':
+				return $this->displayText($book->getAnnotationAsXhtml());
 		}
 
 		$this->view = array(

@@ -168,10 +168,37 @@ function showBookmarks()
 }
 
 
+function initCluetip()
+{
+	$("a.booklink")
+		.live("click", function(){
+			// do not spam users if they wish to follow a link
+			_GLOBALS.showCluetip = false;
+		})
+		.cluetip({
+			width: 750,
+			positionBy: 'mouse',
+			//splitTitle: ';',
+			sticky: true,
+			dropShadow: false,
+			closePosition: 'title',
+			closeText: '<span>Затваряне</span>',
+			mouseOutClose: true,
+			hoverIntent: {
+				sensitivity: 10,
+				interval:    300 // in milliseconds
+			},
+			onActivate: function(e) {
+				return _GLOBALS.showCluetip;
+			}
+		});
+}
+
 $(function(){
 	if (user.isAuthenticated()) {
 		showBookmarks();
 	}
+	initCluetip();
 	enhanceModifying();
 });
 

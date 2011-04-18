@@ -92,8 +92,8 @@ class TextController extends Controller
 				return $this->displayText($text->getContentAsSfb(), array('Content-Type' => 'text/plain'));
 			case 'fbi':
 				return $this->displayText($text->getFbi(), array('Content-Type' => 'text/plain'));
-			case 'clue':
-				return $this->displayText($text->getClue());
+// 			case 'clue':
+// 				return $this->displayText($text->getClue());
 			case 'txt.zip':
 				return $this->urlRedirect($this->getTxtZipFile(explode(',', $id), $_format));
 			case 'fb2.zip':
