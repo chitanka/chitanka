@@ -418,8 +418,8 @@ class User /*extends BaseUser*/ implements UserInterface
 		return true;
 	}
 
-	public function isSuperUser() {
-		return $this->inGroup('superuser');
+	public function isGod() {
+		return $this->inGroup('god');
 	}
 
 	public function isHuman() {

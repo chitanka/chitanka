@@ -31,7 +31,7 @@ class UserPage extends Page {
 			return;
 		}
 		$dataView = $this->makePublicUserDataView();
-		if ( $this->user->isSuperUser() ) {
+		if ( $this->user->inGroup('admin') ) {
 			$dataView .= $this->makePrivateUserDataView();
 		}
 		$o = "<table class='content'>$dataView</table>"
