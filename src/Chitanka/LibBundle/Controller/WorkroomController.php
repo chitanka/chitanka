@@ -105,6 +105,6 @@ class WorkroomController extends Controller
 			'entries' => $this->getRepository('WorkEntry')->getLatest($limit),
 		);
 
-		return $this->display('latest_entries');
+		return $this->display('entries_list');
 	}
 }

@@ -19,6 +19,16 @@ class WorkEntryRepository extends EntityRepository
 	}
 
 
+	public function getByTitleOrAuthor($title, $limit = null)
+	{
+		return $this->getQueryBuilder()
+			->where('e.title LIKE ?1 OR e.author LIKE ?1')
+			->setParameter(1, "%$title%")
+			->getQuery()
+			->getArrayResult();
+	}
+
+
 	public function getQueryBuilder($orderBys = null)
 	{
 		$qb = parent::getQueryBuilder($orderBys)
