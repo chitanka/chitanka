@@ -54,7 +54,6 @@
 					{% endif %}
 				</div>
 
-				{#
 				{% if app.session.hasFlash('error') %}
 					<div class="messages error">{{ app.session.flash('error')|raw }}</div>
 					{{ app.session.removeFlash('error') }}
@@ -63,7 +62,6 @@
 					<div class="messages">{{ app.session.flash('notice')|raw }}</div>
 					{{ app.session.removeFlash('notice') }}
 				{% endif %}
-				#}
 
 				{% block content '' %}
 			</div>

@@ -16,6 +16,7 @@ class LoginPage extends RegisterPage {
 		parent::__construct($fields);
 		$this->title = 'Вход';
 		$this->remember = (int) $this->request->checkbox('remember');
+		$this->message = '';
 	}
 
 
