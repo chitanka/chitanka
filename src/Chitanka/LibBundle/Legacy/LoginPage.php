@@ -52,11 +52,12 @@ class LoginPage extends RegisterPage {
 		}
 
 		$user->setPassword($this->password); // update with the new algorithm
+		$user->login($this->remember);
+
 		$em = $this->controller->getEntityManager();
 		$em->persist($user);
 		$em->flush();
 
-		$user->login($this->remember);
 		$this->controller->setUser($user);
 
 		if (empty($this->returnto)) {
