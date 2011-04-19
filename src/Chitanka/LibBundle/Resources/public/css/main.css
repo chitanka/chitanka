@@ -638,7 +638,7 @@ input.search {
 }
 .superlist {
 	/*clear: both;*/
-	padding: .5em 0 .5em .5em;
+	padding: .5em 0 1em .5em;
 	font-size: 1em;
 }
 .superlist dl:hover {
@@ -751,6 +751,7 @@ dd.country {
 	-moz-box-shadow: none;
 	font-size: 1.1em;
 	text-align: left;
+	background-color: inherit;
 }
 .book-content h2.inner-text,
 .book-content h3.inner-text,
