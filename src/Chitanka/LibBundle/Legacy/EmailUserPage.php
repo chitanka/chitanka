@@ -72,7 +72,7 @@ class EmailUserPage extends MailPage {
 		if ( empty($this->username) ) {
 			return 'Не е избран потребител.';
 		}
-		$this->localUser = $this->controller->getRepository('User')->loadOneByUsername($this->username);
+		$this->localUser = $this->controller->getRepository('User')->loadUserByUsername($this->username);
 		if ( ! $this->localUser) {
 			return "Не съществува потребител с име <strong>$this->username</strong>.";
 		}
