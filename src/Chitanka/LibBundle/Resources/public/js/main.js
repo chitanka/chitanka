@@ -186,7 +186,7 @@ function initCluetip()
 			mouseOutClose: true,
 			hoverIntent: {
 				sensitivity: 10,
-				interval:    300 // in milliseconds
+				interval:    500 // in milliseconds
 			},
 			onActivate: function(e) {
 				return _GLOBALS.showCluetip;
