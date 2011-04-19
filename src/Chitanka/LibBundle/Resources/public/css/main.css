@@ -642,7 +642,7 @@ input.search {
 	font-size: 1em;
 }
 .superlist dl:hover {
-	background-image: -moz-linear-gradient(top, <?php echo $mainBgColor ?>, <?php echo $footerBgColor ?> 35%, <?php echo $footerBgColor ?> 65%, <?php echo $mainBgColor ?>);
+	background-image: -moz-linear-gradient(top, <?php echo $tocBgColor ?>, <?php echo $footerBgColor ?> 35%, <?php echo $footerBgColor ?> 65%, <?php echo $tocBgColor ?>);
 }
 
 .superlist dl {
@@ -728,6 +728,14 @@ dd.country {
 
 .bookcat, .bookseq {
 	font-size: 90%;
+}
+
+.cover-and-links {
+	float: left;
+	margin-bottom: 1em;
+}
+.cover-and-links .cover {
+	float: none;
 }
 
 .book-content {
@@ -1032,10 +1040,14 @@ li.title {
 .readercomment,
 .tabbedpanebody,
 #tooltip,
-article {
+article,
+fieldset {
 	clear: both;
 	color: <?php echo $mainFgColor?>;
 	background-color: <?php echo $tocBgColor?>;
+}
+.annotation {
+	clear: none;
 }
 .infobox {
 	margin-bottom: 2em;
@@ -1161,8 +1173,10 @@ a.dl:hover {
 	display: inline;
 	padding: 0;
 }
-.navbody .dl-list {
+.navbody .dl-list,
+.cover-and-links .dl-list {
 	display: block;
+	margin: 0;
 	text-align: center;
 }
 .dl-list li {

@@ -4,9 +4,10 @@
 	<div class="subheader">{{ book.titleextra|nl2br|raw }}</div>
 {% endif %}
 
-{% if book.has_cover %}
+<div class="cover-and-links">
 	{{ booktools.cover(book, 200) }}
-{% endif %}
+	{{ booktools.download_links(book) }}
+</div>
 
 {% if annotation %}
 	<fieldset class="annotation">
@@ -24,11 +25,6 @@
 
 	{{ template|join_lists|raw }}
 </fieldset>
-
-<div class="menu">
-	<p>Сваляне на книгата във формат:</p>
-	{{ booktools.download_links(book, ' ') }}
-</div>
 
 {% if book.links|length %}
 	<div class="menu">

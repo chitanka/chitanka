@@ -43,5 +43,5 @@
 {% endmacro %}
 
 {% macro cover(book, width) %}
-	<div class="cover"><img src="{{ asset(book.has_cover ? cover(book.id, width) : 'images/nocover.png') }}" alt="Корица" width="{{ width }}"></div>
+	<div class="cover"><img src="{{ asset(book.has_cover ? cover(book.id, width) : 'images/nocover.'~width~'.png') }}" alt="Корица" width="{{ width }}"></div>
 {% endmacro %}
