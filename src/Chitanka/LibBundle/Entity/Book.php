@@ -893,7 +893,6 @@ class Book extends BaseWork
 	##################
 
 	const
-		ID_SKIP = 700,
 		MIRRORS_FILE = 'MIRRORS',
 		INFO_FILE = 'INFO',
 		THUMB_DIR = 'thumb',
@@ -948,9 +947,9 @@ class Book extends BaseWork
 			return $this->_files;
 		}
 
-		$dir = Legacy::getContentFilePath('pic', $this->id - self::ID_SKIP);
+		$dir = Legacy::getContentFilePath('book', $this->id);
 
-		$ignore = array(self::MIRRORS_FILE, self::THUMB_DIR, self::INFO_FILE);
+		$ignore = array(self::MIRRORS_FILE, self::THUMB_DIR);
 
 		$files = array();
 		foreach (scandir($dir) as $file) {
@@ -972,7 +971,7 @@ class Book extends BaseWork
 			return $this->_mirrors;
 		}
 
-		$file = Legacy::getContentFilePath('pic', $this->id - self::ID_SKIP) . '/' . self::MIRRORS_FILE;
+		$file = Legacy::getContentFilePath('book', $this->id) . '/' . self::MIRRORS_FILE;
 
 		$mirrors = Setup::setting('mirror_sites_graphic');
 		if ( file_exists($file) && filesize($file) > 0 ) {
@@ -1005,7 +1004,7 @@ class Book extends BaseWork
 	public function getImageDir()
 	{
 		if ( ! isset($this->_imageDir) ) {
-			$this->_imageDir = Legacy::getContentFilePath('pic', $this->id - self::ID_SKIP);
+			$this->_imageDir = Legacy::getContentFilePath('book', $this->id);
 		}
 
 		return $this->_imageDir;
