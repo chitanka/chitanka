@@ -9,17 +9,21 @@
 {% endif %}
 
 {% if annotation %}
-	<div class="annotation">{{ annotation|raw }}</div>
+	<fieldset class="annotation">
+		<legend>Анотация</legend>
+		{{ annotation|raw }}
+	</fieldset>
 {% endif %}
 
-<div class="book-content superlist">
+<fieldset class="book-content superlist">
+	<legend>Съдържание</legend>
 	{% import 'LibBundle::text.html.twig' as texttools %}
 	{% for text in book.texts %}
 		{% set template = template|replace_var(['text:'~text.id, 'file:'~text.id], (book.isFromSameAuthor(text) ? texttools.text(text) : texttools.text_with_author(text))) %}
 	{% endfor %}
 
 	{{ template|join_lists|raw }}
-</div>
+</fieldset>
 
 <div class="menu">
 	<p>Сваляне на книгата във формат:</p>
