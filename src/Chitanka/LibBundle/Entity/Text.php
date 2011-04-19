@@ -828,10 +828,15 @@ EOS;
 		if ( ! empty( $subtitle ) ) {
 			$title .= ' (' . trim($subtitle, '()') . ')';
 		}
-		$series = $this->series->getOrigName();
-		if ( ! empty($series) && ! empty( $this->sernr ) ) {
-			$series .= " [$this->sernr]";
+		if ($this->series) {
+			$series = $this->series->getOrigName();
+			if ( ! empty($series) && ! empty( $this->sernr ) ) {
+				$series .= " [$this->sernr]";
+			}
+		} else {
+			$series = '';
 		}
+
 		return <<<EOS
 {Оригинал:$authors
 |Заглавие     = $title
@@ -1028,7 +1033,7 @@ EOS;
 			$conv->addTranslator($translator['name']);
 		}
 
-		if ( ! empty($this->series) ) {
+		if ($this->series) {
 			$conv->addSequence($this->series->getName(), $this->sernr);
 		}
 
@@ -1044,7 +1049,7 @@ EOS;
 			$conv->setSrcTitle(empty($this->orig_title) ? '(no data for original title)' : '');
 			$conv->setSrcSubtitle($this->orig_subtitle);
 
-			if ($this->series->getOrigName()) {
+			if ($this->series && $this->series->getOrigName()) {
 				$conv->addSrcSequence($this->series->getOrigName(), $this->sernr);
 			}
 		}
