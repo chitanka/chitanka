@@ -435,14 +435,6 @@ foreign_books:
     defaults: { _controller: LibBundle:ForeignBook:index }
 
 
-_internal:
-    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
-    prefix:   /_50m3th1ng_w1ck3d_c0m35_th15_way
-
-test:
-    pattern:   /t
-    defaults: { _controller: LibBundle:User:personalTools }
-
 # fos_user_security:
     # resource: @FOSUserBundle/Resources/config/routing/security.xml
 
