@@ -2,7 +2,6 @@
 
 namespace Chitanka\LibBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -13,7 +12,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Chitanka\LibBundle\Legacy\Legacy;
 use Chitanka\LibBundle\Util\String;
 
-class DbMigrateCommand extends Command
+class MigrateDbCommand extends CommonDbCommand
 {
 
 	protected function configure()
@@ -57,9 +56,9 @@ EOT
 		$this->copyTables($output, $em, $olddb);
 		$this->convertBooleanColumns($output, $em);
 		$this->convertTextSize($output, $em);
-		$this->fillTextCountByLabels($output, $em);
-		$this->fillCommentCountByTexts($output, $em);
-		$this->fillBookCountByCategories($output, $em);
+		$this->updateTextCountByLabels($output, $em);
+		$this->updateCommentCountByTexts($output, $em);
+		$this->updateBookCountByCategories($output, $em);
 		$this->fillSlugFields($output, $em);
 		$this->convertPersonInfoField($output, $em);
 		$this->convertUserOptions($output, $em, $olddb);
@@ -131,59 +130,6 @@ EOT
 		$this->executeUpdates($queries, $conn);
 	}
 
-
-	/**
-	* @RawSql
-	*/
-	protected function fillTextCountByLabels(OutputInterface $output, $em)
-	{
-		$output->writeln('Calculating text counts by labels');
-
-		$queries = array();
-		$conn = $em->getConnection();
-		$sql = 'SELECT label_id, COUNT(text_id) count FROM text_label GROUP BY label_id';
-		foreach ($conn->fetchAll($sql) as $data) {
-			$queries[] = sprintf('UPDATE label SET nr_of_texts = %d WHERE id = %d', $data['count'], $data['label_id']);
-		}
-
-		$this->executeUpdates($queries, $conn);
-	}
-
-
-	/**
-	* @RawSql
-	*/
-	protected function fillCommentCountByTexts(OutputInterface $output, $em)
-	{
-		$output->writeln('Calculating comments count by texts');
-
-		$queries = array();
-		$conn = $em->getConnection();
-		$sql = 'SELECT text_id, COUNT(text_id) count FROM text_comment GROUP BY text_id';
-		foreach ($conn->fetchAll($sql) as $data) {
-			$queries[] = sprintf('UPDATE text SET comment_count = %d WHERE id = %d', $data['count'], $data['text_id']);
-		}
-
-		$this->executeUpdates($queries, $conn);
-	}
-
-
-	/**
-	* @RawSql
-	*/
-	protected function fillBookCountByCategories(OutputInterface $output, $em)
-	{
-		$output->writeln('Calculating book count by categories');
-
-		$queries = array();
-		$conn = $em->getConnection();
-		$sql = 'SELECT category_id, COUNT(id) count FROM book GROUP BY category_id';
-		foreach ($conn->fetchAll($sql) as $data) {
-			$queries[] = sprintf('UPDATE category SET nr_of_books = %d WHERE id = %d', $data['count'], $data['category_id']);
-		}
-
-		$this->executeUpdates($queries, $conn);
-	}
 
 	/**
 	* @RawSql
@@ -333,15 +279,6 @@ EOT
 		$this->executeUpdates($queries, $conn);
 	}
 
-
-	protected function executeUpdates($updates, $connection)
-	{
-		$connection->beginTransaction();
-		foreach ($updates as $update) {
-			$connection->executeUpdate($update);
-		}
-		$connection->commit();
-	}
 
 	protected function prepareOldDatabase(OutputInterface $output, $em, $olddb)
 	{

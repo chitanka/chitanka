@@ -7,7 +7,6 @@
 /web/todo/*
 /web/bundles/*
 /vendor/*
-*.cache
 *.min.js
 *.php~
 .DS_Store
