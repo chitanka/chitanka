@@ -140,12 +140,10 @@ class TextController extends Controller
 	/**
 	* TODO
 	*/
-	public function showMultiAction()
+	public function showMultiAction($id, $_format)
 	{
-		$request = $this->get('request')->query;
-
-		$mirror = $this->tryMirrorRedirect($request->get('id'));
-		$filename = $request->get('filename');
+		$mirror = $this->tryMirrorRedirect($id, $_format);
+		$filename = $this->get('request')->get('filename');
 		if ( ! empty( $filename ) ) {
 			$mirror .= '&filename=' . urlencode($filename);
 		}

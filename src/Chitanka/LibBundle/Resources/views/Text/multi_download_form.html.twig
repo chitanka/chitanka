@@ -1,5 +1,5 @@
 {% macro download_link(texts, format) %}
-	<a href="{{ path('text_show_multi', {'id': texts|keys|join(','), '_format': format, 'filename': 'file'}) }}" title="Сваляне на всички във формат {{ format }}" class="dl dl-{{ format|replace({'.zip': ''}) }}"><span>{{ format }}</span></a>
+	<a href="{{ path('text_show_multi', {'id': texts|keys|join(','), '_format': format, 'filename': 'chitanka-info-archive'}) }}" title="Сваляне на всички във формат {{ format }}" class="dl dl-{{ format|replace({'.zip': ''}) }}"><span>{{ format }}</span></a>
 {% endmacro %}
 
 <dl class="download-multi">
