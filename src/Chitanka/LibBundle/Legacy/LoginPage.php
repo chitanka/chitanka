@@ -37,11 +37,11 @@ class LoginPage extends RegisterPage {
 		if ( ! $user->validatePassword($this->password) ) { // no match
 			if ( ! $user->validateNewPassword($this->password) ) { // no match
 				if ( $user->getLoginTries() >= self::MAX_LOGIN_TRIES ) {
-					$this->addMessage('Направени са повече от '. self::MAX_LOGIN_TRIES .' неуспешни опита за влизане в библиотеката с името <strong>'.$this->username.'</strong>, затова сметката е била блокирана.', true);
-					$this->addMessage(sprintf('Ползвайте страницата „<a href="%s">Изпращане на нова парола</a>“, за да получите нова парола за достъп, или се свържете с администратора на библиотеката.', $this->controller->generateUrl('request_password')), true);
-
 					$this->redirect = $this->controller->generateUrl('homepage');
-					return '';
+					return
+						'<div class="error">'
+						.'<p>Направени са повече от '. self::MAX_LOGIN_TRIES .' неуспешни опита за влизане в библиотеката с името <strong>'.$this->username.'</strong>, затова сметката е била блокирана.</p>'
+						. sprintf('<p>Ползвайте страницата „<a href="%s">Изпращане на нова парола</a>“, за да получите нова парола за достъп, или се свържете с администратора на библиотеката.</p>', $this->controller->generateUrl('request_password'));
 				}
 				$this->addMessage('Въвели сте грешна парола.', true);
 				$user->incLoginTries();
@@ -50,8 +50,6 @@ class LoginPage extends RegisterPage {
 			}
 			$user->activateNewPassword();
 		}
-
-		$this->addMessage("Влязохте в <em>$this->sitename</em> като $this->username.");
 
 		$user->setPassword($this->password); // update with the new algorithm
 		$em = $this->controller->getEntityManager();
@@ -67,7 +65,7 @@ class LoginPage extends RegisterPage {
 			$this->redirect = $this->returnto;
 		}
 
-		return '';
+		return "Влязохте в <em>$this->sitename</em> като $this->username.";
 	}
 
 
