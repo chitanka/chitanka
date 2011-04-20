@@ -211,10 +211,10 @@ class WorkPage extends Page {
 		);
 		if ( $this->handleUpload() && !empty($this->uplfile) ) {
 			$set['uplfile'] = $this->uplfile;
-			if ( $this->isMultiUser() ) {
+			//if ( $this->isMultiUser() ) {
 				$set['tmpfiles'] = $this->makeTmpFilePath(self::rawurlencode($this->uplfile));
 				$set['tfsize'] = Legacy::int_b2m(filesize($this->absTmpDir . $this->uplfile));
-			}
+			//}
 		}
 		$this->db->update(self::DB_TABLE, $set, $this->entry);
 		$msg = $this->entry == 0
@@ -1286,7 +1286,7 @@ EOS;
 		}
 		$editLink = $this->controller->generateUrl('workroom_entry_edit', array('id' => $entry));
 
-		$mailpage = PageManager::buildPage('mail');
+		$mailpage = Setup::getPage('Mail', $this->controller, $this->container);
 		$msg = <<<EOS
 Нов потребител се присъедини към подготовката на „{$title}“ от $author.
 
