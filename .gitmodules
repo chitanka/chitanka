@@ -10,3 +10,6 @@
 [submodule "src/Knplabs/MenuBundle"]
 	path = src/Knplabs/MenuBundle
 	url = git://github.com/sonata-project/MenuBundle.git
+[submodule "vendor/sfblib"]
+	path = vendor/sfblib
+	url = git://gitorious.org/sfb-converter/mainline.git

@@ -6,7 +6,6 @@
 /web/tor/*
 /web/todo/*
 /web/bundles/*
-/vendor/*
 *.min.js
 *.php~
 .DS_Store
