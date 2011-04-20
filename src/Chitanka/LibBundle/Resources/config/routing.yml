@@ -330,6 +330,8 @@ user_show:
     pattern:   /user/{username}
     defaults: { _controller: LibBundle:User:show }
     requirements: { _method: get }
+    options:
+        segment_separators: [/]
 # old edituserpage
 user_page_edit:
     pattern:   /user/{username}/page
