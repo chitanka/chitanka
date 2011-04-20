@@ -8,7 +8,7 @@ class SettingsPage extends RegisterPage {
 	protected
 		$action = 'settings',
 		$canChangeUsername = false,
-		$optKeys = array('skin', 'nav'),
+		$optKeys = array('skin', 'nav', 'css'),
 		$defEcnt = 10,
 		$nonEmptyFields = array();
 
@@ -56,7 +56,7 @@ class SettingsPage extends RegisterPage {
 			return $this->makeRegUserForm();
 		}
 
-		$user = $this->controller->getRepository('user')->find($this->user->getId());
+		$user = $this->controller->getRepository('User')->find($this->user->getId());
 		$user->setRealname($this->realname);
 		$user->setEmail($this->email);
 		$user->setAllowemail((int) $this->allowemail);
@@ -101,6 +101,7 @@ class SettingsPage extends RegisterPage {
 		$allowemail = $this->out->checkbox('allowemail', '', $this->allowemail,
 			'Разрешаване на писма от другите потребители', null, $this->tabindex++);
 		$common = $this->makeCommonInput();
+		$css = $this->makeCssInput();
 		$news = $this->out->checkbox('news', '', $this->news,
 			'Получаване на месечен бюлетин', null, $this->tabindex++);
 		$formEnd = $this->makeFormEnd();
@@ -134,6 +135,7 @@ $formBegin
 			$allowemail
 		</td>
 	</tr>$common
+	<tr><td colspan="2">$css</td></tr>
 	<tr>
 		<td colspan="2">
 			$news
@@ -193,6 +195,32 @@ EOS;
 		return $this->out->selectBox('nav', '', Setup::setting('navpos'),
 			$this->opts['nav'], $tabindex,
 			array('onchange'=>'nav=this.value; changeStyleSheet()'));
+	}
+
+
+	protected function makeCssInput() {
+		$inputs = array();
+		$files = $this->container->getParameter('user_css');
+		foreach ($files as $file => $title) {
+			$inputs[] = sprintf('<li><label><input type="checkbox" name="css[%s]" value="%s" %s> %s</label></li>', 
+				$file,
+				$file,
+				(isset($this->opts['css'][$file]) ? 'checked="checked"' : ''),
+				$title);
+		}
+		$inputs[] = sprintf('<li><label>Собствени стилове: <input type="text" name="css[custom]" size="50" value="%s"></label></li>',
+			(isset($this->opts['css']['custom']) ? $this->opts['css']['custom'] : '')
+		);
+		$inputs = implode("\n", $inputs);
+
+		return <<<EOS
+<fieldset>
+	<legend>Допълнителни стилове</legend>
+	<ul>
+		$inputs
+	</ul>
+</fieldset>
+EOS;
 	}
 
 

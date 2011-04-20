@@ -183,7 +183,8 @@ EOS;
 		$this->responseAge = 0;
 
 		return $this->render('LibBundle:User:stylesheet.html.twig', array(
-			'stylesheet' => $this->getStylesheet()
+			'stylesheet' => $this->getStylesheet(),
+			'extra_stylesheets' => $this->getUser()->getExtraStylesheets(),
 		));
 	}
 }

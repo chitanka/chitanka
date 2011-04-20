@@ -1,3 +1,6 @@
 {% if stylesheet %}
 	<link rel="stylesheet" href="{{ asset(stylesheet) }}" id="activeStyleSheet">
 {% endif %}
+{% for stylesheet in extra_stylesheets %}
+	<link rel="stylesheet" href="{{ asset(stylesheet) }}">
+{% endfor %}

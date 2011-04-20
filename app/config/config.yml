@@ -201,6 +201,9 @@ parameters:
         right: Вдясно
         left:  Вляво
 
+    user_css:
+        css/no_projects_links.css: Без меню за отделните проекти
+
     download_formats: [txt.zip, fb2.zip, epub, sfb.zip]
 
     download_file: AUTHOR - SERIES - SERNO. TITLE-ID

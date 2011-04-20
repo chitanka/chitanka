@@ -187,6 +187,11 @@ class User /*extends BaseUser*/ implements UserInterface
 	public function addBookmark($bookmark) { $this->bookmarks[] = $bookmark; }
 
 
+	public function getExtraStylesheets()
+	{
+		return isset($this->opts['css']) ? $this->opts['css'] : array();
+	}
+
 	public function __toString()
 	{
 		return $this->getUsername();
@@ -254,12 +259,17 @@ class User /*extends BaseUser*/ implements UserInterface
 		if (empty($this->email)) {
 			$this->allowemail = false;
 		}
+
+		if (empty($this->opts['css']['custom'])) {
+			unset($this->opts['css']['custom']);
+		}
 	}
 
 
 	static public $defOptions = array(
 		'skin' => 'orange',
 		'nav' => 'right', // navigation position
+		'css' => array(),
 		'news' => false, // receive montly newsletter
 		'allowemail' => true, // allow email from other users
 		'dlformat' => 'txt.zip', // default format for batch downloading
