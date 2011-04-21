@@ -165,14 +165,12 @@ class WorkPage extends Page {
 
 		if ($this->entry == 0) { // check if this text exists in the library
 			// TODO does not work if there are more than one titles with the same name
-			$work = $this->controller->getRepository('Text')->findOneBy(array('title' => $this->btitle));
+			$text = $this->controller->getRepository('Text')->findOneBy(array('title' => $this->btitle));
 			$this->scanuser_view = 0;
-			if ( !empty($work) && $work->author_name == $this->author
-					&& !$this->bypassExisting )
-			{
-				$wl = $this->makeSimpleTextLink($work->getTitle(), $work->getId());
+			if ( !empty($text) && $text->getAuthorNames() == $this->author && !$this->bypassExisting ) {
+				$wl = $this->makeSimpleTextLink($text->getTitle(), $text->getId());
 				$this->addMessage('В библиотеката вече съществува произведение'.
-					$this->makeFromAuthorSuffix($work) .
+					$this->makeFromAuthorSuffix($text) .
 					" със същото заглавие: <div class='standalone'>$wl.</div>", true);
 				$this->addMessage('Повторното съхраняване ще добави вашия запис въпреки горното предупреждение.');
 				$this->bypassExisting = 1;
@@ -516,7 +514,7 @@ EOS;
 					? ''
 					: $this->makeFileLink($data['uplfile'], $data['username']);
 				if ($muser == $user_id) {
-					$userlink = "$uinfo $ufile $userlink";
+					$userlink = "$userlink $uinfo $ufile";
 					continue;
 				}
 				$ulink = $this->makeUserLinkWithEmail($data['username'],
@@ -524,7 +522,7 @@ EOS;
 				if ($data['is_frozen']) {
 					$ulink = "<span class='is_frozen'>$ulink</span>";
 				}
-				$musers .= "\n\t<li>$uinfo $ufile $ulink</li>";
+				$musers .= "\n\t<li>$ulink $uinfo $ufile</li>";
 				$extraclass .= $this->user->getId() == $muser ? ' hilite' : '';
 			}
 			if ( !empty($mdata) ) {
@@ -816,8 +814,8 @@ EOS;
 			? self::MAX_SCAN_STATUS
 			: $this->status;
 		if ( $this->thisUserCanDeleteEntry() ) {
-			if ( empty($this->multidata) || $this->userIsAdmin() ) {
-				$status = $this->userIsAdmin()
+			if ( empty($this->multidata) || $this->userIsSupervisor() ) {
+				$status = $this->userIsSupervisor()
 					? $this->getStatusSelectField($this->status)
 					: $this->getStatusSelectField($cstatus, self::MAX_SCAN_STATUS);
 				$status = "<select name='entry_status' id='entry_status'>$status</select>";
@@ -910,10 +908,11 @@ EOS;
 		$readytogo = $this->userCanMarkAsReady()
 			? $this->out->checkbox('ready', 'ready', false, 'Готово е за добавяне')
 			: '';
+		$action = $this->controller->generateUrl('workroom');
 
 		return <<<EOS
 
-<form action="" method="post" enctype="multipart/form-data">
+<form action="$action" method="post" enctype="multipart/form-data">
 	<fieldset>
 		<legend>Моят принос ($ulink)</legend>
 		$msg
@@ -1219,19 +1218,20 @@ EOS;
 	}
 
 	public function thisUserCanEditEntry($entry, $type) {
-		if ($this->userIsAdmin() || $type == 1) return true;
+		if ($this->userIsSupervisor() || $type == 1) return true;
 		$key = array('id' => $entry, 'user_id' => $this->user->getId());
 
 		return $this->db->exists(self::DB_TABLE, $key);
 	}
 
 	public function userCanEditEntry($user, $type = 0) {
-		return $this->userIsAdmin() || $user == $this->user->getId()
+		return $this->userIsSupervisor()
+			|| $user == $this->user->getId()
 			|| ($type == 1 && $this->userCanAddEntry());
 	}
 
 	public function thisUserCanDeleteEntry() {
-		if ($this->userIsAdmin() || empty($this->entry)) return true;
+		if ($this->userIsSupervisor() || empty($this->entry)) return true;
 		if ( isset($this->_tucde) ) return $this->_tucde;
 		$key = array('id' => $this->entry, 'user_id' => $this->user->getId());
 
@@ -1239,7 +1239,7 @@ EOS;
 	}
 
 	public function userCanDeleteEntry($user) {
-		return $this->userIsAdmin() || $user == $this->scanuser;
+		return $this->user->inGroup('workroom-admin', 'workroom-supervisor') || $user == $this->scanuser;
 	}
 
 
@@ -1260,7 +1260,12 @@ EOS;
 
 	private function userIsAdmin()
 	{
-		return $this->userCanSetStatus(self::STATUS_7);
+		return $this->user->inGroup('workroom-admin');
+	}
+
+	private function userIsSupervisor()
+	{
+		return $this->user->inGroup(array('workroom-admin', 'workroom-supervisor'));
 	}
 
 	private function userCanSetStatus($status) {
@@ -1286,7 +1291,7 @@ EOS;
 		}
 		$editLink = $this->controller->generateUrl('workroom_entry_edit', array('id' => $entry));
 
-		$mailpage = Setup::getPage('Mail', $this->controller, $this->container);
+		$mailpage = Setup::getPage('Mail', $this->controller, $this->container, false);
 		$msg = <<<EOS
 Нов потребител се присъедини към подготовката на „{$title}“ от $author.
 

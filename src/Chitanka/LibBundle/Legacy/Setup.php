@@ -66,7 +66,7 @@ class Setup {
 
 		self::defineDbTableConsts();
 		$admin_email = self::setting('admin_email');
-		list($admin, $email) = each($admin_email);
+		list($email, $admin) = each($admin_email);
 		define('ADMIN', $admin);
 		define('ADMIN_EMAIL', $email);
 		define('SITENAME', self::setting('sitename'));
