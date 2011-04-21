@@ -1,3 +1,9 @@
+<FilesMatch "\.(jpg|jpeg|png|gif)$">
+	ExpiresActive On
+	ExpiresDefault "access plus 10 years"
+	Header unset Last-Modified
+</FilesMatch>
+
  RewriteEngine On
 
  RewriteCond %{REQUEST_METHOD} GET
