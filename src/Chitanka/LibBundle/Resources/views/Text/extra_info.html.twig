@@ -3,7 +3,7 @@
 
 	{% if text.book and text.book.has_cover %}
 		{% import 'LibBundle::book.html.twig' as booktools %}
-		{{ booktools.cover(text.book, 200) }}
+		{{ booktools.cover_div(text.book, 200) }}
 	{% endif %}
 
 	{{ text.extrainfohtml(asset('/'))|raw }}
