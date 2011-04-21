@@ -103,6 +103,10 @@ class CommentPage extends Page {
 		$this->db->insert(DBT_COMMENT, $set, true);
 		if ($showComment) {
 			$this->db->query(sprintf('UPDATE %s SET comment_count = comment_count + 1 WHERE id = %d', DBT_TEXT, $this->textId));
+
+			// TODO rewrite
+			$chatMsg = sprintf('Нов [url=http://chitanka.info/text/%d/comments#e%d]читателски коментар[/url] от [b]%s[/b] за „%s“', $this->textId, $id, $this->reader, $this->work->title);
+			Legacy::getFromUrl('http://forum.chitanka.info/chat/post.php', array('m' => $chatMsg));
 		}
 		$this->addMessage('Мнението ви беше получено.');
 		if ( ! $showComment ) {
