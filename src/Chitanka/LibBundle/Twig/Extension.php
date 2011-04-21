@@ -181,9 +181,9 @@ class Extension extends \Twig_Extension
 	}
 
 
-	public function getCover($id, $width = 200)
+	public function getCover($id, $width = 200, $format = 'jpg')
 	{
-		return Legacy::getContentFilePath('book-cover', $id) . ".$width.jpg";
+		return Legacy::getContentFilePath('book-cover', $id) . ".$width.$format";
 	}
 
 

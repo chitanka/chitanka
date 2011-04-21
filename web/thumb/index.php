@@ -27,6 +27,10 @@ function genThumbnail($filename, $thumbname, $width = 250, $quality = 90)
 			break;
 		case 'png':
 			$image = imagecreatefrompng($filename);
+			imagealphablending($image_p, false);
+			$color = imagecolortransparent($image_p, imagecolorallocatealpha($image_p, 0, 0, 0, 127));
+			imagefill($image_p, 0, 0, $color);
+			imagesavealpha($image_p, true);
 			imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 			imagepng($image_p, $thumbname, 9);
 			break;
