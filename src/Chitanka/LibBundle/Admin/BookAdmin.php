@@ -14,6 +14,7 @@ class BookAdmin extends Admin
 	protected $baseRouteName = 'book';
 
 	protected $list = array(
+		'url' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:list_url.html.twig'),
 		'title' => array('identifier' => true),
 		'slug',
 		'type',
