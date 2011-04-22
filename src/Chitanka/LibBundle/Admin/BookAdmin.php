@@ -18,7 +18,8 @@ class BookAdmin extends Admin
 		'title' => array('identifier' => true),
 		'slug',
 		'type',
-		'sequence',
+		'sfbg' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:list_sfbg.html.twig'),
+		//'sequence',
 		'_action' => array(
 			'actions' => array(
 				'delete' => array(),

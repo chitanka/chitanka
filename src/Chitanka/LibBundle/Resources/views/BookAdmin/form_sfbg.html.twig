@@ -14,8 +14,10 @@ function searchSfbg(title)
 		} else {
 			var matches = response.replace(/\n/g, " ").match(/<table class="lst">.+<\/table>/);
 			var content = matches[0];
-			var codeMatch = content.match(/book\/([^"]+)"/);
-			content += '<div><label>Код: <input type="text" size="20" value="' + codeMatch[1] + '"></label></div>';
+			var codeMatch = content.match(/book\/([^"]+)"/g);
+			for (var i = 0; i < codeMatch.length; i++) {
+				content += '<div><label>Код: <input type="text" size="20" value="' + codeMatch[i] + '"></label></div>';
+			}
 			$("#sfbg-content").html(content);
 		}
 	});
