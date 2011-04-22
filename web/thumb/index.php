@@ -50,6 +50,9 @@ if ($format == 'jpg') {
 }
 
 if (file_exists($file)) {
+	$expires = 30240000; // 350 days
+	header("Cache-Control: maxage=$expires");
+	header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
 	header('Content-Type: image/'.$format);
 	$thumb = sprintf('%s/../cache/thumb/%s', dirname(__FILE__), $query);
 	readfile(genThumbnail($file, $thumb, $width, 90));
