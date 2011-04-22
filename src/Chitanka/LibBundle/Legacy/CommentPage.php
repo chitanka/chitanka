@@ -144,7 +144,7 @@ class CommentPage extends Page {
 		$key = $this->wheres[$this->showMode];
 		$key['c.text_id'] = $this->textId;
 		if ( !empty($this->replyto) ) {
-			$key['id'] = $this->replyto;
+			$key['c.id'] = $this->replyto;
 		}
 		$qa = array(
 			'SELECT' => 'c.*, tr.rating, tr.date ratingdate',
