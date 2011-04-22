@@ -228,6 +228,8 @@ class Book extends BaseWork
 	public function getCategory() { return $this->category; }
 
 
+	public function getSfbg() { return ''; }
+
 	public
 		$textIds = array(),
 		$textsById = array();

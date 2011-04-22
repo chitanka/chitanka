@@ -28,6 +28,7 @@ class BookAdmin extends Admin
 	);
 
 	protected $form = array(
+		'sfbg' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:form_sfbg.html.twig'),
 		'slug',
 		'title',
 		'subtitle',
@@ -53,6 +54,7 @@ class BookAdmin extends Admin
 		'sequence' => array('form_field_options' => array('required' => false)),
 		'seqnr',
 		'category',
+		//'links',
 	);
 
 	protected $filter = array(

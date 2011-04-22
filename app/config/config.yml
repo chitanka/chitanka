@@ -95,7 +95,7 @@ services:
         class: Chitanka\LibBundle\Admin\BookSiteAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_secondary, label: booksite }
-        arguments: [Chitanka\LibBundle\Entity\BookSite, LibBundle:BookAdmin]
+        arguments: [Chitanka\LibBundle\Entity\BookSite, LibBundle:BookSiteAdmin]
     chitanka.admin.wiki_site:
         class: Chitanka\LibBundle\Admin\WikiSiteAdmin
         tags:

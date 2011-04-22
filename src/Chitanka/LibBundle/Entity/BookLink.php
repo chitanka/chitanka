@@ -45,8 +45,14 @@ class BookLink
 	public function setCode($code) { $this->code = $code; }
 	public function getCode() { return $this->code; }
 
-	public function getUrl() {
+	public function getUrl()
+	{
 		return str_replace('BOOKID', $this->code, $this->site->getUrl());
+	}
+
+	public function __toString()
+	{
+		return $this->code;
 	}
 
 }
