@@ -12,7 +12,7 @@ class WorkEntryRepository extends EntityRepository
 
 	public function getLatestIdsByDate($limit = null)
 	{
-		$dql = sprintf('SELECT e.id FROM %s e ORDER BY e.date DESC', $this->getEntityName());
+		$dql = sprintf('SELECT e.id FROM %s e WHERE e.deleted_at IS NULL ORDER BY e.date DESC', $this->getEntityName());
 		$query = $this->_em->createQuery($dql)->setMaxResults($limit);
 
 		return $query->getResult('id');
@@ -35,7 +35,8 @@ class WorkEntryRepository extends EntityRepository
 			->select('e', 'u', 'c', 'cu')
 			->leftJoin('e.user', 'u')
 			->leftJoin('e.contribs', 'c')
-			->leftJoin('c.user', 'cu');
+			->leftJoin('c.user', 'cu')
+			->where('e.deleted_at IS NULL');
 
 		return $qb;
 	}
