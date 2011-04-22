@@ -70,6 +70,11 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_main, label: sequence }
         arguments: [Chitanka\LibBundle\Entity\Sequence, LibBundle:SequenceAdmin]
+    chitanka.admin.text_comment:
+        class: Chitanka\LibBundle\Admin\TextCommentAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: text_comment }
+        arguments: [Chitanka\LibBundle\Entity\TextComment, LibBundle:TextCommentAdmin]
 
     chitanka.admin.wanted_book:
         class: Chitanka\LibBundle\Admin\WantedBookAdmin
