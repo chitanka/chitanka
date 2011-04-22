@@ -62,6 +62,8 @@ class BookAdmin extends Admin
 		'title',
 		'subtitle',
 		'type',
+		'has_cover',
+		'has_anno',
 	);
 
 
