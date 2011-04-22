@@ -16,7 +16,9 @@ function searchSfbg(title)
 			var content = matches[0];
 			var codeMatch = content.match(/book\/([^"]+)"/g);
 			for (var i = 0; i < codeMatch.length; i++) {
-				content += '<div><label>Код: <input type="text" size="20" value="' + codeMatch[i] + '"></label></div>';
+				content += '<div><label>Код: <input type="text" size="20" value="'
+					+ codeMatch[i].replace(/book\//, "")
+					+ '"></label></div>';
 			}
 			$("#sfbg-content").html(content);
 		}
