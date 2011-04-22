@@ -64,6 +64,31 @@ class FeedController extends Controller
 	}
 
 
+	public function randomReviewAction()
+	{
+		$feedUrl = 'http://blog.chitanka.info/section/reviews/feed';
+		$feed = Legacy::getFromUrlOrCache($feedUrl, $days = 0.1);
+		if (empty($feed)) {
+			return $this->displayText('');
+		}
+
+		$found = preg_match_all('|<item>.+<link>(.+)</link>.+<img src="(.+)" title="„(.+)“ от (.+)"|U', str_replace("\n", ' ', $feed), $matches, PREG_SET_ORDER);
+		if ( ! $found) {
+			return $this->displayText('No reviews found');
+		}
+
+		shuffle($matches);
+		$this->view['book'] = array(
+			'author' => $matches[0][4],
+			'title'  => $matches[0][3],
+			'url'    => $matches[0][1],
+			'cover'  => $matches[0][2],
+		);
+
+		return $this->display('book', 'FeaturedBook');
+	}
+
+
 	public function fetchFeed($xmlFile, $xslFile)
 	{
 		$proc = new \XSLTProcessor();

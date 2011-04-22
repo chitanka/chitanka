@@ -62,7 +62,7 @@ abstract class Controller extends SymfonyController
 	}
 
 
-	protected function display($action)
+	protected function display($action, $controller = null)
 	{
 		$request = $this->get('request');
 		$globals = array(
@@ -76,7 +76,10 @@ abstract class Controller extends SymfonyController
 			'ajax' => $request->isXmlHttpRequest(),
 		);
 
-		$response = $this->render(sprintf('LibBundle:%s:%s.%s.twig', $this->getName(), $action, $this->responseFormat), $this->view + $globals);
+		if ($controller === null) {
+			$controller = $this->getName();
+		}
+		$response = $this->render(sprintf('LibBundle:%s:%s.%s.twig', $controller, $action, $this->responseFormat), $this->view + $globals);
 		if ($this->responseAge) {
 			$response->setPublic();
 			$response->setSharedMaxAge($this->responseAge);
