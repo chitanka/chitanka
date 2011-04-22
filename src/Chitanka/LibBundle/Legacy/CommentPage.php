@@ -391,6 +391,19 @@ EOS;
 			$this->title .= ' за „'.$title.'“';
 		}
 		$qa = array(
+			'SELECT' => 'c.id',
+			'FROM' => DBT_COMMENT .' c',
+			'WHERE' => $key,
+			'ORDER BY' => "`time` $order",
+			'LIMIT' => array($offset, $limit)
+		);
+		$res = $this->db->extselect($qa);
+		$ids = array();
+		while ($row = $this->db->fetchRow($res)) {
+			$ids[] = $row[0];
+		}
+
+		$qa = array(
 			'SELECT' => 'c.*, t.id textId, t.title textTitle,
 				GROUP_CONCAT(DISTINCT a.name ORDER BY aof.pos) author,
 				tr.rating, tr.date ratingdate',
@@ -401,11 +414,12 @@ EOS;
 				DBT_PERSON .' a' => 'aof.person_id = a.id',
 				DBT_TEXT_RATING .' tr' => 'tr.text_id = t.id AND tr.user_id = c.user_id',
 			),
-			'WHERE' => $key,
+			'WHERE' => array('c.id IN ('.implode(',', $ids).')'),
 			'GROUP BY' => 'c.id',
 			'ORDER BY' => "`time` $order",
 			'LIMIT' => array($offset, $limit)
 		);
+
 		return $this->db->extselectQ($qa);
 	}
 
