@@ -39,93 +39,93 @@ services:
         class: Chitanka\LibBundle\Admin\PersonAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_main, label: person }
-        arguments: [Chitanka\LibBundle\Entity\Person, LibBundle:PersonAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\Person, LibBundle:PersonAdmin]
     chitanka.admin.book:
         class: Chitanka\LibBundle\Admin\BookAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_main, label: book }
-        arguments: [Chitanka\LibBundle\Entity\Book, LibBundle:BookAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\Book, LibBundle:BookAdmin]
     chitanka.admin.text:
         class: Chitanka\LibBundle\Admin\TextAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_main, label: text }
-        arguments: [Chitanka\LibBundle\Entity\Text, LibBundle:TextAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\Text, LibBundle:TextAdmin]
     chitanka.admin.series:
         class: Chitanka\LibBundle\Admin\SeriesAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_main, label: series }
-        arguments: [Chitanka\LibBundle\Entity\Series, LibBundle:SeriesAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\Series, LibBundle:SeriesAdmin]
     chitanka.admin.label:
         class: Chitanka\LibBundle\Admin\LabelAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_main, label: label }
-        arguments: [Chitanka\LibBundle\Entity\Label, LibBundle:LabelAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\Label, LibBundle:LabelAdmin]
     chitanka.admin.category:
         class: Chitanka\LibBundle\Admin\CategoryAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_main, label: category }
-        arguments: [Chitanka\LibBundle\Entity\Category, LibBundle:CategoryAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\Category, LibBundle:CategoryAdmin]
     chitanka.admin.sequence:
         class: Chitanka\LibBundle\Admin\SequenceAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_main, label: sequence }
-        arguments: [Chitanka\LibBundle\Entity\Sequence, LibBundle:SequenceAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\Sequence, LibBundle:SequenceAdmin]
     chitanka.admin.text_comment:
         class: Chitanka\LibBundle\Admin\TextCommentAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_main, label: text_comment }
-        arguments: [Chitanka\LibBundle\Entity\TextComment, LibBundle:TextCommentAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\TextComment, LibBundle:TextCommentAdmin]
 
     chitanka.admin.wanted_book:
         class: Chitanka\LibBundle\Admin\WantedBookAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_secondary, label: wantedbook }
-        arguments: [Chitanka\LibBundle\Entity\WantedBook, LibBundle:WantedBookAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\WantedBook, LibBundle:WantedBookAdmin]
     chitanka.admin.featured_book:
         class: Chitanka\LibBundle\Admin\FeaturedBookAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_secondary, label: featuredbook }
-        arguments: [Chitanka\LibBundle\Entity\FeaturedBook, LibBundle:FeaturedBookAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\FeaturedBook, LibBundle:FeaturedBookAdmin]
     chitanka.admin.foreign_book:
         class: Chitanka\LibBundle\Admin\ForeignBookAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_secondary, label: foreignbook }
-        arguments: [Chitanka\LibBundle\Entity\ForeignBook, LibBundle:ForeignBookAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\ForeignBook, LibBundle:ForeignBookAdmin]
     chitanka.admin.site:
         class: Chitanka\LibBundle\Admin\SiteAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_secondary, label: site }
-        arguments: [Chitanka\LibBundle\Entity\Site, LibBundle:SiteAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\Site, LibBundle:SiteAdmin]
     chitanka.admin.book_site:
         class: Chitanka\LibBundle\Admin\BookSiteAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_secondary, label: booksite }
-        arguments: [Chitanka\LibBundle\Entity\BookSite, LibBundle:BookSiteAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\BookSite, LibBundle:BookSiteAdmin]
     chitanka.admin.wiki_site:
         class: Chitanka\LibBundle\Admin\WikiSiteAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_secondary, label: wikisite }
-        arguments: [Chitanka\LibBundle\Entity\WikiSite, LibBundle:WikiSiteAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\WikiSite, LibBundle:WikiSiteAdmin]
     chitanka.admin.question:
         class: Chitanka\LibBundle\Admin\QuestionAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_secondary, label: question }
-        arguments: [Chitanka\LibBundle\Entity\Question, LibBundle:QuestionAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\Question, LibBundle:QuestionAdmin]
     chitanka.admin.license:
         class: Chitanka\LibBundle\Admin\LicenseAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_secondary, label: license }
-        arguments: [Chitanka\LibBundle\Entity\License, LibBundle:LicenseAdmin]
+        arguments: [null, Chitanka\LibBundle\Entity\License, LibBundle:LicenseAdmin]
 #     chitanka.admin.work_entry:
 #         class: Chitanka\LibBundle\Admin\WorkEntryAdmin
 #         tags:
 #             - { name: sonata.admin, manager_type: orm, group: library, label: workentry }
-#         arguments: [Chitanka\LibBundle\Entity\WorkEntry, LibBundle:WorkEntryAdmin]
+#         arguments: [null, Chitanka\LibBundle\Entity\WorkEntry, LibBundle:WorkEntryAdmin]
 #     chitanka.admin.user:
 #         class: Chitanka\LibBundle\Admin\UserAdmin
 #         tags:
 #             - { name: sonata.admin, manager_type: orm, group: library, label: user }
-#         arguments: [Chitanka\LibBundle\Entity\User, LibBundle:UserAdmin]
+#         arguments: [null, Chitanka\LibBundle\Entity\User, LibBundle:UserAdmin]
 
 
 # Twig Configuration

@@ -84,4 +84,7 @@ return array(
 	'link_user_list' => 'Потребители',
 	'link_user_create' => 'Добавяне на потребител',
 	'link_user_edit' => 'Редактиране на потребител',
+	'link_textcomment_list' => 'Читателски коментари',
+	'link_textcomment_create' => 'Добавяне',
+	'link_textcomment_edit' => 'Редактиране',
 );
