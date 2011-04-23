@@ -266,7 +266,7 @@ class CommentPage extends Page {
 
 		return <<<EOS
 
-	<fieldset class="readercomment" id="e$id">
+	<fieldset class="readercomment deletable" id="e$id">
 		$firstrow
 		$secondrow
 		<div class="commenttext">
