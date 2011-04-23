@@ -108,6 +108,7 @@ class CommentPage extends Page {
 
 			// TODO rewrite
 			$chatMsg = sprintf('Нов [url=http://chitanka.info/text/%d/comments#e%d]читателски коментар[/url] от [b]%s[/b] за „%s“', $this->textId, $id, $this->reader, $this->work->getTitle());
+			Legacy::getFromUrl('http://forum.chitanka.info/chat/post.php', array('m' => $chatMsg));
 		}
 		$this->addMessage('Мнението ви беше получено.');
 		if ( ! $showComment ) {
