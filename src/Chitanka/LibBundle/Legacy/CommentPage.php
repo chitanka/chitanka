@@ -417,7 +417,6 @@ EOS;
 			'WHERE' => array('c.id IN ('.implode(',', $ids).')'),
 			'GROUP BY' => 'c.id',
 			'ORDER BY' => "`time` $order",
-			'LIMIT' => array($offset, $limit)
 		);
 
 		return $this->db->extselectQ($qa);
