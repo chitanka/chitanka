@@ -430,7 +430,7 @@ EOS;
 			return true;
 		}
 		$this->initDone = true;
-		$this->work = Text::newFromId($this->textId);
+		$this->work = $this->controller->getRepository('Text')->find($this->textId);
 		if ( empty($this->work) ) {
 			$this->addMessage("Не съществува текст с номер <strong>$this->textId</strong>.", true);
 			return false;
