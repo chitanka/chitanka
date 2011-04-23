@@ -10,6 +10,8 @@ use Chitanka\LibBundle\Legacy\Legacy;
 
 class TextAdmin extends Admin
 {
+	protected $baseRouteName = 'text';
+
 	protected $list = array(
 		'title' => array('identifier' => true),
 		'slug',

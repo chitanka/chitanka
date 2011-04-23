@@ -203,7 +203,7 @@ class CommentPage extends Page {
 		$this->comments .= "\n<ul id='sublistof$id'>";
 		foreach ($tree as $id => $subtree) {
 			$this->comments .= isset($this->acomments[$id])
-				? "<li id='it$id' class='lev$level'>". $this->makeComment( $this->acomments[$id] )
+				? "<li id='it$id' class='lev$level deletable'>". $this->makeComment( $this->acomments[$id] )
 				: '';
 			if ( is_array($subtree) && !empty($subtree) ) {
 				$this->makeCommentsAsTree($subtree, $level + 1, $id);
@@ -249,6 +249,10 @@ class CommentPage extends Page {
 				}
 				if ( empty($this->textId) ) {
 					$links .= sprintf('<li><a href="%s" title="Всички коментари за произведението">Всички коментари</a></li>', $this->controller->generateUrl('text_comments', array('id' => $textId)));
+				}
+				if ($this->user->inGroup('admin')) {
+					$links .= sprintf('<li><a href="%s" title="Редактиране на коментара">Редактиране</a></li>', $this->controller->generateUrl('textcomment_edit', array('id' => $id)));
+					$links .= sprintf('<li><form action="%s" method="post" class="image-form delete-form"><button type="submit" title="Изтриване на коментара"><span>Изтриване</span></button></form></li>', $this->controller->generateUrl('textcomment_delete', array('id' => $id)));
 				}
 				$acts = "<ul class='menu' style='float:right'>$links</ul>";
 			}

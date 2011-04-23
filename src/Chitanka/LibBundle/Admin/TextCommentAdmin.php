@@ -6,7 +6,7 @@ use Sonata\AdminBundle\Admin\Admin;
 
 class TextCommentAdmin extends Admin
 {
-	protected $baseRouteName = 'sequence';
+	protected $baseRouteName = 'textcomment';
 
 	protected $list = array(
 		'text',
