@@ -208,6 +208,7 @@ parameters:
 
     user_css:
         css/no_projects_links.css: Без меню за отделните проекти
+        css/onecolumn_frontpage.css: Едноколонна начална страница
 
     download_formats: [txt.zip, fb2.zip, epub, sfb.zip]
 

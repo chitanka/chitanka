@@ -1,0 +1,24 @@
+/* one of two boxes in a row */
+.box2 {
+	width: 100%;
+}
+.liternewsbox {
+	width: 100%;
+}
+.p_homepage .textbox dt,
+.p_homepage .textbox dd {
+	max-width: none;
+}
+.liternewsbox article,
+.insidenews article {
+	max-height: none;
+	overflow: visible;
+}
+.commentbox article,
+.forumbox article {
+	height: auto;
+	overflow: visible;
+}
+.insidenews {
+	width: 100%;
+}
