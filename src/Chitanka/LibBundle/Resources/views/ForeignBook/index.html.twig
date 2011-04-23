@@ -2,6 +2,7 @@
 
 {% set title = 'Нови книги в други сайтове' %}
 {% block content %}
+	<p><small>Това е безплатна реклама на електронни книги в други сайтове.</small></p>
 	<ul class="bookshelf">
 	{% for book in books %}
 		<li>{% include 'LibBundle:ForeignBook:book.html.twig' %}</li>
