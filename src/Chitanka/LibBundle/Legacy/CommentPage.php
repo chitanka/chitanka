@@ -85,7 +85,7 @@ class CommentPage extends Page {
 				$showComment = 0;
 			}
 		}
-		$id = $this->db->autoIncrementId(self::DB_TABLE);
+		$id = $this->db->autoIncrementId(DBT_COMMENT);
 		$set = array(
 			'id' => $id,
 			'text_id' => $this->textId,
