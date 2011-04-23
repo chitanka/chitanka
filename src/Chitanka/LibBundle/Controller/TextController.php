@@ -161,6 +161,8 @@ class TextController extends Controller
 
 	public function commentsAction($id, $_format)
 	{
+		$this->responseAge = 0;
+
 		$_REQUEST['id'] = $id;
 
 		return $this->legacyPage('Comment');

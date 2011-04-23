@@ -8,6 +8,7 @@ class TextCommentController extends Controller
 {
 	public function indexAction($page, $_format)
 	{
+		$this->responseAge = 0;
 		$this->responseFormat = $_format;
 		if ($_format == 'rss') {
 			$limit = 10;
