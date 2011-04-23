@@ -362,7 +362,7 @@ EOS;
 				$this->controller->generateUrl('user_email', array('username' => $username)),
 				String::myhtmlentities($username));
 		}
-		return $this->makeUserLink($username) . $mlink;
+		return $this->makeUserLink($username) .' '. $mlink;
 	}
 
 
