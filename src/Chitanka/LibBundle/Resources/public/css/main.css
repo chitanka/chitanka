@@ -220,12 +220,12 @@ dd {
 /* абзаци */
 p {
 	margin: 0;
-	text-indent: 2.5em;
+	text-indent: 20px;
 }
 ul,
 ol,
 dl {
-	margin: 0 .5em 0 2.5em;
+	margin: 0 .5em 0 25px;
 }
 em em {
 	font-weight: bold;
@@ -236,7 +236,7 @@ pre {
 	overflow: auto;
 }
 .text-content pre {
-	margin-left: 2.5em;
+	margin-left: 25px;
 }
 pre p {
 	display: inline;
@@ -2095,6 +2095,12 @@ table.toccolours td {
 }
 .right {
 	text-align: right;
+}
+.bold {
+	font-weight: bold;
+}
+.italic {
+	font-style: italic;
 }
 .smallcaps {
 	font-variant: small-caps;
