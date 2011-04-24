@@ -319,16 +319,22 @@ class WorkPage extends Page {
 
 
 	protected function buildContent() {
+		$content = $this->makeUserGuideLink();
 		if ($this->subaction == 'edit' && $this->userCanAddEntry()) {
 			$this->initData();
-
-			return $this->makeForm();
+			$content .= $this->makeForm();
+		} else {
+			$this->addRssLink();
+			$content .= $this->getInlineRssLink('workroom_rss') . $this->makeLists();
 		}
-		$this->addRssLink();
 
-		return $this->getInlineRssLink('workroom_rss') . $this->makeLists();
+		return $content;
 	}
 
+
+	protected function makeUserGuideLink() {
+		return '<div class="float-right"><a class="act-info" href="http://wiki.chitanka.info/Workroom" title="Наръчник за работното ателие"><span>Наръчник за работното ателие</span></a></div>';
+	}
 
 	protected function makeLists() {
 		$o = $this->makePageHelp()
@@ -678,8 +684,7 @@ EOS;
 			$button = $delete = '';
 		}
 		$lcomment = $this->out->label('Коментар:', self::FF_COMMENT);
-		$helpBot = $this->isSingleUser($this->workType) ?
-			$this->makeSingleUserHelp() : $this->makeMultiUserHelp();
+		$helpBot = $this->isSingleUser($this->workType) ? $this->makeSingleUserHelp() : '';
 		$scanuser = $this->out->hiddenField('user', $this->scanuser);
 		$entry = $this->out->hiddenField('id', $this->entry);
 		$workType = $this->out->hiddenField('workType', $this->workType);
@@ -689,7 +694,6 @@ EOS;
 		return <<<EOS
 
 $helpTop
-<p class="assistive">След формуляра ще намерите <a href="#helpBottom">още помощна информация</a>.</p>
 <div class="tabbedpane" style="margin:1em auto">$tabs
 <div class="tabbedpanebody">
 <form action="$action" method="post" enctype="multipart/form-data">
@@ -1022,73 +1026,11 @@ EOS;
 
 
 	protected function makeSingleUserHelp() {
-		$sendFile = $this->makeSendFileHelp();
-
 		return <<<EOS
 
 <p>На тази страница може да променяте данните за произведението.
 Най-често ще се налага да обновявате етапа, на който се намира подготовката. Възможно е да посочите напредъка на подготовката и чрез процент, в случай че операциите сканиране, разпознаване и коригиране се извършват едновременно.</p>
 <p>Ако подготовката на произведението е замразена, това може да се посочи, като се отметне полето „Подготовката е спряна за известно време“.</p>
-$sendFile
-EOS;
-	}
-
-
-	protected function makeMultiUserHelp() {
-		$help = '';
-		if ( $this->thisUserCanDeleteEntry() )
-			$help .= $this->makeMultiUserScanHelp();
-		if ( $this->isScanDone() )
-			$help .= $this->makeMultiUserEditHelp();
-
-		return $help;
-	}
-
-
-	protected function makeMultiUserScanHelp() {
-		$maxUploadSizeInMiB = Legacy::getMaxUploadSizeInMiB();
-
-		return <<<EOS
-
-<h2>Сканиране и разпознаване</h2>
-<p>След като сканирате произведението, може да качите суровите файлове в библиотеката (чрез полето „Файл“) или някъде в интернет. Ако изберете библиотеката, имайте предвид, че ограничението за големината на файла е <strong>$maxUploadSizeInMiB</strong> мебибайта. При втория вариант е нужно да посочите адреса в полето „Външен файл“. Полезно е да въведете и големината на файловете в полето „Размер“.</p>
-EOS;
-	}
-
-	protected function makeMultiUserEditHelp() {
-		$sendFile = $this->makeSendFileHelp();
-
-		return <<<EOS
-
-<h2>Коригиране</h2>
-<p>Преди да се включите в коригирането на текста, изтеглете междинните файлове от адреса, посочен в раздела „Сканиране и разпознаване“.</p>
-<h3>Коментар и напредък</h3>
-<p>В полето „Коментар“ посочете каква част от текста сте се захванали да обработите, за да могат останалите коректори да си изберат нещо друго. <em>Няма нужда едни и същи страници да се коригират от повече от един човек!</em></p>
-<p>В хода на корекцията е добре да посочвате напредъка на подготовката. В случай че сте решили да направите малка почивка, отметнете полето „Подготовката е спряна за известно време“.</p>
-<h3>Пращане на готовия файл</h3>
-$sendFile
-EOS;
-	}
-
-	protected function makeSendFileHelp() {
-		$tmpDir = $this->out->link( $this->makeTmpFilePath() );
-		$adminMail = $this->out->obfuscateEmail(ADMIN_EMAIL);
-		$maxUploadSizeInMiB = Legacy::getMaxUploadSizeInMiB();
-
-		return <<<EOS
-
-<p>Когато сте готови с текста, в полето „Файл“ изберете файла с произведението (като натиснете бутона до полето ще ви се отвори прозорче за избор).</p>
-<p>Има ограничение от <strong>$maxUploadSizeInMiB</strong> мебибайта за големината на файла, затова първо го компресирайте. Ако и това не помогне, опитайте да го разделите на части или пък ми го пратете по електронната поща — $adminMail.</p>
-<p><strong>Важно:</strong> Ако след съхранението не видите съобщението „Файлът беше качен“, значи е станал някакъв фал при качването на файла. В такъв случай опитайте да го пратите отново.</p>
-<p>Препоръчително е да включвате и всякаква допълнителна информация както за текста, така и за самия файл.</p>
-<p>За произведението е добре да има данни относно хартиеното издание и за преводача, ако е превод. За файла е хубаво да се знае кой го е сканирал и коригирал.</p>
-<p>Тъй като обичам свободата, предпочитам следните <em>свободни</em> документови формати:</p>
-<ul>
-	<li><a href="http://en.wikipedia.org/wiki/Plain_text" title="http://en.wikipedia.org/wiki/Plain_text — чист текст">чист текст</a> — обикновено файловете са с разширение <strong>.txt</strong>;</li>
-	<li><a href="http://en.wikipedia.org/wiki/OpenDocument" title="http://en.wikipedia.org/wiki/OpenDocument — OpenDocument">OpenDocument</a> — разширение <strong>.odt</strong>;</li>
-	<li><a href="http://en.wikipedia.org/wiki/HTML" title="http://en.wikipedia.org/wiki/HTML — HTML"><abbr title='Hypertext Markup Language'>HTML</abbr></a>.</li>
-</ul>
-<p>В краен случай бих приел и файлове в <a href="http://en.wikipedia.org/wiki/Rich_Text_Format" title="http://en.wikipedia.org/wiki/Rich_Text_Format — Rich Text Format">Rich Text Format</a>. Това не е свободен формат, но поне спецификацията му е известна на обществото.</p>
 EOS;
 	}
 
