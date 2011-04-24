@@ -411,7 +411,7 @@ EOS;
 
 		$qa = array(
 			'SELECT' => 'c.*, t.id textId, t.title textTitle,
-				GROUP_CONCAT(DISTINCT a.name ORDER BY aof.pos) author,
+				GROUP_CONCAT(DISTINCT a.name ORDER BY aof.pos SEPARATOR ", ") author,
 				tr.rating, tr.date ratingdate',
 			'FROM' => DBT_COMMENT .' c',
 			'LEFT JOIN' => array(
