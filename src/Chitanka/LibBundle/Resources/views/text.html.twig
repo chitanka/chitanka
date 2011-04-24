@@ -63,7 +63,7 @@
 {% endmacro %}
 
 
-{% macro text_with_author(text) %}
+{% macro text_with_author(text, options) %}
 	{% import 'LibBundle::link.html.twig' as link %}
 <dl class="text-entity" data-id="{{ text.id }}">
 	<dt>
@@ -74,8 +74,9 @@
 		{{ link.text(text) }}
 	</dt>
 	<dd class="tauthor">{{ _self.author_list(text.authors) }}</dd>
-	<!--<dd class="extra">{#{{ _self.text_extra_info(text) }}#}</dd>-->
-	<dd class="download">{{ _self.download_links(text) }}</dd>
+	{% if options.download_links is defined %}
+		<dd class="download">{{ _self.download_links(text) }}</dd>
+	{% endif %}
 </dl>
 {% endmacro %}
 
