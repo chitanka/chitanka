@@ -285,11 +285,13 @@ img {
 	text-align: center;
 	text-indent: 0;
 }
-.float-left {
+.float-left,
+.floatleft {
 	float: left;
 	margin: .5em 1em 1em 0;
 }
-.float-right {
+.float-right,
+.floatright {
 	float: right;
 	margin: .5em 0 1em 1em;
 }
