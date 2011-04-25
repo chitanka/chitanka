@@ -2275,6 +2275,11 @@ ul.two-columns {
 	text-shadow: black 1px 1px 0;
 	text-decoration: none;
 }
+
+/* not necessary wiki stuff */
+.chitanka-personinfo {
+	display: none;
+}
 }
 
 @media print {
