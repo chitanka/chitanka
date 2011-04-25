@@ -144,6 +144,9 @@ class User /*extends BaseUser*/ implements UserInterface
 	}
 	public function getNewpassword() { return $this->newpassword; }
 
+	public function setAlgorithm($algorithm) { $this->algorithm = $algorithm; }
+	public function getAlgorithm() { return $this->algorithm; }
+
 	public function setEmail($email) { $this->email = $email; }
 	public function getEmail() { return $this->email; }
 
