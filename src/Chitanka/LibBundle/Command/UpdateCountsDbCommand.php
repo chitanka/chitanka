@@ -42,6 +42,7 @@ EOT
 	protected function updateCounts(OutputInterface $output, $em)
 	{
 		$this->updateTextCountByLabels($output, $em);
+		$this->updateTextCountByLabelsParents($output, $em);
 		$this->updateCommentCountByTexts($output, $em);
 		$this->updateBookCountByCategories($output, $em);
 	}

@@ -66,6 +66,13 @@ class Label
 	public function setParent($parent) { $this->parent = $parent; }
 	public function getParent() { return $this->parent; }
 
+	public function setNrOfTexts($nr_of_texts) { $this->nr_of_texts = $nr_of_texts; }
+	public function getNrOfTexts() { return $this->nr_of_texts; }
+	public function incNrOfTexts($value = 1) 
+	{ 
+		$this->nr_of_texts += $value; 
+	}
+
 	public function setChildren($children) { $this->children = $children; }
 	public function getChildren() { return $this->children; }
 

@@ -36,6 +36,31 @@ class CommonDbCommand extends Command
 		$this->executeUpdates($queries, $conn);
 	}
 
+	protected function updateTextCountByLabelsParents(OutputInterface $output, $em)
+	{
+		$output->writeln('Updating text counts by labels parents');
+
+		$queries = array();
+		$repo = $em->getRepository('LibBundle:Label');
+		$dirty = array();
+		foreach ($repo->findAll() as $label) {
+			if (in_array($label->getId(), $dirty)) {
+				$label = $repo->find($label->getId());
+			}
+			$parent = $label->getParent();
+			if ($parent) {
+				$nrOfTexts = $label->getNrOfTexts();
+				do {
+					$parent->incNrOfTexts($nrOfTexts);
+					$em->persist($parent);
+					$dirty[] = $parent->getId();
+				} while (null !== ($parent = $parent->getParent()));
+			}
+		}
+
+		$em->flush();
+	}
+
 
 	/**
 	* @RawSql
