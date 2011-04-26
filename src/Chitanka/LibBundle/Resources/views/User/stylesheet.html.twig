@@ -4,3 +4,7 @@
 {% for stylesheet in extra_stylesheets %}
 	<link rel="stylesheet" href="{{ asset(stylesheet) }}">
 {% endfor %}
+<script>var user_functions = [];</script>
+{% for javascript in extra_javascripts %}
+	<script src="{{ asset(javascript) }}"></script>
+{% endfor %}

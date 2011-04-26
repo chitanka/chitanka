@@ -132,4 +132,9 @@
 	{% if inline_js is defined %}
 		<script>{{ inline_js|raw }}</script>
 	{% endif %}
+	<script>
+		$.each(user_functions, function(i, func){
+			func();
+		});
+	</script>
 {% endblock %}

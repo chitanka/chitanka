@@ -8,7 +8,7 @@ class SettingsPage extends RegisterPage {
 	protected
 		$action = 'settings',
 		$canChangeUsername = false,
-		$optKeys = array('skin', 'nav', 'css'),
+		$optKeys = array('skin', 'nav', 'css', 'js'),
 		$defEcnt = 10,
 		$nonEmptyFields = array();
 
@@ -102,6 +102,7 @@ class SettingsPage extends RegisterPage {
 			'Разрешаване на писма от другите потребители', null, $this->tabindex++);
 		$common = $this->makeCommonInput();
 		$css = $this->makeCssInput();
+		$js = $this->makeJsInput();
 		$news = $this->out->checkbox('news', '', $this->news,
 			'Получаване на месечен бюлетин', null, $this->tabindex++);
 		$formEnd = $this->makeFormEnd();
@@ -136,6 +137,7 @@ $formBegin
 		</td>
 	</tr>$common
 	<tr><td colspan="2">$css</td></tr>
+	<tr><td colspan="2">$js</td></tr>
 	<tr>
 		<td colspan="2">
 			$news
@@ -202,7 +204,7 @@ EOS;
 		$inputs = array();
 		$files = $this->container->getParameter('user_css');
 		foreach ($files as $file => $title) {
-			$inputs[] = sprintf('<li><label><input type="checkbox" name="css[%s]" value="%s" %s> %s</label></li>', 
+			$inputs[] = sprintf('<li><label><input type="checkbox" name="css[%s]" value="%s" %s> %s</label></li>',
 				$file,
 				$file,
 				(isset($this->opts['css'][$file]) ? 'checked="checked"' : ''),
@@ -216,6 +218,32 @@ EOS;
 		return <<<EOS
 <fieldset>
 	<legend>Допълнителни стилове</legend>
+	<ul>
+		$inputs
+	</ul>
+</fieldset>
+EOS;
+	}
+
+
+	protected function makeJsInput() {
+		$inputs = array();
+		$files = $this->container->getParameter('user_js');
+		foreach ($files as $file => $title) {
+			$inputs[] = sprintf('<li><label><input type="checkbox" name="js[%s]" value="%s" %s> %s</label></li>',
+				$file,
+				$file,
+				(isset($this->opts['js'][$file]) ? 'checked="checked"' : ''),
+				$title);
+		}
+		$inputs[] = sprintf('<li><label>Собствени скриптове: <input type="text" name="js[custom]" size="50" value="%s"></label></li>',
+			(isset($this->opts['js']['custom']) ? $this->opts['js']['custom'] : '')
+		);
+		$inputs = implode("\n", $inputs);
+
+		return <<<EOS
+<fieldset>
+	<legend>Допълнителни скриптове</legend>
 	<ul>
 		$inputs
 	</ul>

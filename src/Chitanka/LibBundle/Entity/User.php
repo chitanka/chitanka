@@ -195,6 +195,11 @@ class User /*extends BaseUser*/ implements UserInterface
 		return isset($this->opts['css']) ? $this->opts['css'] : array();
 	}
 
+	public function getExtraJavascripts()
+	{
+		return isset($this->opts['js']) ? $this->opts['js'] : array();
+	}
+
 	public function __toString()
 	{
 		return $this->getUsername();
@@ -266,6 +271,9 @@ class User /*extends BaseUser*/ implements UserInterface
 		if (empty($this->opts['css']['custom'])) {
 			unset($this->opts['css']['custom']);
 		}
+		if (empty($this->opts['js']['custom'])) {
+			unset($this->opts['js']['custom']);
+		}
 	}
 
 
@@ -273,6 +281,7 @@ class User /*extends BaseUser*/ implements UserInterface
 		'skin' => 'orange',
 		'nav' => 'right', // navigation position
 		'css' => array(),
+		'js' => array(),
 		'news' => false, // receive montly newsletter
 		'allowemail' => true, // allow email from other users
 		'dlformat' => 'txt.zip', // default format for batch downloading

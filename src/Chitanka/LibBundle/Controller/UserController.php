@@ -185,6 +185,7 @@ EOS;
 		return $this->render('LibBundle:User:stylesheet.html.twig', array(
 			'stylesheet' => $this->getStylesheet(),
 			'extra_stylesheets' => $this->getUser()->getExtraStylesheets(),
+			'extra_javascripts' => $this->getUser()->getExtraJavascripts(),
 		));
 	}
 }

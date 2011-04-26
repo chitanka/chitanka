@@ -2231,7 +2231,10 @@ ul.two-columns {
 	background: url(images/bookmark_active.png) no-repeat 0 0;
 }
 
-#project-links ul {
+.project-links h3 {
+	display: none;
+}
+.project-links ul {
 	margin: 0;
 	padding: 0;
 	border-bottom: 1px solid #bbb;
@@ -2240,7 +2243,7 @@ ul.two-columns {
 	color: black;
 	text-align: center;
 }
-#project-links li {
+.project-links li {
 	display: inline-block;
 	margin: 0;
 	padding: 0;
@@ -2252,7 +2255,7 @@ ul.two-columns {
 	text-align: center;
 	font-variant: small-caps;
 }
-#project-links li a {
+.project-links li a {
 	display: block;
 	width: 7em;
 	padding: .2em .3em 0 .3em;
@@ -2262,13 +2265,13 @@ ul.two-columns {
 	text-shadow: 1px 1px 0 #e8e8e8;
 	text-decoration: none;
 }
-#project-links li.current a {
+.project-links li.current a {
 	background-color: #555;
 	background-image: -moz-linear-gradient(top, #555, #888);
 	color: #e8e8e8;
 	text-shadow: black 1px 1px 0;
 }
-#project-links li:hover a {
+.project-links li:hover a {
 	background-color: #333;
 	background-image: -moz-linear-gradient(top, #333, #4c4c4c);
 	color: #e8e8e8;
