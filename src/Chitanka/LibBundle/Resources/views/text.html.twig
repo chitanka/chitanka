@@ -63,7 +63,7 @@
 {% endmacro %}
 
 
-{% macro text_with_author(text, options) %}
+{% macro text_with_author(text) %}
 	{% import 'LibBundle::link.html.twig' as link %}
 <dl class="text-entity" data-id="{{ text.id }}">
 	<dt>
@@ -74,9 +74,8 @@
 		{{ link.text(text) }}
 	</dt>
 	<dd class="tauthor">{{ _self.author_list(text.authors) }}</dd>
-	{% if options.download_links is defined %}
-		<dd class="download">{{ _self.download_links(text) }}</dd>
-	{% endif %}
+	<!--<dd class="extra">{#{{ _self.text_extra_info(text) }}#}</dd>-->
+	<dd class="download">{{ _self.download_links(text) }}</dd>
 </dl>
 {% endmacro %}
 
@@ -121,7 +120,7 @@
 
 {% macro download_link(text, format, size) %}
 	{% spaceless %}
-	<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug, '_format': format}) }}" title="Сваляне във формат {{ format }}{% if size %} ({{ size }} KiB){% endif %}" class="dl dl-{{ format|replace({'.zip': ''}) }}"><span>{{ format }}{% if size %} ({{ size }} KiB){% endif %}</span></a>
+	<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug, '_format': format}) }}" title="Сваляне във формат {{ format }}{% if size %} ({{ size }} KiB){% endif %}" class="dl dl-{{ format|replace({'.zip': ''}) }}"><span>{{ format }}</span>{% if size %}<span class="filesize"> {{ size }} KiB</span>{% endif %}</a>
 	{% endspaceless %}
 {% endmacro %}
 
