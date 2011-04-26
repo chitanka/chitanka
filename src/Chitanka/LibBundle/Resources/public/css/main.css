@@ -2282,6 +2282,34 @@ ul.two-columns {
 }
 }
 
+/* for small displays */
+@media handheld, screen and (max-width: 900px), screen and (max-device-width: 900px) {
+/* one of two boxes in a row */
+.box2 {
+	width: 100%;
+}
+.liternewsbox {
+	width: 100%;
+}
+.p_homepage .textbox dt,
+.p_homepage .textbox dd {
+	max-width: none;
+}
+.liternewsbox article,
+.insidenews article {
+	max-height: none;
+	overflow: visible;
+}
+.commentbox article,
+.forumbox article {
+	height: auto;
+	overflow: visible;
+}
+.insidenews {
+	width: 100%;
+}
+} /* end small displays */
+
 @media print {
 
 #main-content {
@@ -2318,4 +2346,4 @@ h6 {
 	display: none;
 }
 
-}
+}/* end print */
