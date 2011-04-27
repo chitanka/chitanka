@@ -47,7 +47,7 @@ class TextRepository extends EntityRepository
 	public function get($id)
 	{
 		return $this->_em->createQueryBuilder()
-			->select('t', 'a', 'tr', 's', 'l', 'b', 'ol', 'tl', 'h', 'r')
+			->select('t', 'a', 'tr', 's', 'l', 'b', 'ol', 'tl', 'r')
 			->from($this->getEntityName(), 't')
 			->leftJoin('t.authors', 'a')
 			->leftJoin('t.translators', 'tr')
@@ -56,7 +56,7 @@ class TextRepository extends EntityRepository
 			->leftJoin('t.books', 'b')
 			->leftJoin('t.orig_license', 'ol')
 			->leftJoin('t.trans_license', 'tl')
-			->leftJoin('t.headers', 'h')
+			//->leftJoin('t.headers', 'h') // takes up too much memory by many rows
 			->leftJoin('t.cur_rev', 'r')
 			->where('t.id = ?1')->setParameter(1, $id)
 			->getQuery()->getSingleResult();
