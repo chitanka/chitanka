@@ -45,6 +45,8 @@ class Extension extends \Twig_Extension
 			'user_markup' => new \Twig_Filter_Method($this, 'formatUserMarkup'),
 			'striptags' => new \Twig_Filter_Method($this, 'stripTags'),
 			'domain' => new \Twig_Filter_Method($this, 'getDomain'),
+			'encoding' => new \Twig_Filter_Method($this, 'changeEncoding'),
+			'urlencode' => new \Twig_Filter_Method($this, 'getUrlEncode'),
 		);
 	}
 
@@ -221,6 +223,18 @@ class Extension extends \Twig_Extension
 	public function stripTags($content)
 	{
 		return strip_tags($content);
+	}
+
+
+	public function changeEncoding($string, $encoding)
+	{
+		return iconv('UTF-8', $encoding, $string);
+	}
+
+
+	public function getUrlEncode($string)
+	{
+		return urlencode($string);
 	}
 
 

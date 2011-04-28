@@ -19,6 +19,7 @@ class BookAdmin extends Admin
 		'slug',
 		'type',
 		'sfbg' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:list_sfbg.html.twig'),
+		'puk' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:list_puk.html.twig'),
 		//'sequence',
 		'_action' => array(
 			'actions' => array(
@@ -29,7 +30,7 @@ class BookAdmin extends Admin
 	);
 
 	protected $form = array(
-		'sfbg' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:form_sfbg.html.twig'),
+		//'sfbg' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:form_sfbg.html.twig'),
 		'slug',
 		'title',
 		'subtitle',

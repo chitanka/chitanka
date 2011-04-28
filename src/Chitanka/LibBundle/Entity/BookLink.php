@@ -42,6 +42,8 @@ class BookLink
 	public function setSite($site) { $this->site = $site; }
 	public function getSite() { return $this->site; }
 
+	public function getSiteName() { return $this->site->getName(); }
+
 	public function setCode($code) { $this->code = $code; }
 	public function getCode() { return $this->code; }
 

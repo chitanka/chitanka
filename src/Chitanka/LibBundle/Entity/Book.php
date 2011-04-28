@@ -228,7 +228,27 @@ class Book extends BaseWork
 	public function getCategory() { return $this->category; }
 
 
-	public function getSfbg() { return ''; }
+	public function getSfbg()
+	{
+		return $this->getLink('SFBG');
+	}
+
+	public function getPuk()
+	{
+		return $this->getLink('ПУК!');
+	}
+
+	public function getLink($name)
+	{
+		$links = $this->getLinks();
+		foreach ($links as $link) {
+			if ($link->getSiteName() == $name) {
+				return $link;
+			}
+		}
+
+		return null;
+	}
 
 	public
 		$textIds = array(),
