@@ -16,7 +16,7 @@ class BookAdmin extends Admin
 	protected $list = array(
 		'url' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:list_url.html.twig'),
 		'title' => array('identifier' => true),
-		'slug',
+		'id',
 		'type',
 		'sfbg' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:list_sfbg.html.twig'),
 		'puk' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:list_puk.html.twig'),
