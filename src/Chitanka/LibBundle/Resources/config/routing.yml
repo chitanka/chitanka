@@ -322,10 +322,14 @@ new_texts_by_month:
 user_email:
     pattern:   /user/{username}/email
     defaults: { _controller: LibBundle:User:email }
+    options:
+        segment_separators: [/]
 # settings
 user_edit:
     pattern:   /user/{username}/edit
     defaults: { _controller: LibBundle:User:edit }
+    options:
+        segment_separators: [/]
 user_show:
     pattern:   /user/{username}
     defaults: { _controller: LibBundle:User:show }
@@ -336,28 +340,40 @@ user_show:
 user_page_edit:
     pattern:   /user/{username}/page
     defaults: { _controller: LibBundle:User:page }
+    options:
+        segment_separators: [/]
 
 user_comments:
     pattern:   /user/{username}/comments
     defaults: { _controller: LibBundle:User:comments }
     requirements: { _method: get }
+    options:
+        segment_separators: [/]
 
 user_ratings:
     pattern:   /user/{username}/ratings
     defaults: { _controller: LibBundle:User:ratings }
     requirements: { _method: get }
+    options:
+        segment_separators: [/]
 
 user_contribs:
     pattern:   /user/{username}/contribs/{page}
     defaults: { _controller: LibBundle:User:contribs, page: 1 }
+    options:
+        segment_separators: [/]
 
 user_read_list:
     pattern:   /user/{username}/read/{page}
     defaults: { _controller: LibBundle:User:readList, page: 1 }
+    options:
+        segment_separators: [/]
 
 user_bookmarks:
     pattern:   /user/{username}/bookmarks/{page}
     defaults: { _controller: LibBundle:User:bookmarks, page: 1 }
+    options:
+        segment_separators: [/]
 
 user_special_texts:
     pattern:   /user-special-texts
