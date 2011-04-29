@@ -11,6 +11,8 @@ class SearchController extends Controller
 
 	public function indexAction()
 	{
+		$this->responseAge = 86400; // 24 hours
+
 		$query = $this->get('request')->query->get('q');
 
 		if ( ! $query) {

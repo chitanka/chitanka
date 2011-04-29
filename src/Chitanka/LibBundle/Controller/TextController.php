@@ -115,6 +115,8 @@ class TextController extends Controller
 
 	public function showHtml($text, $part)
 	{
+		$this->responseAge = 86400; // 24 hours
+
 		$nextHeader = $text->getNextHeaderByNr($part);
 		$nextPart = $nextHeader ? $nextHeader->getNr() : 0;
 		$this->view = array(
