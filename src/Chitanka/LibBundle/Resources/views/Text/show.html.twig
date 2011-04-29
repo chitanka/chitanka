@@ -15,7 +15,7 @@
 	{% endif %}
 {% endset %}
 {% if text.subtitle %}
-	{% set subtitle = text.subtitle %}
+	{% set subtitle = text.subtitle|replace({'\\n': '<br>'})|raw %}
 {% endif %}
 
 {% block content %}
