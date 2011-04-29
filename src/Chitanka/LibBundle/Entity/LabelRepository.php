@@ -46,4 +46,14 @@ class LabelRepository extends EntityRepository
 			->getQuery()->getResult('key_value');
 	}
 
+
+	public function getByNames($name)
+	{
+		return $this->getQueryBuilder()
+			->where('e.name LIKE ?1')
+			->setParameter(1, "%$name%")
+			->getQuery()
+			->getArrayResult();
+	}
+
 }

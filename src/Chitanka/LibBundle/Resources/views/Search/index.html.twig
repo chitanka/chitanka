@@ -28,6 +28,16 @@
 		{% include 'LibBundle:Sequence:sequences_list.html.twig' %}
 	{% endif %}
 
+	{% if labels|length %}
+		<h2>Етикети</h2>
+		{% include 'LibBundle:Text:label_list.html.twig' %}
+	{% endif %}
+
+	{% if categories|length %}
+		<h2>Категории</h2>
+		{% include 'LibBundle:Book:category_list.html.twig' %}
+	{% endif %}
+
 	{% if work_entries|length %}
 		<h2>Работно ателие</h2>
 		{% include 'LibBundle:Workroom:entries_list.html.twig' with {'entries': work_entries} %}

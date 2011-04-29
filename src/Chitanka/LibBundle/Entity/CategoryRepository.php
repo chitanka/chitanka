@@ -38,4 +38,14 @@ class CategoryRepository extends EntityRepository
 		return $labels;
 	}
 
+
+	public function getByNames($name)
+	{
+		return $this->getQueryBuilder()
+			->where('e.name LIKE ?1')
+			->setParameter(1, "%$name%")
+			->getQuery()
+			->getArrayResult();
+	}
+
 }

@@ -1,0 +1,8 @@
+<ul>
+{% for category in categories %}
+	<li>
+		<a href="{{ path('books_by_category', {'slug': category.slug}) }}">{{ category.name }}</a>
+		({{ category.nr_of_books }})
+	</li>
+{% endfor %}
+</ul>
