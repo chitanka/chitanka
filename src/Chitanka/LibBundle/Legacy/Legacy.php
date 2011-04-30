@@ -322,7 +322,7 @@ class Legacy
 	);
 
 	static public function getContentFile($key, $num) {
-		$file = __DIR__ .'/../../../../web'. self::getContentFilePath($key, $num);
+		$file = __DIR__ .'/../../../../web/'. self::getContentFilePath($key, $num);
 		if ( file_exists($file) ) {
 			return file_get_contents($file);
 		}

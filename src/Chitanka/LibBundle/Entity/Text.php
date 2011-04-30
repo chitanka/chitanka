@@ -216,6 +216,12 @@ class Text extends BaseWork
 	private $has_title_note;
 
 	/**
+	* @var boolean
+	* @orm:Column(type="boolean")
+	*/
+	private $is_compilation;
+
+	/**
 	* @var string $mode
 	* @orm:Column(type="string", length=8)
 	*/
@@ -982,9 +988,26 @@ EOS;
 	}
 
 
-	public function getRawContent()
+	public function getRawContent($asFileName = false)
 	{
-		return file_get_contents(Legacy::getContentFilePath('text', $this->id));
+		if ( ! $this->is_compilation) {
+			if ($asFileName) {
+				return Legacy::getContentFilePath('text', $this->id);
+			} else {
+				return Legacy::getContentFile('text', $this->id);
+			}
+		}
+
+		$template = Legacy::getContentFile('text', $this->id);
+		if (preg_match_all('/\t\{file:(\d+-.+)\}/', $template, $matches, PREG_SET_ORDER)) {
+			foreach ($matches as $match) {
+				list($row, $filename) = $match;
+				$template = str_replace($row, Legacy::getContentFile('text', $filename), $template);
+			}
+		}
+		// TODO cache the full output
+
+		return $template;
 	}
 
 	public function getFullTitleAsSfb()
@@ -1030,7 +1053,7 @@ EOS;
 		$conv->setSrcLang(empty($this->orig_lang) ? '?' : $this->orig_lang);
 
 		foreach ($this->translators as $translator) {
-			$conv->addTranslator($translator['name']);
+			$conv->addTranslator($translator->getName());
 		}
 
 		if ($this->series) {
@@ -1278,14 +1301,14 @@ EOS;
 
 	public function getEpubChunks($imgDir)
 	{
-		return $this->getEpubChunksFrom(Legacy::getContentFilePath('text_id', $this->id), $imgDir);
+		return $this->getEpubChunksFrom($this->getRawContent(true), $imgDir);
 	}
 
 
 	public function getContentHtml($imgDirPrefix = '', $part = 1, $objCount = 0)
 	{
 		$imgDir = $imgDirPrefix . Legacy::getContentFilePath('img', $this->id);
-		$conv = new \Sfblib_SfbToHtmlConverter(Legacy::getContentFilePath('text', $this->id), $imgDir);
+		$conv = new \Sfblib_SfbToHtmlConverter($this->getRawContent(true), $imgDir);
 
 		if ( ! empty( $objCount ) ) {
 			$conv->setObjectCount($objCount);

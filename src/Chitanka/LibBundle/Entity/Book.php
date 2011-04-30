@@ -635,7 +635,7 @@ class Book extends BaseWork
 			} else {
 				list($command, $content) = explode("\t", $line);
 				if ($content[0] == '{') {
-					if (preg_match('/(text|file):(\d+)/', $content, $matches)) {
+					if (preg_match('/\{(text|file):(\d+)(-.+)?\}/', $content, $matches)) {
 						$text = $texts[$matches[2]];
 						if ($matches[1] == 'text') {
 							$authors = implode(', ', $this->getTextAuthorIfNotInTitle($text));
@@ -646,10 +646,15 @@ class Book extends BaseWork
 							$title = strtr($title, array(\Sfblib_SfbConverter::HEADER => $command));
 							$sfb .= $authors . $title . $div . ltrim(strtr("\n".$text->getRawContent(), $this->headingRepl[$command]), "\n");
 						} else { // file:
-							if (empty($command)) {
-								$sfb .= $text->getRawContent();
+							if (empty($matches[3])) {
+								$textContent = $text->getRawContent();
 							} else {
-								$sfb .= ltrim(strtr("\n".$text->getRawContent(), $this->headingRepl[$command]), "\n");
+								$textContent = Legacy::getContentFile('text', $matches[2].$matches[3]);
+							}
+							if (empty($command)) {
+								$sfb .= $textContent;
+							} else {
+								$sfb .= ltrim(strtr("\n".$textContent, $this->headingRepl[$command]), "\n");
 							}
 						}
 						$sfb .= $div;

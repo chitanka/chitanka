@@ -20,7 +20,7 @@
 	<legend>Съдържание</legend>
 	{% import 'LibBundle::text.html.twig' as texttools %}
 	{% for text in book.texts %}
-		{% set template = template|replace_var(['text:'~text.id, 'file:'~text.id], (book.isFromSameAuthor(text) ? texttools.text(text) : texttools.text_with_author(text))) %}
+		{% set template = template|replace_var(['text:'~text.id, 'file:'~text.id, 'file:'~text.id~'-*'], (book.isFromSameAuthor(text) ? texttools.text(text) : texttools.text_with_author(text))) %}
 	{% endfor %}
 
 	{{ template|join_lists|raw }}

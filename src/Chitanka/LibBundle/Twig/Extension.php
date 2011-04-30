@@ -147,7 +147,11 @@ class Extension extends \Twig_Extension
 	public function replaceVar($string, $vars, $value)
 	{
 		foreach ((array) $vars as $var) {
-			$string = str_replace('{'.$var.'}', $value, $string);
+			if ($var[strlen($var)-1] == '*') {
+				$string = preg_replace('/\{'.substr($var, 0, strlen($var)-1).'.+\}/', $value, $string);
+			} else {
+				$string = str_replace('{'.$var.'}', $value, $string);
+			}
 		}
 
 		return $string;
