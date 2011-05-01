@@ -44,6 +44,9 @@ class Site
 	public function setUrl($url) { $this->url = $url; }
 	public function getUrl() { return $this->url; }
 
-	public function setDescription($description) { $this->description = $description; }
 	public function getDescription() { return $this->description; }
+	public function setDescription($description)
+	{
+		$this->description = ltrim($description, ' ,—');
+	}
 }

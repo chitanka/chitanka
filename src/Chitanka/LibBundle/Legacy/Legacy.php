@@ -424,12 +424,12 @@ class Legacy
 	}
 
 
-	static public function getMwContent($url)
+	static public function getMwContent($url, $cacheDays = 7)
 	{
 		$id = md5($url);
 		$action = 'info';
 
-		if ( CacheManager::cacheExists($action, $id, $days = 7) ) {
+		if ( CacheManager::cacheExists($action, $id, $cacheDays) ) {
 			return CacheManager::getCache($action, $id);
 		}
 
