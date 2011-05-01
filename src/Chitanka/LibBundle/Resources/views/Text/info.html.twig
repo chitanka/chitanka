@@ -37,6 +37,8 @@
 			</li>
 		{% endif %}
 		<li>
+		Форма: <a href="{{ path('texts_by_type', {'type': text.type}) }}">{% trans 'text.type.singular.' ~ text.type %}</a></li>
+		<li>
 			Етикети:
 			<ul class="simplelist with-actions">
 			{% for label in text.labels %}
