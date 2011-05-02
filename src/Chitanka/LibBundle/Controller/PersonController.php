@@ -102,6 +102,8 @@ class PersonController extends Controller
 
 	public function showAction($slug)
 	{
+		$this->responseAge = 86400; // 24 hours
+
 		$person = $this->getRepository('Person')->findOneBy(array('slug' => $slug));
 
 		if ( ! $person) {

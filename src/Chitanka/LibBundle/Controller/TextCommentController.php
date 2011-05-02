@@ -27,6 +27,7 @@ class TextCommentController extends Controller
 
 	public function listForTextAction($id)
 	{
+		$this->responseAge = 0;
 		$text = $this->getRepository('Text')->find($id);
 
 		$_REQUEST['id'] = $id;
