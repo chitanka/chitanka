@@ -37,13 +37,15 @@
 	{% include 'LibBundle:Text:end_message.html.twig' %}
 {% endblock %}
 
-{% set download_links %}
-	{% import 'LibBundle::text.html.twig' as texttools %}
-	<div class="text-entity" data-id="{{ text.id }}">
-		{{ texttools.download_links(text) }}
-	</div>
-{% endset %}
-{% set navextra = navextra|merge({'Сваляне': download_links}) %}
+{% if text.mode == "public" %}
+	{% set download_links %}
+		{% import 'LibBundle::text.html.twig' as texttools %}
+		<div class="text-entity" data-id="{{ text.id }}">
+			{{ texttools.download_links(text) }}
+		</div>
+	{% endset %}
+	{% set navextra = navextra|merge({'Сваляне': download_links}) %}
+{% endif %}
 {% set inline_js %}
 	/*mgSettings = $.extend(mgSettings, {
 		"textId": {{ text.id }},
