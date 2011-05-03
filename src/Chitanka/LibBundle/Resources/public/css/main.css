@@ -1288,6 +1288,10 @@ a[rel=next]:after { content: "\00A0\2192"; /* right arrow */ }
 	font-weight: bold;
 	font-size: 1.1em;
 }
+div.error,
+p.error {
+	clear: both;
+}
 /* допълнителна информация */
 .extra,
 .extra a {
@@ -1666,6 +1670,7 @@ div.tabbedpanebody {
 }
 
 .standalone {
+	clear: both;
 	margin: .5em auto;
 	text-align: center;
 }
