@@ -42,6 +42,12 @@ class TextRevision
 	*/
 	private $date;
 
+	/**
+	* @var boolean
+	* @orm:Column(type="boolean")
+	*/
+	private $first;
+
 
 	public function getId() { return $this->id; }
 
@@ -56,5 +62,8 @@ class TextRevision
 
 	public function setDate($date) { $this->date = $date; }
 	public function getDate() { return $this->date; }
+
+	public function setFirst($first) { $this->first = $first; }
+	public function getFirst() { return $this->first; }
 
 }

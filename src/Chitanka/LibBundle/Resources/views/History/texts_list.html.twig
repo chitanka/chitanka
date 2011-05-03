@@ -4,7 +4,10 @@
 	<h3>{{ day|humandate }}</h3>
 	<ul class="superlist">
 	{% for revision in revisions %}
-		<li title="{{ revision.comment }}" class="title t-{{ revision.text.type }}">{{ texttools.text_with_author(revision.text) }}</li>
+		{% set prefix %}
+			<span title="{{ revision.comment }}">{{ revision.first ? 'Н' : 'к' }}</span>
+		{% endset %}
+		<li class="title t-{{ revision.text.type }}">{{ texttools.text_with_author(revision.text, {'prefix': prefix}) }}</li>
 	{% endfor %}
 	</ul>
 {% else %}
