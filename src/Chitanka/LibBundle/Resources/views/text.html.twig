@@ -76,7 +76,9 @@
 	</dt>
 	<dd class="tauthor">{{ _self.author_list(text.authors) }}</dd>
 	<!--<dd class="extra">{#{{ _self.text_extra_info(text) }}#}</dd>-->
-	<dd class="download">{{ _self.download_links(text) }}</dd>
+	{% if options.download_links is defined %}
+		<dd class="download">{{ _self.download_links(text) }}</dd>
+	{% endif %}
 </dl>
 {% endmacro %}
 
