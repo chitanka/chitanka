@@ -30,7 +30,7 @@ class Book extends BaseWork
 
 	/**
 	* @var string $title_author
-	* @orm:Column(type="string", length=255)
+	* @orm:Column(type="string", length=255, nullable=true)
 	*/
 	private $title_author;
 
@@ -42,19 +42,19 @@ class Book extends BaseWork
 
 	/**
 	* @var string $subtitle
-	* @orm:Column(type="string", length=255)
+	* @orm:Column(type="string", length=255, nullable=true)
 	*/
 	private $subtitle;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=1000)
+	* @orm:Column(type="string", length=1000, nullable=true)
 	*/
 	private $title_extra;
 
 	/**
 	* @var string $orig_title
-	* @orm:Column(type="string", length=255)
+	* @orm:Column(type="string", length=255, nullable=true)
 	*/
 	private $orig_title;
 
@@ -96,7 +96,7 @@ class Book extends BaseWork
 
 	/**
 	* @var integer
-	* @orm:Column(type="smallint")
+	* @orm:Column(type="smallint", nullable=true)
 	*/
 	private $seqnr;
 

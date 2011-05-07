@@ -33,7 +33,7 @@ class WorkEntry
 
 	/**
 	* @var string $author
-	* @orm:Column(type="string", length=100)
+	* @orm:Column(type="string", length=100, nullable=true)
 	*/
 	private $author;
 
@@ -59,35 +59,35 @@ class WorkEntry
 	* @var integer $status
 	* @orm:Column(type="smallint")
 	*/
-	private $status;
+	private $status = 0;
 
 	/**
 	* @var integer $progress
 	* @orm:Column(type="smallint")
 	*/
-	private $progress;
+	private $progress = 0;
 
 	/**
 	* @var boolean $is_frozen
 	* @orm:Column(type="boolean")
 	*/
-	private $is_frozen;
+	private $is_frozen = false;
 
 	/**
 	* @var string $tmpfiles
-	* @orm:Column(type="string", length=255)
+	* @orm:Column(type="string", length=255, nullable=true)
 	*/
 	private $tmpfiles;
 
 	/**
 	* @var integer $tfsize
-	* @orm:Column(type="smallint")
+	* @orm:Column(type="smallint", nullable=true)
 	*/
 	private $tfsize;
 
 	/**
 	* @var string $uplfile
-	* @orm:Column(type="string", length=255)
+	* @orm:Column(type="string", length=255, nullable=true)
 	*/
 	private $uplfile;
 

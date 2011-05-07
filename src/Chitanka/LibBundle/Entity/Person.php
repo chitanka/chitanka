@@ -38,25 +38,25 @@ class Person
 
 	/**
 	* @var string $orig_name
-	* @orm:Column(type="string", length=100)
+	* @orm:Column(type="string", length=100, nullable=true)
 	*/
 	private $orig_name;
 
 	/**
 	* @var string $real_name
-	* @orm:Column(type="string", length=100)
+	* @orm:Column(type="string", length=100, nullable=true)
 	*/
 	private $real_name;
 
 	/**
 	* @var string $oreal_name
-	* @orm:Column(type="string", length=100)
+	* @orm:Column(type="string", length=100, nullable=true)
 	*/
 	private $oreal_name;
 
 	/**
 	* @var string $last_name
-	* @orm:Column(type="string", length=50)
+	* @orm:Column(type="string", length=50, nullable=true)
 	*/
 	private $last_name;
 
@@ -75,7 +75,7 @@ class Person
 
 	/**
 	* @var string $info
-	* @orm:Column(type="string", length=160)
+	* @orm:Column(type="string", length=160, nullable=true)
 	*/
 	private $info;
 

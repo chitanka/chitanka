@@ -32,7 +32,7 @@ class BookText
 
 	/**
 	* @var integer $pos
-	* @orm:Column(type="smallint")
+	* @orm:Column(type="smallint", nullable=true)
 	*/
 	private $pos;
 

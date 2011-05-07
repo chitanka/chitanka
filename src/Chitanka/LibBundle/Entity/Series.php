@@ -31,7 +31,7 @@ class Series
 
 	/**
 	* @var string $orig_name
-	* @orm:Column(type="string", length=100)
+	* @orm:Column(type="string", length=100, nullable=true)
 	*/
 	private $orig_name;
 

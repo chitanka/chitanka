@@ -46,7 +46,7 @@ class TextRevision
 	* @var boolean
 	* @orm:Column(type="boolean")
 	*/
-	private $first;
+	private $first = true;
 
 
 	public function getId() { return $this->id; }

@@ -40,13 +40,13 @@ class WorkContrib
 	* @var integer $progress
 	* @orm:Column(type="smallint")
 	*/
-	private $progress;
+	private $progress = 0;
 
 	/**
 	* @var boolean $is_frozen
 	* @orm:Column(type="boolean")
 	*/
-	private $is_frozen;
+	private $is_frozen = false;
 
 	/**
 	* @var datetime $date
@@ -56,7 +56,7 @@ class WorkContrib
 
 	/**
 	* @var string $uplfile
-	* @orm:Column(type="string", length=255)
+	* @orm:Column(type="string", length=255, nullable=true)
 	*/
 	private $uplfile;
 

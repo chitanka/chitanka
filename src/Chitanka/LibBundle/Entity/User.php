@@ -31,7 +31,7 @@ class User /*extends BaseUser*/ implements UserInterface
 
 	/**
 	* @var string $realname
-	* @orm:Column(type="string", length=120)
+	* @orm:Column(type="string", length=120, nullable=true)
 	*/
 	private $realname;
 

@@ -43,7 +43,7 @@ class Text extends BaseWork
 
 	/**
 	* @var string $subtitle
-	* @orm:Column(type="string", length=255)
+	* @orm:Column(type="string", length=255, nullable=true)
 	*/
 	private $subtitle;
 
@@ -67,13 +67,13 @@ class Text extends BaseWork
 
 	/**
 	* @var string $orig_title
-	* @orm:Column(type="string", length=255)
+	* @orm:Column(type="string", length=255, nullable=true)
 	*/
 	private $orig_title;
 
 	/**
 	* @var string $orig_subtitle
-	* @orm:Column(type="string", length=255)
+	* @orm:Column(type="string", length=255, nullable=true)
 	*/
 	private $orig_subtitle;
 
@@ -121,13 +121,13 @@ class Text extends BaseWork
 
 	/**
 	* @var integer $sernr
-	* @orm:Column(type="smallint")
+	* @orm:Column(type="smallint", nullable=true)
 	*/
 	private $sernr;
 
 	/**
 	* @var integer $sernr2
-	* @orm:Column(type="smallint")
+	* @orm:Column(type="smallint", nullable=true)
 	*/
 	private $sernr2;
 
@@ -135,7 +135,7 @@ class Text extends BaseWork
 	* @var integer $headlevel
 	* @orm:Column(type="smallint")
 	*/
-	private $headlevel;
+	private $headlevel = 0;
 
 	/**
 	* @var integer $size
@@ -171,43 +171,43 @@ class Text extends BaseWork
 	* @var integer $dl_count
 	* @orm:Column(type="integer")
 	*/
-	private $dl_count;
+	private $dl_count = 0;
 
 	/**
 	* @var integer $read_count
 	* @orm:Column(type="integer")
 	*/
-	private $read_count;
+	private $read_count = 0;
 
 	/**
 	* @var integer $comment_count
 	* @orm:Column(type="integer")
 	*/
-	private $comment_count;
+	private $comment_count = 0;
 
 	/**
 	* @var float $rating
 	* @orm:Column(type="float")
 	*/
-	private $rating;
+	private $rating = 0;
 
 	/**
 	* @var integer $votes
 	* @orm:Column(type="integer")
 	*/
-	private $votes;
+	private $votes = 0;
 
 	/**
 	* @var boolean $has_anno
 	* @orm:Column(type="boolean")
 	*/
-	private $has_anno;
+	private $has_anno = false;
 
 	/**
 	* @var boolean
 	* @orm:Column(type="boolean")
 	*/
-	private $has_cover;
+	private $has_cover = false;
 
 	/*
 	* @var boolean
@@ -219,7 +219,7 @@ class Text extends BaseWork
 	* @var boolean
 	* @orm:Column(type="boolean")
 	*/
-	private $is_compilation;
+	private $is_compilation = false;
 
 	/**
 	* @var string $mode
