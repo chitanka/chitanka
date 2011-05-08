@@ -215,6 +215,8 @@ class TextController extends Controller
 
 	public function newLabelAction($id)
 	{
+		$this->responseAge = 0;
+
 		if ( ! $this->getUser()->isAuthenticated()) {
 			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
 		}
@@ -252,6 +254,8 @@ class TextController extends Controller
 
 	public function deleteLabelAction($id, $labelId)
 	{
+		$this->responseAge = 0;
+
 		if ( ! $this->getUser()->isAuthenticated()) {
 			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
 		}
@@ -289,6 +293,8 @@ class TextController extends Controller
 
 	public function markReadAction($id)
 	{
+		$this->responseAge = 0;
+
 		if ( ! $this->getUser()->isAuthenticated()) {
 			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
 		}
@@ -316,6 +322,8 @@ class TextController extends Controller
 
 	public function addBookmarkAction($id)
 	{
+		$this->responseAge = 0;
+
 		if ( ! $this->getUser()->isAuthenticated()) {
 			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
 		}

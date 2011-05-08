@@ -78,6 +78,8 @@ class UserController extends Controller
 
 	public function readListAction($username, $page)
 	{
+		$this->responseAge = 0;
+
 		if ($this->getUser()->getUsername() != $username) {
 			$user = $this->getRepository('User')->findOneBy(array('token' => $username));
 			if ( ! $user) {
@@ -111,6 +113,8 @@ class UserController extends Controller
 
 	public function bookmarksAction($username, $page)
 	{
+		$this->responseAge = 0;
+
 		if ($this->getUser()->getUsername() != $username) {
 			$user = $this->getRepository('User')->findOneBy(array('token' => $username));
 			if ( ! $user) {
@@ -148,11 +152,11 @@ class UserController extends Controller
 	*/
 	public function specialTextsAction()
 	{
+		$this->responseAge = 0;
+
 		if ($this->getUser()->isAnonymous()) {
 			throw new HttpException(401);
 		}
-
-		$this->responseAge = 0;
 
 		$texts = $this->get('request')->get('texts');
 
@@ -165,11 +169,11 @@ class UserController extends Controller
 
 	public function editAction($username)
 	{
+		$this->responseAge = 0;
+
 		if ($this->getUser()->getUsername() != $username) {
 			throw new HttpException(401);
 		}
-
-		$this->responseAge = 0;
 
 		$styleUrl = '/css/SKIN,NAV.css';
 		$this->view['inline_js'] = <<<EOS
