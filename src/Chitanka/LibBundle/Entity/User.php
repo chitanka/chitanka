@@ -101,6 +101,14 @@ class User /*extends BaseUser*/ implements UserInterface
 	*/
 	private $touched;
 
+	/**
+	* Token used to access private user lists, e.g. read texts
+	*
+	* @var string
+	* @orm:Column(type="string", length=40, nullable=true)
+	*/
+	private $token;
+
 
 	/** FIXME doctrine:schema:create does not allow this relation
 	* @var array
@@ -186,6 +194,9 @@ class User /*extends BaseUser*/ implements UserInterface
 
 	public function setTouched($touched) { $this->touched = $touched; }
 	public function getTouched() { return $this->touched; }
+
+	public function setToken($token) { $this->token = $token; }
+	public function getToken() { return $this->token; }
 
 	public function addBookmark($bookmark) { $this->bookmarks[] = $bookmark; }
 

@@ -79,15 +79,22 @@ class UserController extends Controller
 	public function readListAction($username, $page)
 	{
 		if ($this->getUser()->getUsername() != $username) {
-			throw new HttpException(401);
+			$user = $this->getRepository('User')->findOneBy(array('token' => $username));
+			if ( ! $user) {
+				throw new HttpException(401);
+			}
+			$isOwner = false;
+		} else {
+			$user = $this->getRepository('User')->findOneBy(array('username' => $username));
+			$isOwner = true;
 		}
 
 		$limit = 50;
-		$user = $this->getRepository('User')->findOneBy(array('username' => $username));
 		$repo = $this->getRepository('UserTextRead');
 
 		$this->view = array(
 			'user' => $user,
+			'is_owner' => $isOwner,
 			'read_texts' => $repo->getByUser($user, $page, $limit),
 			'pager'    => new Pager(array(
 				'page'  => $page,
@@ -105,15 +112,22 @@ class UserController extends Controller
 	public function bookmarksAction($username, $page)
 	{
 		if ($this->getUser()->getUsername() != $username) {
-			throw new HttpException(401);
+			$user = $this->getRepository('User')->findOneBy(array('token' => $username));
+			if ( ! $user) {
+				throw new HttpException(401);
+			}
+			$isOwner = false;
+		} else {
+			$user = $this->getRepository('User')->findOneBy(array('username' => $username));
+			$isOwner = true;
 		}
 
 		$limit = 50;
-		$user = $this->getRepository('User')->findOneBy(array('username' => $username));
 		$repo = $this->getRepository('Bookmark');
 
 		$this->view = array(
 			'user' => $user,
+			'is_owner' => $isOwner,
 			'bookmarks' => $repo->getByUser($user, $page, $limit),
 			'pager'    => new Pager(array(
 				'page'  => $page,
