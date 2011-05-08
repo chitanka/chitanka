@@ -47,6 +47,7 @@ class Extension extends \Twig_Extension
 			'domain' => new \Twig_Filter_Method($this, 'getDomain'),
 			'encoding' => new \Twig_Filter_Method($this, 'changeEncoding'),
 			'urlencode' => new \Twig_Filter_Method($this, 'getUrlEncode'),
+			'qrcode' => new \Twig_Filter_Method($this, 'getQrCode'),
 		);
 	}
 
@@ -239,6 +240,12 @@ class Extension extends \Twig_Extension
 	public function getUrlEncode($string)
 	{
 		return urlencode($string);
+	}
+
+
+	public function getQrCode($url)
+	{
+		return 'http://chart.apis.google.com/chart?cht=qr&chs=150x150&chld=H|0&chl='. urlencode($url);
 	}
 
 

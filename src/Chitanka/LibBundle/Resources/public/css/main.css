@@ -739,6 +739,10 @@ dd.country {
 .cover-and-links .cover {
 	float: none;
 }
+.qrcode {
+	float: right;
+	margin: 20px;
+}
 
 .book-content {
 	clear: both;

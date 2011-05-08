@@ -198,3 +198,7 @@
 		<a href="{{ path('text_show_part', {'id': text.id, 'part': header.nr}) }}#textstart" class="{{ cur_part == header.nr ? 'selected' : '' }}" rel="{{ rel }}">{{ header.name }}</a>
 	{% endif %}
 {% endmacro %}
+
+{% macro qrcode(text) %}
+	<a href="http://bg.wikipedia.org/wiki/QR_%D0%BA%D0%BE%D0%B4" class="qrcode"><img src="{{ url('text_show', {'id': text.id ~'-'~ text.slug})|qrcode }}"></a>
+{% endmacro %}

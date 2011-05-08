@@ -6,6 +6,9 @@
 		{{ booktools.cover_div(text.book, 200) }}
 	{% endif %}
 
+	{% import 'LibBundle::text.html.twig' as texttools %}
+	{{ texttools.qrcode(text) }}
+
 	{{ text.extrainfohtml(asset('/'))|raw }}
 
 	<hr>
