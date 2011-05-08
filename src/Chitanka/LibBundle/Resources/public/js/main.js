@@ -38,13 +38,17 @@ function submitForm(form)
 	var $button = $(":submit", $form).addClass("loading");
 	$.post(form.action, $form.serialize(), function(response){
 		$button.removeClass("loading").blur();
-		if (response.addClass) {
-			$button.addClass(response.addClass);
-		} else if (response.removeClass) {
-			$button.removeClass(response.removeClass);
-		}
-		if (response.setTitle) {
-			$button.attr("title", response.setTitle);
+		if (typeof response == "string") {
+			$form.replaceWith(response);
+		} else {
+			if (response.addClass) {
+				$button.addClass(response.addClass);
+			} else if (response.removeClass) {
+				$button.removeClass(response.removeClass);
+			}
+			if (response.setTitle) {
+				$button.attr("title", response.setTitle);
+			}
 		}
 	}, "json");
 }
@@ -320,15 +324,6 @@ function inArray( val, arr ) {
 /*
 	Miscellaneous AJAX functions
 */
-
-/** Mark text as read */
-function markRead(button) {
-	$(button).addClass("loading").disable();
-	return ! $.post(button.form.action, function(response){
-		$(button.form).replaceWith(response);
-	});
-};
-
 
 /**
 * Rate a text

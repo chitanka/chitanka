@@ -279,12 +279,12 @@ class TextController extends Controller
 
 		if ($this->getUser()->isAuthenticated()) {
 			$tr = $this->getRepository('UserTextRead')->findOneBy(array('text' => $id, 'user' => $this->getUser()->getId()));
-			if ( ! $tr) {
-				return $this->render('LibBundle:Text:mark_read_form.html.twig', array('id' => $id));
+			if ($tr) {
+				return new Response('Произведението е отбелязано като прочетено.');
 			}
 		}
 
-		return new Response('');
+		return $this->render('LibBundle:Text:mark_read_form.html.twig', array('id' => $id));
 	}
 
 	public function markReadAction($id)
@@ -307,7 +307,7 @@ class TextController extends Controller
 		$em->flush();
 
 		if ($this->get('request')->isXmlHttpRequest()) {
-			return $this->display('mark_read');
+			return $this->displayJson('Произведението е отбелязано като прочетено.');
 		} else {
 			return $this->redirectToText($text);
 		}

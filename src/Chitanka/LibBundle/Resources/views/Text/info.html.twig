@@ -67,11 +67,7 @@
 		<li>Вашата оценка:
 			{% render 'LibBundle:Text:rating' with {'id': text.id}, {'standalone': true} %}
 		</li>
-		{# TODO user cache
-		{% if text_is_read %}
-			<li>Произведението е отбелязано като прочетено.</li>
-		{% endif %}
-		#}
+		<li>{% render 'LibBundle:Text:markReadForm' with {'id': text.id}, {'standalone': true} %}</li>
 	</ul>
 </fieldset>
 <div id="after-infobox" class="assistive"></div>
