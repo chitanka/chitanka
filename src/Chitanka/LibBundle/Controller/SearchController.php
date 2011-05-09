@@ -42,7 +42,7 @@ class SearchController extends Controller
 
 	public function personsAction($_format)
 	{
-		if (($query = $this->getQuery()) instanceof Response) {
+		if (($query = $this->getQuery($_format)) instanceof Response) {
 			return $query;
 		}
 
@@ -59,7 +59,7 @@ class SearchController extends Controller
 
 	public function textsAction($_format)
 	{
-		if (($query = $this->getQuery()) instanceof Response) {
+		if (($query = $this->getQuery($_format)) instanceof Response) {
 			return $query;
 		}
 
@@ -76,7 +76,7 @@ class SearchController extends Controller
 
 	public function booksAction($_format)
 	{
-		if (($query = $this->getQuery()) instanceof Response) {
+		if (($query = $this->getQuery($_format)) instanceof Response) {
 			return $query;
 		}
 
@@ -93,7 +93,7 @@ class SearchController extends Controller
 
 	public function seriesAction($_format)
 	{
-		if (($query = $this->getQuery()) instanceof Response) {
+		if (($query = $this->getQuery($_format)) instanceof Response) {
 			return $query;
 		}
 
@@ -110,7 +110,7 @@ class SearchController extends Controller
 
 	public function sequencesAction($_format)
 	{
-		if (($query = $this->getQuery()) instanceof Response) {
+		if (($query = $this->getQuery($_format)) instanceof Response) {
 			return $query;
 		}
 
@@ -119,14 +119,14 @@ class SearchController extends Controller
 			$this->responseStatusCode = 404;
 		}
 		$this->view = compact('query', 'sequences', 'found');
-		$this->responseFormat = $_format;
 
 		return $this->display('sequences');
 	}
 
 
-	private function getQuery()
+	private function getQuery($_format = 'html')
 	{
+		$this->responseFormat = $_format;
 		$query = $this->get('request')->query->get('q');
 
 		if ( ! $query) {
