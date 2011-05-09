@@ -1,5 +1,5 @@
 {% if is_owner %}
-	<p>Само вие може да виждате този списък. Ако желаете да дадете достъп до списъка и на други лица, ползвайте <label>следния адрес: <input size="80" value="{{ url('user_read_list', {'username': user.token}) }}"></label></p>
+	<p>Само вие може да виждате този списък. Ако желаете да дадете достъп до списъка и на други лица, ползвайте следния адрес: <a href="{{ url('user_read_list', {'username': user.token}) }}">{{ url('user_read_list', {'username': user.token}) }}</a></p>
 {% endif %}
 <ul class="superlist">
 {% import 'LibBundle::text.html.twig' as texttools %}
