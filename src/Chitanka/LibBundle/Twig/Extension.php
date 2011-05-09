@@ -129,7 +129,10 @@ class Extension extends \Twig_Extension
 	public function getDocTitle($title)
 	{
 		$title = preg_replace('/\s\s+/', ' ', $title);
-		$title = str_replace('<br>', ' — ', $title);
+		$title = strtr($title, array(
+			'<br>' => ' — ',
+			'&amp;' => '&', // will be escaped afterwards by Twig
+		));
 		$title = trim(strip_tags($title));
 
 		return $title;
