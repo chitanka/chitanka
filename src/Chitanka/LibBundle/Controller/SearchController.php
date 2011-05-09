@@ -137,6 +137,7 @@ class SearchController extends Controller
 
 		if (mb_strlen($query, 'utf-8') < $this->minQueryLength) {
 			$this->view['message'] = sprintf('Трябва да въведете поне %d знака.', $this->minQueryLength);
+			$this->responseStatusCode = 400;
 
 			return $this->display('message');
 		}
