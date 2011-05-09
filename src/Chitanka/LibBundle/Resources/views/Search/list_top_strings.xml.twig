@@ -1,0 +1,8 @@
+{% extends 'LibBundle::layout.xml.twig' %}
+{% block body %}
+<queries>
+{% for string in strings %}
+	<query>{{ string.name }}</query>
+{% endfor %}
+</queries>
+{% endblock %}
