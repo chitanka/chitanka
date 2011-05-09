@@ -1,6 +1,6 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title = person.name %}
+{% set title %}<a class="selflink" data-edit="{{ path('person_edit', {'id': person.id}) }}">{{ person.name }}</a>{% endset %}
 {% set subtitle = is_author ? (is_translator ? 'автор и преводач' : 'автор') : 'преводач' %}
 {% block content %}
 	{% include 'LibBundle:Person:info.html.twig' %}

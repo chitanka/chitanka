@@ -380,7 +380,8 @@ a,
 	cursor: pointer;
 }
 a:hover,
-.pseudolink:hover {
+.pseudolink:hover,
+a.selflink {
 	text-decoration: none;
 }
 /* връзки в заглавия */

@@ -1,5 +1,5 @@
 {% macro person(person) %}
-	<a href="{{ path('person_show', {'slug': person.slug}) }}">{{ person.name }}</a>
+	<a href="{{ path('person_show', {'slug': person.slug}) }}" data-edit="{{ path('person_edit', {'id': person.id}) }}">{{ person.name }}</a>
 {% endmacro %}
 
 {% macro persons(persons) %}
@@ -16,7 +16,7 @@
 
 {% macro persons_comma(persons) %}
 	{% for person in persons %}
-		<a href="{{ path('person_show', {'slug': person.slug}) }}">{{ person.name }}</a>{{ loop.last ? '' : ',' }}
+		<a href="{{ path('person_show', {'slug': person.slug}) }}" data-edit="{{ path('person_edit', {'id': person.id}) }}">{{ person.name }}</a>{{ loop.last ? '' : ',' }}
 	{% endfor %}
 {% endmacro %}
 
@@ -35,11 +35,11 @@
 {% endmacro %}
 
 {% macro series(series) %}
-	<a href="{{ path('series_show', {'slug': series.slug}) }}"><i>{{ series.name }}</i></a>
+	<a href="{{ path('series_show', {'slug': series.slug}) }}" data-edit="{{ path('series_edit', {'id': series.id}) }}"><i>{{ series.name }}</i></a>
 {% endmacro %}
 
 {% macro text(text) %}
-{% spaceless %}<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}" class="textlink"
+{% spaceless %}<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}" class="textlink"  data-edit="{{ path('text_edit', {'id': text.id}) }}"
 {% if text.lang != text.orig_lang %}
 	{% if text.translators is defined %}
 		title="Превод: {{ _self.translators_plain(text.translators) }} {{ text.trans_year is defined ? '(' ~ text.trans_year ~ ')' : '' }}"
@@ -48,19 +48,19 @@
 {% endmacro %}
 
 {% macro book(book) %}
-{% spaceless %}<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}" rel="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}" class="booklink"><i>{{ book.title }}</i></a>{% endspaceless %}
+{% spaceless %}<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}" rel="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}" class="booklink" data-edit="{{ path('book_edit', {'id': book.id}) }}"><i>{{ book.title }}</i></a>{% endspaceless %}
 {% endmacro %}
 
 {% macro sequence(sequence) %}
-{% spaceless %}<a href="{{ path('sequence_show', {'slug': sequence.slug}) }}" rel="category">{{ sequence.name }}</a>{% endspaceless %}
+{% spaceless %}<a href="{{ path('sequence_show', {'slug': sequence.slug}) }}" rel="category" data-edit="{{ path('sequence_edit', {'id': sequence.id}) }}">{{ sequence.name }}</a>{% endspaceless %}
 {% endmacro %}
 
 {% macro category(category) %}
-	<a href="{{ path('books_by_category', {'slug': category.slug}) }}" rel="category tag">{{ category.name }}</a>
+	<a href="{{ path('books_by_category', {'slug': category.slug}) }}" rel="category tag" data-edit="{{ path('category_edit', {'id': category.id}) }}">{{ category.name }}</a>
 {% endmacro %}
 
 {% macro label(label) %}
-{% spaceless %}<a href="{{ path('texts_by_type', {'type': label.slug}) }}" rel="tag">{{ label.name }}</a>{% endspaceless %}
+{% spaceless %}<a href="{{ path('texts_by_type', {'type': label.slug}) }}" rel="tag" data-edit="{{ path('label_edit', {'id': label.id}) }}">{{ label.name }}</a>{% endspaceless %}
 {% endmacro %}
 
 {% macro user_with_email(user) %}

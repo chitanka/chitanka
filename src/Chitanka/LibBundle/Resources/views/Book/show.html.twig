@@ -5,7 +5,7 @@
 		{% import 'LibBundle::link.html.twig' as link %}
 		{{ link.persons_comma(authors) }}<br>
 	{% endif %}
-	{{ book.title|replace({'. ': '<br>'})|raw }}
+	<a class="selflink" data-edit="{{ path('book_edit', {'id': book.id}) }}">{{ book.title|replace({'. ': '<br>'})|raw }}</a>
 {% endset %}
 {% if book.subtitle %}
 	{% set subtitle = book.subtitle|replace({'. ': '<br>'}) %}
