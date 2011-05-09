@@ -25,6 +25,9 @@ abstract class Controller extends SymfonyController
 	/** The max cache time of the response (in seconds) */
 	protected $responseAge = 600;
 
+	/** The status code of the response */
+	protected $responseStatusCode = null;
+
 	/**
 	* Response headers. Used to overwrite default or add new ones
 	*/
@@ -83,6 +86,9 @@ abstract class Controller extends SymfonyController
 		if ($this->responseAge) {
 			$response->setPublic();
 			$response->setSharedMaxAge($this->responseAge);
+		}
+		if ($this->responseStatusCode) {
+			$response->setStatusCode($this->responseStatusCode);
 		}
 
 		return $response;

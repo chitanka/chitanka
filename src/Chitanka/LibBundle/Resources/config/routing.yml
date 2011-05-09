@@ -43,6 +43,11 @@ translators_by_letter:
     requirements:   { _method: get }
 
 
+persons_search:
+    pattern:        /persons/search.{_format}
+    defaults:       { _controller: LibBundle:Search:persons, _format: html }
+    requirements:   { _method: get, _format: html|xml }
+
 person_show:
     pattern:        /person/{slug}
     defaults:       { _controller: LibBundle:Person:show }
@@ -77,6 +82,11 @@ serie:
     defaults:       { _controller: LibBundle:Main:redirect, route: series }
     requirements:   { _method: get }
 
+series_search:
+    pattern:        /series/search.{_format}
+    defaults:       { _controller: LibBundle:Search:series, _format: html }
+    requirements:   { _method: get, _format: html|xml }
+
 series_by_letter:
     pattern:        /series/{letter}/{page}
     defaults:       { _controller: LibBundle:Series:list, page: 1 }
@@ -99,6 +109,11 @@ book:
     pattern:        /book
     defaults:       { _controller: LibBundle:Main:redirect, route: books }
     requirements:   { _method: get }
+
+books_search:
+    pattern:        /books/search.{_format}
+    defaults:       { _controller: LibBundle:Search:books, _format: html }
+    requirements:   { _method: get, _format: html|xml }
 
 books_by_category:
     pattern:        /books/{slug}/{page}
@@ -140,6 +155,11 @@ sequence:
     defaults:       { _controller: LibBundle:Main:redirect, route: sequences }
     requirements:   { _method: get }
 
+sequences_search:
+    pattern:        /sequences/search.{_format}
+    defaults:       { _controller: LibBundle:Search:sequences, _format: html }
+    requirements:   { _method: get, _format: html|xml }
+
 sequences_by_letter:
     pattern:        /sequences/{letter}/{page}
     defaults:       { _controller: LibBundle:Sequence:list, page: 1 }
@@ -167,6 +187,11 @@ text:
     pattern:        /text
     defaults:       { _controller: LibBundle:Main:redirect, route: texts }
     requirements:   { _method: get }
+
+texts_search:
+    pattern:        /texts/search.{_format}
+    defaults:       { _controller: LibBundle:Search:texts, _format: html }
+    requirements:   { _method: get, _format: html|xml }
 
 texts_by_type:
     pattern:        /texts/{type}/{page}

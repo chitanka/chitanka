@@ -1,0 +1,8 @@
+<id>{{ person.id }}</id>
+<slug>{{ person.slug }}</slug>
+<name>{{ person.name }}</name>
+{% if person.orig_name is defined %}<orig-name>{{ person.orig_name }}</orig-name>{% endif %}
+{% if person.real_name is defined %}<real-name>{{ person.real_name }}</real-name>{% endif %}
+{% if person.oreal_name is defined %}<orig-real-name>{{ person.oreal_name }}</orig-real-name>{% endif %}
+<country>{{ person.country }}</country>
+{% if person.info is defined %}<info>{{ person.info }}</info>{% endif %}

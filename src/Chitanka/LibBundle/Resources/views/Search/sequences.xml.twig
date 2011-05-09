@@ -1,0 +1,6 @@
+{% extends 'LibBundle::layout.xml.twig' %}
+{% block body %}
+<results query="{{ query }}">
+	{% include 'LibBundle:Sequence:sequences_list.xml.twig' %}
+</results>
+{% endblock %}

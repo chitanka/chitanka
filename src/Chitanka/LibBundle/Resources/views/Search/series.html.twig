@@ -1,0 +1,14 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Търсене' ~ (query ? ' на „'~query~'“' : '') ~ ' в авторските поредици' %}
+{% block content %}
+
+	{% if series|length %}
+		{% include 'LibBundle:Series:series_list.html.twig' %}
+	{% endif %}
+
+	{% if not found %}
+		<p class="no-items">Нямате късмет. Не открихме никакви авторски поредици.</p>
+	{% endif %}
+
+{% endblock %}

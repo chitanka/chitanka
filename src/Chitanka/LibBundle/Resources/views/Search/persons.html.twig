@@ -1,0 +1,14 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Търсене' ~ (query ? ' на „'~query~'“' : '') ~ ' в личности' %}
+{% block content %}
+
+	{% if persons|length %}
+		{% include 'LibBundle:Person:authors_list_with_country.html.twig' with {'authors': persons} %}
+	{% endif %}
+
+	{% if not found %}
+		<p class="no-items">Нямате късмет. Не открихме никакви личности.</p>
+	{% endif %}
+
+{% endblock %}

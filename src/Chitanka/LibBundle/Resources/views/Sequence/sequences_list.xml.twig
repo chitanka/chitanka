@@ -1,0 +1,10 @@
+<sequences>
+{% for sequence in sequences %}
+	<sequence>
+		<id>{{ sequence.id }}</id>
+		<slug>{{ sequence.slug }}</slug>
+		<name>{{ sequence.name }}</name>
+		<publisher>{{ sequence.publisher }}</publisher>
+	</sequence>
+{% endfor %}
+</sequences>

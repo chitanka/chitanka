@@ -1,0 +1,6 @@
+{% extends 'LibBundle::layout.xml.twig' %}
+{% block body %}
+<results query="{{ query }}">
+	{% include 'LibBundle:Person:persons_list.xml.twig' %}
+</results>
+{% endblock %}

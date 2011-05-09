@@ -1,0 +1,14 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Търсене' ~ (query ? ' на „'~query~'“' : '') ~ ' в книгите' %}
+{% block content %}
+
+	{% if books|length %}
+		{% include 'LibBundle:Book:books_list.html.twig' %}
+	{% endif %}
+
+	{% if not found %}
+		<p class="no-items">Нямате късмет. Не открихме никакви книги.</p>
+	{% endif %}
+
+{% endblock %}
