@@ -158,6 +158,7 @@ EOS;
 
 		return $h . $this->controller->renderView('LibBundle:User:read_texts_list.html.twig', array(
 			'user' => $this->shown_user,
+			'is_owner' => true,
 			'read_texts' => $repo->getLatestByUser($this->shown_user, 20),
 		))
 		. sprintf('<p class="more"><a href="%s">Всички</a></p>', $this->controller->generateUrl('user_read_list', array('username' => $this->shown_user->getUsername())));
@@ -174,6 +175,7 @@ EOS;
 
 		return $h . $this->controller->renderView('LibBundle:User:bookmarks_list.html.twig', array(
 			'user' => $this->shown_user,
+			'is_owner' => true,
 			'bookmarks' => $repo->getLatestByUser($this->shown_user, 20),
 		))
 		. sprintf('<p class="more"><a href="%s">Всички</a></p>', $this->controller->generateUrl('user_bookmarks', array('username' => $this->shown_user->getUsername())));
