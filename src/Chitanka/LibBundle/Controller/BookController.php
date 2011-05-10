@@ -41,6 +41,30 @@ class BookController extends Controller
 		return $this->display('list');
 	}
 
+
+	public function listByLetterAction($letter, $page)
+	{
+		$page = (int)$page;
+		$bookRepo = $this->getRepository('Book');
+		$limit = 30;
+
+		$prefix = $letter == '-' ? null : $letter;
+		$this->view = array(
+			'letter' => $letter,
+			'books' => $bookRepo->getByPrefix($prefix, $page, $limit),
+			'pager'    => new Pager(array(
+				'page'  => $page,
+				'limit' => $limit,
+				'total' => $bookRepo->countByPrefix($prefix)
+			)),
+			'route' => 'books_by_letter',
+			'route_params' => array('letter' => $letter),
+		);
+
+		return $this->display('list_by_letter');
+	}
+
+
 	public function showAction($id, $_format)
 	{
 		list($id) = explode('-', $id); // remove optional slug

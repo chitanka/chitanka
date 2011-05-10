@@ -74,6 +74,29 @@ class TextController extends Controller
 	}
 
 
+	public function listByLetterAction($letter, $page)
+	{
+		$page = (int)$page;
+		$textRepo = $this->getRepository('Text');
+		$limit = 30;
+
+		$prefix = $letter == '-' ? null : $letter;
+		$this->view = array(
+			'letter' => $letter,
+			'texts' => $textRepo->getByPrefix($prefix, $page, $limit),
+			'pager'    => new Pager(array(
+				'page'  => $page,
+				'limit' => $limit,
+				'total' => $textRepo->countByPrefix($prefix)
+			)),
+			'route' => 'texts_by_letter',
+			'route_params' => array('letter' => $letter),
+		);
+
+		return $this->display('list_by_letter');
+	}
+
+
 	public function showAction($id, $_format)
 	{
 		list($id) = explode('-', $id); // remove optional slug

@@ -115,6 +115,11 @@ books_search:
     defaults:       { _controller: LibBundle:Search:books, _format: html }
     requirements:   { _method: get, _format: html|xml }
 
+books_by_letter:
+    pattern:        /books/alpha/{letter}/{page}
+    defaults:       { _controller: LibBundle:Book:listByLetter, page: 1 }
+    requirements:   { _method: get }
+
 books_by_category:
     pattern:        /books/{slug}/{page}
     defaults:       { _controller: LibBundle:Book:list, page: 1 }
@@ -193,6 +198,11 @@ texts_search:
     defaults:       { _controller: LibBundle:Search:texts, _format: html }
     requirements:   { _method: get, _format: html|xml }
 
+texts_by_letter:
+    pattern:        /texts/alpha/{letter}/{page}
+    defaults:       { _controller: LibBundle:Text:listByLetter, page: 1 }
+    requirements:   { _method: get }
+
 texts_by_type:
     pattern:        /texts/{type}/{page}
     defaults:       { _controller: LibBundle:Text:list, page: 1 }
@@ -205,11 +215,6 @@ text_label_delete:
     pattern:        /text/{id}/label/{labelId}
     defaults:       { _controller: LibBundle:Text:deleteLabel }
     requirements:   { _method: delete }
-
-# texts_by_type:
-#     pattern:        /texts-by-type/{type}/{page}
-#     defaults:       { _controller: LibBundle:Text:listByType, page: 1 }
-#     requirements:   { _method: get }
 
 text_random:
     pattern:        /text/random
