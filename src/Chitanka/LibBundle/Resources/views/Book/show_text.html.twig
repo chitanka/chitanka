@@ -6,7 +6,9 @@
 
 <div class="cover-and-links">
 	{{ booktools.cover_div(book, 200) }}
-	{{ booktools.download_links(book) }}
+	{% if book.mode == 'public' %}
+		{{ booktools.download_links(book) }}
+	{% endif %}
 </div>
 
 {% if annotation %}
