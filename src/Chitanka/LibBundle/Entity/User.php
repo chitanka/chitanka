@@ -546,6 +546,7 @@ class User /*extends BaseUser*/ implements UserInterface
 		// delete a previously generated new password, login_tries
 		$this->setNewpassword(null, false);
 		$this->setLoginTries(0);
+		$this->touch();
 		$_COOKIE[self::UID_COOKIE] = $this->getId();
 		$_COOKIE[self::TOKEN_COOKIE] = $this->encodePasswordCookie($this->getPassword(), false);
 
@@ -567,6 +568,11 @@ class User /*extends BaseUser*/ implements UserInterface
 		$request->deleteCookie(self::TOKEN_COOKIE);
 	}
 
+
+	public function touch()
+	{
+		$this->setTouched(new \DateTime);
+	}
 
 	public function updateSession() {
 		$_SESSION[self::U_SESSION] = $this->toArray();
