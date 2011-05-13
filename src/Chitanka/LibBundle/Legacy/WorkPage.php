@@ -813,7 +813,7 @@ EOS;
 
 
 	protected function makeMultiScanInput() {
-		$is_frozenLabel = 'Сканирането е спряно за известно време';
+		$is_frozenLabel = 'Подготовката е спряна за известно време';
 		$cstatus = $this->status > self::MAX_SCAN_STATUS
 			? self::MAX_SCAN_STATUS
 			: $this->status;
