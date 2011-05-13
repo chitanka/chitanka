@@ -209,8 +209,12 @@ $(function(){
 	if (user.isAuthenticated()) {
 		showBookmarks();
 	}
+
 	initCluetip();
+
 	enhanceModifying();
+
+	$("#toc").boxcollapse();
 });
 
 // create a menu toggle link
