@@ -335,7 +335,7 @@ class mlDatabase {
 			return 'NULL';
 		} else */
 		if ( is_bool($value) ) {
-			$value = $value ? 'true' : 'false';
+			$value = $value ? 1 : 0;
 		} else if ($value instanceof \DateTime) {
 			$value = $value->format('Y-m-d H:i:s');
 		} else {
