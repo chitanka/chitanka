@@ -482,6 +482,9 @@ foreign_books:
     pattern:   /foreign-books
     defaults: { _controller: LibBundle:ForeignBook:index }
 
+reviews:
+    pattern:   /reviews
+    defaults: { _controller: LibBundle:Feed:reviews }
 
 # fos_user_security:
     # resource: @FOSUserBundle/Resources/config/routing/security.xml

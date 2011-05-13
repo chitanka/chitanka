@@ -66,26 +66,61 @@ class FeedController extends Controller
 
 	public function randomReviewAction()
 	{
-		$feedUrl = 'http://blog.chitanka.info/section/reviews/feed';
-		$feed = Legacy::getFromUrlOrCache($feedUrl, $days = 0.1);
-		if (empty($feed)) {
-			return $this->displayText('');
-		}
-
-		$found = preg_match_all('|<item>.+<link>(.+)</link>.+<img src="(.+)" title="„(.+)“ от (.+)"|U', str_replace("\n", ' ', $feed), $matches, PREG_SET_ORDER);
-		if ( ! $found) {
+		$reviews = $this->getReviews(1, true);
+		if (empty($reviews)) {
 			return $this->displayText('No reviews found');
 		}
 
-		shuffle($matches);
-		$this->view['book'] = array(
-			'author' => $matches[0][4],
-			'title'  => $matches[0][3],
-			'url'    => $matches[0][1],
-			'cover'  => $matches[0][2],
-		);
+		$this->view['book'] = $reviews[0];
 
 		return $this->display('book', 'FeaturedBook');
+	}
+
+
+	public function reviewsAction()
+	{
+		$reviews = $this->getReviews();
+		if (empty($reviews)) {
+			return $this->displayText('No reviews found');
+		}
+
+		$this->view = compact('reviews');
+
+		return $this->display('index', 'Review');
+	}
+
+
+	public function getReviews($limit = null, $random = false)
+	{
+		$reviews = array();
+		$feedUrl = 'http://blog.chitanka.info/section/reviews/feed';
+		$feed = Legacy::getFromUrlOrCache($feedUrl, $days = 0.1);
+		if (empty($feed)) {
+			return $reviews;
+		}
+
+		$feedTree = new \SimpleXMLElement($feed);
+		foreach ($feedTree->xpath('//item') as $item) {
+			$content = $item->children('content', true)->encoded;
+			if (preg_match('|<img src="(.+)" title="„(.+)“ от (.+)"|U', $content, $matches)) {
+				$reviews[] = array(
+ 					'author' => $matches[3],
+					'title'  => $matches[2],
+					'url'    => $item->link->__toString(),
+					'cover'  => $matches[1],
+				);
+			}
+		}
+
+		if ($random) {
+			shuffle($reviews);
+		}
+
+		if ($limit) {
+			$reviews = array_slice($reviews, 0, $limit);
+		}
+
+		return $reviews;
 	}
 
 

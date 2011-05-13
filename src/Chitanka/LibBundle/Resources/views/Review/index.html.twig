@@ -1,0 +1,10 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Читателски рецензии' %}
+{% block content %}
+	<ul class="bookshelf">
+	{% for review in reviews %}
+		<li>{% include 'LibBundle:FeaturedBook:book.html.twig' with {'book': review} %}</li>
+	{% endfor %}
+	</ul>
+{% endblock %}
