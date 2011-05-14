@@ -26,7 +26,7 @@ class SeriesAdmin extends Admin
 		'slug',
 		'name',
 		'orig_name',
-		'authors',// => array('form_field_options' => array('expanded' => true)),
+		//'authors',// => array('form_field_options' => array('expanded' => true)),
 	);
 
 	protected $filter = array(
