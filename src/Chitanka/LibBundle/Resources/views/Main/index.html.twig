@@ -6,9 +6,11 @@
 {% endblock %}
 
 {% block content %}
-	<div class="float-left"><img src="{{ asset('images/new.png') }}"><a href="http://wiki.chitanka.info/%D0%9D%D0%B0%D1%80%D1%8A%D1%87%D0%BD%D0%B8%D0%BA_%D0%BD%D0%B0_%D0%BF%D0%BE%D1%82%D1%80%D0%B5%D0%B1%D0%B8%D1%82%D0%B5%D0%BB%D1%8F/%D0%A0%D0%B0%D0%B7%D0%BB%D0%B8%D0%BA%D0%B8_%D0%BC%D0%B5%D0%B6%D0%B4%D1%83_%D0%A7%D0%B8%D1%82%D0%B0%D0%BD%D0%BA%D0%B0_1_%D0%B8_%D0%A7%D0%B8%D1%82%D0%B0%D0%BD%D0%BA%D0%B0_2">Какво ново?</a></div>
-	<div class="float-right"><img src="{{ asset('images/bug.png') }}">Грешка? <a href="http://forum.chitanka.info/chitanka2-bugs-t2398.html">Докладвайте я!</a></div>
-	<div style="clear: both"></div>
+	<div id="mp-help-links">
+		<div class="float-left"><img src="{{ asset('images/new.png') }}"><a href="http://wiki.chitanka.info/%D0%9D%D0%B0%D1%80%D1%8A%D1%87%D0%BD%D0%B8%D0%BA_%D0%BD%D0%B0_%D0%BF%D0%BE%D1%82%D1%80%D0%B5%D0%B1%D0%B8%D1%82%D0%B5%D0%BB%D1%8F/%D0%A0%D0%B0%D0%B7%D0%BB%D0%B8%D0%BA%D0%B8_%D0%BC%D0%B5%D0%B6%D0%B4%D1%83_%D0%A7%D0%B8%D1%82%D0%B0%D0%BD%D0%BA%D0%B0_1_%D0%B8_%D0%A7%D0%B8%D1%82%D0%B0%D0%BD%D0%BA%D0%B0_2">Какво ново?</a></div>
+		<div class="float-right"><img src="{{ asset('images/bug.png') }}">Грешка? <a href="http://forum.chitanka.info/chitanka2-bugs-t2398.html">Докладвайте я!</a></div>
+		<div style="clear: both"></div>
+	</div>
 
 	<h1 class="welcome">Добре дошли в <em>Моята библиотека</em>!</h1>
 	<div class="dashboard">
@@ -23,57 +25,57 @@
 		</ul>
 	</div>
 
-	<section class="box box3 bookbox">
+	<section id="mp-review" class="box box3 bookbox">
 		<h2><a href="{{ path('reviews') }}">Открийте</a></h2>
 		{% render 'LibBundle:Feed:randomReview' with {}, {'standalone': true} %}
 	</section>
-	<section class="box box3 bookbox">
+	<section id="mp-foreign-book" class="box box3 bookbox">
 		<h2><a href="{{ path('foreign_books') }}">Купете си</a></h2>
 		{% render 'LibBundle:ForeignBook:book' with {}, {'standalone': true} %}
 	</section>
-	<section class="box box3 bookbox">
+	<section id="mp-featured-book" class="box box3 bookbox">
 		<h2><a href="{{ path('featured_books') }}">Прочетете</a></h2>
 		{% render 'LibBundle:FeaturedBook:book' with {}, {'standalone': true} %}
 	</section>
 	<div class="separator"></div>
 
-	<section class="box box2">
+	<section id="mp-new-books" class="box box2">
 		<h2>Нови книги</h2>
 		{% render 'LibBundle:Main:lastBooks' with {}, {'standalone': true} %}
 		<div class="more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
 	</section>
-	<section class="box box2 textbox">
+	<section id="mp-new-texts" class="box box2 textbox">
 		<h2>Нови произведения</h2>
 		{% render 'LibBundle:Main:lastTexts' with {}, {'standalone': true} %}
 		<div class="more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
 	</section>
 	<div class="separator"></div>
 
-	<section class="box box2 commentbox">
+	<section id="mp-reader-comments" class="box box2 commentbox">
 		<h2>Читателите казват</h2>
 		{% render 'LibBundle:TextComment:latest' with {}, {'standalone': true} %}
 	</section>
-	<section class="box box2 forumbox">
+	<section id="mp-forum-posts" class="box box2 forumbox">
 		<h2>От форума</h2>
 		{% render 'LibBundle:Feed:lastForumPosts' with {}, {'standalone': true} %}
 	</section>
 	<div class="separator"></div>
 
-	<section class="box liternewsbox">
+	<section id="mp-liternews" class="box liternewsbox">
 		<h2>Литературни новини</h2>
 		{% render 'LibBundle:Feed:lastLiternews' with {}, {'standalone': true} %}
 	</section>
-	<section class="box box3 insidenews">
+	<section id="mp-insidenews" class="box box3 insidenews">
 		<h2>Вътрешни новини</h2>
 		{% render 'LibBundle:Feed:lastInsideNews' with {}, {'standalone': true} %}
 	</section>
-	<section class="box box3">
+	<section id="mp-search" class="box box3">
 		<h2>Потърсено</h2>
 		{% render 'LibBundle:Search:latest' with {'limit': 20}, {'standalone': true} %}
 	</section>
 	<div class="separator"></div>
 
-	<section>
+	<section id="mp-workroom">
 		<h2>Ново в ателието</h2>
 		{% render 'LibBundle:Workroom:latest' with {}, {'standalone': true} %}
 		<div class="more">Към <a href="{{ path('workroom') }}">работното ателие</a></div>
