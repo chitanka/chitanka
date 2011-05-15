@@ -40,43 +40,43 @@
 	<div class="separator"></div>
 
 	<section id="mp-new-books" class="box box2">
-		<h2>Нови книги</h2>
+		<h2><a href="{{ path('new_books') }}">Нови книги</a></h2>
 		{% render 'LibBundle:Main:lastBooks' with {}, {'standalone': true} %}
 		<div class="more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
 	</section>
 	<section id="mp-new-texts" class="box box2 textbox">
-		<h2>Нови произведения</h2>
+		<h2><a href="{{ path('new_texts') }}">Нови произведения</a></h2>
 		{% render 'LibBundle:Main:lastTexts' with {}, {'standalone': true} %}
 		<div class="more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
 	</section>
 	<div class="separator"></div>
 
 	<section id="mp-reader-comments" class="box box2 commentbox">
-		<h2>Читателите казват</h2>
+		<h2><a href="{{ path('texts_comments') }}">Читателите казват</a></h2>
 		{% render 'LibBundle:TextComment:latest' with {}, {'standalone': true} %}
 	</section>
 	<section id="mp-forum-posts" class="box box2 forumbox">
-		<h2>От форума</h2>
+		<h2><a href="http://forum.chitanka.info">От форума</a></h2>
 		{% render 'LibBundle:Feed:lastForumPosts' with {}, {'standalone': true} %}
 	</section>
 	<div class="separator"></div>
 
 	<section id="mp-liternews" class="box liternewsbox">
-		<h2>Литературни новини</h2>
+		<h2><a href="http://blog.chitanka.info/section/liternews">Литературни новини</a></h2>
 		{% render 'LibBundle:Feed:lastLiternews' with {}, {'standalone': true} %}
 	</section>
 	<section id="mp-insidenews" class="box box3 insidenews">
-		<h2>Вътрешни новини</h2>
+		<h2><a href="http://blog.chitanka.info/section/news">Вътрешни новини</a></h2>
 		{% render 'LibBundle:Feed:lastInsideNews' with {}, {'standalone': true} %}
 	</section>
 	<section id="mp-search" class="box box3">
-		<h2>Потърсено</h2>
+		<h2><a href="{{ path('search') }}">Потърсено</a></h2>
 		{% render 'LibBundle:Search:latest' with {'limit': 20}, {'standalone': true} %}
 	</section>
 	<div class="separator"></div>
 
 	<section id="mp-workroom">
-		<h2>Ново в ателието</h2>
+		<h2><a href="{{ path('workroom') }}">Ново в ателието</a></h2>
 		{% render 'LibBundle:Workroom:latest' with {}, {'standalone': true} %}
 		<div class="more">Към <a href="{{ path('workroom') }}">работното ателие</a></div>
 	</section>
