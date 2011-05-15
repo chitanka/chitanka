@@ -9,16 +9,6 @@
 .p_homepage .textbox dd {
 	max-width: none;
 }
-.liternewsbox article,
-.insidenews article {
-	max-height: none;
-	overflow: visible;
-}
-.commentbox article,
-.forumbox article {
-	height: auto;
-	overflow: visible;
-}
 .insidenews {
 	width: 100%;
 }

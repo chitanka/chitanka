@@ -1944,15 +1944,18 @@ article h1 {
 	clear: both;
 	height: 1em;
 }
-.liternewsbox article,
-.insidenews article {
-	max-height: 35em;
-	overflow: auto;
+button.expander {
+	width: 100%;
+	border: none;
+	text-align: center;
+	cursor: pointer;
 }
-.commentbox article,
-.forumbox article {
-	height: 15em;
-	overflow: auto;
+button.expander span {
+	background: url(images/double_arrow_down.png) no-repeat center right;
+	padding-right: 1.1em;
+}
+button.expander:hover span {
+	text-decoration: underline;
 }
 
 .license {
@@ -2307,16 +2310,6 @@ ul.two-columns {
 .p_homepage .textbox dt,
 .p_homepage .textbox dd {
 	max-width: none;
-}
-.liternewsbox article,
-.insidenews article {
-	max-height: none;
-	overflow: visible;
-}
-.commentbox article,
-.forumbox article {
-	height: auto;
-	overflow: visible;
 }
 .insidenews {
 	width: 100%;

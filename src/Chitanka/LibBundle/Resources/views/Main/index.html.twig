@@ -80,3 +80,27 @@
 	</section>
 
 {% endblock %}
+{% set inline_js %}
+(function(){
+	var expander = '<button class="expander" role="button"><span>Показване на още</span></button>';
+	var adjustCss = {"overflow": "hidden", "margin-bottom": 0};
+
+	var adjustHeight = function(elm, height){
+		if ($(elm).height() > height){
+			$(elm).height(height).css(adjustCss).after(expander).click(function(){
+				$(this).css({"height": "auto", "overflow": "visible"}).next(".expander").remove()
+			});
+		}
+	};
+
+	$(".commentbox article, .forumbox article").each(function(){
+		adjustHeight(this, 220);
+	});
+	$(".liternewsbox article, .insidenews article").each(function(){
+		adjustHeight(this, 450);
+	});
+	$("button.expander").live("click", function(){
+		$(this).prev().css({"height": "auto", "overflow": "visible"}).end().remove();
+	});
+})();
+{% endset %}
