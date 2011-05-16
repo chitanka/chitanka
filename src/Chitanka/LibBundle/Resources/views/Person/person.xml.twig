@@ -6,3 +6,8 @@
 {% if person.oreal_name is defined %}<orig-real-name>{{ person.oreal_name }}</orig-real-name>{% endif %}
 <country>{{ person.country }}</country>
 {% if person.info is defined %}<info>{{ person.info }}</info>{% endif %}
+{% if person.person is defined %}
+	<person>
+		{% include 'LibBundle:Person:person.xml.twig' with {'person': person.person} %}
+	</person>
+{% endif %}
