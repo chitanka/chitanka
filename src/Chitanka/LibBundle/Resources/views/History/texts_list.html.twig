@@ -1,5 +1,7 @@
+<div class="feed-standalone">
+	<a href="{{ path('new_texts', {'_format': 'rss'}) }}" title="RSS 2.0 — нови произведения" rel="feed"><span>RSS</span></a>
+</div>
 {% import 'LibBundle::text.html.twig' as texttools %}
-
 {% for day, revisions in text_revisions_by_date %}
 	<h3>{{ day|humandate }}</h3>
 	<ul class="superlist">
