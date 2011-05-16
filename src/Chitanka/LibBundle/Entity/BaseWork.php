@@ -175,7 +175,7 @@ class BaseWork
 			"S>\n" => "\n", "S$\n" => "\n", "S\t" => "\t",
 			"N>\n" => "\n", "N$\n" => "\n", "N\t" => "\t",
 			"P>\n" => "\n", "P$\n" => "\n",
-			"M>\n" => "\n", "M$\n" => "\n",
+			"M$\n" => "\n",
 			"C>\n" => "\n", "C$\n" => "\n",
 			"F>\n" => "\n", "F$\n" => "\n", "F\t" => "\t",
 			"T>\n" => "\n",
@@ -192,6 +192,8 @@ class BaseWork
 		$sfbContent = strtr($sfbContent, array(
 			"\n" => "\r\n",
 		));
+
+		$sfbContent = preg_replace('/M>\t.+/', '', $sfbContent);
 
 		return $sfbContent;
 	}
