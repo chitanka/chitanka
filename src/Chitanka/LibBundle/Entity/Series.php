@@ -6,7 +6,8 @@ namespace Chitanka\LibBundle\Entity;
 * @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\SeriesRepository")
 * @orm:Table(name="series",
 *	indexes={
-*		@orm:Index(name="name_idx", columns={"name"})}
+*		@orm:Index(name="name_idx", columns={"name"}),
+*		@orm:Index(name="orig_name_idx", columns={"orig_name"})}
 * )
 */
 class Series
@@ -19,7 +20,7 @@ class Series
 
 	/**
 	* @var string $slug
-	* @orm:Column(type="string", length=50)
+	* @orm:Column(type="string", length=50, unique=true)
 	*/
 	private $slug;
 

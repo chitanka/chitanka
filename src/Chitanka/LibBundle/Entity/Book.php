@@ -11,7 +11,8 @@ use Chitanka\LibBundle\Legacy\Setup;
 *	indexes={
 *		@orm:Index(name="title_idx", columns={"title"}),
 *		@orm:Index(name="title_author_idx", columns={"title_author"}),
-*		@orm:Index(name="subtitle_idx", columns={"subtitle"})}
+*		@orm:Index(name="subtitle_idx", columns={"subtitle"}),
+*		@orm:Index(name="orig_title_idx", columns={"orig_title"})}
 * )
 */
 class Book extends BaseWork

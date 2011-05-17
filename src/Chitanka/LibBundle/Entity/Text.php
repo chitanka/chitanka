@@ -15,10 +15,9 @@ use Chitanka\LibBundle\Legacy\Setup;
 * @orm:Table(name="text",
 *	indexes={
 *		@orm:Index(name="title_idx", columns={"title"}),
-*		@orm:Index(name="series_idx", columns={"series_id"}),
-*		@orm:Index(name="cur_rev_idx", columns={"cur_rev_id"}),
-*		@orm:Index(name="orig_license_idx", columns={"orig_license_id"}),
-*		@orm:Index(name="trans_license_idx", columns={"trans_license_id"})}
+*		@orm:Index(name="subtitle_idx", columns={"subtitle"}),
+*		@orm:Index(name="orig_title_idx", columns={"orig_title"}),
+*		@orm:Index(name="orig_subtitle_idx", columns={"orig_subtitle"})}
 * )
 */
 class Text extends BaseWork
