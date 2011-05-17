@@ -57,11 +57,11 @@ class PersonRepository extends EntityRepository
 		return $qb;
 	}
 
-	public function getCountQueryBuilder($alias = 'p')
+	public function getCountQueryBuilder($alias = 'e')
 	{
-		$qb = $this->createQueryBuilder($alias)->select('COUNT(p.id)');
+		$qb = $this->createQueryBuilder($alias)->select('COUNT(e.id)');
 		if ($this->sqlRole) {
-			$qb->andWhere("p.role IN ($this->sqlRole)");
+			$qb->andWhere("e.role IN ($this->sqlRole)");
 		}
 
 		return $qb;
@@ -76,8 +76,8 @@ class PersonRepository extends EntityRepository
 	public function getCountsByCountry()
 	{
 		return $this->getCountQueryBuilder()
-			->select('p.country', 'COUNT(p.id)')
-			->groupBy('p.country')
+			->select('e.country', 'COUNT(e.id)')
+			->groupBy('e.country')
 			->getQuery()->getResult('key_value');
 	}
 
@@ -109,14 +109,14 @@ class PersonRepository extends EntityRepository
 
 	public function addFilters($qb, $filters)
 	{
-		$nameField = empty($filters['by']) || $filters['by'] == 'first' ? 'p.name' : 'p.last_name';
+		$nameField = empty($filters['by']) || $filters['by'] == 'first' ? 'e.name' : 'e.last_name';
 		$qb->addOrderBy($nameField);
 		if ( ! empty($filters['prefix']) && $filters['prefix'] != '-' ) {
 			$qb->andWhere("$nameField LIKE :name")->setParameter('name', $filters['prefix'].'%');
 		}
 
 		if ( ! empty($filters['country']) ) {
-			$qb->andWhere('p.country = ?1')->setParameter(1, $filters['country']);
+			$qb->andWhere('e.country = ?1')->setParameter(1, $filters['country']);
 		}
 
 		return $qb;
