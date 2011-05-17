@@ -73,27 +73,47 @@ abstract class EntityRepository extends DoctrineEntityRepository
 
 	public function getByQuery($query)
 	{
-		if (empty($query['text']) || empty($query['by']) || ! in_array($query['by'], $this->queryableFields)) {
+		if (empty($query['text']) || empty($query['by'])) {
 			return false;
 		}
 
-		$qb = $this->getQueryBuilder();
 		switch ($query['match']) {
 			case 'exact':
-				$qb->where("e.$query[by] = ?1")->setParameter(1, $query['text']);
+				$op = '=';
+				$param = $query['text'];
 				break;
 			case 'prefix':
-				$qb->where("e.$query[by] LIKE ?1")->setParameter(1, "$query[text]%");
+				$op = 'LIKE';
+				$param = "$query[text]%";
 				break;
 			case 'suffix':
-				$qb->where("e.$query[by] LIKE ?1")->setParameter(1, "%$query[text]");
+				$op = 'LIKE';
+				$param = "%$query[text]";
 				break;
 			default:
-				$qb->where("e.$query[by] LIKE ?1")->setParameter(1, "%$query[text]%");
+				$op = 'LIKE';
+				$param = "%$query[text]%";
 				break;
 		}
+		$tests = array();
+		foreach (explode('|', $query['by']) as $field) {
+			if (in_array($field, $this->queryableFields)) {
+				$tests[] = "e.$field $op ?1";
+			}
+		}
+		if (empty($tests)) {
+			return false;
+		}
 
-		return $qb->getQuery()->getArrayResult();
+		return $this->getQueryBuilder()
+			->where(implode(' OR ', $tests))->setParameter(1, $param)
+			->getQuery()->getArrayResult();
+	}
+
+
+	public function getQueryableFields()
+	{
+		return $this->queryableFields;
 	}
 
 

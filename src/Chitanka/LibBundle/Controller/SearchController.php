@@ -46,9 +46,10 @@ class SearchController extends Controller
 			return $query;
 		}
 
-		$persons = isset($query['by'])
-			? $this->getRepository('Person')->getByQuery($query)
-			: $this->getRepository('Person')->getByNames($query['text']);
+		if (empty($query['by'])) {
+			$query['by'] = 'name|orig_name';
+		}
+		$persons = $this->getRepository('Person')->getByQuery($query);
 		if ( ! ($found = count($persons) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -65,9 +66,10 @@ class SearchController extends Controller
 			return $query;
 		}
 
-		$texts = isset($query['by'])
-			? $this->getRepository('Text')->getByQuery($query)
-			: $this->getRepository('Text')->getByTitles($query['text']);
+		if (empty($query['by'])) {
+			$query['by'] = 'title|subtitle|orig_title';
+		}
+		$texts = $this->getRepository('Text')->getByQuery($query);
 		if ( ! ($found = count($texts) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -84,9 +86,10 @@ class SearchController extends Controller
 			return $query;
 		}
 
-		$books = isset($query['by'])
-			? $this->getRepository('Book')->getByQuery($query)
-			: $this->getRepository('Book')->getByTitles($query['text']);
+		if (empty($query['by'])) {
+			$query['by'] = 'title|subtitle|orig_title';
+		}
+		$books = $this->getRepository('Book')->getByQuery($query);
 		if ( ! ($found = count($books) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -103,9 +106,10 @@ class SearchController extends Controller
 			return $query;
 		}
 
-		$series = isset($query['by'])
-			? $this->getRepository('Series')->getByQuery($query)
-			: $this->getRepository('Series')->getByNames($query['text']);
+		if (empty($query['by'])) {
+			$query['by'] = 'name|orig_name';
+		}
+		$series = $this->getRepository('Series')->getByQuery($query);
 		if ( ! ($found = count($series) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -122,9 +126,10 @@ class SearchController extends Controller
 			return $query;
 		}
 
-		$sequences = isset($query['by'])
-			? $this->getRepository('Sequence')->getByQuery($query)
-			: $this->getRepository('Sequence')->getByNames($query['text']);
+		if (empty($query['by'])) {
+			$query['by'] = 'name';
+		}
+		$sequences = $this->getRepository('Sequence')->getByQuery($query);
 		if ( ! ($found = count($sequences) > 0)) {
 			$this->responseStatusCode = 404;
 		}
