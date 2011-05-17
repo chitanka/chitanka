@@ -4,6 +4,8 @@ namespace Chitanka\LibBundle\Entity;
 
 class SequenceRepository extends EntityRepository
 {
+	protected $queryableFields = array('id', 'slug', 'name', 'publisher');
+
 	public function findBySlug($slug)
 	{
 		return $this->findOneBy(array('slug' => $slug));

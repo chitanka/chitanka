@@ -6,7 +6,8 @@ class PersonRepository extends EntityRepository
 {
 	protected
 		/* role bit: 1 - author, 2 - translator, 3 - both */
-		$sqlRole = null;
+		$sqlRole = null,
+		$queryableFields = array('id', 'slug', 'name', 'orig_name');
 
 
 	public function getBy($filters, $page = 1, $limit = null)
@@ -46,11 +47,11 @@ class PersonRepository extends EntityRepository
 
 	public function getQueryBuilder($orderBys = null)
 	{
-		$qb = $this->createQueryBuilder('p')
-			->select('p', 'pp')
-			->leftJoin('p.person', 'pp');
+		$qb = $this->createQueryBuilder('e')
+			->select('e', 'p')
+			->leftJoin('e.person', 'p');
 		if ($this->sqlRole) {
-			$qb->andWhere("p.role IN ($this->sqlRole)");
+			$qb->andWhere("e.role IN ($this->sqlRole)");
 		}
 
 		return $qb;
@@ -84,7 +85,7 @@ class PersonRepository extends EntityRepository
 	public function getByNames($name, $limit = null)
 	{
 		return $this->getQueryBuilder()
-			->where('p.name LIKE ?1 OR p.orig_name LIKE ?1')
+			->where('e.name LIKE ?1 OR e.orig_name LIKE ?1')
 			->setParameter(1, "%$name%")
 			->getQuery()//->setMaxResults($limit)
 			->getArrayResult();

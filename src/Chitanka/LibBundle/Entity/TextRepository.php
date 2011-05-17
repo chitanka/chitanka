@@ -44,6 +44,15 @@ class TextRepository extends EntityRepository
 		'other',
 	);
 
+	protected $queryableFields = array(
+		'id',
+		'title',
+		'subtitle',
+		'orig_title',
+		'orig_subtitle',
+	);
+
+
 	public function get($id)
 	{
 		return $this->_em->createQueryBuilder()
@@ -204,9 +213,9 @@ class TextRepository extends EntityRepository
 	public function findByTranslator($translator)
 	{
 		$texts = $this->getQueryBuilder()
-			->leftJoin('t.textTranslators', 'tt')
+			->leftJoin('e.textTranslators', 'tt')
 			->where('tt.person = ?1')->setParameter(1, $translator->getId())
-			->orderBy('t.type, t.title')
+			->orderBy('e.type, e.title')
 			->getQuery()->getArrayResult();
 
 		$texts = $this->groupTexts($texts, false);
@@ -217,7 +226,7 @@ class TextRepository extends EntityRepository
 	public function getByIds($ids, $orderBy = null)
 	{
 		$texts = $this->getQueryBuilder()
-			->where(sprintf('t.id IN (%s)', implode(',', $ids)))
+			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
 			->getQuery()->getArrayResult();
 
 		return $texts;
@@ -227,7 +236,7 @@ class TextRepository extends EntityRepository
 	public function getByTitles($title, $limit = null)
 	{
 		return $this->getQueryBuilder()
-			->where('t.title LIKE ?1 OR t.subtitle LIKE ?1 OR t.orig_title LIKE ?1')
+			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.orig_title LIKE ?1')
 			->setParameter(1, "%$title%")
 			->getQuery()//->setMaxResults($limit)
 			->getArrayResult();
@@ -237,22 +246,22 @@ class TextRepository extends EntityRepository
 	public function getQueryBuilder($orderBys = null)
 	{
 		return $this->_em->createQueryBuilder()
-			->select('t', 'a', 's')
-			->from($this->getEntityName(), 't')
-			->leftJoin('t.series', 's')
-			->leftJoin('t.authors', 'a')
-			->orderBy('t.title');
+			->select('e', 'a', 's')
+			->from($this->getEntityName(), 'e')
+			->leftJoin('e.series', 's')
+			->leftJoin('e.authors', 'a')
+			->orderBy('e.title');
 	}
 
 
 	public function getBySeries($series)
 	{
 		$texts = $this->_em->createQueryBuilder()
-			->select('t', 'a')
-			->from($this->getEntityName(), 't')
-			->leftJoin('t.authors', 'a')
-			->where('t.series = ?1')->setParameter(1, $series->getId())
-			->addOrderBy('t.sernr, t.title')
+			->select('e', 'a')
+			->from($this->getEntityName(), 'e')
+			->leftJoin('e.authors', 'a')
+			->where('e.series = ?1')->setParameter(1, $series->getId())
+			->addOrderBy('e.sernr, e.title')
 			->getQuery()->getArrayResult();
 
 		return $this->putIdAsKey($texts);
@@ -261,9 +270,9 @@ class TextRepository extends EntityRepository
 	public function getCountsByType()
 	{
 		return $this->_em->createQueryBuilder()
-			->select('t.type', 'COUNT(t.id)')
-			->from($this->getEntityName(), 't')
-			->groupBy('t.type')
+			->select('e.type', 'COUNT(e.id)')
+			->from($this->getEntityName(), 'e')
+			->groupBy('e.type')
 			->getQuery()->getResult('key_value');
 	}
 

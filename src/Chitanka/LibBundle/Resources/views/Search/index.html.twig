@@ -1,6 +1,6 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title = 'Търсене' ~ (query ? ' на „'~query~'“' : '') %}
+{% set title = 'Търсене' ~ (query ? ' на „'~query.text~'“' : '') %}
 {% block content %}
 
 	{% if persons|length %}
@@ -44,7 +44,7 @@
 	{% endif %}
 
 	{% if not found %}
-		<p class="no-items">Нямате късмет. Не открихме нищо за „{{ query }}“.</p>
+		<p class="no-items">Нямате късмет. Не открихме нищо за „{{ query.text }}“.</p>
 	{% endif %}
 
 	{% if message is defined %}

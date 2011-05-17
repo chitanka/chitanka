@@ -1,6 +1,6 @@
 {% extends 'LibBundle::layout.xml.twig' %}
 {% block body %}
-<results query="{{ query }}">
+<results query="{{ query.text }}">
 	{% include 'LibBundle:Book:books_list.xml.twig' %}
 </results>
 {% endblock %}

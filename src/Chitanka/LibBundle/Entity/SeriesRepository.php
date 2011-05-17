@@ -4,6 +4,8 @@ namespace Chitanka\LibBundle\Entity;
 
 class SeriesRepository extends EntityRepository
 {
+	protected $queryableFields = array('id', 'slug', 'name', 'orig_name');
+
 	public function findBySlug($slug)
 	{
 		return $this->findOneBy(array('slug' => $slug));
@@ -29,7 +31,7 @@ class SeriesRepository extends EntityRepository
 	public function getByIds($ids, $orderBy = null)
 	{
 		$texts = $this->getQueryBuilder()
-			->where(sprintf('s.id IN (%s)', implode(',', $ids)))
+			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
 			->getQuery()->getArrayResult();
 
 		return $texts;
@@ -48,7 +50,7 @@ class SeriesRepository extends EntityRepository
 	public function getByNames($name, $limit = null)
 	{
 		return $this->getQueryBuilder()
-			->where('s.name LIKE ?1 OR s.orig_name LIKE ?1')
+			->where('e.name LIKE ?1 OR e.orig_name LIKE ?1')
 			->setParameter(1, "%$name%")
 			->getQuery()//->setMaxResults($limit)
 			->getArrayResult();
@@ -57,10 +59,10 @@ class SeriesRepository extends EntityRepository
 	public function getQueryBuilder($orderBys = null)
 	{
 		return $this->_em->createQueryBuilder()
-			->select('s', 'a')
-			->from($this->getEntityName(), 's')
-			->leftJoin('s.authors', 'a')
-			->addOrderBy('s.name');
+			->select('e', 'a')
+			->from($this->getEntityName(), 'e')
+			->leftJoin('e.authors', 'a')
+			->addOrderBy('e.name');
 	}
 
 }

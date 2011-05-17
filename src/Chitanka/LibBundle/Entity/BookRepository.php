@@ -4,6 +4,8 @@ namespace Chitanka\LibBundle\Entity;
 
 class BookRepository extends EntityRepository
 {
+	protected $queryableFields = array('id', 'title', 'subtitle', 'orig_title');
+
 	public function get($id)
 	{
 		return $this->_em->createQueryBuilder()

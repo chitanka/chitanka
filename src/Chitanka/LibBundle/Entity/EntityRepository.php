@@ -6,6 +6,9 @@ use Doctrine\ORM\EntityRepository as DoctrineEntityRepository;
 
 abstract class EntityRepository extends DoctrineEntityRepository
 {
+	protected $queryableFields = array();
+
+
 	public function flush()
 	{
 		$this->_em->flush();
@@ -66,6 +69,33 @@ abstract class EntityRepository extends DoctrineEntityRepository
 			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
 			->getQuery()->getArrayResult();
 	}
+
+
+	public function getByQuery($query)
+	{
+		if (empty($query['text']) || empty($query['by']) || ! in_array($query['by'], $this->queryableFields)) {
+			return false;
+		}
+
+		$qb = $this->getQueryBuilder();
+		switch ($query['match']) {
+			case 'exact':
+				$qb->where("e.$query[by] = ?1")->setParameter(1, $query['text']);
+				break;
+			case 'prefix':
+				$qb->where("e.$query[by] LIKE ?1")->setParameter(1, "$query[text]%");
+				break;
+			case 'suffix':
+				$qb->where("e.$query[by] LIKE ?1")->setParameter(1, "%$query[text]");
+				break;
+			default:
+				$qb->where("e.$query[by] LIKE ?1")->setParameter(1, "%$query[text]%");
+				break;
+		}
+
+		return $qb->getQuery()->getArrayResult();
+	}
+
 
 	public function getQueryBuilder($orderBys = null)
 	{

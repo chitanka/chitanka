@@ -1,6 +1,6 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title = 'Търсене' ~ (query ? ' на „'~query~'“' : '') ~ ' в авторските поредици' %}
+{% set title = 'Търсене' ~ (query ? ' на „'~query.text~'“' : '') ~ ' в авторските поредици' %}
 {% block content %}
 
 	{% if series|length %}

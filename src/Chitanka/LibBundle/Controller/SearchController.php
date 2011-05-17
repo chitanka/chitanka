@@ -17,19 +17,19 @@ class SearchController extends Controller
 			return $query;
 		}
 
-		$persons = $this->getRepository('Person')->getByNames($query);
-		$texts = $this->getRepository('Text')->getByTitles($query);
-		$books = $this->getRepository('Book')->getByTitles($query);
-		$series = $this->getRepository('Series')->getByNames($query);
-		$sequences = $this->getRepository('Sequence')->getByNames($query);
-		$work_entries = $this->getRepository('WorkEntry')->getByTitleOrAuthor($query);
-		$labels = $this->getRepository('Label')->getByNames($query);
-		$categories = $this->getRepository('Category')->getByNames($query);
+		$persons = $this->getRepository('Person')->getByNames($query['text']);
+		$texts = $this->getRepository('Text')->getByTitles($query['text']);
+		$books = $this->getRepository('Book')->getByTitles($query['text']);
+		$series = $this->getRepository('Series')->getByNames($query['text']);
+		$sequences = $this->getRepository('Sequence')->getByNames($query['text']);
+		$work_entries = $this->getRepository('WorkEntry')->getByTitleOrAuthor($query['text']);
+		$labels = $this->getRepository('Label')->getByNames($query['text']);
+		$categories = $this->getRepository('Category')->getByNames($query['text']);
 
 		$found = count($persons) > 0 || count($texts) > 0 || count($books) > 0 || count($series) > 0 || count($sequences) > 0 || count($work_entries) > 0 || count($labels) > 0 || count($categories) > 0;
 
 		if ($found) {
-			$this->logSearch($query);
+			$this->logSearch($query['text']);
 		} else {
 			$this->responseStatusCode = 404;
 		}
@@ -46,7 +46,9 @@ class SearchController extends Controller
 			return $query;
 		}
 
-		$persons = $this->getRepository('Person')->getByNames($query);
+		$persons = isset($query['by'])
+			? $this->getRepository('Person')->getByQuery($query)
+			: $this->getRepository('Person')->getByNames($query['text']);
 		if ( ! ($found = count($persons) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -63,7 +65,9 @@ class SearchController extends Controller
 			return $query;
 		}
 
-		$texts = $this->getRepository('Text')->getByTitles($query);
+		$texts = isset($query['by'])
+			? $this->getRepository('Text')->getByQuery($query)
+			: $this->getRepository('Text')->getByTitles($query['text']);
 		if ( ! ($found = count($texts) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -80,7 +84,9 @@ class SearchController extends Controller
 			return $query;
 		}
 
-		$books = $this->getRepository('Book')->getByTitles($query);
+		$books = isset($query['by'])
+			? $this->getRepository('Book')->getByQuery($query)
+			: $this->getRepository('Book')->getByTitles($query['text']);
 		if ( ! ($found = count($books) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -97,7 +103,9 @@ class SearchController extends Controller
 			return $query;
 		}
 
-		$series = $this->getRepository('Series')->getByNames($query);
+		$series = isset($query['by'])
+			? $this->getRepository('Series')->getByQuery($query)
+			: $this->getRepository('Series')->getByNames($query['text']);
 		if ( ! ($found = count($series) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -114,7 +122,9 @@ class SearchController extends Controller
 			return $query;
 		}
 
-		$sequences = $this->getRepository('Sequence')->getByNames($query);
+		$sequences = isset($query['by'])
+			? $this->getRepository('Sequence')->getByQuery($query)
+			: $this->getRepository('Sequence')->getByNames($query['text']);
 		if ( ! ($found = count($sequences) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -127,7 +137,8 @@ class SearchController extends Controller
 	private function getQuery($_format = 'html')
 	{
 		$this->responseFormat = $_format;
-		$query = $this->get('request')->query->get('q');
+		$request = $this->get('request')->query;
+		$query = $request->get('q');
 
 		if ( ! $query) {
 			$this->view['strings'] = $this->getRepository('SearchString')->getLatest(30);
@@ -135,14 +146,19 @@ class SearchController extends Controller
 			return $this->display('list_top_strings');
 		}
 
-		if (mb_strlen($query, 'utf-8') < $this->minQueryLength) {
+		$matchType = $request->get('match');
+		if ($matchType != 'exact' && mb_strlen($query, 'utf-8') < $this->minQueryLength) {
 			$this->view['message'] = sprintf('Трябва да въведете поне %d знака.', $this->minQueryLength);
 			$this->responseStatusCode = 400;
 
 			return $this->display('message');
 		}
 
-		return $query;
+		return array(
+			'text' => $query,
+			'by'    => $request->get('by'),
+			'match' => $matchType,
+		);
 	}
 
 
