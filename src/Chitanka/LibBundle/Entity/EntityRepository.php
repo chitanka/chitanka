@@ -96,7 +96,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
 				break;
 		}
 		$tests = array();
-		foreach (explode('|', $query['by']) as $field) {
+		foreach (explode(',', $query['by']) as $field) {
 			if (in_array($field, $this->queryableFields)) {
 				$tests[] = "e.$field $op ?1";
 			}

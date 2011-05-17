@@ -47,7 +47,7 @@ class SearchController extends Controller
 		}
 
 		if (empty($query['by'])) {
-			$query['by'] = 'name|orig_name';
+			$query['by'] = 'name,orig_name';
 		}
 		$persons = $this->getRepository('Person')->getByQuery($query);
 		if ( ! ($found = count($persons) > 0)) {
@@ -67,7 +67,7 @@ class SearchController extends Controller
 		}
 
 		if (empty($query['by'])) {
-			$query['by'] = 'title|subtitle|orig_title';
+			$query['by'] = 'title,subtitle,orig_title';
 		}
 		$texts = $this->getRepository('Text')->getByQuery($query);
 		if ( ! ($found = count($texts) > 0)) {
@@ -87,7 +87,7 @@ class SearchController extends Controller
 		}
 
 		if (empty($query['by'])) {
-			$query['by'] = 'title|subtitle|orig_title';
+			$query['by'] = 'title,subtitle,orig_title';
 		}
 		$books = $this->getRepository('Book')->getByQuery($query);
 		if ( ! ($found = count($books) > 0)) {
@@ -107,7 +107,7 @@ class SearchController extends Controller
 		}
 
 		if (empty($query['by'])) {
-			$query['by'] = 'name|orig_name';
+			$query['by'] = 'name,orig_name';
 		}
 		$series = $this->getRepository('Series')->getByQuery($query);
 		if ( ! ($found = count($series) > 0)) {
