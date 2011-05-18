@@ -364,7 +364,7 @@ EOS;
 			return '';
 		}
 
-		$pagelinks = $showPageLinks ? $this->controller->renderView('LibBundle::pager.html.twig', array(
+		$params = array(
 			'pager'    => new Pager(array(
 				'page'  => $this->lpage,
 				'limit' => $this->llimit,
@@ -372,7 +372,12 @@ EOS;
 			)),
 			'route' => 'texts_comments',
 			'route_params' => array(),
-		)) : '';
+		);
+		if ( ! empty($this->username)) {
+			$params['route'] = 'user_comments';
+			$params['route_params'] = array('username' => $this->username);
+		}
+		$pagelinks = $showPageLinks ? $this->controller->renderView('LibBundle::pager.html.twig', $params) : '';
 
 		$c = '';
 		while ($row = $this->db->fetchAssoc($res)) {

@@ -46,9 +46,10 @@ class UserController extends Controller
 	}
 
 
-	public function commentsAction($username)
+	public function commentsAction($username, $page)
 	{
 		$_REQUEST['username'] = $username;
+		$_REQUEST['page'] = $page;
 
 		return $this->legacyPage('Comment');
 	}

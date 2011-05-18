@@ -374,8 +374,8 @@ user_page_edit:
         segment_separators: [/]
 
 user_comments:
-    pattern:   /user/{username}/comments
-    defaults: { _controller: LibBundle:User:comments }
+    pattern:   /user/{username}/comments/{page}
+    defaults: { _controller: LibBundle:User:comments, page: 1 }
     requirements: { _method: get }
     options:
         segment_separators: [/]
