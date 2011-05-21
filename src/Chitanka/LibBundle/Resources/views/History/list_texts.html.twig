@@ -1,6 +1,7 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
 {% set title = 'Нови произведения' %}
+{% set page_feed = {'url': path('new_texts', {'_format': 'rss'})} %}
 {% block content %}
 	<div class="history-wrapper">
 		{% include 'LibBundle:History:toc.html.twig' with {'route': 'new_texts_by_month'} %}
