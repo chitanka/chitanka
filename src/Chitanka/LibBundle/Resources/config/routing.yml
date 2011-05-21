@@ -204,8 +204,13 @@ texts_by_letter:
     requirements:   { _method: get }
 
 texts_by_type:
-    pattern:        /texts/{type}/{page}
-    defaults:       { _controller: LibBundle:Text:list, page: 1 }
+    pattern:        /texts/type/{type}/{page}
+    defaults:       { _controller: LibBundle:Text:listByType, page: 1 }
+    requirements:   { _method: get }
+
+texts_by_label:
+    pattern:        /texts/label/{slug}/{page}
+    defaults:       { _controller: LibBundle:Text:listByLabel, page: 1 }
     requirements:   { _method: get }
 
 text_label_new:

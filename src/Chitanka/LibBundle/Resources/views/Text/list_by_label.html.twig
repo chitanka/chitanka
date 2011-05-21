@@ -1,0 +1,28 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Произведения' %}
+{% set subtitle = label.name %}
+{% block content %}
+
+	{% if texts is empty %}
+
+		<p class="no-items">Няма намерени произведения.</p>
+
+	{% else %}
+
+		<ul class="breadcrumbs">
+			<li><a href="{{ path('texts') }}">Произведения</a></li>
+			{% for parent in parents %}
+				<li><a href="{{ path('texts_by_type', {'type': parent.slug}) }}">{{ parent.name }}</a></li>
+			{% endfor %}
+			<li>{{ subtitle }}</li>
+		</ul>
+
+		{% include 'LibBundle:Text:texts_list.html.twig' %}
+		{% include 'LibBundle::pager.html.twig' %}
+
+	{% endif %}
+
+	{% include 'LibBundle::color_legend.html.twig' %}
+
+{% endblock %}

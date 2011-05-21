@@ -34,43 +34,51 @@ class TextController extends Controller
 		return $this->display('index');
 	}
 
-	public function listAction($type, $page)
+	public function listByTypeAction($type, $page)
 	{
 		$page = (int)$page;
 		$textRepo = $this->getRepository('Text');
 		$limit = 30;
 
-		if ($textRepo->isValidType($type)) {
-			$parents = array();
-			$texts = $textRepo->getByType($type, $page, $limit);
-			$total = $textRepo->countByType($type);
-			$this->view = array(
-				'type' => $type,
-			);
-		} else {
-			$label = $this->getRepository('Label')->findBySlug($type);
-			$labels = $label->getDescendantIdsAndSelf();
-			$parents = array_reverse($label->getAncestors());
-			$texts = $textRepo->getByLabel($labels, $page, $limit);
-			$total = $textRepo->countByLabel($labels);
-			$this->view = array(
-				'label' => $label,
-			);
-		}
-
 		$this->view = array_merge($this->view, array(
-			'parents' => $parents,
-			'texts'   => $texts,
+			'type' => $type,
+			'texts'   => $textRepo->getByType($type, $page, $limit),
 			'pager'    => new Pager(array(
 				'page'  => $page,
 				'limit' => $limit,
-				'total' => $total
+				'total' => $textRepo->countByType($type)
 			)),
 			'route' => 'texts_by_type',
 			'route_params' => array('type' => $type),
 		));
 
-		return $this->display('list');
+		return $this->display('list_by_type');
+	}
+
+
+	public function listByLabelAction($slug, $page)
+	{
+		$page = (int)$page;
+		$textRepo = $this->getRepository('Text');
+		$limit = 30;
+
+		$label = $this->getRepository('Label')->findBySlug($slug);
+		$labels = $label->getDescendantIdsAndSelf();
+
+		$this->view = array_merge($this->view, array(
+			'label' => $label,
+			'parents' => array_reverse($label->getAncestors()),
+			'texts'   => $textRepo->getByLabel($labels, $page, $limit),
+			'pager'    => new Pager(array(
+				'page'  => $page,
+				'limit' => $limit,
+				'total' => $textRepo->countByLabel($labels)
+			)),
+			'route' => 'texts_by_label',
+			'route_params' => array('slug' => $slug),
+		));
+
+		return $this->display('list_by_label');
 	}
 
 

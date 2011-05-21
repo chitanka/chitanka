@@ -1,0 +1,25 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Произведения' %}
+{% set subtitle %}{% trans 'text.type.plular.' ~ type %}{% endset %}
+{% block content %}
+
+	{% if texts is empty %}
+
+		<p class="no-items">Няма намерени произведения.</p>
+
+	{% else %}
+
+		<ul class="breadcrumbs">
+			<li><a href="{{ path('texts') }}">Произведения</a></li>
+			<li>{{ subtitle }}</li>
+		</ul>
+
+		{% include 'LibBundle:Text:texts_list.html.twig' %}
+		{% include 'LibBundle::pager.html.twig' %}
+
+	{% endif %}
+
+	{% include 'LibBundle::color_legend.html.twig' %}
+
+{% endblock %}
