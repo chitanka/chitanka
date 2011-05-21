@@ -475,12 +475,14 @@ workroom_rss:
 
 
 featured_books:
-    pattern:   /featured-books
-    defaults: { _controller: LibBundle:FeaturedBook:index }
+    pattern:   /featured-books.{_format}
+    defaults: { _controller: LibBundle:FeaturedBook:index, _format: html }
+    requirements: { _format: html|rss }
 
 foreign_books:
-    pattern:   /foreign-books
-    defaults: { _controller: LibBundle:ForeignBook:index }
+    pattern:   /foreign-books.{_format}
+    defaults: { _controller: LibBundle:ForeignBook:index, _format: html }
+    requirements: { _format: html|rss }
 
 reviews:
     pattern:   /reviews

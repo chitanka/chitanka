@@ -1,6 +1,7 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
 {% set title = 'Препоръчани книги' %}
+{% set page_feed = {'url': path('featured_books', {'_format': 'rss'})} %}
 {% block content %}
 	<ul class="bookshelf">
 	{% for book in books %}
