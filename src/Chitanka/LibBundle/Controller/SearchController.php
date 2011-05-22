@@ -146,7 +146,10 @@ class SearchController extends Controller
 		$query = $request->get('q');
 
 		if ( ! $query) {
-			$this->view['strings'] = $this->getRepository('SearchString')->getLatest(30);
+			$this->view = array(
+				'latest_strings' => $this->getRepository('SearchString')->getLatest(30),
+				'top_strings' => $this->getRepository('SearchString')->getTop(30),
+			);
 
 			return $this->display('list_top_strings');
 		}
