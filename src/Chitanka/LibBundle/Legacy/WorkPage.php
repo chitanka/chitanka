@@ -249,7 +249,9 @@ class WorkPage extends Page {
 			'comment' => $this->editComment,
 			'date' => $this->date,
 			'progress' => $this->progress,
-			'is_frozen' => $this->is_frozen);
+			'is_frozen' => $this->is_frozen,
+			'deleted_at = null',
+		);
 		if ( $this->handleUpload() && !empty($this->uplfile) ) {
 			$set['uplfile'] = $this->uplfile;
 		}
