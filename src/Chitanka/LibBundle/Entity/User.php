@@ -263,6 +263,7 @@ class User /*extends BaseUser*/ implements UserInterface
 			'login_tries' => $this->login_tries,
 			'registration' => $this->registration,
 			'touched' => $this->touched,
+			'token' => $this->token,
 		);
 	}
 
