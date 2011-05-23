@@ -127,7 +127,7 @@ class User /*extends BaseUser*/ implements UserInterface
 
 	public function __construct()
 	{
-		$this->registration = $this->touched = new \DateTime;
+		$this->touch();
 	}
 
 	public function getId() { return $this->id; }
@@ -269,6 +269,8 @@ class User /*extends BaseUser*/ implements UserInterface
 	/** @orm:PrePersist */
 	public function preInsert()
 	{
+		$this->registration = new \DateTime;
+		$this->token = $this->generateToken();
 		$this->groups[] = 'user';
 	}
 
@@ -540,6 +542,11 @@ class User /*extends BaseUser*/ implements UserInterface
 	}
 
 
+
+	public function generateToken()
+	{
+		return strtoupper(sha1(str_repeat(uniqid() . $this->username, 2)));
+	}
 
 	public function login($remember = false)
 	{
