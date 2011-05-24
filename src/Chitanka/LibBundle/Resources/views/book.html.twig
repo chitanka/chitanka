@@ -15,7 +15,9 @@
 			<br><span class="bookcat">{{ link.category(book.category) }}</span>
 		{% endif %}
 		</dd>
-		<dd class="download">{{ _self.download_links(book) }}</dd>
+		{% if book.mode == 'public' %}
+			<dd class="download">{{ _self.download_links(book) }}</dd>
+		{% endif %}
 	</dl>
 {% endmacro %}
 
