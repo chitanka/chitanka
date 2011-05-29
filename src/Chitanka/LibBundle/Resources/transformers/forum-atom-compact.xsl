@@ -9,15 +9,46 @@
 	<xsl:apply-templates select="node()"/>
 </xsl:template>
 
+<xsl:template match="atom:content">
+	<xsl:choose>
+		<xsl:when test="@type = 'xhtml'">
+			<xsl:copy-of select="." disable-output-escaping="yes"/>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of select="." disable-output-escaping="yes"/>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
+<xsl:template match="atom:source">
+	<p><b><xsl:value-of select="atom:title" disable-output-escaping="yes"/>:</b></p>
+</xsl:template>
+
+<xsl:template match="atom:link">
+	<xsl:value-of select="@href" disable-output-escaping="yes"/>
+</xsl:template>
+
 <xsl:template match="atom:feed">
 	<xsl:for-each select="atom:entry">
 		<article class="post collapsible">
+			<xsl:apply-templates select="atom:source"/>
 			<h1>
-				<a><xsl:attribute name="href"><xsl:value-of select="atom:id" disable-output-escaping="no"/></xsl:attribute>
-				<xsl:value-of select="atom:title" disable-output-escaping="yes"/></a>
+				<a>
+					<xsl:attribute name="href">
+						<xsl:choose>
+							<xsl:when test="atom:link[@rel='alternate']">
+								<xsl:apply-templates select="atom:link[@rel='alternate']"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:apply-templates select="atom:link"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:attribute>
+					<xsl:value-of select="atom:title" disable-output-escaping="yes"/>
+				</a>
 			</h1>
 			<div>
-				<xsl:value-of select="atom:content" disable-output-escaping="yes"/>
+				<xsl:apply-templates select="atom:content"/>
 			</div>
 		</article>
 	</xsl:for-each>

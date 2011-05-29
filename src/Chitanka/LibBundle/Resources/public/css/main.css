@@ -295,6 +295,16 @@ img {
 	float: right;
 	margin: .5em 0 1em 1em;
 }
+img[align=left] {
+	margin: 1em 1em 1em 0 !important;
+}
+img[align=right] {
+	margin: 1em 0 1em 1em !important;
+}
+/* от Книголандия, не се подравняват добре */
+img[alt=Web] {
+	display: none !important;
+}
 /*img.float-left,
 img.float-right {
 	border: thin solid silver;

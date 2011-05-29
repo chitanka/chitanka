@@ -11,7 +11,7 @@ class FeedController extends Controller
 
 	public function lastLiternewsAction($limit = 3)
 	{
-		$feedUrl = 'http://blog.chitanka.info/section/liternews/feed/atom';
+		$feedUrl = 'http://planet.chitanka.info/atom.xml';
 		$xsl = __DIR__.'/../Resources/transformers/forum-atom-compact.xsl';
 
 		$content = $this->fetchFeed($feedUrl, $xsl);
