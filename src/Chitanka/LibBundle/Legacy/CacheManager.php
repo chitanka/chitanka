@@ -154,7 +154,7 @@ class CacheManager
 			$db->insert(DBT_DL_CACHE_TEXT, array(
 				"dc_id = $pk",
 				'text_id' => $textId,
-			), true);
+			), true, false);
 		}
 		return $file;
 	}
