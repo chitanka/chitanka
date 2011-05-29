@@ -17,6 +17,7 @@ class Language
 		'it' => 'Италиански',
 		'zh' => 'Китайски',
 		'ko' => 'Корейски',
+		'la' => 'Латински',
 		'de' => 'Немски',
 		'no' => 'Норвежки',
 		'fa' => 'Персийски',
@@ -49,7 +50,7 @@ class Language
 	}
 
 	/** TODO remove */
-	static public function langName($code, $asUpper = true) 
+	static public function langName($code, $asUpper = true)
 	{
 		if ( !array_key_exists($code, self::$langs) ) return '';
 		$name = self::$langs[$code];
