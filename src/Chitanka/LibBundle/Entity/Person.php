@@ -123,6 +123,7 @@ class Person
 
 	public function setOrigName($origName) { $this->orig_name = $origName; }
 	public function getOrigName() { return $this->orig_name; }
+	public function orig_name() { return $this->orig_name; }
 
 	public function setRealName($realName) { $this->real_name = $realName; }
 	public function getRealName() { return $this->real_name; }
