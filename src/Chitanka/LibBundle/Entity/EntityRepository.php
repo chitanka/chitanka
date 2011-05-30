@@ -9,6 +9,12 @@ abstract class EntityRepository extends DoctrineEntityRepository
 	protected $queryableFields = array();
 
 
+	public function persist($object)
+	{
+		$this->_em->persist($object);
+		$this->_em->flush();
+	}
+
 	public function flush()
 	{
 		$this->_em->flush();
