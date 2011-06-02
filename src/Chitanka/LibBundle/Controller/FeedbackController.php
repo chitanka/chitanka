@@ -27,7 +27,7 @@ class FeedbackController extends Controller
 
 		if ($form->isValid()) {
 			$form->process();
-			# 'Съобщението ви беше изпратено. Благодаря ви!';
+			$this->view['message'] = 'Съобщението ви беше изпратено.';
 // 			$this->mailFailureMessage = 'Изглежда е станал някакъв фал при изпращането на съобщението ви. Ако желаете, пробвайте още веднъж.';
 // 			if ( empty($this->referer) ) {
 // 				return '';
