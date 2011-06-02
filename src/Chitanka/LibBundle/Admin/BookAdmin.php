@@ -56,8 +56,8 @@ class BookAdmin extends Admin
 		'sequence' => array('form_field_options' => array('required' => false)),
 		'seqnr',
 		'category',
-		'has_cover',
-		'has_anno',
+		//'has_cover',
+		//'has_anno',
 		'mode',
 		//'links',
 	);
