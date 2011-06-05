@@ -60,7 +60,7 @@
 {% endmacro %}
 
 {% macro label(label) %}
-{% spaceless %}<a href="{{ path('texts_by_type', {'type': label.slug}) }}" rel="tag" data-edit="{{ path('label_edit', {'id': label.id}) }}">{{ label.name }}</a>{% endspaceless %}
+{% spaceless %}<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" rel="tag" data-edit="{{ path('label_edit', {'id': label.id}) }}">{{ label.name }}</a>{% endspaceless %}
 {% endmacro %}
 
 {% macro user_with_email(user) %}
