@@ -94,7 +94,7 @@ class FeedController extends Controller
 	{
 		$reviews = array();
 		$feedUrl = 'http://blog.chitanka.info/section/reviews/feed';
-		$feed = Legacy::getFromUrlOrCache($feedUrl, $days = 0.1);
+		$feed = Legacy::getFromUrlOrCache($feedUrl, $days = 0.02);
 		if (empty($feed)) {
 			return $reviews;
 		}
@@ -134,7 +134,7 @@ class FeedController extends Controller
 		}
 
 		$feed = new \DOMDocument();
-		if ( $feed->loadXML(Legacy::getFromUrlOrCache($xmlFile, $days = 0.1)) ) {
+		if ( $feed->loadXML(Legacy::getFromUrlOrCache($xmlFile, $days = 0.02)) ) {
 			return $proc->transformToXML($feed);
 		}
 
