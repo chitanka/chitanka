@@ -34,7 +34,7 @@ class SequenceController extends Controller
 	}
 
 
-	public function showAction($slug)
+	public function showAction($slug, $_format)
 	{
 		$sequence = $this->getRepository('Sequence')->findBySlug($slug);
 
@@ -42,6 +42,7 @@ class SequenceController extends Controller
 			'sequence' => $sequence,
 			'books'  => $this->getRepository('Book')->getBySequence($sequence),
 		);
+		$this->responseFormat = $_format;
 
 		return $this->display('show');
 	}

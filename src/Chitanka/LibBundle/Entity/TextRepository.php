@@ -257,9 +257,11 @@ class TextRepository extends EntityRepository
 	public function getBySeries($series)
 	{
 		$texts = $this->_em->createQueryBuilder()
-			->select('e', 'a')
+			->select('e', 'a', 'ol', 'tl')
 			->from($this->getEntityName(), 'e')
 			->leftJoin('e.authors', 'a')
+			->leftJoin('e.orig_license', 'ol')
+			->leftJoin('e.trans_license', 'tl')
 			->where('e.series = ?1')->setParameter(1, $series->getId())
 			->addOrderBy('e.sernr, e.title')
 			->getQuery()->getArrayResult();

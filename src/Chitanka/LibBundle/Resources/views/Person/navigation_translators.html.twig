@@ -1,13 +1,13 @@
 {% import 'LibBundle::navi.html.twig' as navi %}
-<dl class="menu buttonmenu">
-	<dt title="Това са препратки към списъци на преводачите, подредени по малко име">Име</dt>
-	<dd>
-		{{ navi.person_first_letter_links('translators_by_letter', (by == 'first' ? letter : '')) }}
-	</dd>
-</dl>
-<dl class="menu buttonmenu">
-	<dt title="Това са препратки към списъци на преводачите, подредени по фамилия">Фамилия</dt>
-	<dd>
-		{{ navi.person_last_letter_links('translators_by_letter', (by == 'last' ? letter : '')) }}
-	</dd>
-</dl>
+{% if by == 'first' or by == '' %}
+	<h2>Име</h2>
+	<div class="menu buttonmenu">
+		{{ navi.person_first_letter_links('translators_by_first_name', (by == 'first' ? letter : '')) }}
+	</div>
+{% endif %}
+{% if by == 'last' or by == '' %}
+	<h2>Фамилия</h2>
+	<div class="menu buttonmenu">
+		{{ navi.person_last_letter_links('translators_by_last_name', (by == 'last' ? letter : '')) }}
+	</div>
+{% endif %}

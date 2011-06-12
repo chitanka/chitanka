@@ -1,0 +1,8 @@
+{% for label in labels %}
+	<entry>
+		<title>{{ label.name }}</title>
+		<id>{{ helper.urn('texts_by_label', [label.slug]) }}</id>
+		{{ helper.link(helper.url('texts_by_label', {'slug': label.slug})) }}
+		<content type="text">Произведения с етикет „{{ label.name }}“. Общо: {{ label.nr_of_texts }}</content>
+	</entry>
+{% endfor %}

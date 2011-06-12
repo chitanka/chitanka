@@ -1,0 +1,50 @@
+{% extends 'LibBundle::layout.atom.twig' %}
+{% import 'LibBundle::helper.atom.twig' as helper %}
+{% set id = helper.urn('catalog') %}
+{% set link_self = helper.url('catalog') %}
+{% block content %}
+	<link type="application/atom+xml" rel="http://opds-spec.org/sort/new" title="Нови книги" href="{{ helper.url('new_books') }}"/>
+	<link type="application/atom+xml" rel="http://opds-spec.org/sort/new" title="Нови творби" href="{{ helper.url('new_texts') }}"/>
+	<entry>
+		<title>Автори</title>
+		<id>{{ helper.urn('authors') }}</id>
+		{{ helper.link(helper.url('authors')) }}
+
+		<content type="text">Азбучен списък на авторите — по малко име или по фамилия</content>
+	</entry>
+	<entry>
+		<title>Преводачи</title>
+		<id>{{ helper.urn('translators') }}</id>
+		{{ helper.link(helper.url('translators')) }}
+
+		<content type="text">Азбучен списък на преводачите — по малко име или по фамилия</content>
+	</entry>
+	<entry>
+		<title>Книги</title>
+		<id>{{ helper.urn('books') }}</id>
+		{{ helper.link(helper.url('books')) }}
+
+		<content type="text">Списък на книгите — по категория или по азбучен ред</content>
+	</entry>
+	<entry>
+		<title>Творби</title>
+		<id>{{ helper.urn('texts') }}</id>
+		{{ helper.link(helper.url('texts')) }}
+
+		<content type="text">Списък на творбите — по етикет, по форма или по азбучен ред</content>
+	</entry>
+	<entry>
+		<title>Поредици</title>
+		<id>{{ helper.urn('series') }}</id>
+		{{ helper.link(helper.url('series')) }}
+
+		<content type="text">Азбучен списък на авторските поредици</content>
+	</entry>
+	<entry>
+		<title>Издателски поредици</title>
+		<id>{{ helper.urn('sequences') }}</id>
+		{{ helper.link(helper.url('sequences')) }}
+
+		<content type="text">Азбучен списък на издателските поредици</content>
+	</entry>
+{% endblock %}

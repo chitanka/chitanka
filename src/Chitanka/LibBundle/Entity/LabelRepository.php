@@ -10,6 +10,14 @@ class LabelRepository extends EntityRepository
 	}
 
 
+	public function getAll()
+	{
+		return $this->getQueryBuilder()
+			->orderBy('e.name', 'asc')
+			->getQuery()
+			->getArrayResult();
+	}
+
 	/**
 	* @RawSql
 	*/

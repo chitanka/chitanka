@@ -74,4 +74,12 @@ class MainController extends Controller
 		return $this->display('last_texts');
 	}
 
+
+	public function catalogAction($_format)
+	{
+		$this->responseFormat = $_format;
+
+		return $this->display('catalog');
+	}
+
 }

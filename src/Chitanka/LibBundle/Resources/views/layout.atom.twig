@@ -1,0 +1,31 @@
+{% extends '::base.atom.twig' %}
+
+{% if title is defined and pager is defined and pager.has_prev %}
+{% set suffix = 'страница ' ~ pager.page ~ ' от ' ~ pager.count %}
+{% set subtitle = subtitle is defined ? subtitle ~' — '~ suffix : suffix %}
+{% endif %}
+
+{% block title %}
+	{% if title is defined %}
+		{{ title|doctitle }}
+		{% if subtitle is defined %}
+			— {{ subtitle|doctitle }}
+		{% endif %}
+		— {{ parent() }}
+	{% else %}
+		{{ parent() }}
+	{% endif %}
+{% endblock %}
+{% block head %}
+	<id>{{ id }}</id>
+	<link rel="start" href="{{ url('catalog', {'_format': 'atom'}) }}" type="application/atom+xml;profile=opds-catalog"/>
+	<link rel="self" href="{{ link_self }}" type="application/atom+xml;profile=opds-catalog"/>
+	{% if link_up is defined %}
+		<link rel="up" href="{{ link_up }}" type="application/atom+xml;profile=opds-catalog"/>
+	{% endif %}
+
+	<author>
+		<name>Моята библиотека</name>
+		<uri>{{ url('homepage') }}</uri>
+	</author>
+{% endblock %}

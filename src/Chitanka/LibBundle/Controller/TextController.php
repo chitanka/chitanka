@@ -24,17 +24,43 @@ class TextController extends Controller
 {
 	protected $repository = 'Text';
 
-	public function indexAction()
+	public function indexAction($_format)
 	{
-		$this->view = array(
-			'labels' => $this->getRepository('Label')->getAllAsTree(),
-			'types' => $this->getRepository('Text')->getTypes(),
-		);
+		if ($_format == 'html') {
+			$this->view = array(
+				'labels' => $this->getRepository('Label')->getAllAsTree(),
+				'types' => $this->getRepository('Text')->getTypes(),
+			);
+		}
+		$this->responseFormat = $_format;
 
 		return $this->display('index');
 	}
 
-	public function listByTypeAction($type, $page)
+	public function listByTypeIndexAction($_format)
+	{
+		$this->view['types'] = $this->getRepository('Text')->getTypes();
+		$this->responseFormat = $_format;
+
+		return $this->display('list_by_type_index');
+	}
+
+	public function listByLabelIndexAction($_format)
+	{
+		$this->view['labels'] = $this->getRepository('Label')->getAll();
+		$this->responseFormat = $_format;
+
+		return $this->display('list_by_label_index');
+	}
+
+	public function listByLetterIndexAction($_format)
+	{
+		$this->responseFormat = $_format;
+
+		return $this->display('list_by_letter_index');
+	}
+
+	public function listByTypeAction($type, $page, $_format)
 	{
 		$page = (int)$page;
 		$textRepo = $this->getRepository('Text');
@@ -51,12 +77,13 @@ class TextController extends Controller
 			'route' => 'texts_by_type',
 			'route_params' => array('type' => $type),
 		));
+		$this->responseFormat = $_format;
 
 		return $this->display('list_by_type');
 	}
 
 
-	public function listByLabelAction($slug, $page)
+	public function listByLabelAction($slug, $page, $_format)
 	{
 		$page = (int)$page;
 		$textRepo = $this->getRepository('Text');
@@ -77,12 +104,13 @@ class TextController extends Controller
 			'route' => 'texts_by_label',
 			'route_params' => array('slug' => $slug),
 		));
+		$this->responseFormat = $_format;
 
 		return $this->display('list_by_label');
 	}
 
 
-	public function listByLetterAction($letter, $page)
+	public function listByLetterAction($letter, $page, $_format)
 	{
 		$page = (int)$page;
 		$textRepo = $this->getRepository('Text');
@@ -100,6 +128,7 @@ class TextController extends Controller
 			'route' => 'texts_by_letter',
 			'route_params' => array('letter' => $letter),
 		);
+		$this->responseFormat = $_format;
 
 		return $this->display('list_by_letter');
 	}
@@ -112,6 +141,7 @@ class TextController extends Controller
 		if ( ! $text) {
 			throw new NotFoundHttpException("Няма текст с номер $id.");
 		}
+		$this->responseFormat = $_format;
 
 		switch ($_format) {
 			case 'txt':

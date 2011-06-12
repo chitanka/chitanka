@@ -72,6 +72,7 @@ class BookController extends Controller
 		if ( ! $book) {
 			throw new NotFoundHttpException("Няма книга с номер $id.");
 		}
+		$this->responseFormat = $_format;
 
 		switch ($_format) {
 			case 'sfb.zip':

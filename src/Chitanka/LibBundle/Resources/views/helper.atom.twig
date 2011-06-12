@@ -1,0 +1,119 @@
+{% macro urn(route, params) %}
+urn:x-chitanka:{{ route }}{% if params is not empty %}:{{ params|join('-')|url_encode }}{% endif %}
+{% endmacro %}
+
+{% macro url(route, params) %}{{ url(route, params|default({})|merge({'_format': 'atom'})) }}{% endmacro %}
+
+{% macro path(route, params) %}{{ path(route, params|default({})|merge({'_format': 'atom'})) }}{% endmacro %}
+
+{% macro link(url, relation) %}{#rel="{{ relation|default('subsection') }}"#}
+	<link  href="{{ url }}" type="application/atom+xml"/>
+{% endmacro %}
+
+{% macro letter_links(route, params) %}
+	{% set letters = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ю', 'Я', '-'] %}
+	{% for letter in letters %}
+		{% set text = letter == '-' ? 'Всички' : letter %}
+		{% set defparams = {'letter': letter, '_format': 'atom'} %}
+		{% if params is empty %}
+			{% set params = defparams %}
+		{% else %}
+			{% set params = params|merge(defparams) %}
+		{% endif %}
+		<entry>
+			<title>{{ text }}</title>
+			{% set url = url(route, params) %}
+			<id>{{ _self.urn(route, [letter]) }}</id>
+			<link href="{{ url }}" type="application/atom+xml"/>
+			<content type="text">{{ letter == '-' ? 'Всички' : 'Започващи с „'~letter~'“' }}</content>
+		</entry>
+	{% endfor %}
+{% endmacro %}
+
+{% macro text_download_link(text, format, mimetype) %}
+	<link rel="http://opds-spec.org/acquisition" href="{{ url('text_show', {'id': text.id, '_format': format}) }}" type="{{ mimetype }}"/>
+{% endmacro %}
+
+{% macro text_entry(text) %}
+	<entry>
+		<title>{{ text.title }}</title>
+		<id>{{ _self.urn('text', text.id) }}</id>
+		{% for person in text.authors %}
+			<author>
+				<name>{{ person.name }}</name>
+				<uri>{{ _self.url('person_show', {'slug': person.slug}) }}</uri>
+			</author>
+		{% endfor %}
+		<dc:language>{{ text.lang }}</dc:language>
+		{% if text.trans_year is defined %}
+			<dc:issued>{{ text.trans_year }}</dc:issued>
+		{% elseif text.year is defined %}
+			<dc:issued>{{ text.year }}</dc:issued>
+		{% endif %}
+		{#
+		{% for label in text.labels %}
+			<category term="{{ label.slug }}" label="{{ label.name }}"/>
+		{% endfor %}
+		#}
+
+		{{ _self.text_download_link(text, 'epub', 'application/epub+zip') }}
+		{#
+		{{ _self.text_download_link(text, 'fb2.zip', 'application/x-fictionbook+xml') }}
+		{{ _self.text_download_link(text, 'txt.zip', 'application/zip') }}
+		{{ _self.text_download_link(text, 'sfb.zip', 'application/zip') }}
+		#}
+
+		<rights>
+			{% if text.trans_license is defined %}
+				{{ text.trans_license.fullname }}
+			{% else %}
+				{{ text.orig_license.fullname }}
+			{% endif %}
+		</rights>
+
+		{#<content type="text"></content>#}
+	</entry>
+{% endmacro %}
+
+{% macro book_entry(book) %}
+	<entry>
+		<title>{{ book.title }}</title>
+		<id>{{ _self.urn('text', book.id) }}</id>
+		{% for person in book.authors %}
+			<author>
+				<name>{{ person.name }}</name>
+				<uri>{{ _self.url('person_show', {'slug': person.slug}) }}</uri>
+			</author>
+		{% endfor %}
+		<dc:language>{{ book.lang }}</dc:language>
+		{% if book.trans_year is defined %}
+			<dc:issued>{{ book.trans_year }}</dc:issued>
+		{% elseif book.year is defined %}
+			<dc:issued>{{ book.year }}</dc:issued>
+		{% endif %}
+		{#
+		{% for category in book.categories %}
+			<category term="{{ label.slug }}" label="{{ label.name }}"/>
+		{% endfor %}
+		#}
+
+		{{ _self.text_download_link(text, 'epub', 'application/epub+zip') }}
+
+		<link rel="http://opds-spec.org/image"
+			href="/covers/4561.lrg.png"
+			type="image/png"/>
+		<link rel="http://opds-spec.org/image/thumbnail"
+			href="/covers/4561.thmb.gif"
+			type="image/gif"/>
+
+		<rights>
+			{% if book.trans_license is defined %}
+				{{ book.trans_license.fullname }}
+			{% else %}
+				{{ book.orig_license.fullname }}
+			{% endif %}
+		</rights>
+
+		{#<content type="text"></content>#}
+	</entry>
+{% endmacro %}

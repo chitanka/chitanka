@@ -6,12 +6,14 @@ use Chitanka\LibBundle\Pagination\Pager;
 
 class SeriesController extends Controller
 {
-	public function indexAction()
+	public function indexAction($_format)
 	{
+		$this->responseFormat = $_format;
+
 		return $this->display('index');
 	}
 
-	public function listAction($letter, $page)
+	public function listAction($letter, $page, $_format)
 	{
 		$page = (int)$page;
 		$repo = $this->getRepository('Series');
@@ -29,12 +31,13 @@ class SeriesController extends Controller
 			'route' => 'series_by_letter',
 			'route_params' => array('letter' => $letter),
 		);
+		$this->responseFormat = $_format;
 
 		return $this->display('list');
 	}
 
 
-	public function showAction($slug)
+	public function showAction($slug, $_format)
 	{
 		$series = $this->getRepository('Series')->findBySlug($slug);
 
@@ -42,6 +45,7 @@ class SeriesController extends Controller
 			'series' => $series,
 			'texts'  => $this->getRepository('Text')->getBySeries($series),
 		);
+		$this->responseFormat = $_format;
 
 		return $this->display('show');
 	}

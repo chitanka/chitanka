@@ -109,13 +109,13 @@
 {% endmacro %}
 
 
-{% macro author_list(authors, prefix) %}
+{% macro author_list(authors, prefix, format) %}
 	{% if authors|length == 1 %}
-		{{ prefix|default('от') }} <a href="{{ path('person_show', {'slug': authors[0].slug}) }}">{{ authors[0].name }}</a>
+		{{ prefix|default('от') }} <a href="{{ path('person_show', {'slug': authors[0].slug, '_format': format|default('html')}) }}">{{ authors[0].name }}</a>
 	{% elseif authors|length > 1 %}
 		{{ prefix|default('от') }} <ul class="simplelist">
 		{% for author in authors %}
-			<li><a href="{{ path('person_show', {'slug': author.slug}) }}">{{ author.name }}</a></li>
+			<li><a href="{{ path('person_show', {'slug': author.slug, '_format': format|default('html')}) }}">{{ author.name }}</a></li>
 		{% endfor %}
 		</ul>
 	{% endif %}

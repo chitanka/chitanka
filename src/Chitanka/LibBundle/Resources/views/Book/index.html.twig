@@ -2,9 +2,9 @@
 
 {% set title = 'Книги' %}
 {% block content %}
-	<h2>По категория</h2>
-	{% include 'LibBundle:Book:category_tree.html.twig' with {'level': 0} %}
-
 	<h2>По азбучен ред</h2>
 	{% include 'LibBundle:Book:navigation.html.twig' with {'letter': ''} %}
+
+	<h2>По категория</h2>
+	{% include 'LibBundle:Book:category_tree.html.twig' with {'level': 0} %}
 {% endblock %}

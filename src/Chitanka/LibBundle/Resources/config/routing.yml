@@ -3,13 +3,18 @@ homepage:
     defaults:       { _controller: LibBundle:Main:index }
     requirements:   { _method: get }
 
+catalog:
+    pattern:        /catalog.{_format}
+    defaults:       { _controller: LibBundle:Main:catalog }
+    requirements:   { _method: get, _format: atom }
+
 
 # # #   PERSONS   # # #
 
 authors:
-    pattern:        /authors
-    defaults:       { _controller: LibBundle:Person:indexAuthors }
-    requirements:   { _method: get }
+    pattern:        /authors.{_format}
+    defaults:       { _controller: LibBundle:Person:indexAuthors, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 author:
     pattern:        /author
@@ -17,31 +22,49 @@ author:
     requirements:   { _method: get }
 
 authors_by_country:
-    pattern:        /authors/by-country/{country}/{page}
-    defaults:       { _controller: LibBundle:Person:listAuthorsByCountry, page: 1 }
-    requirements:   { _method: get }
+    pattern:        /authors/country/{country}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Person:listAuthorsByCountry, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
-authors_by_letter:
-    pattern:        /authors/{letter}/{page}
-    defaults:       { _controller: LibBundle:Person:listAuthors, page: 1 }
-    requirements:   { _method: get }
+authors_by_first_name:
+    pattern:        /authors/first-name/{letter}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Person:listAuthors, by: first, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
+authors_by_last_name:
+    pattern:        /authors/last-name/{letter}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Person:listAuthors, by: last, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|atom }
+
+authors_by_first_name_index:
+    pattern:        /authors/first-name.{_format}
+    defaults:       { _controller: LibBundle:Person:listAuthors, by: first, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|atom }
+
+authors_by_last_name_index:
+    pattern:        /authors/last-name.{_format}
+    defaults:       { _controller: LibBundle:Person:listAuthors, by: last, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 translators:
-    pattern:        /translators
-    defaults:       { _controller: LibBundle:Person:indexTranslators }
-    requirements:   { _method: get }
+    pattern:        /translators.{_format}
+    defaults:       { _controller: LibBundle:Person:indexTranslators, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 translator:
     pattern:        /translator
     defaults:       { _controller: LibBundle:Main:redirect, route: translators }
     requirements:   { _method: get }
 
-translators_by_letter:
-    pattern:        /translators/{letter}/{page}
-    defaults:       { _controller: LibBundle:Person:listTranslators, page: 1 }
-    requirements:   { _method: get }
+translators_by_first_name:
+    pattern:        /translators/first-name/{letter}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Person:listTranslators, by: first, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
+translators_by_last_name:
+    pattern:        /translators/last-name/{letter}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Person:listTranslators, by: last, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 persons_search:
     pattern:        /persons/search.{_format}
@@ -49,9 +72,9 @@ persons_search:
     requirements:   { _method: get, _format: html|xml }
 
 person_show:
-    pattern:        /person/{slug}
-    defaults:       { _controller: LibBundle:Person:show }
-    requirements:   { _method: get }
+    pattern:        /person/{slug}.{_format}
+    defaults:       { _controller: LibBundle:Person:show, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 person_suggest:
     pattern:        /person/{slug}/suggest
@@ -73,9 +96,9 @@ translator_show:
 # # #   SERIES   # # #
 
 series:
-    pattern:        /series
-    defaults:       { _controller: LibBundle:Series:index }
-    requirements:   { _method: get }
+    pattern:        /series.{_format}
+    defaults:       { _controller: LibBundle:Series:index, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 serie:
     pattern:        /serie
@@ -88,22 +111,22 @@ series_search:
     requirements:   { _method: get, _format: html|xml }
 
 series_by_letter:
-    pattern:        /series/{letter}/{page}
-    defaults:       { _controller: LibBundle:Series:list, page: 1 }
-    requirements:   { _method: get }
+    pattern:        /series/alpha/{letter}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Series:list, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 series_show:
-    pattern:        /serie/{slug}
-    defaults:       { _controller: LibBundle:Series:show }
-    requirements:   { _method: get }
+    pattern:        /serie/{slug}.{_format}
+    defaults:       { _controller: LibBundle:Series:show, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 
 # # #   BOOKS   # # #
 
 books:
-    pattern:        /books
-    defaults:       { _controller: LibBundle:Book:index }
-    requirements:   { _method: get }
+    pattern:        /books.{_format}
+    defaults:       { _controller: LibBundle:Book:index, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 book:
     pattern:        /book
@@ -116,14 +139,14 @@ books_search:
     requirements:   { _method: get, _format: html|xml }
 
 books_by_letter:
-    pattern:        /books/alpha/{letter}/{page}
-    defaults:       { _controller: LibBundle:Book:listByLetter, page: 1 }
-    requirements:   { _method: get }
+    pattern:        /books/alpha/{letter}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Book:listByLetter, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 books_by_category:
-    pattern:        /books/{slug}/{page}
-    defaults:       { _controller: LibBundle:Book:list, page: 1 }
-    requirements:   { _method: get }
+    pattern:        /books/category/{slug}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Book:list, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 book_random:
     pattern:        /book/random
@@ -133,7 +156,7 @@ book_random:
 book_show:
     pattern:        /book/{id}.{_format}
     defaults:       { _controller: LibBundle:Book:show, _format: html }
-    requirements:   { _method: get, _format: html|sfb|sfb\.zip|fb2|fb2\.zip|txt|txt\.zip|epub|djvu|clue }
+    requirements:   { _method: get, _format: html|sfb|sfb\.zip|fb2|fb2\.zip|txt|txt\.zip|epub|djvu|clue|atom }
 
 book_comments:
     pattern:        /book/{id}/comments.{_format}
@@ -143,17 +166,13 @@ book_comments:
 #     pattern:        /book/{id}/suggest/{object}
 #     defaults:       { _controller: LibBundle:Book:suggest }
 
-category_edit:
-    pattern:        /admin/category/edit/{id}
-    defaults:       { _controller: LibBundle:Category:edit }
-
 
 # # #   BOOK SEQUENCES   # # #
 
 sequences:
-    pattern:        /sequences
-    defaults:       { _controller: LibBundle:Sequence:index }
-    requirements:   { _method: get }
+    pattern:        /sequences.{_format}
+    defaults:       { _controller: LibBundle:Sequence:index, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 sequence:
     pattern:        /sequence
@@ -166,14 +185,14 @@ sequences_search:
     requirements:   { _method: get, _format: html|xml }
 
 sequences_by_letter:
-    pattern:        /sequences/{letter}/{page}
-    defaults:       { _controller: LibBundle:Sequence:list, page: 1 }
-    requirements:   { _method: get }
+    pattern:        /sequences/alpha/{letter}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Sequence:list, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 sequence_show:
-    pattern:        /sequence/{slug}
-    defaults:       { _controller: LibBundle:Sequence:show }
-    requirements:   { _method: get }
+    pattern:        /sequence/{slug}.{_format}
+    defaults:       { _controller: LibBundle:Sequence:show, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 
 # # #   TEXTS   # # #
@@ -184,9 +203,9 @@ texts_comments:
     requirements:   { _method: get, _format: html|rss }
 
 texts:
-    pattern:        /texts
-    defaults:       { _controller: LibBundle:Text:index }
-    requirements:   { _method: get }
+    pattern:        /texts.{_format}
+    defaults:       { _controller: LibBundle:Text:index, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 text:
     pattern:        /text
@@ -199,19 +218,34 @@ texts_search:
     requirements:   { _method: get, _format: html|xml }
 
 texts_by_letter:
-    pattern:        /texts/alpha/{letter}/{page}
-    defaults:       { _controller: LibBundle:Text:listByLetter, page: 1 }
-    requirements:   { _method: get }
+    pattern:        /texts/alpha/{letter}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Text:listByLetter, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 texts_by_type:
-    pattern:        /texts/type/{type}/{page}
-    defaults:       { _controller: LibBundle:Text:listByType, page: 1 }
-    requirements:   { _method: get }
+    pattern:        /texts/type/{type}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Text:listByType, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 texts_by_label:
-    pattern:        /texts/label/{slug}/{page}
-    defaults:       { _controller: LibBundle:Text:listByLabel, page: 1 }
-    requirements:   { _method: get }
+    pattern:        /texts/label/{slug}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Text:listByLabel, page: 1, _format: html }
+    requirements:   { _method: get, _format: html|atom }
+
+texts_by_letter_index:
+    pattern:        /texts/alpha.{_format}
+    defaults:       { _controller: LibBundle:Text:listByLetterIndex, _format: html }
+    requirements:   { _method: get, _format: html|atom }
+
+texts_by_type_index:
+    pattern:        /texts/type.{_format}
+    defaults:       { _controller: LibBundle:Text:listByTypeIndex, _format: html }
+    requirements:   { _method: get, _format: html|atom }
+
+texts_by_label_index:
+    pattern:        /texts/label.{_format}
+    defaults:       { _controller: LibBundle:Text:listByLabelIndex, _format: html }
+    requirements:   { _method: get, _format: html|atom }
 
 text_label_new:
     pattern:        /text/{id}/label/new
@@ -260,7 +294,7 @@ text_bookmark:
 text_show:
     pattern:        /text/{id}.{_format}
     defaults:       { _controller: LibBundle:Text:show, slug: test, _format: html }
-    requirements:   { _method: get, _format: html|sfb|fb2|sfb\.zip|fb2\.zip|txt|txt\.zip|epub|clue }
+    requirements:   { _method: get, _format: html|sfb|fb2|sfb\.zip|fb2\.zip|txt|txt\.zip|epub|clue|atom }
 
 text_show_part:
     pattern:        /text/{id}/{part}
@@ -328,30 +362,32 @@ new:
 new_books:
     pattern:   /new-books.{_format}
     defaults: { _controller: LibBundle:History:listBooks, _format: html }
-    requirements:   { _method: get, _format: html|rss }
+    requirements:   { _method: get, _format: html|rss|atom }
 
 new_books_by_month:
-    pattern:   /new-books/{year}/{month}/{page}
-    defaults: { _controller: LibBundle:History:listBooksByMonth, page: 1 }
+    pattern:   /new-books/{year}/{month}.{_format}/{page}
+    defaults: { _controller: LibBundle:History:listBooksByMonth, page: 1, _format: html }
     requirements:
         _method: get
         year: \d+
         month: \d+
         page: \d+
+        _format: html|atom
 
 new_texts:
     pattern:   /new-texts.{_format}
     defaults: { _controller: LibBundle:History:listTexts, _format: html }
-    requirements:   { _method: get, _format: html|rss }
+    requirements:   { _method: get, _format: html|rss|atom }
 
 new_texts_by_month:
-    pattern:   /new-texts/{year}/{month}/{page}
-    defaults: { _controller: LibBundle:History:listTextsByMonth, page: 1 }
+    pattern:   /new-texts/{year}/{month}.{_format}/{page}
+    defaults: { _controller: LibBundle:History:listTextsByMonth, page: 1, _format: html }
     requirements:
         _method: get
         year: \d+
         month: \d+
         page: \d+
+        _format: html|atom
 
 
 user_email:

@@ -18,10 +18,10 @@ class PersonController extends Controller
 		return $this->display('index_translators');
 	}
 
-	public function listAuthorsAction($letter, $page)
+
+	public function listAuthorsAction($by, $letter, $page, $_format)
 	{
 		$request = $this->get('request')->query;
-		$by      = $request->get('by', 'first');
 		$country = $request->get('country', '');
 		$limit = 100;
 
@@ -38,14 +38,14 @@ class PersonController extends Controller
 				'limit' => $limit,
 				'total' => $repo->countBy($filters)
 			)),
-			'route' => 'authors_by_letter',
+			'route' => 'authors_by_'.$by.'_name',
 			'route_params' => array('letter' => $letter, 'by' => $by),
 		);
 
 		return $this->display('list_authors');
 	}
 
-	public function listAuthorsByCountryAction($country, $page)
+	public function listAuthorsByCountryAction($country, $page, $_format)
 	{
 		$request = $this->get('request')->query;
 		$by      = $request->get('by', 'first');
@@ -64,17 +64,17 @@ class PersonController extends Controller
 				'total' => $repo->countBy($filters)
 			)),
 			'route' => 'authors_by_country',
-			'route_params' => array('country' => $country/*, 'by' => $by*/),
+			'route_params' => array('country' => $country/*, 'by' => $by*/, '_format' => $_format),
 		);
+		$this->responseFormat = $_format;
 
 		return $this->display('list_authors_by_country');
 	}
 
 
-	public function listTranslatorsAction($letter, $page)
+	public function listTranslatorsAction($by, $letter, $page, $_format)
 	{
 		$request = $this->get('request')->query;
-		$by      = $request->get('by', 'first');
 		$country = $request->get('country', '');
 		$limit = 100;
 
@@ -91,7 +91,7 @@ class PersonController extends Controller
 				'limit' => $limit,
 				'total' => $repo->countBy($filters)
 			)),
-			'route' => 'translators_by_letter',
+			'route' => 'translators_by_'.$by.'_name',
 			'route_params' => array('letter' => $letter, 'by' => $by),
 		);
 
@@ -100,7 +100,7 @@ class PersonController extends Controller
 
 
 
-	public function showAction($slug)
+	public function showAction($slug, $_format)
 	{
 		$this->responseAge = 86400; // 24 hours
 
@@ -133,6 +133,7 @@ class PersonController extends Controller
 			$this->view['info'] = Legacy::getMwContent($site->getUrl($name));
 			$this->view['info_intro'] = $site->getIntro();
 		}
+		$this->responseFormat = $_format;
 
 		return $this->display('show');
 	}

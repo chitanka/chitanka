@@ -29,6 +29,11 @@ class Pager
 		return $this->page;
 	}
 
+	public function count()
+	{
+		return $this->count;
+	}
+
 	public function show()
 	{
 		return $this->count > 1;
