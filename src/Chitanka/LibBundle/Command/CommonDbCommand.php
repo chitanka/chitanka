@@ -36,22 +36,32 @@ class CommonDbCommand extends Command
 		$this->executeUpdates($queries, $conn);
 	}
 
+
 	protected function updateTextCountByLabelsParents(OutputInterface $output, $em)
 	{
 		$output->writeln('Updating text counts by labels parents');
+		$this->_updateCountByParents($em, 'LibBundle:Label', 'NrOfTexts');
+	}
 
-		$queries = array();
-		$repo = $em->getRepository('LibBundle:Label');
+	protected function updateBookCountByCategoriesParents(OutputInterface $output, $em)
+	{
+		$output->writeln('Updating book counts by categories parents');
+		$this->_updateCountByParents($em, 'LibBundle:Category', 'NrOfBooks');
+	}
+
+	protected function _updateCountByParents($em, $entity, $field)
+	{
 		$dirty = array();
-		foreach ($repo->findAll() as $label) {
-			if (in_array($label->getId(), $dirty)) {
-				$label = $repo->find($label->getId());
+		$repo = $em->getRepository($entity);
+		foreach ($repo->findAll() as $item) {
+			if (in_array($item->getId(), $dirty)) {
+				$item = $repo->find($item->getId());
 			}
-			$parent = $label->getParent();
+			$parent = $item->getParent();
 			if ($parent) {
-				$nrOfTexts = $label->getNrOfTexts();
+				$count = call_user_func(array($item, "get{$field}"));
 				do {
-					$parent->incNrOfTexts($nrOfTexts);
+					call_user_func(array($parent, "inc{$field}"), $count);
 					$em->persist($parent);
 					$dirty[] = $parent->getId();
 				} while (null !== ($parent = $parent->getParent()));

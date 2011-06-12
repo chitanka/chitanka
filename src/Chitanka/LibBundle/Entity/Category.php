@@ -72,7 +72,12 @@ class Category
 	public function setBooks($books) { $this->books = $books; }
 	public function getBooks() { return $this->books; }
 
+	public function setNrOfBooks($nr_of_books) { $this->nr_of_books = $nr_of_books; }
 	public function getNrOfBooks() { return $this->nr_of_books; }
+	public function incNrOfBooks($value = 1)
+	{
+		$this->nr_of_books += $value;
+	}
 
 	public function __toString()
 	{
