@@ -1924,6 +1924,9 @@ article h1 {
 article h1 {
 	font-size: 1.3em;
 }
+.insidenews article h1 {
+	display: none;
+}
 .box {
 	float: left;
 	margin-right: 1%;

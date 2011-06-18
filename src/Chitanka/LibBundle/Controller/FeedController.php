@@ -25,14 +25,14 @@ class FeedController extends Controller
 	}
 
 
-	public function lastInsideNewsAction($limit = 3)
+	public function lastInsideNewsAction($limit = 8)
 	{
-		$feedUrl = 'http://blog.chitanka.info/section/news/feed/atom';
+		$feedUrl = 'http://identi.ca/api/statuses/user_timeline/127745.atom';
 		$xsl = __DIR__.'/../Resources/transformers/forum-atom-compact.xsl';
 
 		$content = $this->fetchFeed($feedUrl, $xsl);
 		if ($content === false) {
-			return $this->displayText('<p class="error">Неуспех при вземането на последните вътрешни новини.</p>');
+			return $this->displayText('<p class="error">Неуспех при вземането на последните съобщения от identi.ca.</p>');
 		}
 
 		$content = $this->limitArticles($content, $limit);
