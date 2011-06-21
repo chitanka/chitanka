@@ -1918,6 +1918,7 @@ article h1 {
 	margin-bottom: 0.3em;
 	font-family: Georgia, "Times New Roman", Times, serif;
 	font-style: italic;
+	font-size: 1.7em;
 	box-shadow: none;
 	-moz-box-shadow: none;
 }
@@ -1926,6 +1927,9 @@ article h1 {
 }
 .insidenews article h1 {
 	display: none;
+}
+.p_homepage article {
+	padding: 1.5em;
 }
 .box {
 	float: left;
@@ -1955,7 +1959,7 @@ article h1 {
 }
 .p_homepage .separator {
 	clear: both;
-	height: 1em;
+	height: 3em;
 }
 button.expander {
 	width: 100%;
