@@ -37,12 +37,6 @@ class Series
 	private $orig_name;
 
 	/**
-	* @var string $type
-	* @orm:Column(type="string", length=10)
-	*/
-	private $type;
-
-	/**
 	* @var array
 	* @orm:ManyToMany(targetEntity="Person", inversedBy="series")
 	* @orm:JoinTable(name="series_author",
@@ -67,9 +61,6 @@ class Series
 
 	public function setOrigName($origName) { $this->orig_name = $origName; }
 	public function getOrigName() { return $this->orig_name; }
-
-	public function setType($type) { $this->type = $type; }
-	public function getType() { return $this->type; }
 
 	public function getAuthors() { return $this->authors; }
 
