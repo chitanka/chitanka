@@ -28,7 +28,7 @@ class ForeignBook
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=100)
+	* @orm:Column(type="string", length=255)
 	*/
 	private $url;
 
