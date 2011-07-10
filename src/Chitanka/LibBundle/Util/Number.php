@@ -14,7 +14,14 @@ class Number
 		return (int) $val;
 	}
 
-	static public function formatNumber($num, $decPl = 2, $decPoint = ',', $tousandDelim = ' ') {
-		return number_format($num, $decPl, $decPoint, $tousandDelim);
+	static public function formatNumber($num, $decPl = 2, $decPoint = ',', $tousandDelim = ' ')
+	{
+		$result = number_format($num, $decPl, $decPoint, $tousandDelim);
+		if ($decPoint == ',' && $num < 10000) {
+			// bulgarian extra rule: put a $tousandDelim only after 9999
+			$result = preg_replace('/^(\d) (\d\d\d)/', '$1$2', $result);
+		}
+
+		return $result;
 	}
 }
