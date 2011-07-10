@@ -1038,7 +1038,7 @@ EOS;
 
 
 	protected function makeContribList() {
-		$this->mb = 1 << 20; // = 2^20
+		$this->rownr = 0;
 		$this->rowclass = '';
 		$qa = array(
 			'SELECT' => 'u.username, COUNT(ut.user_id) count, SUM(ut.size) size',
@@ -1064,8 +1064,9 @@ EOS;
 		</colgroup>
 	<thead>
 	<tr>
+		<th>№</th>
 		<th>Потребител</th>
-		<th title="Размер на обработените произведения в мебибайта">Размер (в <abbr title="Мебибайта">MiB</abbr>)</th>
+		<th title="Размер на обработените произведения в мебибайта">Размер (в <abbr title="Кибибайта">KiB</abbr>)</th>
 		<th title="Брой на обработените произведения">Брой</th>
 	</tr>
 	</thead>
@@ -1080,9 +1081,10 @@ EOS;
 		extract($dbrow);
 		$this->rowclass = $this->out->nextRowClass($this->rowclass);
 		$ulink = $this->makeUserLink($username);
-		$s = Number::formatNumber($size / $this->mb);
+		$s = Number::formatNumber($size, 0);
+		$this->rownr += 1;
 
-		return "\n\t<tr class='$this->rowclass'><td>$ulink</td><td>$s</td><td>$count</td></tr>";
+		return "\n\t<tr class='$this->rowclass'><td>$this->rownr</td><td>$ulink</td><td>$s</td><td>$count</td></tr>";
 	}
 
 
