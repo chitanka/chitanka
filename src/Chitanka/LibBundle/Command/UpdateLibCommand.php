@@ -163,7 +163,7 @@ EOT
 		}
 		if (file_exists($file = str_replace('.data', '.tmpl', $dataFile))) {
 			$work['tmpl'] = $file;
-			$work = self::prepareWorkTemplate($work);print_r($work);
+			$work = self::prepareWorkTemplate($work);
 		} else if (file_exists($file = str_replace('.data', '.text', $dataFile))) {
 			$work['text'] = $file;
 		}
@@ -243,8 +243,8 @@ EOT
 		$bookTmpl = file_get_contents($file);
 		$bookWorks = array();
 		foreach ($works as $packetId => $work) {
-			if (strpos($bookTmpl, ":$packetId}") !== false) {
-				$bookTmpl = str_replace(":$packetId}", ":$work[id]}", $bookTmpl);
+			if (strpos($bookTmpl, ":$packetId-") !== false) {
+				$bookTmpl = str_replace(":$packetId-", ":$work[id]-", $bookTmpl);
 				$bookWorks[] = $work;
 			}
 		}
@@ -330,7 +330,7 @@ EOT
 				'votes' => 0,
 				'has_anno' => 0,
 				'has_cover' => 0,
-				'is_compilation' => false,
+				'is_compilation' => isset($work['tmpl']),
 				'mode' => 'public',
 
 				'sernr' => (isset($work['ser_nr']) ? $work['ser_nr'] : 0),
