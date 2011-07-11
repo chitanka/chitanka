@@ -68,6 +68,8 @@ class DownloadFile
 	public function getDlFileForBook($book, $format, $binaryCallback = null)
 	{
 		$textIds = $book->getTextIds();
+		// a book with one text is different from the very same text
+		$textIds[] = "book$book->id";
 
 		if ( ($dlCache = self::getDlCache($textIds, $format)) ) {
 			if ( ($dlFile = self::getDlFile($dlCache)) ) {
