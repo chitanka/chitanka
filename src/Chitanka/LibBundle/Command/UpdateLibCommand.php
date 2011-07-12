@@ -243,8 +243,11 @@ EOT
 		$bookTmpl = file_get_contents($file);
 		$bookWorks = array();
 		foreach ($works as $packetId => $work) {
-			if (strpos($bookTmpl, ":$packetId-") !== false) {
-				$bookTmpl = str_replace(":$packetId-", ":$work[id]-", $bookTmpl);
+			if (strpos($bookTmpl, ":$packetId") !== false) {
+				$bookTmpl = strtr($bookTmpl, array(
+					":$packetId}", ":$work[id]}",
+					":$packetId-", ":$work[id]-",
+				));
 				$bookWorks[] = $work;
 			}
 		}
