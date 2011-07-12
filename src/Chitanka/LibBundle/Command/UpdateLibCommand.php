@@ -245,8 +245,8 @@ EOT
 		foreach ($works as $packetId => $work) {
 			if (strpos($bookTmpl, ":$packetId") !== false) {
 				$bookTmpl = strtr($bookTmpl, array(
-					":$packetId}", ":$work[id]}",
-					":$packetId-", ":$work[id]-",
+					":$packetId}" => ":$work[id]}",
+					":$packetId-" => ":$work[id]-",
 				));
 				$bookWorks[] = $work;
 			}
@@ -337,11 +337,11 @@ EOT
 				'mode' => 'public',
 
 				'sernr' => (isset($work['ser_nr']) ? $work['ser_nr'] : 0),
-				'orig_title' => (isset($work['orig_title']) ? $work['orig_title'] : ''),
+				'orig_title' => (isset($work['orig_title']) ? self::fixOrigTitle($work['orig_title']) : ''),
 			);
 		}
 		if (isset($work['subtitle'])) $set['subtitle'] = $work['subtitle'];
-		if (isset($work['orig_subtitle'])) $set['orig_subtitle'] = $work['orig_subtitle'];
+		if (isset($work['orig_subtitle'])) $set['orig_subtitle'] = self::fixOrigTitle($work['orig_subtitle']);
 		if (isset($work['year'])) $set['year'] = $work['year'];
 		if (isset($work['year2'])) $set['year2'] = $work['year2'];
 		if (isset($work['trans_year'])) $set['trans_year'] = $work['trans_year'];
@@ -468,7 +468,7 @@ EOT
 				'mode' => 'public',
 
 				'seqnr' => (isset($book['seq_nr']) ? $book['seq_nr'] : 0),
-				'orig_title' => (isset($book['orig_title']) ? $book['orig_title'] : ''),
+				'orig_title' => (isset($book['orig_title']) ? self::fixOrigTitle($book['orig_title']) : ''),
 			);
 		}
 		if (isset($book['subtitle'])) $set['subtitle'] = $book['subtitle'];
@@ -584,5 +584,12 @@ EOT
 		}
 
 		return $size;
+	}
+
+	static private function fixOrigTitle($title)
+	{
+		return strtr($title, array(
+			'\'' => '’',
+		));
 	}
 }
