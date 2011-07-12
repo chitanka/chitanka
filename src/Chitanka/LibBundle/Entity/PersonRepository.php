@@ -7,7 +7,7 @@ class PersonRepository extends EntityRepository
 	protected
 		/* role bit: 1 - author, 2 - translator, 3 - both */
 		$sqlRole = null,
-		$queryableFields = array('id', 'slug', 'name', 'orig_name');
+		$queryableFields = array('id', 'slug', 'name', 'orig_name', 'real_name', 'oreal_name');
 
 
 	public function getBy($filters, $page = 1, $limit = null)
