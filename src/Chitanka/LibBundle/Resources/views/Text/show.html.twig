@@ -19,11 +19,14 @@
 {% endif %}
 
 {% block content %}
+	{% if part <= 1 %}
+		{% include 'LibBundle:Text:annotation.html.twig' %}
+	{% endif %}
+
 	{% include 'LibBundle:Text:info.html.twig' %}
 
 	{% if part <= 1 %}
 		{% include 'LibBundle:Text:extra_info.html.twig' %}
-		{% include 'LibBundle:Text:annotation.html.twig' %}
 	{% endif %}
 
 	{% include 'LibBundle:Text:toc.html.twig' %}
