@@ -242,6 +242,12 @@ EOT
 	{
 		$bookTmpl = file_get_contents($file);
 		$bookWorks = array();
+		if (preg_match_all('/\{(file|text):(\d+)\}/', $bookTmpl, $m)) {
+			// already existing in the database works included in this book
+			foreach ($m[2] as $oldWork) {
+				$bookWorks[] = array('id' => $oldWork, 'is_new' => false);
+			}
+		}
 		foreach ($works as $packetId => $work) {
 			if (strpos($bookTmpl, ":$packetId") !== false) {
 				$bookTmpl = strtr($bookTmpl, array(
@@ -434,7 +440,9 @@ EOT
 			}
 			if (isset($work['img'])) {
 				$dir = "$this->contentDir/img/$path";
-				mkdir($dir, 0755, true);
+				if ( ! file_exists($dir)) {
+					mkdir($dir, 0755, true);
+				}
 				`cp $work[img]/* $dir`;
 			}
 		}
@@ -507,7 +515,7 @@ EOT
 
 		if ( ! empty($book['works'])) {
 			foreach ($book['works'] as $work) {
-				$set = array('book_id' => $book['id'], 'text_id' => $work['id'], 'share_info' => 1);
+				$set = array('book_id' => $book['id'], 'text_id' => $work['id'], 'share_info' => (int)$work['is_new']);
 				$qs[] = $this->db->insertQ('book_text', $set, false, false);
 			}
 		}
@@ -534,9 +542,13 @@ EOT
 	}
 
 
-	static private function copyTextFile($source, $dest)
+	static private function copyTextFile($source, $dest, $replaceChars = true)
 	{
-		File::myfile_put_contents($dest, String::my_replace(file_get_contents($source)));
+		$contents = file_get_contents($source);
+		if ($replaceChars) {
+			$contents = String::my_replace($contents);
+		}
+		File::myfile_put_contents($dest, $contents);
 	}
 
 
