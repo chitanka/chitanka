@@ -110,14 +110,7 @@ EOT
 	{
 		$work = array();
 		foreach (file($dataFile) as $line) {
-			list($var, $value) = explode('=', $line);
-			$value = trim($value);
-			if (empty($value) || $value == '?') {
-				continue;
-			} else if ($value == '-') {
-				$value = '';
-			}
-			$work[trim($var)] = $value;
+			$work += self::_extractVarFromLineData($line);
 		}
 		$packetId = $work['id'];
 		$work['is_new'] = $packetId < 0;
@@ -182,14 +175,7 @@ EOT
 	{
 		$book = array();
 		foreach (file($dataFile) as $line) {
-			list($var, $value) = explode('=', $line);
-			$value = trim($value);
-			if (empty($value) || $value == '?') {
-				continue;
-			} else if ($value == '-') {
-				$value = '';
-			}
-			$book[trim($var)] = $value;
+			$book += self::_extractVarFromLineData($line);
 		}
 		$packetId = $book['id'];
 		$book['is_new'] = $packetId < 0;
@@ -223,6 +209,21 @@ EOT
 		return $book;
 	}
 
+
+	static private function _extractVarFromLineData($line)
+	{
+		$separator = '=';
+		$parts = explode($separator, $line);
+		$var = trim(array_shift($parts));
+		$value = trim(implode($separator, $parts));
+		if (empty($value) || $value == '?') {
+			return array();
+		}
+		if ($value == '-') {
+			$value = '';
+		}
+		return array($var => $value);
+	}
 
 	static public function sortDataFiles($files)
 	{
@@ -343,7 +344,7 @@ EOT
 				'mode' => 'public',
 
 				'sernr' => (isset($work['ser_nr']) ? $work['ser_nr'] : 0),
-				'orig_title' => (isset($work['orig_title']) ? self::fixOrigTitle($work['orig_title']) : ''),
+				'orig_title' => (empty($work['orig_title']) ? '' : self::fixOrigTitle($work['orig_title'])),
 			);
 		}
 		if (isset($work['subtitle'])) $set['subtitle'] = $work['subtitle'];
@@ -403,7 +404,7 @@ EOT
 					'text_id' => $work['id'],
 					'size' => $usize,
 					'percent' => $percent,
-					'comment' => '',
+					//'comment' => '',
 					'date' => $this->modifDate,
 				);
 				$qs[] = $this->db->insertQ(DBT_USER_TEXT, $set, true, false);
@@ -476,7 +477,7 @@ EOT
 				'mode' => 'public',
 
 				'seqnr' => (isset($book['seq_nr']) ? $book['seq_nr'] : 0),
-				'orig_title' => (isset($book['orig_title']) ? self::fixOrigTitle($book['orig_title']) : ''),
+				'orig_title' => (empty($book['orig_title']) ? '' : self::fixOrigTitle($book['orig_title'])),
 			);
 		}
 		if (isset($book['subtitle'])) $set['subtitle'] = $book['subtitle'];
