@@ -30,18 +30,8 @@ class PersonAdmin extends Admin
 		'real_name',
 		'oreal_name',
 		'country',
-		'role' => array(
-			'type' => 'choice',
-			'form_field_options' => array(
-				'choices' => array(
-					1 => 'Aвтор',
-					2 => 'Преводач',
-					3 => 'Автор и преводач',
-				),
-				'expanded' => true,
-				'required' => true,
-			),
-		),
+		'is_author',
+		'is_translator',
 		'info',
 		'type' => array(
 			'type' => 'choice',

@@ -5,8 +5,8 @@ namespace Chitanka\LibBundle\Entity;
 class PersonRepository extends EntityRepository
 {
 	protected
-		/* role bit: 1 - author, 2 - translator, 3 - both */
-		$sqlRole = null,
+		$asAuthor = false,
+		$asTranslator = false,
 		$queryableFields = array('id', 'slug', 'name', 'orig_name', 'real_name', 'oreal_name');
 
 
@@ -47,21 +47,28 @@ class PersonRepository extends EntityRepository
 
 	public function getQueryBuilder($orderBys = null)
 	{
-		$qb = $this->createQueryBuilder('e')
+		$qb = $this->getBaseQueryBuilder('e')
 			->select('e', 'p')
 			->leftJoin('e.person', 'p');
-		if ($this->sqlRole) {
-			$qb->andWhere("e.role IN ($this->sqlRole)");
-		}
 
 		return $qb;
 	}
 
 	public function getCountQueryBuilder($alias = 'e')
 	{
-		$qb = $this->createQueryBuilder($alias)->select('COUNT(e.id)');
-		if ($this->sqlRole) {
-			$qb->andWhere("e.role IN ($this->sqlRole)");
+		$qb = $this->getBaseQueryBuilder($alias)->select('COUNT(e.id)');
+
+		return $qb;
+	}
+
+	public function getBaseQueryBuilder($alias = 'e')
+	{
+		$qb = $this->createQueryBuilder($alias);
+		if ($this->asAuthor) {
+			$qb->andWhere("e.is_author = 1");
+		}
+		if ($this->asTranslator) {
+			$qb->andWhere("e.is_translator = 1");
 		}
 
 		return $qb;
@@ -94,14 +101,14 @@ class PersonRepository extends EntityRepository
 
 	public function asAuthor()
 	{
-		$this->sqlRole = '1,3';
+		$this->asAuthor = true;
 
 		return $this;
 	}
 
 	public function asTranslator()
 	{
-		$this->sqlRole = '2,3';
+		$this->asTranslator = true;
 
 		return $this;
 	}

@@ -2,6 +2,8 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Chitanka\LibBundle\Util\String;
+
 #use Symfony\Component\Validator\Constraints;
 #use Symfony\Component\Validator\Mapping\ClassMetadata;
 
@@ -13,7 +15,8 @@ namespace Chitanka\LibBundle\Entity;
 *		@orm:Index(name="last_name_idx", columns={"last_name"}),
 *		@orm:Index(name="orig_name_idx", columns={"orig_name"}),
 *		@orm:Index(name="country_idx", columns={"country"}),
-*		@orm:Index(name="role_idx", columns={"role"})}
+*		@orm:Index(name="is_author_idx", columns={"is_author"}),
+*		@orm:Index(name="is_translator_idx", columns={"is_translator"})}
 * )
 */
 class Person
@@ -66,12 +69,11 @@ class Person
 	*/
 	private $country;
 
-	/**
-	* @var integer $role
-	* @orm:Column(type="smallint")
-	* Values: 1 - author, 2 - translator, 3 - both
-	*/
-	private $role = 1;
+	/** @orm:Column(type="boolean") */
+	private $is_author = true;
+
+	/** @orm:Column(type="boolean") */
+	private $is_translator = false;
 
 	/**
 	* @var string $info
@@ -118,10 +120,29 @@ class Person
 	public function setSlug($slug) { $this->slug = $slug; }
 	public function getSlug() { return $this->slug; }
 
-	public function setName($name) { $this->name = $name; }
+	public function setName($name)
+	{
+		$this->name = $name;
+		$this->last_name = self::getLastNameFromName($name);
+		if (empty($this->slug)) {
+			$this->slug = String::slugify($name);
+		}
+	}
 	public function getName() { return $this->name; }
 
-	public function setOrigName($origName) { $this->orig_name = $origName; }
+	public function getLastNameFromName($name)
+	{
+		preg_match('/([^,]+) ([^,]+)(, .+)?/', $name, $m);
+		return isset($m[2]) ? $m[2] : $name;
+	}
+
+	public function setOrigName($origName)
+	{
+		$this->orig_name = $origName;
+		if (empty($this->slug) && preg_match('/[a-z]/', $origName)) {
+			$this->slug = String::slugify($origName);
+		}
+	}
 	public function getOrigName() { return $this->orig_name; }
 	public function orig_name() { return $this->orig_name; }
 
@@ -131,14 +152,29 @@ class Person
 	public function setOrealName($orealName) { $this->oreal_name = $orealName; }
 	public function getOrealName() { return $this->oreal_name; }
 
-	public function setLastName($lastName) { $this->last_name = $lastName; }
 	public function getLastName() { return $this->last_name; }
 
 	public function setCountry($country) { $this->country = $country; }
 	public function getCountry() { return $this->country; }
 
-	public function setRole($role) { $this->role = $role; }
-	public function getRole() { return $this->role; }
+	public function getIsAuthor() { return $this->is_author; }
+	public function getIsTranslator() { return $this->is_translator; }
+
+	public function isAuthor($isAuthor = null)
+	{
+		if ($isAuthor !== null) {
+			$this->is_author = $isAuthor;
+		}
+		return $this->is_author;
+	}
+
+	public function isTranslator($isTranslator = null)
+	{
+		if ($isTranslator !== null) {
+			$this->is_translator = $isTranslator;
+		}
+		return $this->is_translator;
+	}
 
 	public function setInfo($info) { $this->info = $info; }
 	public function getInfo() { return $this->info; }
