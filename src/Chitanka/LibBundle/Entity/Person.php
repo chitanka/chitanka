@@ -159,6 +159,8 @@ class Person
 
 	public function getIsAuthor() { return $this->is_author; }
 	public function getIsTranslator() { return $this->is_translator; }
+	public function setIsAuthor($isAuthor) { $this->is_author = $isAuthor; }
+	public function setIsTranslator($isTranslator) { $this->is_translator = $isTranslator; }
 
 	public function isAuthor($isAuthor = null)
 	{
