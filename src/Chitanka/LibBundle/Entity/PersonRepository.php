@@ -102,6 +102,7 @@ class PersonRepository extends EntityRepository
 	public function asAuthor()
 	{
 		$this->asAuthor = true;
+		$this->asTranslator = false;
 
 		return $this;
 	}
@@ -109,6 +110,7 @@ class PersonRepository extends EntityRepository
 	public function asTranslator()
 	{
 		$this->asTranslator = true;
+		$this->asAuthor = false;
 
 		return $this;
 	}
