@@ -347,7 +347,7 @@ EOT
 				'orig_title' => (empty($work['orig_title']) ? '' : self::fixOrigTitle($work['orig_title'])),
 			);
 		}
-		if (isset($work['subtitle'])) $set['subtitle'] = $work['subtitle'];
+		if (isset($work['subtitle'])) $set['subtitle'] = String::my_replace($work['subtitle']);
 		if (isset($work['orig_subtitle'])) $set['orig_subtitle'] = self::fixOrigTitle($work['orig_subtitle']);
 		if (isset($work['year'])) $set['year'] = $work['year'];
 		if (isset($work['year2'])) $set['year2'] = $work['year2'];
@@ -471,8 +471,8 @@ EOT
 		if ($book['is_new']) {
 			$set += array(
 				'created_at' => $this->entrydate,
-				'has_anno' => (isset($book['anno']) ? 1 : 0),
-				'has_cover' => (isset($book['cover']) ? 1 : 0),
+				'has_anno' => 0,
+				'has_cover' => 0,
 				'type' => $book['type'],
 				'mode' => 'public',
 
@@ -480,7 +480,9 @@ EOT
 				'orig_title' => (empty($book['orig_title']) ? '' : self::fixOrigTitle($book['orig_title'])),
 			);
 		}
-		if (isset($book['subtitle'])) $set['subtitle'] = $book['subtitle'];
+		if (isset($book['anno']))  $set['has_anno'] = 1;
+		if (isset($book['cover']))  $set['has_cover'] = 1;
+		if (isset($book['subtitle'])) $set['subtitle'] = String::my_replace($book['subtitle']);
 		if (isset($book['year'])) $set['year'] = $book['year'];
 		if (isset($book['trans_year'])) $set['trans_year'] = $book['trans_year'];
 
