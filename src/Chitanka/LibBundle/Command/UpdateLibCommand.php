@@ -46,7 +46,7 @@ EOT
 		$this->dumpSql = $input->getOption('dump-sql') === true;
 		$queries = $this->conquerTheWorld($input, $output, $this->container->get('doctrine.orm.default_entity_manager'));
 
-		echo str_replace('*/;', '*/', implode(";\n", $queries)), ";\n";
+		echo str_replace('*/;', '*/', implode(";\n", $queries) . ";\n");
 
 		$output->writeln('/*Done.*/');
 	}

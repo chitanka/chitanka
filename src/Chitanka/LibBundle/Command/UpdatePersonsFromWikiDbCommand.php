@@ -15,7 +15,7 @@ class UpdatePersonsFromWikiDbCommand extends CommonDbCommand
 
 		$this
 			->setName('db:update-persons-from-wiki')
-			->setDescription('Update links to external sites')
+			->setDescription('Update persons from wiki data')
 			->setHelp(<<<EOT
 The <info>db:update-persons-from-wiki</info> command reads data from the wiki and updates or adds new person entries.
 EOT
