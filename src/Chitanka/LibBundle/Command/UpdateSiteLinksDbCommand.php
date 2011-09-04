@@ -20,8 +20,7 @@ class UpdateSiteLinksDbCommand extends CommonDbCommand
 			->setHelp(<<<EOT
 The <info>db:update-sites</info> command reads data from the wiki and updates the links to external sites.
 EOT
-        );
-		;
+		);
 	}
 
 	/**

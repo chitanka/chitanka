@@ -19,7 +19,7 @@ class UpdatePersonsFromWikiDbCommand extends CommonDbCommand
 			->setHelp(<<<EOT
 The <info>db:update-persons-from-wiki</info> command reads data from the wiki and updates or adds new person entries.
 EOT
-        );
+		);
 	}
 
 	/**

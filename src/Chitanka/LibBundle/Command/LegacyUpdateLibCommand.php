@@ -28,8 +28,7 @@ class LegacyUpdateLibCommand extends CommonDbCommand
 			->setHelp(<<<EOT
 The <info>lib:legacy-update</info> command adds or updates texts and books.
 EOT
-        );
-		;
+		);
 	}
 
 	/**

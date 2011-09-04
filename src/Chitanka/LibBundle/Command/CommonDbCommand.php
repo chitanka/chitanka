@@ -4,6 +4,8 @@ namespace Chitanka\LibBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
+use Chitanka\LibBundle\Legacy\Setup;
+use Chitanka\LibBundle\Util\String;
 
 
 class CommonDbCommand extends Command
@@ -115,5 +117,47 @@ class CommonDbCommand extends Command
 			$connection->executeUpdate($update);
 		}
 		$connection->commit();
+	}
+
+
+	public function buildTextHeadersUpdateQuery($file, $textId, $headlevel)
+	{
+		require_once __DIR__ . '/../Legacy/headerextract.php';
+
+		$data = array();
+		foreach (\Chitanka\LibBundle\Legacy\makeDbRows($file, $headlevel) as $row) {
+			$name = $row[2];
+			$name = strtr($name, array('_'=>''));
+			$name = $this->olddb()->escape(String::my_replace($name));
+			$data[] = array($textId, $row[0], $row[1], $name, $row[3], $row[4]);
+		}
+		$qs = array();
+		$qs[] = $this->olddb()->deleteQ('text_header', array('text_id' => $textId));
+		if ( !empty($data) ) {
+			$fields = array('text_id', 'nr', 'level', 'name', 'fpos', 'linecnt');
+			$qs[] = $this->olddb()->multiinsertQ('text_header', $data, $fields);
+		}
+
+		return $qs;
+	}
+
+	public function printQueries($queries)
+	{
+		echo str_replace('*/;', '*/', implode(";\n", $queries) . ";\n");
+	}
+
+	public function webDir($file = null)
+	{
+		return __DIR__ . '/../../../../web' . ($file ? "/$file" : '');
+	}
+
+	private $_olddb;
+	protected function olddb()
+	{
+		if ( ! $this->_olddb) {
+			Setup::doSetup($this->container);
+			$this->_olddb = Setup::db();
+		}
+		return $this->_olddb;
 	}
 }

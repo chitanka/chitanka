@@ -26,8 +26,7 @@ class MigrateDbCommand extends CommonDbCommand
 			->setHelp(<<<EOT
 The <info>db:migrate</info> command migrates the old database from mylib to the new schema.
 EOT
-        );
-		;
+		);
 	}
 
 	/**

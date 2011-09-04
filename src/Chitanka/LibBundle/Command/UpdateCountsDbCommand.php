@@ -18,8 +18,7 @@ class UpdateCountsDbCommand extends CommonDbCommand
 			->setHelp(<<<EOT
 The <info>db:update-counts</info> command updates some total counts in the database. For example number of texts by every label, or number of books by every category.
 EOT
-        );
-		;
+		);
 	}
 
 	/**

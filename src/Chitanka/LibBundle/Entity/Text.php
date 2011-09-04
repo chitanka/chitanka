@@ -1375,4 +1375,8 @@ EOS;
 		return $this;
 	}
 
+	public function getMainContentFile()
+	{
+		return Legacy::getContentFilePath('text', $this->id);
+	}
 }

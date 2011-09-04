@@ -27,7 +27,7 @@ class UpdateLibCommand extends CommonDbCommand
 			->setHelp(<<<EOT
 The <info>lib:update</info> command adds or updates texts and books.
 EOT
-        );
+		);
 	}
 
 	/**
@@ -46,7 +46,7 @@ EOT
 		$this->dumpSql = $input->getOption('dump-sql') === true;
 		$queries = $this->conquerTheWorld($input, $output, $this->container->get('doctrine.orm.default_entity_manager'));
 
-		echo str_replace('*/;', '*/', implode(";\n", $queries) . ";\n");
+		$this->printQueries($queries);
 
 		$output->writeln('/*Done.*/');
 	}
@@ -56,8 +56,6 @@ EOT
 	{
 		$this->em = $em;
 
-		Setup::doSetup($this->container);
-		$this->db = Setup::db();
 		$this->overwrite = false; // overwrite existing files?
 
 		$this->entrydate = date('Y-m-d');
@@ -142,6 +140,8 @@ EOT
 				$work['trans_year'] = $transYear;
 			}
 			$work['translators'] = $translators;
+		} else if ($work['is_new'] && $work['lang'] != $work['orig_lang']) {
+			$work['trans_license'] = 'fc';
 		}
 		if (isset($work['users'])) {
 			$users = array();
@@ -294,7 +294,7 @@ EOT
 	private function getNextId($table)
 	{
 		if ( ! isset($this->_curIds[$table])) {
-			$this->_curIds[$table] = $this->db->autoIncrementId($table);
+			$this->_curIds[$table] = $this->olddb()->autoIncrementId($table);
 		} else {
 			$this->_curIds[$table]++;
 		}
@@ -359,9 +359,9 @@ EOT
 		if (isset($work['trans_license'])) $set['trans_license_id'] = $this->getObjectId('license', $work['trans_license'], 'code');
 
 		if ($work['is_new']) {
-			$qs[] = $this->db->replaceQ(DBT_TEXT, $set);
+			$qs[] = $this->olddb()->replaceQ(DBT_TEXT, $set);
 		} else if (count($set) > 1) {
-			$qs[] = $this->db->updateQ(DBT_TEXT, $set, array('id' => $work['id']));
+			$qs[] = $this->olddb()->updateQ(DBT_TEXT, $set, array('id' => $work['id']));
 		}
 
 		if (isset($work['revision'])) {
@@ -373,26 +373,26 @@ EOT
 				'date' => $this->modifDate,
 				'first' => ($work['is_new'] ? 1 : 0),
 			);
-			$qs[] = $this->db->replaceQ(DBT_EDIT_HISTORY, $set);
-			$qs[] = $this->db->updateQ(DBT_TEXT, array('cur_rev_id' => $work['revision_id']), array('id' => $work['id']));
+			$qs[] = $this->olddb()->replaceQ(DBT_EDIT_HISTORY, $set);
+			$qs[] = $this->olddb()->updateQ(DBT_TEXT, array('cur_rev_id' => $work['revision_id']), array('id' => $work['id']));
 		} else {
 			$qs[] = "/* no revision for text $work[id] */";
 		}
 
 		if ( ! empty($work['authors'])) {
-			$qs[] = $this->db->deleteQ(DBT_AUTHOR_OF, array('text_id' => $work['id']));
+			$qs[] = $this->olddb()->deleteQ(DBT_AUTHOR_OF, array('text_id' => $work['id']));
 			foreach ($work['authors'] as $pos => $author) {
 				$set = array('person_id' => $author, 'text_id' => $work['id'], 'pos' => $pos);
-				$qs[] = $this->db->insertQ(DBT_AUTHOR_OF, $set, false, false);
+				$qs[] = $this->olddb()->insertQ(DBT_AUTHOR_OF, $set, false, false);
 			}
 		}
 
 		if ( ! empty($work['translators'])) {
-			$qs[] = $this->db->deleteQ(DBT_TRANSLATOR_OF, array('text_id' => $work['id']));
+			$qs[] = $this->olddb()->deleteQ(DBT_TRANSLATOR_OF, array('text_id' => $work['id']));
 			foreach ($work['translators'] as $pos => $translator) {
 				list($personId, $transYear) = $translator;
 				$set = array('person_id' => $personId, 'text_id' => $work['id'], 'pos' => $pos, 'year' => $transYear);
-				$qs[] = $this->db->insertQ(DBT_TRANSLATOR_OF, $set, false, false);
+				$qs[] = $this->olddb()->insertQ(DBT_TRANSLATOR_OF, $set, false, false);
 			}
 		}
 
@@ -407,7 +407,7 @@ EOT
 					//'comment' => '',
 					'date' => $this->modifDate,
 				);
-				$qs[] = $this->db->insertQ(DBT_USER_TEXT, $set, true, false);
+				$qs[] = $this->olddb()->insertQ(DBT_USER_TEXT, $set, true, false);
 			}
 		}
 
@@ -426,14 +426,14 @@ EOT
 				$tmpname = 'text.'.uniqid();
 				file_put_contents($tmpname, $fullText);
 				if (isset($work['toc_level'])) {
-					$qs = array_merge($qs, $this->makeUpdateChunkQuery($tmpname, $work['id'], $work['toc_level']));
+					$qs = array_merge($qs, $this->buildTextHeadersUpdateQuery($tmpname, $work['id'], $work['toc_level']));
 				}
 				unlink($tmpname);
 			} else if (isset($work['text'])) {
 				$entryFile = "$this->contentDir/text/$path";
 				self::copyTextFile($work['text'], $entryFile);
 				if (isset($work['toc_level'])) {
-					$qs = array_merge($qs, $this->makeUpdateChunkQuery($entryFile, $work['id'], $work['toc_level']));
+					$qs = array_merge($qs, $this->buildTextHeadersUpdateQuery($entryFile, $work['id'], $work['toc_level']));
 				}
 			}
 			if (isset($work['info'])) {
@@ -445,6 +445,7 @@ EOT
 					mkdir($dir, 0755, true);
 				}
 				`cp $work[img]/* $dir`;
+				// TODO check if images are referenced from the text file
 			}
 		}
 
@@ -490,9 +491,9 @@ EOT
 		if (isset($book['category'])) $set['category_id'] = $this->getObjectId('category', $book['category']);
 
 		if ($book['is_new']) {
-			$qs[] = $this->db->replaceQ(DBT_BOOK, $set);
+			$qs[] = $this->olddb()->replaceQ(DBT_BOOK, $set);
 		} else if (count($set) > 1) {
-			$qs[] = $this->db->updateQ(DBT_BOOK, $set, array('id' => $book['id']));
+			$qs[] = $this->olddb()->updateQ(DBT_BOOK, $set, array('id' => $book['id']));
 		}
 
 		if (isset($book['revision'])) {
@@ -503,23 +504,23 @@ EOT
 				'date' => $this->modifDate,
 				'first' => ($book['is_new'] ? 1 : 0),
 			);
-			$qs[] = $this->db->replaceQ('book_revision', $set);
+			$qs[] = $this->olddb()->replaceQ('book_revision', $set);
 		} else {
 			$qs[] = "/* no revision for book $book[id] */";
 		}
 
 		if ( ! empty($book['authors'])) {
-			$qs[] = $this->db->deleteQ('book_author', array('book_id' => $book['id']));
+			$qs[] = $this->olddb()->deleteQ('book_author', array('book_id' => $book['id']));
 			foreach ($book['authors'] as $pos => $author) {
 				$set = array('person_id' => $author, 'book_id' => $book['id']);
-				$qs[] = $this->db->insertQ('book_author', $set, false, false);
+				$qs[] = $this->olddb()->insertQ('book_author', $set, false, false);
 			}
 		}
 
 		if ( ! empty($book['works'])) {
 			foreach ($book['works'] as $work) {
 				$set = array('book_id' => $book['id'], 'text_id' => $work['id'], 'share_info' => (int)$work['is_new']);
-				$qs[] = $this->db->insertQ('book_text', $set, false, false);
+				$qs[] = $this->olddb()->insertQ('book_text', $set, false, false);
 			}
 		}
 
@@ -552,28 +553,6 @@ EOT
 			$contents = String::my_replace($contents);
 		}
 		File::myfile_put_contents($dest, $contents);
-	}
-
-
-	public function makeUpdateChunkQuery($file, $textId, $headlevel)
-	{
-		require_once __DIR__ . '/../Legacy/headerextract.php';
-
-		$data = array();
-		foreach (\Chitanka\LibBundle\Legacy\makeDbRows($file, $headlevel) as $row) {
-			$name = $row[2];
-			$name = strtr($name, array('_'=>''));
-			$name = $this->db->escape(String::my_replace($name));
-			$data[] = array($textId, $row[0], $row[1], $name, $row[3], $row[4]);
-		}
-		$qs = array();
-		$qs[] = $this->db->deleteQ('text_header', array('text_id' => $textId));
-		if ( !empty($data) ) {
-			$fields = array('text_id', 'nr', 'level', 'name', 'fpos', 'linecnt');
-			$qs[] = $this->db->multiinsertQ('text_header', $data, $fields);
-		}
-
-		return $qs;
 	}
 
 
