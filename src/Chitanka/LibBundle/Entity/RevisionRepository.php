@@ -2,6 +2,8 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Chitanka\LibBundle\Util\Datetime;
+
 class RevisionRepository extends EntityRepository
 {
 
@@ -10,10 +12,22 @@ class RevisionRepository extends EntityRepository
 		return $this->getByDate(null, 1, $limit, $groupByDate);
 	}
 
-
-	public function getByDate($month, $page = 1, $limit = null, $groupByDate = true)
+	public function getByMonth($month, $page = 1, $limit = null)
 	{
-		$ids = $this->getIdsByDate($month, $page, $limit);
+		if (strpos($month, '-') === false) {
+			$yearMonth = date('Y') . '-' . $month;
+		} else {
+			$yearMonth = $month;
+		}
+		$dates = array("$yearMonth-01", Datetime::endOfMonth($yearMonth));
+
+		return $this->getByDate($dates, $page, $limit, false);
+	}
+
+
+	public function getByDate($date, $page = 1, $limit = null, $groupByDate = true)
+	{
+		$ids = $this->getIdsByDate($date, $page, $limit);
 
 		if (empty($ids)) {
 			return array();
@@ -52,7 +66,7 @@ class RevisionRepository extends EntityRepository
 	public function getByIds($ids, $orderBy = null)
 	{
 		$texts = $this->getQueryBuilder($orderBy)
-			->where(sprintf('r.id IN (%s)', implode(',', $ids)))
+			->andWhere(sprintf('r.id IN (%s)', implode(',', $ids)))
 			->getQuery()->getArrayResult();
 
 		return $texts;
