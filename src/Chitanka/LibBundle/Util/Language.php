@@ -42,6 +42,7 @@ class Language
 		'cs' => 'Чешки',
 		'sv' => 'Шведски',
 		'jp' => 'Японски',
+		'mul' => '(Многоезично)',
 	);
 
 	static public function getLangs()
