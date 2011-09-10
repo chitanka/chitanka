@@ -195,7 +195,7 @@ class WorkPage extends Page {
 		}
 		$set = array(
 			'id' => $id,
-			'type' => in_array($this->status, array(self::STATUS_4, self::STATUS_5)) ? 1 : $this->workType,
+			'type' => in_array($this->status, array(self::STATUS_4)) ? 1 : $this->workType,
 			'title'=>$this->btitle,
 			'author'=> strtr($this->author, array(';'=>',')),
 			'user_id'=>$this->scanuser,
@@ -877,7 +877,7 @@ EOS;
 
 	protected function makeMultiEditInput() {
 		$editorList = $this->makeEditorList();
-		$myContrib = $this->makeMultiEditMyInput();
+		$myContrib = $this->isMyContribAllowed() ? $this->makeMultiEditMyInput() : '';
 
 		return <<<EOS
 	<fieldset>
@@ -888,6 +888,15 @@ EOS;
 EOS;
 	}
 
+	protected function isMyContribAllowed() {
+		if ($this->userIsSupervisor()) {
+			return true;
+		}
+		if (in_array($this->status, array(self::STATUS_5, self::STATUS_6, self::STATUS_7))) {
+			return false;
+		}
+		return true;
+	}
 
 	protected function makeMultiEditMyInput() {
 		$msg = '';
