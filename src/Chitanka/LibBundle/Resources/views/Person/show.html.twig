@@ -1,7 +1,17 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
 {% set title %}<a class="selflink" data-edit="{{ path('person_edit', {'id': person.id}) }}">{{ person.name }}</a>{% endset %}
-{% set subtitle = is_author ? (is_translator ? 'автор и преводач' : 'автор') : 'преводач' %}
+{% set subtitle %}{% spaceless %}
+	{% if person.is_author %}
+		{% if person.is_translator %}
+			автор и преводач
+		{% else %}
+			автор
+		{% endif %}
+	{% elseif person.is_translator %}
+		преводач
+	{% endif %}
+{% endspaceless %}{% endset %}
 {% block content %}
 	{% include 'LibBundle:Person:info.html.twig' %}
 
@@ -10,10 +20,10 @@
 		{% include 'LibBundle:Book:books_list.html.twig' %}
 	{% endif %}
 
-	{% if is_author %}
-		{% if is_translator %}
+	{% if person.is_author %}
+		{% if person.is_translator %}
 			<h2 id="author">Авторски произведения</h2>
-		{% elseif books is defined %}
+		{% elseif books is defined and texts_as_author|length %}
 			<h2 id="author">Произведения</h2>
 		{% endif %}
 		{% for series in texts_as_author %}
@@ -21,8 +31,8 @@
 		{% endfor %}
 	{% endif %}
 
-	{% if is_translator %}
-		{% if is_author or books is defined %}
+	{% if person.is_translator %}
+		{% if person.is_author or books is defined %}
 			<h2 id="translator">Преводни произведения</h2>
 		{% endif %}
 		{% for series in texts_as_translator %}

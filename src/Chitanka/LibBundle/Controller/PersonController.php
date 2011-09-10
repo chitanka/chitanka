@@ -120,8 +120,6 @@ class PersonController extends Controller
 			'person' => $person,
 			'texts_as_author' => $textsAsAuthor,
 			'texts_as_translator' => $textsAsTranslator,
-			'is_author' => ! empty($textsAsAuthor),
-			'is_translator' => ! empty($textsAsTranslator),
 		);
 
 		if ( count($books = $this->getRepository('Book')->getByAuthor($person)) ) {
