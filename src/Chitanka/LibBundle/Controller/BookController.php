@@ -2,6 +2,8 @@
 
 namespace Chitanka\LibBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Doctrine\ORM\NoResultException;
 use Chitanka\LibBundle\Pagination\Pager;
 use Chitanka\LibBundle\Legacy\Setup;
 
@@ -68,8 +70,9 @@ class BookController extends Controller
 	public function showAction($id, $_format)
 	{
 		list($id) = explode('-', $id); // remove optional slug
-		$book = $this->getRepository('Book')->get($id);
-		if ( ! $book) {
+		try {
+			$book = $this->getRepository('Book')->get($id);
+		} catch (NoResultException $e) {
 			throw new NotFoundHttpException("Няма книга с номер $id.");
 		}
 		$this->responseFormat = $_format;

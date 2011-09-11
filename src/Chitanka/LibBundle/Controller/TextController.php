@@ -5,6 +5,7 @@ namespace Chitanka\LibBundle\Controller;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\NoResultException;
 use Chitanka\LibBundle\Pagination\Pager;
 use Chitanka\LibBundle\Util\File;
 use Chitanka\LibBundle\Util\Char;
@@ -137,8 +138,9 @@ class TextController extends Controller
 	public function showAction($id, $_format)
 	{
 		list($id) = explode('-', $id); // remove optional slug
-		$text = $this->getRepository('Text')->get($id);
-		if ( ! $text) {
+		try {
+			$text = $this->getRepository('Text')->get($id);
+		} catch (NoResultException $e) {
 			throw new NotFoundHttpException("Няма текст с номер $id.");
 		}
 		$this->responseFormat = $_format;
