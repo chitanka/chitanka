@@ -1281,7 +1281,7 @@ EOS;
 
 
 	protected function makeTmpFilePath($file = '') {
-		if ( strpos($file, 'http://') !== false ) {
+		if (preg_match('|https?://|', $file)) {
 			return $file;
 		}
 
