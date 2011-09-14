@@ -322,7 +322,7 @@ class WorkPage extends Page {
 
 	protected function buildContent() {
 		$content = $this->makeUserGuideLink();
-		if ($this->subaction == 'edit' && $this->userCanAddEntry()) {
+		if ($this->subaction == 'edit'/* && $this->userCanAddEntry()*/) {
 			$this->initData();
 			$content .= $this->makeForm();
 		} else {
