@@ -66,13 +66,21 @@ EOT
 
 	protected function createPerson($data)
 	{
-		$person = new Person;
+		if ($data['slug']) {
+			$person = $this->em->getRepository('LibBundle:Person')->getBySlug($data['slug']);
+			if ( ! $person) {
+				$person = new Person;
+				$person->setSlug($data['slug']);
+			}
+		} else {
+			$person = new Person;
+		}
 		if ( ! empty($data['orig_name'])) $person->setOrigName($data['orig_name']);
-		$person->setName($data['name']);
+		if ( ! empty($data['name'])) $person->setName($data['name']);
 		if ( ! empty($data['real_name'])) $person->setRealName($data['real_name']);
 		if ( ! empty($data['oreal_name'])) $person->setOrealName($data['oreal_name']);
-		$person->setCountry($data['country']);
-		$person->setInfo($data['info']);
+		if ( ! empty($data['country'])) $person->setCountry($data['country']);
+		if ( ! empty($data['info'])) $person->setInfo($data['info']);
 
 		return $person;
 	}
@@ -102,12 +110,13 @@ EOT
 	{
 		$wikiVars = $this->_getPersonVarsFromWikiContent($template);
 		return array(
-			'name'       => $wikiVars['име'],
-			'orig_name'  => $wikiVars['оригинално име'],
-			'real_name'  => $wikiVars['истинско име'],
-			'oreal_name' => $wikiVars['оригинално истинско име'],
-			'country'    => $wikiVars['държава'],
-			'info'       => str_replace('_', ' ', $wikiVars['уики']),
+			'slug'       => @$wikiVars['идентификатор'],
+			'name'       => @$wikiVars['име'],
+			'orig_name'  => @$wikiVars['оригинално име'],
+			'real_name'  => @$wikiVars['истинско име'],
+			'oreal_name' => @$wikiVars['оригинално истинско име'],
+			'country'    => @$wikiVars['държава'],
+			'info'       => str_replace('_', ' ', @$wikiVars['уики']),
 		);
 	}
 
