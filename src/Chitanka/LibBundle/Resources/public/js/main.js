@@ -107,7 +107,7 @@ function enhanceModifying()
 			return false;
 		})
 		.delegate("a[data-edit]", "click", function(event){
-			if (event.altKey) {
+			if (event.altKey || event.shiftKey) {
 				window.open($(this).data("edit"));
 				return false;
 			}
