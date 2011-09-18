@@ -933,6 +933,8 @@ class Book extends BaseWork
 
 		return $files;
 	}
+	public function setDatafiles($f) {} // dummy for sonata admin
+
 
 	##################
 	# legacy pic stuff
