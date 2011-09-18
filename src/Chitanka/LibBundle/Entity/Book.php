@@ -919,6 +919,20 @@ class Book extends BaseWork
 	}
 
 
+	public function getDatafiles()
+	{
+		$files = array();
+		$files['book'] = Legacy::getContentFilePath('book', $this->id);
+		if ($this->hasCover()) {
+			$files['book-cover'] = Legacy::getContentFilePath('book-cover', $this->id) . '.1000.jpg';
+		}
+		if ($this->hasAnno()) {
+			$files['book-anno'] = Legacy::getContentFilePath('book-anno', $this->id);
+		}
+		$files['book-info'] = Legacy::getContentFilePath('book-info', $this->id);
+
+		return $files;
+	}
 
 	##################
 	# legacy pic stuff

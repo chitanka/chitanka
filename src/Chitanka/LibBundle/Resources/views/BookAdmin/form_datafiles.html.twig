@@ -1,0 +1,8 @@
+<div style="float: right; max-width: 40%">
+	<h2>Файлове</h2>
+	<ul>
+		{% for filetype, file in object.datafiles %}
+			<li><a href="{{ asset(file) }}">{{ filetype }}</a></li>
+		{% endfor %}
+	</ul>
+</div>

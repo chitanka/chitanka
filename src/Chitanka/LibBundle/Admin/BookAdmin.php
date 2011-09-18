@@ -31,6 +31,7 @@ class BookAdmin extends Admin
 
 	protected $form = array(
 		//'sfbg' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:form_sfbg.html.twig'),
+		'datafiles' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:form_datafiles.html.twig'),
 		'slug',
 		'title',
 		'subtitle',
