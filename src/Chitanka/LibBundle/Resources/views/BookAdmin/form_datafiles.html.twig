@@ -2,7 +2,11 @@
 	<h2>Файлове</h2>
 	<ul>
 		{% for filetype, file in object.datafiles %}
-			<li><a href="{{ asset(file) }}">{{ filetype }}</a></li>
+			{% if filetype == "book-cover" %}
+				<li><a href="{{ asset(file) }}">{{ filetype }}</a></li>
+			{% else %}
+				<li><a href="/{{ file }}">{{ filetype }}</a></li>
+			{% endif %}
 		{% endfor %}
 	</ul>
 </div>
