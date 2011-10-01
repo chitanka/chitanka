@@ -145,12 +145,16 @@ EOT
 		}
 		if (isset($work['users'])) {
 			$users = array();
-			foreach (explode(';', $work['users']) as $userPerc) {
-				$parts = explode(',', $userPerc);
-				$userId = $this->getObjectId('user', $parts[0], 'username');
-				if ($userId) { // only registered users
-					$users[$userId] = isset($parts[1]) ? $parts[1] : 100;
+			foreach (str_getcsv($work['users'], ';') as $userContrib) {
+				// username, percent, comment, date
+				$parts = str_getcsv($userContrib, ',');
+				if ($parts[0] == '-') {
+					$parts[0] = null;
+					$parts[] = null;
+				} else {
+					$parts[] = $this->getObjectId('user', $parts[0], 'username');
 				}
+				$users[] = $parts;
 			}
 			$work['users'] = $users;
 		}
@@ -397,16 +401,19 @@ EOT
 		}
 
 		if (isset($work['text']) && isset($work['users'])) {
-			foreach ($work['users'] as $user => $percent) {
+			foreach ($work['users'] as $user) {
+				list($username, $percent, $comment, $date, $userId) = $user;
 				$usize = $percent/100 * $size;
 				$set = array(
-					'user_id' => $user,
 					'text_id' => $work['id'],
 					'size' => $usize,
 					'percent' => $percent,
-					//'comment' => '',
+					'comment' => $comment,
 					'date' => $this->modifDate,
+					'humandate' => $date,
 				);
+				if ($userId) $set['user_id'] = $userId;
+				if ($username) $set['username'] = $username;
 				$qs[] = $this->olddb()->insertQ(DBT_USER_TEXT, $set, true, false);
 			}
 		}
@@ -474,13 +481,12 @@ EOT
 				'created_at' => $this->entrydate,
 				'has_anno' => 0,
 				'has_cover' => 0,
-				'type' => $book['type'],
 				'mode' => 'public',
-
-				'seqnr' => (isset($book['seq_nr']) ? $book['seq_nr'] : 0),
-				'orig_title' => (empty($book['orig_title']) ? '' : self::fixOrigTitle($book['orig_title'])),
 			);
 		}
+		if (isset($book['type']))  $set['type'] = $book['type'];
+		if (isset($book['orig_title'])) $set['orig_title'] = self::fixOrigTitle($book['orig_title']);
+		if (isset($book['seq_nr']))  $set['seqnr'] = $book['seq_nr'];
 		if (isset($book['anno']))  $set['has_anno'] = 1;
 		if (isset($book['cover']))  $set['has_cover'] = 1;
 		if (isset($book['subtitle'])) $set['subtitle'] = String::my_replace($book['subtitle']);

@@ -4,10 +4,7 @@ namespace Chitanka\LibBundle\Entity;
 
 /**
 * @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\UserTextContribRepository")
-* @orm:Table(name="user_text_contrib",
-*	uniqueConstraints={@orm:UniqueConstraint(name="text_user_uniq", columns={"text_id", "user_id"})},
-*	indexes={
-*		@orm:Index(name="user_idx", columns={"user_id"})}
+* @orm:Table(name="user_text_contrib"
 * )
 */
 class UserTextContrib
@@ -23,6 +20,12 @@ class UserTextContrib
 	* @orm:ManyToOne(targetEntity="User", cascade={"ALL"})
 	*/
 	private $user;
+
+	/**
+	* @var string
+	* @orm:Column(type="string", length=100)
+	*/
+	private $username;
 
 	/**
 	* @var integer $text
@@ -54,10 +57,19 @@ class UserTextContrib
 	*/
 	private $date;
 
+	/**
+	* @var string
+	* @orm:Column(type="string", length="30")
+	*/
+	private $humandate;
+
 	public function getId() { return $this->id; }
 
 	public function setUser($user) { $this->user = $user; }
 	public function getUser() { return $this->user; }
+
+	public function setUsername($username) { $this->username = $username; }
+	public function getUsername() { return $this->username; }
 
 	public function setText($text) { $this->text = $text; }
 	public function getText() { return $this->text; }
@@ -73,5 +85,8 @@ class UserTextContrib
 
 	public function setDate($date) { $this->date = $date; }
 	public function getDate() { return $this->date; }
+
+	public function setHumandate($humandate) { $this->humandate = $humandate; }
+	public function getHumandate() { return $this->humandate; }
 
 }

@@ -9,6 +9,17 @@
 	{% import 'LibBundle::text.html.twig' as texttools %}
 	{{ texttools.qrcode(text) }}
 
+	{% for contrib in text.userContribs %}
+		<p>
+			{{ contrib.comment }}:
+			{% if contrib.user %}
+				<a href="{{ path('user_show', {'username': contrib.username}) }}">{{ contrib.username }}</a>
+			{% else %}
+				{{ contrib.username }}
+			{% endif %}
+			{% if contrib.humandate is defined %}({{ contrib.humandate }}){% endif %}
+		</p>
+	{% endfor %}
 	{{ text.extrainfohtml(asset('/'))|raw }}
 
 	<hr>

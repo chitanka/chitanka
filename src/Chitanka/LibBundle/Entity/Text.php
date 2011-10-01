@@ -440,6 +440,8 @@ class Text extends BaseWork
 	public function setMode($mode) { $this->mode = $mode; }
 	public function getMode() { return $this->mode; }
 
+	public function getUserContribs() { return $this->userContribs; }
+
 	public function addAuthor(Person $author) { $this->authors[] = $author; }
 	public function getAuthors() { return $this->authors; }
 
