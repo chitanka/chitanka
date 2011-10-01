@@ -10,6 +10,7 @@
 	{{ texttools.qrcode(text) }}
 
 	{% for contrib in text.userContribs %}
+		{% if contrib.comment %}
 		<p>
 			{{ contrib.comment }}:
 			{% if contrib.user %}
@@ -19,6 +20,7 @@
 			{% endif %}
 			{% if contrib.humandate is defined %}({{ contrib.humandate }}){% endif %}
 		</p>
+		{% endif %}
 	{% endfor %}
 	{{ text.extrainfohtml(asset('/'))|raw }}
 
