@@ -101,7 +101,7 @@
 
 
 {% macro text_extra_info(text) %}
-	{% if text.orig_title %}
+	{% if text.orig_title is defined %}
 		<em>{{ text.orig_title }}</em>{% if text.year is defined %}, {{ text.year }}{% endif %}
 	{% elseif text.year is defined %}
 		{{ text.year }}
