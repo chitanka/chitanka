@@ -360,12 +360,12 @@ new:
     defaults: { _controller: LibBundle:History:index }
 
 new_books:
-    pattern:   /new-books.{_format}
+    pattern:   /new/books.{_format}
     defaults: { _controller: LibBundle:History:listBooks, _format: html }
     requirements:   { _method: get, _format: html|rss|atom }
 
 new_books_by_month:
-    pattern:   /new-books/{year}/{month}.{_format}/{page}
+    pattern:   /new/books/{year}/{month}.{_format}/{page}
     defaults: { _controller: LibBundle:History:listBooksByMonth, page: 1, _format: html }
     requirements:
         _method: get
@@ -375,12 +375,12 @@ new_books_by_month:
         _format: html|atom
 
 new_texts:
-    pattern:   /new-texts.{_format}
+    pattern:   /new/texts.{_format}
     defaults: { _controller: LibBundle:History:listTexts, _format: html }
     requirements:   { _method: get, _format: html|rss|atom }
 
 new_texts_by_month:
-    pattern:   /new-texts/{year}/{month}.{_format}/{page}
+    pattern:   /new/texts/{year}/{month}.{_format}/{page}
     defaults: { _controller: LibBundle:History:listTextsByMonth, page: 1, _format: html }
     requirements:
         _method: get
