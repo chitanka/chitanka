@@ -126,6 +126,7 @@ class PersonController extends Controller
 			$this->view['books'] = $books;
 		}
 		if ($person->getInfo() != '') {
+			// TODO move this in the entity
 			list($prefix, $name) = explode(':', $person->getInfo());
 			$site = $this->getRepository('WikiSite')->findOneBy(array('code' => $prefix));
 			$this->view['info'] = Legacy::getMwContent($site->getUrl($name));

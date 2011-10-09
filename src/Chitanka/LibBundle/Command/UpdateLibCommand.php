@@ -145,11 +145,11 @@ EOT
 		}
 		if (isset($work['users'])) {
 			$users = array();
-			foreach (str_getcsv($work['users'], ';') as $userContrib) {
+			foreach (explode(';', $work['users']) as $userContrib) {
 				// username, percent, comment, date
 				$parts = str_getcsv($userContrib, ',');
 				if ($parts[0] == '-') {
-					$parts[0] = null;
+					$parts[0] = '?';
 					$parts[] = null;
 				} else {
 					$parts[] = $this->getObjectId('user', $parts[0], 'username');
