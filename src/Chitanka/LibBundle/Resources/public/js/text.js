@@ -75,10 +75,8 @@ $("button.ok").click(function(){
 });
 
 if ( ! location.hash ) {
-	var toc = $("#toc");
-	toc.boxcollapse();
 	$("a.goto-toc").live("click", function(){
-		$(".collapsible-ctrl a", toc).click(); // uncollapse toc
+		$("#toc .collapsible-ctrl a").click(); // uncollapse toc
 		//$("html").animate({scrollTop: toc.offset().top}, 800);
 	});
 }
