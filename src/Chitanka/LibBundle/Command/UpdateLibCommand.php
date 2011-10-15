@@ -137,7 +137,11 @@ EOT
 				if ($slug != '?') {
 					$translators[] = array($this->getObjectId('person', $slug), $transYear);
 				}
-				$work['trans_year'] = $transYear;
+				if (strpos($transYear, '-') !== false) {
+					list($work['trans_year'], $work['trans_year2']) = explode('-', $transYear);
+				} else {
+					$work['trans_year'] = $transYear;
+				}
 			}
 			$work['translators'] = $translators;
 		} else if ($work['is_new'] && $work['lang'] != $work['orig_lang']) {
@@ -270,13 +274,14 @@ EOT
 	{
 		$files = array();
 		$template = file_get_contents($work['tmpl']);
-		if (preg_match_all('/\{(text|file):-1(-.+)\}/', $template, $matches)) {
+		if (preg_match_all('/\{(text|file):-\d+(-.+)\}/', $template, $matches)) {
 			foreach ($matches[2] as $match) {
 				$files["$work[id]$match"] = str_replace('.tmpl', "$match.text", $work['tmpl']);
+				$template = preg_replace("/(text|file):-\d+-/", "$1:$work[id]-", $template);
 			}
 		}
 		$work['text'] = $files;
-		$work['tmpl'] = preg_replace('/(file|text):-1-/', '$1:'.$work['id'].'-', $template);
+		$work['tmpl'] = $template;
 
 		return $work;
 	}
