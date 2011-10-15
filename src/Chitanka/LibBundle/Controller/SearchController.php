@@ -9,7 +9,7 @@ use Chitanka\LibBundle\Entity\SearchString;
 class SearchController extends Controller
 {
 	protected $responseAge = 86400; // 24 hours
-	private $minQueryLength = 4;
+	private $minQueryLength = 3;
 
 	public function indexAction()
 	{
