@@ -60,7 +60,11 @@ EOT
 		foreach ($persons as $person) {
 			$this->em->persist($this->createPerson($person));
 		}
-		$this->em->flush();
+		try {
+			$this->em->flush();
+		} catch (\PDOException $e) {
+			//$e->getMessage();
+		}
 		return count($persons);
 	}
 
