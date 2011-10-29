@@ -59,11 +59,11 @@ EOT
 		$this->output->writeln('Updating persons...');
 		foreach ($persons as $person) {
 			$this->em->persist($this->createPerson($person));
-		}
-		try {
-			$this->em->flush();
-		} catch (\PDOException $e) {
-			//$e->getMessage();
+			try {
+				$this->em->flush();
+			} catch (\PDOException $e) {
+				$e->getMessage();
+			}
 		}
 		return count($persons);
 	}
