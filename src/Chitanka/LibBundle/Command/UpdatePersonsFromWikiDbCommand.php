@@ -36,6 +36,7 @@ EOT
 	{
 		$this->em = $this->container->get('doctrine.orm.default_entity_manager');
 		$this->output = $output;
+		$this->errors = array();
 		$this->processWikiPage('Работно ателие/Нови автори');
 		$output->writeln('Done.');
 	}
@@ -47,7 +48,8 @@ EOT
 		if (preg_match('/== Готови автори ==(.+)== За попълване ==/ms', $wikiPage->text, $m)) {
 			$personTemplates = trim($m[1]);
 			if ($personTemplates && $this->updatePersons($personTemplates)) {
-				$wikiPage->text = preg_replace('/(== Готови автори ==\n).+(\n== За попълване ==)/ms', "$1\n$2", $wikiPage->text);
+				$errors = implode("\n\n", $this->errors);
+				$wikiPage->text = preg_replace('/(== Готови автори ==\n).+(\n== За попълване ==)/ms', "$1$errors\n$2", $wikiPage->text);
 				$this->_wikiBot()->submit_page($wikiPage, '/* Готови автори */ пренасяне в базата на библиотеката');
 			}
 		}
@@ -62,7 +64,7 @@ EOT
 			try {
 				$this->em->flush();
 			} catch (\PDOException $e) {
-				$e->getMessage();
+				$this->errors[] = $e->getMessage();
 			}
 		}
 		return count($persons);
