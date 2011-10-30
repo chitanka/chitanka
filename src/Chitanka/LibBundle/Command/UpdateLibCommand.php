@@ -148,6 +148,10 @@ EOT
 			$work['trans_license'] = 'fc';
 		}
 		if (isset($work['users'])) {
+			if ($work['users'][0] == '*') {
+				$work['users_as_new'] = true;
+				$work['users'] = substr($work['users'], 1);
+			}
 			$users = array();
 			foreach (explode(';', $work['users']) as $userContrib) {
 				// username, percent, comment, date
@@ -212,6 +216,9 @@ EOT
 		}
 		if (file_exists($file = str_replace('.data', '.covr.jpg', $dataFile))) {
 			$book['cover'] = $file;
+		}
+		if (file_exists($dir = strtr($dataFile, array('.data' => ''))) && is_dir($dir)) {
+			$book['img'] = $dir;
 		}
 
 		return $book;
@@ -406,6 +413,9 @@ EOT
 		}
 
 		if (isset($work['text']) && isset($work['users'])) {
+			if (isset($work['users_as_new']) && $work['users_as_new']) {
+				$qs[] = $this->olddb()->deleteQ(DBT_USER_TEXT, array('text_id' => $work['id']));
+			}
 			foreach ($work['users'] as $user) {
 				list($username, $percent, $comment, $date, $userId) = $user;
 				$usize = $percent/100 * $size;
@@ -550,6 +560,13 @@ EOT
 				$dest = "$this->contentDir/book-cover/$path.jpg";
 				File::make_parent($dest);
 				`cp $book[cover] $dest`;
+			}
+			if (isset($book['img'])) {
+				$dir = "$this->contentDir/book-img/$path";
+				if ( ! file_exists($dir)) {
+					mkdir($dir, 0755, true);
+				}
+				`cp $book[img]/* $dir`;
 			}
 		}
 
