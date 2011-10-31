@@ -67,7 +67,7 @@ class Book extends BaseWork
 
 	/**
 	* @var string $orig_lang
-	* @orm:Column(type="string", length=2, nullable=true)
+	* @orm:Column(type="string", length=3, nullable=true)
 	*/
 	private $orig_lang;
 
