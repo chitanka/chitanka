@@ -44,7 +44,8 @@ EOT
 		$this->updateTextCountByLabelsParents($output, $em);
 		$this->updateCommentCountByTexts($output, $em);
 		$this->updateBookCountByCategories($output, $em);
-		$this->updateBookCountByCategoriesParents($output, $em);
+		// disable for now, TODO fix pagination by parent categories
+		//$this->updateBookCountByCategoriesParents($output, $em);
 	}
 
 }
