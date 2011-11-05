@@ -1,6 +1,6 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title %}{% trans 'authors.by.country' %}: {% trans 'country.' ~ country %}{% endset %}
+{% set title = 'authors.by.country'|trans ~': '~ ('country.'~country)|trans %}
 {% block content %}
 
 {% if authors is empty %}
@@ -16,11 +16,11 @@
 			{% if author.person is defined %}
 				<dt>{{ author.name|name_format(by)|raw }} &rarr; <a href="{{ path('person_show', {'slug': author.person.slug}) }}">{{ author.person.name|name_format(by)|raw }}</a></dt>
 				<dd class="orig-name">{{ author.orig_name ? author.orig_name|name_format(by)|raw : '—' }}</dd>
-				<dd class="country">{% trans 'country.' ~ author.person.country %}</dd>
+				<dd class="country">{{ ('country.'~author.person.country) | trans }}</dd>
 			{% else %}
 				<dt><a href="{{ path('person_show', {'slug': author.slug}) }}">{{ author.name|name_format(by)|raw }}</a></dt>
 				<dd class="orig-name">{{ author.orig_name ? author.orig_name|name_format(by)|raw : '—' }}</dd>
-				<dd class="country">{% trans 'country.' ~ author.country %}</dd>
+				<dd class="country">{{ ('country.'~author.country) | trans }}</dd>
 			{% endif %}
 		</dl>
 	</li>

@@ -2,55 +2,57 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\CategoryRepository")
-* @orm:Table(name="category")
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\CategoryRepository")
+* @ORM\Table(name="category")
 */
 class Category
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue(strategy="AUTO")
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue(strategy="AUTO")
 	*/
 	private $id;
 
 	/**
 	* @var string $slug
-	* @orm:Column(type="string", length=50, unique=true)
+	* @ORM\Column(type="string", length=50, unique=true)
 	* @assert:NotBlank()
 	*/
 	private $slug = '';
 
 	/**
 	* @var string $name
-	* @orm:Column(type="string", length=80, unique=true)
+	* @ORM\Column(type="string", length=80, unique=true)
 	* @assert:NotBlank()
 	*/
 	private $name = '';
 
 	/**
 	* @var integer $parent
-	* @orm:ManyToOne(targetEntity="Category", inversedBy="children")
+	* @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
 	*/
 	private $parent;
 
 	/**
 	* The children of this category
 	* @var array
-	* @orm:OneToMany(targetEntity="Category", mappedBy="parent")
+	* @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
 	*/
 	private $children;
 
 	/**
 	* @var array
-	* @orm:OneToMany(targetEntity="Book", mappedBy="category")
+	* @ORM\OneToMany(targetEntity="Book", mappedBy="category")
 	*/
 	private $books;
 
 	/**
 	* Number of books in this category
 	* @var integer
-	* @orm:Column(type="integer")
+	* @ORM\Column(type="integer")
 	*/
 	private $nr_of_books = 0;
 

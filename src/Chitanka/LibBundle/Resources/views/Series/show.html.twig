@@ -1,6 +1,6 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title %}<a class="selflink" data-edit="{{ path('series_edit', {'id': series.id}) }}">{{ series.name }}</a>{% endset %}
+{% set title = '<a class="selflink" data-edit="' ~ path('admin_series_edit', {'id': series.id}) ~'">'~ series.name ~'</a>' %}
 {% set subtitle = 'поредица' %}
 {% block content %}
 	{% import 'LibBundle::text.html.twig' as text_lister %}

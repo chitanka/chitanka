@@ -1,6 +1,7 @@
-*_local.yml
+/app/config/parameters.yml
 /app/cache/*
 /app/logs/*
+/vendor/*
 /web/content/*
 /web/cache/*
 /web/tor/*

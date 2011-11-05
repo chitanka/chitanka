@@ -1,8 +1,8 @@
 {% for type in types %}
 	<entry>
-		<title>{% trans 'text.type.singular.' ~ type %}</title>
+		<title>{{ ('text.type.singular.'~type) | trans }}</title>
 		<id>{{ helper.urn('texts_by_type', [type]) }}</id>
 		{{ helper.link(helper.url('texts_by_type', {'type': type})) }}
-		<content type="text">Произведения от вид „{% trans 'text.type.singular.' ~ type %}“</content>
+		<content type="text">Произведения от вид „{{ ('text.type.singular.'~type) | trans }}“</content>
 	</entry>
 {% endfor %}

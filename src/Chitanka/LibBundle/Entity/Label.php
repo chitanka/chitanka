@@ -2,55 +2,57 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\LabelRepository")
-* @orm:Table(name="label")
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\LabelRepository")
+* @ORM\Table(name="label")
 */
 class Label
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue(strategy="AUTO")
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue(strategy="AUTO")
 	*/
 	private $id;
 
 	/**
 	* @var string $slug
-	* @orm:Column(type="string", length=80, unique=true)
+	* @ORM\Column(type="string", length=80, unique=true)
 	* @assert:NotBlank()
 	*/
 	private $slug = '';
 
 	/**
 	* @var string $name
-	* @orm:Column(type="string", length=80, unique=true)
+	* @ORM\Column(type="string", length=80, unique=true)
 	* @assert:NotBlank()
 	*/
 	private $name = '';
 
 	/**
 	* @var integer $parent
-	* @orm:ManyToOne(targetEntity="Label", inversedBy="children")
+	* @ORM\ManyToOne(targetEntity="Label", inversedBy="children")
 	*/
 	private $parent;
 
 	/**
 	* Number of texts having this label
 	* @var integer $nr_of_texts
-	* @orm:Column(type="integer")
+	* @ORM\Column(type="integer")
 	*/
 	private $nr_of_texts = 0;
 
 	/**
 	* The children of this label
 	* @var array
-	* @orm:OneToMany(targetEntity="Label", mappedBy="parent")
+	* @ORM\OneToMany(targetEntity="Label", mappedBy="parent")
 	*/
 	private $children;
 
 	/**
 	* @var array
-	* @orm:ManyToMany(targetEntity="Text", inversedBy="labels")
+	* @ORM\ManyToMany(targetEntity="Text", inversedBy="labels")
 	*/
 	private $texts;
 

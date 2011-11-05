@@ -21,7 +21,7 @@
 {% endmacro %}
 
 {% macro authors_by_country(country) %}
-	<a href="{{ url('authors_by_country', {'country': country}) }}">{% trans 'country.' ~ country %}</a>
+	<a href="{{ url('authors_by_country', {'country': country}) }}">{{ ('country.'~country) | trans }}</a>
 {% endmacro %}
 
 {% macro series(series) %}

@@ -7,7 +7,7 @@
 				({{ series.orig_name }})
 			{% endif %}
 		{% else %}
-			{% trans 'text.type.plular.' ~ series.name %}
+			{{ ('text.type.plular.'~series.name) | trans }}
 		{% endif %}
 	</legend>
 	{{ text_lister.text_list(texts) }}
@@ -17,7 +17,7 @@
 			{% if series.slug is defined %}
 				{{ series.slug }}
 			{% else %}
-				{% trans 'text.type.plular.' ~ series.name %}
+				{{ ('text.type.plular.'~series.name) | trans }}
 			{% endif %}
 		{% endspaceless %}{% endset %}
 		{% include 'LibBundle:Text:multi_download_form.html.twig' with {'filename': filename} %}

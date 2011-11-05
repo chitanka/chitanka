@@ -2,64 +2,66 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\UserTextContribRepository")
-* @orm:Table(name="user_text_contrib"
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\UserTextContribRepository")
+* @ORM\Table(name="user_text_contrib"
 * )
 */
 class UserTextContrib
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var integer $user
-	* @orm:ManyToOne(targetEntity="User", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="User")
 	*/
 	private $user;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=100)
+	* @ORM\Column(type="string", length=100)
 	*/
 	private $username;
 
 	/**
 	* @var integer $text
-	* @orm:ManyToOne(targetEntity="Text", inversedBy="userContribs", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="Text", inversedBy="userContribs")
 	*/
 	private $text;
 
 	/**
 	* @var integer $size
-	* @orm:Column(type="integer")
+	* @ORM\Column(type="integer")
 	*/
 	private $size;
 
 	/**
 	* @var integer $percent
-	* @orm:Column(type="smallint")
+	* @ORM\Column(type="smallint")
 	*/
 	private $percent;
 
 	/**
 	* @var string $comment
-	* @orm:Column(type="string", length=255)
+	* @ORM\Column(type="string", length=255)
 	*/
 	private $comment;
 
 	/**
 	* @var date
-	* @orm:Column(type="datetime")
+	* @ORM\Column(type="datetime")
 	*/
 	private $date;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length="30")
+	* @ORM\Column(type="string", length="30")
 	*/
 	private $humandate;
 

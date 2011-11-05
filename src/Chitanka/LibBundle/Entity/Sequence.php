@@ -2,43 +2,45 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\SequenceRepository")
-* @orm:Table(name="sequence",
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\SequenceRepository")
+* @ORM\Table(name="sequence",
 *	indexes={
-*		@orm:Index(name="name_idx", columns={"name"}),
-*		@orm:Index(name="publisher_idx", columns={"publisher"})}
+*		@ORM\Index(name="name_idx", columns={"name"}),
+*		@ORM\Index(name="publisher_idx", columns={"publisher"})}
 * )
 */
 class Sequence
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var string $slug
-	* @orm:Column(type="string", length=50, unique=true)
+	* @ORM\Column(type="string", length=50, unique=true)
 	*/
 	private $slug = '';
 
 	/**
 	* @var string $name
-	* @orm:Column(type="string", length=100)
+	* @ORM\Column(type="string", length=100)
 	*/
 	private $name = '';
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=100)
+	* @ORM\Column(type="string", length=100)
 	*/
 	private $publisher = '';
 
 	/**
 	* @var array
-	* @orm:OneToMany(targetEntity="Book", mappedBy="sequence")
+	* @ORM\OneToMany(targetEntity="Book", mappedBy="sequence")
 	*/
 	private $books;
 

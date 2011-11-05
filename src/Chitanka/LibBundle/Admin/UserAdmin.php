@@ -6,7 +6,7 @@ use Sonata\AdminBundle\Admin\Admin;
 
 class UserAdmin extends Admin
 {
-	protected $baseRouteName = 'user';
+	protected $baseRouteName = 'admin_user';
 
 	protected $list = array(
 		'username' => array('identifier' => true),

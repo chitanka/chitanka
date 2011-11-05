@@ -2,154 +2,168 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Chitanka\LibBundle\Legacy\Legacy;
 use Chitanka\LibBundle\Legacy\Setup;
 
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\BookRepository")
-* @orm:Table(name="book",
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\BookRepository")
+* @ORM\Table(name="book",
 *	indexes={
-*		@orm:Index(name="title_idx", columns={"title"}),
-*		@orm:Index(name="title_author_idx", columns={"title_author"}),
-*		@orm:Index(name="subtitle_idx", columns={"subtitle"}),
-*		@orm:Index(name="orig_title_idx", columns={"orig_title"})}
+*		@ORM\Index(name="title_idx", columns={"title"}),
+*		@ORM\Index(name="title_author_idx", columns={"title_author"}),
+*		@ORM\Index(name="subtitle_idx", columns={"subtitle"}),
+*		@ORM\Index(name="orig_title_idx", columns={"orig_title"})}
 * )
 */
 class Book extends BaseWork
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	protected $id;
 
 	/**
 	* @var string $slug
-	* @orm:Column(type="string", length=50)
+	* @ORM\Column(type="string", length=50)
 	*/
 	private $slug;
 
 	/**
 	* @var string $title_author
-	* @orm:Column(type="string", length=255, nullable=true)
+	* @ORM\Column(type="string", length=255, nullable=true)
 	*/
 	private $title_author;
 
 	/**
 	* @var string $title
-	* @orm:Column(type="string", length=255)
+	* @ORM\Column(type="string", length=255)
 	*/
 	private $title;
 
 	/**
 	* @var string $subtitle
-	* @orm:Column(type="string", length=255, nullable=true)
+	* @ORM\Column(type="string", length=255, nullable=true)
 	*/
 	private $subtitle;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=1000, nullable=true)
+	* @ORM\Column(type="string", length=1000, nullable=true)
 	*/
 	private $title_extra;
 
 	/**
 	* @var string $orig_title
-	* @orm:Column(type="string", length=255, nullable=true)
+	* @ORM\Column(type="string", length=255, nullable=true)
 	*/
 	private $orig_title;
 
 	/**
 	* @var string $lang
-	* @orm:Column(type="string", length=2)
+	* @ORM\Column(type="string", length=2)
 	*/
 	private $lang;
 
 	/**
 	* @var string $orig_lang
-	* @orm:Column(type="string", length=3, nullable=true)
+	* @ORM\Column(type="string", length=3, nullable=true)
 	*/
 	private $orig_lang;
 
 	/**
 	* @var integer $year
-	* @orm:Column(type="smallint")
+	* @ORM\Column(type="smallint")
 	*/
 	private $year;
 
 	/**
 	* @var integer $trans_year
-	* @orm:Column(type="smallint", nullable=true)
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $trans_year;
 
 	/**
 	* @var string $type
-	* @orm:Column(type="string", length=10)
+	* @ORM\Column(type="string", length=10)
 	*/
 	private $type;
+	static private $typeList = array(
+		'book' => 'Обикновена книга',
+		'collection' => 'Сборник',
+		'poetry' => 'Стихосбирка',
+		'anthology' => 'Антология',
+		'pic' => 'Разкази в картинки',
+		'djvu' => 'DjVu',
+	);
+
 
 	/**
 	* @var integer
-	* @orm:ManyToOne(targetEntity="Sequence", inversedBy="books")
+	* @ORM\ManyToOne(targetEntity="Sequence", inversedBy="books")
 	*/
 	private $sequence;
 
 	/**
 	* @var integer
-	* @orm:Column(type="smallint", nullable=true)
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $seqnr;
 
 	/**
 	* @var integer
-	* @orm:ManyToOne(targetEntity="Category", inversedBy="books")
+	* @ORM\ManyToOne(targetEntity="Category", inversedBy="books")
 	*/
 	private $category;
 
 	/**
 	* @var boolean
-	* @orm:Column(type="boolean")
+	* @ORM\Column(type="boolean")
 	*/
 	private $has_anno;
 
 	/**
 	* @var boolean
-	* @orm:Column(type="boolean")
+	* @ORM\Column(type="boolean")
 	*/
 	private $has_cover;
 
 	/**
 	* @var string $mode
-	* @orm:Column(type="string", length=8)
+	* @ORM\Column(type="string", length=8)
 	*/
 	private $mode;
+	static private $modeList = array(
+		'public' => 'Достъпна',
+		'private' => 'Свалена',
+	);
 
 	/**
-	* @orm:ManyToMany(targetEntity="Person", inversedBy="books")
-	* @orm:JoinTable(name="book_author",
-	*	joinColumns={@orm:JoinColumn(name="book_id", referencedColumnName="id")},
-	*	inverseJoinColumns={@orm:JoinColumn(name="person_id", referencedColumnName="id")})
+	* @ORM\ManyToMany(targetEntity="Person", inversedBy="books")
+	* @ORM\JoinTable(name="book_author",
+	*	joinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id")},
+	*	inverseJoinColumns={@ORM\JoinColumn(name="person_id", referencedColumnName="id")})
 	*/
 	private $authors;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	* @orm:ManyToMany(targetEntity="Text", inversedBy="books")
-	* @orm:JoinTable(name="book_text",
-	*	joinColumns={@orm:JoinColumn(name="book_id", referencedColumnName="id")},
-	*	inverseJoinColumns={@orm:JoinColumn(name="text_id", referencedColumnName="id")})
+	* @ORM\ManyToMany(targetEntity="Text", inversedBy="books")
+	* @ORM\JoinTable(name="book_text",
+	*	joinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id")},
+	*	inverseJoinColumns={@ORM\JoinColumn(name="text_id", referencedColumnName="id")})
 	*/
 	private $texts;
 
 	/**
 	* @var array
-	* @orm:OneToMany(targetEntity="BookLink", mappedBy="book")
+	* @ORM\OneToMany(targetEntity="BookLink", mappedBy="book")
 	*/
 	private $links;
 
 	/**
 	* @var date
-	* @orm:Column(type="date")
+	* @ORM\Column(type="date")
 	*/
 	private $created_at;
 
@@ -1149,6 +1163,16 @@ class Book extends BaseWork
 	public function sameAs($otherPic)
 	{
 		return $this->id == $otherPic->id;
+	}
+
+	static public function getTypeList()
+	{
+		return self::$typeList;
+	}
+
+	static public function getModeList()
+	{
+		return self::$modeList;
 	}
 
 }

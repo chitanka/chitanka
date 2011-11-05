@@ -1,13 +1,13 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title %}{% trans 'translators.by.' ~ by %}: {{ letter == '-' ? 'Всички' : letter }}{% endset %}
+{% set title = ('translators.by.'~by)|trans ~': '~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
 
 <ul class="superlist">
 {% for translator in translators %}
 	<li><dl>
 		<dt><a href="{{ path('person_show', {'slug': translator.slug}) }}">{{ translator.name|name_format(by)|raw }}</a></dt>
-		<dd class="country">{% trans 'country.' ~ translator.country %}</dd>
+		<dd class="country">{{ ('country.'~translator.country) | trans }}</dd>
 	</dl></li>
 {% else %}
 	<li class="no-items">Няма намерени преводачи.</li>

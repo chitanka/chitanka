@@ -1,6 +1,6 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title %}<a class="selflink" data-edit="{{ path('sequence_edit', {'id': sequence.id}) }}">{{ sequence.name }}</a>{% endset %}
+{% set title = '<a class="selflink" data-edit="'~ path('sequence_edit', {'id': sequence.id}) ~'">'~ sequence.name ~'</a>' %}
 {% set subtitle = 'издателска поредица' %}
 {% block content %}
 	<ul class="breadcrumbs">

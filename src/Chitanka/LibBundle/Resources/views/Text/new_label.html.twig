@@ -6,8 +6,8 @@
 	{{ form_errors(form) }}
 	<div>
 		{{ form_label(form.label, '') }}
-		{{ form_field(form.label) }}
-		{{ form_hidden(form) }}
+		{{ form_widget(form.label) }}
+		{{ form_rest(form) }}
 		<input type="submit" value="Добавяне">
 	</div>
 </form>

@@ -2,30 +2,32 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\WantedBookRepository")
-* @orm:Table(name="wanted_book",
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\WantedBookRepository")
+* @ORM\Table(name="wanted_book",
 *	indexes={
-*		@orm:Index(name="name_idx", columns={"name"})}
+*		@ORM\Index(name="name_idx", columns={"name"})}
 * )
 */
 class WantedBook
 {
 	/**
 	* @var integer
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=60)
+	* @ORM\Column(type="string", length=60)
 	*/
 	private $name;
 
 	/**
 	* @var string
-	* @orm:Column(type="text")
+	* @ORM\Column(type="text")
 	*/
 	private $description;
 

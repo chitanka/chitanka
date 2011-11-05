@@ -9,27 +9,39 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class CategoryAdmin extends Admin
 {
-	protected $baseRouteName = 'category';
+	protected $baseRouteName = 'admin_category';
 
-	protected $list = array(
-		'name' => array('identifier' => true),
-		'slug',
-		//'parent',
-		'_action' => array(
-			'actions' => array(
-				'delete' => array(),
-				'edit' => array()
-			)
-		),
-	);
+	protected function configureListFields(ListMapper $listMapper)
+	{
+		$listMapper
+			->addIdentifier('name')
+			->add('slug')
+			->add('_action', 'actions', array(
+				'actions' => array(
+					'delete' => array(),
+					'edit' => array(),
+				)
+			))
+		;
+	}
 
-	protected $form = array(
-		'name',
-		'slug',
-		'parent' => array('form_field_options' => array('required' => false)),
-	);
+	protected function configureFormFields(FormMapper $formMapper)
+	{
+		$formMapper
+			->add('name')
+			->add('slug')
+			->add('parent', null, array('required' => false, 'query_builder' => function ($repo) {
+				return $repo->createQueryBuilder('e')->orderBy('e.name');
+			}))
+		;
 
-	protected $filter = array(
-		'name',
-	);
+	}
+
+	protected function configureDatagridFilters(DatagridMapper $datagrid)
+	{
+		$datagrid
+			->add('name')
+		;
+	}
+
 }

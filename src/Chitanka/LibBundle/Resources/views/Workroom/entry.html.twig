@@ -1,6 +1,6 @@
 <td class="date" title="{{ entry.date|humandate }}">{{ entry.date.format('d.m.Y') }}</td>
 <td>
-	<span class="{{ entry.type == 1 ? 'multiuser' : 'singleuser' }}"><span>{% trans 'workroom.type.' ~ entry.type %}</span></span>
+	<span class="{{ entry.type == 1 ? 'multiuser' : 'singleuser' }}"><span>{{ ('workroom.type.'~entry.type) | trans }}</span></span>
 </td>
 <td>
 	{% if entry.comment %}
@@ -18,7 +18,7 @@
 	{% if entry.progress %}
 		{{ progressbar(entry.progress)|raw }}
 	{% else %}
-		<span class="progress progress-{{ entry.status }}">{% trans 'workroom.status.' ~ entry.status %}</span>
+		<span class="progress progress-{{ entry.status }}">{{ ('workroom.status.'~entry.status) | trans }}</span>
 	{% endif %}
 	{% if entry.is_frozen %}
 		<span title="Подготовката е замразена">(замразена)</span>

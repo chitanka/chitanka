@@ -1,0 +1,117 @@
+# These parameters can be imported into other config files
+# by enclosing the key with % (like %database_user%)
+# Comments start with '#'
+parameters:
+    database_host:      localhost
+    database_name:      chitanka
+    database_user:      root
+    database_password:
+    database_driver:    pdo_mysql
+    database_port:      
+
+    mailer_transport:  smtp
+    mailer_host:       localhost
+    mailer_user: 
+    mailer_password: 
+
+    secret: ThisTokenIsNotSoSecretChangeIt
+
+    assets_base_urls: http://chitanka.local
+
+    locale: bg
+
+    server:     http://chitanka.local
+    style_url:  http://chitanka.local/css/FILE.css
+
+    # Следните променливи се ползват при пращането на електронна поща
+    admin:              Администратор
+    admin_email:        { admin@localhost: Администратор }
+    site_email:         admin@localhost
+    work_email:         admin@localhost
+
+#   Път до библиотеката jQuery. По подразбиране false.
+#   При false, се ползва локалното копие
+    script_library: false
+
+    mirror_sites: ~
+    mirror_sites_graphic: ~
+
+    sitename:    Моята библиотека
+
+    webroot: ~
+    docroot: ~
+
+    # This must be a valid timezone constant
+    # See “List of Supported Timezones” [http://php.net/manual/en/timezones.php]
+    default_timezone: Europe/Sofia
+
+    tmp_dir: /tmp
+
+    # Облици
+    skins:
+        blackwhite: Белчо
+        purple:     Люляк
+        olive:      Маслинова нощ
+        neg:        Негортокал
+        orange:     Портокал
+        pink:       Роза
+        blue:       Синева
+        phoenix:    Феникс
+
+    # Позиция на навигационното меню
+    navpos:
+        right: Вдясно
+        left:  Вляво
+
+    user_css:
+        css/onecolumn_frontpage.css: Едноколонна начална страница
+        css/show_filesize.css: Видим размер на произведенията
+
+    user_js:
+        js/move_projects_links.js: Преместване на менюто за отделните проекти
+
+    download_formats: [txt.zip, fb2.zip, epub, sfb.zip]
+
+    download_file: AUTHOR - SERIES - SERNO. TITLE-ID
+
+    workroom_remote: false
+    workroom_root: ~
+
+    wiki_url: http://wiki.chitanka.info/$1
+
+    menu:
+        Читалня:
+            authors:
+                text: Автори
+                title: Начална страница за преглед на авторите
+            translators:
+                text: Преводачи
+                title: Начална страница за преглед на преводачите
+            books:
+                text: Книги
+                title: Начална страница за преглед на книгите
+            texts:
+                text: Произведения
+                title: Начална страница за преглед на произведенията
+            text_random:
+                text: Случайна творба
+                title: Показване на случайно произведение
+            series:
+                text: Поредици
+                title: Начална страница за преглед на поредиците
+            texts_comments:
+                text: Читателски мнения
+                title: Читателски коментари за произведенията
+        Работилница:
+            new:
+                text: Новодобавено
+                title: Списък на произведенията по месец на добавяне
+            workroom:
+                text: Работно ателие
+                title: Списък на произведения, подготвящи се за добавяне
+            torrents:
+                text: Торенти
+                title: ~
+            statistics:
+                text: Статистика
+                title: ~

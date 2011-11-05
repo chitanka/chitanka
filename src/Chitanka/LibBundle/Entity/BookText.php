@@ -2,43 +2,45 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity
-* @orm:Table(name="book_text",
-*	uniqueConstraints={@orm:UniqueConstraint(name="book_text_uniq", columns={"book_id", "text_id"})},
+* @ORM\Entity
+* @ORM\Table(name="book_text",
+*	uniqueConstraints={@ORM\UniqueConstraint(name="book_text_uniq", columns={"book_id", "text_id"})},
 *	indexes={
-*		@orm:Index(name="text_idx", columns={"text_id"})}
+*		@ORM\Index(name="text_idx", columns={"text_id"})}
 * )
 */
 class BookText
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var integer $book
-	* @orm:ManyToOne(targetEntity="Book", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="Book")
 	*/
 	private $book;
 
 	/**
 	* @var integer $text
-	* @orm:ManyToOne(targetEntity="Text", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="Text")
 	*/
 	private $text;
 
 	/**
 	* @var integer $pos
-	* @orm:Column(type="smallint", nullable=true)
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $pos;
 
 	/**
 	* @var boolean $share_info
-	* @orm:Column(type="boolean")
+	* @ORM\Column(type="boolean")
 	*/
 	private $share_info;
 

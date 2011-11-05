@@ -7,15 +7,15 @@
 
 	<dl>
 		<dt>{{ form_label(form.slug, 'Идентификатор') }}</dt>
-		<dd>{{ form_field(form.slug) }}</dd>
+		<dd>{{ form_widget(form.slug) }}</dd>
 		<dt>{{ form_label(form.name, 'Име') }}</dt>
-		<dd>{{ form_field(form.name) }}</dd>
+		<dd>{{ form_widget(form.name) }}</dd>
 		<dt>{{ form_label(form.parent, 'Родител') }}</dt>
-		<dd>{{ form_field(form.parent) }}</dd>
+		<dd>{{ form_widget(form.parent) }}</dd>
 	</dl>
 
 	<div>
-		{{ form_hidden(form) }}
+		{{ form_rest(form) }}
 		<ul class="actions">
 			<li class="submit"><input type="submit" value="Запис"></li>
 			<li class="cancel"><a href="{{ path('labels') }}">Всички етикети</a></li>

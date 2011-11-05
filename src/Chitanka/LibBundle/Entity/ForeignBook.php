@@ -2,39 +2,41 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\ForeignBookRepository")
-* @orm:Table(name="foreign_book")
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\ForeignBookRepository")
+* @ORM\Table(name="foreign_book")
 */
 class ForeignBook
 {
 	/**
 	* @var integer
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=100)
+	* @ORM\Column(type="string", length=100)
 	*/
 	private $title;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=100)
+	* @ORM\Column(type="string", length=100)
 	*/
 	private $author;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=255)
+	* @ORM\Column(type="string", length=255)
 	*/
 	private $url;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=255)
+	* @ORM\Column(type="string", length=255)
 	*/
 	private $cover;
 

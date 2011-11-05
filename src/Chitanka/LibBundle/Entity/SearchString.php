@@ -2,33 +2,35 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\SearchStringRepository")
-* @orm:Table(name="search_string")
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\SearchStringRepository")
+* @ORM\Table(name="search_string")
 */
 class SearchString
 {
 	/**
 	* @var integer
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=100, unique=true)
+	* @ORM\Column(type="string", length=100, unique=true)
 	*/
 	private $name;
 
 	/**
 	* @var integer
-	* @orm:Column(type="integer")
+	* @ORM\Column(type="integer")
 	*/
 	private $count = 0;
 
 	/**
 	* @var \DateTime
-	* @orm:Column(type="datetime")
+	* @ORM\Column(type="datetime")
 	*/
 	private $date;
 

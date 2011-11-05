@@ -2,31 +2,33 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /** FIXME doctrine:schema:create does not allow this entity table
-* @orm:Entity
-* @orm:Table(name="text_label",
+* @ORM\Entity
+* @ORM\Table(name="text_label",
 *	indexes={
-*		@orm:Index(name="label_idx", columns={"label_id"})})
+*		@ORM\Index(name="label_idx", columns={"label_id"})})
 */
 class TextLabel
 {
 	/**
 	* @var integer
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue(strategy="AUTO")
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue(strategy="AUTO")
 	*/
 	private $id;
 
 	/**
 	* @var integer
-	* @orm:Id
-	* @orm:ManyToOne(targetEntity="Text", inversedBy="textLabels", cascade={"ALL"})
+	* @ORM\Id
+	* @ORM\ManyToOne(targetEntity="Text", inversedBy="textLabels")
 	*/
 	private $text;
 
 	/**
 	* @var integer
-	* @orm:Id
-	* @orm:ManyToOne(targetEntity="Label", cascade={"ALL"})
+	* @ORM\Id
+	* @ORM\ManyToOne(targetEntity="Label")
 	*/
 	private $label;
 

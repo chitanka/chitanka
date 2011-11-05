@@ -22,7 +22,7 @@
 	{% for revisions in book_revisions_by_date %}
 		{% for revision in revisions %}
 			{% set book = revision.book %}
-			{% set title = book.title ~ (book.subtitle is defined ? '. ' ~ book.subtitle : '') %}
+			{% set title = book.title ~ (book.subtitle is empty ? '' : '. ' ~ book.subtitle) %}
 			{% set author = persontools.authors_plain(book.authors) %}
 			<item>
 				<title>{{ title }}</title>
@@ -42,7 +42,7 @@
 			от {{ link.persons_comma(book.authors) }}
 		{% endif %}
 	</div>
-	{% if book.sequence is defined %}
+	{% if book.sequence is defined and book.sequence is not empty %}
 		<div>Поредица: {{ link.sequence(book.sequence) }}{% if book.seqnr is defined %}, № {{ book.seqnr }}{% endif %}</div>
 	{% endif %}
 	{% if book.category is defined %}

@@ -2,11 +2,11 @@
 {% for category in categories %}
 	{% if level > 0 or category.parent_id is not defined %}
 	<li>
-		<a href="{{ path('books_by_category', {'slug': category.slug}) }}" data-edit="{{ path('category_edit', {'id': category.id}) }}">{{ category.name }}</a>
+		<a href="{{ path('books_by_category', {'slug': category.slug}) }}" data-edit="{{ path('admin_category_edit', {'id': category.id}) }}">{{ category.name }}</a>
 		({{ category.nr_of_books }})
 		{#
 		{% if has_role("ROLE_ADMIN") %}
-			<a href="{{ path('category_edit', {'id': category.id}) }}" title="Редактиране на категорията" class="edit"><span>редактиране</span></a>
+			<a href="{{ path('admin_category_edit', {'id': category.id}) }}" title="Редактиране на категорията" class="edit"><span>редактиране</span></a>
 		{% endif %}
 		#}
 	{% if category.children is defined %}

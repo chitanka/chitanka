@@ -74,10 +74,12 @@ class PersonRepository extends EntityRepository
 		return $qb;
 	}
 
-	public function getCount($where = array())
+	public function getCount($where = null)
 	{
-		return $this->getCountQueryBuilder()->andWhere($where)
-			->getQuery()->getSingleScalarResult();
+		$qb = $this->getCountQueryBuilder();
+		if ($where) $qb->andWhere($where);
+
+		return $qb->getQuery()->getSingleScalarResult();
 	}
 
 	public function getCountsByCountry()

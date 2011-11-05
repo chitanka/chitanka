@@ -9,28 +9,38 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class SeriesAdmin extends Admin
 {
-	protected $baseRouteName = 'series';
+	protected $baseRouteName = 'admin_series';
 
-	protected $list = array(
-		'name' => array('identifier' => true),
-		'slug',
-		'_action' => array(
-			'actions' => array(
-				'delete' => array(),
-				'edit' => array()
-			)
-		),
-	);
+	protected function configureListFields(ListMapper $listMapper)
+	{
+		$listMapper
+			->addIdentifier('name')
+			->add('slug')
+			->add('_action', 'actions', array(
+				'actions' => array(
+					'delete' => array(),
+					'edit' => array(),
+				)
+			))
+		;
+	}
 
-	protected $form = array(
-		'slug',
-		'name',
-		'orig_name',
-		//'authors',// => array('form_field_options' => array('expanded' => true)),
-	);
+	protected function configureFormFields(FormMapper $formMapper)
+	{
+		$formMapper
+			->add('slug')
+			->add('name')
+			->add('orig_name', null, array('required' => false))
+		;
 
-	protected $filter = array(
-		'name',
-		'orig_name',
-	);
+	}
+
+	protected function configureDatagridFilters(DatagridMapper $datagrid)
+	{
+		$datagrid
+			->add('name')
+			->add('orig_name')
+		;
+	}
+
 }

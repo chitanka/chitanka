@@ -9,20 +9,35 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class WantedBookAdmin extends Admin
 {
-	protected $baseRouteName = 'wanted_book';
+	protected $baseRouteName = 'admin_wanted_book';
 
-	protected $list = array(
-		'name' => array('identifier' => true),
-		'_action' => array(
-			'actions' => array(
-				'delete' => array(),
-				'edit' => array()
-			)
-		),
-	);
+	protected function configureListFields(ListMapper $listMapper)
+	{
+		$listMapper
+			->addIdentifier('name')
+			->add('_action', 'actions', array(
+				'actions' => array(
+					'delete' => array(),
+					'edit' => array(),
+				)
+			))
+		;
+	}
 
-	protected $form = array(
-		'name',
-		'description',
-	);
+	protected function configureFormFields(FormMapper $formMapper)
+	{
+		$formMapper
+			->add('name')
+			->add('description')
+		;
+
+	}
+
+	protected function configureDatagridFilters(DatagridMapper $datagrid)
+	{
+		$datagrid
+			->add('name')
+		;
+	}
+
 }

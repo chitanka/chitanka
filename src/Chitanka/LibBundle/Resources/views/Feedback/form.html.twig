@@ -3,17 +3,17 @@
 
 	<dl>
 		<dt>{{ form_label(form.comment, 'Kоментар') }}</dt>
-		<dd>{{ form_errors(form.comment) }}{{ form_field(form.comment) }}</dd>
+		<dd>{{ form_errors(form.comment) }}{{ form_widget(form.comment) }}</dd>
 		<dt>{{ form_label(form.subject, 'Тема') }}</dt>
-		<dd>{{ form_errors(form.subject) }}{{ form_field(form.subject) }}</dd>
+		<dd>{{ form_errors(form.subject) }}{{ form_widget(form.subject) }}</dd>
 		<dt>{{ form_label(form.name, 'Име') }}</dt>
-		<dd>{{ form_errors(form.name) }}{{ form_field(form.name) }}</dd>
+		<dd>{{ form_errors(form.name) }}{{ form_widget(form.name) }}</dd>
 		<dt>{{ form_label(form.email, 'Е-поща') }}</dt>
-		<dd>{{ form_errors(form.email) }}{{ form_field(form.email) }}</dd>
+		<dd>{{ form_errors(form.email) }}{{ form_widget(form.email) }}</dd>
 	</dl>
 
 	<div>
-		{{ form_hidden(form) }}
+		{{ form_rest(form) }}
 		<ul class="actions">
 			<li class="submit"><input type="submit" value="Пращане"></li>
 		</ul>

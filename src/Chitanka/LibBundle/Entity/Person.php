@@ -2,115 +2,121 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Chitanka\LibBundle\Util\String;
 
 #use Symfony\Component\Validator\Constraints;
 #use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\PersonRepository")
-* @orm:Table(name="person",
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\PersonRepository")
+* @ORM\Table(name="person",
 *	indexes={
-*		@orm:Index(name="name_idx", columns={"name"}),
-*		@orm:Index(name="last_name_idx", columns={"last_name"}),
-*		@orm:Index(name="orig_name_idx", columns={"orig_name"}),
-*		@orm:Index(name="country_idx", columns={"country"}),
-*		@orm:Index(name="is_author_idx", columns={"is_author"}),
-*		@orm:Index(name="is_translator_idx", columns={"is_translator"})}
+*		@ORM\Index(name="name_idx", columns={"name"}),
+*		@ORM\Index(name="last_name_idx", columns={"last_name"}),
+*		@ORM\Index(name="orig_name_idx", columns={"orig_name"}),
+*		@ORM\Index(name="country_idx", columns={"country"}),
+*		@ORM\Index(name="is_author_idx", columns={"is_author"}),
+*		@ORM\Index(name="is_translator_idx", columns={"is_translator"})}
 * )
 */
 class Person
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var string $slug
-	* @orm:Column(type="string", length=50, unique=true)
+	* @ORM\Column(type="string", length=50, unique=true)
 	*/
 	private $slug;
 
 	/**
 	* @var string $name
-	* @orm:Column(type="string", length=100)
+	* @ORM\Column(type="string", length=100)
 	*/
 	private $name;
 
 	/**
 	* @var string $orig_name
-	* @orm:Column(type="string", length=100, nullable=true)
+	* @ORM\Column(type="string", length=100, nullable=true)
 	*/
 	private $orig_name;
 
 	/**
 	* @var string $real_name
-	* @orm:Column(type="string", length=100, nullable=true)
+	* @ORM\Column(type="string", length=100, nullable=true)
 	*/
 	private $real_name;
 
 	/**
 	* @var string $oreal_name
-	* @orm:Column(type="string", length=100, nullable=true)
+	* @ORM\Column(type="string", length=100, nullable=true)
 	*/
 	private $oreal_name;
 
 	/**
 	* @var string $last_name
-	* @orm:Column(type="string", length=50, nullable=true)
+	* @ORM\Column(type="string", length=50, nullable=true)
 	*/
 	private $last_name;
 
 	/**
 	* @var string $country
-	* @orm:Column(type="string", length=10)
+	* @ORM\Column(type="string", length=10)
 	*/
 	private $country;
 
-	/** @orm:Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $is_author = true;
 
-	/** @orm:Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $is_translator = false;
 
 	/**
 	* @var string $info
-	* @orm:Column(type="string", length=160, nullable=true)
+	* @ORM\Column(type="string", length=160, nullable=true)
 	*/
 	private $info;
 
 	/**
 	* @var integer $person
-	* @orm:ManyToOne(targetEntity="Person", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="Person", cascade={"remove"})
 	*/
 	private $person;
 
 	/**
 	* @var string $type
-	* @orm:Column(type="string", length=1, nullable=true)
+	* @ORM\Column(type="string", length=1, nullable=true)
 	*/
 	private $type;
+	static private $typeList = array(
+		'p' => 'Псевдоним',
+		'r' => 'Истинско име',
+		'a' => 'Алтернативно изписване',
+	);
 
 	/**
-	* @orm:ManyToMany(targetEntity="Text", mappedBy="authors")
+	* @ORM\ManyToMany(targetEntity="Text", mappedBy="authors")
 	*/
 	private $textsAsAuthor;
 
 	/**
-	* @orm:ManyToMany(targetEntity="Text", mappedBy="translators")
+	* @ORM\ManyToMany(targetEntity="Text", mappedBy="translators")
 	*/
 	private $textsAsTranslator;
 
 	/**
-	* @orm:ManyToMany(targetEntity="Book", mappedBy="authors")
+	* @ORM\ManyToMany(targetEntity="Book", mappedBy="authors")
 	*/
 	private $books;
 
 	/**
-	* @orm:ManyToMany(targetEntity="Series", mappedBy="authors")
-	* @orm:JoinTable(name="series_author")
+	* @ORM\ManyToMany(targetEntity="Series", mappedBy="authors")
+	* @ORM\JoinTable(name="series_author")
 	*/
 	private $series;
 
@@ -180,6 +186,15 @@ class Person
 		return $this->is_translator;
 	}
 
+	public function getRole()
+	{
+		$roles = array();
+		if ($this->is_author) $roles[] = 'author';
+		if ($this->is_translator) $roles[] = 'translator';
+
+		return implode(',', $roles);
+	}
+
 	public function setInfo($info) { $this->info = $info; }
 	public function getInfo() { return $this->info; }
 
@@ -194,5 +209,10 @@ class Person
 	public function __toString()
 	{
 		return $this->name;
+	}
+
+	static public function getTypeList()
+	{
+		return self::$typeList;
 	}
 }

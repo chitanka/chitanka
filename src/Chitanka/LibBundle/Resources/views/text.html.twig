@@ -69,7 +69,7 @@
 	<dt>
 		{{ _self.rating(text) }}
 		{{ options.prefix is defined ? options.prefix : '' }}
-		{% if text.series is defined %}
+		{% if text.series is defined and text.series is not empty %}
 			<a href="{{ path('series_show', {'slug': text.series.slug}) }}" title="{{ text.series.name }}">{{ text.series.name|acronym }}</a>:
 		{% endif %}
 		{{ link.text(text) }}
@@ -101,9 +101,9 @@
 
 
 {% macro text_extra_info(text) %}
-	{% if text.orig_title is defined %}
-		<em>{{ text.orig_title }}</em>{% if text.year is defined %}, {{ text.year }}{% endif %}
-	{% elseif text.year is defined %}
+	{% if text.orig_title is not empty %}
+		<em>{{ text.orig_title }}</em>{% if text.year is not empty %}, {{ text.year }}{% endif %}
+	{% elseif text.year is not empty %}
 		{{ text.year }}
 	{% endif %}
 {% endmacro %}

@@ -2,103 +2,105 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\WorkEntryRepository")
-* @orm:Table(name="work_entry",
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\WorkEntryRepository")
+* @ORM\Table(name="work_entry",
 *	indexes={
-*		@orm:Index(name="title_idx", columns={"title"}),
-*		@orm:Index(name="author_idx", columns={"author"}),
-*		@orm:Index(name="status_idx", columns={"status"})}
+*		@ORM\Index(name="title_idx", columns={"title"}),
+*		@ORM\Index(name="author_idx", columns={"author"}),
+*		@ORM\Index(name="status_idx", columns={"status"})}
 * )
 */
 class WorkEntry
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var integer $type
-	* @orm:Column(type="smallint")
+	* @ORM\Column(type="smallint")
 	*/
 	private $type;
 
 	/**
 	* @var string $title
-	* @orm:Column(type="string", length=100)
+	* @ORM\Column(type="string", length=100)
 	*/
 	private $title;
 
 	/**
 	* @var string $author
-	* @orm:Column(type="string", length=100, nullable=true)
+	* @ORM\Column(type="string", length=100, nullable=true)
 	*/
 	private $author;
 
 	/**
 	* @var integer $user
-	* @orm:ManyToOne(targetEntity="User", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="User")
 	*/
 	private $user;
 
 	/**
 	* @var text $comment
-	* @orm:Column(type="text")
+	* @ORM\Column(type="text")
 	*/
 	private $comment;
 
 	/**
 	* @var datetime $date
-	* @orm:Column(type="datetime")
+	* @ORM\Column(type="datetime")
 	*/
 	private $date;
 
 	/**
 	* @var integer $status
-	* @orm:Column(type="smallint")
+	* @ORM\Column(type="smallint")
 	*/
 	private $status = 0;
 
 	/**
 	* @var integer $progress
-	* @orm:Column(type="smallint")
+	* @ORM\Column(type="smallint")
 	*/
 	private $progress = 0;
 
 	/**
 	* @var boolean $is_frozen
-	* @orm:Column(type="boolean")
+	* @ORM\Column(type="boolean")
 	*/
 	private $is_frozen = false;
 
 	/**
 	* @var string $tmpfiles
-	* @orm:Column(type="string", length=255, nullable=true)
+	* @ORM\Column(type="string", length=255, nullable=true)
 	*/
 	private $tmpfiles;
 
 	/**
 	* @var integer $tfsize
-	* @orm:Column(type="smallint", nullable=true)
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $tfsize;
 
 	/**
 	* @var string $uplfile
-	* @orm:Column(type="string", length=255, nullable=true)
+	* @ORM\Column(type="string", length=255, nullable=true)
 	*/
 	private $uplfile;
 
 	/**
 	* @var datetime
-	* @orm:Column(type="datetime", nullable=true)
+	* @ORM\Column(type="datetime", nullable=true)
 	*/
 	private $deleted_at;
 
 	/**
-	* @orm:OneToMany(targetEntity="WorkContrib", mappedBy="entry")
+	* @ORM\OneToMany(targetEntity="WorkContrib", mappedBy="entry")
 	*/
 	private $contribs;
 

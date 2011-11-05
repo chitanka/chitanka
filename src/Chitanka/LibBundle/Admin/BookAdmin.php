@@ -7,74 +7,72 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
+use Chitanka\LibBundle\Entity\Book;
 use Chitanka\LibBundle\Util\Language;
 
 class BookAdmin extends Admin
 {
-	protected $baseRouteName = 'book';
+	protected $baseRouteName = 'admin_book';
 
-	protected $list = array(
-		'url' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:list_url.html.twig'),
-		'title' => array('identifier' => true),
-		'id',
-		'type',
-		'sfbg' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:list_sfbg.html.twig'),
-		'puk' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:list_puk.html.twig'),
-		//'sequence',
-		'_action' => array(
-			'actions' => array(
-				'delete' => array(),
-				'edit' => array()
-			)
-		),
-	);
-
-	protected $form = array(
-		//'sfbg' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:form_sfbg.html.twig'),
-		'datafiles' => array('type' => 'string', 'template' => 'LibBundle:BookAdmin:form_datafiles.html.twig'),
-		'slug',
-		'title',
-		'subtitle',
-		'title_extra',
-		'orig_title',
-		'lang',
-		'orig_lang',
-		'year',
-		'trans_year',
-		'type' => array(
-			'type' => 'choice',
-			'form_field_options' => array(
-				'choices' => array(
-					'book' => 'Обикновена книга',
-					'collection' => 'Сборник',
-					'poetry' => 'Стихосбирка',
-					'anthology' => 'Антология',
-					'pic' => 'Разкази в картинки',
-					'djvu' => 'DjVu',
-				)
-			)
-		),
-		'sequence' => array('form_field_options' => array('required' => false)),
-		'seqnr',
-		'category',
-		//'has_cover',
-		//'has_anno',
-		'mode',
-		//'links',
-	);
-
-	protected $filter = array(
-		'title',
-		'subtitle',
-		'type',
-		'has_cover',
-		'has_anno',
-	);
-
-
-	protected function configureFormFields(FormMapper $form)
+	protected function configureListFields(ListMapper $listMapper)
 	{
-		$form->add('lang', array('choices' => Language::getLangs()), array('type' => 'choice'));
-		$form->add('orig_lang', array('choices' => Language::getLangs()), array('type' => 'choice'));
+		$listMapper
+			->add('url', 'string', array('template' => 'LibBundle:BookAdmin:list_url.html.twig'))
+			->add('slug')
+			->addIdentifier('title')
+			->add('id')
+			->add('type')
+			->add('sfbg', 'string', array('template' => 'LibBundle:BookAdmin:list_sfbg.html.twig'))
+			->add('puk', 'string', array('template' => 'LibBundle:BookAdmin:list_puk.html.twig'))
+			->add('_action', 'actions', array(
+				'actions' => array(
+					'delete' => array(),
+					'edit' => array(),
+				)
+			))
+		;
 	}
+
+	protected function configureFormFields(FormMapper $formMapper)
+	{
+		$formMapper
+			//->add('sfbg', 'string', array('template' => 'LibBundle:BookAdmin:form_sfbg.html.twig'))
+			//->add('datafiles', 'string', array('template' => 'LibBundle:BookAdmin:form_datafiles.html.twig'))
+			->add('slug')
+			->add('title')
+			->add('subtitle', null, array('required' => false))
+			->add('title_extra', null, array('required' => false))
+			->add('orig_title', null, array('required' => false))
+			->add('lang', 'choice', array('choices' => Language::getLangs()))
+			->add('orig_lang', 'choice', array('required' => false, 'choices' => Language::getLangs()))
+			->add('year')
+			->add('trans_year', null, array('required' => false))
+			->add('type', 'choice', array('choices' => Book::getTypeList()))
+			->add('sequence', null, array('required' => false, 'query_builder' => function ($repo) {
+				return $repo->createQueryBuilder('e')->orderBy('e.name');
+			}))
+			->add('seqnr', null, array('required' => false))
+			->add('category', null, array('required' => false, 'query_builder' => function ($repo) {
+				return $repo->createQueryBuilder('e')->orderBy('e.name');
+			}))
+			->add('mode', 'choice', array('choices' => Book::getModeList()))
+//            ->add('links', 'sonata_type_model', array('expanded' => true), array(
+//                'edit' => 'inline',
+//                'inline' => 'table',
+//                //'sortable'  => 'position'
+//            ))
+		;
+	}
+
+	protected function configureDatagridFilters(DatagridMapper $datagrid)
+	{
+		$datagrid
+			->add('title')
+			->add('subtitle')
+			->add('type')
+			->add('has_cover')
+			->add('has_anno')
+		;
+	}
+
 }

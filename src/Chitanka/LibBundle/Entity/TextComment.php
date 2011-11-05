@@ -2,73 +2,75 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\TextCommentRepository")
-* @orm:Table(name="text_comment",
-*	uniqueConstraints={@orm:UniqueConstraint(name="user_comment_uniq", columns={"text_id", "rname", "contenthash"})},
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\TextCommentRepository")
+* @ORM\Table(name="text_comment",
+*	uniqueConstraints={@ORM\UniqueConstraint(name="user_comment_uniq", columns={"text_id", "rname", "contenthash"})},
 *	indexes={
-*		@orm:Index(name="user_idx", columns={"user_id"})}
+*		@ORM\Index(name="user_idx", columns={"user_id"})}
 * )
 */
 class TextComment
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var integer $text
-	* @orm:ManyToOne(targetEntity="Text", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="Text")
 	*/
 	private $text;
 
 	/**
 	* @var string $rname
-	* @orm:Column(type="string", length=100)
+	* @ORM\Column(type="string", length=100)
 	*/
 	private $rname;
 
 	/**
 	* @var integer $user
-	* @orm:ManyToOne(targetEntity="User")
+	* @ORM\ManyToOne(targetEntity="User")
 	*/
 	private $user;
 
 	/**
 	* @var text
-	* @orm:Column(type="text")
+	* @ORM\Column(type="text")
 	*/
 	private $content;
 
 	/**
 	* @var string $contenthash
-	* @orm:Column(type="string", length=32)
+	* @ORM\Column(type="string", length=32)
 	*/
 	private $contenthash;
 
 	/**
 	* @var datetime $time
-	* @orm:Column(type="datetime")
+	* @ORM\Column(type="datetime")
 	*/
 	private $time;
 
 	/**
 	* @var string $ip
-	* @orm:Column(type="string", length=15)
+	* @ORM\Column(type="string", length=15)
 	*/
 	private $ip;
 
 	/**
 	* @var integer $replyto
-	* @orm:ManyToOne(targetEntity="TextComment")
+	* @ORM\ManyToOne(targetEntity="TextComment", cascade={"remove"})
 	*/
 	private $replyto;
 
 	/**
 	* @var boolean $is_shown
-	* @orm:Column(type="boolean")
+	* @ORM\Column(type="boolean")
 	*/
 	private $is_shown;
 

@@ -1,6 +1,6 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title %}Нови произведения за {% trans 'month.'~month %} {{year}}{% endset %}
+{% set title = 'Нови произведения за ' ~ ('month.'~month)|trans ~' '~ year %}
 {% block content %}
 	<div class="history-wrapper">
 		{% include 'LibBundle:History:toc.html.twig' with {'route': 'new_texts_by_month'} %}

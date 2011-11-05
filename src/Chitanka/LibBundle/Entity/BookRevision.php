@@ -2,42 +2,44 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\BookRevisionRepository")
-* @orm:Table(name="book_revision",
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\BookRevisionRepository")
+* @ORM\Table(name="book_revision",
 *	indexes={
-*		@orm:Index(name="book_idx", columns={"book_id"})}
+*		@ORM\Index(name="book_idx", columns={"book_id"})}
 * )
 */
 class BookRevision
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var integer
-	* @orm:ManyToOne(targetEntity="Book", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="Book")
 	*/
 	private $book;
 
 	/**
 	* @var string $comment
-	* @orm:Column(type="string", length=255)
+	* @ORM\Column(type="string", length=255)
 	*/
 	private $comment;
 
 	/**
 	* @var datetime $date
-	* @orm:Column(type="datetime")
+	* @ORM\Column(type="datetime")
 	*/
 	private $date;
 
 	/**
 	* @var boolean
-	* @orm:Column(type="boolean")
+	* @ORM\Column(type="boolean")
 	*/
 	private $first;
 

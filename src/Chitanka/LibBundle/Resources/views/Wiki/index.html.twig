@@ -1,6 +1,6 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title %}{% trans 'wiki.title.' ~ page %}{% endset %}
+{% set title = ('wiki.title.'~page)|trans %}
 {% block content %}
 	<div class="wikidata">
 		{{ contents|raw }}

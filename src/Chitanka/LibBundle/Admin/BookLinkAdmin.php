@@ -6,7 +6,7 @@ use Sonata\AdminBundle\Admin\Admin;
 
 class BookLinkAdmin extends Admin
 {
-	protected $baseRouteName = 'book_link';
+	protected $baseRouteName = 'admin_book_link';
 
 	protected $list = array(
 		'book',

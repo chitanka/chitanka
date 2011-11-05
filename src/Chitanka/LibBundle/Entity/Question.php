@@ -2,27 +2,29 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity
-* @orm:Table(name="question")
+* @ORM\Entity
+* @ORM\Table(name="question")
 */
 class Question
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var string $question
-	* @orm:Column(type="string", length=255)
+	* @ORM\Column(type="string", length=255)
 	*/
 	private $question;
 
 	/**
 	* @var string $answers
-	* @orm:Column(type="string", length=255)
+	* @ORM\Column(type="string", length=255)
 	*/
 	private $answers;
 

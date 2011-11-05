@@ -1,7 +1,7 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
 {% set title = 'Произведения' %}
-{% set subtitle %}{% trans 'text.type.plular.' ~ type %}{% endset %}
+{% set subtitle %}{{ ('text.type.plular.'~type) | trans }}{% endset %}
 {% block content %}
 
 	{% if texts is empty %}

@@ -1,17 +1,7 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title %}<a class="selflink" data-edit="{{ path('person_edit', {'id': person.id}) }}">{{ person.name }}</a>{% endset %}
-{% set subtitle %}{% spaceless %}
-	{% if person.is_author %}
-		{% if person.is_translator %}
-			автор и преводач
-		{% else %}
-			автор
-		{% endif %}
-	{% elseif person.is_translator %}
-		преводач
-	{% endif %}
-{% endspaceless %}{% endset %}
+{% set title = '<a class="selflink" data-edit="'~ path('admin_person_edit', {'id': person.id}) ~'">'~ person.name ~'</a>' %}
+{% set subtitle = ('person.role.'~person.role)|trans %}
 {% block content %}
 	{% include 'LibBundle:Person:info.html.twig' %}
 
@@ -43,6 +33,6 @@
 	{% include 'LibBundle::color_legend.html.twig' %}
 {% endblock %}
 
-{% set inline_js %}
+{% block inline_js %}
 	$("fieldset.infobox,fieldset.filters").boxcollapse();
-{% endset %}
+{% endblock %}

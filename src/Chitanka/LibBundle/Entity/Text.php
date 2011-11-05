@@ -2,6 +2,7 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Chitanka\LibBundle\Util\Char;
@@ -11,237 +12,241 @@ use Chitanka\LibBundle\Legacy\Legacy;
 use Chitanka\LibBundle\Legacy\Setup;
 
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\TextRepository")
-* @orm:Table(name="text",
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\TextRepository")
+* @ORM\Table(name="text",
 *	indexes={
-*		@orm:Index(name="title_idx", columns={"title"}),
-*		@orm:Index(name="subtitle_idx", columns={"subtitle"}),
-*		@orm:Index(name="orig_title_idx", columns={"orig_title"}),
-*		@orm:Index(name="orig_subtitle_idx", columns={"orig_subtitle"})}
+*		@ORM\Index(name="title_idx", columns={"title"}),
+*		@ORM\Index(name="subtitle_idx", columns={"subtitle"}),
+*		@ORM\Index(name="orig_title_idx", columns={"orig_title"}),
+*		@ORM\Index(name="orig_subtitle_idx", columns={"orig_subtitle"})}
 * )
 */
 class Text extends BaseWork
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	protected $id;
 
 	/**
 	* @var string $slug
-	* @orm:Column(type="string", length=50)
+	* @ORM\Column(type="string", length=50)
 	*/
 	private $slug;
 
 	/**
 	* @var string $title
-	* @orm:Column(type="string", length=255)
+	* @ORM\Column(type="string", length=255)
 	*/
 	private $title;
 
 	/**
 	* @var string $subtitle
-	* @orm:Column(type="string", length=255, nullable=true)
+	* @ORM\Column(type="string", length=255, nullable=true)
 	*/
 	private $subtitle;
 
 	/**
 	* @var string $lang
-	* @orm:Column(type="string", length=2)
+	* @ORM\Column(type="string", length=2)
 	*/
 	private $lang = 'bg';
 
 	/**
 	* @var integer $trans_year
-	* @orm:Column(type="smallint", nullable=true)
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $trans_year;
 
 	/**
 	* @var integer $trans_year2
-	* @orm:Column(type="smallint", nullable=true)
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $trans_year2;
 
 	/**
 	* @var string $orig_title
-	* @orm:Column(type="string", length=255, nullable=true)
+	* @ORM\Column(type="string", length=255, nullable=true)
 	*/
 	private $orig_title;
 
 	/**
 	* @var string $orig_subtitle
-	* @orm:Column(type="string", length=255, nullable=true)
+	* @ORM\Column(type="string", length=255, nullable=true)
 	*/
 	private $orig_subtitle;
 
 	/**
 	* @var string $orig_lang
-	* @orm:Column(type="string", length=3)
+	* @ORM\Column(type="string", length=3)
 	*/
 	private $orig_lang;
 
 	/**
 	* @var integer $year
-	* @orm:Column(type="smallint", nullable=true)
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $year;
 
 	/**
 	* @var integer $year2
-	* @orm:Column(type="smallint", nullable=true)
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $year2;
 
 	/**
 	* @var integer $orig_license
-	* @orm:ManyToOne(targetEntity="License")
+	* @ORM\ManyToOne(targetEntity="License")
 	*/
 	private $orig_license;
 
 	/**
 	* @var integer $trans_license
-	* @orm:ManyToOne(targetEntity="License")
+	* @ORM\ManyToOne(targetEntity="License")
 	*/
 	private $trans_license;
 
 	/**
 	* @var string $type
-	* @orm:Column(type="string", length=12)
+	* @ORM\Column(type="string", length=12)
 	*/
 	private $type;
 
 	/**
 	* @var integer $series
-	* @orm:ManyToOne(targetEntity="Series", inversedBy="texts")
+	* @ORM\ManyToOne(targetEntity="Series", inversedBy="texts")
 	*/
 	private $series;
 
 	/**
 	* @var integer $sernr
-	* @orm:Column(type="smallint", nullable=true)
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $sernr;
 
 	/**
 	* @var integer $sernr2
-	* @orm:Column(type="smallint", nullable=true)
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $sernr2;
 
 	/**
 	* @var integer $headlevel
-	* @orm:Column(type="smallint")
+	* @ORM\Column(type="smallint")
 	*/
 	private $headlevel = 0;
 
 	/**
 	* @var integer $size
-	* @orm:Column(type="integer")
+	* @ORM\Column(type="integer")
 	*/
 	private $size;
 
 	/**
 	* @var integer $zsize
-	* @orm:Column(type="integer")
+	* @ORM\Column(type="integer")
 	*/
 	private $zsize;
 
 	/**
 	* @var date
-	* @orm:Column(type="date")
+	* @ORM\Column(type="date")
 	*/
 	private $created_at;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=1000, nullable=true)
+	* @ORM\Column(type="string", length=1000, nullable=true)
 	*/
 	private $source;
 
 	/**
 	* @var integer $cur_rev
-	* @orm:ManyToOne(targetEntity="TextRevision")
+	* @ORM\ManyToOne(targetEntity="TextRevision")
 	*/
 	private $cur_rev;
 
 	/**
 	* @var integer $dl_count
-	* @orm:Column(type="integer")
+	* @ORM\Column(type="integer")
 	*/
 	private $dl_count = 0;
 
 	/**
 	* @var integer $read_count
-	* @orm:Column(type="integer")
+	* @ORM\Column(type="integer")
 	*/
 	private $read_count = 0;
 
 	/**
 	* @var integer $comment_count
-	* @orm:Column(type="integer")
+	* @ORM\Column(type="integer")
 	*/
 	private $comment_count = 0;
 
 	/**
 	* @var float $rating
-	* @orm:Column(type="float")
+	* @ORM\Column(type="float")
 	*/
 	private $rating = 0;
 
 	/**
 	* @var integer $votes
-	* @orm:Column(type="integer")
+	* @ORM\Column(type="integer")
 	*/
 	private $votes = 0;
 
 	/**
 	* @var boolean $has_anno
-	* @orm:Column(type="boolean")
+	* @ORM\Column(type="boolean")
 	*/
 	private $has_anno = false;
 
 	/**
 	* @var boolean
-	* @orm:Column(type="boolean")
+	* @ORM\Column(type="boolean")
 	*/
 	private $has_cover = false;
 
 	/*
 	* @var boolean
-	* @orm:Column(type="boolean")
+	* @ORM\Column(type="boolean")
 	*/
 	private $has_title_note;
 
 	/**
 	* @var boolean
-	* @orm:Column(type="boolean")
+	* @ORM\Column(type="boolean")
 	*/
 	private $is_compilation = false;
 
 	/**
 	* @var string $mode
-	* @orm:Column(type="string", length=8)
+	* @ORM\Column(type="string", length=8)
 	*/
 	private $mode = 'public';
+	static private $modeList = array(
+		'public' => 'Достъпно',
+		'private' => 'Свалено',
+	);
 
 
 	/**
 	* @var array
-	* @orm:OneToMany(targetEntity="TextAuthor", mappedBy="text")
+	* @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="text")
 	*/
 	private $textAuthors;
 
 	/**
 	* @var array
-	* @orm:OneToMany(targetEntity="TextTranslator", mappedBy="text")
+	* @ORM\OneToMany(targetEntity="TextTranslator", mappedBy="text")
 	*/
 	private $textTranslators;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	* @orm:ManyToMany(targetEntity="Person", inversedBy="textsAsAuthor")
-	* @orm:JoinTable(name="text_author")
+	* @ORM\ManyToMany(targetEntity="Person", inversedBy="textsAsAuthor")
+	* @ORM\JoinTable(name="text_author")
 	*/
 	private $authors;
 
@@ -256,52 +261,52 @@ class Text extends BaseWork
 	private $authorOrigNames;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	* @orm:ManyToMany(targetEntity="Person", inversedBy="textsAsTranslator")
-	* @orm:JoinTable(name="text_translator")
+	* @ORM\ManyToMany(targetEntity="Person", inversedBy="textsAsTranslator")
+	* @ORM\JoinTable(name="text_translator")
 	*/
 	private $translators;
 
 	/**
 	* @var array
-	* @orm:OneToMany(targetEntity="BookText", mappedBy="text")
+	* @ORM\OneToMany(targetEntity="BookText", mappedBy="text")
 	*/
 	private $bookTexts;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	* @orm:ManyToMany(targetEntity="Book", inversedBy="texts")
-	* @orm:JoinTable(name="book_text",
-	*	joinColumns={@orm:JoinColumn(name="text_id", referencedColumnName="id")},
-	*	inverseJoinColumns={@orm:JoinColumn(name="book_id", referencedColumnName="id")})
-	* @orm:OrderBy({"title" = "ASC"})
+	* @ORM\ManyToMany(targetEntity="Book", inversedBy="texts")
+	* @ORM\JoinTable(name="book_text",
+	*	joinColumns={@ORM\JoinColumn(name="text_id", referencedColumnName="id")},
+	*	inverseJoinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id")})
+	* @ORM\OrderBy({"title" = "ASC"})
 	*/
 	private $books;
 
 	/**
 	* @var array
-	* @orm:ManyToMany(targetEntity="Label", inversedBy="texts")
-	* @orm:OrderBy({"name" = "ASC"})
+	* @ORM\ManyToMany(targetEntity="Label", inversedBy="texts")
+	* @ORM\OrderBy({"name" = "ASC"})
 	*/
 	private $labels;
 
 	/**
 	* @var array
-	* @orm:OneToMany(targetEntity="TextHeader", mappedBy="text")
-	* @orm:OrderBy({"nr" = "ASC"})
+	* @ORM\OneToMany(targetEntity="TextHeader", mappedBy="text")
+	* @ORM\OrderBy({"nr" = "ASC"})
 	*/
 	private $headers;
 
 	/** FIXME doctrine:schema:create does not allow this relation
 	* @var array
-	* @orm:ManyToMany(targetEntity="User", inversedBy="readTexts")
-	* @orm:JoinTable(name="user_text_read",
-	*	joinColumns={@orm:JoinColumn(name="text_id")},
-	*	inverseJoinColumns={@orm:JoinColumn(name="user_id")})
+	* @ORM\ManyToMany(targetEntity="User", inversedBy="readTexts")
+	* @ORM\JoinTable(name="user_text_read",
+	*	joinColumns={@ORM\JoinColumn(name="text_id")},
+	*	inverseJoinColumns={@ORM\JoinColumn(name="user_id")})
 	*/
 	private $readers;
 
 	/**
 	* @var array
-	* @orm:OneToMany(targetEntity="UserTextContrib", mappedBy="text")
+	* @ORM\OneToMany(targetEntity="UserTextContrib", mappedBy="text")
 	*/
 	private $userContribs;
 
@@ -1380,5 +1385,10 @@ EOS;
 	public function getMainContentFile()
 	{
 		return Legacy::getContentFilePath('text', $this->id);
+	}
+
+	static public function getModeList()
+	{
+		return self::$modeList;
 	}
 }

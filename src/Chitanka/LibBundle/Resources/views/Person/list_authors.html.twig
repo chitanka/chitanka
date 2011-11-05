@@ -1,6 +1,6 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title %}{% trans 'authors.by.' ~ by %}: {{ letter == '-' ? 'Всички' : letter }}{% endset %}
+{% set title = ('authors.by.'~by)|trans ~': '~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
 
 	{% include 'LibBundle:Person:authors_list_with_country.html.twig' %}

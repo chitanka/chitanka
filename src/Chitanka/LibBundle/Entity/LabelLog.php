@@ -2,61 +2,63 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity
-* @orm:Table(name="label_log",
+* @ORM\Entity
+* @ORM\Table(name="label_log",
 *	indexes={
-*		@orm:Index(name="text_idx", columns={"text_id"}),
-*		@orm:Index(name="user_idx", columns={"user_id"})}
+*		@ORM\Index(name="text_idx", columns={"text_id"}),
+*		@ORM\Index(name="user_idx", columns={"user_id"})}
 * )
 */
 class LabelLog
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var integer $text
-	* @orm:ManyToOne(targetEntity="Text", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="Text")
 	*/
 	private $text;
 
 	/**
 	* @var integer $user
-	* @orm:ManyToOne(targetEntity="User", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="User")
 	*/
 	private $user;
 
 	/**
 	* @var string $title
-	* @orm:Column(type="string", length=100)
+	* @ORM\Column(type="string", length=100)
 	*/
 	private $title;
 
 	/**
 	* @var string $author
-	* @orm:Column(type="string", length=200)
+	* @ORM\Column(type="string", length=200)
 	*/
 	private $author;
 
 	/**
 	* @var string $action
-	* @orm:Column(type="string", length=1)
+	* @ORM\Column(type="string", length=1)
 	*/
 	private $action;
 
 	/**
 	* @var string $labels
-	* @orm:Column(type="string", length=255)
+	* @ORM\Column(type="string", length=255)
 	*/
 	private $labels;
 
 	/**
 	* @var datetime $time
-	* @orm:Column(type="datetime")
+	* @ORM\Column(type="datetime")
 	*/
 	private $time;
 

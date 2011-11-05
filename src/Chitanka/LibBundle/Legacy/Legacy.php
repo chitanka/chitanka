@@ -454,7 +454,7 @@ class Legacy
 		$patterns = array(
 			'/rel="[^"]+"/' => '',
 			// images
-			'| src="/|' => " src=\"$server/",
+			'| src="(/\w)|' => " src=\"$server$1",
 		);
 		$content = preg_replace(array_keys($patterns), array_values($patterns), $content);
 

@@ -319,7 +319,7 @@ EOS;
 			$text = empty($sortby)
 				? 'Произведения от ' . $name
 				: $this->formatPersonName($lname, $sortby);
-			$link = sprintf('<a href="%s">%s</a>', $this->controller->generateUrl('person_show', array('slug' => trim($lname))+$query), $text);
+			$link = strpos($lname, '.') === false ? sprintf('<a href="%s">%s</a>', $this->controller->generateUrl('person_show', array('slug' => trim($lname))+$query), $text) : $lname;
 			$o .= ', ' . $pref . $link . $suf;
 		}
 		return substr($o, 2);

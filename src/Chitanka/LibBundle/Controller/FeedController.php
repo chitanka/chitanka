@@ -134,7 +134,11 @@ class FeedController extends Controller
 		}
 
 		$feed = new \DOMDocument();
-		if ( $feed->loadXML(Legacy::getFromUrlOrCache($xmlFile, $days = 0.02)) ) {
+		$contents = Legacy::getFromUrlOrCache($xmlFile, $days = 0.02);
+		if (empty($contents)) {
+			return false;
+		}
+		if ( $feed->loadXML($contents) ) {
 			return $proc->transformToXML($feed);
 		}
 

@@ -4,74 +4,75 @@ namespace Chitanka\LibBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 
+use Chitanka\LibBundle\Entity\Text;
 use Chitanka\LibBundle\Util\Language;
 use Chitanka\LibBundle\Legacy\Legacy;
 
 class TextAdmin extends Admin
 {
-	protected $baseRouteName = 'text';
+	protected $baseRouteName = 'admin_text';
 
-	protected $list = array(
-		'title' => array('identifier' => true),
-		'slug',
-		'_action' => array(
-			'actions' => array(
-				'delete' => array(),
-				'edit' => array()
-			)
-		),
-	);
-
-	protected $form = array(
-		'slug',
-		'title',
-		'subtitle',
-		'lang',
-		'trans_year',
-		'trans_year2',
-		'orig_title',
-		'orig_subtitle',
-		'orig_lang',
-		'year',
-		'year2',
-		'orig_license',
-		'trans_license',
-		'type',
-		'series',
-		'sernr',
-		'sernr2',
-		'headlevel',
-		//'size',
-		//'zsize',
-		'source',
-		//'cur_rev',
-		'mode' => array(
-			'type' => 'choice',
-			'form_field_options' => array(
-				'choices' => array(
-					'public' => 'Видим',
-					'private' => 'Скрит',
-				),
-				'expanded' => true
-			)
-		),
-	);
-
-	protected $filter = array(
-		'title',
-	);
-
-	protected function configureFormFields(FormMapper $form)
+	protected function configureListFields(ListMapper $listMapper)
 	{
-		$form->add('lang', array('choices' => Language::getLangs()), array('type' => 'choice'));
-		$form->add('orig_lang', array('choices' => Language::getLangs()), array('type' => 'choice'));
-		$form->add('type', array('choices' => array('' => '') + Legacy::workTypes()), array('type' => 'choice'));
-		$form->add('series', array(
-			'query_builder' => function ($repo) {
-				return $repo->createQueryBuilder('e')->orderBy('e.name');
-			},
-			'required' => false
-		));
+		$listMapper
+			->addIdentifier('title')
+			->add('slug')
+
+			->add('_action', 'actions', array(
+				'actions' => array(
+					'delete' => array(),
+					'edit' => array(),
+				)
+			))
+		;
+	}
+
+	protected function configureFormFields(FormMapper $formMapper)
+	{
+		$formMapper
+			->add('slug')
+			->add('title')
+			->add('subtitle', null, array('required' => false))
+			->add('lang', 'choice', array('choices' => Language::getLangs()))
+			->add('trans_year', null, array('required' => false))
+			->add('trans_year2', null, array('required' => false))
+			->add('orig_title', null, array('required' => false))
+			->add('orig_subtitle', null, array('required' => false))
+			->add('orig_lang', 'choice', array('choices' => Language::getLangs()))
+			->add('year', null, array('required' => false))
+			->add('year2', null, array('required' => false))
+			->add('orig_license', null, array('required' => false))
+			->add('trans_license', null, array('required' => false))
+			->add('type', 'choice', array('choices' => array('' => '') + Legacy::workTypes()))
+			->add('series', 'sonata_type_model', array('required' => false), array('edit' => 'list'))
+			->add('sernr', null, array('required' => false))
+			->add('sernr2', null, array('required' => false))
+			->add('headlevel', null, array('required' => false))
+			->add('source', null, array('required' => false))
+			->add('mode', 'choice', array('choices' => Text::getModeList()))
+		;
+	}
+
+	protected function configureDatagridFilters(DatagridMapper $datagrid)
+	{
+		$datagrid
+			->add('title')
+			->add('subtitle')
+			->add('lang')
+			->add('trans_year')
+			->add('trans_year2')
+			->add('orig_title')
+			->add('orig_subtitle')
+			->add('orig_lang')
+			->add('year')
+			->add('year2')
+			->add('orig_license')
+			->add('trans_license')
+			->add('type')
+			->add('mode')
+		;
 	}
 }

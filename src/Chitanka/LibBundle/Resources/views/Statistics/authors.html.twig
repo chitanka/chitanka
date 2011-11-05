@@ -2,7 +2,7 @@
 	<caption>Автори по държава</caption>
 	{% for country, count in author_countries %}
 		<tr class="{{ cycle(['even', 'odd'], loop.index) }}">
-			<td><a href="{{ path('authors_by_country', {'country': country}) }}">{% trans 'country.' ~ country %}</a></td>
+			<td><a href="{{ path('authors_by_country', {'country': country}) }}">{{ ('country.'~country) | trans }}</a></td>
 			<td>{{ count }}</td>
 		</tr>
 	{% endfor %}

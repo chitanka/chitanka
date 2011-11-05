@@ -2,49 +2,51 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\TextRevisionRepository")
-* @orm:Table(name="text_revision",
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\TextRevisionRepository")
+* @ORM\Table(name="text_revision",
 *	indexes={
-*		@orm:Index(name="text_idx", columns={"text_id"}),
-*		@orm:Index(name="user_idx", columns={"user_id"})}
+*		@ORM\Index(name="text_idx", columns={"text_id"}),
+*		@ORM\Index(name="user_idx", columns={"user_id"})}
 * )
 */
 class TextRevision
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var integer $text
-	* @orm:ManyToOne(targetEntity="Text", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="Text")
 	*/
 	private $text;
 
 	/**
 	* @var integer $user
-	* @orm:ManyToOne(targetEntity="User", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="User")
 	*/
 	private $user;
 
 	/**
 	* @var string $comment
-	* @orm:Column(type="string", length=255)
+	* @ORM\Column(type="string", length=255)
 	*/
 	private $comment;
 
 	/**
 	* @var datetime $date
-	* @orm:Column(type="datetime")
+	* @ORM\Column(type="datetime")
 	*/
 	private $date;
 
 	/**
 	* @var boolean
-	* @orm:Column(type="boolean")
+	* @ORM\Column(type="boolean")
 	*/
 	private $first = true;
 

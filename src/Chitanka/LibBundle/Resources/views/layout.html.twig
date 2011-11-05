@@ -136,10 +136,11 @@
 		<script src="{{ asset('js/'~ js_extra|join(',') ~'.js') }}"></script>
 	{% endif %}
 
-	{% if inline_js is defined %}
-		<script>{{ inline_js|raw }}</script>
-	{% endif %}
 	<script>
+		{% if inline_js is defined %}
+			{{ inline_js|raw }}
+		{% endif %}
+		{% block inline_js %}{% endblock %}
 		$.each(user_functions, function(i, func){
 			func();
 		});

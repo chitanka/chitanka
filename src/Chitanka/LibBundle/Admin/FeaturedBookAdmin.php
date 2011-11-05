@@ -3,34 +3,48 @@
 namespace Chitanka\LibBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class FeaturedBookAdmin extends Admin
 {
-	protected $baseRouteName = 'featured_book';
+	protected $baseRouteName = 'admin_featured_book';
 
-	protected $list = array(
-		'cover' => array('template' => 'LibBundle:FeaturedBookAdmin:list_cover.html.twig'),
-		'title' => array('identifier' => true),
-		'author',
-		'url' => array('template' => 'LibBundle:FeaturedBookAdmin:list_url.html.twig'),
-		'_action' => array(
-			'actions' => array(
-				'delete' => array(),
-				'edit' => array()
-			)
-		),
-	);
+	protected function configureListFields(ListMapper $listMapper)
+	{
+		$listMapper
+			->add('cover', 'string', array('template' => 'LibBundle:FeaturedBookAdmin:list_cover.html.twig'))
+			->addIdentifier('title')
+			->add('author')
+			->add('url', 'string', array('template' => 'LibBundle:FeaturedBookAdmin:list_url.html.twig'))
+			->add('_action', 'actions', array(
+				'actions' => array(
+					'delete' => array(),
+					'edit' => array(),
+				)
+			))
+		;
+	}
 
-	protected $form = array(
-		'title',
-		'author',
-		'url',
-		'cover',
-	);
+	protected function configureFormFields(FormMapper $formMapper)
+	{
+		$formMapper
+			->add('title')
+			->add('author')
+			->add('url')
+			->add('cover')
+		;
 
-	protected $filter = array(
-		'title',
-		'author',
-		'url',
-	);
+	}
+
+	protected function configureDatagridFilters(DatagridMapper $datagrid)
+	{
+		$datagrid
+			->add('title')
+			->add('author')
+			->add('url')
+		;
+	}
+
 }

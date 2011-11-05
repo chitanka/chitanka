@@ -2,102 +2,103 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 #use FOS\UserBundle\Entity\User as BaseUser;
 use Chitanka\LibBundle\Legacy\Setup;
 use Chitanka\LibBundle\Legacy\Legacy;
 
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\UserRepository")
-* @orm:HasLifecycleCallbacks
-* @orm:Table(name="user",
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\UserRepository")
+* @ORM\HasLifecycleCallbacks
+* @ORM\Table(name="user",
 *	indexes={
-*		@orm:Index(name="realname_idx", columns={"realname"})}
+*		@ORM\Index(name="realname_idx", columns={"realname"})}
 * )
 */
 class User /*extends BaseUser*/ implements UserInterface
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var string $username
-	* @orm:Column(type="string", length=100, unique=true)
+	* @ORM\Column(type="string", length=100, unique=true)
 	*/
 	private $username = '~anon';
 
 	/**
 	* @var string $realname
-	* @orm:Column(type="string", length=120, nullable=true)
+	* @ORM\Column(type="string", length=120, nullable=true)
 	*/
 	private $realname;
 
 	/**
 	* @var string $password
-	* @orm:Column(type="string", length=40)
+	* @ORM\Column(type="string", length=40)
 	*/
 	private $password;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=100, nullable=true)
+	* @ORM\Column(type="string", length=100, nullable=true)
 	*/
 	private $algorithm;
 
 	/**
 	* @var string $newpassword
-	* @orm:Column(type="string", length=40, nullable=true)
+	* @ORM\Column(type="string", length=40, nullable=true)
 	*/
 	private $newpassword;
 
 	/**
 	* @var string $email
-	* @orm:Column(type="string", length=100, nullable=true)
+	* @ORM\Column(type="string", length=100, nullable=true)
 	*/
 	private $email;
 
 	/**
 	* @var boolean $allowemail
-	* @orm:Column(type="boolean")
+	* @ORM\Column(type="boolean")
 	*/
 	private $allowemail = false;
 
 	/**
 	* @var array
-	* @orm:Column(type="array")
+	* @ORM\Column(type="array")
 	*/
 	private $groups = array();
 
 	/**
 	* @var boolean $news
-	* @orm:Column(type="boolean")
+	* @ORM\Column(type="boolean")
 	*/
 	private $news = false;
 
 	/**
 	* @var array $opts
-	* @orm:Column(type="array")
+	* @ORM\Column(type="array")
 	*/
 	private $opts = array();
 
 	/**
 	* @var integer $login_tries
-	* @orm:Column(type="smallint")
+	* @ORM\Column(type="smallint")
 	*/
 	private $login_tries = 0;
 
 	/**
 	* @var datetime $registration
-	* @orm:Column(type="datetime")
+	* @ORM\Column(type="datetime")
 	*/
 	private $registration;
 
 	/**
 	* @var datetime $touched
-	* @orm:Column(type="datetime")
+	* @ORM\Column(type="datetime")
 	*/
 	private $touched;
 
@@ -105,22 +106,22 @@ class User /*extends BaseUser*/ implements UserInterface
 	* Token used to access private user lists, e.g. read texts
 	*
 	* @var string
-	* @orm:Column(type="string", length=40, nullable=true)
+	* @ORM\Column(type="string", length=40, nullable=true)
 	*/
 	private $token;
 
 
 	/** FIXME doctrine:schema:create does not allow this relation
 	* @var array
-	* @orm:ManyToMany(targetEntity="Text", mappedBy="readers")
-	* @orm:JoinTable(name="user_text_read",
-	*	joinColumns={@orm:JoinColumn(name="user_id")},
-	*	inverseJoinColumns={@orm:JoinColumn(name="text_id")})
+	* @ORM\ManyToMany(targetEntity="Text", mappedBy="readers")
+	* @ORM\JoinTable(name="user_text_read",
+	*	joinColumns={@ORM\JoinColumn(name="user_id")},
+	*	inverseJoinColumns={@ORM\JoinColumn(name="text_id")})
 	*/
 	private $readTexts;
 
 	/**
-	* @orm:OneToMany(targetEntity="Bookmark", mappedBy="user")
+	* @ORM\OneToMany(targetEntity="Bookmark", mappedBy="user")
 	*/
 	private $bookmarks;
 
@@ -267,7 +268,7 @@ class User /*extends BaseUser*/ implements UserInterface
 		);
 	}
 
-	/** @orm:PrePersist */
+	/** @ORM\PrePersist */
 	public function preInsert()
 	{
 		$this->registration = new \DateTime;
@@ -275,7 +276,7 @@ class User /*extends BaseUser*/ implements UserInterface
 		$this->groups[] = 'user';
 	}
 
-	/** @orm:PreUpdate */
+	/** @ORM\PreUpdate */
 	public function preUpdate()
 	{
 		if (empty($this->email)) {

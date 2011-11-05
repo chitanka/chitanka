@@ -2,30 +2,29 @@
 
 namespace Chitanka\LibBundle\Entity;
 
-/**
-*/
+use Symfony\Component\Validator\Constraints as Assert;
+
 class Feedback
 {
-	/** */
 	public $referer;
 
 	/**
-    * @assert:MinLength(3)
-	*/
+	 * @Assert\MinLength(3)
+	 */
 	public $name;
 
 	/**
-	* @assert:Email()
-	*/
+	 * @Assert\Email()
+	 */
 	public $email;
 
 	/** */
 	public $subject = 'Обратна връзка от Моята библиотека';
 
 	/**
-	* @assert:NotBlank()
-    * @assert:MinLength(50)
-	*/
+	 * @Assert\NotBlank()
+     * @Assert\MinLength(50)
+	 */
 	public $comment;
 
 	private $mailer;

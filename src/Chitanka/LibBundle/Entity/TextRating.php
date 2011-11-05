@@ -2,44 +2,46 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\TextRatingRepository")
-* @orm:HasLifecycleCallbacks
-* @orm:Table(name="text_rating",
-*	uniqueConstraints={@orm:UniqueConstraint(name="text_user_uniq", columns={"text_id", "user_id"})},
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\TextRatingRepository")
+* @ORM\HasLifecycleCallbacks
+* @ORM\Table(name="text_rating",
+*	uniqueConstraints={@ORM\UniqueConstraint(name="text_user_uniq", columns={"text_id", "user_id"})},
 *	indexes={
-*		@orm:Index(name="user_idx", columns={"user_id"})}
+*		@ORM\Index(name="user_idx", columns={"user_id"})}
 * )
 */
 class TextRating
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var integer $text
-	* @orm:ManyToOne(targetEntity="Text", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="Text")
 	*/
 	private $text;
 
 	/**
 	* @var integer $user
-	* @orm:ManyToOne(targetEntity="User", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="User")
 	*/
 	private $user;
 
 	/**
 	* @var integer $rating
-	* @orm:Column(type="smallint")
+	* @ORM\Column(type="smallint")
 	*/
 	private $rating;
 
 	/**
 	* @var date $date
-	* @orm:Column(type="datetime")
+	* @ORM\Column(type="datetime")
 	*/
 	private $date;
 
@@ -68,7 +70,7 @@ class TextRating
 		$this->setDate(new \DateTime);
 	}
 
-	/** @orm:PreUpdate */
+	/** @ORM\PreUpdate */
 	public function preUpdate()
 	{
 		$this->setDate(new \DateTime);

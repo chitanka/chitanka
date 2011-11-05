@@ -2,53 +2,55 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\TextHeaderRepository")
-* @orm:Table(name="text_header",
-*	uniqueConstraints={@orm:UniqueConstraint(name="key_uniq", columns={"text_id", "nr", "level"})}
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\TextHeaderRepository")
+* @ORM\Table(name="text_header",
+*	uniqueConstraints={@ORM\UniqueConstraint(name="key_uniq", columns={"text_id", "nr", "level"})}
 * )
 */
 class TextHeader
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var integer $text
-	* @orm:ManyToOne(targetEntity="Text", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="Text")
 	*/
 	private $text;
 
 	/**
 	* @var integer $nr
-	* @orm:Column(type="smallint")
+	* @ORM\Column(type="smallint")
 	*/
 	private $nr;
 
 	/**
 	* @var integer $level
-	* @orm:Column(type="smallint")
+	* @ORM\Column(type="smallint")
 	*/
 	private $level;
 
 	/**
 	* @var string $name
-	* @orm:Column(type="string", length=255)
+	* @ORM\Column(type="string", length=255)
 	*/
 	private $name;
 
 	/**
 	* @var integer $fpos
-	* @orm:Column(type="integer")
+	* @ORM\Column(type="integer")
 	*/
 	private $fpos;
 
 	/**
 	* @var integer $linecnt
-	* @orm:Column(type="smallint")
+	* @ORM\Column(type="smallint")
 	*/
 	private $linecnt;
 

@@ -49,10 +49,10 @@
 	{% endset %}
 	{% set navextra = navextra|merge({'Сваляне': download_links}) %}
 {% endif %}
-{% set inline_js %}
+{% block inline_js %}
 	/*mgSettings = $.extend(mgSettings, {
 		"textId": {{ text.id }},
 		"chunkId": {{ part }},
 		"nextChunkId": {{ next_part }}
 	});*/
-{% endset %}
+{% endblock %}

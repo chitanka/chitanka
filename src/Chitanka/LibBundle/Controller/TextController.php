@@ -4,6 +4,7 @@ namespace Chitanka\LibBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\NoResultException;
 use Chitanka\LibBundle\Pagination\Pager;
@@ -14,8 +15,8 @@ use Chitanka\LibBundle\Entity\TextRating;
 use Chitanka\LibBundle\Entity\UserTextRead;
 use Chitanka\LibBundle\Entity\TextLabel;
 use Chitanka\LibBundle\Entity\Bookmark;
-use Chitanka\LibBundle\Form\TextRatingForm;
-use Chitanka\LibBundle\Form\TextLabelForm;
+//use Chitanka\LibBundle\Form\Type\TextRatingType;
+//use Chitanka\LibBundle\Form\Type\TextLabelType;
 use Chitanka\LibBundle\Legacy\Setup;
 use Chitanka\LibBundle\Legacy\ZipFile;
 use Chitanka\LibBundle\Legacy\CacheManager;
@@ -234,40 +235,44 @@ class TextController extends Controller
 	}
 
 
-	public function ratingAction($id)
+	public function ratingAction(Request $request, $id)
 	{
 		$text = $this->getRepository('Text')->find($id);
 
-		$user = $this->getEntityManager()->merge($this->getUser());
+		$em = $this->getEntityManager();
+		$user = $em->merge($this->getUser());
 		$rating = $this->getRepository('TextRating')->getByTextAndUser($text, $user);
 		if ( ! $rating) {
 			$rating = new TextRating($text, $user);
 		}
-		$form = TextRatingForm::create($this->get('form.context'), 'rating', array('em' => $this->getEntityManager()));
+		$form = $this->createForm('text_rating_form', $rating);
 
 		// TODO replace with DoctrineListener
 		$oldRating = $rating->getRating();
 
-		$form->bind($this->get('request'), $rating);
+		if ($request->getMethod() == 'POST') {
+			$form->bindRequest($request);
+			if ($form->isValid() && $this->getUser()->isAuthenticated()) {
+				// TODO replace with DoctrineListener
+				$text->updateAvgRating($rating->getRating(), $oldRating);
+				$this->getEntityManager()->persist($text);
 
-		if ($form->isValid() && $this->getUser()->isAuthenticated()) {
-			// TODO replace with DoctrineListener
-			$text->updateAvgRating($rating->getRating(), $oldRating);
-			$this->getEntityManager()->persist($text);
+				// TODO bind overwrites the Text object with an id
+				$rating->setText($text);
 
-			// TODO bind overwrites the Text object with an id
-			$rating->setText($text);
-
-			$rating->setCurrentDate();
-			$form->process();
+				$rating->setCurrentDate();
+				$em->persist($rating);
+				$em->flush();
+			}
 		}
 
 		$this->view = array(
-			'form' => $form,
+			'text' => $text,
+			'form' => $form->createView(),
 			'rating' => $rating,
 		);
 
-		if ($this->get('request')->isXmlHttpRequest() || $this->get('request')->getMethod() == 'GET') {
+		if ($request->isXmlHttpRequest() || $request->getMethod() == 'GET') {
 			$this->responseAge = 0;
 
 			return $this->display('rating');
@@ -276,7 +281,7 @@ class TextController extends Controller
 		}
 	}
 
-	public function newLabelAction($id)
+	public function newLabelAction(Request $request, $id)
 	{
 		$this->responseAge = 0;
 
@@ -289,26 +294,31 @@ class TextController extends Controller
 			throw new NotFoundHttpException("Няма текст с номер $id.");
 		}
 
-		$form = TextLabelForm::create($this->get('form.context'), 'text_label', array('em' => $this->getEntityManager()));
 		$textLabel = new TextLabel;
 		$textLabel->setText($text);
-		$form->bind($this->get('request'), $textLabel);
+		$form = $this->createForm('text_label_form', $textLabel);
 
 		$this->view = array(
 			'text' => $text,
 			'text_label' => $textLabel,
-			'form' => $form,
+			'form' => $form->createView(),
 		);
 
-		if ($form->isValid()) {
-			// TODO bind overwrites the Text object with an id
-			$textLabel->setText($text);
-			$form->process();
-			if ($this->get('request')->isXmlHttpRequest()) {
-				$this->view['label'] = $textLabel->getLabel();
-				return $this->display('label_view');
-			} else {
-				return $this->redirectToText($text);
+		if ($request->getMethod() == 'POST') {
+			$form->bindRequest($request);
+			if ($form->isValid()) {
+				// TODO bind overwrites the Text object with an id
+				$textLabel->setText($text);
+				$text->addLabel($textLabel->getLabel());
+				$em = $this->getEntityManager();
+				$em->persist($text);
+				$em->flush();
+				if ($request->isXmlHttpRequest()) {
+					$this->view['label'] = $textLabel->getLabel();
+					return $this->display('label_view');
+				} else {
+					return $this->redirectToText($text);
+				}
 			}
 		}
 

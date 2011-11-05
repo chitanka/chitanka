@@ -2076,7 +2076,10 @@ table.toccolours td {
 	margin: 0 0 .5em 10.5em;
 	width: 30em;
 }
-.main-form input[type=text], .main-form textarea, .main-form select {
+.main-form input[type=text],
+.main-form input[type=email],
+.main-form textarea,
+.main-form select {
 	font-family: sans-serif;
 	font-size: 1em;
 	width: 30em;

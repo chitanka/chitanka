@@ -75,7 +75,7 @@ function submitDeleteForm(form)
 {
 	var $form = $(form);
 	$(":submit", $form).addClass("loading");
-	$.post(form.action, $form.serialize(), function(data){
+	$.post(form.action, $form.serialize() + "&_method=DELETE", function(data){
 		var $parent = $form.parents(".deletable:eq(0)");
 		if ( ! $parent.length) {
 			$parent = $form.parent();

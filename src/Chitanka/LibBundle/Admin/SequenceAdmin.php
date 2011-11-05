@@ -9,27 +9,38 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class SequenceAdmin extends Admin
 {
-	protected $baseRouteName = 'sequence';
+	protected $baseRouteName = 'admin_sequence';
 
-	protected $list = array(
-		'name' => array('identifier' => true),
-		'slug',
-		'_action' => array(
-		'actions' => array(
-				'delete' => array(),
-				'edit' => array()
-			)
-		),
-	);
+	protected function configureListFields(ListMapper $listMapper)
+	{
+		$listMapper
+			->addIdentifier('name')
+			->add('slug')
+			->add('_action', 'actions', array(
+				'actions' => array(
+					'delete' => array(),
+					'edit' => array(),
+				)
+			))
+		;
+	}
 
-	protected $form = array(
-		'name',
-		'slug',
-		'publisher',
-	);
+	protected function configureFormFields(FormMapper $formMapper)
+	{
+		$formMapper
+			->add('name')
+			->add('slug')
+			->add('publisher', null, array('required' => false))
+		;
 
-	protected $filter = array(
-		'name',
-		'publisher',
-	);
+	}
+
+	protected function configureDatagridFilters(DatagridMapper $datagrid)
+	{
+		$datagrid
+			->add('name')
+			->add('publisher')
+		;
+	}
+
 }

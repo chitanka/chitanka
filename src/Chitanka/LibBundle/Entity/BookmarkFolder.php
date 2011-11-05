@@ -2,44 +2,46 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity(repositoryClass="Chitanka\LibBundle\Entity\BookmarkFolderRepository")
-* @orm:HasLifecycleCallbacks
-* @orm:Table(name="bookmark_folder",
-*	uniqueConstraints={@orm:UniqueConstraint(name="uniq_key", columns={"slug", "user_id"})},
+* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\BookmarkFolderRepository")
+* @ORM\HasLifecycleCallbacks
+* @ORM\Table(name="bookmark_folder",
+*	uniqueConstraints={@ORM\UniqueConstraint(name="uniq_key", columns={"slug", "user_id"})},
 *	indexes={
-*		@orm:Index(name="slug_idx", columns={"slug"})}
+*		@ORM\Index(name="slug_idx", columns={"slug"})}
 * )
 */
 class BookmarkFolder
 {
 	/**
 	* @var integer
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=40)
+	* @ORM\Column(type="string", length=40)
 	*/
 	private $slug = '';
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=80)
+	* @ORM\Column(type="string", length=80)
 	*/
 	private $name = '';
 
 	/**
 	* @var integer
-	* @orm:ManyToOne(targetEntity="User", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="User")
 	*/
 	private $user;
 
 	/**
 	* @var date
-	* @orm:Column(type="datetime")
+	* @ORM\Column(type="datetime")
 	*/
 	private $created_at;
 
@@ -58,7 +60,7 @@ class BookmarkFolder
 	public function setCreatedAt($created_at) { $this->created_at = $created_at; }
 	public function getCreatedAt() { return $this->created_at; }
 
-	/** @orm:PrePersist */
+	/** @ORM\PrePersist */
 	public function preInsert()
 	{
 		$this->setCreatedAt(new \DateTime);

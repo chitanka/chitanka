@@ -1,5 +1,5 @@
 <ul class="two-columns">
 {% for type in types %}
-	<li><a href="{{ path('texts_by_type', {'type': type}) }}">{% trans 'text.type.singular.' ~ type %}</a></li>
+	<li><a href="{{ path('texts_by_type', {'type': type}) }}">{{ ('text.type.singular.'~type) | trans }}</a></li>
 {% endfor %}
 </ul>

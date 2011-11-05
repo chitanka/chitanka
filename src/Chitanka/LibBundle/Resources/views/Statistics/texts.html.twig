@@ -2,7 +2,7 @@
 	<caption>Произведения по форма</caption>
 	{% for type, count in text_types %}
 		<tr class="{{ cycle(['even', 'odd'], loop.index) }}">
-			<td><a href="{{ path('texts_by_type', {'type': type}) }}">{% trans 'text.type.singular.' ~ type %}</a></td>
+			<td><a href="{{ path('texts_by_type', {'type': type}) }}">{{ ('text.type.singular.'~type) | trans }}</a></td>
 			<td>{{ count }}</td>
 		</tr>
 	{% endfor %}

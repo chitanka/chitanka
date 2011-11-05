@@ -2,43 +2,45 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity
-* @orm:Table(name="text_translator",
-*	uniqueConstraints={@orm:UniqueConstraint(name="person_text_uniq", columns={"person_id", "text_id"})},
+* @ORM\Entity
+* @ORM\Table(name="text_translator",
+*	uniqueConstraints={@ORM\UniqueConstraint(name="person_text_uniq", columns={"person_id", "text_id"})},
 *	indexes={
-*		@orm:Index(name="text_idx", columns={"text_id"})}
+*		@ORM\Index(name="text_idx", columns={"text_id"})}
 * )
 */
 class TextTranslator
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var integer $person
-	* @orm:ManyToOne(targetEntity="Person", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="Person")
 	*/
 	private $person;
 
 	/**
 	* @var integer $text
-	* @orm:ManyToOne(targetEntity="Text", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="Text")
 	*/
 	private $text;
 
 	/**
 	* @var integer $pos
-	* @orm:Column(type="smallint")
+	* @ORM\Column(type="smallint")
 	*/
 	private $pos;
 
 	/**
 	* @var integer $year
-	* @orm:Column(type="smallint")
+	* @ORM\Column(type="smallint")
 	*/
 	private $year;
 

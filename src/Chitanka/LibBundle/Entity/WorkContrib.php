@@ -2,67 +2,69 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity
-* @orm:Table(name="work_contrib",
-*	uniqueConstraints={@orm:UniqueConstraint(name="entry_user_uniq", columns={"entry_id", "user_id"})},
+* @ORM\Entity
+* @ORM\Table(name="work_contrib",
+*	uniqueConstraints={@ORM\UniqueConstraint(name="entry_user_uniq", columns={"entry_id", "user_id"})},
 *	indexes={
-*		@orm:Index(name="user_idx", columns={"user_id"})}
+*		@ORM\Index(name="user_idx", columns={"user_id"})}
 * )
 */
 class WorkContrib
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var integer $entry
-	* @orm:ManyToOne(targetEntity="WorkEntry", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="WorkEntry")
 	*/
 	private $entry;
 
 	/**
 	* @var integer $user
-	* @orm:ManyToOne(targetEntity="User", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="User")
 	*/
 	private $user;
 
 	/**
 	* @var text $comment
-	* @orm:Column(type="text")
+	* @ORM\Column(type="text")
 	*/
 	private $comment;
 
 	/**
 	* @var integer $progress
-	* @orm:Column(type="smallint")
+	* @ORM\Column(type="smallint")
 	*/
 	private $progress = 0;
 
 	/**
 	* @var boolean $is_frozen
-	* @orm:Column(type="boolean")
+	* @ORM\Column(type="boolean")
 	*/
 	private $is_frozen = false;
 
 	/**
 	* @var datetime $date
-	* @orm:Column(type="datetime")
+	* @ORM\Column(type="datetime")
 	*/
 	private $date;
 
 	/**
 	* @var string $uplfile
-	* @orm:Column(type="string", length=255, nullable=true)
+	* @ORM\Column(type="string", length=255, nullable=true)
 	*/
 	private $uplfile;
 
 	/**
 	* @var datetime
-	* @orm:Column(type="datetime", nullable=true)
+	* @ORM\Column(type="datetime", nullable=true)
 	*/
 	private $deleted_at;
 

@@ -2,13 +2,13 @@
 
 namespace Chitanka\LibBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use Chitanka\LibBundle\Legacy\Setup;
 use Chitanka\LibBundle\Util\String;
 
 
-class CommonDbCommand extends Command
+class CommonDbCommand extends ContainerAwareCommand
 {
 
 	protected function configure()

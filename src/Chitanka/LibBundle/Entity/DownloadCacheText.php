@@ -2,29 +2,31 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity
-* @orm:Table(name="download_cache_text",
-*	indexes={@orm:Index(name="text_idx", columns={"text_id"})}
+* @ORM\Entity
+* @ORM\Table(name="download_cache_text",
+*	indexes={@ORM\Index(name="text_idx", columns={"text_id"})}
 * )
 */
 class DownloadCacheText
 {
 	/**
 	* @var integer $id
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue(strategy="AUTO")
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue(strategy="AUTO")
 	*/
 	private $id;
 
 	/**
 	* @var integer $dc
-	* @orm:ManyToOne(targetEntity="DownloadCache", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="DownloadCache")
 	*/
 	private $dc;
 
 	/**
 	* @var integer $text
-	* @orm:ManyToOne(targetEntity="Text", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="Text")
 	*/
 	private $text;
 

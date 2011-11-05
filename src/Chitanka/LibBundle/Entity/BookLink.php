@@ -2,35 +2,37 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity
-* @orm:Table(name="book_link",
-*	uniqueConstraints={@orm:UniqueConstraint(name="book_site_uniq", columns={"book_id", "site_id"})}
+* @ORM\Entity
+* @ORM\Table(name="book_link",
+*	uniqueConstraints={@ORM\UniqueConstraint(name="book_site_uniq", columns={"book_id", "site_id"})}
 * )
 */
 class BookLink
 {
 	/**
 	* @var integer
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var integer
-	* @orm:ManyToOne(targetEntity="Book", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="Book")
 	*/
 	private $book;
 
 	/**
 	* @var integer
-	* @orm:ManyToOne(targetEntity="BookSite", cascade={"ALL"})
+	* @ORM\ManyToOne(targetEntity="BookSite")
 	*/
 	private $site;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=50)
+	* @ORM\Column(type="string", length=50)
 	*/
 	private $code;
 

@@ -20,15 +20,17 @@ class AppKernel extends Kernel
 
 			//new FOS\UserBundle\FOSUserBundle(),
 			new Sonata\jQueryBundle\SonatajQueryBundle(),
-			new Sonata\BluePrintBundle\SonataBluePrintBundle(),
 			new Sonata\AdminBundle\SonataAdminBundle(),
-			new Knplabs\MenuBundle\KnplabsMenuBundle(),
+			new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
+			new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
 			new Chitanka\LibBundle\LibBundle(),
 		);
 
 		if (in_array($this->getEnvironment(), array('dev', 'test'))) {
 			$bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+			//$bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
+			$bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
 		}
 
 		return $bundles;
@@ -51,11 +53,11 @@ class AppKernel extends Kernel
 	protected function getConfigurationFile($environment, $format = 'yml')
 	{
 		$basePath = __DIR__.'/config/config_';
-		$file = $basePath.$environment.'_local.'.$format;
-
-		if (file_exists($file)) {
-			return $file;
-		}
+//		$file = $basePath.$environment.'_local.'.$format;
+//
+//		if (file_exists($file)) {
+//			return $file;
+//		}
 
 		return $basePath.$environment.'.'.$format;
 	}

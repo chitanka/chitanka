@@ -2,27 +2,29 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity
-* @orm:Table(name="book_site")
+* @ORM\Entity
+* @ORM\Table(name="book_site")
 */
 class BookSite
 {
 	/**
 	* @var integer
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=50, unique=true)
+	* @ORM\Column(type="string", length=50, unique=true)
 	*/
 	private $name;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=100)
+	* @ORM\Column(type="string", length=100)
 	*/
 	private $url;
 

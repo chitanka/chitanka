@@ -32,12 +32,12 @@
 		</li>
 		{% if text.origlang != text.lang %}
 			<li>
-			Превод от {% trans 'lang.' ~ text.origlang %}: {{ textinfo.translator(text) }}, {{ textinfo.trans_year(text) }}
+			Превод от {{ ('lang.'~text.origlang) | trans }}: {{ textinfo.translator(text) }}, {{ textinfo.trans_year(text) }}
 			({{ textinfo.license(text.translicense) }})
 			</li>
 		{% endif %}
 		<li>
-		Форма: <a href="{{ path('texts_by_type', {'type': text.type}) }}">{% trans 'text.type.singular.' ~ text.type %}</a></li>
+		Форма: <a href="{{ path('texts_by_type', {'type': text.type}) }}">{{ ('text.type.singular.'~text.type) | trans }}</a></li>
 		<li>
 			Етикети:
 			<ul class="simplelist with-actions">

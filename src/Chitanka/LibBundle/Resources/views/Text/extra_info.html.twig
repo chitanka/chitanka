@@ -18,7 +18,7 @@
 			{% else %}
 				{{ contrib.username }}
 			{% endif %}
-			{% if contrib.humandate is defined %}({{ contrib.humandate }}){% endif %}
+			{% if contrib.humandate is not empty %}({{ contrib.humandate }}){% endif %}
 		</p>
 		{% endif %}
 	{% endfor %}

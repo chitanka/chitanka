@@ -2,39 +2,41 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
-* @orm:Entity
-* @orm:Table(name="wiki_site")
+* @ORM\Entity
+* @ORM\Table(name="wiki_site")
 */
 class WikiSite
 {
 	/**
 	* @var integer
-	* @orm:Id @orm:Column(type="integer") @orm:GeneratedValue
+	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	*/
 	private $id;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=10, unique=true)
+	* @ORM\Column(type="string", length=10, unique=true)
 	*/
 	private $code;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=50, unique=true)
+	* @ORM\Column(type="string", length=50, unique=true)
 	*/
 	private $name;
 
 	/**
 	* @var string
-	* @orm:Column(type="string", length=100)
+	* @ORM\Column(type="string", length=100)
 	*/
 	private $url;
 
 	/**
 	* @var string
-	* @orm:Column(type="text")
+	* @ORM\Column(type="text")
 	*/
 	private $intro;
 

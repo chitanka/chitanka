@@ -76,7 +76,7 @@
 	</section>
 
 {% endblock %}
-{% set inline_js %}
+{% block inline_js %}
 (function(){
 	var expander = '<button class="expander" role="button"><span>Показване на още</span></button>';
 	var hideCss = {"overflow": "hidden", "margin-bottom": 0};
@@ -100,4 +100,4 @@
 		$(this).prev().css(showCss).end().remove();
 	});
 })();
-{% endset %}
+{% endblock %}
