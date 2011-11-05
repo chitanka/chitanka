@@ -1,3 +1,0 @@
-[submodule "vendor/sfblib"]
-	path = vendor/sfblib
-	url = git://gitorious.org/sfb-converter/mainline.git

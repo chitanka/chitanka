@@ -60,7 +60,7 @@
     target=/bundles/Symfony/Bundle/AsseticBundle
     version=v1.0.1
 
-[Sfblib]
+[sfblib]
     git=git://gitorious.org/sfb-converter/mainline.git
 
 [SonatajQueryBundle]
