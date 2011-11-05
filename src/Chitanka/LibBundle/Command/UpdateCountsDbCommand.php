@@ -33,7 +33,7 @@ EOT
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$this->updateCounts($output, $this->container->get('doctrine.orm.default_entity_manager'));
+		$this->updateCounts($output, $this->getContainer()->get('doctrine.orm.default_entity_manager'));
 		$output->writeln('Done.');
 	}
 

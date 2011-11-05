@@ -46,7 +46,7 @@ EOT
 		$this->saveFiles = $input->getOption('save') === true;
 		$this->dumpSql = $input->getOption('dump-sql') === true;
 		$this->defineVars();
-		list($queries, $errors) = $this->conquerTheWorld($input, $output, $this->container->get('doctrine.orm.default_entity_manager'));
+		list($queries, $errors) = $this->conquerTheWorld($input, $output, $this->getContainer()->get('doctrine.orm.default_entity_manager'));
 
 		if ( ! empty($errors) ) {
 			$output->writeln("/* ###########!!!   ГРЕШКИ:\n\n"
@@ -60,7 +60,7 @@ EOT
 
 	private function defineVars()
 	{
-		Setup::doSetup($this->container);
+		Setup::doSetup($this->getContainer());
 		$this->db = Setup::db();
 		$this->overwrite = true; // overwrite existing files?
 
@@ -91,7 +91,7 @@ EOT
 		$this->labels = array();
 
 		$this->errors = array();
-		$this->contentDir = $this->container->getParameter('kernel.root_dir').'/../web/content';
+		$this->contentDir = $this->getContainer()->getParameter('kernel.root_dir').'/../web/content';
 		$this->books = array();
 	}
 

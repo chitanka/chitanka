@@ -44,7 +44,7 @@ EOT
 	{
 		$this->saveFiles = $input->getOption('save') === true;
 		$this->dumpSql = $input->getOption('dump-sql') === true;
-		$queries = $this->conquerTheWorld($input, $output, $this->container->get('doctrine.orm.default_entity_manager'));
+		$queries = $this->conquerTheWorld($input, $output, $this->getContainer()->get('doctrine.orm.default_entity_manager'));
 
 		$this->printQueries($queries);
 
@@ -61,7 +61,7 @@ EOT
 		$this->entrydate = date('Y-m-d');
 		$this->modifDate = $this->entrydate . ' ' . date('H:i:s');
 
-		$this->contentDir = $this->container->getParameter('kernel.root_dir').'/../web/content';
+		$this->contentDir = $this->getContainer()->getParameter('kernel.root_dir').'/../web/content';
 		$this->works = $this->books = array();
 		$this->errors = array();
 	}

@@ -43,7 +43,7 @@ EOT
 	{
 		$options = $input->getOptions();
 
-		$em = $this->container->get('doctrine.orm.default_entity_manager');
+		$em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->migrateDb($output, $em, $options['old-db']);
 		$output->writeln('Done.');
 	}
@@ -179,7 +179,7 @@ EOT
 	{
 		$output->writeln('Setting the "has_cover" field by books');
 
-		$coverDir = $this->container->getParameter('kernel.root_dir').'/../web/content/book-cover';
+		$coverDir = $this->getContainer()->getParameter('kernel.root_dir').'/../web/content/book-cover';
 		$finder = new Finder();
 		$finder->files()->name('*.jpg');
 		$ids = array();

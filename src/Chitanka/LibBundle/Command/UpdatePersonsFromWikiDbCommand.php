@@ -34,7 +34,7 @@ EOT
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$this->em = $this->container->get('doctrine.orm.default_entity_manager');
+		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->output = $output;
 		$this->errors = array();
 		$this->processWikiPage('Работно ателие/Нови автори');
@@ -59,12 +59,19 @@ EOT
 	{
 		$persons = $this->_getPersonsDataFromWikiContent($wikiContent);
 		$this->output->writeln('Updating persons...');
-		foreach ($persons as $person) {
-			$this->em->persist($this->createPerson($person));
-			try {
-				$this->em->flush();
-			} catch (\PDOException $e) {
-				$this->errors[] = $e->getMessage();
+		foreach ($persons as $personData) {
+			if ($personData['slug'] || $personData['name']) {
+				$person = $this->createPerson($personData);
+				if ($this->isNewPersonWithTakenSlug($person)) {
+					$this->errors[] = "При $personData[name] се генерира идентификатор ({$person->getSlug()}), който вече присъства в базата.";
+					continue;
+				}
+				$this->em->persist($person);
+				try {
+					$this->em->flush();
+				} catch (\PDOException $e) {
+					$this->errors[] = $e->getMessage();
+				}
 			}
 		}
 		return count($persons);
@@ -89,6 +96,11 @@ EOT
 		if ( ! empty($data['info'])) $person->setInfo($data['info']);
 
 		return $person;
+	}
+
+	protected function isNewPersonWithTakenSlug($person)
+	{
+		return !$person->getId() && $this->em->getRepository('LibBundle:Person')->getBySlug($person->getSlug());
 	}
 
 	private $_wikiBot;

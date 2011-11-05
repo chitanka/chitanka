@@ -35,7 +35,7 @@ EOT
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$this->em = $this->container->get('doctrine.orm.default_entity_manager');
+		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->em->getConfiguration()->addCustomHydrationMode('id', 'Chitanka\LibBundle\Hydration\IdHydrator');
 		$this->em->getConfiguration()->addCustomHydrationMode('key_value', 'Chitanka\LibBundle\Hydration\KeyValueHydrator');
 		$this->input = $input;

@@ -155,7 +155,7 @@ class CommonDbCommand extends ContainerAwareCommand
 	protected function olddb()
 	{
 		if ( ! $this->_olddb) {
-			Setup::doSetup($this->container);
+			Setup::doSetup($this->getContainer());
 			$this->_olddb = Setup::db();
 		}
 		return $this->_olddb;

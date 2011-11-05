@@ -35,7 +35,7 @@ EOT
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$em = $this->container->get('doctrine.orm.default_entity_manager');
+		$em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->updateLinks($this->fetchWikiContent($output), $output, $em);
 		$output->writeln('Done.');
 	}

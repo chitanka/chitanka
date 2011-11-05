@@ -14,14 +14,14 @@ if (isset($_GET['url'])) {
 	));
 
 	if (strpos($url, 'http://') !== 0) {
-		die('not a http address');
+		die('not an http address');
 	}
 	if ( ! in_array(parse_url($url, PHP_URL_HOST), $allowedDomains)) {
 		die('not allowed domain');
 	}
 	$response = @file_get_contents($url);
 	if ($response === false) {
-		echo 'error';
+		echo 'fetch error';
 	} else {
 		echo $response;
 	}

@@ -35,7 +35,7 @@ EOT
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$this->em = $this->container->get('doctrine.orm.default_entity_manager');
+		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->output = $output;
 		$this->dumpSql = $input->getOption('dump-sql') === true;
 		$this->updateHeaders($this->dumpSql);
