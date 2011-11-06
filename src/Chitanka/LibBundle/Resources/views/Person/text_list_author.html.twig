@@ -3,7 +3,7 @@
 	<legend>
 		{% if series.slug is defined %}
 			<a href="{{ path('series_show', {'slug': series.slug}) }}">{{ series.name }}</a>
-			{% if series.orig_name is defined %}
+			{% if series.orig_name is not empty %}
 				({{ series.orig_name }})
 			{% endif %}
 		{% else %}
