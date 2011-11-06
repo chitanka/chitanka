@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class QuestionAdmin extends Admin
 {
+	protected $baseRoutePattern = 'question';
 	protected $baseRouteName = 'admin_question';
 
 	protected function configureListFields(ListMapper $listMapper)

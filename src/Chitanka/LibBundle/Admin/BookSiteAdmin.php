@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class BookSiteAdmin extends Admin
 {
+	protected $baseRoutePattern = 'book-site';
 	protected $baseRouteName = 'admin_book_site';
 
 	protected function configureListFields(ListMapper $listMapper)

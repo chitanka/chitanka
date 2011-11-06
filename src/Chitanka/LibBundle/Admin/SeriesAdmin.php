@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class SeriesAdmin extends Admin
 {
+	protected $baseRoutePattern = 'series';
 	protected $baseRouteName = 'admin_series';
 
 	protected function configureListFields(ListMapper $listMapper)

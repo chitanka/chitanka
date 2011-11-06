@@ -13,6 +13,7 @@ use Chitanka\LibBundle\Legacy\Legacy;
 
 class TextAdmin extends Admin
 {
+	protected $baseRoutePattern = 'text';
 	protected $baseRouteName = 'admin_text';
 
 	protected function configureListFields(ListMapper $listMapper)

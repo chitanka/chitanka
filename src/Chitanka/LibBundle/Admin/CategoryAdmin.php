@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class CategoryAdmin extends Admin
 {
+	protected $baseRoutePattern = 'category';
 	protected $baseRouteName = 'admin_category';
 
 	protected function configureListFields(ListMapper $listMapper)

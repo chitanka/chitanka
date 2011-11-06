@@ -123,9 +123,9 @@ EOS;
 	protected function makeMailMessage() {
 		$title = $this->work->getTitle();
 		return <<<EOS
-Текст: „{$title}“
+Произведение: „{$title}“
 
-http://chitanka.info/lib/edit/$this->textId
+http://chitanka.info/admin/text/$this->textId/edit
 
 $this->info
 EOS;

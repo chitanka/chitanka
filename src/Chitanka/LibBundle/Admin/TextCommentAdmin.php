@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class TextCommentAdmin extends Admin
 {
+	protected $baseRoutePattern = 'text-comment';
 	protected $baseRouteName = 'admin_text_comment';
 
 	protected function configureListFields(ListMapper $listMapper)

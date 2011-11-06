@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class WikiSiteAdmin extends Admin
 {
+	protected $baseRoutePattern = 'wiki-site';
 	protected $baseRouteName = 'admin_wiki_site';
 
 	protected function configureListFields(ListMapper $listMapper)

@@ -11,6 +11,7 @@ use Chitanka\LibBundle\Entity\Person;
 
 class PersonAdmin extends Admin
 {
+	protected $baseRoutePattern = 'person';
 	protected $baseRouteName = 'admin_person';
 
 	protected function configureListFields(ListMapper $listMapper)

@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class LabelAdmin extends Admin
 {
+	protected $baseRoutePattern = 'label';
 	protected $baseRouteName = 'admin_label';
 
 	protected function configureListFields(ListMapper $listMapper)

@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class SequenceAdmin extends Admin
 {
+	protected $baseRoutePattern = 'sequence';
 	protected $baseRouteName = 'admin_sequence';
 
 	protected function configureListFields(ListMapper $listMapper)

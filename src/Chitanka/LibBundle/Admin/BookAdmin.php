@@ -12,6 +12,7 @@ use Chitanka\LibBundle\Util\Language;
 
 class BookAdmin extends Admin
 {
+	protected $baseRoutePattern = 'book';
 	protected $baseRouteName = 'admin_book';
 
 	protected function configureListFields(ListMapper $listMapper)

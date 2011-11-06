@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\Admin;
 
 class WorkEntryAdmin extends Admin
 {
+	protected $baseRoutePattern = 'work-entry';
 	protected $baseRouteName = 'admin_work_entry';
 
 	protected $list = array(
