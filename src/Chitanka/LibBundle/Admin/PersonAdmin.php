@@ -43,7 +43,7 @@ class PersonAdmin extends Admin
 			->add('info', null, array('required' => false))
 			->add('type', 'choice', array(
 				'choices' => Person::getTypeList(),
-				'expanded' => true,
+				//'expanded' => true,
 				'required' => false,
 			))
 			->add('person', 'sonata_type_model', array('required' => false), array('edit' => 'list'))

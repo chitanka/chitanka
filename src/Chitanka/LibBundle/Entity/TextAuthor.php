@@ -28,19 +28,19 @@ class TextAuthor
 
 	/**
 	* @var integer $text
-	* @ORM\ManyToOne(targetEntity="Text", inversedBy="textTranslators")
+	* @ORM\ManyToOne(targetEntity="Text", inversedBy="textAuthors")
 	*/
 	private $text;
 
 	/**
 	* @var integer $pos
-	* @ORM\Column(type="smallint")
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $pos;
 
 	/**
 	* @var integer $year
-	* @ORM\Column(type="smallint")
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $year;
 

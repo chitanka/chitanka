@@ -40,6 +40,13 @@ class BookAdmin extends Admin
 			//->add('datafiles', 'string', array('template' => 'LibBundle:BookAdmin:form_datafiles.html.twig'))
 			->add('slug')
 			->add('title')
+			->add('bookAuthors', 'sonata_type_collection', array(
+				'by_reference' => false,
+				'required' => false,
+			), array(
+				'edit' => 'inline',
+				'inline' => 'table',
+			))
 			->add('subtitle', null, array('required' => false))
 			->add('title_extra', null, array('required' => false))
 			->add('orig_title', null, array('required' => false))
@@ -56,11 +63,14 @@ class BookAdmin extends Admin
 				return $repo->createQueryBuilder('e')->orderBy('e.name');
 			}))
 			->add('mode', 'choice', array('choices' => Book::getModeList()))
-//            ->add('links', 'sonata_type_model', array('expanded' => true), array(
-//                'edit' => 'inline',
-//                'inline' => 'table',
-//                //'sortable'  => 'position'
-//            ))
+			->add('links', 'sonata_type_collection', array(
+				'by_reference' => false,
+				'required' => false,
+			), array(
+				'edit' => 'inline',
+				'inline' => 'table',
+				'sortable' => 'site_id'
+			))
 		;
 	}
 
@@ -73,6 +83,17 @@ class BookAdmin extends Admin
 			->add('has_cover')
 			->add('has_anno')
 		;
+	}
+
+	public function preUpdate($book) {
+		foreach ($book->getLinks() as $link) {
+			$link->setBook($book);
+		}
+		foreach ($book->getBookAuthors() as $bookAuthor) {
+			if ($bookAuthor->getPerson()) {
+				$bookAuthor->setBook($book);
+			}
+		}
 	}
 
 }

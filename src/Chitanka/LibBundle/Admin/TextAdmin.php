@@ -35,6 +35,22 @@ class TextAdmin extends Admin
 		$formMapper
 			->add('slug')
 			->add('title')
+			->add('textAuthors', 'sonata_type_collection', array(
+				'by_reference' => false,
+				'required' => false,
+			), array(
+				'edit' => 'inline',
+				'inline' => 'table',
+				'sortable' => 'pos',
+			))
+			->add('textTranslators', 'sonata_type_collection', array(
+				'by_reference' => false,
+				'required' => false,
+			), array(
+				'edit' => 'inline',
+				'inline' => 'table',
+				'sortable' => 'pos',
+			))
 			->add('subtitle', null, array('required' => false))
 			->add('lang', 'choice', array('choices' => Language::getLangs()))
 			->add('trans_year', null, array('required' => false))
@@ -53,6 +69,9 @@ class TextAdmin extends Admin
 			->add('headlevel', null, array('required' => false))
 			->add('source', null, array('required' => false))
 			->add('mode', 'choice', array('choices' => Text::getModeList()))
+			->setHelps(array(
+				'sernr2' => $this->trans('admin.help.text.sernr2')
+			))
 		;
 	}
 
@@ -74,5 +93,18 @@ class TextAdmin extends Admin
 			->add('type')
 			->add('mode')
 		;
+	}
+
+	public function preUpdate($text) {
+		foreach ($text->getTextAuthors() as $textAuthor) {
+			if ($textAuthor->getPerson()) {
+				$textAuthor->setText($text);
+			}
+		}
+		foreach ($text->getTextTranslators() as $textTranslator) {
+			if ($textTranslator->getPerson()) {
+				$textTranslator->setText($text);
+			}
+		}
 	}
 }

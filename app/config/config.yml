@@ -140,6 +140,32 @@ services:
             - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.license }
         arguments: [null, Chitanka\LibBundle\Entity\License, LibBundle:LicenseAdmin]
 
+    chitanka.admin.book_link:
+        class: Chitanka\LibBundle\Admin\BookLinkAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_links, label: admin.booklink }
+        arguments: [null, Chitanka\LibBundle\Entity\BookLink, LibBundle:BookLinkAdmin]
+    chitanka.admin.book_author:
+        class: Chitanka\LibBundle\Admin\BookAuthorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_links, label: admin.bookauthor }
+        arguments: [null, Chitanka\LibBundle\Entity\BookAuthor, LibBundle:BookAuthorAdmin]
+    chitanka.admin.text_author:
+        class: Chitanka\LibBundle\Admin\TextAuthorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_links, label: admin.textauthor }
+        arguments: [null, Chitanka\LibBundle\Entity\TextAuthor, LibBundle:TextAuthorAdmin]
+    chitanka.admin.text_translator:
+        class: Chitanka\LibBundle\Admin\TextTranslatorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_links, label: admin.texttranslator }
+        arguments: [null, Chitanka\LibBundle\Entity\TextTranslator, LibBundle:TextTranslatorAdmin]
+    chitanka.admin.series_author:
+        class: Chitanka\LibBundle\Admin\SeriesAuthorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_links, label: admin.seriesauthor }
+        arguments: [null, Chitanka\LibBundle\Entity\SeriesAuthor, LibBundle:SeriesAuthorAdmin]
+
 #     chitanka.admin.work_entry:
 #         class: Chitanka\LibBundle\Admin\WorkEntryAdmin
 #         tags:

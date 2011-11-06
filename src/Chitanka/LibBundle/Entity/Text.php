@@ -234,13 +234,13 @@ class Text extends BaseWork
 
 	/**
 	* @var array
-	* @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="text")
+	* @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	*/
 	private $textAuthors;
 
 	/**
 	* @var array
-	* @ORM\OneToMany(targetEntity="TextTranslator", mappedBy="text")
+	* @ORM\OneToMany(targetEntity="TextTranslator", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	*/
 	private $textTranslators;
 
@@ -311,7 +311,7 @@ class Text extends BaseWork
 	private $userContribs;
 
 
-	public function __construct($id)
+	public function __construct($id = null)
 	{
 		$this->id = $id;
 		$this->textAuthors = new ArrayCollection;
@@ -450,8 +450,16 @@ class Text extends BaseWork
 	public function addAuthor(Person $author) { $this->authors[] = $author; }
 	public function getAuthors() { return $this->authors; }
 
+	public function addTextAuthors(TextAuthor $textAuthor) { $this->textAuthors[] = $textAuthor; }
+	public function setTextAuthors($textAuthors) { $this->textAuthors = $textAuthors; }
+	public function getTextAuthors() { return $this->textAuthors; }
+
 	public function addTranslator(Person $translator) { $this->translators[] = $translator; }
 	public function getTranslators() { return $this->translators; }
+
+	public function addTextTranslators(TextTranslator $textTranslator) { $this->textTranslators[] = $textTranslator; }
+	public function setTextTranslators($textTranslators) { $this->textTranslators = $textTranslators; }
+	public function getTextTranslators() { return $this->textTranslators; }
 
 	public function addBook(Book $book) { $this->books[] = $book; }
 	public function getBooks() { return $this->books; }

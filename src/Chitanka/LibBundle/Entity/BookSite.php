@@ -28,6 +28,11 @@ class BookSite
 	*/
 	private $url;
 
+	public function __toString()
+	{
+		return $this->name;
+	}
+
 	public function getId() { return $this->id; }
 
 	public function setName($name) { $this->name = $name; }

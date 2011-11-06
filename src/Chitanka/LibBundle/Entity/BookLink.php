@@ -20,7 +20,7 @@ class BookLink
 
 	/**
 	* @var integer
-	* @ORM\ManyToOne(targetEntity="Book")
+	* @ORM\ManyToOne(targetEntity="Book", inversedBy="links")
 	*/
 	private $book;
 

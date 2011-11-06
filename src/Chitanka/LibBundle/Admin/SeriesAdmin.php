@@ -31,6 +31,13 @@ class SeriesAdmin extends Admin
 			->add('slug')
 			->add('name')
 			->add('orig_name', null, array('required' => false))
+			->add('seriesAuthors', 'sonata_type_collection', array(
+				'by_reference' => false,
+				'required' => false,
+			), array(
+				'edit' => 'inline',
+				'inline' => 'table',
+			))
 		;
 
 	}
@@ -41,6 +48,14 @@ class SeriesAdmin extends Admin
 			->add('name')
 			->add('orig_name')
 		;
+	}
+
+	public function preUpdate($series) {
+		foreach ($series->getSeriesAuthors() as $seriesAuthor) {
+			if ($seriesAuthor->getPerson()) {
+				$seriesAuthor->setSeries($series);
+			}
+		}
 	}
 
 }

@@ -7,16 +7,15 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
-class BookLinkAdmin extends Admin
+class SeriesAuthorAdmin extends Admin
 {
-	protected $baseRouteName = 'admin_book_link';
+	protected $baseRouteName = 'admin_series_author';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-			->add('book')
-			->add('site')
-			->addIdentifier('code')
+			->add('series')
+			->add('person')
 			->add('_action', 'actions', array(
 				'actions' => array(
 					'delete' => array(),
@@ -29,18 +28,8 @@ class BookLinkAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			//->add('book')
-			->add('site')
-			->add('code')
-		;
-	}
-
-	protected function configureDatagridFilters(DatagridMapper $datagrid)
-	{
-		$datagrid
-			->add('book')
-			->add('site')
-			->add('code')
+			//->add('series')
+			->add('person', 'sonata_type_model', array('required' => false), array('edit' => 'list'))
 		;
 	}
 

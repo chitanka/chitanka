@@ -152,6 +152,7 @@ class CommonDbCommand extends ContainerAwareCommand
 	}
 
 	private $_olddb;
+	/** @return mlDatabase */
 	protected function olddb()
 	{
 		if ( ! $this->_olddb) {

@@ -401,6 +401,12 @@ EOT
 				$set = array('person_id' => $author, 'text_id' => $work['id'], 'pos' => $pos);
 				$qs[] = $this->olddb()->insertQ(DBT_AUTHOR_OF, $set, false, false);
 			}
+			if (isset($set['series_id'])) {
+				foreach ($work['authors'] as $pos => $author) {
+					$set = array('person_id' => $author, 'series_id' => $set['series_id']);
+					$qs[] = $this->olddb()->insertQ(DBT_SER_AUTHOR_OF, $set, true, false);
+				}
+			}
 		}
 
 		if ( ! empty($work['translators'])) {

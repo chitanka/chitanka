@@ -147,6 +147,12 @@ class Book extends BaseWork
 	*/
 	private $authors;
 
+	/**
+	* @var array
+	* @ORM\OneToMany(targetEntity="BookAuthor", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
+	*/
+	private $bookAuthors;
+
 	/** FIXME doctrine:schema:create does not allow this relation
 	* @ORM\ManyToMany(targetEntity="Text", inversedBy="books")
 	* @ORM\JoinTable(name="book_text",
@@ -157,7 +163,7 @@ class Book extends BaseWork
 
 	/**
 	* @var array
-	* @ORM\OneToMany(targetEntity="BookLink", mappedBy="book")
+	* @ORM\OneToMany(targetEntity="BookLink", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
 	*/
 	private $links;
 
@@ -167,6 +173,11 @@ class Book extends BaseWork
 	*/
 	private $created_at;
 
+
+	public function __toString()
+	{
+		return $this->title;
+	}
 
 	public function getId() { return $this->id; }
 
@@ -222,10 +233,16 @@ class Book extends BaseWork
 		$this->authors[] = $author;
 	}
 
+	public function addBookAuthors(BookAuthor $bookAuthor) { $this->bookAuthors[] = $bookAuthor; }
+	public function setBookAuthors($bookAuthors) { $this->bookAuthors = $bookAuthors; }
+	public function getBookAuthors() { return $this->bookAuthors; }
+
 	public function getTexts() { return $this->texts; }
 
+	public function setLinks($links) { $this->links = $links; }
 	public function getLinks() { return $this->links; }
 	public function addLink($link) { $this->links[] = $link; }
+	public function addLinks($link) { $this->addLink($link); }
 
 	public function setHasAnno($has_anno) { $this->has_anno = $has_anno; }
 	public function getHasAnno() { return $this->has_anno; }
@@ -657,7 +674,7 @@ class Book extends BaseWork
 					if (preg_match('/\{(text|file):(\d+)(-.+)?\}/', $content, $matches)) {
 						$text = $texts[$matches[2]];
 						if ($matches[1] == 'text') {
-							$authors = implode(', ', $this->getTextAuthorIfNotInTitle($text));
+							$authors = implode(', ', $this->getBookAuthorIfNotInTitle($text));
 							if ( ! empty($authors) ) {
 								$authors = $command . \Sfblib_SfbConverter::CMD_DELIM . $authors . \Sfblib_SfbConverter::EOL;
 							}
@@ -704,7 +721,7 @@ class Book extends BaseWork
 	/**
 	* Return the author of a text if he/she is not on the book title
 	*/
-	public function getTextAuthorIfNotInTitle($text)
+	public function getBookAuthorIfNotInTitle($text)
 	{
 		$bookAuthorsIds = $this->getAuthorIds();
 		$authors = array();
@@ -984,24 +1001,6 @@ class Book extends BaseWork
 		}
 		return $pic->__toString();
 	}
-
-
-	public function __toString() {
-		if ( empty( $this->series ) ) {
-			return $this->name;
-		}
-		$name = $this->getSeriesName();
-		if ( ! empty($this->sernr) ) {
-			$name .= ', брой ' . $this->sernr;
-		}
-		if ( $this->name != $this->seriesName ) {
-			$name .= ' — ' . $this->name;
-		}
-		$name = str_replace('\n', '<br>', $name);
-
-		return $name;
-	}
-
 
 	public function getFiles()
 	{

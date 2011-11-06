@@ -22,25 +22,25 @@ class TextTranslator
 
 	/**
 	* @var integer $person
-	* @ORM\ManyToOne(targetEntity="Person")
+	* @ORM\ManyToOne(targetEntity="Person", inversedBy="textTranslators")
 	*/
 	private $person;
 
 	/**
 	* @var integer $text
-	* @ORM\ManyToOne(targetEntity="Text")
+	* @ORM\ManyToOne(targetEntity="Text", inversedBy="textTranslators")
 	*/
 	private $text;
 
 	/**
 	* @var integer $pos
-	* @ORM\Column(type="smallint")
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $pos;
 
 	/**
 	* @var integer $year
-	* @ORM\Column(type="smallint")
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $year;
 

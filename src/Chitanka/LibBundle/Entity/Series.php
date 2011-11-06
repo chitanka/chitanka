@@ -49,6 +49,12 @@ class Series
 
 	/**
 	* @var array
+	* @ORM\OneToMany(targetEntity="SeriesAuthor", mappedBy="series", cascade={"persist", "remove"}, orphanRemoval=true)
+	*/
+	private $seriesAuthors;
+
+	/**
+	* @var array
 	* @ORM\OneToMany(targetEntity="Text", mappedBy="series")
 	*/
 	private $texts;
@@ -65,6 +71,10 @@ class Series
 	public function getOrigName() { return $this->orig_name; }
 
 	public function getAuthors() { return $this->authors; }
+
+	public function addSeriesAuthors(SeriesAuthor $seriesAuthor) { $this->seriesAuthors[] = $seriesAuthor; }
+	public function setSeriesAuthors($seriesAuthors) { $this->seriesAuthors = $seriesAuthors; }
+	public function getSeriesAuthors() { return $this->seriesAuthors; }
 
 	public function getTexts() { return $this->texts; }
 
