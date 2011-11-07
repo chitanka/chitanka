@@ -96,7 +96,7 @@
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
-                <target>разширяване/свиване</target>
+                <target>+/–</target>
             </trans-unit>
             <trans-unit id="no_result">
                 <source>no_result</source>

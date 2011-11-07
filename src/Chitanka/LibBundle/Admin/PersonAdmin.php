@@ -42,12 +42,14 @@ class PersonAdmin extends Admin
 			->add('is_author', null, array('required' => false))
 			->add('is_translator', null, array('required' => false))
 			->add('info', null, array('required' => false))
-			->add('type', 'choice', array(
-				'choices' => Person::getTypeList(),
-				//'expanded' => true,
-				'required' => false,
-			))
-			->add('person', 'sonata_type_model', array('required' => false), array('edit' => 'list'))
+			->with($this->trans('admin.main-person'), array('collapsed' => true))
+				->add('type', 'choice', array(
+					'choices' => Person::getTypeList(),
+					//'expanded' => true,
+					'required' => false,
+				))
+				->add('person', 'sonata_type_model', array('required' => false), array('edit' => 'list'))
+			->end()
 		;
 
 	}
