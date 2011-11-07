@@ -32,13 +32,19 @@ class PersonAdmin extends Admin
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
+		$countryList = array();
+		foreach (Person::getCountryList() as $countryCode) {
+			$countryList[$countryCode] = $this->trans("country.$countryCode");
+		}
 		$formMapper
 			->add('slug', null, array('required' => false))
 			->add('name')
 			->add('orig_name', null, array('required' => false))
 			->add('real_name', null, array('required' => false))
 			->add('oreal_name', null, array('required' => false))
-			->add('country')
+			->add('country', 'choice', array(
+				'choices' => $countryList,
+			))
 			->add('is_author', null, array('required' => false))
 			->add('is_translator', null, array('required' => false))
 			->add('info', null, array('required' => false))
