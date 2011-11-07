@@ -586,6 +586,9 @@ EOT
 		if ($replaceChars) {
 			$contents = String::my_replace($contents);
 		}
+		if (empty($contents)) {
+			throw new Exception(sprintf('CharReplace failed by %s', $source));
+		}
 		File::myfile_put_contents($dest, $contents);
 	}
 
