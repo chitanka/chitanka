@@ -1,6 +1,8 @@
+# Indentation: 4 spaces, NO tabs
+# Comments start with #
+
 # These parameters can be imported into other config files
 # by enclosing the key with % (like %database_user%)
-# Comments start with '#'
 parameters:
     database_host:      localhost
     database_name:      chitanka
@@ -115,3 +117,8 @@ parameters:
             statistics:
                 text: Статистика
                 title: ~
+
+sonata_admin:
+    dashboard_groups:
+        library_main: ~
+        library_secondary: ~
