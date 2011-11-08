@@ -11,6 +11,7 @@ class SequenceAdmin extends Admin
 {
 	protected $baseRoutePattern = 'sequence';
 	protected $baseRouteName = 'admin_sequence';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{

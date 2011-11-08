@@ -171,11 +171,11 @@ services:
 #         tags:
 #             - { name: sonata.admin, manager_type: orm, group: library, label: workentry }
 #         arguments: [null, Chitanka\LibBundle\Entity\WorkEntry, LibBundle:WorkEntryAdmin]
-#     chitanka.admin.user:
-#         class: Chitanka\LibBundle\Admin\UserAdmin
-#         tags:
-#             - { name: sonata.admin, manager_type: orm, group: library, label: user }
-#         arguments: [null, Chitanka\LibBundle\Entity\User, LibBundle:UserAdmin]
+    chitanka.admin.user:
+        class: Chitanka\LibBundle\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_user, label: admin.user }
+        arguments: [null, Chitanka\LibBundle\Entity\User, LibBundle:UserAdmin]
 
 
 # Twig Configuration

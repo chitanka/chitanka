@@ -15,6 +15,7 @@ class TextAdmin extends Admin
 {
 	protected $baseRoutePattern = 'text';
 	protected $baseRouteName = 'admin_text';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
@@ -71,7 +72,7 @@ class TextAdmin extends Admin
 			->add('source', null, array('required' => false))
 			->add('mode', 'choice', array('choices' => Text::getModeList()))
 			->setHelps(array(
-				'sernr2' => $this->trans('admin.help.text.sernr2')
+				'sernr2' => $this->trans('help.text.sernr2')
 			))
 		;
 	}

@@ -11,6 +11,7 @@ class QuestionAdmin extends Admin
 {
 	protected $baseRoutePattern = 'question';
 	protected $baseRouteName = 'admin_question';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
@@ -32,7 +33,7 @@ class QuestionAdmin extends Admin
 			->add('question')
 			->add('answers')
 			->setHelps(array(
-				'answers' => $this->trans('admin.help.question.answers'),
+				'answers' => $this->trans('help.question.answers'),
 			))
 		;
 

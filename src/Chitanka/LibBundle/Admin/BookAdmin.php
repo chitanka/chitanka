@@ -14,6 +14,7 @@ class BookAdmin extends Admin
 {
 	protected $baseRoutePattern = 'book';
 	protected $baseRouteName = 'admin_book';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{

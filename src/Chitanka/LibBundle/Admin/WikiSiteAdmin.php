@@ -11,6 +11,7 @@ class WikiSiteAdmin extends Admin
 {
 	protected $baseRoutePattern = 'wiki-site';
 	protected $baseRouteName = 'admin_wiki_site';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
@@ -34,9 +35,9 @@ class WikiSiteAdmin extends Admin
 			->add('url')
 			->add('intro', null, array('required' => false))
 			->setHelps(array(
-				'code' => $this->trans('admin.help.wikisite.code'),
-				'url' => $this->trans('admin.help.wikisite.url'),
-				'intro' => $this->trans('admin.help.wikisite.intro'),
+				'code' => $this->trans('help.wikisite.code'),
+				'url' => $this->trans('help.wikisite.url'),
+				'intro' => $this->trans('help.wikisite.intro'),
 			))
 		;
 

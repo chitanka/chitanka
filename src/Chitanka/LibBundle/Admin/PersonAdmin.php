@@ -13,6 +13,7 @@ class PersonAdmin extends Admin
 {
 	protected $baseRoutePattern = 'person';
 	protected $baseRouteName = 'admin_person';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
@@ -48,14 +49,18 @@ class PersonAdmin extends Admin
 			->add('is_author', null, array('required' => false))
 			->add('is_translator', null, array('required' => false))
 			->add('info', null, array('required' => false))
-			->with($this->trans('admin.main-person'), array('collapsed' => true))
+			->with($this->trans('Main person'), array('collapsed' => true))
 				->add('type', 'choice', array(
 					'choices' => Person::getTypeList(),
 					//'expanded' => true,
 					'required' => false,
+					'label' => 'Person type',
 				))
-				->add('person', 'sonata_type_model', array('required' => false), array('edit' => 'list'))
+				->add('person', 'sonata_type_model', array('required' => false, 'label' => 'Main person'), array('edit' => 'list'))
 			->end()
+			->setHelps(array(
+				'info' => $this->trans('help.person.info')
+			))
 		;
 
 	}

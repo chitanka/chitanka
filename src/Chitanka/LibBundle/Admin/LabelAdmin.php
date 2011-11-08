@@ -11,6 +11,7 @@ class LabelAdmin extends Admin
 {
 	protected $baseRoutePattern = 'label';
 	protected $baseRouteName = 'admin_label';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{

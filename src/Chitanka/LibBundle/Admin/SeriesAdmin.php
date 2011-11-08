@@ -11,6 +11,7 @@ class SeriesAdmin extends Admin
 {
 	protected $baseRoutePattern = 'series';
 	protected $baseRouteName = 'admin_series';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{

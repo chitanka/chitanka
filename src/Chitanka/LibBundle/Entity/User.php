@@ -71,6 +71,13 @@ class User /*extends BaseUser*/ implements UserInterface
 	* @ORM\Column(type="array")
 	*/
 	private $groups = array();
+	static private $groupList = array(
+		'user',
+		'workroom-supervisor',
+		'workroom-admin',
+		'admin',
+		'god',
+	);
 
 	/**
 	* @var boolean $news
@@ -426,6 +433,10 @@ class User /*extends BaseUser*/ implements UserInterface
 		return $db->fetchAssoc($res);
 	}
 
+	static public function getGroupList()
+	{
+		return self::$groupList;
+	}
 
 
 	public function showName() {

@@ -11,6 +11,7 @@ class TextCommentAdmin extends Admin
 {
 	protected $baseRoutePattern = 'text-comment';
 	protected $baseRouteName = 'admin_text_comment';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{

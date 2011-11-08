@@ -11,6 +11,7 @@ class BookSiteAdmin extends Admin
 {
 	protected $baseRoutePattern = 'book-site';
 	protected $baseRouteName = 'admin_book_site';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
@@ -32,7 +33,7 @@ class BookSiteAdmin extends Admin
 			->add('name')
 			->add('url')
 			->setHelps(array(
-				'url' => $this->trans('admin.help.booksite.url')
+				'url' => $this->trans('help.booksite.url')
 			))
 		;
 

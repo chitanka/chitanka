@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 class SeriesAuthorAdmin extends Admin
 {
 	protected $baseRouteName = 'admin_series_author';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{

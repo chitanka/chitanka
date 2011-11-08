@@ -11,6 +11,7 @@ class CategoryAdmin extends Admin
 {
 	protected $baseRoutePattern = 'category';
 	protected $baseRouteName = 'admin_category';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{

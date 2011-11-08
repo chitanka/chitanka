@@ -11,6 +11,7 @@ class LicenseAdmin extends Admin
 {
 	protected $baseRoutePattern = 'license';
 	protected $baseRouteName = 'admin_license';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{

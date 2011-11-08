@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 class TextTranslatorAdmin extends Admin
 {
 	protected $baseRouteName = 'admin_text_translator';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{

@@ -11,6 +11,7 @@ class FeaturedBookAdmin extends Admin
 {
 	protected $baseRoutePattern = 'featured-book';
 	protected $baseRouteName = 'admin_featured_book';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{

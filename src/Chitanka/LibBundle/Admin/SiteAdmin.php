@@ -11,6 +11,7 @@ class SiteAdmin extends Admin
 {
 	protected $baseRoutePattern = 'site';
 	protected $baseRouteName = 'admin_site';
+	protected $translationDomain = 'admin';
 
 	protected function configureListFields(ListMapper $listMapper)
 	{

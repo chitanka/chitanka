@@ -3,39 +3,62 @@
 namespace Chitanka\LibBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 
 class WorkEntryAdmin extends Admin
 {
 	protected $baseRoutePattern = 'work-entry';
 	protected $baseRouteName = 'admin_work_entry';
+	protected $translationDomain = 'admin';
 
-	protected $list = array(
-		'title' => array('identifier' => true),
-		'author',
-		'_action' => array(
-			'actions' => array(
-				'delete' => array(),
-				'edit' => array()
-			)
-		),
-	);
+	protected function configureListFields(ListMapper $listMapper)
+	{
+		$listMapper
+			->addIdentifier('title')
+			->add('author')
+			->add('_action', 'actions', array(
+				'actions' => array(
+					'delete' => array(),
+					'edit' => array(),
+				)
+			))
+		;
+	}
 
-	protected $form = array(
-		'type',
-		'title',
-		'author',
-		//'user',
-		'comment',
-		'status',
-		'progress',
-		'is_frozen',
-		'tmpfiles',
-		'tfsize',
-		'uplfile',
-	);
+	protected function configureFormFields(FormMapper $formMapper)
+	{
+		$formMapper
+			->add('date')
+			->add('type')
+			->add('title')
+			->add('author', null, array('required' => false))
+			->add('user')
+			->add('comment', null, array('required' => false))
+			->add('status')
+			->add('progress')
+			->add('is_frozen')
+			->add('tmpfiles', null, array('required' => false))
+			->add('tfsize', null, array('required' => false))
+			->add('uplfile', null, array('required' => false))
+			->add('deleted_at', null, array('required' => false))
+		;
 
-	protected $filter = array(
-		'title',
-		'author',
-	);
+	}
+
+	protected function configureDatagridFilters(DatagridMapper $datagrid)
+	{
+		$datagrid
+			->add('title')
+			->add('author')
+			->add('user')
+			->add('status')
+			->add('progress')
+			->add('is_frozen')
+			->add('type')
+			->add('date')
+		;
+	}
+
 }
