@@ -1,0 +1,13 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block form %}
+	{% if admin.preFormContent is defined %}
+		{% include admin.preFormContent %}
+	{% endif %}
+
+	{{ parent() }}
+
+	{% if admin.postFormContent is defined %}
+		{% include admin.postFormContent %}
+	{% endif %}
+{% endblock %}

@@ -35,6 +35,8 @@ class BookAdmin extends Admin
 		;
 	}
 
+	public $preFormContent = 'LibBundle:BookAdmin:form_datafiles.html.twig';
+
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper

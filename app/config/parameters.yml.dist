@@ -117,8 +117,3 @@ parameters:
             statistics:
                 text: Статистика
                 title: ~
-
-sonata_admin:
-    dashboard_groups:
-        library_main: ~
-        library_secondary: ~

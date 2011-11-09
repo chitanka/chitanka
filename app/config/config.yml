@@ -225,3 +225,11 @@ swiftmailer:
 # jms_security_extra:
 #     secure_controllers:  true
 #     secure_all_services: false
+
+sonata_admin:
+    dashboard_groups:
+        library_main: ~
+        library_secondary: ~
+
+    templates:
+        edit: LibBundle:Admin:edit.html.twig
