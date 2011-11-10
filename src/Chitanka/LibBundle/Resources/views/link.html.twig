@@ -1,5 +1,5 @@
 {% macro person(person) %}
-	<a href="{{ path('person_show', {'slug': person.slug}) }}" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name }}</a>
+{% spaceless %}<a href="{{ path('person_show', {'slug': person.slug}) }}" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name }}</a>{% endspaceless %}
 {% endmacro %}
 
 {% macro persons(persons) %}

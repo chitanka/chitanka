@@ -294,6 +294,12 @@ return array(
 		'last' => 'Преводачи по фамилия',
 	),
 
+	'person.alt' => array(
+		'p' => '%current% е псевдоним на %target%.',
+		'r' => '%current% е истинското име на %target%.',
+		'a' => '%current% е алтернативно изписване за %target%.',
+	),
+
 	'wiki.title' => array(
 		'about' => 'За Моята библиотека',
 		'rules' => 'Правила за използване на Моята библиотека',
