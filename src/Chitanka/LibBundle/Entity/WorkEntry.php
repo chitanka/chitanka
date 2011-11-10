@@ -143,6 +143,7 @@ class WorkEntry
 	public function setUplfile($uplfile) { $this->uplfile = $uplfile; }
 	public function getUplfile() { return $this->uplfile; }
 
+	public function getDeletedAt() { return $this->deleted_at; }
 	public function setDeletedAt($deleted_at) { $this->deleted_at = $deleted_at; }
 	public function delete()
 	{

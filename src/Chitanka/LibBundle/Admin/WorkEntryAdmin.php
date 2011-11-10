@@ -30,11 +30,10 @@ class WorkEntryAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('date')
 			->add('type')
 			->add('title')
 			->add('author', null, array('required' => false))
-			->add('user')
+			->add('user', 'sonata_type_model', array('required' => false), array('edit' => 'list'))
 			->add('comment', null, array('required' => false))
 			->add('status')
 			->add('progress')
@@ -52,12 +51,22 @@ class WorkEntryAdmin extends Admin
 		$datagrid
 			->add('title')
 			->add('author')
-			->add('user')
+//			->add('user')
 			->add('status')
 			->add('progress')
 			->add('is_frozen')
 			->add('type')
-			->add('date')
+//			->add('date')
+			->add('is_deleted', 'doctrine_orm_callback', array(
+				'callback' => function($queryBuilder, $alias, $field, $value) {
+					if (!$value) {
+						return;
+					}
+
+					$queryBuilder->andWhere("$alias.deleted_at IS NOT NULL");
+				},
+				'field_type' => 'checkbox'
+			))
 		;
 	}
 

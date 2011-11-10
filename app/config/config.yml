@@ -166,15 +166,15 @@ services:
             - { name: sonata.admin, manager_type: orm, group: library_links, label: admin.seriesauthor }
         arguments: [null, Chitanka\LibBundle\Entity\SeriesAuthor, LibBundle:SeriesAuthorAdmin]
 
-#     chitanka.admin.work_entry:
-#         class: Chitanka\LibBundle\Admin\WorkEntryAdmin
-#         tags:
-#             - { name: sonata.admin, manager_type: orm, group: library, label: workentry }
-#         arguments: [null, Chitanka\LibBundle\Entity\WorkEntry, LibBundle:WorkEntryAdmin]
+    chitanka.admin.work_entry:
+        class: Chitanka\LibBundle\Admin\WorkEntryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_intern, label: admin.workentry }
+        arguments: [null, Chitanka\LibBundle\Entity\WorkEntry, LibBundle:WorkEntryAdmin]
     chitanka.admin.user:
         class: Chitanka\LibBundle\Admin\UserAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: library_user, label: admin.user }
+            - { name: sonata.admin, manager_type: orm, group: library_intern, label: admin.user }
         arguments: [null, Chitanka\LibBundle\Entity\User, LibBundle:UserAdmin]
 
 
