@@ -134,6 +134,7 @@ class Person
 		'ch',
 		'se',
 		'yu',
+		'za',
 		'jp',
 	);
 
