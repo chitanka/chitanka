@@ -29,6 +29,7 @@ class CommonDbCommand extends ContainerAwareCommand
 		$output->writeln('Updating text counts by labels');
 
 		$queries = array();
+		$queries[] = 'UPDATE label SET nr_of_texts = 0';
 		$conn = $em->getConnection();
 		$sql = 'SELECT label_id, COUNT(text_id) count FROM text_label GROUP BY label_id';
 		foreach ($conn->fetchAll($sql) as $data) {
@@ -82,6 +83,7 @@ class CommonDbCommand extends ContainerAwareCommand
 		$output->writeln('Updating comments count by texts');
 
 		$queries = array();
+		$queries[] = 'UPDATE text SET comment_count = 0';
 		$conn = $em->getConnection();
 		$sql = 'SELECT text_id, COUNT(text_id) count FROM text_comment GROUP BY text_id';
 		foreach ($conn->fetchAll($sql) as $data) {
@@ -100,6 +102,7 @@ class CommonDbCommand extends ContainerAwareCommand
 		$output->writeln('Updating book count by categories');
 
 		$queries = array();
+		$queries[] = 'UPDATE category SET nr_of_books = 0';
 		$conn = $em->getConnection();
 		$sql = 'SELECT category_id, COUNT(id) count FROM book GROUP BY category_id';
 		foreach ($conn->fetchAll($sql) as $data) {
