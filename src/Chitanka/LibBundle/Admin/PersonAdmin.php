@@ -35,7 +35,7 @@ class PersonAdmin extends Admin
 	{
 		$countryList = array();
 		foreach (Person::getCountryList() as $countryCode) {
-			$countryList[$countryCode] = $this->trans("country.$countryCode");
+			$countryList[$countryCode] = "country.$countryCode";
 		}
 		$formMapper
 			->add('slug', null, array('required' => false))
