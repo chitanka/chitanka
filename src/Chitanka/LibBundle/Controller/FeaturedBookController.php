@@ -8,7 +8,7 @@ class FeaturedBookController extends Controller
 	public function indexAction($_format)
 	{
 		$this->view = array(
-			'books' => $this->getRepository('FeaturedBook')->getLatest(100)
+			'books' => $this->getRepository('FeaturedBook')->getLatest(100),
 		);
 		$this->responseFormat = $_format;
 

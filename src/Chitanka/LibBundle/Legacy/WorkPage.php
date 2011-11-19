@@ -382,7 +382,6 @@ EOS;
 			$showPageLinks = true,
 			$where = array())
 	{
-		#$this->addScript('jquery-tooltip');
 		$q = $this->makeSqlQuery($limit, $offset, $order, $where);
 		$l = $this->db->iterateOverResult($q, 'makeWorkListItem', $this, true);
 		if ( empty($l) ) {
@@ -558,14 +557,14 @@ EOS;
 	</tr>
 EOS;
 		}
-		$time = !isset($showtime) || $showtime ? "Дата: $date<br />" : '';
+		$time = !isset($showtime) || $showtime ? "Дата: $date<br>" : '';
 		$titlev = !isset($showtitle) || $showtitle ? $title : '';
 		return <<<EOS
 
 		<p>$time
-		$info $titlev<br />
-		<strong>Автор:</strong> $author<br />
-		<strong>Етап:</strong> $st $sis_frozen<br />
+		$info $titlev<br>
+		<strong>Автор:</strong> $author<br>
+		<strong>Етап:</strong> $st $sis_frozen<br>
 		Подготвя се от $userlink
 		</p>
 EOS;
@@ -586,7 +585,7 @@ EOS;
 	public function makeExtraInfo($info, $expand = false) {
 		$info = str_replace("\n\n", "\n——\n", $info);
 		$info = strtr($info, array(
-			"\n"   => '<br />',
+			"\n"   => '<br>',
 			"\r"   => '',
 		));
 		if ($expand) {
@@ -762,7 +761,7 @@ EOS;
 		<td><label for="entry_status">Етап:</label></td>
 		<td><select name="entry_status" id="entry_status">$status</select>
 		&#160; или &#160;
-		$progress<label for="progress">%</label><br />
+		$progress<label for="progress">%</label><br>
 		$is_frozen
 		</td>
 	</tr><tr>

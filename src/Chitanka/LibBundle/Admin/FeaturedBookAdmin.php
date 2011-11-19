@@ -36,6 +36,7 @@ class FeaturedBookAdmin extends Admin
 			->add('author')
 			->add('url')
 			->add('cover')
+			->add('description')
 		;
 
 	}

@@ -40,6 +40,12 @@ class FeaturedBook
 	*/
 	private $cover;
 
+	/**
+	* @var string
+	* @ORM\Column(type="text", nullable=true)
+	*/
+	private $description;
+
 	public function getId() { return $this->id; }
 
 	public function setTitle($title) { $this->title = $title; }
@@ -53,4 +59,7 @@ class FeaturedBook
 
 	public function setCover($cover) { $this->cover = $cover; }
 	public function getCover() { return $this->cover; }
+
+	public function setDescription($description) { $this->description = $description; }
+	public function getDescription() { return $this->description; }
 }

@@ -36,6 +36,7 @@ class ForeignBookAdmin extends Admin
 			->add('author')
 			->add('url')
 			->add('cover')
+			->add('description')
 		;
 
 	}

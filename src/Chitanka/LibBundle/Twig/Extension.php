@@ -212,7 +212,7 @@ class Extension extends \Twig_Extension
 	}
 
 
-	public function nl2br($value, $sep = '<br />')
+	public function nl2br($value, $sep = '<br>')
 	{
 		return str_replace("\n", $sep."\n", $value);
 	}

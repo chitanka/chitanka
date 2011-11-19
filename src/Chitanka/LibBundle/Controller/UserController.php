@@ -22,9 +22,6 @@ class UserController extends Controller
 
 		$_REQUEST['username'] = $username;
 
-		$this->view['js_extra'][] = 'jquery-tooltip';
-		$this->view['inline_js'] = '$(".tooltip").tooltip({showURL: false, showBody: "<br />" });';
-
 		return $this->legacyPage('User');
 	}
 

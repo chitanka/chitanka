@@ -211,6 +211,7 @@ $(function(){
 	}
 
 	initCluetip();
+	$(".tooltip").tooltip({showURL: false, showBody: "<br>"});
 
 	enhanceModifying();
 
