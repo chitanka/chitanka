@@ -30,7 +30,7 @@ class FeaturedBook
 
 	/**
 	* @var string
-	* @ORM\Column(type="string", length=100)
+	* @ORM\Column(type="string", length=255)
 	*/
 	private $url;
 
