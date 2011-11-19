@@ -20,6 +20,7 @@ class ForeignBookAdmin extends Admin
 			->addIdentifier('title')
 			->add('author')
 			->add('url', 'string', array('template' => 'LibBundle:FeaturedBookAdmin:list_url.html.twig'))
+			->add('isFree')
 			->add('_action', 'actions', array(
 				'actions' => array(
 					'delete' => array(),
@@ -37,6 +38,7 @@ class ForeignBookAdmin extends Admin
 			->add('url')
 			->add('cover')
 			->add('description')
+			->add('isFree')
 		;
 
 	}
@@ -47,6 +49,7 @@ class ForeignBookAdmin extends Admin
 			->add('title')
 			->add('author')
 			->add('url')
+			->add('isFree')
 		;
 	}
 

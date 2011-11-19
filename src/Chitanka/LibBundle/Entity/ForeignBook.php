@@ -46,6 +46,12 @@ class ForeignBook
 	*/
 	private $description;
 
+	/**
+	* @var boolean
+	* @ORM\Column(name="is_free", type="boolean")
+	*/
+	private $isFree;
+
 	public function getId() { return $this->id; }
 
 	public function setTitle($title) { $this->title = $title; }
@@ -62,4 +68,7 @@ class ForeignBook
 
 	public function setDescription($description) { $this->description = $description; }
 	public function getDescription() { return $this->description; }
+
+	public function setIsFree($isFree) { $this->isFree = $isFree; }
+	public function getIsFree() { return $this->isFree; }
 }

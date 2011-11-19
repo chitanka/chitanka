@@ -6,10 +6,9 @@ class ForeignBookRepository extends EntityRepository
 {
 	public function getLatest($limit = null)
 	{
-		return $this->_em->createQueryBuilder()
-			->from($this->getEntityName(), 'b')
-			->select('b')
-			->orderBy('b.id', 'desc')
+		return $this->createQueryBuilder('b')
+			->orderBy('b.isFree', 'desc')
+			->addOrderBy('b.id', 'desc')
 			->getQuery()->setMaxResults($limit)
 			->getArrayResult();
 	}

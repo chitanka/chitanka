@@ -29,6 +29,7 @@ return array(
 	'Textauthors' => 'Автори',
 	'Seriesauthors' => 'Автори',
 	'Texttranslators' => 'Преводачи',
+	'Author' => 'Автор',
 	'title' => 'Заглавие',
 	'Title' => 'Заглавие',
 	'subtitle' => 'Подзаглавие',
@@ -92,6 +93,8 @@ return array(
 	'Fullname' => 'Пълно име',
 	'free' => 'Свободен?',
 	'Free' => 'Свободен?',
+	'Isfree' => 'Свободен?',
+	'isFree' => 'Свободен?',
 
 	'admin' => array(
 		'label' => 'Етикети',
