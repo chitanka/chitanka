@@ -1101,6 +1101,8 @@ fieldset {
 	border: thin solid <?php echo $mainFgColor?>;
 	font-size: .9em;
 	padding: .4em .6em;
+	min-width: 450px;
+	max-width: 600px;
 }
 #tooltip h3,
 #tooltip div {
