@@ -40,7 +40,8 @@ function genThumbnail($filename, $thumbname, $width = 250, $quality = 90)
 }
 
 
-$query = $_SERVER['QUERY_STRING'];
+$query = ltrim($_SERVER['QUERY_STRING'], '/');
+$query = strtr($query, array('..' => '.'));
 
 list($name, $width, $format) = explode('.', basename($query));
 $file = sprintf('%s/../content/%s/%s.%s', dirname(__FILE__), dirname($query), $name, $format);
