@@ -104,10 +104,12 @@ class FeedController extends Controller
 			$content = $item->children('content', true)->encoded;
 			if (preg_match('|<img src="(.+)" title="„(.+)“ от (.+)"|U', $content, $matches)) {
 				$reviews[] = array(
+					'id' => 0,
  					'author' => $matches[3],
 					'title'  => $matches[2],
 					'url'    => $item->link->__toString(),
 					'cover'  => $matches[1],
+					'description' => $item->description,
 				);
 			}
 		}
