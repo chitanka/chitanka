@@ -131,7 +131,7 @@
 	{% else %}
 		{% set scripts = ['jquery'] %}
 	{% endif %}
-	{% set scripts = scripts|merge(['jquery-hoverIntent', 'jquery-cluetip', 'jquery-tooltip', 'jquery-myplugins', 'main']) %}
+	{% set scripts = scripts|merge(['jquery-hoverIntent', 'jquery-cluetip', 'jquery-tooltip', 'jquery-cookie', 'jquery-myplugins', 'main']) %}
 	<script src="{{ asset('js/'~ scripts|join(',') ~'.js') }}"></script>
 	{% if js_extra is defined %}
 		<script src="{{ asset('js/'~ js_extra|join(',') ~'.js') }}"></script>
