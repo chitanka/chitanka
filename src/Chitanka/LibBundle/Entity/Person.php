@@ -100,6 +100,7 @@ class Person
 		'it',
 		'kz',
 		'ca',
+		'kg',
 		'cn',
 		'co',
 		'cu',
