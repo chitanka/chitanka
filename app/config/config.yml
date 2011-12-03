@@ -26,6 +26,14 @@ services:
         class: Chitanka\LibBundle\Twig\Extension
         tags:
             - { name: twig.extension }
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+    twig.extension.debug:
+        class: Twig_Extensions_Extension_Debug
+        tags:
+            - { name: twig.extension }
 
 #     kernel.listener.chitanka:
 #         class: Chitanka\LibBundle\Listener\Listener
