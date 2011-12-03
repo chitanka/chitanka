@@ -15,11 +15,6 @@ class FeedbackController extends Controller
 
 		$form = $this->createForm(new FeedbackType, $feedback);
 
-		$this->view = array(
-			'admin_email' => key($adminEmail),
-			'form' => $form->createView(),
-		);
-
 		if ($request->getMethod() == 'POST') {
 			$form->bindRequest($request);
 
@@ -34,6 +29,11 @@ class FeedbackController extends Controller
 //				return $this->redirect($this->generateUrl('task_success'));
 			}
 		}
+
+		$this->view = array(
+			'admin_email' => key($adminEmail),
+			'form' => $form->createView(),
+		);
 
 		return $this->display('index');
 	}
