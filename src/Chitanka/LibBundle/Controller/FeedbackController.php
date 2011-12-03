@@ -30,10 +30,8 @@ class FeedbackController extends Controller
 			}
 		}
 
-		$this->view = array(
-			'admin_email' => key($adminEmail),
-			'form' => $form->createView(),
-		);
+		$this->view['admin_email'] = key($adminEmail);
+		$this->view['form'] = $form->createView();
 
 		return $this->display('index');
 	}

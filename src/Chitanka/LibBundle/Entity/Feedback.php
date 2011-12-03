@@ -24,7 +24,7 @@ class Feedback
 
 	/**
 	 * @Assert\NotBlank()
-     * @Assert\MinLength(50)
+     * @Assert\MinLength(80)
      * @MyAssert\NotSpam()
 	 */
 	public $comment;
