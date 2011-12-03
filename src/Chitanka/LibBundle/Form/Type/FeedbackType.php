@@ -4,7 +4,6 @@ namespace Chitanka\LibBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FieldError;
 use Chitanka\LibBundle\Util\String;
 
 class FeedbackType extends AbstractType
@@ -34,22 +33,6 @@ class FeedbackType extends AbstractType
 	public function getName()
 	{
 		return 'feedback';
-	}
-
-	public function isValid()
-	{
-		if ( ! parent::isValid()) {
-			return false;
-		}
-
-		// TODO refactor as ... a constraint?
-		if (String::isSpam($this->get('comment')->getData())) {
-			$this->addError(new FieldError('Коментарът ви е определен като спам. Вероятно съдържа прекалено много уеб адреси.'));
-
-			return false;
-		}
-
-		return true;
 	}
 
 }

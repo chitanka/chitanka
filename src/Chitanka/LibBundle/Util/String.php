@@ -5,11 +5,6 @@ use Chitanka\LibBundle\Legacy\Legacy;
 
 class String
 {
-	static public function isSpam($cont, $lc = 2) {
-		return substr_count($cont, 'http://') > $lc;
-	}
-
-
 	static public function limitLength($str, $len = 80) {
 		if ( strlen($str) > $len ) {
 			return substr($str, 0, $len - 1) . '…';

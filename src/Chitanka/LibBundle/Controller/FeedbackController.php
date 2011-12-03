@@ -13,7 +13,7 @@ class FeedbackController extends Controller
 		$adminEmail = $this->container->getParameter('admin_email');
 		$feedback = new Feedback($this->get('mailer'), $adminEmail);
 
-		$form = $this->createForm('feedback_form', $feedback);
+		$form = $this->createForm(new FeedbackType, $feedback);
 
 		$this->view = array(
 			'admin_email' => key($adminEmail),

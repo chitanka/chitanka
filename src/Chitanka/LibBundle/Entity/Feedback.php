@@ -3,6 +3,7 @@
 namespace Chitanka\LibBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Chitanka\LibBundle\Validator\Constraints as MyAssert;
 
 class Feedback
 {
@@ -24,6 +25,7 @@ class Feedback
 	/**
 	 * @Assert\NotBlank()
      * @Assert\MinLength(50)
+     * @MyAssert\NotSpam()
 	 */
 	public $comment;
 
