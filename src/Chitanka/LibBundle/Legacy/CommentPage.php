@@ -64,10 +64,6 @@ class CommentPage extends Page {
 			$this->addMessage('Попълнете всички полета!', true);
 			return $this->buildContent();
 		}
-		if ( $this->user->isAnonymous() && String::isSpam($this->comment) ) {
-			$this->addMessage('Коментарът ви е определен като спам. Вероятно съдържа прекалено много уеб адреси.', true);
-			return $this->buildContent();
-		}
 		if ( !empty($this->textId) ) {
 			$this->initData();
 		}

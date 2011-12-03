@@ -5,6 +5,8 @@ namespace Chitanka\LibBundle\Legacy;
 use Chitanka\LibBundle\Entity\Text;
 use Chitanka\LibBundle\Util\Ary;
 use Chitanka\LibBundle\Util\String;
+use Chitanka\LibBundle\Validator\Constraints\NotSpamValidator;
+use Chitanka\LibBundle\Validator\Constraints\NotSpam;
 
 class SuggestDataPage extends MailPage {
 
@@ -44,7 +46,8 @@ class SuggestDataPage extends MailPage {
 			$this->addMessage('Не сте въвели никаква информация.', true);
 			return $this->buildContent();
 		}
-		if ( $this->user->isAnonymous() && String::isSpam($this->info, 2) ) {
+		$notSpamValidator = new NotSpamValidator;
+		if ( $this->user->isAnonymous() && !$notSpamValidator->isValid($this->info, new NotSpam) ) {
 			$this->addMessage('Съобщението ви е определено като спам. Вероятно съдържа прекалено много уеб адреси.', true);
 			return $this->buildContent();
 		}
