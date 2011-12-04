@@ -186,10 +186,6 @@ class EpubFile
 			$tags = $this->getTextAuthorTags();
 		}
 
-		foreach ($this->obj->getTranslators() as $translator) {
-			$tags[] = self::getCreatorTag($translator['name'], 'trl');
-		}
-
 		return implode("\n", $tags);
 	}
 
@@ -228,6 +224,12 @@ class EpubFile
 			String::getMachinePersonName($name), $role, $name);
 	}
 
+	static public function getContributorTag($name, $role)
+	{
+		return sprintf('<dc:contributor opf:file-as="%s" opf:role="%s">%s</dc:contributor>',
+			String::getMachinePersonName($name), $role, $name);
+	}
+
 
 	public function getSubjectTags()
 	{
@@ -241,7 +243,12 @@ class EpubFile
 
 	public function getContributorTags()
 	{
-		return '';
+		$tags = array();
+		foreach ($this->obj->getTranslators() as $translator) {
+			$tags[] = self::getContributorTag($translator['name'], 'trl');
+		}
+
+		return implode("\n", $tags);
 	}
 
 
