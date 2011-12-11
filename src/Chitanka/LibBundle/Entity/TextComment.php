@@ -64,7 +64,7 @@ class TextComment
 
 	/**
 	* @var integer $replyto
-	* @ORM\ManyToOne(targetEntity="TextComment", cascade={"remove"})
+	* @ORM\ManyToOne(targetEntity="TextComment")
 	*/
 	private $replyto;
 
