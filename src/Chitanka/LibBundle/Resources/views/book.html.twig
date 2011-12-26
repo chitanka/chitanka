@@ -9,7 +9,7 @@
 			<span class="bookauthor">{{ link.persons_comma(book.authors) }}</span>
 		{% endif %}
 		{% if book.sequence is not empty %}
-			<br><span class="bookseq">{{ link.sequence(book.sequence) }}{% if book.seqnr is defined %}, №&nbsp;{{ book.seqnr }}{% endif %}</span>
+			<br><span class="bookseq">{{ link.sequence(book.sequence) }}{% if book.seqnr is not empty %}, №&nbsp;{{ book.seqnr }}{% endif %}</span>
 		{% endif %}
 		{% if book.category is not empty %}
 			<br><span class="bookcat">{{ link.category(book.category) }}</span>

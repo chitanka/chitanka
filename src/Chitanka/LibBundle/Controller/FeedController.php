@@ -95,7 +95,7 @@ class FeedController extends Controller
 		$reviews = array();
 		$feedUrl = 'http://blog.chitanka.info/section/reviews/feed';
 		$feed = Legacy::getFromUrlOrCache($feedUrl, $days = 0.02);
-		if (empty($feed)) {
+		if (empty($feed) || strpos($feed, '<atom') === false) {
 			return $reviews;
 		}
 
