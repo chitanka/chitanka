@@ -172,6 +172,9 @@ EOT
 		} else if (file_exists($file = str_replace('.data', '.text', $dataFile))) {
 			$work['text'] = $file;
 		}
+		if (file_exists($file = str_replace('.data', '.anno', $dataFile))) {
+			$work['anno'] = $file;
+		}
 		if (file_exists($file = str_replace('.data', '.info', $dataFile))) {
 			$work['info'] = $file;
 		}
@@ -463,6 +466,9 @@ EOT
 				if (isset($work['toc_level'])) {
 					$qs = array_merge($qs, $this->buildTextHeadersUpdateQuery($entryFile, $work['id'], $work['toc_level']));
 				}
+			}
+			if (isset($work['anno'])) {
+				self::copyTextFile($work['anno'], "$this->contentDir/text-anno/$path");
 			}
 			if (isset($work['info'])) {
 				self::copyTextFile($work['info'], "$this->contentDir/text-info/$path");
