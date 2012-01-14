@@ -4,6 +4,7 @@
 {% set subtitle = ('person.role.'~person.role)|trans %}
 {% block content %}
 
+	<div class="person-{{ person.slug }}">
 	{% if person.person is empty %}
 		{% include 'LibBundle:Person:info.html.twig' %}
 	{% else %}
@@ -35,6 +36,7 @@
 			{% include 'LibBundle:Person:text_list_translator.html.twig' with {'series': series.data, 'texts': series.texts} %}
 		{% endfor %}
 	{% endif %}
+	</div>
 
 	{% include 'LibBundle::color_legend.html.twig' %}
 {% endblock %}
