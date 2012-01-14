@@ -51,7 +51,7 @@
 {% macro cover_div(book, width) %}
 	<div class="cover">
 		{% if book.has_cover %}
-			<a href="{{ asset(cover(book.id, 1000)) }}"><img src="{{ asset(cover(book.id, width)) }}" alt="Корица" width="{{ width }}"></a>
+			<a href="{{ asset(cover(book.id, 'max')) }}"><img src="{{ asset(cover(book.id, width)) }}" alt="Корица" width="{{ width }}"></a>
 		{% else %}
 			<img src="{{ asset(cover(0, width, 'png')) }}" alt="Корица" width="{{ width }}">
 		{% endif %}
