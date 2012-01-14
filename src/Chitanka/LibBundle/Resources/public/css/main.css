@@ -2300,6 +2300,9 @@ ul.two-columns {
 .chitanka-personinfo {
 	display: none;
 }
+div.person-aleks_boldin .dl-epub {
+	display: none;
+}
 }
 
 /* for small displays */
