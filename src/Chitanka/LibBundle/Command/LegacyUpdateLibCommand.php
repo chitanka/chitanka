@@ -68,13 +68,13 @@ EOT
 		$this->curEditId = $this->db->autoIncrementId(DBT_EDIT_HISTORY);
 		$this->curBookRev = $this->db->autoIncrementId('book_revision');
 		$this->entrydate = date('Y-m-d');
-		$this->modifDate = $this->entrydate . ' 12:00:00';
+		$this->modifDate = $this->entrydate . ' 15:00:00';
 
 		$this->orig_lang = 'bg';
 		$this->series = 0;
 		$this->sernr = 0;
 		$this->book = 0;
-		$this->book_author = true; // link the book with the author
+		$this->book_author = false; // link the book with the author
 		$this->author = 0;
 		$this->license_orig = 2; // 1: PD, 2: FC
 		$this->license_trans = 2;
@@ -82,7 +82,7 @@ EOT
 		$this->lang = 'bg';
 		$this->year = 0;
 		$this->trans_year = 0;
-		$this->type = 'novel';
+		$this->type = 'shortstory';
 		$this->comment = 'Добавяне';
 		$this->users = array();
 		$this->year2 = 0;
@@ -170,13 +170,13 @@ EOT
 						$textId = str_replace('>	$id=', '', rtrim($line));
 						$set = array('book_id' => $this->book, 'text_id' => $textId, 'share_info' => 0);
 						$queries[] = $this->db->insertQ(DBT_BOOK_TEXT, $set, true, false);
-						$bookFile .= "\t{". $textId ."}\n";
+						$bookFile .= ">\t{text:". $textId ."}\n\n";
 					}
 					continue;
 				}
 
 				if ($this->book) {
-					$bookFile .= "\t{{$this->curTextId}}\n";
+					$bookFile .= ">\t{text:{$this->curTextId}}\n\n";
 				}
 
 				$line = rtrim($this->clearHeadline($line), '*');
@@ -502,7 +502,7 @@ EOT
 
 	private function getPersonId($personName)
 	{
-		$id = $this->db->getFields(DBT_PERSON, array('name' => trim($personName)), 'id');
+		$id = $this->db->getFields(DBT_PERSON, array('slug' => trim($personName)), 'id');
 
 		if ( empty($id) ) {
 			$this->errors[] = "Личността $personName не съществува";
@@ -513,7 +513,7 @@ EOT
 
 	private function getSeriesId($name)
 	{
-		$id = $this->db->getFields(DBT_SERIES, array('name' => trim($name)), 'id');
+		$id = $this->db->getFields(DBT_SERIES, array('slug' => trim($name)), 'id');
 
 		if ( empty($id) ) {
 			$this->errors[] = "Поредицата $name не съществува";
