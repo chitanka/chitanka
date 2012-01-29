@@ -22,6 +22,9 @@
 		</p>
 		{% endif %}
 	{% endfor %}
+	{% if text.source is not empty %}
+		<p>Източник: {{ text.source }}</p>
+	{% endif %}
 	{{ text.extrainfohtml(asset('/'))|raw }}
 
 	<hr>
