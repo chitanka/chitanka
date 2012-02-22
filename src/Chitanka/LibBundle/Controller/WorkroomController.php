@@ -41,6 +41,9 @@ class WorkroomController extends Controller
 
 	public function newAction()
 	{
+		if ($this->getUser()->isAnonymous()) {
+			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
+		}
 		$_REQUEST['id'] = 0;
 		$_REQUEST['status'] = 'edit';
 
