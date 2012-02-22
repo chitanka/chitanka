@@ -25,6 +25,9 @@ class BookController extends Controller
 		$page = (int)$page;
 		$bookRepo = $this->getRepository('Book');
 		$category = $this->getRepository('Category')->findBySlug($slug);
+		if ( ! $category) {
+			throw new NotFoundHttpException("Няма категория с код $slug.");
+		}
 		$limit = 30;
 
 		$this->view = array(
