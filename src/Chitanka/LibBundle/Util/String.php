@@ -101,17 +101,15 @@ class String
 	static public function slugify($name, $maxlength = 40)
 	{
 		$name = strtr($name, array(
-			' ' => '_', '/' => '_',
 			'²' => '2', '°' => 'deg',
-			'—' => '',
 		));
 		$name = Char::cyr2lat($name);
 		$name = Legacy::removeDiacritics($name);
 		$name = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $name);
 		$name = strtolower($name);
-		$name = preg_replace('/__+/', '_', $name);
-		$name = preg_replace('/[^\w\d_]/', '', $name);
-		$name = rtrim(substr($name, 0, $maxlength), '_');
+		$name = preg_replace('/[^a-z\d]/', '-', $name);
+		$name = preg_replace('/--+/', '-', $name);
+		$name = rtrim(substr($name, 0, $maxlength), '-');
 
 		return $name;
 	}

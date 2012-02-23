@@ -3,6 +3,7 @@
 namespace Chitanka\LibBundle\Controller;
 
 use Chitanka\LibBundle\Pagination\Pager;
+use Chitanka\LibBundle\Util\String;
 
 class SeriesController extends Controller
 {
@@ -39,6 +40,7 @@ class SeriesController extends Controller
 
 	public function showAction($slug, $_format)
 	{
+		$slug = String::slugify($slug);
 		$series = $this->getRepository('Series')->findBySlug($slug);
 
 		$this->view = array(

@@ -5,6 +5,7 @@ namespace Chitanka\LibBundle\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Chitanka\LibBundle\Pagination\Pager;
 use Chitanka\LibBundle\Legacy\Legacy;
+use Chitanka\LibBundle\Util\String;
 
 class PersonController extends Controller
 {
@@ -104,6 +105,7 @@ class PersonController extends Controller
 	{
 		$this->responseAge = 86400; // 24 hours
 
+		$slug = String::slugify($slug);
 		$person = $this->getRepository('Person')->findOneBy(array('slug' => $slug));
 
 		if ( ! $person) {

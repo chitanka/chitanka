@@ -6,6 +6,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ORM\NoResultException;
 use Chitanka\LibBundle\Pagination\Pager;
 use Chitanka\LibBundle\Legacy\Setup;
+use Chitanka\LibBundle\Util\String;
 
 class BookController extends Controller
 {
@@ -22,7 +23,8 @@ class BookController extends Controller
 
 	public function listAction($slug, $page)
 	{
-		$page = (int)$page;
+		$slug = String::slugify($slug);
+		$page = (int) $page;
 		$bookRepo = $this->getRepository('Book');
 		$category = $this->getRepository('Category')->findBySlug($slug);
 		if ( ! $category) {

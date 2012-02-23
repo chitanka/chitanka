@@ -10,6 +10,7 @@ use Doctrine\ORM\NoResultException;
 use Chitanka\LibBundle\Pagination\Pager;
 use Chitanka\LibBundle\Util\File;
 use Chitanka\LibBundle\Util\Char;
+use Chitanka\LibBundle\Util\String;
 use Chitanka\LibBundle\Entity\Text;
 use Chitanka\LibBundle\Entity\TextRating;
 use Chitanka\LibBundle\Entity\UserTextRead;
@@ -91,6 +92,7 @@ class TextController extends Controller
 		$textRepo = $this->getRepository('Text');
 		$limit = 30;
 
+		$slug = String::slugify($slug);
 		$label = $this->getRepository('Label')->findBySlug($slug);
 		$labels = $label->getDescendantIdsAndSelf();
 

@@ -4,6 +4,7 @@ namespace Chitanka\LibBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Chitanka\LibBundle\Pagination\Pager;
+use Chitanka\LibBundle\Util\String;
 
 class SequenceController extends Controller
 {
@@ -37,6 +38,7 @@ class SequenceController extends Controller
 
 	public function showAction($slug, $_format)
 	{
+		$slug = String::slugify($slug);
 		$sequence = $this->getRepository('Sequence')->findBySlug($slug);
 		if ( ! $sequence) {
 			throw new NotFoundHttpException("Няма издателска поредица с код $slug.");
