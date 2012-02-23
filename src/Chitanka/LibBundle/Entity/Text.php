@@ -442,6 +442,8 @@ class Text extends BaseWork
 // 	public function setHasTitleNote($hasTitleNote) { $this->has_title_note = $hasTitleNote; }
 // 	public function getHasTitleNote() { return $this->has_title_note; }
 
+	public function isCompilation() { return $this->is_compilation; }
+
 	public function setMode($mode) { $this->mode = $mode; }
 	public function getMode() { return $this->mode; }
 
