@@ -421,7 +421,7 @@ EOS;
 				DBT_PERSON .' a' => 'aof.person_id = a.id',
 				DBT_TEXT_RATING .' tr' => 'tr.text_id = t.id AND tr.user_id = c.user_id',
 			),
-			'WHERE' => array('c.id IN ('.implode(',', $ids).')'),
+			'WHERE' => empty($ids) ? '0' : array('c.id IN ('.implode(',', $ids).')'),
 			'GROUP BY' => 'c.id',
 			'ORDER BY' => "`time` $order",
 		);
