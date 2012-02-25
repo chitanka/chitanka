@@ -79,7 +79,7 @@ class WorkroomController extends Controller
 		}
 
 		$contrib = $this->getRepository('WorkContrib')->find($id);
-		if ( ! $contrib) {
+		if ($contrib === null) {
 			throw new NotFoundHttpException();
 		}
 		$entry = $contrib->getEntry();

@@ -94,6 +94,9 @@ class TextController extends Controller
 
 		$slug = String::slugify($slug);
 		$label = $this->getRepository('Label')->findBySlug($slug);
+		if ($label === null) {
+			throw new NotFoundHttpException("Няма етикет с код $slug.");
+		}
 		$labels = $label->getDescendantIdsAndSelf();
 
 		$this->view = array_merge($this->view, array(
@@ -292,7 +295,7 @@ class TextController extends Controller
 		}
 
 		$text = $this->getRepository('Text')->find($id);
-		if ( ! $text) {
+		if ($text === null) {
 			throw new NotFoundHttpException("Няма текст с номер $id.");
 		}
 
@@ -375,7 +378,7 @@ class TextController extends Controller
 		}
 
 		$text = $this->getRepository('Text')->find($id);
-		if ( ! $text) {
+		if ($text === null) {
 			throw new NotFoundHttpException("Няма текст с номер $id.");
 		}
 
@@ -404,7 +407,7 @@ class TextController extends Controller
 		}
 
 		$text = $this->getRepository('Text')->find($id);
-		if ( ! $text) {
+		if ($text === null) {
 			throw new NotFoundHttpException("Няма текст с номер $id.");
 		}
 

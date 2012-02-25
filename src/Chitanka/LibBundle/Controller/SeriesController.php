@@ -2,6 +2,7 @@
 
 namespace Chitanka\LibBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Chitanka\LibBundle\Pagination\Pager;
 use Chitanka\LibBundle\Util\String;
 
@@ -42,6 +43,9 @@ class SeriesController extends Controller
 	{
 		$slug = String::slugify($slug);
 		$series = $this->getRepository('Series')->findBySlug($slug);
+		if ($series === null) {
+			throw new NotFoundHttpException("Няма поредица с код $slug.");
+		}
 
 		$this->view = array(
 			'series' => $series,

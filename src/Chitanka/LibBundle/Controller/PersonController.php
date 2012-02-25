@@ -108,7 +108,7 @@ class PersonController extends Controller
 		$slug = String::slugify($slug);
 		$person = $this->getRepository('Person')->findOneBy(array('slug' => $slug));
 
-		if ( ! $person) {
+		if ($person === null) {
 			$person = $this->getRepository('Person')->findOneBy(array('name' => $slug));
 			if ($person) {
 				return $this->urlRedirect($this->generateUrl('person_show', array('slug' => $person->getSlug())), true);
