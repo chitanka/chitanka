@@ -3,6 +3,7 @@
 namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Chitanka\LibBundle\Util\String;
 use Chitanka\LibBundle\Legacy\Legacy;
 use Chitanka\LibBundle\Legacy\Setup;
 
@@ -181,7 +182,7 @@ class Book extends BaseWork
 
 	public function getId() { return $this->id; }
 
-	public function setSlug($slug) { $this->slug = $slug; }
+	public function setSlug($slug) { $this->slug = String::slugify($slug); }
 	public function getSlug() { return $this->slug; }
 
 	public function setTitleAuthor($titleAuthor) { $this->title_author = $titleAuthor; }

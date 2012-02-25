@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Chitanka\LibBundle\Util\Char;
 use Chitanka\LibBundle\Util\File;
 use Chitanka\LibBundle\Util\Language;
+use Chitanka\LibBundle\Util\String;
 use Chitanka\LibBundle\Legacy\Legacy;
 use Chitanka\LibBundle\Legacy\Setup;
 
@@ -340,7 +341,7 @@ class Text extends BaseWork
 
 	public function getId() { return $this->id; }
 
-	public function setSlug($slug) { $this->slug = $slug; }
+	public function setSlug($slug) { $this->slug = String::slugify($slug); }
 	public function getSlug() { return $this->slug; }
 
 	public function setTitle($title) { $this->title = $title; }

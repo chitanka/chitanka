@@ -192,7 +192,7 @@ class Person
 
 	public function getId() { return $this->id; }
 
-	public function setSlug($slug) { $this->slug = $slug; }
+	public function setSlug($slug) { $this->slug = String::slugify($slug); }
 	public function getSlug() { return $this->slug; }
 
 	public function setName($name)
@@ -200,7 +200,7 @@ class Person
 		$this->name = $name;
 		$this->last_name = self::getLastNameFromName($name);
 		if (empty($this->slug)) {
-			$this->slug = String::slugify($name);
+			$this->setSlug($name);
 		}
 	}
 	public function getName() { return $this->name; }
@@ -215,7 +215,7 @@ class Person
 	{
 		$this->orig_name = $origName;
 		if (empty($this->slug) && preg_match('/[a-z]/', $origName)) {
-			$this->slug = String::slugify($origName);
+			$this->setSlug($origName);
 		}
 	}
 	public function getOrigName() { return $this->orig_name; }

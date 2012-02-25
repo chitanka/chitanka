@@ -3,6 +3,7 @@
 namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Chitanka\LibBundle\Util\String;
 
 /**
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\LabelRepository")
@@ -59,7 +60,7 @@ class Label
 
 	public function getId() { return $this->id; }
 
-	public function setSlug($slug) { $this->slug = $slug; }
+	public function setSlug($slug) { $this->slug = String::slugify($slug); }
 	public function getSlug() { return $this->slug; }
 
 	public function setName($name) { $this->name = $name; }
@@ -70,9 +71,9 @@ class Label
 
 	public function setNrOfTexts($nr_of_texts) { $this->nr_of_texts = $nr_of_texts; }
 	public function getNrOfTexts() { return $this->nr_of_texts; }
-	public function incNrOfTexts($value = 1) 
-	{ 
-		$this->nr_of_texts += $value; 
+	public function incNrOfTexts($value = 1)
+	{
+		$this->nr_of_texts += $value;
 	}
 
 	public function setChildren($children) { $this->children = $children; }

@@ -3,6 +3,7 @@
 namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Chitanka\LibBundle\Util\String;
 
 /**
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\CategoryRepository")
@@ -59,7 +60,7 @@ class Category
 
 	public function getId() { return $this->id; }
 
-	public function setSlug($slug) { $this->slug = $slug; }
+	public function setSlug($slug) { $this->slug = String::slugify($slug); }
 	public function getSlug() { return $this->slug; }
 
 	public function setName($name) { $this->name = $name; }
