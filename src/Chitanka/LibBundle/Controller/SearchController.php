@@ -5,6 +5,7 @@ namespace Chitanka\LibBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Chitanka\LibBundle\Pagination\Pager;
 use Chitanka\LibBundle\Entity\SearchString;
+use Chitanka\LibBundle\Util\String;
 
 class SearchController extends Controller
 {
@@ -154,6 +155,8 @@ class SearchController extends Controller
 			return $this->display('list_top_strings');
 		}
 
+		$query = String::fixEncoding($query);
+
 		$matchType = $request->get('match');
 		if ($matchType != 'exact' && mb_strlen($query, 'utf-8') < $this->minQueryLength) {
 			$this->view['message'] = sprintf('Трябва да въведете поне %d знака.', $this->minQueryLength);
@@ -168,7 +171,6 @@ class SearchController extends Controller
 			'match' => $matchType,
 		);
 	}
-
 
 	private function logSearch($query)
 	{

@@ -60,6 +60,14 @@ class String
 		return htmlspecialchars($text, ENT_COMPAT, 'UTF-8');
 	}
 
+	static public function fixEncoding($string)
+	{
+		if ('UTF-8' != ($enc = mb_detect_encoding($string, 'UTF-8, Windows-1251'))) {
+			$string = iconv($enc, 'UTF-8', $string);
+		}
+		return $string;
+	}
+
 	static public function pretifyInput($text) {
 		$patterns = array(
 			// link in brackets
