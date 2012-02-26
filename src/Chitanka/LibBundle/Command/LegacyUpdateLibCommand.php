@@ -84,7 +84,7 @@ EOT
 		$this->trans_year = null;
 		$this->type = 'shortstory';
 		$this->comment = 'Добавяне';
-		// 'USERNAME' => array(PERCENT, date('Y'), 'Сканиране, разпознаване и корекция')
+		// 'USERNAME' => array(PERCENT, 'Сканиране, разпознаване и корекция', date('Y'))
 		$this->users = array();
 		$this->year2 = null;
 		$this->trans_year2 = null;
@@ -383,7 +383,7 @@ EOT
 		}
 
 		foreach ($users as $user => $userData) {
-			list($percent, $humanDate, $userComment) = $userData;
+			list($percent, $userComment, $humanDate) = $userData;
 			$userId = $this->getUserId($user);
 			if ( empty($userId) ) { continue; }
 			$size = $percent/100 * $l;
