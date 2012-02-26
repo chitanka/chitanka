@@ -72,22 +72,23 @@ EOT
 
 		$this->orig_lang = 'bg';
 		$this->series = 0;
-		$this->sernr = 0;
+		$this->sernr = null;
 		$this->book = 0;
 		$this->book_author = false; // link the book with the author
-		$this->author = 0;
+		$this->author = null;
 		$this->license_orig = 2; // 1: PD, 2: FC
 		$this->license_trans = 2;
 		$this->translator = 0;
 		$this->lang = 'bg';
-		$this->year = 0;
-		$this->trans_year = 0;
+		$this->year = null;
+		$this->trans_year = null;
 		$this->type = 'shortstory';
 		$this->comment = 'Добавяне';
+		// 'USERNAME' => array(PERCENT, date('Y'), 'Сканиране, разпознаване и корекция')
 		$this->users = array();
-		$this->year2 = 0;
-		$this->trans_year2 = 0;
-		$this->subtitle = $this->orig_title = $this->orig_subtitle = '';
+		$this->year2 = null;
+		$this->trans_year2 = null;
+		$this->subtitle = $this->orig_title = $this->orig_subtitle = null;
 		$this->labels = array();
 
 		$this->errors = array();
@@ -381,11 +382,21 @@ EOT
 			$qs[] = $this->db->insertQ(DBT_TEXT_LABEL, $set, true, false);
 		}
 
-		foreach ($users as $user => $percent) {
-			$userId = is_numeric($user) ? $user : $this->getUserId($user);
+		foreach ($users as $user => $userData) {
+			list($percent, $humanDate, $userComment) = $userData;
+			$userId = $this->getUserId($user);
 			if ( empty($userId) ) { continue; }
 			$size = $percent/100 * $l;
-			$set = array('user_id' => $userId, 'text_id' => $textId, 'size' => $size, 'percent' => $percent);
+			$set = array(
+				'user_id' => $userId,
+				'username' => $user,
+				'text_id' => $textId,
+				'size' => $size,
+				'percent' => $percent,
+				'date' => $this->modifDate,
+				'humandate' => $humanDate,
+				'comment' => $userComment,
+			);
 			$qs[] = $this->db->insertQ(DBT_USER_TEXT, $set, true, false);
 		}
 
