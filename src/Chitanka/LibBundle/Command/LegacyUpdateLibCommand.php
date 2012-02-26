@@ -64,11 +64,11 @@ EOT
 		$this->db = Setup::db();
 		$this->overwrite = true; // overwrite existing files?
 
-		$this->curTextId = $this->db->autoIncrementId(DBT_TEXT);
+		//$this->curTextId = $this->getNextId('text');
 		$this->curEditId = $this->db->autoIncrementId(DBT_EDIT_HISTORY);
 		$this->curBookRev = $this->db->autoIncrementId('book_revision');
 		$this->entrydate = date('Y-m-d');
-		$this->modifDate = $this->entrydate . ' 15:00:00';
+		$this->modifDate = $this->entrydate . date(' H:i:s');
 
 		$this->orig_lang = 'bg';
 		$this->series = 0;
@@ -176,6 +176,7 @@ EOT
 				}
 
 				if ($this->book) {
+					// FIXME this->curTextId is not initialized used anymore
 					$bookFile .= ">\t{text:{$this->curTextId}}\n\n";
 				}
 
@@ -237,7 +238,7 @@ EOT
 
 		$isNew = ! isset($id);
 		if ( $isNew ) {
-			$textId = $this->curTextId++;
+			$textId = $this->getNextId('text');
 			$comment = $this->comment;
 		} else {
 			$textId = $id;
@@ -284,6 +285,7 @@ EOT
 				'zsize' => $zl,
 				'id' => $textId,
 				'headlevel' => (isset($headlevel) ? $headlevel : 0),
+				'mode' => 'public',
 			);
 			if ($series) {
 				$set['series_id'] = is_numeric($series) ? $series : $this->getSeriesId($series);
@@ -499,6 +501,25 @@ EOT
 		return array($text, $vars);
 	}
 
+
+	private $_curIds = array();
+	private $_ids = array(
+		'text' => array(),
+		'book' => array(),
+	);
+	private function getNextId($table)
+	{
+		if (isset($this->_ids[$table]) && count($this->_ids[$table])) {
+			return array_shift($this->_ids[$table]);
+		}
+		if ( ! isset($this->_curIds[$table])) {
+			$this->_curIds[$table] = $this->db->autoIncrementId($table);
+		} else {
+			$this->_curIds[$table]++;
+		}
+
+		return $this->_curIds[$table];
+	}
 
 	private function getPersonId($personName)
 	{
