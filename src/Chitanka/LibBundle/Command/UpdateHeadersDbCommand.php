@@ -49,7 +49,13 @@ EOT
 		$iterableResult = $this->em->createQuery('SELECT t FROM LibBundle:Text t WHERE t.headlevel > 0')->iterate();
 		foreach ($iterableResult AS $row) {
 			$text = $row[0];
-			$queries = array_merge($queries, $this->buildTextHeadersUpdateQuery($this->webDir($text->getMainContentFile()), $text->getId(), $text->getHeadlevel()));
+			if ($text->isCompilation()) {
+				$file = tempnam(sys_get_temp_dir(), 'text');
+				file_put_contents($file, $text->getRawContent());
+			} else {
+				$file = $this->webDir($text->getMainContentFile());
+			}
+			$queries = array_merge($queries, $this->buildTextHeadersUpdateQuery($file, $text->getId(), $text->getHeadlevel()));
 			$this->em->detach($text);
 		}
 
