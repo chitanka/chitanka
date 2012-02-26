@@ -300,6 +300,9 @@ EOT
 	private $_objectsIds = array();
 	private function getObjectId($table, $query, $column = 'slug')
 	{
+		if ($column == 'slug') {
+			$query = String::slugify($query);
+		}
 		if ( ! isset($this->_objectsIds[$table][$query])) {
 			$sql = "SELECT id FROM $table WHERE $column = '$query'";
 			$result = $this->em->getConnection()->fetchAssoc($sql);
@@ -330,7 +333,7 @@ EOT
 		);
 		if (isset($work['title'])) {
 			$set += array(
-				'slug' => (isset($work['slug']) ? $work['slug'] : String::slugify($work['title'])),
+				'slug' => (isset($work['slug']) ? String::slugify($work['slug']) : String::slugify($work['title'])),
 				'title' => String::my_replace($work['title']),
 			);
 		}
@@ -376,6 +379,8 @@ EOT
 
 		if (isset($work['orig_license'])) $set['orig_license_id'] = $this->getObjectId('license', $work['orig_license'], 'code');
 		if (isset($work['trans_license'])) $set['trans_license_id'] = $this->getObjectId('license', $work['trans_license'], 'code');
+
+		if (isset($work['source'])) $set['source'] = $work['source'];
 
 		if ($work['is_new']) {
 			$qs[] = $this->olddb()->replaceQ(DBT_TEXT, $set);
@@ -496,7 +501,7 @@ EOT
 		);
 		if (isset($book['title'])) {
 			$set += array(
-				'slug' => (isset($book['slug']) ? $book['slug'] : String::slugify($book['title'])),
+				'slug' => (isset($book['slug']) ? String::slugify($book['slug']) : String::slugify($book['title'])),
 				'title' => String::my_replace($book['title']),
 			);
 		}
@@ -593,7 +598,7 @@ EOT
 			$contents = String::my_replace($contents);
 		}
 		if (empty($contents)) {
-			throw new Exception(sprintf('CharReplace failed by %s', $source));
+			throw new \Exception(sprintf('CharReplace failed by %s', $source));
 		}
 		File::myfile_put_contents($dest, $contents);
 	}
