@@ -266,6 +266,9 @@ class mlDatabase {
 		$keyword = $putKeyword ? ' SET ' : '';
 		$cl = array();
 		foreach ($data as $field => $value) {
+			if ($value === null) {
+				continue;
+			}
 			if ( is_numeric($field) ) { // take the value as is
 				$cl[] = $value;
 			} else {
