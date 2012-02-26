@@ -105,10 +105,9 @@ class PersonController extends Controller
 	{
 		$this->responseAge = 86400; // 24 hours
 
-		$slug = String::slugify($slug);
-		$person = $this->getRepository('Person')->findOneBy(array('slug' => $slug));
+		$person = $this->getRepository('Person')->findBySlug(String::slugify($slug));
 
-		if ($person === null) {
+		if ($person == null) {
 			$person = $this->getRepository('Person')->findOneBy(array('name' => $slug));
 			if ($person) {
 				return $this->urlRedirect($this->generateUrl('person_show', array('slug' => $person->getSlug())), true);

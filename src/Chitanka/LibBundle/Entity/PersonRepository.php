@@ -10,6 +10,11 @@ class PersonRepository extends EntityRepository
 		$queryableFields = array('id', 'slug', 'name', 'orig_name', 'real_name', 'oreal_name');
 
 
+	public function findBySlug($slug)
+	{
+		return $this->findOneBy(array('slug' => $slug));
+	}
+
 	public function getBy($filters, $page = 1, $limit = null)
 	{
 		$query = $this->setPagination($this->getQueryBy($filters), $page, $limit);
