@@ -157,20 +157,20 @@ class mlDatabase {
 	public function extselectQ($qparts, $distinct = false) {
 		$qd = $distinct ? ' DISTINCT' : '';
 		$q = "SELECT$qd $qparts[SELECT] FROM $qparts[FROM]";
-		if ( !empty($qparts['LEFT JOIN']) ) {
+		if ( isset($qparts['LEFT JOIN']) ) {
 			foreach ($qparts['LEFT JOIN'] as $table => $onrule) {
 				$q .= " LEFT JOIN $table ON ($onrule)";
 			}
 		}
-		if ( !empty($qparts['WHERE']) ) {
+		if ( isset($qparts['WHERE']) ) {
 			$q .= $this->makeWhereClause($qparts['WHERE']);
 		}
 		foreach ( array('GROUP BY', 'ORDER BY') as $key ) {
-			if ( !empty($qparts[$key]) ) {
+			if ( isset($qparts[$key]) ) {
 				$q .= " $key $qparts[$key]";
 			}
 		}
-		if ( !empty($qparts['LIMIT']) ) {
+		if ( isset($qparts['LIMIT']) ) {
 			if ( is_array($qparts['LIMIT']) ) {
 				list($offset, $limit) = $qparts['LIMIT'];
 			} else {
