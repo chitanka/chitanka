@@ -107,9 +107,8 @@ EOT
 	private function _wikiBot()
 	{
 		if ($this->_wikiBot == null) {
-			error_reporting(E_ALL ^ E_NOTICE); // Apibot has too many notices
-			require_once __DIR__ . '/../../../../vendor/apibot/apibot.php';
-			$this->_wikiBot = new \Apibot($logins['chitanka']);
+			require_once $this->getContainer()->getParameter('kernel.root_dir') . '/../vendor/apibot/apibot.php';
+			$this->_wikiBot = new \Apibot($logins['chitanka'], array('dump_mode' => 0));
 		}
 		return $this->_wikiBot;
 	}
