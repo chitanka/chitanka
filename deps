@@ -63,6 +63,9 @@
 [sfblib]
     git=git://gitorious.org/sfb-converter/mainline.git
 
+[apibot]
+    git=git://gitorious.org/apibot/apibot.git
+
 [SonatajQueryBundle]
     git=http://github.com/sonata-project/SonatajQueryBundle.git
     target=/bundles/Sonata/jQueryBundle
