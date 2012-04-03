@@ -106,7 +106,7 @@ class String
 	}
 
 
-	static public function slugify($name, $maxlength = 40)
+	static public function slugify($name, $maxlength = 60)
 	{
 		$name = strtr($name, array(
 			'²' => '2', '°' => 'deg',
