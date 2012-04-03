@@ -160,7 +160,11 @@ EOT
 					$parts[0] = '?';
 					$parts[] = null;
 				} else {
-					$parts[] = $this->getObjectId('user', $parts[0], 'username');
+					try {
+						$parts[] = $this->getObjectId('user', $parts[0], 'username');
+					} catch (\Exception $e) {
+						$parts[] = null;
+					}
 				}
 				$users[] = $parts;
 			}
@@ -306,6 +310,9 @@ EOT
 		if ( ! isset($this->_objectsIds[$table][$query])) {
 			$sql = "SELECT id FROM $table WHERE $column = '$query'";
 			$result = $this->em->getConnection()->fetchAssoc($sql);
+			if (empty($result['id'])) {
+				throw new \Exception("Няма запис за $table.$column = '$query'");
+			}
 			$this->_objectsIds[$table][$query] = $result['id'];
 		}
 
