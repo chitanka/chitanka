@@ -1,9 +1,3 @@
-/** Escape from an eventual frameset */
-if (window.top != window) {
-	window.top.location = window.location;
-}
-
-
 function showNewForm(link)
 {
 	$(link).addClass("loading");
