@@ -496,11 +496,9 @@ EOS;
 		} else if ( ! empty($uplfile) ) {
 			$file = $this->makeFileLink($uplfile);
 		}
-		if ( $this->userCanEditEntry($user_id, $type) ) {
-			$title = sprintf('<a href="%s" title="Към страницата за редактиране">%s</a>',
-				$this->controller->generateUrl('workroom_entry_edit', array('id' => $id)),
-				$title);
-		}
+		$title = sprintf('<a href="%s" title="Към страницата за редактиране">%s</a>',
+			$this->controller->generateUrl('workroom_entry_edit', array('id' => $id)),
+			$title);
 		$this->rowclass = $this->out->nextRowClass($this->rowclass);
 		$st = $progress > 0
 			? $this->makeProgressBar($progress)
@@ -895,6 +893,9 @@ EOS;
 		if (in_array($this->status, array(self::STATUS_5, self::STATUS_6, self::STATUS_7))) {
 			return false;
 		}
+		if ($this->user->isAnonymous()) {
+			return false;
+		}
 		return true;
 	}
 
@@ -1174,6 +1175,9 @@ EOS;
 	}
 
 	public function thisUserCanEditEntry($entry, $type) {
+		if ($this->user->isAnonymous()) {
+			return false;
+		}
 		if ($this->userIsSupervisor() || $type == 1) return true;
 		$key = array('id' => $entry, 'user_id' => $this->user->getId());
 
@@ -1181,6 +1185,9 @@ EOS;
 	}
 
 	public function userCanEditEntry($user, $type = 0) {
+		if ($user->isAnonymous()) {
+			return false;
+		}
 		return $this->userIsSupervisor()
 			|| $user == $this->user->getId()
 			|| ($type == 1 && $this->userCanAddEntry());
