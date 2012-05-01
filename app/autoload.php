@@ -14,12 +14,13 @@ $loader->registerNamespaces(array(
 	'Monolog'          => __DIR__.'/../vendor/monolog/src',
 	'Assetic'          => __DIR__.'/../vendor/assetic/src',
 	'Metadata'         => __DIR__.'/../vendor/metadata/src',
-	'Chitanka'         => __DIR__.'/../src',
+	'FOS\\Rest'        => __DIR__.'/../vendor/fos',
+	'FOS'              => __DIR__.'/../vendor/bundles',
 	'Sonata'           => __DIR__.'/../vendor/bundles',
-    'Knp'              => array(
-		__DIR__.'/../vendor/bundles',
-		__DIR__.'/../vendor/knp/menu/src',
-	),
+	'Exporter'         => __DIR__.'/../vendor/exporter/lib',
+	'Knp\Bundle'       => __DIR__.'/../vendor/bundles',
+	'Knp\Menu'         => __DIR__.'/../vendor/knp/menu/src',
+	'Chitanka'         => __DIR__.'/../src',
 ));
 $loader->registerPrefixes(array(
 	'Twig_Extensions_' => __DIR__.'/../vendor/twig-extensions/lib',

@@ -179,7 +179,8 @@ hr {
 
 /* кутии за групиране */
 fieldset,
-article {
+article,
+div.fos_comment_comment_show {
 	margin: 1em 0;
 	padding: 1em;
 	border: thin solid <?php echo $fieldsetBordColor?>;
@@ -350,7 +351,7 @@ button:focus {
 }
 /* бутони за пращане на формуляр */
 input[type=submit],
-button[type=submit] {
+button {
 	color: <?php echo $buttonLinksFgColor?>;
 	background-color: <?php echo $buttonLinksBgColor?>;
 	border: thin solid <?php echo $buttonLinksFgColor?>;
@@ -360,8 +361,8 @@ button[type=submit] {
 }
 input[type=submit]:focus,
 input[type=submit]:hover,
-button[type=submit]:focus,
-button[type=submit]:hover {
+button:focus,
+button:hover {
 	color: <?php echo $buttonLinksBgColor?>;
 	background-color: <?php echo $buttonLinksFgColor?>;
 }
@@ -1062,7 +1063,8 @@ li.title {
 .tabbedpanebody,
 #tooltip,
 article,
-fieldset {
+fieldset,
+div.fos_comment_comment_show {
 	clear: both;
 	color: <?php echo $mainFgColor?>;
 	background-color: <?php echo $tocBgColor?>;
@@ -1074,7 +1076,8 @@ fieldset {
 	margin-bottom: 2em;
 }
 /* читателските мнения */
-#readercomments ul {
+#readercomments ul,
+div.fos_comment_comment_replies {
 	margin: 0;
 	padding-left: 1em;
 	list-style-type: none;
@@ -1094,6 +1097,21 @@ fieldset {
 	line-height: 1.4em;
 	font-size: 1.1em;
 }
+div.fos_comment_comment_form_holder textarea {
+	width: 98%;
+	height: 6em;
+	padding: 1%;
+}
+div.fos_comment_comment_metas {
+	margin-bottom: 0.5em;
+	padding-bottom: 0.5em;
+	border-bottom: solid thin <?php echo $logoFgColor?>;
+}
+div.fos_comment_comment_reply {
+	text-align: right;
+}
+/* currently broken */
+.fos_comment_thread_commentable_action, .fos_comment_comment_remove { display: none }
 
 #tooltip {
 	position: absolute;

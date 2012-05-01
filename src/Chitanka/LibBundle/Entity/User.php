@@ -226,7 +226,10 @@ class User /*extends BaseUser*/ implements UserInterface
 
 	public function getRoles()
 	{
-		return array();
+		#return array();
+		return array_map(function($group){
+			return 'ROLE_' . strtoupper($group);
+		}, $this->getGroups());
 	}
 
 	public function eraseCredentials()

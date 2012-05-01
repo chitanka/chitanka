@@ -49,14 +49,14 @@ class PersonAdmin extends Admin
 			->add('is_author', null, array('required' => false))
 			->add('is_translator', null, array('required' => false))
 			->add('info', null, array('required' => false))
-			->with($this->trans('Main person'), array('collapsed' => true))
+			->with($this->trans('Main Person'), array('collapsed' => true))
 				->add('type', 'choice', array(
 					'choices' => Person::getTypeList(),
 					//'expanded' => true,
 					'required' => false,
-					'label' => 'Person type',
+					'label' => 'Person Type',
 				))
-				->add('person', 'sonata_type_model', array('required' => false, 'label' => 'Main person'), array('edit' => 'list'))
+				->add('person', 'sonata_type_model', array('required' => false, 'label' => 'Main Person'), array('edit' => 'list'))
 			->end()
 			->setHelps(array(
 				'info' => $this->trans('help.person.info')

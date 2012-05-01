@@ -140,7 +140,7 @@ class Book extends BaseWork
 		'private' => 'Свалена',
 	);
 
-	/**
+	/** FIXME doctrine:schema:create does not allow this relation
 	* @ORM\ManyToMany(targetEntity="Person", inversedBy="books")
 	* @ORM\JoinTable(name="book_author",
 	*	joinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id")},

@@ -689,6 +689,7 @@ EOS;
 		$workType = $this->out->hiddenField('workType', $this->workType);
 		$bypass = $this->out->hiddenField('bypass', $this->bypassExisting);
 		$action = $this->controller->generateUrl('workroom');
+		$comments = $this->createCommentsJavascript($this->entry);
 
 		return <<<EOS
 
@@ -721,12 +722,41 @@ $helpTop
 $extra
 </div>
 </div>
+
+$comments
+
 <div id="helpBottom">
 $helpBot
 </div>
 EOS;
 	}
 
+	private function createCommentsJavascript($entry)
+	{
+		if (empty($entry)) {
+			return '';
+		}
+		return <<<JS
+<div id="fos_comment_thread"></div>
+
+<script type="text/javascript">
+var fos_comment_thread_id = 'work_entry_$entry';
+
+// api base url to use for initial requests
+var fos_comment_thread_api_base_url = '/api/threads';
+
+// Snippet for asynchronously loading the comments
+(function() {
+    var fos_comment_script = document.createElement('script');
+    fos_comment_script.async = true;
+    fos_comment_script.src = '/js/comments_1.js';
+    fos_comment_script.type = 'text/javascript';
+
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(fos_comment_script);
+})();
+</script>
+JS;
+	}
 
 	protected function makeSubmitButton() {
 		$submit = $this->out->submitButton('Запис');

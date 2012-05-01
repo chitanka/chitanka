@@ -1,5 +1,8 @@
  RewriteEngine On
 
+ RewriteCond %{REQUEST_FILENAME} -f
+ RewriteRule ^.*$ - [NC,L]
+
  RewriteCond %{REQUEST_METHOD} GET
  RewriteCond %{DOCUMENT_ROOT}/cache%{REQUEST_URI} -f
  RewriteRule ^(.*) /cache/css/$1 [L]

@@ -79,6 +79,11 @@ abstract class Controller extends SymfonyController
 			'ajax' => $request->isXmlHttpRequest(),
 		);
 
+		if ($this->responseFormat == 'atom') {
+			$globals += array(
+				'updated' => new \DateTime,
+			);
+		}
 		if ($controller === null) {
 			$controller = $this->getName();
 		}
@@ -164,15 +169,19 @@ abstract class Controller extends SymfonyController
 	}
 
 
+	private $user;
 	public function getUser()
 	{
 		// TODO remove
-		if ( ! isset($this->_user)) {
-			$this->_user = User::initUser($this->getRepository('User'));
+		if ( ! isset($this->user)) {
+			$this->user = User::initUser($this->getRepository('User'));
+			if ($this->user->isAuthenticated()) {
+				$token = new \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken($this->user, $this->user->getPassword(), 'User', $this->user->getRoles());
+				$this->get('security.context')->setToken($token);
+			}
 		}
-		return $this->_user;
-
-		return $this->get('security.context')->getUser();
+		return $this->user;
+		//return $this->get('security.context')->getToken()->getUser();
 	}
 
 	public function setUser($user)
@@ -254,5 +263,24 @@ abstract class Controller extends SymfonyController
 
 		return false; // main site
 	}
+
+	/** @return PersonRepository */
+	protected function getPersonRepository() { return $this->getRepository('Person'); }
+	/** @return TextRepository */
+	protected function getTextRepository() { return $this->getRepository('Text'); }
+	/** @return SeriesRepository */
+	protected function getSeriesRepository() { return $this->getRepository('Series'); }
+	/** @return LabelRepository */
+	protected function getLabelRepository() { return $this->getRepository('Label'); }
+	/** @return BookRepository */
+	protected function getBookRepository() { return $this->getRepository('Book'); }
+	/** @return SequenceRepository */
+	protected function getSequenceRepository() { return $this->getRepository('Sequence'); }
+	/** @return CategoryRepository */
+	protected function getCategoryRepository() { return $this->getRepository('Category'); }
+	/** @return TextCommentRepository */
+	protected function getTextCommentRepository() { return $this->getRepository('TextComment'); }
+	/** @return UserRepository */
+	protected function getUserRepository() { return $this->getRepository('User'); }
 
 }

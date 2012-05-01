@@ -14,15 +14,21 @@ class AppKernel extends Kernel
 			new Symfony\Bundle\MonologBundle\MonologBundle(),
 			new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
 			new Symfony\Bundle\DoctrineBundle\DoctrineBundle(),
-			//new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+			new Symfony\Bundle\AsseticBundle\AsseticBundle(),
 			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 			//new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
 			//new FOS\UserBundle\FOSUserBundle(),
-			new Sonata\jQueryBundle\SonatajQueryBundle(),
 			new Sonata\AdminBundle\SonataAdminBundle(),
+			new Sonata\BlockBundle\SonataBlockBundle(),
+			new Sonata\CacheBundle\SonataCacheBundle(),
+			new Sonata\jQueryBundle\SonatajQueryBundle(),
 			new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
 			new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+
+			new JMS\SerializerBundle\JMSSerializerBundle($this),
+			new FOS\RestBundle\FOSRestBundle(),
+			new FOS\CommentBundle\FOSCommentBundle(),
 
 			new Chitanka\LibBundle\LibBundle(),
 		);

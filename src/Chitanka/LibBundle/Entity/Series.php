@@ -39,7 +39,7 @@ class Series
 	*/
 	private $orig_name;
 
-	/**
+	/** FIXME doctrine:schema:create does not allow this relation
 	* @var array
 	* @ORM\ManyToMany(targetEntity="Person", inversedBy="series")
 	* @ORM\JoinTable(name="series_author",

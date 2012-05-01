@@ -1,0 +1,26 @@
+fos_comment_comment_new_headline_first:       Добавяне на коментар
+fos_comment_comment_new_headline:             Добавяне на коментар
+fos_comment_comment_new_submit:               Пращане
+
+fos_comment_comment_reply_reply_to:           Отговор на %name%
+fos_comment_comment_reply_cancel:             Отказ
+
+fos_comment_comment_show_by:                  От
+fos_comment_comment_show_voteup:              Нагоре
+fos_comment_comment_show_votedown:            Надолу
+fos_comment_comment_show_reply:               Отговор
+
+fos_comment_comment_vote_score:               "Резултат: "
+
+fos_comment_comment_tree_load_more:           Зареждане на още отговори
+
+Showing %num% comment|Showing %num% comments: Показване на един коментар|Показване на %num% коментара
+
+fos_comment_rss_feed:                         Емисия на RSS
+
+fos_comment_thread_close:                     Затваряне на темата
+fos_comment_thread_open:                      Отваряне на темата
+fos_comment_thread_comment_count:             Един коментар|%count% коментара
+fos_comment_comment_delete:                   Изтриване на коментара
+fos_comment_comment_undelete:                 Възвръщане на коментара
+fos_comment_comment_deleted:                  "[изтрит]"
