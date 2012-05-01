@@ -2,6 +2,7 @@
 namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManager;
 use FOS\CommentBundle\Entity\Comment as BaseComment;
 use FOS\CommentBundle\Model\SignedCommentInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -53,5 +54,20 @@ class Comment extends BaseComment implements SignedCommentInterface
 		}
 
 		return $this->getAuthor()->getUsername();
+	}
+
+	public function isForWorkEntry()
+	{
+		return $this->getThread()->isForWorkEntry();
+	}
+
+	public function getTarget(EntityManager $em)
+	{
+		return $this->getThread()->getTarget($em);
+	}
+
+	public function hasParent()
+	{
+		return $this->getDepth() > 0;
 	}
 }

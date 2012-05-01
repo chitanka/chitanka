@@ -146,6 +146,11 @@ class User /*extends BaseUser*/ implements UserInterface
 	public function setRealname($realname) { $this->realname = $realname; }
 	public function getRealname() { return $this->realname; }
 
+	public function getName()
+	{
+		return $this->getRealname() ?: $this->getUsername();
+	}
+
 	public function setPassword($password, $plain = true)
 	{
 		$this->password = $plain ? $this->encodePasswordDB($password) : $password;

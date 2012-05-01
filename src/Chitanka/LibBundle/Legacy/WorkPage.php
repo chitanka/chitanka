@@ -740,7 +740,7 @@ EOS;
 <div id="fos_comment_thread"></div>
 
 <script type="text/javascript">
-var fos_comment_thread_id = 'work_entry_$entry';
+var fos_comment_thread_id = 'WorkEntry:$entry';
 
 // api base url to use for initial requests
 var fos_comment_thread_api_base_url = '/api/threads';

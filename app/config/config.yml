@@ -40,6 +40,12 @@ services:
 #         tags:
 #             - { name: kernel.listener, event: core.security, method: run }
 
+    comment.listener:
+        class: Chitanka\LibBundle\Listener\CommentListener
+        arguments: ['@mailer', '@doctrine.orm.entity_manager']
+        tags:
+            - { name: kernel.event_listener, event: fos_comment.comment.post_persist, method: onPostPersist }
+
     doctrine.listener:
         class: Chitanka\LibBundle\Listener\DoctrineListener
         tags:
