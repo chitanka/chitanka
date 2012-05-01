@@ -23,24 +23,17 @@ security:
             pattern:  ^/login$
             security: false
 
-#        secured_area:
+#        backend:
 #            pattern:    ^/admin/
 #            form_login:
-#                check_path: /login_check
-#                login_path: /login
+#                check_path: /admin/login_check
+#                login_path: /admin/login
 #            logout:
 #                path:   /logout
 #                target: /
             #anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"
-
-        backend:
-            pattern:    /admin/.*
-            form_login:
-                check_path: /admin/login_check
-                login_path: /admin/login
-            logout:     true
         public:
             pattern:     /.*
             form_login:  true
