@@ -109,6 +109,11 @@
                 'form.fos_comment_comment_new_form',
                 function(e) {
                     var that = $(this);
+                    if (that.is(".loading")) {
+                        e.preventDefault();
+                        return;
+                    }
+                    that.addClass("loading");
 
                     FOS_COMMENT.post(
                         this.action,
@@ -116,12 +121,14 @@
                         // success
                         function(data, statusCode) {
                             FOS_COMMENT.appendComment(data, that);
+                            that.removeClass("loading");
                         },
                         // error
                         function(data, statusCode) {
                             var parent = that.parent();
                             parent.after(data);
                             parent.remove();
+                            that.removeClass("loading");
                         }
                     );
 
