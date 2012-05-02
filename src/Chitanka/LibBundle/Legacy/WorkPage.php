@@ -411,9 +411,10 @@ EOS;
 <thead>
 	<tr>
 		<th>Дата</th>
-		<th></th>
-		<th></th>
-		<th></th>
+		<th title="Тип на записа"></th>
+		<th title="Информация"></th>
+		<th title="Коментари към записа"></th>
+		<th title="Файл"></th>
 		<th style="width: 25%">Заглавие</th>
 		<th>Автор</th>
 		<th>Етап на работата</th>
@@ -433,10 +434,11 @@ EOS;
 		$limit = 0, $offset = 0, $order = null, $where = array() )
 	{
 		$qa = array(
-			'SELECT' => 'w.*, DATE(date) ddate, u.username, u.email, u.allowemail',
+			'SELECT' => 'w.*, DATE(date) ddate, u.username, u.email, u.allowemail, num_comments',
 			'FROM' => self::DB_TABLE. ' w',
 			'LEFT JOIN' => array(
 				DBT_USER .' u' => 'w.user_id = u.id',
+				'thread ct' => 'w.comment_thread_id = ct.id',
 			),
 			'WHERE' => $this->makeSqlWhere('w', $where),
 			'ORDER BY' => 'date DESC, w.id DESC',
@@ -496,9 +498,9 @@ EOS;
 		} else if ( ! empty($uplfile) ) {
 			$file = $this->makeFileLink($uplfile);
 		}
-		$title = sprintf('<a href="%s" title="Към страницата за редактиране">%s</a>',
-			$this->controller->generateUrl('workroom_entry_edit', array('id' => $id)),
-			$title);
+		$entryLink = $this->controller->generateUrl('workroom_entry_edit', array('id' => $id));
+		$commentsLink = $num_comments ? sprintf('<a href="%s#fos_comment_thread" title="Коментари" class="comments">%s</a>', $entryLink, $num_comments) : '';
+		$title = sprintf('<a href="%s" title="Към страницата за редактиране">%s</a>', $entryLink, $title);
 		$this->rowclass = $this->out->nextRowClass($this->rowclass);
 		$st = $progress > 0
 			? $this->makeProgressBar($progress)
@@ -547,6 +549,7 @@ EOS;
 		<td class="date" title="$date">$ddate</td>
 		<td>$umarker</td>
 		<td>$info</td>
+		<td>$commentsLink</td>
 		<td>$file</td>
 		<td>$title</td>
 		<td>$author</td>

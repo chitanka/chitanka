@@ -870,6 +870,9 @@ span.frozen {
 .idea {
 	background-position: 0 -1052px;
 }
+.comments:after {
+	content: url(images/actions/034-comments.png);
+}
 
 /* Типове текстове */
 .title,
