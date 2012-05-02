@@ -104,6 +104,11 @@ class WorkEntry
 	*/
 	private $contribs;
 
+	/**
+	 * @ORM\OneToOne(targetEntity="Thread", inversedBy="workEntry")
+	 */
+	private $comment_thread;
+
 
 	public function getId() { return $this->id; }
 
@@ -142,6 +147,13 @@ class WorkEntry
 
 	public function setUplfile($uplfile) { $this->uplfile = $uplfile; }
 	public function getUplfile() { return $this->uplfile; }
+
+	public function setCommentThread(Thread $thread)
+	{
+		$this->comment_thread = $thread;
+		return $this;
+	}
+	public function getCommentThread() { return $this->comment_thread; }
 
 	public function getDeletedAt() { return $this->deleted_at; }
 	public function setDeletedAt($deleted_at) { $this->deleted_at = $deleted_at; }

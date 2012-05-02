@@ -736,6 +736,7 @@ EOS;
 		if (empty($entry)) {
 			return '';
 		}
+		$threadUrl = $this->controller->generateUrl('fos_comment_post_threads');
 		return <<<JS
 <div id="fos_comment_thread"></div>
 
@@ -743,7 +744,7 @@ EOS;
 var fos_comment_thread_id = 'WorkEntry:$entry';
 
 // api base url to use for initial requests
-var fos_comment_thread_api_base_url = '/api/threads';
+var fos_comment_thread_api_base_url = '$threadUrl';
 
 // Snippet for asynchronously loading the comments
 (function() {

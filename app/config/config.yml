@@ -44,7 +44,8 @@ services:
         class: Chitanka\LibBundle\Listener\CommentListener
         arguments: ['@mailer', '@doctrine.orm.entity_manager']
         tags:
-            - { name: kernel.event_listener, event: fos_comment.comment.post_persist, method: onPostPersist }
+            - { name: kernel.event_listener, event: fos_comment.comment.post_persist, method: onCommentPostPersist }
+            - { name: kernel.event_listener, event: fos_comment.thread.post_persist, method: onThreadPostPersist }
 
     doctrine.listener:
         class: Chitanka\LibBundle\Listener\DoctrineListener

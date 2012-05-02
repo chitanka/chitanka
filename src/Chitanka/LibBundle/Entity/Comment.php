@@ -61,9 +61,9 @@ class Comment extends BaseComment implements SignedCommentInterface
 		return $this->getThread()->isForWorkEntry();
 	}
 
-	public function getTarget(EntityManager $em)
+	public function getWorkEntry()
 	{
-		return $this->getThread()->getTarget($em);
+		return $this->getThread()->getWorkEntry();
 	}
 
 	public function hasParent()

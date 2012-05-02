@@ -20,6 +20,14 @@ class Thread extends BaseThread
 	 */
 	protected $id;
 
+	/**
+	 * @ORM\OneToOne(targetEntity="WorkEntry", mappedBy="comment_thread")
+	 */
+	private $workEntry;
+//	private $person;
+//	private $book;
+//	private $text;
+
 	public function isForWorkEntry()
 	{
 		return strpos($this->id, 'WorkEntry:') === 0;
@@ -31,4 +39,7 @@ class Thread extends BaseThread
 		$repo = $em->getRepository("LibBundle:$entity");
 		return $repo ? $repo->find($id) : null;
 	}
+
+	/** @return WorkEntry */
+	public function getWorkEntry() { return $this->workEntry; }
 }
