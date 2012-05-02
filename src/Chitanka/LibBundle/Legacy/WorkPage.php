@@ -737,6 +737,7 @@ EOS;
 			return '';
 		}
 		$threadUrl = $this->controller->generateUrl('fos_comment_post_threads');
+		$commentJs = $this->container->getParameter('assets_base_urls') . '/js/comments_1.js';
 		return <<<JS
 <div id="fos_comment_thread"></div>
 
@@ -750,7 +751,7 @@ var fos_comment_thread_api_base_url = '$threadUrl';
 (function() {
     var fos_comment_script = document.createElement('script');
     fos_comment_script.async = true;
-    fos_comment_script.src = '/js/comments_1.js';
+    fos_comment_script.src = '$commentJs';
     fos_comment_script.type = 'text/javascript';
 
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(fos_comment_script);
