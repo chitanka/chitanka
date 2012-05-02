@@ -42,4 +42,9 @@ class Thread extends BaseThread
 
 	/** @return WorkEntry */
 	public function getWorkEntry() { return $this->workEntry; }
+
+	public function getPermalink()
+	{
+		return rawurldecode(parent::getPermalink());
+	}
 }

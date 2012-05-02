@@ -33,7 +33,7 @@ class Notifier {
 		$commentBody = $comment->getBody();
 		$authorName = $comment->getAuthorName();
 		$title = $workEntry->getTitle();
-		$link = 'http://chitanka.info/workroom/entry/'.$workEntry->getId().'#fos_comment_'.$comment->getId();
+		$link = $comment->getThread()->getPermalink().'#fos_comment_'.$comment->getId();
 		return <<<BODY
 Здравейте!
 
