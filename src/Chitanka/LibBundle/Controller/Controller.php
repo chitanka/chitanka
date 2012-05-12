@@ -166,7 +166,7 @@ abstract class Controller extends SymfonyController
 	}
 
 
-	protected function getRepository($entityName = null)
+	public function getRepository($entityName = null)
 	{
 		return $this->getEntityManager()->getRepository($this->getEntityName($entityName));
 	}
