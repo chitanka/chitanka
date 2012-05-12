@@ -692,7 +692,7 @@ EOS;
 		$workType = $this->out->hiddenField('workType', $this->workType);
 		$bypass = $this->out->hiddenField('bypass', $this->bypassExisting);
 		$action = $this->controller->generateUrl('workroom');
-		$comments = $this->createCommentsJavascript($this->entry);
+		$this->addJs($this->createCommentsJavascript($this->entry));
 
 		return <<<EOS
 
@@ -726,7 +726,7 @@ $extra
 </div>
 </div>
 
-$comments
+<div id="fos_comment_thread"></div>
 
 <div id="helpBottom">
 $helpBot
@@ -742,9 +742,6 @@ EOS;
 		$threadUrl = $this->controller->generateUrl('fos_comment_post_threads');
 		$commentJs = $this->container->getParameter('assets_base_urls') . '/js/comments_1.js';
 		return <<<JS
-<div id="fos_comment_thread"></div>
-
-<script type="text/javascript">
 var fos_comment_thread_id = 'WorkEntry:$entry';
 
 // api base url to use for initial requests
@@ -759,7 +756,6 @@ var fos_comment_thread_api_base_url = '$threadUrl';
 
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(fos_comment_script);
 })();
-</script>
 JS;
 	}
 
