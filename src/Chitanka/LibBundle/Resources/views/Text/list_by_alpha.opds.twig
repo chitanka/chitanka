@@ -1,0 +1,14 @@
+{% extends 'LibBundle::layout.opds.twig' %}
+{% import 'LibBundle::helper.opds.twig' as helper %}
+
+{% set title = 'Произведения' %}
+{% if letter != '-' %}
+	{% set subtitle = letter %}
+{% endif %}
+{% set link_self = helper.url(current_route, {'letter': letter}) %}
+{% block content %}
+
+	{% include 'LibBundle:Text:list.opds.twig' %}
+	{% include 'LibBundle::pager.opds.twig' %}
+
+{% endblock %}

@@ -27,29 +27,29 @@ class SeriesControllerTest extends WebTestCase
 		$this->assertHtmlPageIs($page, 'series_show');
 	}
 
-	public function testIndexAtom()
+	public function testIndexOpds()
 	{
-		$page = $this->request("series.atom");
+		$page = $this->request("series.opds");
 
-		$this->assertAtomPageIs($page, 'series');
+		$this->assertOpdsPageIs($page, 'series');
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 
-	public function testListByAlphaByLetterAAtom()
+	public function testListByAlphaByLetterAOpds()
 	{
-		$route = "series/alpha/".urlencode('А').".atom";
+		$route = "series/alpha/".urlencode('А').".opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 	}
 
-	public function testShowAtom()
+	public function testShowOpds()
 	{
 		$series = 'hronikite-na-ambyr';
-		$route = "serie/$series.atom";
+		$route = "serie/$series.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 	}
 
 }

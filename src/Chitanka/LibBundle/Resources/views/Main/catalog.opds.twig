@@ -1,0 +1,15 @@
+{% extends 'LibBundle::layout.opds.twig' %}
+{% import 'LibBundle::helper.opds.twig' as helper %}
+
+{% set link_self = helper.url('catalog') %}
+{% block content %}
+	<link type="application/atom+xml; profile=opds-catalog; kind=acquisition" rel="http://opds-spec.org/sort/new" title="Нови книги" href="{{ helper.url('new_books') }}"/>
+	<link type="application/atom+xml; profile=opds-catalog; kind=acquisition" rel="http://opds-spec.org/sort/new" title="Нови творби" href="{{ helper.url('new_texts') }}"/>
+
+	{{ helper.navi_entry('Автори', updated_at, 'authors', {}, 'Азбучен списък на авторите — по малко име или по фамилия') }}
+	{{ helper.navi_entry('Преводачи', updated_at, 'translators', {}, 'Азбучен списък на преводачите — по малко име или по фамилия') }}
+	{{ helper.navi_entry('Книги', books_updated_at, 'books', {}, 'Списък на книгите — по категория или по азбучен ред') }}
+	{{ helper.navi_entry('Творби', texts_updated_at, 'texts', {}, 'Списък на творбите — по етикет, по форма или по азбучен ред') }}
+	{{ helper.navi_entry('Поредици', texts_updated_at, 'series', {}, 'Азбучен списък на авторските поредици') }}
+	{{ helper.navi_entry('Издателски поредици', books_updated_at, 'sequences', {}, 'Азбучен списък на издателските поредици') }}
+{% endblock %}

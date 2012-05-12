@@ -1,0 +1,4 @@
+{% import 'LibBundle::helper.opds.twig' as helper %}
+{% for book in books %}
+	{{ helper.book_entry(book) }}
+{% endfor %}

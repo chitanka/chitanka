@@ -1,0 +1,11 @@
+{% extends 'LibBundle::layout.opds.twig' %}
+{% import 'LibBundle::helper.opds.twig' as helper %}
+
+{% set link_self = helper.url(current_route, {'slug': series.slug}) %}
+{% set title = series.name %}
+{% set subtitle = 'поредица' %}
+{% block content %}
+	{% for text in texts %}
+		{{ helper.text_entry(text) }}
+	{% endfor %}
+{% endblock %}

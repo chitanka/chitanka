@@ -26,28 +26,28 @@ class SequenceControllerTest extends WebTestCase
 		$this->assertHtmlPageIs($page, 'sequence_show');
 	}
 
-	public function testIndexAtom()
+	public function testIndexOpds()
 	{
-		$page = $this->request("sequences.atom");
+		$page = $this->request("sequences.opds");
 
-		$this->assertAtomPageIs($page, 'sequences');
+		$this->assertOpdsPageIs($page, 'sequences');
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 
-	public function testListByAlphaByLetterAAtom()
+	public function testListByAlphaByLetterAOpds()
 	{
-		$route = "sequences/alpha/".urlencode('А').".atom";
+		$route = "sequences/alpha/".urlencode('А').".opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 	}
 
-	public function testShowAtom()
+	public function testShowOpds()
 	{
 		$sequence = 'BARD-HA1';
-		$route = "sequence/$sequence.atom";
+		$route = "sequence/$sequence.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 	}
 }

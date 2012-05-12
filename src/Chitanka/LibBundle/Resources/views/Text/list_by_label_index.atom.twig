@@ -1,9 +1,0 @@
-{% extends 'LibBundle::layout.atom.twig' %}
-
-{% import 'LibBundle::helper.atom.twig' as helper %}
-{% set id = helper.urn('texts_by_label_index') %}
-{% set link_self = helper.url('texts_by_label_index') %}
-{% set title = 'Произведения по етикет' %}
-{% block content %}
-	{% include 'LibBundle:Text:label_list.atom.twig' %}
-{% endblock %}

@@ -11,11 +11,11 @@ abstract class WebTestCase extends BaseTestCase
 	 * @param string $route
 	 * @return Crawler
 	 */
-	public function request($route)
+	public function request($route, $parameters = array())
 	{
 		$client = static::createClient();
 
-		return $client->request('GET', "/$route");
+		return $client->request('GET', "/$route", $parameters);
 	}
 
 	public function assertHtmlPageIs(Crawler $page, $route)
@@ -24,9 +24,9 @@ abstract class WebTestCase extends BaseTestCase
 		$this->assertCount(1, $page->filter("body.$class"), "HTML page body should have the class '$class'.");
 	}
 
-	public function assertAtomPageIs(Crawler $page, $route)
+	public function assertOpdsPageIs(Crawler $page, $route)
 	{
-		$this->assertContains("/$route", $page->filter("feed > id")->text(), "Atom page body should have an id containing '/$route'.");
+		$this->assertContains("/$route", $page->filter("feed > id")->text(), "Opds page body should have an id containing '/$route'.");
 		$this->assertCount(1, $page->filter('feed'));
 	}
 

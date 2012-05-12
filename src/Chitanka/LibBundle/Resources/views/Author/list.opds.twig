@@ -1,0 +1,26 @@
+{% import 'LibBundle::helper.opds.twig' as helper %}
+
+{% macro description(person, by) %}
+	{% if person.orig_name is not empty %}
+		оригинално име: {{ person.orig_name ? person.orig_name|name_format(by)|striptags : '—' }};
+	{% endif %}
+	държава: {{ ('country.'~person.country)|trans }}
+{% endmacro %}
+
+{% for author in persons %}
+	{% if author.person is not empty %}
+		{{ helper.navi_entry(
+			author.name|name_format(by)|striptags ~ ' ('~ author.person.name|name_format(by)|striptags ~')',
+			updated_at,
+			'person_show',
+			{'slug': author.person.slug},
+			_self.description(author, by)) }}
+	{% else %}
+		{{ helper.navi_entry(
+			author.name|name_format(by)|striptags,
+			updated_at,
+			'person_show',
+			{'slug': author.slug},
+			_self.description(author, by)) }}
+	{% endif %}
+{% endfor %}

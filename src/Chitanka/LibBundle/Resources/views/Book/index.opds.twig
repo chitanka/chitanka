@@ -1,0 +1,20 @@
+{% extends 'LibBundle::layout.opds.twig' %}
+
+{% import 'LibBundle::helper.opds.twig' as helper %}
+{% set id = helper.urn('books') %}
+{% set link_self = helper.url('books') %}
+{% set title = 'Книги' %}
+{% block content %}
+	<entry>
+		<title>По азбучен ред</title>
+		<id>{{ helper.urn('books_by_alpha_index') }}</id>
+		{{ helper.link(helper.url('books_by_alpha_index')) }}
+		<content type="text">Списък на книгите по азбучен ред</content>
+	</entry>
+	<entry>
+		<title>По категория</title>
+		<id>{{ helper.urn('books_by_category_index') }}</id>
+		{{ helper.link(helper.url('books_by_category_index')) }}
+		<content type="text">Списък на книгите по етикет</content>
+	</entry>
+{% endblock %}

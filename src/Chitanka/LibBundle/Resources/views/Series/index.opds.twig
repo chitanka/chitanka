@@ -1,0 +1,10 @@
+{% extends 'LibBundle::layout.opds.twig' %}
+
+{% import 'LibBundle::helper.opds.twig' as helper %}
+{% set title = 'Поредици' %}
+{% set id = helper.urn('series') %}
+{% set link_self = helper.url('series') %}
+{% set link_up = helper.url('catalog') %}
+{% block content %}
+	{{ helper.letter_links('series_by_alpha') }}
+{% endblock %}

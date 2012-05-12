@@ -1,0 +1,9 @@
+{% extends 'LibBundle::layout.opds.twig' %}
+
+{% import 'LibBundle::helper.opds.twig' as helper %}
+{% set id = helper.urn('texts_by_label_index') %}
+{% set link_self = helper.url('texts_by_label_index') %}
+{% set title = 'Произведения по етикет' %}
+{% block content %}
+	{% include 'LibBundle:Text:label_list.opds.twig' %}
+{% endblock %}

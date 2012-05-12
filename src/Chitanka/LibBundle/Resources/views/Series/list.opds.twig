@@ -1,0 +1,19 @@
+{% import 'LibBundle::text.html.twig' as text_lister %}
+{% import 'LibBundle::helper.opds.twig' as helper %}
+{% for serie in series %}
+	<entry>
+		<title>{{ serie.name }}</title>
+		<id>{{ helper.urn('series_show', [serie.slug]) }}</id>
+		{{ helper.link(helper.url('series_show', {'slug': serie.slug})) }}
+		<content type="html">
+			<dl>
+				{% if serie.orig_name is defined %}
+					<dt>Оригинално име</dt>
+					<dd>{{ serie.orig_name }}</dd>
+				{% endif %}
+				<dt>Автор</dt>
+				<dd>{{ text_lister.author_list(serie.authors, ' ', 'opds') }}</dd>
+			</dl>
+		</content>
+	</entry>
+{% endfor %}

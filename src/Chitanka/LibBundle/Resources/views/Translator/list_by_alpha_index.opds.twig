@@ -1,0 +1,8 @@
+{% extends 'LibBundle::layout.opds.twig' %}
+{% import 'LibBundle::helper.opds.twig' as helper %}
+
+{% set link_self = helper.url('translators_by_alpha_index', {'by': by}) %}
+{% set title = ('translators.by.'~by)|trans %}
+{% block content %}
+	{{ helper.letter_links('translators_by_alpha', {'by': by}) }}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'LibBundle::layout.opds.twig' %}
+{% import 'LibBundle::helper.opds.twig' as helper %}
+
+{% set link_self = helper.url('authors_by_alpha', {'by': by, 'letter': letter}) %}
+{% set title = ('authors.by.'~by)|trans ~': '~ (letter == '-' ? 'Всички' : letter) %}
+{% block content %}
+
+	{% include 'LibBundle:Author:list.opds.twig' %}
+	{% include 'LibBundle::pager.opds.twig' %}
+
+{% endblock %}

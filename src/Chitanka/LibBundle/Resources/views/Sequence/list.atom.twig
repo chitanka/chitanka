@@ -1,9 +1,0 @@
-{% import 'LibBundle::helper.atom.twig' as helper %}
-
-{% macro description(sequence) %}
-	Издател: {{ sequence.publisher }}
-{% endmacro %}
-
-{% for sequence in sequences %}
-	{{ helper.navi_entry(sequence.name, updated_at, 'sequence_show', {'slug': sequence.slug}, _self.description(sequence)) }}
-{% endfor %}

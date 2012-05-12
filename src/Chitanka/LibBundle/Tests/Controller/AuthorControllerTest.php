@@ -35,44 +35,44 @@ class AuthorControllerTest extends PersonControllerTest
 		$this->assertHtmlPageIs($page, $this->routeBase.'_by_country');
 	}
 
-	public function testIndexByCountryByFirstNameAtom()
+	public function testIndexByCountryByFirstNameOpds()
 	{
-		$this->doTestIndexByCountryAtom('first-name');
+		$this->doTestIndexByCountryOpds('first-name');
 	}
-	public function testIndexByCountryByLastNameAtom()
+	public function testIndexByCountryByLastNameOpds()
 	{
-		$this->doTestIndexByCountryAtom('last-name');
+		$this->doTestIndexByCountryOpds('last-name');
 	}
-	private function doTestIndexByCountryAtom($by)
+	private function doTestIndexByCountryOpds($by)
 	{
-		$route = "$this->routeBase/country/$by.atom";
+		$route = "$this->routeBase/country/$by.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 	}
 
-	public function testListByCountryByFirstNameAtom()
+	public function testListByCountryByFirstNameOpds()
 	{
-		$this->doTestListByCountryAtom('first-name');
+		$this->doTestListByCountryOpds('first-name');
 	}
-	public function testListByCountryByLastNameAtom()
+	public function testListByCountryByLastNameOpds()
 	{
-		$this->doTestListByCountryAtom('last-name');
+		$this->doTestListByCountryOpds('last-name');
 	}
-	private function doTestListByCountryAtom($by)
+	private function doTestListByCountryOpds($by)
 	{
-		$route = "$this->routeBase/country/bg/$by.atom";
+		$route = "$this->routeBase/country/bg/$by.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 	}
 
-	public function testShowAtom()
+	public function testShowOpds()
 	{
-		$route = "person/roger-zelazny.atom";
+		$route = "person/roger-zelazny.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 

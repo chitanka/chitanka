@@ -1,0 +1,8 @@
+{% extends 'LibBundle::layout.opds.twig' %}
+{% import 'LibBundle::helper.opds.twig' as helper %}
+
+{% set link_self = helper.url('sequences') %}
+{% set title = 'Издателски поредици' %}
+{% block content %}
+	{{ helper.letter_links('sequences_by_alpha') }}
+{% endblock %}

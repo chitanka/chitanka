@@ -1,9 +1,0 @@
-{% extends 'LibBundle::layout.atom.twig' %}
-{% import 'LibBundle::helper.atom.twig' as helper %}
-
-{% set link_self = helper.url(current_route, {'letter': letter}) %}
-{% set title = 'Книги — ' ~ (letter == '-' ? 'Всички' : letter) %}
-{% block content %}
-	{% include 'LibBundle:Book:list.atom.twig' %}
-	{% include 'LibBundle::pager.atom.twig' %}
-{% endblock %}

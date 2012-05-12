@@ -1,9 +1,0 @@
-{% extends 'LibBundle::layout.atom.twig' %}
-{% import 'LibBundle::helper.atom.twig' as helper %}
-
-{% set link_self = helper.url('translators') %}
-{% set title = 'Преводачи' %}
-{% block content %}
-	{{ helper.navi_entry('По малко име', updated_at, 'translators_by_alpha_index', {'by': 'first-name'}, 'Списък на преводачите по малко име') }}
-	{{ helper.navi_entry('По фамилия', updated_at, 'translators_by_alpha_index', {'by': 'last-name'}, 'Списък на преводачите по фамилия') }}
-{% endblock %}

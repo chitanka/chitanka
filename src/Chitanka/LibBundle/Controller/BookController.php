@@ -30,7 +30,7 @@ class BookController extends Controller
 			case 'html':
 				$categories = $this->getCategoryRepository()->getAllAsTree();
 				break;
-			case 'atom':
+			case 'opds':
 				$categories = $this->getCategoryRepository()->getAll();
 				break;
 		}
@@ -125,7 +125,7 @@ class BookController extends Controller
 				return $this->displayText($book->getContentAsSfb(), array('Content-Type' => 'text/plain'));
 			case 'clue':
 				return $this->displayText($book->getAnnotationAsXhtml());
-			case 'atom':
+			case 'opds':
 				break;
 			case 'html':
 			default:

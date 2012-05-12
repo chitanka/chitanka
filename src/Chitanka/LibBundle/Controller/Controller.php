@@ -79,7 +79,7 @@ abstract class Controller extends SymfonyController
 			'ajax' => $request->isXmlHttpRequest(),
 		);
 
-		if ($this->responseFormat == 'atom') {
+		if ($this->responseFormat == 'opds') {
 			$textsUpdatedAt = $this->getTextRevisionRepository()->getMaxDate();
 			$booksUpdatedAt = $this->getBookRevisionRepository()->getMaxDate();
 			$globals += array(

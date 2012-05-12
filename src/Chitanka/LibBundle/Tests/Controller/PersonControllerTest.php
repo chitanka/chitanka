@@ -28,49 +28,49 @@ class PersonControllerTest extends WebTestCase
 		$this->assertHtmlPageIs($page, $this->routeBase.'_by_alpha');
 	}
 
-	public function testIndexAtom()
+	public function testIndexOpds()
 	{
-		$page = $this->request("$this->routeBase.atom");
+		$page = $this->request("$this->routeBase.opds");
 
-		$this->assertAtomPageIs($page, $this->routeBase);
+		$this->assertOpdsPageIs($page, $this->routeBase);
 		$this->assertCountGe(2, $page->filter('entry'));
 	}
 
-	public function testIndexByFirstNameAtom()
+	public function testIndexByFirstNameOpds()
 	{
-		$this->doTestIndexByAlphaAtom('first-name');
+		$this->doTestIndexByAlphaOpds('first-name');
 	}
 
-	public function testIndexByLastNameAtom()
+	public function testIndexByLastNameOpds()
 	{
-		$this->doTestIndexByAlphaAtom('last-name');
+		$this->doTestIndexByAlphaOpds('last-name');
 	}
 
-	public function doTestIndexByAlphaAtom($by)
+	public function doTestIndexByAlphaOpds($by)
 	{
-		$route = "$this->routeBase/$by.atom";
+		$route = "$this->routeBase/$by.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 		$this->assertCountGe(30, $page->filter('entry'));
 	}
 
-	public function testListByAlphaByFirstNameByLetterAAtom()
+	public function testListByAlphaByFirstNameByLetterAOpds()
 	{
-		$this->doTestListByAlphaByLetterAtom('first-name', urlencode('А'));
+		$this->doTestListByAlphaByLetterOpds('first-name', urlencode('А'));
 	}
 
-	public function testListByAlphaByLastNameByLetterAAtom()
+	public function testListByAlphaByLastNameByLetterAOpds()
 	{
-		$this->doTestListByAlphaByLetterAtom('last-name', urlencode('А'));
+		$this->doTestListByAlphaByLetterOpds('last-name', urlencode('А'));
 	}
 
-	public function doTestListByAlphaByLetterAtom($by, $letter)
+	public function doTestListByAlphaByLetterOpds($by, $letter)
 	{
-		$route = "$this->routeBase/$by/$letter.atom";
+		$route = "$this->routeBase/$by/$letter.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 	}
 
 }

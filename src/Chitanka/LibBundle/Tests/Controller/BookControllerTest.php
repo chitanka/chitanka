@@ -18,48 +18,48 @@ class BookControllerTest extends WebTestCase
 		$this->assertHtmlPageIs($page, 'books_by_alpha');
 	}
 
-	public function testIndexAtom()
+	public function testIndexOpds()
 	{
-		$route = "books.atom";
+		$route = "books.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 		$this->assertCountGe(2, $page->filter('entry'));
 	}
 
-	public function testIndexByAlphaAtom()
+	public function testIndexByAlphaOpds()
 	{
-		$route = "books/alpha.atom";
+		$route = "books/alpha.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 		$this->assertCountGe(30, $page->filter('entry'));
 	}
 
-	public function testIndexByCategoryAtom()
+	public function testIndexByCategoryOpds()
 	{
-		$route = "books/category.atom";
+		$route = "books/category.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 
-	public function testListByAlphaLetterAAtom()
+	public function testListByAlphaLetterAOpds()
 	{
-		$route = "books/alpha/".urlencode('А').".atom";
+		$route = "books/alpha/".urlencode('А').".opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 
-	public function testListByCategoryFantastikaAtom()
+	public function testListByCategoryFantastikaOpds()
 	{
-		$route = "books/category/fantastika.atom";
+		$route = "books/category/fantastika.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 

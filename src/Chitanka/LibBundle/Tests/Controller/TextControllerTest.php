@@ -11,66 +11,66 @@ class TextControllerTest extends WebTestCase
 		$this->assertCount(1, $page->filter('h1'));
 	}
 
-	public function testIndexAtom()
+	public function testIndexOpds()
 	{
-		$route = "texts.atom";
+		$route = "texts.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 		$this->assertCountGe(3, $page->filter('entry'));
 	}
 
-	public function testIndexByAlphaAtom()
+	public function testIndexByAlphaOpds()
 	{
-		$route = "texts/alpha.atom";
+		$route = "texts/alpha.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 		$this->assertCountGe(30, $page->filter('entry'));
 	}
 
-	public function testIndexByLabelAtom()
+	public function testIndexByLabelOpds()
 	{
-		$route = "texts/label.atom";
+		$route = "texts/label.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 
-	public function testIndexByTypeAtom()
+	public function testIndexByTypeOpds()
 	{
-		$route = "texts/type.atom";
+		$route = "texts/type.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 
-	public function testListByAlphaByLetterAAtom()
+	public function testListByAlphaByLetterAOpds()
 	{
-		$route = "texts/alpha/".urlencode('А').".atom";
+		$route = "texts/alpha/".urlencode('А').".opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 
-	public function testListByLabelByAuthorAtom()
+	public function testListByLabelByAuthorOpds()
 	{
-		$route = "texts/label/by-author.atom";
+		$route = "texts/label/by-author.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 
-	public function testListByTypeByNovelAtom()
+	public function testListByTypeByNovelOpds()
 	{
-		$route = "texts/type/novel.atom";
+		$route = "texts/type/novel.opds";
 		$page = $this->request($route);
 
-		$this->assertAtomPageIs($page, $route);
+		$this->assertOpdsPageIs($page, $route);
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 

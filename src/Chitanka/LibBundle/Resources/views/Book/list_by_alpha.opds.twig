@@ -1,0 +1,9 @@
+{% extends 'LibBundle::layout.opds.twig' %}
+{% import 'LibBundle::helper.opds.twig' as helper %}
+
+{% set link_self = helper.url(current_route, {'letter': letter}) %}
+{% set title = 'Книги — ' ~ (letter == '-' ? 'Всички' : letter) %}
+{% block content %}
+	{% include 'LibBundle:Book:list.opds.twig' %}
+	{% include 'LibBundle::pager.opds.twig' %}
+{% endblock %}
