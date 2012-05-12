@@ -48,24 +48,15 @@ class AppKernel extends Kernel
 	}
 
 	/**
-	 * Returns the config_{environment}_local.yml file or
-	 * the default config_{environment}.yml if it does not exist.
-	 * Useful to override development password.
-	 * Code from http://symfony2bundles.org
+	 * Returns the configuration file for the given environment and format: config_{environment}.{format}.
 	 *
-	 * @param string Environment
+	 * @param string $environment   Application environment
+	 * @param string $format        File format (default: yml)
 	 * @return The configuration file path
 	 */
 	protected function getConfigurationFile($environment, $format = 'yml')
 	{
-		$basePath = __DIR__.'/config/config_';
-//		$file = $basePath.$environment.'_local.'.$format;
-//
-//		if (file_exists($file)) {
-//			return $file;
-//		}
-
-		return $basePath.$environment.'.'.$format;
+		return __DIR__."/config/config_$environment.$format";
 	}
 
 	public function registerRootDir()

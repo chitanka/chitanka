@@ -297,5 +297,7 @@ abstract class Controller extends SymfonyController
 	protected function getBookRevisionRepository() { return $this->getRepository('BookRevision'); }
 	/** @return Chitanka\LibBundle\Entity\SearchStringRepository */
 	protected function getSearchStringRepository() { return $this->getRepository('SearchString'); }
+	/** @return Chitanka\LibBundle\Entity\WorkEntryRepository */
+	protected function getWorkEntryRepository() { return $this->getRepository('WorkEntry'); }
 
 }
