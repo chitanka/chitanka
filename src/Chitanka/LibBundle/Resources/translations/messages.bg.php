@@ -285,15 +285,20 @@ return array(
 		'декември'
 	),
 
+	'authors' => 'Автори',
 	'authors.by' => array(
-		'first' => 'Автори',
-		'last' => 'Автори по фамилия',
-		'country' => 'Автори по държава',
+		'first-name' => 'Автори',
+		'last-name' => 'Автори по фамилия',
+		'country' => array(
+			'first-name' => 'Автори по държава',
+			'last-name' => 'Автори по държава (по фамилия)',
+		),
 	),
 
+	'translators' => 'Преводачи',
 	'translators.by' => array(
-		'first' => 'Преводачи',
-		'last' => 'Преводачи по фамилия',
+		'first-name' => 'Преводачи',
+		'last-name' => 'Преводачи по фамилия',
 	),
 
 	'person.alt' => array(

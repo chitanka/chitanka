@@ -1,12 +1,19 @@
-{% extends 'LibBundle::layout.atom.twig' %}
-
+{% import 'LibBundle::text.html.twig' as text_lister %}
 {% import 'LibBundle::helper.atom.twig' as helper %}
-{% set self_route_params = pager.has_prev ? route_params|merge({'page': pager.page}) : route_params %}
-{% set id = helper.urn(current_route, self_route_params) %}
-{% set link_self = helper.url(current_route, self_route_params) %}
-{% set link_up = helper.url('series') %}
-{% set title = 'Поредици: ' ~ (letter == '-' ? 'Всички' : letter) %}
-{% block content %}
-	{% include 'LibBundle::pager.atom.twig' %}
-	{% include 'LibBundle:Series:series_list.atom.twig' %}
-{% endblock %}
+{% for serie in series %}
+	<entry>
+		<title>{{ serie.name }}</title>
+		<id>{{ helper.urn('series_show', [serie.slug]) }}</id>
+		{{ helper.link(helper.url('series_show', {'slug': serie.slug})) }}
+		<content type="html">
+			<dl>
+				{% if serie.orig_name is defined %}
+					<dt>Оригинално име</dt>
+					<dd>{{ serie.orig_name }}</dd>
+				{% endif %}
+				<dt>Автор</dt>
+				<dd>{{ text_lister.author_list(serie.authors, ' ', 'atom') }}</dd>
+			</dl>
+		</content>
+	</entry>
+{% endfor %}

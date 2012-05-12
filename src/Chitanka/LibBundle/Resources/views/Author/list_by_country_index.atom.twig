@@ -1,0 +1,12 @@
+{% extends 'LibBundle::layout.atom.twig' %}
+{% import 'LibBundle::helper.atom.twig' as helper %}
+
+{% set link_self = helper.url('authors_by_country_index', {'by': by}) %}
+{% set title = ('authors.by.country.'~by)|trans %}
+{% block content %}
+
+	{% for country in countries %}
+		{{ helper.navi_entry(('country.'~country)|trans, updated_at, 'authors_by_country', {'country': country, 'by': by}) }}
+	{% endfor %}
+
+{% endblock %}

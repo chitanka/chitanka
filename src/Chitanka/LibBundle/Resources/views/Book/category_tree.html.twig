@@ -1,6 +1,6 @@
 <ul>
 {% for category in categories %}
-	{% if level > 0 or category.parent_id is empty %}
+	{% if (category.children is defined or category.nr_of_books > 0) and (level > 0 or category.parent_id is empty) %}
 	<li>
 		<a href="{{ path('books_by_category', {'slug': category.slug}) }}" data-edit="{{ path('admin_category_edit', {'id': category.id}) }}">{{ category.name }}</a>
 		({{ category.nr_of_books }})
@@ -9,9 +9,9 @@
 			<a href="{{ path('admin_category_edit', {'id': category.id}) }}" title="Редактиране на категорията" class="edit"><span>редактиране</span></a>
 		{% endif %}
 		#}
-	{% if category.children is defined %}
-		{% include 'LibBundle:Book:category_tree.html.twig' with {'categories': category.children, 'level': level+1} %}
-	{% endif %}
+		{% if category.children is defined %}
+			{% include 'LibBundle:Book:category_tree.html.twig' with {'categories': category.children, 'level': level+1} %}
+		{% endif %}
 	</li>
 	{% endif %}
 {% endfor %}

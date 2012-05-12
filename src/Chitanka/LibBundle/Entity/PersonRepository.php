@@ -4,11 +4,95 @@ namespace Chitanka\LibBundle\Entity;
 
 class PersonRepository extends EntityRepository
 {
-	protected
-		$asAuthor = false,
-		$asTranslator = false,
-		$queryableFields = array('id', 'slug', 'name', 'orig_name', 'real_name', 'oreal_name');
+	protected $asAuthor = false;
+	protected $asTranslator = false;
+	protected $queryableFields = array('id', 'slug', 'name', 'orig_name', 'real_name', 'oreal_name');
 
+	private $countryList = array(
+		'-',
+		'au',
+		'at',
+		'al',
+		'ar',
+		'am',
+		'az',
+		'by',
+		'be',
+		'ba',
+		'br',
+		'bg',
+		'gb',
+		've',
+		'gt',
+		'de',
+		'gr',
+		'dk',
+		'aro',
+		'agr',
+		'zm',
+		'et',
+		'il',
+		'in',
+		'ir',
+		'ie',
+		'es',
+		'it',
+		'kz',
+		'ca',
+		'kg',
+		'cn',
+		'co',
+		'cu',
+		'lb',
+		'lt',
+		'lu',
+		'mx',
+		'md',
+		'ni',
+		'nz',
+		'no',
+		'pa',
+		'pe',
+		'pl',
+		'pt',
+		'ro',
+		'ru',
+		'us',
+		'sk',
+		'si',
+		'rs',
+		'tr',
+		'ua',
+		'hu',
+		'uy',
+		'fr',
+		'fi',
+		'nl',
+		'hr',
+		'cz',
+		'cl',
+		'ch',
+		'se',
+		'yu',
+		'za',
+		'jp',
+	);
+
+	private $typeList = array(
+		'p' => 'Псевдоним',
+		'r' => 'Истинско име',
+		'a' => 'Алтернативно изписване',
+	);
+
+	public function getCountryList()
+	{
+		return $this->countryList;
+	}
+
+	public function getTypeList()
+	{
+		return $this->typeList;
+	}
 
 	public function findBySlug($slug)
 	{
@@ -125,7 +209,7 @@ class PersonRepository extends EntityRepository
 
 	public function addFilters($qb, $filters)
 	{
-		$nameField = empty($filters['by']) || $filters['by'] == 'first' ? 'e.name' : 'e.last_name';
+		$nameField = empty($filters['by']) || $filters['by'] == 'first-name' ? 'e.name' : 'e.last_name';
 		$qb->addOrderBy($nameField);
 		if ( ! empty($filters['prefix']) && $filters['prefix'] != '-' ) {
 			$qb->andWhere("$nameField LIKE :name")->setParameter('name', $filters['prefix'].'%');

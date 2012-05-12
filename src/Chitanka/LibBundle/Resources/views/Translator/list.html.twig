@@ -1,0 +1,10 @@
+<ul class="superlist">
+{% for translator in persons %}
+	<li><dl>
+		<dt><a href="{{ path('person_show', {'slug': translator.slug}) }}">{{ translator.name|name_format(by)|raw }}</a></dt>
+		<dd class="country">{{ ('country.'~translator.country) | trans }}</dd>
+	</dl></li>
+{% else %}
+	<li class="no-items">Няма намерени преводачи.</li>
+{% endfor %}
+</ul>

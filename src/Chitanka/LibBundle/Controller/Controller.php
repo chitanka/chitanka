@@ -47,7 +47,7 @@ abstract class Controller extends SymfonyController
 			'menu' => $this->container->getParameter('menu'),
 			'_user' => $this->getUser(),
 			'navextra' => array(),
-			'current_route' => $this->get('request')->attributes->get('_route'),
+			'current_route' => $this->getCurrentRoute(),
 			//'stylesheet' => $this->getStylesheet(),
 			'script_library' => $this->container->getParameter('script_library'),
 		);
@@ -72,7 +72,7 @@ abstract class Controller extends SymfonyController
 			'menu' => $this->container->getParameter('menu'),
 			'_user' => $this->getUser(),
 			'navextra' => array(),
-			'current_route' => $request->attributes->get('_route'),
+			'current_route' => $this->getCurrentRoute(),
 			// done in a separate request
 			//'stylesheet' => $this->getStylesheet(),
 			'script_library' => $this->container->getParameter('script_library'),
@@ -80,8 +80,12 @@ abstract class Controller extends SymfonyController
 		);
 
 		if ($this->responseFormat == 'atom') {
+			$textsUpdatedAt = $this->getTextRevisionRepository()->getMaxDate();
+			$booksUpdatedAt = $this->getBookRevisionRepository()->getMaxDate();
 			$globals += array(
-				'updated' => new \DateTime,
+				'texts_updated_at' => $textsUpdatedAt,
+				'books_updated_at' => $booksUpdatedAt,
+				'updated_at' => max($textsUpdatedAt, $booksUpdatedAt),
 			);
 		}
 		if ($controller === null) {
@@ -144,6 +148,11 @@ abstract class Controller extends SymfonyController
 		return $this->name;
 	}
 
+	protected function getCurrentRoute()
+	{
+		return $this->get('request')->attributes->get('_route');
+	}
+
 	public function getEntityManager()
 	{
 		if (is_null($this->_em)) {
@@ -157,7 +166,7 @@ abstract class Controller extends SymfonyController
 	}
 
 
-	public function getRepository($entityName = null)
+	protected function getRepository($entityName = null)
 	{
 		return $this->getEntityManager()->getRepository($this->getEntityName($entityName));
 	}
@@ -264,23 +273,29 @@ abstract class Controller extends SymfonyController
 		return false; // main site
 	}
 
-	/** @return PersonRepository */
+	/** @return Chitanka\LibBundle\Entity\PersonRepository */
 	protected function getPersonRepository() { return $this->getRepository('Person'); }
-	/** @return TextRepository */
+	/** @return Chitanka\LibBundle\Entity\TextRepository */
 	protected function getTextRepository() { return $this->getRepository('Text'); }
-	/** @return SeriesRepository */
+	/** @return Chitanka\LibBundle\Entity\SeriesRepository */
 	protected function getSeriesRepository() { return $this->getRepository('Series'); }
-	/** @return LabelRepository */
+	/** @return Chitanka\LibBundle\Entity\LabelRepository */
 	protected function getLabelRepository() { return $this->getRepository('Label'); }
-	/** @return BookRepository */
+	/** @return Chitanka\LibBundle\Entity\BookRepository */
 	protected function getBookRepository() { return $this->getRepository('Book'); }
-	/** @return SequenceRepository */
+	/** @return Chitanka\LibBundle\Entity\SequenceRepository */
 	protected function getSequenceRepository() { return $this->getRepository('Sequence'); }
-	/** @return CategoryRepository */
+	/** @return Chitanka\LibBundle\Entity\CategoryRepository */
 	protected function getCategoryRepository() { return $this->getRepository('Category'); }
-	/** @return TextCommentRepository */
+	/** @return Chitanka\LibBundle\Entity\TextCommentRepository */
 	protected function getTextCommentRepository() { return $this->getRepository('TextComment'); }
-	/** @return UserRepository */
+	/** @return Chitanka\LibBundle\Entity\UserRepository */
 	protected function getUserRepository() { return $this->getRepository('User'); }
+	/** @return Chitanka\LibBundle\Entity\TextRevisionRepository */
+	protected function getTextRevisionRepository() { return $this->getRepository('TextRevision'); }
+	/** @return Chitanka\LibBundle\Entity\BookRevisionRepository */
+	protected function getBookRevisionRepository() { return $this->getRepository('BookRevision'); }
+	/** @return Chitanka\LibBundle\Entity\SearchStringRepository */
+	protected function getSearchStringRepository() { return $this->getRepository('SearchString'); }
 
 }

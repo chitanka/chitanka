@@ -1,0 +1,18 @@
+{% macro link(person, by) %}
+	<a href="{{ path('person_show', {'slug': person.slug}) }}" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name|name_format(by)|raw }}</a>
+{% endmacro %}
+
+<ul class="superlist">
+{% for author in persons %}
+	<li><dl>
+		{% if author.person is not empty %}
+			<dt>{{ author.name|name_format(by)|raw }} &rarr; {{ _self.link(author.person, by) }}</dt>
+		{% else %}
+			<dt>{{ _self.link(author, by) }}</dt>
+		{% endif %}
+		<dd class="orig-name">{{ author.orig_name ? author.orig_name|name_format(by)|raw : '—' }}</dd>
+	</dl></li>
+{% else %}
+	<li class="no-items">Няма намерени автори.</li>
+{% endfor %}
+</ul>

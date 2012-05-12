@@ -5,12 +5,12 @@
 {% block content %}
 	<ul class="breadcrumbs">
 		<li><a href="{{ path('sequences') }}">Издателски поредици</a></li>
-		<li><a href="{{ path('sequences_by_letter', {'letter': sequence.name|first_char}) }}">{{ sequence.name|first_char }}</a></li>
+		<li><a href="{{ path('sequences_by_alpha', {'letter': sequence.name|first_char}) }}">{{ sequence.name|first_char }}</a></li>
 		<li>{{ sequence.name }}
 			{% if sequence.publisher %}
 				({{ sequence.publisher }})
 			{% endif %}
 		</li>
 	</ul>
-	{% include 'LibBundle:Book:books_list.html.twig' %}
+	{% include 'LibBundle:Book:list.html.twig' %}
 {% endblock %}

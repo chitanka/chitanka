@@ -1,0 +1,8 @@
+{% extends 'LibBundle::layout.atom.twig' %}
+{% import 'LibBundle::helper.atom.twig' as helper %}
+
+{% set link_self = helper.url('authors_by_alpha_index', {'by': by}) %}
+{% set title = ('authors.by.'~by)|trans %}
+{% block content %}
+	{{ helper.letter_links('authors_by_alpha', {'by': by}) }}
+{% endblock %}

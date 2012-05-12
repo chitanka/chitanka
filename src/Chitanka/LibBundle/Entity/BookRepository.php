@@ -6,6 +6,7 @@ class BookRepository extends EntityRepository
 {
 	protected $queryableFields = array('id', 'title', 'subtitle', 'orig_title');
 
+	/** @return Book */
 	public function get($id)
 	{
 		return $this->_em->createQueryBuilder()

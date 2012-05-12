@@ -31,8 +31,8 @@ class TextController extends Controller
 	{
 		if ($_format == 'html') {
 			$this->view = array(
-				'labels' => $this->getRepository('Label')->getAllAsTree(),
-				'types' => $this->getRepository('Text')->getTypes(),
+				'labels' => $this->getLabelRepository()->getAllAsTree(),
+				'types' => $this->getTextRepository()->getTypes(),
 			);
 		}
 		$this->responseFormat = $_format;
@@ -42,7 +42,7 @@ class TextController extends Controller
 
 	public function listByTypeIndexAction($_format)
 	{
-		$this->view['types'] = $this->getRepository('Text')->getTypes();
+		$this->view['types'] = $this->getTextRepository()->getTypes();
 		$this->responseFormat = $_format;
 
 		return $this->display('list_by_type_index');
@@ -50,23 +50,22 @@ class TextController extends Controller
 
 	public function listByLabelIndexAction($_format)
 	{
-		$this->view['labels'] = $this->getRepository('Label')->getAll();
+		$this->view['labels'] = $this->getLabelRepository()->getAll();
 		$this->responseFormat = $_format;
 
 		return $this->display('list_by_label_index');
 	}
 
-	public function listByLetterIndexAction($_format)
+	public function listByAlphaIndexAction($_format)
 	{
 		$this->responseFormat = $_format;
 
-		return $this->display('list_by_letter_index');
+		return $this->display('list_by_alpha_index');
 	}
 
 	public function listByTypeAction($type, $page, $_format)
 	{
-		$page = (int)$page;
-		$textRepo = $this->getRepository('Text');
+		$textRepo = $this->getTextRepository();
 		$limit = 30;
 
 		$this->view = array_merge($this->view, array(
@@ -77,7 +76,7 @@ class TextController extends Controller
 				'limit' => $limit,
 				'total' => $textRepo->countByType($type)
 			)),
-			'route' => 'texts_by_type',
+			'route' => $this->getCurrentRoute(),
 			'route_params' => array('type' => $type),
 		));
 		$this->responseFormat = $_format;
@@ -88,8 +87,7 @@ class TextController extends Controller
 
 	public function listByLabelAction($slug, $page, $_format)
 	{
-		$page = (int)$page;
-		$textRepo = $this->getRepository('Text');
+		$textRepo = $this->getTextRepository();
 		$limit = 30;
 
 		$slug = String::slugify($slug);
@@ -108,7 +106,7 @@ class TextController extends Controller
 				'limit' => $limit,
 				'total' => $textRepo->countByLabel($labels)
 			)),
-			'route' => 'texts_by_label',
+			'route' => $this->getCurrentRoute(),
 			'route_params' => array('slug' => $slug),
 		));
 		$this->responseFormat = $_format;
@@ -117,10 +115,9 @@ class TextController extends Controller
 	}
 
 
-	public function listByLetterAction($letter, $page, $_format)
+	public function listByAlphaAction($letter, $page, $_format)
 	{
-		$page = (int)$page;
-		$textRepo = $this->getRepository('Text');
+		$textRepo = $this->getTextRepository();
 		$limit = 30;
 
 		$prefix = $letter == '-' ? null : $letter;
@@ -132,12 +129,12 @@ class TextController extends Controller
 				'limit' => $limit,
 				'total' => $textRepo->countByPrefix($prefix)
 			)),
-			'route' => 'texts_by_letter',
+			'route' => $this->getCurrentRoute(),
 			'route_params' => array('letter' => $letter),
 		);
 		$this->responseFormat = $_format;
 
-		return $this->display('list_by_letter');
+		return $this->display('list_by_alpha');
 	}
 
 

@@ -1,0 +1,6 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'authors'|trans %}
+{% block content %}
+	{% include 'LibBundle:Author:navigation.html.twig' with {'by': '', 'letter': ''} %}
+{% endblock %}

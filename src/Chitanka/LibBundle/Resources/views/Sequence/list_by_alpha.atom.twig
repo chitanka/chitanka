@@ -1,0 +1,11 @@
+{% extends 'LibBundle::layout.atom.twig' %}
+{% import 'LibBundle::helper.atom.twig' as helper %}
+
+{% set self_route_params = pager.has_prev ? route_params|merge({'page': pager.page}) : route_params %}
+{% set link_self = helper.url(current_route, self_route_params) %}
+{% set link_up = helper.url('sequences') %}
+{% set title = 'Издателски поредици: ' ~ (letter == '-' ? 'Всички' : letter) %}
+{% block content %}
+	{% include 'LibBundle::pager.atom.twig' %}
+	{% include 'LibBundle:Sequence:list.atom.twig' %}
+{% endblock %}

@@ -1,9 +1,0 @@
-{% extends 'LibBundle::layout.atom.twig' %}
-
-{% import 'LibBundle::helper.atom.twig' as helper %}
-{% set id = helper.urn('texts_by_letter_index') %}
-{% set link_self = helper.url('texts_by_letter_index') %}
-{% set title = 'Произведения по азбучен ред' %}
-{% block content %}
-	{{ helper.letter_links('texts_by_letter') }}
-{% endblock %}

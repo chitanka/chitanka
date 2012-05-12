@@ -81,7 +81,7 @@ class Extension extends \Twig_Extension
 		return Legacy::rmTrailingZeros( Number::formatNumber($rating, 1) );
 	}
 
-	public function formatPersonName($name, $sortby = 'first')
+	public function formatPersonName($name, $sortby = 'first-name')
 	{
 		if (empty($name)) {
 			return $name;
@@ -93,7 +93,7 @@ class Extension extends \Twig_Extension
 		$last = "<span class=\"lastname\">$m[2]</span>";
 		$m3 = isset($m[3]) ? $m[3] : '';
 
-		return $sortby == 'last' ? $last.', '.$m[1].$m3 : $m[1].' '.$last.$m3;
+		return $sortby == 'last-name' ? $last.', '.$m[1].$m3 : $m[1].' '.$last.$m3;
 	}
 
 

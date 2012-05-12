@@ -75,17 +75,17 @@ EOT
 		$this->sernr = null;
 		$this->book = 0;
 		$this->book_author = false; // link the book with the author
-		$this->author = null;
-		$this->license_orig = 2; // 1: PD, 2: FC
-		$this->license_trans = 2;
+		$this->author = 'hristo-smirnenski';
+		$this->license_orig = 1; // 1: PD, 2: FC
+		$this->license_trans = null;
 		$this->translator = 0;
 		$this->lang = 'bg';
-		$this->year = null;
+		$this->year = 1923;
 		$this->trans_year = null;
-		$this->type = 'shortstory';
-		$this->comment = 'Добавяне';
+		$this->type = 'poetry';
+		$this->comment = 'Добавяне (от Събрани съчинения, том 4. Български писател, 1979)';
 		// 'USERNAME' => array(PERCENT, 'Сканиране, разпознаване и корекция', date('Y'))
-		$this->users = array();
+		$this->users = array('zelenkroki' => array(30, 'Форматиране и последна редакция', date('Y')));
 		$this->year2 = null;
 		$this->trans_year2 = null;
 		$this->subtitle = $this->orig_title = $this->orig_subtitle = null;
@@ -515,8 +515,8 @@ EOT
 
 	private $_curIds = array();
 	private $_ids = array(
-		'text' => array(),
-		'book' => array(),
+		'text' => array(504,2318,3569),
+		'book' => array(534,1113,1186,1224,1249,1299,1303,1697,2004,2115),
 	);
 	private function getNextId($table)
 	{

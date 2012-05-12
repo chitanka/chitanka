@@ -1,7 +1,6 @@
 {% extends 'LibBundle::layout.atom.twig' %}
-
 {% import 'LibBundle::helper.atom.twig' as helper %}
-{% set id = helper.urn(current_route, [series.slug]) %}
+
 {% set link_self = helper.url(current_route, {'slug': series.slug}) %}
 {% set title = series.name %}
 {% set subtitle = 'поредица' %}

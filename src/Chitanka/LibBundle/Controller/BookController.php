@@ -12,21 +12,46 @@ class BookController extends Controller
 {
 	protected $repository = 'Book';
 
-	public function indexAction()
+	public function indexAction($_format)
 	{
-		$this->view = array(
-			'categories' => $this->getRepository('Category')->getAllAsTree(),
-		);
+		if ($_format == 'html') {
+			$this->view = array(
+				'categories' => $this->getCategoryRepository()->getAllAsTree(),
+			);
+        }
+		$this->responseFormat = $_format;
 
 		return $this->display('index');
 	}
 
-	public function listAction($slug, $page)
+	public function listByCategoryIndexAction($_format)
+	{
+		switch ($_format) {
+			case 'html':
+				$categories = $this->getCategoryRepository()->getAllAsTree();
+				break;
+			case 'atom':
+				$categories = $this->getCategoryRepository()->getAll();
+				break;
+		}
+		$this->view['categories'] = $categories;
+		$this->responseFormat = $_format;
+
+		return $this->display('list_by_category_index');
+	}
+
+	public function listByAlphaIndexAction($_format)
+	{
+		$this->responseFormat = $_format;
+
+		return $this->display('list_by_alpha_index');
+	}
+
+	public function listByCategoryAction($slug, $page, $_format)
 	{
 		$slug = String::slugify($slug);
-		$page = (int) $page;
-		$bookRepo = $this->getRepository('Book');
-		$category = $this->getRepository('Category')->findBySlug($slug);
+		$bookRepo = $this->getBookRepository();
+		$category = $this->getCategoryRepository()->findBySlug($slug);
 		if ($category === null) {
 			throw new NotFoundHttpException("Няма категория с код $slug.");
 		}
@@ -41,18 +66,18 @@ class BookController extends Controller
 				'limit' => $limit,
 				'total' => $category->getNrOfBooks()
 			)),
-			'route' => 'books_by_category',
+			'route' => $this->getCurrentRoute(),
 			'route_params' => array('slug' => $slug),
 		);
+		$this->responseFormat = $_format;
 
-		return $this->display('list');
+		return $this->display('list_by_category');
 	}
 
 
-	public function listByLetterAction($letter, $page)
+	public function listByAlphaAction($letter, $page, $_format)
 	{
-		$page = (int)$page;
-		$bookRepo = $this->getRepository('Book');
+		$bookRepo = $this->getBookRepository();
 		$limit = 30;
 
 		$prefix = $letter == '-' ? null : $letter;
@@ -64,11 +89,12 @@ class BookController extends Controller
 				'limit' => $limit,
 				'total' => $bookRepo->countByPrefix($prefix)
 			)),
-			'route' => 'books_by_letter',
+			'route' => $this->getCurrentRoute(),
 			'route_params' => array('letter' => $letter),
 		);
+		$this->responseFormat = $_format;
 
-		return $this->display('list_by_letter');
+		return $this->display('list_by_alpha');
 	}
 
 
@@ -76,7 +102,7 @@ class BookController extends Controller
 	{
 		list($id) = explode('-', $id); // remove optional slug
 		try {
-			$book = $this->getRepository('Book')->get($id);
+			$book = $this->getBookRepository()->get($id);
 		} catch (NoResultException $e) {
 			throw new NotFoundHttpException("Няма книга с номер $id.");
 		}
@@ -99,6 +125,13 @@ class BookController extends Controller
 				return $this->displayText($book->getContentAsSfb(), array('Content-Type' => 'text/plain'));
 			case 'clue':
 				return $this->displayText($book->getAnnotationAsXhtml());
+			case 'atom':
+				break;
+			case 'html':
+			default:
+				if ($book->getType() == 'pic') {
+					Setup::doSetup($this->container);
+				}
 		}
 
 		$this->view = array(
@@ -109,17 +142,13 @@ class BookController extends Controller
 			'info' => $book->getExtraInfoAsXhtml(),
 		);
 
-		if ($book->getType() == 'pic') {
-			Setup::doSetup($this->container);
-		}
-
 		return $this->display('show');
 	}
 
 
 	public function randomAction()
 	{
-		$id = $this->getRepository('Book')->getRandomId();
+		$id = $this->getBookRepository()->getRandomId();
 
 		return $this->urlRedirect($this->generateUrl('book_show', array('id' => $id)));
 	}

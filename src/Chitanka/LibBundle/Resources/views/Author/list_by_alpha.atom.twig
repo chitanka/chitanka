@@ -1,0 +1,11 @@
+{% extends 'LibBundle::layout.atom.twig' %}
+{% import 'LibBundle::helper.atom.twig' as helper %}
+
+{% set link_self = helper.url('authors_by_alpha', {'by': by, 'letter': letter}) %}
+{% set title = ('authors.by.'~by)|trans ~': '~ (letter == '-' ? 'Всички' : letter) %}
+{% block content %}
+
+	{% include 'LibBundle:Author:list.atom.twig' %}
+	{% include 'LibBundle::pager.atom.twig' %}
+
+{% endblock %}

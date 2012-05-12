@@ -18,7 +18,7 @@
 			{% elseif text.books|length > 1 %}
 				Част от книгите:
 			{% endif %}
-			{% include 'LibBundle:Book:books_list.html.twig' with {'books': text.books} %}
+			{% include 'LibBundle:Book:list.html.twig' with {'books': text.books} %}
 			</li>
 		{% endif %}
 		<li>

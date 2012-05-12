@@ -1,5 +1,4 @@
 <?php
-
 namespace Chitanka\LibBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -9,97 +8,52 @@ use Chitanka\LibBundle\Util\String;
 
 class PersonController extends Controller
 {
-	public function indexAuthorsAction()
+	public function indexAction($_format)
 	{
-		return $this->display('index_authors');
+		$this->responseFormat = $_format;
+
+		return $this->display('index');
 	}
 
-	public function indexTranslatorsAction()
+	public function listByAlphaIndexAction($by, $_format)
 	{
-		return $this->display('index_translators');
-	}
-
-
-	public function listAuthorsAction($by, $letter, $page, $_format)
-	{
-		$request = $this->get('request')->query;
-		$country = $request->get('country', '');
-		$limit = 100;
-
-		$repo = $this->getRepository('Person')->asAuthor();
-		$filters = array(
-			'by'      => $by,
-			'prefix'  => $letter,
-			'country' => $country,
-		);
-		$this->view = compact('by', 'letter', 'country') + array(
-			'authors' => $repo->getBy($filters, $page, $limit),
-			'pager'    => new Pager(array(
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $repo->countBy($filters)
-			)),
-			'route' => 'authors_by_'.$by.'_name',
-			'route_params' => array('letter' => $letter, 'by' => $by),
-		);
-
-		return $this->display('list_authors');
-	}
-
-	public function listAuthorsByCountryAction($country, $page, $_format)
-	{
-		$request = $this->get('request')->query;
-		$by      = $request->get('by', 'first');
-		$limit = 100;
-
-		$repo = $this->getRepository('Person')->asAuthor();
-		$filters = array(
-			'by'      => $by,
-			'country' => $country,
-		);
-		$this->view = compact('by', 'country') + array(
-			'authors' => $repo->getBy($filters, $page, $limit),
-			'pager'    => new Pager(array(
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $repo->countBy($filters)
-			)),
-			'route' => 'authors_by_country',
-			'route_params' => array('country' => $country/*, 'by' => $by*/, '_format' => $_format),
+		$this->view = array(
+			'by' => $by,
 		);
 		$this->responseFormat = $_format;
 
-		return $this->display('list_authors_by_country');
+		return $this->display('list_by_alpha_index');
 	}
 
-
-	public function listTranslatorsAction($by, $letter, $page, $_format)
+	public function listByAlphaAction($by, $letter, $page, $_format)
 	{
 		$request = $this->get('request')->query;
 		$country = $request->get('country', '');
 		$limit = 100;
 
-		$repo = $this->getRepository('Person')->asTranslator();
+		$repo = $this->getPersonRepository();
 		$filters = array(
 			'by'      => $by,
 			'prefix'  => $letter,
 			'country' => $country,
 		);
-		$this->view = compact('by', 'letter', 'country') + array(
-			'translators' => $repo->getBy($filters, $page, $limit),
+		$this->view = array(
+			'by'      => $by,
+			'letter'  => $letter,
+			'country' => $country,
+			'persons' => $repo->getBy($filters, $page, $limit),
 			'pager'    => new Pager(array(
 				'page'  => $page,
 				'limit' => $limit,
 				'total' => $repo->countBy($filters)
 			)),
-			'route' => 'translators_by_'.$by.'_name',
+			'route' => $this->getCurrentRoute(),
 			'route_params' => array('letter' => $letter, 'by' => $by),
 		);
+		$this->responseFormat = $_format;
 
-		return $this->display('list_translators');
+		return $this->display('list_by_alpha');
 	}
-
-
 
 	public function showAction($slug, $_format)
 	{

@@ -90,6 +90,16 @@ class RevisionRepository extends EntityRepository
 	}
 
 
+	/**
+	 * @RawSql
+	 */
+	public function getMaxDate()
+	{
+		$sql = sprintf('SELECT MAX(r.date) FROM %s r', $this->getClassMetadata()->getTableName());
+
+		return $this->_em->getConnection()->fetchColumn($sql);
+	}
+
 	public function getQueryBuilder($orderBys = null)
 	{
 		$qb = $this->_em->createQueryBuilder();

@@ -13,58 +13,50 @@ catalog:
 
 authors:
     pattern:        /authors.{_format}
-    defaults:       { _controller: LibBundle:Person:indexAuthors, _format: html }
+    defaults:       { _controller: LibBundle:Author:index, _format: html }
     requirements:   { _method: get, _format: html|atom }
 
-author:
+authors_alt:
     pattern:        /author
     defaults:       { _controller: LibBundle:Main:redirect, route: authors }
     requirements:   { _method: get }
 
+authors_by_alpha_index:
+    pattern:        /authors/{by}.{_format}
+    defaults:       { _controller: LibBundle:Author:listByAlphaIndex, _format: html }
+    requirements:   { _method: get, by: first-name|last-name, _format: html|atom }
+authors_by_alpha:
+    pattern:        /authors/{by}/{letter}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Author:listByAlpha, page: 1, _format: html }
+    requirements:   { _method: get, by: first-name|last-name, page: \d+, _format: html|atom }
+
+authors_by_country_index:
+    pattern:        /authors/country/{by}.{_format}
+    defaults:       { _controller: LibBundle:Author:listByCountryIndex, by: first-name, _format: html }
+    requirements:   { _method: get, by: first-name|last-name, _format: html|atom }
 authors_by_country:
-    pattern:        /authors/country/{country}.{_format}/{page}
-    defaults:       { _controller: LibBundle:Person:listAuthorsByCountry, page: 1, _format: html }
-    requirements:   { _method: get, _format: html|atom }
-
-authors_by_first_name:
-    pattern:        /authors/first-name/{letter}.{_format}/{page}
-    defaults:       { _controller: LibBundle:Person:listAuthors, by: first, page: 1, _format: html }
-    requirements:   { _method: get, _format: html|atom }
-
-authors_by_last_name:
-    pattern:        /authors/last-name/{letter}.{_format}/{page}
-    defaults:       { _controller: LibBundle:Person:listAuthors, by: last, page: 1, _format: html }
-    requirements:   { _method: get, _format: html|atom }
-
-authors_by_first_name_index:
-    pattern:        /authors/first-name.{_format}
-    defaults:       { _controller: LibBundle:Person:listAuthors, by: first, page: 1, _format: html }
-    requirements:   { _method: get, _format: html|atom }
-
-authors_by_last_name_index:
-    pattern:        /authors/last-name.{_format}
-    defaults:       { _controller: LibBundle:Person:listAuthors, by: last, page: 1, _format: html }
-    requirements:   { _method: get, _format: html|atom }
+    pattern:        /authors/country/{country}/{by}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Author:listByCountry, by: first-name, page: 1, _format: html }
+    requirements:   { _method: get, by: first-name|last-name, page: \d+, _format: html|atom }
 
 translators:
     pattern:        /translators.{_format}
-    defaults:       { _controller: LibBundle:Person:indexTranslators, _format: html }
+    defaults:       { _controller: LibBundle:Translator:index, _format: html }
     requirements:   { _method: get, _format: html|atom }
 
-translator:
+translators_alt:
     pattern:        /translator
     defaults:       { _controller: LibBundle:Main:redirect, route: translators }
     requirements:   { _method: get }
 
-translators_by_first_name:
-    pattern:        /translators/first-name/{letter}.{_format}/{page}
-    defaults:       { _controller: LibBundle:Person:listTranslators, by: first, page: 1, _format: html }
-    requirements:   { _method: get, _format: html|atom }
-
-translators_by_last_name:
-    pattern:        /translators/last-name/{letter}.{_format}/{page}
-    defaults:       { _controller: LibBundle:Person:listTranslators, by: last, page: 1, _format: html }
-    requirements:   { _method: get, _format: html|atom }
+translators_by_alpha_index:
+    pattern:        /translators/{by}.{_format}
+    defaults:       { _controller: LibBundle:Translator:listByAlphaIndex, _format: html }
+    requirements:   { _method: get, by: first-name|last-name, _format: html|atom }
+translators_by_alpha:
+    pattern:        /translators/{by}/{letter}.{_format}/{page}
+    defaults:       { _controller: LibBundle:Translator:listByAlpha, page: 1, _format: html }
+    requirements:   { _method: get, by: first-name|last-name, page: \d+, _format: html|atom }
 
 persons_search:
     pattern:        /persons/search.{_format}
@@ -74,6 +66,21 @@ persons_search:
 person_show:
     pattern:        /person/{slug}.{_format}
     defaults:       { _controller: LibBundle:Person:show, _format: html }
+    requirements:   { _method: get, _format: html|atom }
+
+person_show_books:
+    pattern:        /person/{slug}/books.{_format}
+    defaults:       { _controller: LibBundle:Person:showBooks, _format: html }
+    requirements:   { _method: get, _format: html|atom }
+
+person_show_texts:
+    pattern:        /person/{slug}/texts.{_format}
+    defaults:       { _controller: LibBundle:Person:showTexts, _format: html }
+    requirements:   { _method: get, _format: html|atom }
+
+person_show_translations:
+    pattern:        /person/{slug}/translations.{_format}
+    defaults:       { _controller: LibBundle:Person:showTranslations, _format: html }
     requirements:   { _method: get, _format: html|atom }
 
 person_suggest:
@@ -100,7 +107,7 @@ series:
     defaults:       { _controller: LibBundle:Series:index, _format: html }
     requirements:   { _method: get, _format: html|atom }
 
-serie:
+series_alt:
     pattern:        /serie
     defaults:       { _controller: LibBundle:Main:redirect, route: series }
     requirements:   { _method: get }
@@ -110,10 +117,10 @@ series_search:
     defaults:       { _controller: LibBundle:Search:series, _format: html }
     requirements:   { _method: get, _format: html|xml }
 
-series_by_letter:
+series_by_alpha:
     pattern:        /series/alpha/{letter}.{_format}/{page}
-    defaults:       { _controller: LibBundle:Series:list, page: 1, _format: html }
-    requirements:   { _method: get, _format: html|atom }
+    defaults:       { _controller: LibBundle:Series:listByAlpha, page: 1, _format: html }
+    requirements:   { _method: get, page: \d+, _format: html|atom }
 
 series_show:
     pattern:        /serie/{slug}.{_format}
@@ -128,7 +135,7 @@ books:
     defaults:       { _controller: LibBundle:Book:index, _format: html }
     requirements:   { _method: get, _format: html|atom }
 
-book:
+books_alt:
     pattern:        /book
     defaults:       { _controller: LibBundle:Main:redirect, route: books }
     requirements:   { _method: get }
@@ -138,14 +145,24 @@ books_search:
     defaults:       { _controller: LibBundle:Search:books, _format: html }
     requirements:   { _method: get, _format: html|xml }
 
-books_by_letter:
+books_by_alpha:
     pattern:        /books/alpha/{letter}.{_format}/{page}
-    defaults:       { _controller: LibBundle:Book:listByLetter, page: 1, _format: html }
-    requirements:   { _method: get, _format: html|atom }
+    defaults:       { _controller: LibBundle:Book:listByAlpha, page: 1, _format: html }
+    requirements:   { _method: get, page: \d+, _format: html|atom }
 
 books_by_category:
     pattern:        /books/category/{slug}.{_format}/{page}
-    defaults:       { _controller: LibBundle:Book:list, page: 1, _format: html }
+    defaults:       { _controller: LibBundle:Book:listByCategory, page: 1, _format: html }
+    requirements:   { _method: get, page: \d+, _format: html|atom }
+
+books_by_alpha_index:
+    pattern:        /books/alpha.{_format}
+    defaults:       { _controller: LibBundle:Book:listByAlphaIndex, _format: html }
+    requirements:   { _method: get, _format: html|atom }
+
+books_by_category_index:
+    pattern:        /books/category.{_format}
+    defaults:       { _controller: LibBundle:Book:listByCategoryIndex, _format: html }
     requirements:   { _method: get, _format: html|atom }
 
 book_random:
@@ -174,7 +191,7 @@ sequences:
     defaults:       { _controller: LibBundle:Sequence:index, _format: html }
     requirements:   { _method: get, _format: html|atom }
 
-sequence:
+sequences_alt:
     pattern:        /sequence
     defaults:       { _controller: LibBundle:Main:redirect, route: sequences }
     requirements:   { _method: get }
@@ -184,10 +201,10 @@ sequences_search:
     defaults:       { _controller: LibBundle:Search:sequences, _format: html }
     requirements:   { _method: get, _format: html|xml }
 
-sequences_by_letter:
+sequences_by_alpha:
     pattern:        /sequences/alpha/{letter}.{_format}/{page}
-    defaults:       { _controller: LibBundle:Sequence:list, page: 1, _format: html }
-    requirements:   { _method: get, _format: html|atom }
+    defaults:       { _controller: LibBundle:Sequence:listByAlpha, page: 1, _format: html }
+    requirements:   { _method: get, page: \d+, _format: html|atom }
 
 sequence_show:
     pattern:        /sequence/{slug}.{_format}
@@ -200,14 +217,14 @@ sequence_show:
 texts_comments:
     pattern:        /texts/comments.{_format}/{page}
     defaults:       { _controller: LibBundle:TextComment:index, page: 1, _format: html }
-    requirements:   { _method: get, _format: html|rss }
+    requirements:   { _method: get, page: \d+, _format: html|rss }
 
 texts:
     pattern:        /texts.{_format}
     defaults:       { _controller: LibBundle:Text:index, _format: html }
     requirements:   { _method: get, _format: html|atom }
 
-text:
+texts_alt:
     pattern:        /text
     defaults:       { _controller: LibBundle:Main:redirect, route: texts }
     requirements:   { _method: get }
@@ -217,24 +234,24 @@ texts_search:
     defaults:       { _controller: LibBundle:Search:texts, _format: html }
     requirements:   { _method: get, _format: html|xml }
 
-texts_by_letter:
+texts_by_alpha:
     pattern:        /texts/alpha/{letter}.{_format}/{page}
-    defaults:       { _controller: LibBundle:Text:listByLetter, page: 1, _format: html }
-    requirements:   { _method: get, _format: html|atom }
+    defaults:       { _controller: LibBundle:Text:listByAlpha, page: 1, _format: html }
+    requirements:   { _method: get, page: \d+, _format: html|atom }
 
 texts_by_type:
     pattern:        /texts/type/{type}.{_format}/{page}
     defaults:       { _controller: LibBundle:Text:listByType, page: 1, _format: html }
-    requirements:   { _method: get, _format: html|atom }
+    requirements:   { _method: get, page: \d+, _format: html|atom }
 
 texts_by_label:
     pattern:        /texts/label/{slug}.{_format}/{page}
     defaults:       { _controller: LibBundle:Text:listByLabel, page: 1, _format: html }
-    requirements:   { _method: get, _format: html|atom }
+    requirements:   { _method: get, page: \d+, _format: html|atom }
 
-texts_by_letter_index:
+texts_by_alpha_index:
     pattern:        /texts/alpha.{_format}
-    defaults:       { _controller: LibBundle:Text:listByLetterIndex, _format: html }
+    defaults:       { _controller: LibBundle:Text:listByAlphaIndex, _format: html }
     requirements:   { _method: get, _format: html|atom }
 
 texts_by_type_index:
@@ -417,7 +434,7 @@ user_page_edit:
 user_comments:
     pattern:   /user/{username}/comments/{page}
     defaults: { _controller: LibBundle:User:comments, page: 1 }
-    requirements: { _method: get }
+    requirements: { _method: get, page: \d+ }
     options:
         segment_separators: [/]
 
@@ -431,18 +448,21 @@ user_ratings:
 user_contribs:
     pattern:   /user/{username}/contribs/{page}
     defaults: { _controller: LibBundle:User:contribs, page: 1 }
+    requirements: { _method: get, page: \d+ }
     options:
         segment_separators: [/]
 
 user_read_list:
     pattern:   /user/{username}/read/{page}
     defaults: { _controller: LibBundle:User:readList, page: 1 }
+    requirements: { _method: get, page: \d+ }
     options:
         segment_separators: [/]
 
 user_bookmarks:
     pattern:   /user/{username}/bookmarks/{page}
     defaults: { _controller: LibBundle:User:bookmarks, page: 1 }
+    requirements: { _method: get, page: \d+ }
     options:
         segment_separators: [/]
 

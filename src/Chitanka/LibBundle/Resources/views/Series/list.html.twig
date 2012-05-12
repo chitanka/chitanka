@@ -1,11 +1,18 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% macro list_item(series) %}
+	{% import 'LibBundle::text.html.twig' as text_lister %}
+	<dl>
+		<dt>
+			<a href="{{ path('series_show', {'slug': series.slug}) }}"><em>{{ series.name }}</em></a>
+		</dt>
+		<dd class="orig-name"><em>{{ series.orig_name ? series.orig_name : '—' }}</em></dd>
+		<dd class="tauthor">{{ text_lister.author_list(series.authors, ' ') }}</dd>
+	</dl>
+{% endmacro %}
 
-{% set title = 'Поредици: ' ~ (letter == '-' ? 'Всички' : letter) %}
-{% block content %}
-
-	{% include 'LibBundle:Series:series_list.html.twig' %}
-	{% include 'LibBundle::pager.html.twig' %}
-	<hr>
-	{% include 'LibBundle:Series:navigation.html.twig' with {'letter': letter} %}
-
-{% endblock %}
+<ul class="superlist series-list">
+{% for serie in series %}
+	<li>{{ _self.list_item(serie) }}</li>
+{% else %}
+	<li class="no-items">Няма намерени поредици.</li>
+{% endfor %}
+</ul>

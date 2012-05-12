@@ -5,27 +5,27 @@
 
 	{% if persons|length %}
 		<h2>Личности</h2>
-		{% include 'LibBundle:Person:authors_list_with_country.html.twig' with {'authors': persons} %}
+		{% include 'LibBundle:Author:list_with_country.html.twig' with {'authors': persons} %}
 	{% endif %}
 
 	{% if texts|length %}
 		<h2>Произведения</h2>
-		{% include 'LibBundle:Text:texts_list.html.twig' %}
+		{% include 'LibBundle:Text:list.html.twig' %}
 	{% endif %}
 
 	{% if books|length %}
 		<h2>Книги</h2>
-		{% include 'LibBundle:Book:books_list.html.twig' %}
+		{% include 'LibBundle:Book:list.html.twig' %}
 	{% endif %}
 
 	{% if series|length %}
 		<h2>Авторски поредици</h2>
-		{% include 'LibBundle:Series:series_list.html.twig' %}
+		{% include 'LibBundle:Series:list.html.twig' %}
 	{% endif %}
 
 	{% if sequences|length %}
 		<h2>Издателски поредици</h2>
-		{% include 'LibBundle:Sequence:sequences_list.html.twig' %}
+		{% include 'LibBundle:Sequence:list.html.twig' %}
 	{% endif %}
 
 	{% if labels|length %}

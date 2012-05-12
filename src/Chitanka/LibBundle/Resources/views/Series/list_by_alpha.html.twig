@@ -1,0 +1,11 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Поредици: ' ~ (letter == '-' ? 'Всички' : letter) %}
+{% block content %}
+
+	{% include 'LibBundle:Series:list.html.twig' %}
+	{% include 'LibBundle::pager.html.twig' %}
+	<hr>
+	{% include 'LibBundle:Series:navigation.html.twig' with {'letter': letter} %}
+
+{% endblock %}

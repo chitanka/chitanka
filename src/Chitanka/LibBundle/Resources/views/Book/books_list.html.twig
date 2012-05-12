@@ -1,9 +1,0 @@
-{% import 'LibBundle::book.html.twig' as booktools %}
-
-<ul class="superlist booklist">
-{% for book in books %}
-	<li>{{ booktools.book(book) }}</li>
-{% else %}
-	<li class="no-items">Няма намерени книги.</li>
-{% endfor %}
-</ul>

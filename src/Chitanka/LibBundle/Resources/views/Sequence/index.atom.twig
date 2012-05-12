@@ -1,0 +1,8 @@
+{% extends 'LibBundle::layout.atom.twig' %}
+{% import 'LibBundle::helper.atom.twig' as helper %}
+
+{% set link_self = helper.url('sequences') %}
+{% set title = 'Издателски поредици' %}
+{% block content %}
+	{{ helper.letter_links('sequences_by_alpha') }}
+{% endblock %}

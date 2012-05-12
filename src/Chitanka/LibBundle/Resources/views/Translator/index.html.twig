@@ -1,0 +1,6 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'translators'|trans %}
+{% block content %}
+	{% include 'LibBundle:Translator:navigation.html.twig' with {'by': '', 'letter': ''} %}
+{% endblock %}

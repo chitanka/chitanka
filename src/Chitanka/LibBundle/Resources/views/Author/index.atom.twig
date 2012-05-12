@@ -1,0 +1,11 @@
+{% extends 'LibBundle::layout.atom.twig' %}
+{% import 'LibBundle::helper.atom.twig' as helper %}
+
+{% set link_self = helper.url('authors') %}
+{% set title = 'Автори' %}
+{% block content %}
+	{{ helper.navi_entry('По малко име', updated_at, 'authors_by_alpha_index', {'by': 'first-name'}, 'Списък на авторите по малко име') }}
+	{{ helper.navi_entry('По фамилия', updated_at, 'authors_by_alpha_index', {'by': 'last-name'}, 'Списък на авторите по фамилия') }}
+	{{ helper.navi_entry('По държава (по малко име)', updated_at, 'authors_by_country_index', {'by': 'first-name'}, 'Списък на авторите по държава, сортирани по малко име') }}
+	{{ helper.navi_entry('По държава (по фамилия)', updated_at, 'authors_by_country_index', {'by': 'last-name'}, 'Списък на авторите по държава, сортирани по фамилия') }}
+{% endblock %}

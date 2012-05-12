@@ -1,6 +1,7 @@
 {% extends '::base.atom.twig' %}
+{% import 'LibBundle::helper.atom.twig' as helper %}
 
-{% if title is defined and pager is defined and pager.has_prev %}
+{% if title is defined and pager is defined and pager.count > 1 %}
 {% set suffix = 'страница ' ~ pager.page ~ ' от ' ~ pager.count %}
 {% set subtitle = subtitle is defined ? subtitle ~' — '~ suffix : suffix %}
 {% endif %}
@@ -17,11 +18,12 @@
 	{% endif %}
 {% endblock %}
 {% block head %}
-	<id>{{ id }}</id>
-	<link rel="start" href="{{ url('catalog', {'_format': 'atom'}) }}" type="application/atom+xml;profile=opds-catalog"/>
-	<link rel="self" href="{{ link_self }}" type="application/atom+xml;profile=opds-catalog"/>
+	{{ helper.id(link_self) }}
+	{{ helper.updated(updated_at) }}
+	<link rel="start" href="{{ url('catalog', {'_format': 'atom'}) }}" type="application/atom+xml; profile=opds-catalog; kind=navigation"/>
+	<link rel="self" href="{{ link_self }}" type="application/atom+xml; profile=opds-catalog; kind=navigation"/>
 	{% if link_up is defined %}
-		<link rel="up" href="{{ link_up }}" type="application/atom+xml;profile=opds-catalog"/>
+		<link rel="up" href="{{ link_up }}" type="application/atom+xml; profile=opds-catalog; kind=navigation"/>
 	{% endif %}
 
 	<author>

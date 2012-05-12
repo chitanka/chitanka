@@ -69,75 +69,6 @@ class Person
 	* @ORM\Column(type="string", length=10)
 	*/
 	private $country;
-	static private $countryList = array(
-		'-',
-		'au',
-		'at',
-		'al',
-		'ar',
-		'am',
-		'az',
-		'by',
-		'be',
-		'ba',
-		'br',
-		'bg',
-		'gb',
-		've',
-		'gt',
-		'de',
-		'gr',
-		'dk',
-		'aro',
-		'agr',
-		'zm',
-		'et',
-		'il',
-		'in',
-		'ir',
-		'ie',
-		'es',
-		'it',
-		'kz',
-		'ca',
-		'kg',
-		'cn',
-		'co',
-		'cu',
-		'lb',
-		'lt',
-		'lu',
-		'mx',
-		'md',
-		'ni',
-		'nz',
-		'no',
-		'pa',
-		'pe',
-		'pl',
-		'pt',
-		'ro',
-		'ru',
-		'us',
-		'sk',
-		'si',
-		'rs',
-		'tr',
-		'ua',
-		'hu',
-		'uy',
-		'fr',
-		'fi',
-		'nl',
-		'hr',
-		'cz',
-		'cl',
-		'ch',
-		'se',
-		'yu',
-		'za',
-		'jp',
-	);
 
 	/** @ORM\Column(type="boolean") */
 	private $is_author = true;
@@ -162,11 +93,6 @@ class Person
 	* @ORM\Column(type="string", length=1, nullable=true)
 	*/
 	private $type;
-	static private $typeList = array(
-		'p' => 'Псевдоним',
-		'r' => 'Истинско име',
-		'a' => 'Алтернативно изписване',
-	);
 
 	/**
 	* @ORM\ManyToMany(targetEntity="Text", mappedBy="authors")
@@ -278,15 +204,5 @@ class Person
 	public function __toString()
 	{
 		return $this->name;
-	}
-
-	static public function getCountryList()
-	{
-		return self::$countryList;
-	}
-
-	static public function getTypeList()
-	{
-		return self::$typeList;
 	}
 }

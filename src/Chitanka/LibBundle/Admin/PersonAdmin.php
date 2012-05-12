@@ -1,13 +1,11 @@
 <?php
-
 namespace Chitanka\LibBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Chitanka\LibBundle\Entity\Person;
+use Chitanka\LibBundle\Entity\PersonRepository;
 
 class PersonAdmin extends Admin
 {
@@ -34,7 +32,7 @@ class PersonAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$countryList = array();
-		foreach (Person::getCountryList() as $countryCode) {
+		foreach ($this->getRepository()->getCountryList() as $countryCode) {
 			$countryList[$countryCode] = "country.$countryCode";
 		}
 		$formMapper
@@ -51,7 +49,7 @@ class PersonAdmin extends Admin
 			->add('info', null, array('required' => false))
 			->with($this->trans('Main Person'), array('collapsed' => true))
 				->add('type', 'choice', array(
-					'choices' => Person::getTypeList(),
+					'choices' => $this->getRepository()->getTypeList(),
 					//'expanded' => true,
 					'required' => false,
 					'label' => 'Person Type',

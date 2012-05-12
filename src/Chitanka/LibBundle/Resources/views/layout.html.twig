@@ -38,6 +38,10 @@
 	{% endif %}
 {% endblock %}
 
+{% block body_class %}
+	page-{{ current_route }}
+{% endblock %}
+
 {% block body %}
 
 	{% include 'LibBundle::jumpto_links.html.twig' %}

@@ -1,0 +1,12 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = ('authors.by.country.'~by)|trans %}
+{% block content %}
+
+<ul>
+	{% for country in countries %}
+		<li><a href="{{ path('authors_by_country', {'country': country, 'by': by}) }}">{{ ('country.'~country)|trans }}</a></li>
+	{% endfor %}
+</ul>
+
+{% endblock %}

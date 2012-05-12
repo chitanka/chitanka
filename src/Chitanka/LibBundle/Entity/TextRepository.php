@@ -246,10 +246,11 @@ class TextRepository extends EntityRepository
 	public function getQueryBuilder($orderBys = null)
 	{
 		return $this->_em->createQueryBuilder()
-			->select('e', 'a', 's')
+			->select('e', 'a', 't', 's')
 			->from($this->getEntityName(), 'e')
 			->leftJoin('e.series', 's')
 			->leftJoin('e.authors', 'a')
+			->leftJoin('e.translators', 't')
 			->orderBy('e.title');
 	}
 

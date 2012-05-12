@@ -1,0 +1,26 @@
+{% extends 'LibBundle::layout.atom.twig' %}
+{% import 'LibBundle::helper.atom.twig' as helper %}
+
+{% set link_self = helper.url('translators_by_alpha', {'by': by, 'letter': letter}) %}
+{% set title = ('translators.by.'~by)|trans ~': '~ (letter == '-' ? 'Всички' : letter) %}
+{% block content %}
+
+{% macro description(translator, by) %}
+	{% if translator.orig_name is not empty %}
+		оригинално име: {{ translator.orig_name|name_format(by)|striptags }};
+	{% endif %}
+	държава: {{ ('country.'~translator.country)|trans }}
+{% endmacro %}
+
+{% for translator in persons %}
+	{{ helper.navi_entry(
+		translator.name|name_format(by)|striptags,
+		updated_at,
+		'person_show',
+		{'slug': translator.slug},
+		_self.description(translator, by)) }}
+{% endfor %}
+
+	{% include 'LibBundle::pager.atom.twig' %}
+
+{% endblock %}

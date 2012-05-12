@@ -1,5 +1,4 @@
 <?php
-
 namespace Chitanka\LibBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -8,15 +7,16 @@ use Chitanka\LibBundle\Util\String;
 
 class SequenceController extends Controller
 {
-	public function indexAction()
+	public function indexAction($_format)
 	{
+		$this->responseFormat = $_format;
+
 		return $this->display('index');
 	}
 
-	public function listAction($letter, $page)
+	public function listByAlphaAction($letter, $page, $_format)
 	{
-		$page = (int)$page;
-		$repo = $this->getRepository('Sequence');
+		$repo = $this->getSequenceRepository();
 		$limit = 50;
 
 		$prefix = $letter == '-' ? null : $letter;
@@ -28,25 +28,26 @@ class SequenceController extends Controller
 				'limit' => $limit,
 				'total' => $repo->countByPrefix($prefix)
 			)),
-			'route' => 'sequences_by_letter',
+			'route' => $this->getCurrentRoute(),
 			'route_params' => array('letter' => $letter),
 		);
+		$this->responseFormat = $_format;
 
-		return $this->display('list');
+		return $this->display('list_by_alpha');
 	}
 
 
 	public function showAction($slug, $_format)
 	{
 		$slug = String::slugify($slug);
-		$sequence = $this->getRepository('Sequence')->findBySlug($slug);
+		$sequence = $this->getSequenceRepository()->findBySlug($slug);
 		if ($sequence === null) {
 			throw new NotFoundHttpException("Няма издателска поредица с код $slug.");
 		}
 
 		$this->view = array(
 			'sequence' => $sequence,
-			'books'  => $this->getRepository('Book')->getBySequence($sequence),
+			'books'  => $this->getBookRepository()->getBySequence($sequence),
 		);
 		$this->responseFormat = $_format;
 

@@ -9,12 +9,12 @@
 		{% include 'LibBundle:Person:info.html.twig' %}
 	{% else %}
 		{% import 'LibBundle::link.html.twig' as link %}
-		<p>{{ ('person.alt.'~person.type) | trans({'%current%': person.name, '%target%': link.person(person.person)})|raw	 }}</p>
+		<p>{{ ('person.alt.'~person.type) | trans({'%current%': person.name, '%target%': link.person(person.person)})|raw }}</p>
 	{% endif %}
 
 	{% if books is defined %}
 		<h2 id="books">Книги</h2>
-		{% include 'LibBundle:Book:books_list.html.twig' %}
+		{% include 'LibBundle:Book:list.html.twig' %}
 	{% endif %}
 
 	{% if person.is_author %}
@@ -24,7 +24,7 @@
 			<h2 id="author">Произведения</h2>
 		{% endif %}
 		{% for series in texts_as_author %}
-			{% include 'LibBundle:Person:text_list_author.html.twig' with {'series': series.data, 'texts': series.texts} %}
+			{% include 'LibBundle:Author:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
 		{% endfor %}
 	{% endif %}
 
@@ -33,7 +33,7 @@
 			<h2 id="translator">Преводни произведения</h2>
 		{% endif %}
 		{% for series in texts_as_translator %}
-			{% include 'LibBundle:Person:text_list_translator.html.twig' with {'series': series.data, 'texts': series.texts} %}
+			{% include 'LibBundle:Translator:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
 		{% endfor %}
 	{% endif %}
 	</div>

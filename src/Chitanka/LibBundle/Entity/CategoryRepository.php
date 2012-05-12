@@ -4,20 +4,40 @@ namespace Chitanka\LibBundle\Entity;
 
 class CategoryRepository extends EntityRepository
 {
+	/** @return Category */
 	public function findBySlug($slug)
 	{
 		return $this->findOneBy(array('slug' => $slug));
 	}
 
 	/**
-	* @RawSql
-	*/
+	 * @RawSql
+	 */
 	public function getAllAsTree()
 	{
-		$labels = $this->_em->getConnection()->fetchAll('SELECT * FROM category ORDER BY name');
-		$labels = $this->convertArrayToTree($labels);
+		$categories = $this->convertArrayToTree($this->getAll());
 
-		return $labels;
+		return $categories;
+	}
+
+	/**
+	 * @RawSql
+	 */
+	public function getAll()
+	{
+		$categories = $this->_em->getConnection()->fetchAll('SELECT * FROM category ORDER BY name');
+
+		return $categories;
+	}
+
+	/**
+	 * @RawSql
+	 */
+	public function getRoots()
+	{
+		$categories = $this->_em->getConnection()->fetchAll('SELECT * FROM category WHERE parent_id IS NULL ORDER BY name');
+
+		return $categories;
 	}
 
 

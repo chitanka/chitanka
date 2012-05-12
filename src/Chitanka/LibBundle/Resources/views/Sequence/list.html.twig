@@ -1,11 +1,16 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% macro list_item(sequence) %}
+	<dl>
+		<dt>
+			<a href="{{ path('sequence_show', {'slug': sequence.slug}) }}">{{ sequence.name }}</a>
+		</dt>
+		<dd>{{ sequence.publisher }}</dd>
+	</dl>
+{% endmacro %}
 
-{% set title = 'Издателски поредици: ' ~ (letter == '-' ? 'Всички' : letter) %}
-{% block content %}
-
-	{% include 'LibBundle:Sequence:sequences_list.html.twig' %}
-	{% include 'LibBundle::pager.html.twig' %}
-	<hr>
-	{% include 'LibBundle:Sequence:navigation.html.twig' with {'letter': letter} %}
-
-{% endblock %}
+<ul class="superlist sequence-list">
+{% for sequence in sequences %}
+	<li>{{ _self.list_item(sequence) }}</li>
+{% else %}
+	<li class="no-items">Няма намерени поредици.</li>
+{% endfor %}
+</ul>

@@ -18,14 +18,14 @@ class SearchController extends Controller
 			return $query;
 		}
 
-		$persons = $this->getRepository('Person')->getByNames($query['text']);
-		$texts = $this->getRepository('Text')->getByTitles($query['text']);
-		$books = $this->getRepository('Book')->getByTitles($query['text']);
-		$series = $this->getRepository('Series')->getByNames($query['text']);
-		$sequences = $this->getRepository('Sequence')->getByNames($query['text']);
-		$work_entries = $this->getRepository('WorkEntry')->getByTitleOrAuthor($query['text']);
-		$labels = $this->getRepository('Label')->getByNames($query['text']);
-		$categories = $this->getRepository('Category')->getByNames($query['text']);
+		$persons = $this->getPersonRepository()->getByNames($query['text']);
+		$texts = $this->getTextRepository()->getByTitles($query['text']);
+		$books = $this->getBookRepository()->getByTitles($query['text']);
+		$series = $this->getSeriesRepository()->getByNames($query['text']);
+		$sequences = $this->getSequenceRepository()->getByNames($query['text']);
+		$work_entries = $this->getWorkEntryRepository()->getByTitleOrAuthor($query['text']);
+		$labels = $this->getLabelRepository()->getByNames($query['text']);
+		$categories = $this->getCategoryRepository()->getByNames($query['text']);
 
 		$found = count($persons) > 0 || count($texts) > 0 || count($books) > 0 || count($series) > 0 || count($sequences) > 0 || count($work_entries) > 0 || count($labels) > 0 || count($categories) > 0;
 
@@ -50,7 +50,7 @@ class SearchController extends Controller
 		if (empty($query['by'])) {
 			$query['by'] = 'name,orig_name';
 		}
-		$persons = $this->getRepository('Person')->getByQuery($query);
+		$persons = $this->getPersonRepository()->getByQuery($query);
 		if ( ! ($found = count($persons) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -70,7 +70,7 @@ class SearchController extends Controller
 		if (empty($query['by'])) {
 			$query['by'] = 'title,subtitle,orig_title';
 		}
-		$texts = $this->getRepository('Text')->getByQuery($query);
+		$texts = $this->getTextRepository()->getByQuery($query);
 		if ( ! ($found = count($texts) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -90,7 +90,7 @@ class SearchController extends Controller
 		if (empty($query['by'])) {
 			$query['by'] = 'title,subtitle,orig_title';
 		}
-		$books = $this->getRepository('Book')->getByQuery($query);
+		$books = $this->getBookRepository()->getByQuery($query);
 		if ( ! ($found = count($books) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -110,7 +110,7 @@ class SearchController extends Controller
 		if (empty($query['by'])) {
 			$query['by'] = 'name,orig_name';
 		}
-		$series = $this->getRepository('Series')->getByQuery($query);
+		$series = $this->getSeriesRepository()->getByQuery($query);
 		if ( ! ($found = count($series) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -130,7 +130,7 @@ class SearchController extends Controller
 		if (empty($query['by'])) {
 			$query['by'] = 'name';
 		}
-		$sequences = $this->getRepository('Sequence')->getByQuery($query);
+		$sequences = $this->getSequenceRepository()->getByQuery($query);
 		if ( ! ($found = count($sequences) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -148,8 +148,8 @@ class SearchController extends Controller
 
 		if ( ! $query) {
 			$this->view = array(
-				'latest_strings' => $this->getRepository('SearchString')->getLatest(30),
-				'top_strings' => $this->getRepository('SearchString')->getTop(30),
+				'latest_strings' => $this->getSearchStringRepository()->getLatest(30),
+				'top_strings' => $this->getSearchStringRepository()->getTop(30),
 			);
 
 			return $this->display('list_top_strings');
@@ -174,7 +174,7 @@ class SearchController extends Controller
 
 	private function logSearch($query)
 	{
-		$searchString = $this->getRepository('SearchString')->findOneBy(array('name' => $query));
+		$searchString = $this->getSearchStringRepository()->findOneBy(array('name' => $query));
 		if ( ! $searchString) {
 			$searchString = new SearchString($query);
 		}
@@ -188,7 +188,7 @@ class SearchController extends Controller
 	{
 		$this->responseAge = 600; // 10 minutes
 		$this->view = array(
-			'strings' => $this->getRepository('SearchString')->getLatest($limit),
+			'strings' => $this->getSearchStringRepository()->getLatest($limit),
 		);
 
 		return $this->display('top_strings');
