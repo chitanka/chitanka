@@ -36,6 +36,7 @@
 	{% if page_feed is defined %}
 		<link rel="alternate" type="application/rss+xml" title="RSS 2.0 — {{ page_feed.title is defined ? page_feed.title : block('title') }}" href="{{ page_feed.url }}">
 	{% endif %}
+	<link rel="related" type="application/atom+xml;profile=opds-catalog" href="{{ path('catalog', {'_format': 'opds'}) }}" title="Каталог на библиотеката чрез OPDS" />
 {% endblock %}
 
 {% block body_class %}

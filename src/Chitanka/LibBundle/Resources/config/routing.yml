@@ -39,6 +39,12 @@ authors_by_country:
     defaults:       { _controller: LibBundle:Author:listByCountry, by: first-name, page: 1, _format: html }
     requirements:   { _method: get, by: first-name|last-name, page: \d+, _format: html|opds }
 
+author_show:
+    pattern:        /author/{slug}.{_format}
+    defaults:       { _controller: LibBundle:Author:show, _format: html }
+    requirements:   { _method: get, _format: html|opds }
+
+
 translators:
     pattern:        /translators.{_format}
     defaults:       { _controller: LibBundle:Translator:index, _format: html }
@@ -58,6 +64,12 @@ translators_by_alpha:
     defaults:       { _controller: LibBundle:Translator:listByAlpha, page: 1, _format: html }
     requirements:   { _method: get, by: first-name|last-name, page: \d+, _format: html|opds }
 
+translator_show:
+    pattern:        /translator/{slug}.{_format}
+    defaults:       { _controller: LibBundle:Translator:show, _format: html }
+    requirements:   { _method: get, _format: html|opds }
+
+
 persons_search:
     pattern:        /persons/search.{_format}
     defaults:       { _controller: LibBundle:Search:persons, _format: html }
@@ -68,37 +80,9 @@ person_show:
     defaults:       { _controller: LibBundle:Person:show, _format: html }
     requirements:   { _method: get, _format: html|opds }
 
-person_show_books:
-    pattern:        /person/{slug}/books.{_format}
-    defaults:       { _controller: LibBundle:Person:showBooks, _format: html }
-    requirements:   { _method: get, _format: html|opds }
-
-person_show_texts:
-    pattern:        /person/{slug}/texts.{_format}
-    defaults:       { _controller: LibBundle:Person:showTexts, _format: html }
-    requirements:   { _method: get, _format: html|opds }
-
-person_show_translations:
-    pattern:        /person/{slug}/translations.{_format}
-    defaults:       { _controller: LibBundle:Person:showTranslations, _format: html }
-    requirements:   { _method: get, _format: html|opds }
-
 person_suggest:
     pattern:        /person/{slug}/suggest
     defaults:       { _controller: LibBundle:Person:suggest }
-
-# legacy url
-author_show:
-    pattern:        /author/{name}
-    defaults:       { _controller: LibBundle:Person:showRedirect }
-    requirements:   { _method: get }
-
-# legacy url
-translator_show:
-    pattern:        /translator/{name}
-    defaults:       { _controller: LibBundle:Person:showRedirect }
-    requirements:   { _method: get }
-
 
 # # #   SERIES   # # #
 

@@ -3,6 +3,9 @@ namespace Chitanka\LibBundle\Tests\Controller;
 
 class TextControllerTest extends WebTestCase
 {
+	/**
+	 * @group html
+	 */
 	public function testIndex()
 	{
 		$page = $this->request('texts');
@@ -11,6 +14,9 @@ class TextControllerTest extends WebTestCase
 		$this->assertCount(1, $page->filter('h1'));
 	}
 
+	/**
+	 * @group opds
+	 */
 	public function testIndexOpds()
 	{
 		$route = "texts.opds";
@@ -20,6 +26,9 @@ class TextControllerTest extends WebTestCase
 		$this->assertCountGe(3, $page->filter('entry'));
 	}
 
+	/**
+	 * @group opds
+	 */
 	public function testIndexByAlphaOpds()
 	{
 		$route = "texts/alpha.opds";
@@ -29,6 +38,9 @@ class TextControllerTest extends WebTestCase
 		$this->assertCountGe(30, $page->filter('entry'));
 	}
 
+	/**
+	 * @group opds
+	 */
 	public function testIndexByLabelOpds()
 	{
 		$route = "texts/label.opds";
@@ -38,6 +50,9 @@ class TextControllerTest extends WebTestCase
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 
+	/**
+	 * @group opds
+	 */
 	public function testIndexByTypeOpds()
 	{
 		$route = "texts/type.opds";
@@ -47,6 +62,9 @@ class TextControllerTest extends WebTestCase
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 
+	/**
+	 * @group opds
+	 */
 	public function testListByAlphaByLetterAOpds()
 	{
 		$route = "texts/alpha/".urlencode('А').".opds";
@@ -56,6 +74,9 @@ class TextControllerTest extends WebTestCase
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 
+	/**
+	 * @group opds
+	 */
 	public function testListByLabelByAuthorOpds()
 	{
 		$route = "texts/label/by-author.opds";
@@ -65,6 +86,9 @@ class TextControllerTest extends WebTestCase
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 
+	/**
+	 * @group opds
+	 */
 	public function testListByTypeByNovelOpds()
 	{
 		$route = "texts/type/novel.opds";

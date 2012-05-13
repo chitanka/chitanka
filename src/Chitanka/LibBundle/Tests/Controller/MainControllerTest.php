@@ -3,6 +3,9 @@ namespace Chitanka\LibBundle\Tests\Controller;
 
 class MainControllerTest extends WebTestCase
 {
+	/**
+	 * @group opds
+	 */
 	public function testCatalogOpds()
 	{
 		$page = $this->request('catalog.opds');

@@ -1,4 +1,3 @@
-{% import 'LibBundle::helper.opds.twig' as helper %}
 {% for book in books %}
-	{{ helper.book_entry(book) }}
+	{% include 'LibBundle:Book:item.opds.twig' %}
 {% endfor %}

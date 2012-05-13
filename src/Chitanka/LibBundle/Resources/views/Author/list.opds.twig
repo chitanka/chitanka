@@ -12,14 +12,14 @@
 		{{ helper.navi_entry(
 			author.name|name_format(by)|striptags ~ ' ('~ author.person.name|name_format(by)|striptags ~')',
 			updated_at,
-			'person_show',
+			'author_show',
 			{'slug': author.person.slug},
 			_self.description(author, by)) }}
 	{% else %}
 		{{ helper.navi_entry(
 			author.name|name_format(by)|striptags,
 			updated_at,
-			'person_show',
+			'author_show',
 			{'slug': author.slug},
 			_self.description(author, by)) }}
 	{% endif %}

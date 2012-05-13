@@ -5,10 +5,16 @@ class AuthorControllerTest extends PersonControllerTest
 {
 	protected $routeBase = 'authors';
 
+	/**
+	 * @group html
+	 */
 	public function testIndexByCountryByFirstName()
 	{
 		$this->doTestIndexByCountry('first-name');
 	}
+	/**
+	 * @group html
+	 */
 	public function testIndexByCountryByLastName()
 	{
 		$this->doTestIndexByCountry('last-name');
@@ -20,10 +26,16 @@ class AuthorControllerTest extends PersonControllerTest
 		$this->assertHtmlPageIs($page, $this->routeBase.'_by_country_index');
 	}
 
+	/**
+	 * @group html
+	 */
 	public function testListByCountryByFirstName()
 	{
 		$this->doTestListByCountry('first-name');
 	}
+	/**
+	 * @group html
+	 */
 	public function testListByCountryByLastName()
 	{
 		$this->doTestListByCountry('last-name');
@@ -35,10 +47,26 @@ class AuthorControllerTest extends PersonControllerTest
 		$this->assertHtmlPageIs($page, $this->routeBase.'_by_country');
 	}
 
+	/**
+	 * @group html
+	 */
+	public function testShow()
+	{
+		$page = $this->request("author/nikolaj-tellalov");
+
+		$this->assertHtmlPageIs($page, 'author_show');
+	}
+
+	/**
+	 * @group opds
+	 */
 	public function testIndexByCountryByFirstNameOpds()
 	{
 		$this->doTestIndexByCountryOpds('first-name');
 	}
+	/**
+	 * @group opds
+	 */
 	public function testIndexByCountryByLastNameOpds()
 	{
 		$this->doTestIndexByCountryOpds('last-name');
@@ -51,10 +79,16 @@ class AuthorControllerTest extends PersonControllerTest
 		$this->assertOpdsPageIs($page, $route);
 	}
 
+	/**
+	 * @group opds
+	 */
 	public function testListByCountryByFirstNameOpds()
 	{
 		$this->doTestListByCountryOpds('first-name');
 	}
+	/**
+	 * @group opds
+	 */
 	public function testListByCountryByLastNameOpds()
 	{
 		$this->doTestListByCountryOpds('last-name');
@@ -67,9 +101,12 @@ class AuthorControllerTest extends PersonControllerTest
 		$this->assertOpdsPageIs($page, $route);
 	}
 
+	/**
+	 * @group opds
+	 */
 	public function testShowOpds()
 	{
-		$route = "person/roger-zelazny.opds";
+		$route = "author/nikolaj-tellalov.opds";
 		$page = $this->request($route);
 
 		$this->assertOpdsPageIs($page, $route);

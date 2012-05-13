@@ -3,6 +3,9 @@ namespace Chitanka\LibBundle\Tests\Controller;
 
 class SequenceControllerTest extends WebTestCase
 {
+	/**
+	 * @group html
+	 */
 	public function testIndex()
 	{
 		$page = $this->request('sequences');
@@ -11,6 +14,9 @@ class SequenceControllerTest extends WebTestCase
 		$this->assertCount(1, $page->filter('h1'));
 	}
 
+	/**
+	 * @group html
+	 */
 	public function testListByAlphaByLetterA()
 	{
 		$page = $this->request("sequences/alpha/".urlencode('А'));
@@ -18,6 +24,9 @@ class SequenceControllerTest extends WebTestCase
 		$this->assertHtmlPageIs($page, 'sequences_by_alpha');
 	}
 
+	/**
+	 * @group html
+	 */
 	public function testShow()
 	{
 		$sequence = 'BARD-HA1';
@@ -26,6 +35,9 @@ class SequenceControllerTest extends WebTestCase
 		$this->assertHtmlPageIs($page, 'sequence_show');
 	}
 
+	/**
+	 * @group opds
+	 */
 	public function testIndexOpds()
 	{
 		$page = $this->request("sequences.opds");
@@ -34,6 +46,9 @@ class SequenceControllerTest extends WebTestCase
 		$this->assertCountGe(1, $page->filter('entry'));
 	}
 
+	/**
+	 * @group opds
+	 */
 	public function testListByAlphaByLetterAOpds()
 	{
 		$route = "sequences/alpha/".urlencode('А').".opds";
@@ -42,6 +57,9 @@ class SequenceControllerTest extends WebTestCase
 		$this->assertOpdsPageIs($page, $route);
 	}
 
+	/**
+	 * @group opds
+	 */
 	public function testShowOpds()
 	{
 		$sequence = 'BARD-HA1';

@@ -1,0 +1,11 @@
+{% extends 'LibBundle::layout.opds.twig' %}
+{% import 'LibBundle::helper.opds.twig' as helper %}
+
+{% set link_self = helper.url('author_show', {'slug': person.slug}) %}
+{% set title = person.name ~ ' (автор)' %}
+{% block content %}
+	{% if books is defined %}
+		{% include 'LibBundle:Book:list.opds.twig' %}
+	{% endif %}
+	{% include 'LibBundle:Text:list.opds.twig' with {'texts': texts_as_author} %}
+{% endblock %}

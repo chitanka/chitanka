@@ -6,6 +6,6 @@
 {% set subtitle = 'поредица' %}
 {% block content %}
 	{% for text in texts %}
-		{{ helper.text_entry(text) }}
+		{% include 'LibBundle:Text:item.opds.twig' %}
 	{% endfor %}
 {% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = '<a class="selflink" data-edit="'~ path('admin_person_edit', {'id': person.id}) ~'">'~ person.name ~'</a>' %}
+{% set subtitle = ('person.role.'~person.role)|trans %}
+{% block content %}
+
+	<div class="person-{{ person.slug }}">
+	{% include 'LibBundle:Person:info.html.twig' %}
+
+	{% if books is defined %}
+		<h2 id="books">Книги</h2>
+		{% include 'LibBundle:Book:list.html.twig' %}
+	{% endif %}
+
+	{% if books is defined and texts_as_author|length %}
+		<h2 id="author">Произведения</h2>
+	{% endif %}
+	{% for series in texts_as_author %}
+		{% include 'LibBundle:Author:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
+	{% endfor %}
+	</div>
+
+	{% include 'LibBundle::color_legend.html.twig' %}
+{% endblock %}
+
+{% block inline_js %}
+	$("fieldset.infobox,fieldset.filters").boxcollapse();
+{% endblock %}

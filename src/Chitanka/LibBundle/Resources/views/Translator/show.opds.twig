@@ -1,0 +1,10 @@
+{% extends 'LibBundle::layout.opds.twig' %}
+{% import 'LibBundle::helper.opds.twig' as helper %}
+
+{% set link_self = helper.url('translator_show', {'slug': person.slug}) %}
+{% set title = person.name ~ ' (преводач)' %}
+{% block content %}
+	{% for series in texts_as_translator %}
+		{% include 'LibBundle:Text:list.opds.twig' with {'texts': series.texts} %}
+	{% endfor %}
+{% endblock %}

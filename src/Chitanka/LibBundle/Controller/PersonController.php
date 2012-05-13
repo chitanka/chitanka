@@ -5,6 +5,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Chitanka\LibBundle\Pagination\Pager;
 use Chitanka\LibBundle\Legacy\Legacy;
 use Chitanka\LibBundle\Util\String;
+use Chitanka\LibBundle\Entity\Person;
 
 class PersonController extends Controller
 {
@@ -59,31 +60,23 @@ class PersonController extends Controller
 	{
 		$this->responseAge = 86400; // 24 hours
 
-		$person = $this->getRepository('Person')->findBySlug(String::slugify($slug));
+		$person = $this->getPersonRepository()->findBySlug(String::slugify($slug));
 
 		if ($person == null) {
-			$person = $this->getRepository('Person')->findOneBy(array('name' => $slug));
+			$person = $this->getPersonRepository()->findOneBy(array('name' => $slug));
 			if ($person) {
 				return $this->urlRedirect($this->generateUrl('person_show', array('slug' => $person->getSlug())), true);
 			}
 			throw new NotFoundHttpException("Няма личност с код $slug.");
 		}
 
-		$textsAsAuthor = $this->getRepository('Text')->findByAuthor($person);
-		$textsAsTranslator = $this->getRepository('Text')->findByTranslator($person);
-		$this->view = array(
-			'person' => $person,
-			'texts_as_author' => $textsAsAuthor,
-			'texts_as_translator' => $textsAsTranslator,
-		);
+		$this->prepareViewForShow($person, $_format);
+		$this->view['person'] = $person;
 
-		if ( count($books = $this->getRepository('Book')->getByAuthor($person)) ) {
-			$this->view['books'] = $books;
-		}
 		if ($person->getInfo() != '') {
 			// TODO move this in the entity
 			list($prefix, $name) = explode(':', $person->getInfo());
-			$site = $this->getRepository('WikiSite')->findOneBy(array('code' => $prefix));
+			$site = $this->getWikiSiteRepository()->findOneBy(array('code' => $prefix));
 			$this->view['info'] = Legacy::getMwContent($site->getUrl($name));
 			$this->view['info_intro'] = $site->getIntro();
 		}
@@ -92,15 +85,23 @@ class PersonController extends Controller
 		return $this->display('show');
 	}
 
-	public function showRedirectAction($name)
+	protected function prepareViewForShow(Person $person, $format)
 	{
-		$person = $this->getRepository('Person')->findOneBy(array('name' => $name));
-		if ($person) {
-			return $this->urlRedirect($this->generateUrl('person_show', array('slug' => $person->getSlug())), true);
-		}
-		throw new NotFoundHttpException("Няма личност с име $slug.");
+		$this->prepareViewForShowAuthor($person, $format);
+		$this->prepareViewForShowTranslator($person, $format);
 	}
-
+	protected function prepareViewForShowAuthor(Person $person, $format)
+	{
+		$groupBySeries = $format == 'html';
+		$this->view['texts_as_author'] = $this->getTextRepository()->findByAuthor($person, $groupBySeries);
+		if ( count($books = $this->getBookRepository()->getByAuthor($person)) ) {
+			$this->view['books'] = $books;
+		}
+	}
+	protected function prepareViewForShowTranslator(Person $person, $format)
+	{
+		$this->view['texts_as_translator'] = $this->getTextRepository()->findByTranslator($person);
+	}
 
 	public function suggest($slug)
 	{

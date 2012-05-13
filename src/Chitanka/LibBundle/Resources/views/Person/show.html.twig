@@ -18,20 +18,14 @@
 	{% endif %}
 
 	{% if person.is_author %}
-		{% if person.is_translator %}
-			<h2 id="author">Авторски произведения</h2>
-		{% elseif books is defined and texts_as_author|length %}
-			<h2 id="author">Произведения</h2>
-		{% endif %}
+		<h2 id="author">Произведения</h2>
 		{% for series in texts_as_author %}
 			{% include 'LibBundle:Author:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
 		{% endfor %}
 	{% endif %}
 
 	{% if person.is_translator %}
-		{% if person.is_author or books is defined %}
-			<h2 id="translator">Преводни произведения</h2>
-		{% endif %}
+		<h2 id="translator">Преводни произведения</h2>
 		{% for series in texts_as_translator %}
 			{% include 'LibBundle:Translator:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
 		{% endfor %}

@@ -1,0 +1,52 @@
+{% import 'LibBundle::helper.opds.twig' as helper %}
+
+{% macro download_link(book, format, mimetype) %}
+	<link rel="http://opds-spec.org/acquisition" href="{{ url('book_show', {'id': book.id, '_format': format}) }}" type="{{ mimetype }}"/>
+{% endmacro %}
+<entry>
+	<title>
+		{{ book.title }}
+		{% if book.subtitle is not empty %}
+			({{ book.subtitle }})
+		{% endif %}
+	</title>
+	<id>{{ helper.urn('book', book.id) }}</id>
+	{% for person in book.authors %}
+		<author>
+			<name>{{ person.name }}</name>
+			<uri>{{ helper.url('person_show', {'slug': person.slug}) }}</uri>
+		</author>
+	{% endfor %}
+	<dc:language>{{ book.lang }}</dc:language>
+	{% if book.trans_year is not empty %}
+		<dc:issued>{{ book.trans_year }}</dc:issued>
+	{% elseif book.year is not empty %}
+		<dc:issued>{{ book.year }}</dc:issued>
+	{% endif %}
+	{#
+	{% for category in book.categories %}
+		<category term="{{ label.slug }}" label="{{ label.name }}"/>
+	{% endfor %}
+	#}
+
+	{{ _self.download_link(book, 'epub', 'application/epub+zip') }}
+
+	{% set cover_format = book.has_cover ? 'jpeg' : 'png' %}
+	<link rel="http://opds-spec.org/image"
+		href="{{ asset(book.has_cover ? cover(book.id, 1000) : cover(0, 600, 'png')) }}"
+		type="image/{{ cover_format }}"/>
+	<link rel="http://opds-spec.org/image/thumbnail"
+		href="{{ asset(book.has_cover ? cover(book.id, 200) : cover(0, 200, 'png')) }}"
+		type="image/{{ cover_format }}"/>
+	{#<link href="{{ helper.url('book_show', {'id': book.id}) }}" type="application/atom+xml; type=entry" rel="alternate" title="Подробна информация"/>#}
+
+	<rights>
+		{% if book.trans_license is defined %}
+			{{ book.trans_license.fullname }}
+		{% elseif book.orig_license is defined %}
+			{{ book.orig_license.fullname }}
+		{% endif %}
+	</rights>
+
+	{#<content type="text"></content>#}
+</entry>

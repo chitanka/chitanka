@@ -2,6 +2,7 @@
 namespace Chitanka\LibBundle\Controller;
 
 use Chitanka\LibBundle\Pagination\Pager;
+use Chitanka\LibBundle\Entity\Person;
 
 class AuthorController extends PersonController
 {
@@ -40,6 +41,11 @@ class AuthorController extends PersonController
 		$this->responseFormat = $_format;
 
 		return $this->display('list_by_country');
+	}
+
+	protected function prepareViewForShow(Person $person, $format)
+	{
+		$this->prepareViewForShowAuthor($person, $format);
 	}
 
 	protected function getPersonRepository()

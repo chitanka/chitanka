@@ -1,0 +1,48 @@
+{% import 'LibBundle::helper.opds.twig' as helper %}
+
+{% macro download_link(text, format, mimetype) %}
+	<link rel="http://opds-spec.org/acquisition" href="{{ url('text_show', {'id': text.id, '_format': format}) }}" type="{{ mimetype }}"/>
+{% endmacro %}
+<entry>
+	<title>
+		{% if text.sernr is not empty %}{{ text.sernr }}.{% endif %}
+		{{ text.title }}
+	</title>
+	<id>{{ helper.urn('text', text.id) }}</id>
+	<updated>2012-04-13T05:19:20Z</updated><!-- TODO -->
+	{% for person in text.authors %}
+		<author>
+			<name>{{ person.name }}</name>
+			<uri>{{ helper.url('person_show', {'slug': person.slug}) }}</uri>
+		</author>
+	{% endfor %}
+	<dc:language>{{ text.lang }}</dc:language>
+	{% if text.trans_year is defined %}
+		<dc:issued>{{ text.trans_year }}</dc:issued>
+	{% elseif text.year is defined %}
+		<dc:issued>{{ text.year }}</dc:issued>
+	{% endif %}
+	{#
+	{% for label in text.labels %}
+		<category term="{{ label.slug }}" label="{{ label.name }}"/>
+	{% endfor %}
+	#}
+
+	{{ _self.download_link(text, 'epub', 'application/epub+zip') }}
+	{#
+	{{ _self.download_link(text, 'fb2.zip', 'application/x-fictionbook+xml') }}
+	{{ _self.download_link(text, 'txt.zip', 'application/zip') }}
+	{{ _self.download_link(text, 'sfb.zip', 'application/zip') }}
+	#}
+	{#<link href="{{ helper.url('text_show', {'id': text.id}) }}" type="application/atom+xml; type=entry" rel="alternate" title="Подробна информация"/>#}
+
+	<rights>
+		{% if text.trans_license is defined %}
+			{{ text.trans_license.fullname }}
+		{% elseif text.orig_license is defined %}
+			{{ text.orig_license.fullname }}
+		{% endif %}
+	</rights>
+
+	{#<content type="text"></content>#}
+</entry>

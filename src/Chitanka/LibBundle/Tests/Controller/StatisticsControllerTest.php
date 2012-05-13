@@ -3,6 +3,9 @@ namespace Chitanka\LibBundle\Tests\Controller;
 
 class StatisticsControllerTest extends WebTestCase
 {
+	/**
+	 * @group html
+	 */
 	public function testIndex()
 	{
 		$page = $this->request('statistics');

@@ -1,0 +1,21 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = '<a class="selflink" data-edit="'~ path('admin_person_edit', {'id': person.id}) ~'">'~ person.name ~'</a>' %}
+{% set subtitle = ('person.role.'~person.role)|trans %}
+{% block content %}
+
+	<div class="person-{{ person.slug }}">
+	{% include 'LibBundle:Person:info.html.twig' %}
+
+	<h2 id="translator">Преводни произведения</h2>
+	{% for series in texts_as_translator %}
+		{% include 'LibBundle:Translator:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
+	{% endfor %}
+	</div>
+
+	{% include 'LibBundle::color_legend.html.twig' %}
+{% endblock %}
+
+{% block inline_js %}
+	$("fieldset.infobox,fieldset.filters").boxcollapse();
+{% endblock %}

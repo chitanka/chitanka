@@ -75,7 +75,7 @@ class Book extends BaseWork
 
 	/**
 	* @var integer $year
-	* @ORM\Column(type="smallint")
+	* @ORM\Column(type="smallint", nullable=true)
 	*/
 	private $year;
 

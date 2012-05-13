@@ -44,10 +44,6 @@ urn:x-chitanka:{{ route }}{% if params is not empty %}:{{ params|join('-')|url_e
 	{% endfor %}
 {% endmacro %}
 
-{% macro text_download_link(text, format, mimetype) %}
-	<link rel="http://opds-spec.org/acquisition" href="{{ url('text_show', {'id': text.id, '_format': format}) }}" type="{{ mimetype }}"/>
-{% endmacro %}
-
 {% macro navi_entry(title, updated_at, route, params, description) %}
 	<entry>
 		<title>{{ title }}</title>
@@ -56,102 +52,5 @@ urn:x-chitanka:{{ route }}{% if params is not empty %}:{{ params|join('-')|url_e
 		{% if description is not empty  %}
 			<content type="text">{{ description }}</content>
 		{% endif %}
-	</entry>
-{% endmacro %}
-
-{% macro text_entry(text) %}
-	<entry>
-		<title>
-			{% if text.sernr is not empty %}{{ text.sernr }}.{% endif %}
-			{{ text.title }}
-		</title>
-		<id>{{ _self.urn('text', text.id) }}</id>
-		<updated>2012-04-13T05:19:20Z</updated><!-- TODO -->
-		{% for person in text.authors %}
-			<author>
-				<name>{{ person.name }}</name>
-				<uri>{{ _self.url('person_show', {'slug': person.slug}) }}</uri>
-			</author>
-		{% endfor %}
-		<dc:language>{{ text.lang }}</dc:language>
-		{% if text.trans_year is defined %}
-			<dc:issued>{{ text.trans_year }}</dc:issued>
-		{% elseif text.year is defined %}
-			<dc:issued>{{ text.year }}</dc:issued>
-		{% endif %}
-		{#
-		{% for label in text.labels %}
-			<category term="{{ label.slug }}" label="{{ label.name }}"/>
-		{% endfor %}
-		#}
-
-		{{ _self.text_download_link(text, 'epub', 'application/epub+zip') }}
-		{#
-		{{ _self.text_download_link(text, 'fb2.zip', 'application/x-fictionbook+xml') }}
-		{{ _self.text_download_link(text, 'txt.zip', 'application/zip') }}
-		{{ _self.text_download_link(text, 'sfb.zip', 'application/zip') }}
-		#}
-		{#<link href="{{ _self.url('text_show', {'id': text.id}) }}" type="application/atom+xml; type=entry" rel="alternate" title="Подробна информация"/>#}
-
-		<rights>
-			{% if text.trans_license is defined %}
-				{{ text.trans_license.fullname }}
-			{% elseif text.orig_license is defined %}
-				{{ text.orig_license.fullname }}
-			{% endif %}
-		</rights>
-
-		{#<content type="text"></content>#}
-	</entry>
-{% endmacro %}
-
-{% macro book_entry(book) %}
-	<entry>
-		<title>
-			{{ book.title }}
-			{% if book.subtitle is not empty %}
-				({{ book.subtitle }})
-			{% endif %}
-		</title>
-		<id>{{ _self.urn('book', book.id) }}</id>
-		{% for person in book.authors %}
-			<author>
-				<name>{{ person.name }}</name>
-				<uri>{{ _self.url('person_show', {'slug': person.slug}) }}</uri>
-			</author>
-		{% endfor %}
-		<dc:language>{{ book.lang }}</dc:language>
-		{% if book.trans_year is defined %}
-			<dc:issued>{{ book.trans_year }}</dc:issued>
-		{% elseif book.year is defined %}
-			<dc:issued>{{ book.year }}</dc:issued>
-		{% endif %}
-		{#
-		{% for category in book.categories %}
-			<category term="{{ label.slug }}" label="{{ label.name }}"/>
-		{% endfor %}
-		#}
-
-		{{ _self.text_download_link(book, 'epub', 'application/epub+zip') }}
-
-		{# TODO #}
-{#
-		<link rel="http://opds-spec.org/image"
-			href="/covers/4561.lrg.png"
-			type="image/png"/>
-		<link rel="http://opds-spec.org/image/thumbnail"
-			href="/covers/4561.thmb.gif"
-			type="image/gif"/>#}
-		{#<link href="{{ _self.url('book_show', {'id': book.id}) }}" type="application/atom+xml; type=entry" rel="alternate" title="Подробна информация"/>#}
-
-		<rights>
-			{% if book.trans_license is defined %}
-				{{ book.trans_license.fullname }}
-			{% elseif book.orig_license is defined %}
-				{{ book.orig_license.fullname }}
-			{% endif %}
-		</rights>
-
-		{#<content type="text"></content>#}
 	</entry>
 {% endmacro %}
