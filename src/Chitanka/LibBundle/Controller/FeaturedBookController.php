@@ -8,7 +8,7 @@ class FeaturedBookController extends Controller
 	public function indexAction($_format)
 	{
 		$this->view = array(
-			'books' => $this->getRepository('FeaturedBook')->getLatest(100),
+			'books' => $this->getFeaturedBookRepository()->getLatest(100),
 		);
 		$this->responseFormat = $_format;
 
@@ -19,7 +19,7 @@ class FeaturedBookController extends Controller
 	public function bookAction()
 	{
 		$this->view = array(
-			'book' => $this->getRepository('FeaturedBook')->getRandom()
+			'book' => $this->getFeaturedBookRepository()->getRandom()
 		);
 
 		return $this->display('book');

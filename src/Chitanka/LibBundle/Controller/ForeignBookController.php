@@ -8,7 +8,7 @@ class ForeignBookController extends Controller
 	public function indexAction($_format)
 	{
 		$this->view = array(
-			'books' => $this->getRepository('ForeignBook')->getLatest(100)
+			'books' => $this->getForeignBookRepository()->getLatest(100)
 		);
 		$this->responseFormat = $_format;
 
@@ -19,7 +19,7 @@ class ForeignBookController extends Controller
 	public function bookAction()
 	{
 		$this->view = array(
-			'book' => $this->getRepository('ForeignBook')->getRandom()
+			'book' => $this->getForeignBookRepository()->getRandom()
 		);
 
 		return $this->display('book');

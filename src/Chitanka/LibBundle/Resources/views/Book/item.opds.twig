@@ -11,6 +11,7 @@
 		{% endif %}
 	</title>
 	<id>{{ helper.urn('book', book.id) }}</id>
+	<updated>{{ book.created_at|date('c') }}</updated>{# TODO #}
 	{% for person in book.authors %}
 		<author>
 			<name>{{ person.name }}</name>

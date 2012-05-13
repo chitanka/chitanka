@@ -361,9 +361,9 @@ new:
     defaults: { _controller: LibBundle:History:index }
 
 new_books:
-    pattern:   /new/books.{_format}
-    defaults: { _controller: LibBundle:History:listBooks, _format: html }
-    requirements:   { _method: get, _format: html|rss|opds }
+    pattern:   /new/books.{_format}/{page}
+    defaults: { _controller: LibBundle:History:listBooks, page: 1, _format: html }
+    requirements:   { _method: get, page: \d+, _format: html|rss|opds }
 
 new_books_by_month:
     pattern:   /new/books/{year}/{month}.{_format}/{page}
@@ -376,9 +376,9 @@ new_books_by_month:
         _format: html|opds
 
 new_texts:
-    pattern:   /new/texts.{_format}
-    defaults: { _controller: LibBundle:History:listTexts, _format: html }
-    requirements:   { _method: get, _format: html|rss|opds }
+    pattern:   /new/texts.{_format}/{page}
+    defaults: { _controller: LibBundle:History:listTexts, page: 1, _format: html }
+    requirements:   { _method: get, page: \d+, _format: html|rss|opds }
 
 new_texts_by_month:
     pattern:   /new/texts/{year}/{month}.{_format}/{page}

@@ -55,8 +55,8 @@ class UserController extends Controller
 	public function contribsAction($username, $page)
 	{
 		$limit = 50;
-		$user = $this->getRepository('User')->findOneby(array('username' => $username));
-		$repo = $this->getRepository('UserTextContrib');
+		$user = $this->getUserRepository()->findOneby(array('username' => $username));
+		$repo = $this->getUserTextContribRepository();
 
 		$this->view = array(
 			'user' => $user,
@@ -79,18 +79,18 @@ class UserController extends Controller
 		$this->responseAge = 0;
 
 		if ($this->getUser()->getUsername() != $username) {
-			$user = $this->getRepository('User')->findOneBy(array('token' => $username));
+			$user = $this->getUserRepository()->findOneBy(array('token' => $username));
 			if ( ! $user) {
 				throw new HttpException(401);
 			}
 			$isOwner = false;
 		} else {
-			$user = $this->getRepository('User')->findOneBy(array('username' => $username));
+			$user = $this->getUserRepository()->findOneBy(array('username' => $username));
 			$isOwner = true;
 		}
 
 		$limit = 50;
-		$repo = $this->getRepository('UserTextRead');
+		$repo = $this->getUserTextReadRepository();
 
 		$this->view = array(
 			'user' => $user,
@@ -114,18 +114,18 @@ class UserController extends Controller
 		$this->responseAge = 0;
 
 		if ($this->getUser()->getUsername() != $username) {
-			$user = $this->getRepository('User')->findOneBy(array('token' => $username));
+			$user = $this->getUserRepository()->findOneBy(array('token' => $username));
 			if ( ! $user) {
 				throw new HttpException(401);
 			}
 			$isOwner = false;
 		} else {
-			$user = $this->getRepository('User')->findOneBy(array('username' => $username));
+			$user = $this->getUserRepository()->findOneBy(array('username' => $username));
 			$isOwner = true;
 		}
 
 		$limit = 50;
-		$repo = $this->getRepository('Bookmark');
+		$repo = $this->getBookmarkRepository();
 
 		$this->view = array(
 			'user' => $user,
@@ -159,8 +159,8 @@ class UserController extends Controller
 		$texts = $this->get('request')->get('texts');
 
 		return $this->displayJson(array(
-			'read' => array_flip($this->getRepository('UserTextRead')->getValidTextIds($this->getUser(), $texts)),
-			'favorities' => array_flip($this->getRepository('Bookmark')->getValidTextIds($this->getUser(), $texts)),
+			'read' => array_flip($this->getUserTextReadRepository()->getValidTextIds($this->getUser(), $texts)),
+			'favorities' => array_flip($this->getBookmarkRepository()->getValidTextIds($this->getUser(), $texts)),
 		));
 	}
 

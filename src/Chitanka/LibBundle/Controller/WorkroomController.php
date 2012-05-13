@@ -78,7 +78,7 @@ class WorkroomController extends Controller
 			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
 		}
 
-		$contrib = $this->getRepository('WorkContrib')->find($id);
+		$contrib = $this->getWorkContribRepository()->find($id);
 		if ($contrib === null) {
 			throw new NotFoundHttpException();
 		}
@@ -107,7 +107,7 @@ class WorkroomController extends Controller
 	public function latestAction($limit = 10)
 	{
 		$this->view = array(
-			'entries' => $this->getRepository('WorkEntry')->getLatest($limit),
+			'entries' => $this->getWorkEntryRepository()->getLatest($limit),
 		);
 
 		return $this->display('entries_list');

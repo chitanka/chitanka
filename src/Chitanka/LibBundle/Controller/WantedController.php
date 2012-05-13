@@ -6,7 +6,7 @@ class WantedController extends Controller
 {
 	public function indexAction()
 	{
-		$this->view['books'] = $this->getRepository('WantedBook')->findAll();
+		$this->view['books'] = $this->getWantedBookRepository()->findAll();
 
 		return $this->display('index');
 	}
@@ -14,7 +14,7 @@ class WantedController extends Controller
 	public function stripeAction()
 	{
 		if ( rand(0, 2) === 0 /*every third*/ ) {
-			$book = $this->getRepository('WantedBook')->getRandom();
+			$book = $this->getWantedBookRepository()->getRandom();
 			$this->view = array(
 				'book' => $book,
 				'put_link' => (strpos($book->getDescription(), '<a ') === false),

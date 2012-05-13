@@ -49,7 +49,7 @@ class MainController extends Controller
 	public function siteboxAction()
 	{
 		$data = array(
-			'site' => $this->getRepository('Site')->getRandom()
+			'site' => $this->getSiteRepository()->getRandom()
 		);
 
 		return $this->render('LibBundle:Main:sitebox.html.twig', $data);

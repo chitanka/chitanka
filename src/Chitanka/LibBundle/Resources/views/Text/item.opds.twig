@@ -9,7 +9,7 @@
 		{{ text.title }}
 	</title>
 	<id>{{ helper.urn('text', text.id) }}</id>
-	<updated>2012-04-13T05:19:20Z</updated><!-- TODO -->
+	<updated>{{ text.created_at|date('c') }}</updated>{# TODO #}
 	{% for person in text.authors %}
 		<author>
 			<name>{{ person.name }}</name>

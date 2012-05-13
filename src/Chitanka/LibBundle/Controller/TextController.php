@@ -91,7 +91,7 @@ class TextController extends Controller
 		$limit = 30;
 
 		$slug = String::slugify($slug);
-		$label = $this->getRepository('Label')->findBySlug($slug);
+		$label = $this->getLabelRepository()->findBySlug($slug);
 		if ($label === null) {
 			throw new NotFoundHttpException("Няма етикет с код $slug.");
 		}
@@ -142,7 +142,7 @@ class TextController extends Controller
 	{
 		list($id) = explode('-', $id); // remove optional slug
 		try {
-			$text = $this->getRepository('Text')->get($id);
+			$text = $this->getTextRepository()->get($id);
 		} catch (NoResultException $e) {
 			throw new NotFoundHttpException("Няма текст с номер $id.");
 		}
@@ -176,7 +176,7 @@ class TextController extends Controller
 
 	public function showPartAction($id, $part)
 	{
-		return $this->showHtml($this->getRepository('Text')->get($id), $part);
+		return $this->showHtml($this->getTextRepository()->get($id), $part);
 	}
 
 	public function showHtml($text, $part)
@@ -196,7 +196,7 @@ class TextController extends Controller
 		if (empty($nextPart)) {
 			Setup::doSetup($this->container);
 			$ids = $text->getSimilar(5, $this->getUser());
-			$this->view['similar_texts'] = $ids ? $this->getRepository('Text')->getByIds($ids) : array();
+			$this->view['similar_texts'] = $ids ? $this->getTextRepository()->getByIds($ids) : array();
 		}
 
 		$this->view['js_extra'][] = 'text';
@@ -221,7 +221,7 @@ class TextController extends Controller
 
 	public function randomAction()
 	{
-		$id = $this->getRepository('Text')->getRandomId();
+		$id = $this->getTextRepository()->getRandomId();
 
 		return $this->urlRedirect($this->generateUrl('text_show', array('id' => $id)));
 	}
@@ -239,11 +239,11 @@ class TextController extends Controller
 
 	public function ratingAction(Request $request, $id)
 	{
-		$text = $this->getRepository('Text')->find($id);
+		$text = $this->getTextRepository()->find($id);
 
 		$em = $this->getEntityManager();
 		$user = $em->merge($this->getUser());
-		$rating = $this->getRepository('TextRating')->getByTextAndUser($text, $user);
+		$rating = $this->getTextRatingRepository()->getByTextAndUser($text, $user);
 		if ( ! $rating) {
 			$rating = new TextRating($text, $user);
 		}
@@ -291,7 +291,7 @@ class TextController extends Controller
 			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
 		}
 
-		$text = $this->getRepository('Text')->find($id);
+		$text = $this->getTextRepository()->find($id);
 		if ($text === null) {
 			throw new NotFoundHttpException("Няма текст с номер $id.");
 		}
@@ -335,7 +335,7 @@ class TextController extends Controller
 			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
 		}
 
-		$this->getRepository('Text')->deleteTextLabel($id, $labelId)->flush();
+		$this->getTextRepository()->deleteTextLabel($id, $labelId)->flush();
 
 		if ($this->get('request')->isXmlHttpRequest()) {
 			return $this->displayText(1);
@@ -357,7 +357,7 @@ class TextController extends Controller
 		$this->responseAge = 0;
 
 		if ($this->getUser()->isAuthenticated()) {
-			$tr = $this->getRepository('UserTextRead')->findOneBy(array('text' => $id, 'user' => $this->getUser()->getId()));
+			$tr = $this->getUserTextReadRepository()->findOneBy(array('text' => $id, 'user' => $this->getUser()->getId()));
 			if ($tr) {
 				return new Response('Произведението е отбелязано като прочетено.');
 			}
@@ -374,7 +374,7 @@ class TextController extends Controller
 			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
 		}
 
-		$text = $this->getRepository('Text')->find($id);
+		$text = $this->getTextRepository()->find($id);
 		if ($text === null) {
 			throw new NotFoundHttpException("Няма текст с номер $id.");
 		}
@@ -403,7 +403,7 @@ class TextController extends Controller
 			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
 		}
 
-		$text = $this->getRepository('Text')->find($id);
+		$text = $this->getTextRepository()->find($id);
 		if ($text === null) {
 			throw new NotFoundHttpException("Няма текст с номер $id.");
 		}
@@ -411,8 +411,8 @@ class TextController extends Controller
 		$em = $this->getEntityManager();
 		$user = $em->merge($this->getUser());
 
-		$folder = $this->getRepository('BookmarkFolder')->getOrCreateForUser($user, 'favorities');
-		$bookmark = $this->getRepository('Bookmark')->findOneBy(array(
+		$folder = $this->getBookmarkFolderRepository()->getOrCreateForUser($user, 'favorities');
+		$bookmark = $this->getBookmarkRepository()->findOneBy(array(
 			'folder' => $folder->getId(),
 			'text' => $text->getId(),
 			'user' => $user->getId(),
@@ -560,7 +560,7 @@ class TextController extends Controller
 		$dlFile = new DownloadFile;
 		if ( count($textId) > 1 ) {
 			$file = $dlFile->getEpubForTexts($textId);
-		} else if ( $text = $this->getRepository('Text')->find($textId[0]) ) {
+		} else if ( $text = $this->getTextRepository()->find($textId[0]) ) {
 			$file = $dlFile->getEpubForText($text);
 		}
 
@@ -641,7 +641,7 @@ class TextController extends Controller
 
 	protected function addFb2ToDlFileFromNew($textId)
 	{
-		$work = $this->getRepository('Text')->find($textId);
+		$work = $this->getTextRepository()->find($textId);
 		if ( ! $work ) {
 			return false;
 		}
@@ -667,7 +667,7 @@ class TextController extends Controller
 
 	protected function addTxtToDlFileFromNew($textId)
 	{
-		$work = $this->getRepository('Text')->find($textId);
+		$work = $this->getTextRepository()->find($textId);
 		if ( ! $work ) {
 			return false;
 		}
@@ -794,7 +794,7 @@ class TextController extends Controller
 
 	protected function getMainFileData($textId)
 	{
-		$work = $this->getRepository('Text')->find($textId);
+		$work = $this->getTextRepository()->find($textId);
 		return array(
 			$this->getFileName($work),
 			$this->getFileDataPrefix($work, $textId),
