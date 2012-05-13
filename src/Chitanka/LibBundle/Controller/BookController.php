@@ -19,9 +19,8 @@ class BookController extends Controller
 				'categories' => $this->getCategoryRepository()->getAllAsTree(),
 			);
         }
-		$this->responseFormat = $_format;
 
-		return $this->display('index');
+		return $this->display("index.$_format");
 	}
 
 	public function listByCategoryIndexAction($_format)
@@ -35,16 +34,13 @@ class BookController extends Controller
 				break;
 		}
 		$this->view['categories'] = $categories;
-		$this->responseFormat = $_format;
 
-		return $this->display('list_by_category_index');
+		return $this->display("list_by_category_index.$_format");
 	}
 
 	public function listByAlphaIndexAction($_format)
 	{
-		$this->responseFormat = $_format;
-
-		return $this->display('list_by_alpha_index');
+		return $this->display("list_by_alpha_index.$_format");
 	}
 
 	public function listByCategoryAction($slug, $page, $_format)
@@ -66,12 +62,10 @@ class BookController extends Controller
 				'limit' => $limit,
 				'total' => $category->getNrOfBooks()
 			)),
-			'route' => $this->getCurrentRoute(),
 			'route_params' => array('slug' => $slug),
 		);
-		$this->responseFormat = $_format;
 
-		return $this->display('list_by_category');
+		return $this->display("list_by_category.$_format");
 	}
 
 
@@ -89,12 +83,10 @@ class BookController extends Controller
 				'limit' => $limit,
 				'total' => $bookRepo->countByPrefix($prefix)
 			)),
-			'route' => $this->getCurrentRoute(),
 			'route_params' => array('letter' => $letter),
 		);
-		$this->responseFormat = $_format;
 
-		return $this->display('list_by_alpha');
+		return $this->display("list_by_alpha.$_format");
 	}
 
 
@@ -106,7 +98,6 @@ class BookController extends Controller
 		} catch (NoResultException $e) {
 			throw new NotFoundHttpException("Няма книга с номер $id.");
 		}
-		$this->responseFormat = $_format;
 
 		switch ($_format) {
 			case 'sfb.zip':
@@ -142,7 +133,7 @@ class BookController extends Controller
 			'info' => $book->getExtraInfoAsXhtml(),
 		);
 
-		return $this->display('show');
+		return $this->display("show.$_format");
 	}
 
 

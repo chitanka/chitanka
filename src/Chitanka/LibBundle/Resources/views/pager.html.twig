@@ -1,4 +1,6 @@
 {% if pager.show %}
+	{% set route = route|default(current_route) %}
+	{% set route_params = route_params|default({}) %}
 	<dl class="menu buttonmenu">
 	<dt>Страници</dt>
 	<dd><ul>

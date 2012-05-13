@@ -12,9 +12,8 @@ class AuthorController extends PersonController
 			'by' => $by,
 			'countries' => $this->getPersonRepository()->getCountryList()
 		);
-		$this->responseFormat = $_format;
 
-		return $this->display('list_by_country_index');
+		return $this->display("list_by_country_index.$_format");
 	}
 
 	public function listByCountryAction($country, $by, $page, $_format)
@@ -38,9 +37,39 @@ class AuthorController extends PersonController
 			'route' => $this->getCurrentRoute(),
 			'route_params' => array('country' => $country, 'by' => $by, '_format' => $_format),
 		);
-		$this->responseFormat = $_format;
 
-		return $this->display('list_by_country');
+		return $this->display("list_by_country.$_format");
+	}
+
+	public function showBooksAction($slug, $_format)
+	{
+		$person = $this->tryToFindPerson($slug);
+		if ( ! $person instanceof Person) {
+			return $person;
+		}
+
+		$this->view = array(
+			'person' => $person,
+			'books'  => $this->getBookRepository()->getByAuthor($person),
+		);
+
+		return $this->display("show_books.$_format");
+	}
+
+	public function showTextsAction($slug, $_format)
+	{
+		$person = $this->tryToFindPerson($slug);
+		if ( ! $person instanceof Person) {
+			return $person;
+		}
+
+		$groupBySeries = $_format == 'html';
+		$this->view = array(
+			'person' => $person,
+			'texts'  => $this->getTextRepository()->findByAuthor($person, $groupBySeries),
+		);
+
+		return $this->display("show_texts.$_format");
 	}
 
 	protected function prepareViewForShow(Person $person, $format)

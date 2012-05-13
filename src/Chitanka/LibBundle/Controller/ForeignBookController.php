@@ -10,9 +10,8 @@ class ForeignBookController extends Controller
 		$this->view = array(
 			'books' => $this->getForeignBookRepository()->getLatest(100)
 		);
-		$this->responseFormat = $_format;
 
-		return $this->display('index');
+		return $this->display("index.$_format");
 	}
 
 

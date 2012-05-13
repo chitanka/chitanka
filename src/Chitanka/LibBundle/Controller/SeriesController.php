@@ -9,9 +9,7 @@ class SeriesController extends Controller
 {
 	public function indexAction($_format)
 	{
-		$this->responseFormat = $_format;
-
-		return $this->display('index');
+		return $this->display("index.$_format");
 	}
 
 	public function listByAlphaAction($letter, $page, $_format)
@@ -28,12 +26,10 @@ class SeriesController extends Controller
 				'limit' => $limit,
 				'total' => $repo->countByPrefix($prefix)
 			)),
-			'route' => $this->getCurrentRoute(),
 			'route_params' => array('letter' => $letter),
 		);
-		$this->responseFormat = $_format;
 
-		return $this->display('list_by_alpha');
+		return $this->display("list_by_alpha.$_format");
 	}
 
 
@@ -49,9 +45,8 @@ class SeriesController extends Controller
 			'series' => $series,
 			'texts'  => $this->getTextRepository()->getBySeries($series),
 		);
-		$this->responseFormat = $_format;
 
-		return $this->display('show');
+		return $this->display("show.$_format");
 	}
 
 }

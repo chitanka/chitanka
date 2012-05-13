@@ -55,9 +55,8 @@ class SearchController extends Controller
 			$this->responseStatusCode = 404;
 		}
 		$this->view = compact('query', 'persons', 'found');
-		$this->responseFormat = $_format;
 
-		return $this->display('persons');
+		return $this->display("persons.$_format");
 	}
 
 
@@ -75,9 +74,8 @@ class SearchController extends Controller
 			$this->responseStatusCode = 404;
 		}
 		$this->view = compact('query', 'texts', 'found');
-		$this->responseFormat = $_format;
 
-		return $this->display('texts');
+		return $this->display("texts.$_format");
 	}
 
 
@@ -95,9 +93,8 @@ class SearchController extends Controller
 			$this->responseStatusCode = 404;
 		}
 		$this->view = compact('query', 'books', 'found');
-		$this->responseFormat = $_format;
 
-		return $this->display('books');
+		return $this->display("books.$_format");
 	}
 
 
@@ -115,9 +112,8 @@ class SearchController extends Controller
 			$this->responseStatusCode = 404;
 		}
 		$this->view = compact('query', 'series', 'found');
-		$this->responseFormat = $_format;
 
-		return $this->display('series');
+		return $this->display("series.$_format");
 	}
 
 
@@ -142,7 +138,6 @@ class SearchController extends Controller
 
 	private function getQuery($_format = 'html')
 	{
-		$this->responseFormat = $_format;
 		$request = $this->get('request')->query;
 		$query = $request->get('q');
 
@@ -152,7 +147,7 @@ class SearchController extends Controller
 				'top_strings' => $this->getSearchStringRepository()->getTop(30),
 			);
 
-			return $this->display('list_top_strings');
+			return $this->display("list_top_strings.$_format");
 		}
 
 		$query = String::fixEncoding($query);
@@ -162,7 +157,7 @@ class SearchController extends Controller
 			$this->view['message'] = sprintf('Трябва да въведете поне %d знака.', $this->minQueryLength);
 			$this->responseStatusCode = 400;
 
-			return $this->display('message');
+			return $this->display("message.$_format");
 		}
 
 		return array(

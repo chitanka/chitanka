@@ -77,9 +77,7 @@ class MainController extends Controller
 
 	public function catalogAction($_format)
 	{
-		$this->responseFormat = $_format;
-
-		return $this->display('catalog');
+		return $this->display("catalog.$_format");
 	}
 
 }

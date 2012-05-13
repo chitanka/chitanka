@@ -58,6 +58,26 @@ class AuthorControllerTest extends PersonControllerTest
 	}
 
 	/**
+	 * @group html
+	 */
+	public function testShowBooks()
+	{
+		$page = $this->request("author/nikolaj-tellalov/books");
+
+		$this->assertHtmlPageIs($page, 'author_show_books');
+	}
+
+	/**
+	 * @group html
+	 */
+	public function testShowTexts()
+	{
+		$page = $this->request("author/nikolaj-tellalov/texts");
+
+		$this->assertHtmlPageIs($page, 'author_show_texts');
+	}
+
+	/**
 	 * @group opds
 	 */
 	public function testIndexByCountryByFirstNameOpds()
@@ -107,6 +127,30 @@ class AuthorControllerTest extends PersonControllerTest
 	public function testShowOpds()
 	{
 		$route = "author/nikolaj-tellalov.opds";
+		$page = $this->request($route);
+
+		$this->assertOpdsPageIs($page, $route);
+		$this->assertCountGe(1, $page->filter('entry'));
+	}
+
+	/**
+	 * @group opds
+	 */
+	public function testShowBooksOpds()
+	{
+		$route = "author/nikolaj-tellalov/books.opds";
+		$page = $this->request($route);
+
+		$this->assertOpdsPageIs($page, $route);
+		$this->assertCountGe(1, $page->filter('entry'));
+	}
+
+	/**
+	 * @group opds
+	 */
+	public function testShowTextsOpds()
+	{
+		$route = "author/nikolaj-tellalov/texts.opds";
 		$page = $this->request($route);
 
 		$this->assertOpdsPageIs($page, $route);

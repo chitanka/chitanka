@@ -9,14 +9,13 @@ class TextCommentController extends Controller
 	public function indexAction($page, $_format)
 	{
 		$this->responseAge = 0;
-		$this->responseFormat = $_format;
 		if ($_format == 'rss') {
 			$limit = 10;
 			$this->view = array(
 				'comments' => $this->getTextCommentRepository()->getLatest($limit),
 			);
 
-			return $this->display('index');
+			return $this->display("index.$_format");
 		}
 
 		$_REQUEST['page'] = $page;

@@ -11,9 +11,7 @@ class PersonController extends Controller
 {
 	public function indexAction($_format)
 	{
-		$this->responseFormat = $_format;
-
-		return $this->display('index');
+		return $this->display("index.$_format");
 	}
 
 	public function listByAlphaIndexAction($by, $_format)
@@ -21,9 +19,8 @@ class PersonController extends Controller
 		$this->view = array(
 			'by' => $by,
 		);
-		$this->responseFormat = $_format;
 
-		return $this->display('list_by_alpha_index');
+		return $this->display("list_by_alpha_index.$_format");
 	}
 
 	public function listByAlphaAction($by, $letter, $page, $_format)
@@ -51,15 +48,28 @@ class PersonController extends Controller
 			'route' => $this->getCurrentRoute(),
 			'route_params' => array('letter' => $letter, 'by' => $by),
 		);
-		$this->responseFormat = $_format;
 
-		return $this->display('list_by_alpha');
+		return $this->display("list_by_alpha.$_format");
 	}
 
 	public function showAction($slug, $_format)
 	{
 		$this->responseAge = 86400; // 24 hours
 
+		$person = $this->tryToFindPerson($slug);
+		if ( ! $person instanceof Person) {
+			return $person;
+		}
+
+		$this->prepareViewForShow($person, $_format);
+		$this->view['person'] = $person;
+		$this->putPersonInfoInView($person);
+
+		return $this->display("show.$_format");
+	}
+
+	protected function tryToFindPerson($slug)
+	{
 		$person = $this->getPersonRepository()->findBySlug(String::slugify($slug));
 
 		if ($person == null) {
@@ -69,20 +79,7 @@ class PersonController extends Controller
 			}
 			throw new NotFoundHttpException("Няма личност с код $slug.");
 		}
-
-		$this->prepareViewForShow($person, $_format);
-		$this->view['person'] = $person;
-
-		if ($person->getInfo() != '') {
-			// TODO move this in the entity
-			list($prefix, $name) = explode(':', $person->getInfo());
-			$site = $this->getWikiSiteRepository()->findOneBy(array('code' => $prefix));
-			$this->view['info'] = Legacy::getMwContent($site->getUrl($name));
-			$this->view['info_intro'] = $site->getIntro();
-		}
-		$this->responseFormat = $_format;
-
-		return $this->display('show');
+		return $person;
 	}
 
 	protected function prepareViewForShow(Person $person, $format)
@@ -101,6 +98,17 @@ class PersonController extends Controller
 	protected function prepareViewForShowTranslator(Person $person, $format)
 	{
 		$this->view['texts_as_translator'] = $this->getTextRepository()->findByTranslator($person);
+	}
+
+	protected function putPersonInfoInView(Person $person)
+	{
+		if ($person->getInfo() != '') {
+			// TODO move this in the entity
+			list($prefix, $name) = explode(':', $person->getInfo());
+			$site = $this->getWikiSiteRepository()->findOneBy(array('code' => $prefix));
+			$this->view['info'] = Legacy::getMwContent($site->getUrl($name));
+			$this->view['info_intro'] = $site->getIntro();
+		}
 	}
 
 	public function suggest($slug)

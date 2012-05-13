@@ -35,32 +35,27 @@ class TextController extends Controller
 				'types' => $this->getTextRepository()->getTypes(),
 			);
 		}
-		$this->responseFormat = $_format;
 
-		return $this->display('index');
+		return $this->display("index.$_format");
 	}
 
 	public function listByTypeIndexAction($_format)
 	{
 		$this->view['types'] = $this->getTextRepository()->getTypes();
-		$this->responseFormat = $_format;
 
-		return $this->display('list_by_type_index');
+		return $this->display("list_by_type_index.$_format");
 	}
 
 	public function listByLabelIndexAction($_format)
 	{
 		$this->view['labels'] = $this->getLabelRepository()->getAll();
-		$this->responseFormat = $_format;
 
-		return $this->display('list_by_label_index');
+		return $this->display("list_by_label_index.$_format");
 	}
 
 	public function listByAlphaIndexAction($_format)
 	{
-		$this->responseFormat = $_format;
-
-		return $this->display('list_by_alpha_index');
+		return $this->display("list_by_alpha_index.$_format");
 	}
 
 	public function listByTypeAction($type, $page, $_format)
@@ -76,12 +71,10 @@ class TextController extends Controller
 				'limit' => $limit,
 				'total' => $textRepo->countByType($type)
 			)),
-			'route' => $this->getCurrentRoute(),
 			'route_params' => array('type' => $type),
 		));
-		$this->responseFormat = $_format;
 
-		return $this->display('list_by_type');
+		return $this->display("list_by_type.$_format");
 	}
 
 
@@ -109,9 +102,8 @@ class TextController extends Controller
 			'route' => $this->getCurrentRoute(),
 			'route_params' => array('slug' => $slug),
 		));
-		$this->responseFormat = $_format;
 
-		return $this->display('list_by_label');
+		return $this->display("list_by_label.$_format");
 	}
 
 
@@ -129,12 +121,10 @@ class TextController extends Controller
 				'limit' => $limit,
 				'total' => $textRepo->countByPrefix($prefix)
 			)),
-			'route' => $this->getCurrentRoute(),
 			'route_params' => array('letter' => $letter),
 		);
-		$this->responseFormat = $_format;
 
-		return $this->display('list_by_alpha');
+		return $this->display("list_by_alpha.$_format");
 	}
 
 
@@ -146,7 +136,6 @@ class TextController extends Controller
 		} catch (NoResultException $e) {
 			throw new NotFoundHttpException("Няма текст с номер $id.");
 		}
-		$this->responseFormat = $_format;
 
 		switch ($_format) {
 			case 'txt':

@@ -44,9 +44,8 @@ class HistoryController extends Controller
 				);
 				break;
 		}
-		$this->responseFormat = $_format;
 
-		return $this->display('list_books');
+		return $this->display("list_books.$_format");
 	}
 
 	public function listBooksByMonthAction($year, $month, $page)
@@ -68,7 +67,7 @@ class HistoryController extends Controller
 			'route_params' => compact('year', 'month'),
 		);
 
-		return $this->display('list_books_by_month');
+		return $this->display("list_books_by_month.$_format");
 	}
 
 	public function listTextsAction($page, $_format)
@@ -96,9 +95,8 @@ class HistoryController extends Controller
 				);
 				break;
 		}
-		$this->responseFormat = $_format;
 
-		return $this->display('list_texts');
+		return $this->display("list_texts.$_format");
 	}
 
 	public function listTextsByMonthAction($year, $month, $page)

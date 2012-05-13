@@ -37,6 +37,11 @@ abstract class Controller extends SymfonyController
 
 	protected function legacyPage($page, $controller = ':legacy')
 	{
+		if (strpos($page, '.') === false) {
+			$format = $this->responseFormat;
+		} else {
+			list($page, $format) = explode('.', $page);
+		}
 		$page = Setup::getPage($page, $this, $this->container);
 		if ($page->redirect) {
 			return $this->urlRedirect($page->redirect);
@@ -55,7 +60,7 @@ abstract class Controller extends SymfonyController
 			$data['inline_js'] = $page->inlineJs;
 		}
 
-		$response = $this->render("LibBundle:$controller.$this->responseFormat.twig", $this->view + $data);
+		$response = $this->render("LibBundle:$controller.$format.twig", $this->view + $data);
 		if ($this->responseAge) {
 			$response->setPublic();
 			$response->setSharedMaxAge($this->responseAge);
@@ -67,6 +72,11 @@ abstract class Controller extends SymfonyController
 
 	protected function display($action, $controller = null)
 	{
+		if (strpos($action, '.') === false) {
+			$format = $this->responseFormat;
+		} else {
+			list($action, $format) = explode('.', $action);
+		}
 		$request = $this->get('request');
 		$globals = array(
 			'menu' => $this->container->getParameter('menu'),
@@ -79,7 +89,7 @@ abstract class Controller extends SymfonyController
 			'ajax' => $request->isXmlHttpRequest(),
 		);
 
-		if ($this->responseFormat == 'opds') {
+		if ($format == 'opds') {
 			$textsUpdatedAt = $this->getTextRevisionRepository()->getMaxDate();
 			$booksUpdatedAt = $this->getBookRevisionRepository()->getMaxDate();
 			$globals += array(
@@ -91,7 +101,7 @@ abstract class Controller extends SymfonyController
 		if ($controller === null) {
 			$controller = $this->getName();
 		}
-		$response = $this->render(sprintf('LibBundle:%s:%s.%s.twig', $controller, $action, $this->responseFormat), $this->view + $globals);
+		$response = $this->render(sprintf('LibBundle:%s:%s.%s.twig', $controller, $action, $format), $this->view + $globals);
 		if ($this->responseAge) {
 			$response->setPublic();
 			$response->setSharedMaxAge($this->responseAge);

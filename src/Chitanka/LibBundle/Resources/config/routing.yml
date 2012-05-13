@@ -44,6 +44,16 @@ author_show:
     defaults:       { _controller: LibBundle:Author:show, _format: html }
     requirements:   { _method: get, _format: html|opds }
 
+author_show_books:
+    pattern:        /author/{slug}/books.{_format}
+    defaults:       { _controller: LibBundle:Author:showBooks, _format: html }
+    requirements:   { _method: get, _format: html|opds }
+
+author_show_texts:
+    pattern:        /author/{slug}/texts.{_format}
+    defaults:       { _controller: LibBundle:Author:showTexts, _format: html }
+    requirements:   { _method: get, _format: html|opds }
+
 
 translators:
     pattern:        /translators.{_format}
