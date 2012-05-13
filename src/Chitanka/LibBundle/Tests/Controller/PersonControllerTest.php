@@ -15,6 +15,8 @@ class PersonControllerTest extends WebTestCase
 		$this->assertHtmlPageIs($page, $this->routeBase);
 		$this->assertCount(1, $page->filter('h1'));
 		$this->assertCountGe(2, $page->filter('h2'));
+		$this->assertEquals("/$this->routeBase/first-name/".urlencode('А'), $page->filter('div.first-name a')->eq(0)->attr("href"), 'First link from the first-name navigation');
+		$this->assertEquals("/$this->routeBase/last-name/".urlencode('А'), $page->filter('div.last-name a')->eq(0)->attr("href"), 'First link from the last-name navigation');
 	}
 
 	/**

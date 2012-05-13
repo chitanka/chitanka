@@ -23,5 +23,5 @@
 {% endmacro %}
 
 {% macro person_last_letter_links(route, letter) %}
-	{{ _self.letter_links(route, letter|default(''), '<span> (фамилия)</span>', {'by': 'first-name'}) }}
+	{{ _self.letter_links(route, letter|default(''), '<span> (фамилия)</span>', {'by': 'last-name'}) }}
 {% endmacro %}
