@@ -24,6 +24,26 @@ class HistoryControllerTest extends WebTestCase
 	}
 
 	/**
+	 * @group html
+	 */
+	public function testNewTextsByMonth()
+	{
+		$page = $this->request("new/texts/2005/9");
+
+		$this->assertHtmlPageIs($page, 'new_texts_by_month');
+	}
+
+	/**
+	 * @group html
+	 */
+	public function testNewBooksByMonth()
+	{
+		$page = $this->request("new/books/2005/9");
+
+		$this->assertHtmlPageIs($page, 'new_books_by_month');
+	}
+
+	/**
 	 * @group opds
 	 */
 	public function testNewTextsOpds()

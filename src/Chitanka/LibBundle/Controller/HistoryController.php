@@ -67,7 +67,7 @@ class HistoryController extends Controller
 			'route_params' => compact('year', 'month'),
 		);
 
-		return $this->display("list_books_by_month.$_format");
+		return $this->display("list_books_by_month");
 	}
 
 	public function listTextsAction($page, $_format)
