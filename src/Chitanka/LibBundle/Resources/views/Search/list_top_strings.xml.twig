@@ -1,8 +1,19 @@
 {% extends 'LibBundle::layout.xml.twig' %}
 {% block body %}
 <queries>
-{% for string in strings %}
-	<query>{{ string.name }}</query>
-{% endfor %}
+	<top>
+		{% for string in top_strings %}
+			<query>
+				{% include 'LibBundle:SearchString:item.xml.twig' %}
+			</query>
+		{% endfor %}
+	</top>
+	<latest>
+		{% for string in latest_strings %}
+			<query>
+				{% include 'LibBundle:SearchString:item.xml.twig' %}
+			</query>
+		{% endfor %}
+	</latest>
 </queries>
 {% endblock %}

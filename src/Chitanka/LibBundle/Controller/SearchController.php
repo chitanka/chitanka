@@ -12,22 +12,24 @@ class SearchController extends Controller
 	protected $responseAge = 86400; // 24 hours
 	private $minQueryLength = 3;
 
-	public function indexAction()
+	public function indexAction($_format)
 	{
-		if (($query = $this->getQuery()) instanceof Response) {
+		if (($query = $this->getQuery($_format)) instanceof Response) {
 			return $query;
 		}
 
-		$persons = $this->getPersonRepository()->getByNames($query['text']);
-		$texts = $this->getTextRepository()->getByTitles($query['text']);
-		$books = $this->getBookRepository()->getByTitles($query['text']);
-		$series = $this->getSeriesRepository()->getByNames($query['text']);
-		$sequences = $this->getSequenceRepository()->getByNames($query['text']);
-		$work_entries = $this->getWorkEntryRepository()->getByTitleOrAuthor($query['text']);
-		$labels = $this->getLabelRepository()->getByNames($query['text']);
-		$categories = $this->getCategoryRepository()->getByNames($query['text']);
+		$lists = array(
+			'persons'      => $this->getPersonRepository()->getByNames($query['text']),
+			'texts'        => $this->getTextRepository()->getByTitles($query['text']),
+			'books'        => $this->getBookRepository()->getByTitles($query['text']),
+			'series'       => $this->getSeriesRepository()->getByNames($query['text']),
+			'sequences'    => $this->getSequenceRepository()->getByNames($query['text']),
+			'work_entries' => $this->getWorkEntryRepository()->getByTitleOrAuthor($query['text']),
+			'labels'       => $this->getLabelRepository()->getByNames($query['text']),
+			'categories'   => $this->getCategoryRepository()->getByNames($query['text']),
+		);
 
-		$found = count($persons) > 0 || count($texts) > 0 || count($books) > 0 || count($series) > 0 || count($sequences) > 0 || count($work_entries) > 0 || count($labels) > 0 || count($categories) > 0;
+		$found = array_sum($lists) > 0;
 
 		if ($found) {
 			$this->logSearch($query['text']);
@@ -35,9 +37,12 @@ class SearchController extends Controller
 			$this->responseStatusCode = 404;
 		}
 
-		$this->view = compact('query', 'persons', 'texts', 'books', 'series', 'sequences', 'work_entries', 'labels', 'categories', 'found');
+		$this->view = array(
+			'query' => $query,
+			'found' => $found,
+		) + $lists;
 
-		return $this->display('index');
+		return $this->display("index.$_format");
 	}
 
 
@@ -54,7 +59,11 @@ class SearchController extends Controller
 		if ( ! ($found = count($persons) > 0)) {
 			$this->responseStatusCode = 404;
 		}
-		$this->view = compact('query', 'persons', 'found');
+		$this->view = array(
+			'query'   => $query,
+			'persons' => $persons,
+			'found'   => $found,
+		);
 
 		return $this->display("persons.$_format");
 	}
@@ -73,7 +82,11 @@ class SearchController extends Controller
 		if ( ! ($found = count($texts) > 0)) {
 			$this->responseStatusCode = 404;
 		}
-		$this->view = compact('query', 'texts', 'found');
+		$this->view = array(
+			'query' => $query,
+			'texts' => $texts,
+			'found' => $found,
+		);
 
 		return $this->display("texts.$_format");
 	}
@@ -92,7 +105,11 @@ class SearchController extends Controller
 		if ( ! ($found = count($books) > 0)) {
 			$this->responseStatusCode = 404;
 		}
-		$this->view = compact('query', 'books', 'found');
+		$this->view = array(
+			'query' => $query,
+			'books' => $books,
+			'found' => $found,
+		);
 
 		return $this->display("books.$_format");
 	}
@@ -111,7 +128,11 @@ class SearchController extends Controller
 		if ( ! ($found = count($series) > 0)) {
 			$this->responseStatusCode = 404;
 		}
-		$this->view = compact('query', 'series', 'found');
+		$this->view = array(
+			'query'  => $query,
+			'series' => $series,
+			'found'  => $found,
+		);
 
 		return $this->display("series.$_format");
 	}
@@ -130,9 +151,13 @@ class SearchController extends Controller
 		if ( ! ($found = count($sequences) > 0)) {
 			$this->responseStatusCode = 404;
 		}
-		$this->view = compact('query', 'sequences', 'found');
+		$this->view = array(
+			'query'     => $query,
+			'sequences' => $sequences,
+			'found'     => $found,
+		);
 
-		return $this->display('sequences');
+		return $this->display("sequences.$_format");
 	}
 
 
@@ -161,7 +186,7 @@ class SearchController extends Controller
 		}
 
 		return array(
-			'text' => $query,
+			'text'  => $query,
 			'by'    => $request->get('by'),
 			'match' => $matchType,
 		);

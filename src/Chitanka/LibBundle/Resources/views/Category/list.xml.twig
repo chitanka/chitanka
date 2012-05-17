@@ -1,0 +1,10 @@
+<categories>
+{% for category in categories %}
+	<category>
+		<id>{{ category.id }}</id>
+		<name>{{ category.name }}</name>
+		<slug>{{ category.slug }}</slug>
+		<nr-of-books>{{ category.nr_of_books }}</nr-of-books>
+	</category>
+{% endfor %}
+</categories>

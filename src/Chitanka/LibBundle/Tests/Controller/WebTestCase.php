@@ -30,6 +30,11 @@ abstract class WebTestCase extends BaseTestCase
 		$this->assertCount(1, $page->filter('feed'));
 	}
 
+	public function	assertXmlSearchPageIsFor(Crawler $page, $query)
+	{
+		$this->assertEquals($query, $page->filter('results')->attr('query'));
+	}
+
 	public function assertCountGe($lowerLimit, Crawler $elements)
 	{
 		$this->assertTrue($elements->count() >= $lowerLimit);

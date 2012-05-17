@@ -1,0 +1,37 @@
+{% extends 'LibBundle::layout.xml.twig' %}
+
+{% block body %}
+<results query="{{ query.text }}">
+	{% if persons|length %}
+		{% include 'LibBundle:Person:list.xml.twig' %}
+	{% endif %}
+
+	{% if texts|length %}
+		{% include 'LibBundle:Text:list.xml.twig' %}
+	{% endif %}
+
+	{% if books|length %}
+		{% include 'LibBundle:Book:list.xml.twig' %}
+	{% endif %}
+
+	{% if series|length %}
+		{% include 'LibBundle:Series:list.xml.twig' %}
+	{% endif %}
+
+	{% if sequences|length %}
+		{% include 'LibBundle:Sequence:list.xml.twig' %}
+	{% endif %}
+
+	{% if labels|length %}
+		{% include 'LibBundle:Label:list.xml.twig' %}
+	{% endif %}
+
+	{% if categories|length %}
+		{% include 'LibBundle:Category:list.xml.twig' %}
+	{% endif %}
+
+	{% if work_entries|length %}
+		{% include 'LibBundle:WorkEntry:list.xml.twig' with {'entries': work_entries} %}
+	{% endif %}
+</results>
+{% endblock %}

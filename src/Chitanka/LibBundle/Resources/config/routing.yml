@@ -333,8 +333,9 @@ links:
     defaults: { _controller: LibBundle:Wiki:index, page: links }
 
 search:
-    pattern:   /search
-    defaults: { _controller: LibBundle:Search:index }
+    pattern:      /search.{_format}
+    defaults:     { _controller: LibBundle:Search:index, _format: html }
+    requirements: { _method: get, _format: html|xml }
 
 sandbox:
     pattern:   /sandbox

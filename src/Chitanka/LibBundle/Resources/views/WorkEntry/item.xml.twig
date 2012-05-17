@@ -1,0 +1,12 @@
+<id>{{ entry.id }}</id>
+<date>{{ entry.date|date('c') }}</date>
+<type>{{ entry.type == 1 ? 'multiuser' : 'singleuser' }}</type>
+<author>{{ entry.author }}</author>
+<title>{{ entry.title }}</title>
+<comment>{{ entry.comment }}</comment>
+<progress>{{ entry.progress }}</progress>
+<status>{{ entry.status }}</status>
+<file size="{{ entry.tfsize }}">{{ entry.tmpfiles }}</file>
+<is-frozen>{{ entry.is_frozen }}</is-frozen>
+<user>{{ entry.user.username }}</user>
+{% include 'LibBundle:WorkContrib:list.xml.twig' with {'contribs': entry.contribs} %}

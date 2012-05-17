@@ -40,15 +40,11 @@
 
 	{% if work_entries|length %}
 		<h2>Работно ателие</h2>
-		{% include 'LibBundle:Workroom:entries_list.html.twig' with {'entries': work_entries} %}
+		{% include 'LibBundle:Workroom:list.html.twig' with {'entries': work_entries} %}
 	{% endif %}
 
 	{% if not found %}
 		<p class="no-items">Нямате късмет. Не открихме нищо за „{{ query.text }}“.</p>
-	{% endif %}
-
-	{% if message is defined %}
-		<p class="messages">{{ message }}</p>
 	{% endif %}
 
 {% endblock %}

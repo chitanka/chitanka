@@ -6,7 +6,7 @@
 {% if person.oreal_name is not empty %}<orig-real-name>{{ person.oreal_name }}</orig-real-name>{% endif %}
 <country>{{ person.country }}</country>
 {% if person.info is not empty %}<info>{{ person.info }}</info>{% endif %}
-{% if person.person is defined %}
+{% if person.person is defined and person.person is not empty %}
 	<person>
 		{% include 'LibBundle:Person:person.xml.twig' with {'person': person.person} %}
 	</person>
