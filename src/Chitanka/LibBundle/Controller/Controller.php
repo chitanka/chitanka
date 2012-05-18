@@ -3,6 +3,7 @@
 namespace Chitanka\LibBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Chitanka\LibBundle\Legacy\Setup;
@@ -77,7 +78,9 @@ abstract class Controller extends SymfonyController
 		} else {
 			list($action, $format) = explode('.', $action);
 		}
+		/* @var $request Request */
 		$request = $this->get('request');
+		$request->setFormat('osd', 'application/opensearchdescription+xml');
 		$globals = array(
 			'menu' => $this->container->getParameter('menu'),
 			'_user' => $this->getUser(),

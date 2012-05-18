@@ -18,6 +18,14 @@ abstract class WebTestCase extends BaseTestCase
 		return $client->request('GET', "/$route", $parameters);
 	}
 
+	public function requestJson($route, $parameters = array())
+	{
+		$client = static::createClient();
+		$page = $client->request('GET', "/$route", $parameters);
+
+		return json_decode($client->getResponse()->getContent());
+	}
+
 	public function assertHtmlPageIs(Crawler $page, $route)
 	{
 		$class = "page-$route";
@@ -33,6 +41,20 @@ abstract class WebTestCase extends BaseTestCase
 	public function	assertXmlSearchPageIsFor(Crawler $page, $query)
 	{
 		$this->assertEquals($query, $page->filter('results')->attr('query'));
+	}
+
+	public function assertOsdSearchPage(Crawler $page)
+	{
+		$this->assertCount(1, $page->filter('OpenSearchDescription'));
+	}
+
+	public function assertSuggestSearchPageIsFor($page, $query)
+	{
+		$this->assertEquals(4, count($page));
+		$this->assertEquals($query, $page[0]);
+		$this->assertTrue(count($page[1]) == count($page[2]));
+		$this->assertTrue(count($page[2]) == count($page[3]));
+		$this->assertTrue(count($page[1]) > 0);
 	}
 
 	public function assertCountGe($lowerLimit, Crawler $elements)

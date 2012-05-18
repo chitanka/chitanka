@@ -40,7 +40,7 @@
 
 	{% if work_entries|length %}
 		<h2>Работно ателие</h2>
-		{% include 'LibBundle:Workroom:list.html.twig' with {'entries': work_entries} %}
+		{% include 'LibBundle:WorkEntry:list.html.twig' with {'entries': work_entries} %}
 	{% endif %}
 
 	{% if not found %}

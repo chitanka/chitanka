@@ -35,10 +35,10 @@ services:
         tags:
             - { name: twig.extension }
 
-#     kernel.listener.chitanka:
-#         class: Chitanka\LibBundle\Listener\Listener
-#         tags:
-#             - { name: kernel.listener, event: core.security, method: run }
+    request.listener:
+        class: Chitanka\LibBundle\Listener\RequestListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
     comment.listener:
         class: Chitanka\LibBundle\Listener\CommentListener

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+	{% set title = title|default('търсене') %}
+	<ShortName>{{ title }}</ShortName>
+	<LongName>{{ title }}@Моята библиотека</LongName>
+	<Description>Търсене в Моята библиотека: {{ title }}</Description>
+	<Tags>e-book e-text</Tags>
+	<InputEncoding>UTF-8</InputEncoding>
+	<OutputEncoding>UTF-8</OutputEncoding>
+	<Image width="16" height="16" type="image/png">{{ asset('favicon.png') }}</Image>
+	<Url type="application/opensearchdescription+xml" rel="self" template="{{ url(current_route, {'_format': 'osd'}) }}" />
+	<Url type="text/html" template="{{ url(current_route, {'_format': 'html'}) }}?q={searchTerms}"/>
+	<Url type="application/x-suggestions+json" rel="suggestions" template="{{ url(current_route, {'_format': 'suggest'}) }}?q={searchTerms}"/>
+	<Query role="example" searchTerms="man" />
+	<SyndicationRight>open</SyndicationRight>
+	<Language>bg-bg</Language>
+	<moz:SearchForm>{{ url(current_route, {'_format': 'osd'}) }}</moz:SearchForm>
+</OpenSearchDescription>

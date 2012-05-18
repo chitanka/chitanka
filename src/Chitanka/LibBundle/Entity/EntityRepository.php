@@ -77,43 +77,48 @@ abstract class EntityRepository extends DoctrineEntityRepository
 	}
 
 
-	public function getByQuery($query)
+	public function getByQuery($params)
 	{
-		if (empty($query['text']) || empty($query['by'])) {
-			return false;
+		if (empty($params['text']) || empty($params['by'])) {
+			return array();
 		}
 
-		switch ($query['match']) {
+		switch ($params['match']) {
 			case 'exact':
 				$op = '=';
-				$param = $query['text'];
+				$param = $params['text'];
 				break;
 			case 'prefix':
 				$op = 'LIKE';
-				$param = "$query[text]%";
+				$param = "$params[text]%";
 				break;
 			case 'suffix':
 				$op = 'LIKE';
-				$param = "%$query[text]";
+				$param = "%$params[text]";
 				break;
 			default:
 				$op = 'LIKE';
-				$param = "%$query[text]%";
+				$param = "%$params[text]%";
 				break;
 		}
 		$tests = array();
-		foreach (explode(',', $query['by']) as $field) {
+		foreach (explode(',', $params['by']) as $field) {
 			if (in_array($field, $this->queryableFields)) {
 				$tests[] = "e.$field $op ?1";
 			}
 		}
 		if (empty($tests)) {
-			return false;
+			return array();
 		}
 
-		return $this->getQueryBuilder()
+		$query = $this->getQueryBuilder()
 			->where(implode(' OR ', $tests))->setParameter(1, $param)
-			->getQuery()->getArrayResult();
+			->getQuery();
+		if (isset($params['limit'])) {
+			$query->setMaxResults($params['limit']);
+		}
+
+		return $query->getArrayResult();
 	}
 
 

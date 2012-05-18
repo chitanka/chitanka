@@ -2,6 +2,7 @@
 
 namespace Chitanka\LibBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Chitanka\LibBundle\Pagination\Pager;
 use Chitanka\LibBundle\Entity\SearchString;
@@ -14,6 +15,9 @@ class SearchController extends Controller
 
 	public function indexAction($_format)
 	{
+		if ($_format == 'osd') {
+			return $this->display("index.$_format");
+		}
 		if (($query = $this->getQuery($_format)) instanceof Response) {
 			return $query;
 		}
@@ -46,8 +50,28 @@ class SearchController extends Controller
 	}
 
 
-	public function personsAction($_format)
+	public function personsAction(Request $request, $_format)
 	{
+		if ($_format == 'osd') {
+			return $this->display("search.$_format", 'Person');
+		}
+		if ($_format == 'suggest') {
+			$items = $descs = $urls = array();
+			$query = $request->query->get('q');
+			$persons = $this->getPersonRepository()->getByQuery(array(
+				'text'  => $query,
+				'by'    => 'name',
+				'match' => 'prefix',
+				'limit' => 10,
+			));
+			foreach ($persons as $person) {
+				$items[] = $person['name'];
+				$descs[] = '';
+				$urls[] = $this->generateUrl('person_show', array('slug' => $person['slug']), true);
+			}
+
+			return $this->displayJson(array($query, $items, $descs, $urls));
+		}
 		if (($query = $this->getQuery($_format)) instanceof Response) {
 			return $query;
 		}
@@ -65,12 +89,75 @@ class SearchController extends Controller
 			'found'   => $found,
 		);
 
-		return $this->display("persons.$_format");
+		return $this->display("search.$_format", 'Person');
 	}
 
-
-	public function textsAction($_format)
+	public function authorsAction(Request $request, $_format)
 	{
+		if ($_format == 'suggest') {
+			$items = $descs = $urls = array();
+			$query = $request->query->get('q');
+			$persons = $this->getPersonRepository()->asAuthor()->getByQuery(array(
+				'text'  => $query,
+				'by'    => 'name',
+				'match' => 'prefix',
+				'limit' => 10,
+			));
+			foreach ($persons as $person) {
+				$items[] = $person['name'];
+				$descs[] = '';
+				$urls[] = $this->generateUrl('author_show', array('slug' => $person['slug']), true);
+			}
+
+			return $this->displayJson(array($query, $items, $descs, $urls));
+		}
+		return $this->display("search.$_format", 'Author');
+	}
+
+	public function translatorsAction(Request $request, $_format)
+	{
+		if ($_format == 'suggest') {
+			$items = $descs = $urls = array();
+			$query = $request->query->get('q');
+			$persons = $this->getPersonRepository()->asTranslator()->getByQuery(array(
+				'text'  => $query,
+				'by'    => 'name',
+				'match' => 'prefix',
+				'limit' => 10,
+			));
+			foreach ($persons as $person) {
+				$items[] = $person['name'];
+				$descs[] = '';
+				$urls[] = $this->generateUrl('translator_show', array('slug' => $person['slug']), true);
+			}
+
+			return $this->displayJson(array($query, $items, $descs, $urls));
+		}
+		return $this->display("search.$_format", 'Translator');
+	}
+
+	public function textsAction(Request $request, $_format)
+	{
+		if ($_format == 'osd') {
+			return $this->display("search.$_format", 'Text');
+		}
+		if ($_format == 'suggest') {
+			$items = $descs = $urls = array();
+			$query = $request->query->get('q');
+			$texts = $this->getTextRepository()->getByQuery(array(
+				'text'  => $query,
+				'by'    => 'title',
+				'match' => 'prefix',
+				'limit' => 10,
+			));
+			foreach ($texts as $text) {
+				$items[] = $text['title'];
+				$descs[] = '';
+				$urls[] = $this->generateUrl('text_show', array('id' => $text['id']), true);
+			}
+
+			return $this->displayJson(array($query, $items, $descs, $urls));
+		}
 		if (($query = $this->getQuery($_format)) instanceof Response) {
 			return $query;
 		}
@@ -88,12 +175,32 @@ class SearchController extends Controller
 			'found' => $found,
 		);
 
-		return $this->display("texts.$_format");
+		return $this->display("search.$_format", 'Text');
 	}
 
 
-	public function booksAction($_format)
+	public function booksAction(Request $request, $_format)
 	{
+		if ($_format == 'osd') {
+			return $this->display("search.$_format", 'Book');
+		}
+		if ($_format == 'suggest') {
+			$items = $descs = $urls = array();
+			$query = $request->query->get('q');
+			$books = $this->getBookRepository()->getByQuery(array(
+				'text'  => $query,
+				'by'    => 'title',
+				'match' => 'prefix',
+				'limit' => 10,
+			));
+			foreach ($books as $book) {
+				$items[] = $book['title'];
+				$descs[] = '';
+				$urls[] = $this->generateUrl('book_show', array('id' => $book['id']), true);
+			}
+
+			return $this->displayJson(array($query, $items, $descs, $urls));
+		}
 		if (($query = $this->getQuery($_format)) instanceof Response) {
 			return $query;
 		}
@@ -111,12 +218,32 @@ class SearchController extends Controller
 			'found' => $found,
 		);
 
-		return $this->display("books.$_format");
+		return $this->display("search.$_format", 'Book');
 	}
 
 
-	public function seriesAction($_format)
+	public function seriesAction(Request $request, $_format)
 	{
+		if ($_format == 'osd') {
+			return $this->display("search.$_format", 'Series');
+		}
+		if ($_format == 'suggest') {
+			$items = $descs = $urls = array();
+			$query = $request->query->get('q');
+			$series = $this->getSeriesRepository()->getByQuery(array(
+				'text'  => $query,
+				'by'    => 'name',
+				'match' => 'prefix',
+				'limit' => 10,
+			));
+			foreach ($series as $serie) {
+				$items[] = $serie['name'];
+				$descs[] = '';
+				$urls[] = $this->generateUrl('series_show', array('slug' => $serie['slug']), true);
+			}
+
+			return $this->displayJson(array($query, $items, $descs, $urls));
+		}
 		if (($query = $this->getQuery($_format)) instanceof Response) {
 			return $query;
 		}
@@ -134,12 +261,32 @@ class SearchController extends Controller
 			'found'  => $found,
 		);
 
-		return $this->display("series.$_format");
+		return $this->display("search.$_format", 'Series');
 	}
 
 
-	public function sequencesAction($_format)
+	public function sequencesAction(Request $request, $_format)
 	{
+		if ($_format == 'osd') {
+			return $this->display("search.$_format", 'Sequence');
+		}
+		if ($_format == 'suggest') {
+			$items = $descs = $urls = array();
+			$query = $request->query->get('q');
+			$sequences = $this->getSequenceRepository()->getByQuery(array(
+				'text'  => $query,
+				'by'    => 'name',
+				'match' => 'prefix',
+				'limit' => 10,
+			));
+			foreach ($sequences as $sequence) {
+				$items[] = $sequence['name'];
+				$descs[] = '';
+				$urls[] = $this->generateUrl('sequence_show', array('slug' => $sequence['slug']), true);
+			}
+
+			return $this->displayJson(array($query, $items, $descs, $urls));
+		}
 		if (($query = $this->getQuery($_format)) instanceof Response) {
 			return $query;
 		}
@@ -157,7 +304,7 @@ class SearchController extends Controller
 			'found'     => $found,
 		);
 
-		return $this->display("sequences.$_format");
+		return $this->display("search.$_format", 'Sequence');
 	}
 
 

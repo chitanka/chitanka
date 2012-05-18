@@ -1,6 +1,10 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
 {% set title = 'Произведения' %}
+{% block head %}
+	{{ parent() }}
+	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('texts_search', {'_format': 'osd'}) }}" title="Търсене по произведения в Моята библиотека" />
+{% endblock %}
 {% block content %}
 	<h2>По азбучен ред</h2>
 	{% include 'LibBundle:Text:navigation.html.twig' with {'letter': ''} %}
