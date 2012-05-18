@@ -29,7 +29,7 @@ class SearchController extends Controller
 			'categories'   => $this->getCategoryRepository()->getByNames($query['text']),
 		);
 
-		$found = array_sum($lists) > 0;
+		$found = array_sum(array_map('count', $lists)) > 0;
 
 		if ($found) {
 			$this->logSearch($query['text']);

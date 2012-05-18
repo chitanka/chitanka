@@ -15,6 +15,26 @@ class SearchControllerTest extends WebTestCase
 	}
 
 	/**
+	 * @group html
+	 */
+	public function testNonEmptySearch()
+	{
+		$page = $this->request('search', array('q' => 'фантастика'));
+
+		$this->assertCount(0, $page->filter('.no-items'), 'There should not be “empty” message');
+	}
+
+	/**
+	 * @group html
+	 */
+	public function testEmptySearch()
+	{
+		$page = $this->request('search', array('q' => 'testingemptysearch'));
+
+		$this->assertCount(1, $page->filter('.no-items'), 'There should be an “empty” message');
+	}
+
+	/**
 	 * @group xml
 	 */
 	public function testIndexInXml()
