@@ -100,6 +100,8 @@ abstract class Controller extends SymfonyController
 				'books_updated_at' => $booksUpdatedAt,
 				'updated_at' => max($textsUpdatedAt, $booksUpdatedAt),
 			);
+		} else if ($format == 'osd') {
+			$this->responseAge = 31536000; // an year
 		}
 		if ($controller === null) {
 			$controller = $this->getName();
