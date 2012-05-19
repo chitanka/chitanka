@@ -4,6 +4,17 @@ namespace Chitanka\LibBundle\Tests\Controller;
 class MainControllerTest extends WebTestCase
 {
 	/**
+	 * @group html
+	 */
+	public function testIndex()
+	{
+		$page = $this->request('');
+
+		$this->assertHtmlPageIs($page, 'homepage');
+		$this->assertCountGe(1, $page->filter('h1'));
+	}
+
+	/**
 	 * @group opds
 	 */
 	public function testCatalogOpds()
