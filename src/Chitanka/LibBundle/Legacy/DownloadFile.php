@@ -105,18 +105,19 @@ class DownloadFile
 
 	public function getDlFileForTexts($texts, $format, $binaryCallback = null)
 	{
-		if ( ($dlCache = self::getDlCache($texts, $format)) ) {
+		$textIds = array_map(function(Text $text) {
+			return $text->getId();
+		}, $texts);
+		if ( ($dlCache = self::getDlCache($textIds, $format)) ) {
 			if ( ($dlFile = self::getDlFile($dlCache)) ) {
 				return $dlFile;
 			}
 		}
 
-		foreach ($texts as $textId) {
-			if ( ($text = Text::newFromId($textId)) ) {
-				$dlFile = new DownloadFile;
-				$filename = $dlFile->getDlFileForText($text, $format, $binaryCallback);
-				$this->_zipFile->addNewFileEntry(file_get_contents($filename), basename($filename), 0, false);
-			}
+		foreach ($texts as $text) {
+			$dlFile = new DownloadFile;
+			$filename = $dlFile->getDlFileForText($text, $format, $binaryCallback);
+			$this->_zipFile->addNewFileEntry(file_get_contents($filename), basename($filename), 0, false);
 		}
 
 		$zipFilename = sprintf('chitanka-info-%d-files-%s-%s.zip', count($texts), uniqid(), $format);
@@ -346,7 +347,7 @@ class DownloadFile
 
 	static protected function getHashForTextIds($textIds, $format = '')
 	{
-		if ( is_array($textIds) ) {
+		if (is_array($textIds)) {
 			$textIds = implode(',', $textIds);
 		}
 		return '0x' . substr(md5($textIds . $format), 0, 16);

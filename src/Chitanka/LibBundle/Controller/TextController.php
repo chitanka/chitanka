@@ -200,15 +200,29 @@ class TextController extends Controller
 	/**
 	* TODO
 	*/
-	public function showMultiAction($id, $_format)
+	public function showMultiAction(Request $request, $id, $_format)
 	{
 		$mirror = $this->tryMirrorRedirect($id, $_format);
-		$filename = $this->get('request')->get('filename');
-		if ( ! empty( $filename ) ) {
-			$mirror .= '&filename=' . urlencode($filename);
+		if ($mirror) {
+			$filename = $request->get('filename');
+			if ( ! empty($filename)) {
+				$mirror .= '&filename=' . urlencode($filename);
+			}
+			return $this->urlRedirect($mirror);
 		}
 
-		return $this->urlRedirect($mirror);
+		switch ($_format) {
+			case 'txt.zip':
+				return $this->urlRedirect($this->getTxtZipFile(explode(',', $id), $_format));
+			case 'fb2.zip':
+				return $this->urlRedirect($this->getFb2ZipFile(explode(',', $id), $_format));
+			case 'sfb.zip':
+				return $this->urlRedirect($this->getSfbZipFile(explode(',', $id), $_format));
+			case 'epub':
+				Setup::doSetup($this->container);
+				return $this->urlRedirect($this->getEpubFile(explode(',', $id), $_format));
+		}
+		throw new \Exception("Неизвестен формат: $_format");
 	}
 
 	public function randomAction()
@@ -551,7 +565,7 @@ class TextController extends Controller
 		$file = null;
 		$dlFile = new DownloadFile;
 		if ( count($textId) > 1 ) {
-			$file = $dlFile->getEpubForTexts($textId);
+			$file = $dlFile->getEpubForTexts($this->getTextRepository()->findBy(array('id' => $textId)));
 		} else if ( $text = $this->getTextRepository()->find($textId[0]) ) {
 			$file = $dlFile->getEpubForText($text);
 		}
@@ -706,7 +720,7 @@ class TextController extends Controller
 		}
 
 		if ( ! $setZipFileName && empty($this->zipFileName) ) {
-			$this->zipFileName = "Архив от $this->sitename - $fileCount файла-".time();
+			$this->zipFileName = "Архив от Моята библиотека - $fileCount файла-".time();
 		}
 
 		$this->zipFileName .= $fileCount > 1 ? "-$format" : $dlkey;

@@ -548,6 +548,10 @@ class Text extends BaseWork
 
 		return $this->authorNames;
 	}
+	public function getAuthorsPlain()
+	{
+		return $this->getAuthorNames();
+	}
 
 
 	public function getAuthorOrigNames()
@@ -627,15 +631,10 @@ class Text extends BaseWork
 	}
 
 
+	// TODO remove
 	public function getCover($width = null)
 	{
-		$cover  = null;
-		$covers = self::getCovers($this->id);
-		if ( ! empty($covers) ) {
-			$cover = $covers[0];
-		}
-
-		return is_null($width) ? $cover : Legacy::genThumbnail($cover, $width);
+		return null;
 	}
 
 
@@ -1062,11 +1061,6 @@ EOS;
 		$conv->setKeywords(implode(', ', $keywords));
 		$conv->setTextDate($this->year);
 
-		$covers = self::getCovers($this->id);
-		if ( ! empty($covers) ) {
-			$conv->addCoverpage($covers[0]);
-		}
-
 		$conv->setLang($this->lang);
 		$conv->setSrcLang(empty($this->orig_lang) ? '?' : $this->orig_lang);
 
@@ -1136,7 +1130,7 @@ EOS;
 		$qa = array(
 			'SELECT' => 't.*,
 				s.id seriesId,
-				s.name series, s.orig_name seriesOrigName, s.type seriesType,
+				s.name series, s.orig_name seriesOrigName,
 				lo.code lo_code, lo.fullname lo_name, lo.copyright lo_copyright, lo.uri lo_uri,
 				lt.code lt_code, lt.fullname lt_name, lt.copyright lt_copyright, lt.uri lt_uri,
 				r.user_id isRead, h.date lastedit',
@@ -1193,7 +1187,15 @@ EOS;
 		while ( $data = $db->fetchAssoc($res) ) {
 			$fields['books'][$data['id']] = $data;
 		}
-		return new Text($fields);
+		$text = new Text;
+		foreach ($fields as $field => $value) {
+			$mutator = 'set'.ucfirst($field);
+			if (is_callable(array($text, $mutator))) {
+				$text->$mutator($value);
+			}
+		}
+
+		return $text;
 	}
 
 
