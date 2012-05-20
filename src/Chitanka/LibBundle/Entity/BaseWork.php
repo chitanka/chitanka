@@ -1,7 +1,6 @@
 <?php
 namespace Chitanka\LibBundle\Entity;
 
-use Chitanka\LibBundle\Util\Ary;
 use Chitanka\LibBundle\Util\File;
 use Chitanka\LibBundle\Legacy\Legacy;
 
@@ -19,9 +18,6 @@ class BaseWork
 			2 => 'Лошо',
 			1 => 'Отвратително',
 		);
-
-	static protected
-		$exts = array('.jpg', '.png');
 
 	static protected
 		$_minRating = null, $_maxRating = null;
@@ -126,38 +122,6 @@ class BaseWork
 	}
 
 
-	/**
-	* @param $id Text or book ID
-	* @param $defCover Default covers if there aren’t any for $id
-	* @param $key 'cover' or 'book-cover'
-	*/
-	static public function getCovers($id, $defCover = null, $key = 'cover')
-	{
-		$bases = array( Legacy::getContentFilePath($key, $id) );
-		if ( !empty($defCover) ) {
-			$bases[] = Legacy::getContentFilePath($key, $defCover);
-		}
-		$coverFiles = Ary::cartesianProduct($bases, self::$exts);
-		$covers = array();
-		foreach ($coverFiles as $file) {
-			if ( file_exists( $file ) ) {
-				$covers[] = $file;
-				// search for more images of the form “ID-DIGIT.EXT”
-				for ($i = 2; /* infinity */; $i++) {
-					$efile = strtr($file, array('.' => "-$i."));
-					if ( file_exists( $efile ) ) {
-						$covers[] = $efile;
-					} else {
-						break;
-					}
-				}
-				break; // don’t check other extensions
-			}
-		}
-		return $covers;
-	}
-
-
 	static public function clearSfbMarkers($sfbContent)
 	{
 		$sfbContent = strtr($sfbContent, array(
@@ -199,18 +163,12 @@ class BaseWork
 	}
 
 
-	static public function renameCover($cover, $newname) {
-		$rexts = strtr(implode('|', self::$exts), array('.'=>'\.'));
-		return preg_replace("/\d+(-\d+)?($rexts)/", "$newname$1$2", $cover);
-	}
-
-
 	public function getMaxHeadersDepth()
 	{
 		$depth = 1;
 		foreach ($this->getHeaders() as $header) {
-			if ($depth < $header['level']) {
-				$depth = $header['level'];
+			if ($depth < $header->getLevel()) {
+				$depth = $header->getLevel();
 			}
 		}
 
@@ -230,21 +188,21 @@ class BaseWork
 		$lastpos = -1;
 		$id = -1;
 		foreach ($this->getHeaders() as $i => $header) {
-			if ($lastpos != $header['fpos']) {
+			if ($lastpos != $header->getFpos()) {
 				$id++;
 			}
-			$lastpos = $header['fpos'];
+			$lastpos = $header->getFpos();
 
-			if ($prevlev < $header['level']) {
-				$xml .= "\n<ul>".str_repeat("<li level=$id>\n<ul>", $header['level'] - 1 - $prevlev);
-			} else if ($prevlev > $header['level']) {
-				$xml .= '</li>'.str_repeat("\n</ul>\n</li>", $prevlev - $header['level']);
+			if ($prevlev < $header->getLevel()) {
+				$xml .= "\n<ul>".str_repeat("<li level=$id>\n<ul>", $header->getLevel() - 1 - $prevlev);
+			} else if ($prevlev > $header->getLevel()) {
+				$xml .= '</li>'.str_repeat("\n</ul>\n</li>", $prevlev - $header->getLevel());
 			} else {
 				$xml .= '</li>';
 			}
 			$xml .= "\n<li level=$id>";
-			$xml .= htmlspecialchars($header['name']);
-			$prevlev = $header['level'];
+			$xml .= htmlspecialchars($header->getName());
+			$prevlev = $header->getLevel();
 		}
 		if ($prevlev) {
 			$xml .= '</li>'.str_repeat("\n</ul>\n</li>", $prevlev-1)."\n</ul>";
@@ -331,19 +289,23 @@ class BaseWork
 
 		$headers = $this->getHeaders();
 		if ( empty($headers) ) {
-			$headers = array(array('name' => 'Основен текст', 'fpos' => 0, 'linecnt' => 1000000));
+			$header = new TextHeader;
+			$header->setName('Основен текст');
+			$header->setFpos(0);
+			$header->setLinecnt(1000000);
+			$headers = array($header);
 		}
 
 		$lastpos = -1;
 		foreach ($headers as $header) {
-			if ($lastpos != $header['fpos']) {
-				$lastpos = $header['fpos'];
+			if ($lastpos != $header->getFpos()) {
+				$lastpos = $header->getFpos();
 				$converter = $this->_getSfbConverter($input, $imgDir);
-				$converter->startpos = $header['fpos'];
-				$converter->maxlinecnt = $header['linecnt'];
+				$converter->startpos = $header->getFpos();
+				$converter->maxlinecnt = $header->getLinecnt();
 				$converter->convert();
 				$text = $converter->getText() . $converter->getNotes(2);
-				$chapters[] = array('title' => $header['name'], 'text'  => $text);
+				$chapters[] = array('title' => $header->getName(), 'text'  => $text);
 			}
 		}
 

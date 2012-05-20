@@ -4,8 +4,10 @@ namespace Chitanka\LibBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ORM\NoResultException;
+use Chitanka\LibBundle\Entity\Book;
 use Chitanka\LibBundle\Pagination\Pager;
 use Chitanka\LibBundle\Legacy\Setup;
+use Chitanka\LibBundle\Legacy\DownloadFile;
 use Chitanka\LibBundle\Util\String;
 
 class BookController extends Controller
@@ -104,7 +106,8 @@ class BookController extends Controller
 			case 'txt.zip':
 			case 'fb2.zip':
 			case 'epub':
-				return $this->urlRedirect($this->processDownload($id, $_format));
+				Setup::doSetup($this->container);
+				return $this->urlRedirect($this->processDownload($book, $_format));
 			case 'txt':
 				Setup::doSetup($this->container);
 				return $this->displayText($book->getContentAsTxt(), array('Content-Type' => 'text/plain'));
@@ -144,15 +147,14 @@ class BookController extends Controller
 		return $this->urlRedirect($this->generateUrl('book_show', array('id' => $id)));
 	}
 
-	protected function processDownload($bookId, $format)
+	protected function processDownload(Book $book, $format)
 	{
 		$dlSite = $this->getMirrorServer();
 		if ( $dlSite !== false ) {
-			return sprintf('%s/book/%d.%s', $dlSite, $bookId, $format);
+			return sprintf('%s/book/%d.%s', $dlSite, $book->getId(), $format);
 		}
 
 		$file = null;
-		$book = Book::newFromId($bookId);
 		$dlFile = new DownloadFile;
 		switch ($format) {
 			case 'sfb.zip':
@@ -170,7 +172,7 @@ class BookController extends Controller
 				break;
 		}
 
-		return $file;
+		return "/$file";
 	}
 
 }

@@ -8,8 +8,8 @@ class CacheManager
 	const ONEDAYSECS = 86400; // 60*60*24
 
 	static private
-		$cacheDir  = '../app/cache/',
-		$dlDir     = '../app/cache/dl/',
+		$cacheDir  = 'cache/',
+		$dlDir     = 'cache/dl/',
 		$zipDir    = 'zip/',
 
 		/** Time to Live for download cache (in hours) */

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Chitanka\LibBundle\Util\String;
 use Chitanka\LibBundle\Legacy\Legacy;
 use Chitanka\LibBundle\Legacy\Setup;
+use Chitanka\LibBundle\Util\Ary;
 
 /**
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\BookRepository")
@@ -142,9 +143,7 @@ class Book extends BaseWork
 
 	/** FIXME doctrine:schema:create does not allow this relation
 	* @ORM\ManyToMany(targetEntity="Person", inversedBy="books")
-	* @ORM\JoinTable(name="book_author",
-	*	joinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id")},
-	*	inverseJoinColumns={@ORM\JoinColumn(name="person_id", referencedColumnName="id")})
+	* @ORM\JoinTable(name="book_author")
 	*/
 	private $authors;
 
@@ -519,13 +518,15 @@ class Book extends BaseWork
 	}
 
 
+	static protected $exts = array('.jpg');
+
 	public function initCovers()
 	{
-		if ( empty($this->covers) ) {
+		if (empty($this->covers)) {
 			$this->covers['front'] = $this->covers['back'] = null;
 
-			$covers = self::getCovers($this->id, null, 'book-cover');
-			if ( ! empty($covers) ) {
+			$covers = self::getCovers($this->id);
+			if ( ! empty($covers)) {
 				$this->covers['front'] = $covers[0];
 			} else {
 				// there should not be any covers by texts
@@ -546,6 +547,43 @@ class Book extends BaseWork
 			}
 		}
 	}
+
+	/**
+	* @param $id Text or book ID
+	* @param $defCover Default covers if there aren’t any for $id
+	*/
+	static public function getCovers($id, $defCover = null)
+	{
+		$key = 'book-cover-content';
+		$bases = array(Legacy::getContentFilePath($key, $id));
+		if ( ! empty($defCover)) {
+			$bases[] = Legacy::getContentFilePath($key, $defCover);
+		}
+		$coverFiles = Ary::cartesianProduct($bases, self::$exts);
+		$covers = array();
+		foreach ($coverFiles as $file) {
+			if (file_exists($file)) {
+				$covers[] = $file;
+				// search for more images of the form “ID-DIGIT.EXT”
+				for ($i = 2; /* infinity */; $i++) {
+					$efile = strtr($file, array('.' => "-$i."));
+					if (file_exists($efile)) {
+						$covers[] = $efile;
+					} else {
+						break;
+					}
+				}
+				break; // don’t check other extensions
+			}
+		}
+		return $covers;
+	}
+
+	static public function renameCover($cover, $newname) {
+		$rexts = strtr(implode('|', self::$exts), array('.'=>'\.'));
+		return preg_replace("/\d+(-\d+)?($rexts)/", "$newname$1$2", $cover);
+	}
+
 
 	public function getImages()
 	{
@@ -851,16 +889,16 @@ class Book extends BaseWork
 			return $this->_headers;
 		}
 
-		require_once BASEDIR . '/include/headerextract.php';
+		require_once __DIR__ . '/../Legacy/headerextract.php';
 		$this->_headers = array();
-		foreach (makeDbRows($this->getMainBodyAsSfbFile(), 4) as $row) {
-			$this->_headers[] = array(
-				'nr' => $row[0],
-				'level' => $row[1],
-				'name' => $row[2],
-				'fpos' => $row[3],
-				'linecnt' => $row[4]
-			);
+		foreach (\Chitanka\LibBundle\Legacy\makeDbRows($this->getMainBodyAsSfbFile(), 4) as $row) {
+			$header = new TextHeader;
+			$header->setNr($row[0]);
+			$header->setLevel($row[1]);
+			$header->setName($row[2]);
+			$header->setFpos($row[3]);
+			$header->setLinecnt($row[4]);
+			$this->_headers[] = $header;
 		}
 
 		return $this->_headers;

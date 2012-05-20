@@ -1,8 +1,8 @@
 <?php
 namespace Chitanka\LibBundle\Legacy;
 
-namespace Chitanka\LibBundle\Util\String;
-namespace Chitanka\LibBundle\Util\File;
+use Chitanka\LibBundle\Util\String;
+use Chitanka\LibBundle\Util\File;
 
 class EpubFile
 {
@@ -30,7 +30,7 @@ class EpubFile
 		$this->creditsPageFileName = 'credits.xhtml';
 
 		$this->imagesDir = 'images';
-		$this->templateDir = BASEDIR . '/include/templates-epub';
+		$this->templateDir = __DIR__ . '/../Resources/templates/epub';
 
 		$this->addFile('ncx', $this->tocFileName, 'application/x-dtbncx+xml');
 		$this->addFile('stylesheet', $this->cssFileName, 'text/css');
@@ -91,7 +91,7 @@ class EpubFile
 			'DEPTH'      => $this->obj->getMaxHeadersDepth(),
 			'EPUBLISHER' => $this->getPublisher(),
 			'TITLE'      => htmlspecialchars($this->obj->getTitles()),
-			'AUTHOR'     => $this->obj->getAuthor(),
+			'AUTHOR'     => $this->obj->getAuthorsPlain(),
 			'NAVPOINTS'  => $this->getNavPointTags(),
 		));
 	}
@@ -193,7 +193,7 @@ class EpubFile
 	{
 		$tags = array();
 		foreach ($this->obj->getAuthors() as $author) {
-			$tags[] = self::getCreatorTag($author['name'], 'aut');
+			$tags[] = self::getCreatorTag($author->getName(), 'aut');
 		}
 
 		return $tags;
@@ -245,7 +245,7 @@ class EpubFile
 	{
 		$tags = array();
 		foreach ($this->obj->getTranslators() as $translator) {
-			$tags[] = self::getContributorTag($translator['name'], 'trl');
+			$tags[] = self::getContributorTag($translator->getName(), 'trl');
 		}
 
 		return implode("\n", $tags);
@@ -388,7 +388,7 @@ class EpubFile
 		}
 
 		return $this->getTemplate($this->titlePageFileName, array(
-			'AUTHOR'          => $this->obj->getAuthor(),
+			'AUTHOR'          => $this->obj->getAuthorsPlain(),
 			'TITLE'           => str_replace(' — ', '<br/>', htmlspecialchars($this->obj->getTitles())),
 			'SERIES-INFO'     => $series,
 			'TRANSLATOR-INFO' => $translator,
@@ -467,7 +467,7 @@ class EpubFile
 	{
 		$file = $this->templateDir . '/'. $template;
 		if ( ! file_exists($file) ) {
-			return false;
+			throw new \Exception("$file does not exist.");
 		}
 
 		foreach ($data as $k => $v) {

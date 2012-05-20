@@ -21,6 +21,8 @@ use Chitanka\LibBundle\Entity\Bookmark;
 use Chitanka\LibBundle\Legacy\Setup;
 use Chitanka\LibBundle\Legacy\ZipFile;
 use Chitanka\LibBundle\Legacy\CacheManager;
+use Chitanka\LibBundle\Legacy\DownloadFile;
+use Chitanka\LibBundle\Legacy\Legacy;
 
 
 class TextController extends Controller
@@ -156,6 +158,7 @@ class TextController extends Controller
 			case 'sfb.zip':
 				return $this->urlRedirect($this->getSfbZipFile(explode(',', $id), $_format));
 			case 'epub':
+				Setup::doSetup($this->container);
 				return $this->urlRedirect($this->getEpubFile(explode(',', $id), $_format));
 			case 'html':
 			default:
@@ -470,7 +473,7 @@ class TextController extends Controller
 		// track here how many times a filename occurs
 		$this->_fnameCount = array();
 
-		return true;
+		return '';
 	}
 
 
@@ -554,7 +557,7 @@ class TextController extends Controller
 		}
 
 		if ($file) {
-			return $file;
+			return "/$file";
 		} else {
 			$this->addMessage('Няма такъв текст.', true);
 		}
@@ -575,8 +578,6 @@ class TextController extends Controller
 	protected function createSfbDlFile()
 	{
 		$key = '';
-		if ($this->withCover) $key .= '-cov';
-		if ($this->withFbi)   $key .= '-fbi';
 		$key .= '-sfb';
 		return $this->createDlFile($this->textIds, 'sfb', $key);
 	}
@@ -601,9 +602,9 @@ class TextController extends Controller
 		}
 		list($this->filename, $this->fPrefix, $this->fSuffix, $fbi) = $mainFileData;
 		$this->addTextFileEntry($textId, '.sfb');
-		if ( $this->withFbi ) {
-			$this->addMiscFileEntry($fbi, $textId, '.fbi');
-		}
+//		if ( $this->withFbi ) {
+//			$this->addMiscFileEntry($fbi, $textId, '.fbi');
+//		}
 		return true;
 	}
 
@@ -748,14 +749,6 @@ class TextController extends Controller
 
 
 	protected function addBinaryFileEntries($textId, $filename) {
-		// add covers
-		if ( $this->withCover ) {
-			foreach (Text::getCovers($textId) as $file) {
-				$ename = parent::renameCover(basename($file), $filename);
-				$fEntry = $this->zf->newFileEntry(file_get_contents($file), $ename);
-				$this->zf->addFileEntry($fEntry);
-			}
-		}
 		// add images
 		$dir = Legacy::getContentFilePath('img', $textId);
 		if ( !is_dir($dir) ) { return; }
@@ -816,9 +809,8 @@ class TextController extends Controller
 	public function getFileDataPrefix($work, $textId)
 	{
 		$prefix = $this->getTextFileStart()
-			. "|\t$work->author_name\n"
-			. $work->getTitleAsSfb()
-			. "\n\n\n";
+			. "|\t" . $work->getAuthorNames() . "\n"
+			. $work->getTitleAsSfb() . "\n\n\n";
 		$anno = $work->getAnnotation();
 		if ( !empty($anno) ) {
 			$prefix .= "A>\n$anno\nA$\n\n\n";

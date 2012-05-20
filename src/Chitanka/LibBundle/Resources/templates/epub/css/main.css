@@ -1,0 +1,263 @@
+#title-page h1 {
+	font-size: 3em;
+}
+.title-author {
+	font-size: 60%;
+}
+#title-page .info {
+	margin-top: 5em;
+}
+.standalone {
+	margin: 1em auto;
+	max-width: 45em;
+	text-align: center;
+	vertical-align: center;
+}
+h1, h2, h3, h4, h5, h6 {
+	margin: 1em 0 0.5em;
+	line-height: 1.3em;
+	font-weight: normal;
+	font-variant: small-caps;
+	text-align: center;
+}
+h2, h3 {
+	page-break-before: always;
+}
+h1+h2, h2+h3 {
+	page-break-before: avoid;
+}
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+	text-align: center;
+	text-indent: 0;
+}
+p {
+	margin: 0;
+	text-indent: 2.5em;
+}
+pre {
+	margin: 0;
+	line-height: 1.3em;
+	overflow: auto;
+}
+pre p {
+	display: inline;
+}
+.standalone p {
+	margin: 1.5em 0;
+	text-indent: 0;
+}
+blockquote {
+	margin: 2.5em 2em;
+}
+/* полета за цитати */
+blockquote.cite,
+blockquote.poem {
+	margin: 1.5em 2em;
+	padding: .5em 0 .5em 1em;
+}
+blockquote, q {
+	font-style: italic;
+}
+blockquote em, q em {
+	font-weight: bold;
+}
+blockquote strong, q strong {
+	font-variant: small-caps;
+}
+blockquote pre {
+	font-size-adjust: 0.6;
+}
+a {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+img {
+	border: none;
+	vertical-align: middle;
+}
+a img {
+	vertical-align: bottom;
+}
+.image {
+	margin: 1em auto;
+	text-align: center;
+	text-indent: 0;
+}
+.float-left {
+	float: left;
+	margin: .5em 1em 1em 0;
+}
+.float-right {
+	float: right;
+	margin: .5em 0 1em 1em;
+}
+div.thumb {
+	float: left;
+	margin: .5em 1em 1em 0;
+	padding: .4em;
+	border: thin solid silver;
+	text-align: center;
+}
+span.image-title {
+	display: block;
+	text-align: center;
+	font-style: italic;
+}
+#textstart {
+	clear: both;
+}
+#text-end-msg {
+	clear: both;
+	margin-top: 1em;
+	font-variant: small-caps;
+	text-align: center;
+}
+/* разделител на абзаци при текстовете */
+.separator {
+	margin: 1.3em auto 1em;
+	font-size: 1.5em;
+	text-align: center;
+	text-indent: 0;
+}
+table.content {
+	margin: .5em auto 1em auto;
+	border-collapse: collapse;
+}
+table.content th, table.content td {
+	border: thin solid silver;
+}
+table.content th {
+	padding-top: .2em;
+	padding-bottom: .2em;
+}
+table.content td {
+	padding: .1em .4em;
+}
+table.content caption {
+	margin: 1em auto 0 auto;
+	font-weight: bold;
+}
+.epigraph p {
+	margin-left: 5em;
+}
+.author {
+	font-style: normal;
+	text-align: right;
+}
+.epigraph .author, .dedication .author, .poem .author {
+	margin-left: 10em;
+	text-align: left;
+}
+blockquote.poem p {
+	position: relative;
+}
+div.poem-middle *, div.poem-middle .subheader {
+	text-align: center;
+	text-indent: 0;
+}
+div.poem-middle .subheader {
+	margin-right: auto;
+	margin-left: auto;
+	width: 60%;
+}
+.placeyear {
+	font-size: small;
+}
+.cite {
+	font-style: normal;
+}
+.cite em {
+	font-style: italic;
+	font-weight: normal;
+}
+.subheader, .sign, .sign p {
+	font-weight: bold;
+	font-style: normal;
+	text-align: center;
+	text-indent: 0;
+}
+.sign {
+	margin: 1em auto;
+	padding: .5em;
+	width: 50%;
+	min-width: 15em;
+	border: thin solid #666;
+}
+.notice, .notice p {
+	margin: .5em auto;
+	font-size: .95em;
+	font-style: italic;
+	text-align: center;
+	text-indent: 0;
+}
+.epigraph .subheader {
+	text-align: left;
+}
+.verse-num {
+	position: absolute;
+	left: -3em;
+	font-size: .9em;
+}
+/* връзки към епизоди в книга-игра */
+.ep {
+	font-weight: bold;
+}
+
+
+.sujet2 {
+	font-family: Georgia, serif, sans-serif;
+}
+.center {
+	text-align: center;
+}
+.center p {
+	text-indent: 0;
+}
+.right {
+	text-align: right;
+}
+.bold {
+	font-weight: bold;
+}
+.italic {
+	font-style: italic;
+}
+.smallcaps {
+	font-variant: small-caps;
+}
+.underline {
+	text-decoration: underline;
+}
+.overline {
+	text-decoration: overline;
+}
+.upper {
+	text-transform: uppercase;
+}
+.large {
+	font-size: 110%;
+}
+.x-large {
+	font-size: 120%;
+}
+.xx-large {
+	font-size: 130%;
+}
+.xxx-large {
+	font-size: 140%;
+}
+.small {
+	font-size: 90%;
+}
+.x-small {
+	font-size: 80%;
+}
+.xx-small {
+	font-size: 70%;
+}
+.xxx-small {
+	font-size: 60%;
+}

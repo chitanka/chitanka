@@ -3,8 +3,9 @@ namespace Chitanka\LibBundle\Legacy;
 
 use Chitanka\LibBundle\Util\Char;
 use Chitanka\LibBundle\Util\File;
-use Chitanka\LibBundle\Entity\Text;
 use Chitanka\LibBundle\Entity\BaseWork;
+use Chitanka\LibBundle\Entity\Book;
+use Chitanka\LibBundle\Entity\Text;
 
 class DownloadFile
 {
@@ -65,11 +66,11 @@ class DownloadFile
 	* @param string  $format
 	* @param string  $binaryCallback
 	*/
-	public function getDlFileForBook($book, $format, $binaryCallback = null)
+	public function getDlFileForBook(Book $book, $format, $binaryCallback = null)
 	{
 		$textIds = $book->getTextIds();
 		// a book with one text is different from the very same text
-		$textIds[] = "book$book->id";
+		$textIds[] = "book".$book->getId();
 
 		if ( ($dlCache = self::getDlCache($textIds, $format)) ) {
 			if ( ($dlFile = self::getDlFile($dlCache)) ) {
@@ -81,7 +82,7 @@ class DownloadFile
 
 		$getMethod = sprintf('getContentAs%s', ucfirst($format));
 		if ( method_exists($book, $getMethod) ) {
-			$cacheKey = "book-$book->id.$format";
+			$cacheKey = "book-".$book->getId().".$format";
 			$this->addContentEntry($book->$getMethod(), "$filename.$format", $cacheKey);
 		}
 
@@ -131,7 +132,7 @@ class DownloadFile
 	*/
 	public function getDlFileForText($text, $format, $binaryCallback = null)
 	{
-		$textIds = array($text->id);
+		$textIds = array($text->getId());
 
 		if ( ($dlCache = self::getDlCache($textIds, $format)) ) {
 			if ( ($dlFile = self::getDlFile($dlCache)) ) {
@@ -143,7 +144,7 @@ class DownloadFile
 
 		$getMethod = sprintf('getContentAs%s', ucfirst($format));
 		if ( method_exists($text, $getMethod) ) {
-			$cacheKey = "text-$text->id.$format";
+			$cacheKey = "text-".$text->getId().".$format";
 			$this->addContentEntry($text->$getMethod(), "$filename.$format", $cacheKey);
 		}
 
@@ -278,7 +279,7 @@ class DownloadFile
 			}
 		}
 
-		$file = $this->addFileEntry(BASEDIR . '/img/logo_transparent.png', "$imagesDir/chitanka-logo");
+		$file = $this->addFileEntry(BASEDIR . '/images/banner/logo_transparent.png', "$imagesDir/chitanka-logo");
 		$epubFile->addFile('logo-image', $file);
 	}
 

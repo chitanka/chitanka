@@ -518,7 +518,7 @@ class Text extends BaseWork
 	public function getAuthorNameEscaped()
 	{
 		if ( preg_match('/[a-z]/', $this->getAuthorOrigNames()) ) {
-			return Char::removeDiacritics( Char::cyr2lat($this->getAuthorOrigNames()) );
+			return Legacy::removeDiacritics( Char::cyr2lat($this->getAuthorOrigNames()) );
 		}
 
 		return Char::cyr2lat($this->getAuthorNames());
@@ -787,6 +787,7 @@ class Text extends BaseWork
 	*/
 	public function getFbi()
 	{
+		return ''; // TODO rewrite legacy code
 		return $this->getFbiMain()
 			. "\n" . $this->getFbiOriginal()
 			. "\n" . $this->getFbiDocument()
@@ -798,8 +799,8 @@ class Text extends BaseWork
 	protected function getFbiMain()
 	{
 		$authors = '';
-		foreach ($this->authors as $data) {
-			$authors .= "\n|Автор        = $data[name]";
+		foreach ($this->authors as $author) {
+			$authors .= "\n|Автор        = " . $author->getName();
 		}
 		$title = $this->title;
 		if ( ! empty( $this->subtitle ) ) {

@@ -318,6 +318,7 @@ class Legacy
 		'book-info' => 'content/book-info/',
 		'book-img' => 'content/book-img/',
 		'book-cover' => 'thumb/book-cover/',
+		'book-cover-content' => 'content/book-cover/',
 		'pic' => 'content/pic/',
 	);
 

@@ -1,0 +1,33 @@
+.sujet2 {
+	font-family: Georgia, serif;
+}
+.center {
+	text-align: center;
+}
+.center p {
+	text-indent: 0;
+}
+.smallcaps {
+	font-variant: small-caps;
+}
+.underline {
+	text-decoration: underline;
+}
+.overline {
+	text-decoration: overline;
+}
+.upper {
+	text-transform: uppercase;
+}
+.big {
+	font-size: 110%;
+}
+.bigger {
+	font-size: 120%;
+}
+.small {
+	font-size: 90%;
+}
+.smaller {
+	font-size: 80%;
+}
