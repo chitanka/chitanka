@@ -88,4 +88,15 @@ class File
 
 		return $fname;
 	}
+	
+
+	static public function isSFB($file) {
+		if ( (strpos($file, '.sfb') !== false) && file_exists($file) ) {
+			$cont = file_get_contents( $file,  false, NULL, -1, 10 );
+			if ( strpos($cont, chr(124).chr(9)) !== false )
+				return true;
+		}
+
+		return false;
+	}
 }

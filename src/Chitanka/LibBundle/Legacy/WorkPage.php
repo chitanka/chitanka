@@ -693,6 +693,54 @@ EOS;
 		$bypass = $this->out->hiddenField('bypass', $this->bypassExisting);
 		$action = $this->controller->generateUrl('workroom');
 		$this->addJs($this->createCommentsJavascript($this->entry));
+		
+		$corrections = '';
+		if ( strpos($this->btitle, '(корекция)') !== false && File::isSFB($this->absTmpDir.basename($this->tmpfiles)) ) {
+			$orititle = trim(str_replace('(корекция)', '', $this->btitle));
+			//FIXME: This will not work as expected if we hit two texts with the same title
+			$text = $this->controller->getRepository('Text')->findOneBy(array('title' => $orititle));
+			if ( $text )
+				$corrections = "
+<fieldset>
+	<legend>Корекции</legend>
+	<pre id=\"corrections\" style=\"white-space: pre-wrap; /* css-3 */ white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */ white-space: -pre-wrap; /* Opera 4-6 */ white-space: -o-pre-wrap; /* Opera 7 */ word-wrap: break-word; /* Internet Explorer 5.5+ */\">
+	Зареждане...
+	</pre>
+</fieldset>
+<script src=\"/js/diff_match_patch.js\"></script>
+<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js\"></script>
+<script>
+	$.ajaxSetup ({
+        cache: false
+    });
+
+    var text1 = '';
+    var text2 = '';
+
+	function doDiff() {
+		var dmp = new diff_match_patch();
+		var d = dmp.diff_main(text1, text2);
+		dmp.diff_cleanupSemantic(d);
+		var ds = dmp.diff_prettyHtml(d);
+		var out = '';
+		var sl = ds.split('<br>');
+		var ins = false;
+		for ( var i=0; i<sl.length; i++ ) {
+			if ( sl[i].indexOf('<ins ') != -1 )
+				ins = true;
+			if ( sl[i].indexOf('</ins>') != -1 )
+				ins = false;
+			if ( (sl[i].indexOf('style') != -1) || ins )
+				out += '<span style=\"color: blue;\">' + eval(i+1) + ':</span> ' + sl[i] + '<br/>';
+		}
+		$('#corrections').html(out);
+	}
+    $.get('/text/$text.sfb', function(data1) {text1 = data1; if (text2 != '') doDiff();});
+    $.get('{$this->tmpfiles}', function(data2) {text2 = data2; if (text1 != '') doDiff();});
+	
+</script>
+";
+		}
 
 		return <<<EOS
 
@@ -724,6 +772,7 @@ $helpTop
 </form>
 $extra
 </div>
+$corrections
 </div>
 
 <div id="fos_comment_thread"></div>
