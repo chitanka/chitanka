@@ -820,7 +820,7 @@ JS;
 		$progress = $this->out->textField('progress', '', $this->progress, 2, 3);
 		$is_frozen = $this->out->checkbox('is_frozen', '', $this->is_frozen,
 			'Подготовката е спряна за известно време');
-		$file = $this->out->fileField('file', '', 50);
+		$file = $this->out->fileField('file', '');
 		$maxFileSize = $this->out->makeMaxFileSizeField();
 		$maxUploadSizeInMiB = Legacy::getMaxUploadSizeInMiB();
 
@@ -924,7 +924,7 @@ EOS;
 		$flink = $this->tmpfiles == self::DEF_TMPFILE ? ''
 			: $this->out->link( $this->makeTmpFilePath($this->tmpfiles), String::limitLength($this->tmpfiles)) .
 			($this->tfsize > 0 ? " ($this->tfsize&#160;MB)" : '');
-		$file = $this->out->fileField('file', '', 50);
+		$file = $this->out->fileField('file', '');
 		$maxFileSize = $this->out->makeMaxFileSizeField();
 		$maxUploadSizeInMiB = Legacy::getMaxUploadSizeInMiB();
 
@@ -999,7 +999,7 @@ EOS;
 		$progress = $this->out->textField('progress', '', $progress, 2, 3);
 		$is_frozen = $this->out->checkbox('is_frozen', 'is_frozen_e', $this->is_frozen,
 			'Корекцията е спряна за известно време');
-		$file = $this->out->fileField('file', '', 50);
+		$file = $this->out->fileField('file', '');
 		$readytogo = $this->userCanMarkAsReady()
 			? $this->out->checkbox('ready', 'ready', false, 'Готово е за добавяне')
 			: '';
