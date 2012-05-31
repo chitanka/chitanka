@@ -1625,17 +1625,13 @@ div.poem-middle .subheader {
 }
 
 /* текст, който е вмъкнат */
-/*ins {
-	color: inherit;
-	background-color: <?php echo $insBgColor?>;
+ins {
 	text-decoration: none;
-}*/
+}
 /* текст, който е изтрит */
-/*del {
-	color: inherit;
-	background-color: <?php echo $delBgColor?>;
+del {
 	text-decoration: none;
-}*/
+}
 .progressbar {
 	border: thin solid <?php echo $mainFgColor?>;
 	font-weight: bold;

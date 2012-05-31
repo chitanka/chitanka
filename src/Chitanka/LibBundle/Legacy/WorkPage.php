@@ -696,14 +696,10 @@ EOS;
 
 		$corrections = '';
 		if ($this->canShowCorrections()) {
-			$orititle = trim(str_replace('(корекция)', '', $this->btitle));
-			//FIXME: This will not work as expected if we hit two texts with the same title
-			$text = $this->controller->getRepository('Text')->findOneBy(array('title' => $orititle));
 			// same domain as main site - for ajax
-			$newFile = str_replace('static.chitanka.info', 'chitanka.info', $this->tmpfiles);
-			if ( $text ) {
-				$dmpPath = $this->container->getParameter('assets_base_urls') . '/js/diff_match_patch.js';
-				$corrections = <<<CORRECTIONS
+			$newFile = str_replace('http://static.chitanka.info', '', $this->tmpfiles);
+			$dmpPath = $this->container->getParameter('assets_base_urls') . '/js/diff_match_patch.js';
+			$corrections = <<<CORRECTIONS
 <fieldset>
 	<legend>Корекции</legend>
 	<button onclick="jQuery(this).hide(); showWorkroomDiff('#corrections')">Показване</button>
@@ -714,38 +710,50 @@ EOS;
 <script src="$dmpPath"></script>
 <script>
 function showWorkroomDiff(target) {
-	$.ajaxSetup ({
-        cache: false
-    });
-
-    var text1 = '';
-    var text2 = '';
-
-	function doDiff() {
+	function doDiff(currentContent, newContent) {
 		var dmp = new diff_match_patch();
-		var d = dmp.diff_main(text1, text2);
+		var d = dmp.diff_main(currentContent, newContent);
 		dmp.diff_cleanupSemantic(d);
 		var ds = dmp.diff_prettyHtml(d);
 		var out = '';
 		var sl = ds.split('<br>');
-		var ins = false;
-		for ( var i=0; i<sl.length; i++ ) {
-			if ( sl[i].indexOf('<ins ') != -1 )
-				ins = true;
-			if ( sl[i].indexOf('</ins>') != -1 )
-				ins = false;
-			if ( (sl[i].indexOf('style') != -1) || ins )
-				out += '<span style="color: blue;">' + eval(i+1) + ':</span> ' + sl[i] + '<br/>';
+		var inIns = inDel = false;
+		var prevLine = 1;
+		for ( var i = 0, len = sl.length; i < len; i++ ) {
+			if ( sl[i].indexOf('<ins') != -1 ) inIns = true;
+			if ( sl[i].indexOf('<del') != -1 ) inDel = true;
+			if ( inIns || inDel ) {
+				var line = i+1;
+				if (prevLine < line-1) {
+					out += '		<span style="opacity: .1">[…]</span><br>';
+				}
+				out += '<span style="color: blue">' + line + ':</span>	' + sl[i] +'<br>';
+				prevLine = line;
+			}
+			if ( sl[i].indexOf('</ins>') != -1 ) inIns = false;
+			if ( sl[i].indexOf('</del>') != -1 ) inDel = false;
 		}
+
+		out = out.replace(/&para;/g, '<span style="opacity:.1">¶</span>');
+
 		$(target).html(out);
 	}
 	$(target).show();
-    $.get('/text/$text.sfb', function(data1) {text1 = data1; if (text2 != '') doDiff();});
-    $.get('$newFile', function(data2) {text2 = data2; if (text1 != '') doDiff();});
+    $.get('$newFile', function(newContent) {
+		// TODO find a better way to find the current text source
+		var m = newContent.match(/: (http:\/\/chitanka.info\/(book|text)\/\d+)/);
+		if (m) {
+			var curContentUrl = m[1]+'.sfb';
+			$.get(curContentUrl, function(curContent){
+				doDiff(curContent, newContent);
+			});
+		} else {
+			$(target).text('Съдържанието на източника не беше открито.');
+		}
+	});
 }
 </script>
 CORRECTIONS;
-			}
 		}
 
 		return <<<EOS
