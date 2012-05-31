@@ -72,12 +72,12 @@ class OutputMaker {
 	}
 
 
-	public function fileField($name, $id = '', $size = 30, $tabindex = null,
+	public function fileField($name, $id = '', $tabindex = null,
 			$title = '', $attrs = array()) {
 		Legacy::fillOnEmpty($id, $name);
 		$attrs = array(
 			'type' => 'file', 'name' => $name, 'id' => $id,
-			'size' => $size, 'title' => $title, 'tabindex' => $tabindex
+			'title' => $title, 'tabindex' => $tabindex
 		) + $attrs;
 		return $this->xmlElement('input', null, $attrs);
 	}
