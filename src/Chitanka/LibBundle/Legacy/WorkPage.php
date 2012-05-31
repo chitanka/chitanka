@@ -399,7 +399,7 @@ EOS;
 					'limit' => $this->llimit,
 					'total' => $this->db->getCount(self::DB_TABLE, $this->makeSqlWhere('', $where)),
 				)),
-				'route' => 'workroom',
+				'current_route' => 'workroom',
 				'route_params' => $params,
 			)) : '';
 		} else {
@@ -693,23 +693,27 @@ EOS;
 		$bypass = $this->out->hiddenField('bypass', $this->bypassExisting);
 		$action = $this->controller->generateUrl('workroom');
 		$this->addJs($this->createCommentsJavascript($this->entry));
-		
+
 		$corrections = '';
-		if ( strpos($this->btitle, '(корекция)') !== false && File::isSFB($this->absTmpDir.basename($this->tmpfiles)) ) {
+		if ($this->canShowCorrections()) {
 			$orititle = trim(str_replace('(корекция)', '', $this->btitle));
 			//FIXME: This will not work as expected if we hit two texts with the same title
 			$text = $this->controller->getRepository('Text')->findOneBy(array('title' => $orititle));
-			if ( $text )
-				$corrections = "
+			// same domain as main site - for ajax
+			$newFile = str_replace('static.chitanka.info', 'chitanka.info', $this->tmpfiles);
+			if ( $text ) {
+				$dmpPath = $this->container->getParameter('assets_base_urls') . '/js/diff_match_patch.js';
+				$corrections = <<<CORRECTIONS
 <fieldset>
 	<legend>Корекции</legend>
-	<pre id=\"corrections\" style=\"white-space: pre-wrap; /* css-3 */ white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */ white-space: -pre-wrap; /* Opera 4-6 */ white-space: -o-pre-wrap; /* Opera 7 */ word-wrap: break-word; /* Internet Explorer 5.5+ */\">
+	<button onclick="jQuery(this).hide(); showWorkroomDiff('#corrections')">Показване</button>
+	<pre id="corrections" style="display: none; white-space: pre-wrap; /* css-3 */ white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */ white-space: -pre-wrap; /* Opera 4-6 */ white-space: -o-pre-wrap; /* Opera 7 */ word-wrap: break-word; /* Internet Explorer 5.5+ */">
 	Зареждане...
 	</pre>
 </fieldset>
-<script src=\"/js/diff_match_patch.js\"></script>
-<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js\"></script>
+<script src="$dmpPath"></script>
 <script>
+function showWorkroomDiff(target) {
 	$.ajaxSetup ({
         cache: false
     });
@@ -731,15 +735,17 @@ EOS;
 			if ( sl[i].indexOf('</ins>') != -1 )
 				ins = false;
 			if ( (sl[i].indexOf('style') != -1) || ins )
-				out += '<span style=\"color: blue;\">' + eval(i+1) + ':</span> ' + sl[i] + '<br/>';
+				out += '<span style="color: blue;">' + eval(i+1) + ':</span> ' + sl[i] + '<br/>';
 		}
-		$('#corrections').html(out);
+		$(target).html(out);
 	}
+	$(target).show();
     $.get('/text/$text.sfb', function(data1) {text1 = data1; if (text2 != '') doDiff();});
-    $.get('{$this->tmpfiles}', function(data2) {text2 = data2; if (text1 != '') doDiff();});
-	
+    $.get('$newFile', function(data2) {text2 = data2; if (text1 != '') doDiff();});
+}
 </script>
-";
+CORRECTIONS;
+			}
 		}
 
 		return <<<EOS
@@ -806,6 +812,13 @@ var fos_comment_thread_api_base_url = '$threadUrl';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(fos_comment_script);
 })();
 JS;
+	}
+
+	private function canShowCorrections()
+	{
+		return strpos($this->btitle, '(корекция)') !== false
+			&& strpos($this->tmpfiles, 'chitanka.info') !== false
+			&& File::isSFB($this->absTmpDir.basename($this->tmpfiles));
 	}
 
 	protected function makeSubmitButton() {
