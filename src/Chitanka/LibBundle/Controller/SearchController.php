@@ -311,7 +311,7 @@ class SearchController extends Controller
 	private function getQuery($_format = 'html')
 	{
 		$request = $this->get('request')->query;
-		$query = $request->get('q');
+		$query = trim($request->get('q'));
 
 		if ( ! $query) {
 			$this->view = array(
