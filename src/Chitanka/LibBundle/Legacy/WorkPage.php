@@ -741,7 +741,7 @@ function showWorkroomDiff(target) {
 	$(target).show();
     $.get('$newFile', function(newContent) {
 		// TODO find a better way to find the current text source
-		var m = newContent.match(/: (http:\/\/chitanka.info\/(book|text)\/\d+)/);
+		var m = newContent.match(/(http:\/\/chitanka.info\/(book|text)\/\d+)/);
 		if (m) {
 			var curContentUrl = m[1]+'.sfb';
 			$.get(curContentUrl, function(curContent){

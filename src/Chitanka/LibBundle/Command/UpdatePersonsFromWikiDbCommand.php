@@ -107,6 +107,7 @@ EOT
 	private function _wikiBot()
 	{
 		if ($this->_wikiBot == null) {
+			error_reporting(E_WARNING);
 			require_once $this->getContainer()->getParameter('kernel.root_dir') . '/../vendor/apibot/apibot.php';
 			$this->_wikiBot = new \Apibot($logins['chitanka'], array('dump_mode' => 0));
 		}
