@@ -44,6 +44,28 @@ class HistoryControllerTest extends WebTestCase
 	}
 
 	/**
+	 * @group rss
+	 */
+	public function testNewTextsRss()
+	{
+		$route = "new/texts.rss";
+		$page = $this->request($route);
+
+		$this->assertCountGe(1, $page->filter('item'));
+	}
+
+	/**
+	 * @group rss
+	 */
+	public function testNewBooksRss()
+	{
+		$route = "new/books.rss";
+		$page = $this->request($route);
+
+		$this->assertCountGe(1, $page->filter('item'));
+	}
+
+	/**
 	 * @group opds
 	 */
 	public function testNewTextsOpds()

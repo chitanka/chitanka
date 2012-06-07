@@ -25,6 +25,7 @@ class HistoryController extends Controller
 		$repo = $this->getBookRevisionRepository();
 		switch ($_format) {
 			case 'html':
+			case 'rss':
 				$revisions = $repo->getLatest($maxPerPage);
 				$lastOnes = current($revisions);
 				$this->view = array(
@@ -76,6 +77,7 @@ class HistoryController extends Controller
 		$repo = $this->getTextRevisionRepository();
 		switch ($_format) {
 			case 'html':
+			case 'rss':
 				$revisions = $repo->getLatest($maxPerPage);
 				$lastOnes = current($revisions);
 				$this->view = array(
