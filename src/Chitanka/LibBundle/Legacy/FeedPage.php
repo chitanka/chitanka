@@ -32,7 +32,8 @@ class FeedPage extends Page {
 		parent::__construct($fields);
 		$this->title = 'Зоб за новинарски четци';
 		$this->feedDescription = 'Универсална електронна библиотека';
-		$this->root = Setup::setting('server') . $this->root;
+		$this->server = $this->request->server();
+		$this->root = $this->server . $this->root;
 		$this->contentType = 'application/rss+xml';
 		$this->obj = Legacy::normVal(
 			$this->request->value('type', $this->defObj),
@@ -41,6 +42,7 @@ class FeedPage extends Page {
 			(int) $this->request->value('count', $this->defListLimit),
 			$this->maxListLimit);
 		$this->feedtype = 'rss';
+		$this->langCode = 'bg';
 	}
 
 
@@ -98,7 +100,7 @@ FEED;
 		$request_uri = $this->request->requestUri(true);
 		$ch =
 			$this->makeXmlElement('title', $this->title() ) .
-			$this->makeXmlElement('link', Setup::setting('server')) .
+			$this->makeXmlElement('link', $this->server) .
 			$this->makeXmlElement('description', $this->feedDescription) .
 			$this->makeXmlElement('language', $this->langCode) .
 			$this->makeXmlElement('lastBuildDate', $this->makeRssDate()) .
@@ -138,7 +140,7 @@ EOS;
 		if (empty($guid)) $guid = $link;
 		$src = empty($source) || strpos($source, 'http') === false ? '' : $source;
 		$lvl = 2;
-		$description = str_replace('href="/', 'href="'.$this->request->server().'/', $description);
+		$description = str_replace('href="/', 'href="'.$this->server.'/', $description);
 
 		return "\n\t<item>".
 			$this->makeXmlElement('title', strip_tags($title), $lvl) .

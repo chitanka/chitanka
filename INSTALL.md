@@ -56,7 +56,7 @@ _Тази стъпка се отнася за торента с динамичн
 	database_host:      localhost
 	database_name:      chitanka
 	database_user:      root
-	database_password:
+	database_password:  ~
 
 Това ще рече, че базата от данни се намира на локалния компютър и се нарича chitanka. За достъп до нея ще се ползва потребителя root, който няма парола.
 

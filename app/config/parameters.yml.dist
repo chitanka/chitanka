@@ -1,5 +1,6 @@
 # Indentation: 4 spaces, NO tabs
 # Comments start with #
+# Empty values are indicated with ~
 
 # These parameters can be imported into other config files
 # by enclosing the key with % (like %database_user%)
@@ -7,23 +8,24 @@ parameters:
     database_host:      localhost
     database_name:      chitanka
     database_user:      root
-    database_password:
+    database_password:  ~
     database_driver:    pdo_mysql
-    database_port:      
+    database_port:      ~
 
     mailer_transport:  smtp
     mailer_host:       localhost
-    mailer_user: 
-    mailer_password: 
+    mailer_user:       ~
+    mailer_password:   ~
 
     secret: ThisTokenIsNotSoSecretChangeIt
 
-    assets_base_urls: http://chitanka.local
-
     locale: bg
 
-    server:     http://chitanka.local
-    style_url:  http://chitanka.local/css/FILE.css
+    #assets_base_urls: http://chitanka.local
+    assets_base_urls: ~
+
+    #style_url:  http://chitanka.local/css/FILE.css
+    style_url:  /css/FILE.css
 
     # Следните променливи се ползват при пращането на електронна поща
     admin:              Администратор
