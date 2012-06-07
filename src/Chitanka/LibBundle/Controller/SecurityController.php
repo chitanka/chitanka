@@ -2,6 +2,7 @@
 
 namespace Chitanka\LibBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Encoder\MessageDigestPasswordEncoder;
 
@@ -36,7 +37,7 @@ class SecurityController extends Controller
 		return $this->legacyPage('Register');
 	}
 
-	public function logoutAction()
+	public function logoutAction(Request $request)
 	{
 		$user = $this->getUser();
 		if ($user) {
@@ -44,7 +45,9 @@ class SecurityController extends Controller
 			$user->logout();
 		}
 
-		$this->get('request')->getSession()->setFlash('notice', 'Излязохте от Моята библиотека.');
+		$session = $request->getSession();
+		$session->invalidate();
+		$session->setFlash('notice', 'Излязохте от Моята библиотека.');
 
 		return $this->redirect('homepage');
 	}

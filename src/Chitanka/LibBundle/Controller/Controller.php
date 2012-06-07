@@ -194,6 +194,7 @@ abstract class Controller extends SymfonyController
 
 
 	private $user;
+	/** @return User */
 	public function getUser()
 	{
 		// TODO remove

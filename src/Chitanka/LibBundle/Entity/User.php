@@ -239,7 +239,7 @@ class User /*extends BaseUser*/ implements UserInterface
 
 	public function eraseCredentials()
 	{
-		$this->id = null;
+		$this->id = -1;
 		$this->username = '~anon';
 		$this->password = null;
 		$this->logout();
