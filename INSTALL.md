@@ -57,7 +57,7 @@ app/cache, app/logs, web/cache
 
 	tar zxvf chitanka-content.tar.gz -C /PATH/TO/chitanka/web
 
-Трябва да получите нова директория `/PATH/TO/chitanka/web/content`, ако разархивирането мине по план.
+ВНИМАНИЕ: Настоящия торент съдържа излишна структура на директориите, която започва от `var/www/chitanka/content`, затова накрая ще получите `/PATH/TO/chitanka/web/var/www/chitanka/content` вместо правилното `/PATH/TO/chitanka/web/content`. Налага се ръчно да преместите директорията content на нужното място — в директорията /PATH/TO/chitanka/web.
 
 
 4. База от данни
