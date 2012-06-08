@@ -32,7 +32,7 @@ class UserAdmin extends Admin
 	{
 		$formMapper
 			->add('username')
-			->add('password')
+			//->add('password')
 			->add('realname')
 			->add('email', null, array('required' => false))
 			->add('allowemail')
