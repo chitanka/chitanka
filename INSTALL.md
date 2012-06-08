@@ -110,7 +110,7 @@ _Тази стъпка се отнася за торента с динамичн
 
 На мястото на /PATH/TO запишете съответните директории.
 
-После в /etc/hosts добавете следното:
+После в [/etc/hosts](http://en.wikipedia.org/wiki/Hosts_%28file%29#Location_in_the_file_system) добавете следното:
 
 	127.0.0.1	chitanka.local
 
