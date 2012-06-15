@@ -22,33 +22,25 @@ class CommonDbCommand extends ContainerAwareCommand
 	}
 
 	/**
-	* @RawSql
-	*/
+	 * @RawSql
+	 */
 	protected function updateTextCountByLabels(OutputInterface $output, $em)
 	{
-		$output->writeln('Updating text counts by labels');
-
-		$queries = array();
-		$queries[] = 'UPDATE label SET nr_of_texts = 0';
-		$conn = $em->getConnection();
-		$sql = 'SELECT label_id, COUNT(text_id) count FROM text_label GROUP BY label_id';
-		foreach ($conn->fetchAll($sql) as $data) {
-			$queries[] = sprintf('UPDATE label SET nr_of_texts = %d WHERE id = %d', $data['count'], $data['label_id']);
-		}
-
-		$this->executeUpdates($queries, $conn);
+		$output->writeln('Updating texts count by labels');
+		$update = 'UPDATE label l SET nr_of_texts = (SELECT COUNT(*) FROM text_label WHERE label_id = l.id)';
+		$em->getConnection()->executeUpdate($update);
 	}
 
 
 	protected function updateTextCountByLabelsParents(OutputInterface $output, $em)
 	{
-		$output->writeln('Updating text counts by labels parents');
+		$output->writeln('Updating texts count by labels parents');
 		$this->_updateCountByParents($em, 'LibBundle:Label', 'NrOfTexts');
 	}
 
 	protected function updateBookCountByCategoriesParents(OutputInterface $output, $em)
 	{
-		$output->writeln('Updating book counts by categories parents');
+		$output->writeln('Updating books count by categories parents');
 		$this->_updateCountByParents($em, 'LibBundle:Category', 'NrOfBooks');
 	}
 
@@ -76,40 +68,24 @@ class CommonDbCommand extends ContainerAwareCommand
 
 
 	/**
-	* @RawSql
-	*/
+	 * @RawSql
+	 */
 	protected function updateCommentCountByTexts(OutputInterface $output, $em)
 	{
 		$output->writeln('Updating comments count by texts');
-
-		$queries = array();
-		$queries[] = 'UPDATE text SET comment_count = 0';
-		$conn = $em->getConnection();
-		$sql = 'SELECT text_id, COUNT(text_id) count FROM text_comment GROUP BY text_id';
-		foreach ($conn->fetchAll($sql) as $data) {
-			$queries[] = sprintf('UPDATE text SET comment_count = %d WHERE id = %d', $data['count'], $data['text_id']);
-		}
-
-		$this->executeUpdates($queries, $conn);
+		$update = 'UPDATE text t SET comment_count = (SELECT COUNT(*) FROM text_comment WHERE text_id = t.id)';
+		$em->getConnection()->executeUpdate($update);
 	}
 
 
 	/**
-	* @RawSql
-	*/
+	 * @RawSql
+	 */
 	protected function updateBookCountByCategories(OutputInterface $output, $em)
 	{
-		$output->writeln('Updating book count by categories');
-
-		$queries = array();
-		$queries[] = 'UPDATE category SET nr_of_books = 0';
-		$conn = $em->getConnection();
-		$sql = 'SELECT category_id, COUNT(id) count FROM book GROUP BY category_id';
-		foreach ($conn->fetchAll($sql) as $data) {
-			$queries[] = sprintf('UPDATE category SET nr_of_books = %d WHERE id = %d', $data['count'], $data['category_id']);
-		}
-
-		$this->executeUpdates($queries, $conn);
+		$output->writeln('Updating books count by categories');
+		$update = 'UPDATE category c SET nr_of_books = (SELECT COUNT(*) FROM book WHERE category_id = c.id)';
+		$em->getConnection()->executeUpdate($update);
 	}
 
 
