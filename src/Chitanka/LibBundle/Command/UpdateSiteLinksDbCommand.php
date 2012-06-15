@@ -1,9 +1,9 @@
 <?php
-
 namespace Chitanka\LibBundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Doctrine\ORM\EntityManager;
 use Chitanka\LibBundle\Entity\Site;
 use Chitanka\LibBundle\Legacy\Legacy;
 
@@ -41,24 +41,21 @@ EOT
 	}
 
 
-	/**
-	* @RawSql
-	*/
-	protected function updateLinks($wikiContent, OutputInterface $output, $em)
+	protected function updateLinks($wikiContent, OutputInterface $output, EntityManager $em)
 	{
 		$linksData = $this->extractLinkData($wikiContent);
-		if ($linksData) {
-			$output->writeln('Updating site links...');
-			$em->getConnection()->executeUpdate('TRUNCATE TABLE site');
-			foreach ($linksData as $linkData) {
-				$site = new Site;
-				$site->setUrl($linkData[1]);
-				$site->setName($linkData[2]);
-				$site->setDescription(strip_tags($linkData[3]));
-				$em->persist($site);
-			}
-			$em->flush();
+		if (empty($linksData)) {
+			return;
 		}
+		$output->writeln('Updating site links...');
+		$repo = $em->getRepository('LibBundle:Site');
+		foreach ($linksData as $linkData) {
+			$site = $repo->findOneByUrlOrCreate($linkData[1]);
+			$site->setName($linkData[2]);
+			$site->setDescription(strip_tags($linkData[3]));
+			$em->persist($site);
+		}
+		$em->flush();
 	}
 
 	protected function fetchWikiContent(OutputInterface $output)
