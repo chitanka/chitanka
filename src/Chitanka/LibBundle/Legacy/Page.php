@@ -319,7 +319,9 @@ EOS;
 			$text = empty($sortby)
 				? 'Произведения от ' . $name
 				: $this->formatPersonName($lname, $sortby);
-			$link = strpos($lname, '.') === false ? sprintf('<a href="%s">%s</a>', $this->controller->generateUrl('person_show', array('slug' => trim($lname))+$query), $text) : $lname;
+			$link = preg_match('|[./]|', $lname) // contains not allowed chars
+				? $lname
+				: sprintf('<a href="%s">%s</a>', $this->controller->generateUrl('person_show', array('slug' => trim($lname))+$query), $text);
 			$o .= ', ' . $pref . $link . $suf;
 		}
 		return substr($o, 2);
