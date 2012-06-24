@@ -450,7 +450,7 @@ EOT
 				);
 				if ($userId) $set['user_id'] = $userId;
 				if ($username) $set['username'] = $username;
-				$qs[] = $this->olddb()->insertQ(DBT_USER_TEXT, $set, true, false);
+				$qs[] = $this->olddb()->insertQ(DBT_USER_TEXT, $set, false, false);
 			}
 		}
 
