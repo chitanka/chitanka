@@ -12,5 +12,5 @@
   RewriteRule ^new-(.+) /new/$1 [R=301,L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^(.*)$ app.php [QSA,L]
+  RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
