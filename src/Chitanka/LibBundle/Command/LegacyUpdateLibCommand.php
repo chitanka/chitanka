@@ -80,10 +80,10 @@ EOT
 		$this->license_trans = null;
 		$this->translator = 0;
 		$this->lang = 'bg';
-		$this->year = 1923;
+		$this->year = 1920;
 		$this->trans_year = null;
 		$this->type = 'poetry';
-		$this->comment = 'Добавяне (от Събрани съчинения, том 4. Български писател, 1979)';
+		$this->comment = 'Добавяне (от Събрани съчинения, том 4. Български писател, 1979. Съставителство, редакция и бележки: Веска Иванова.)';
 		// 'USERNAME' => array(PERCENT, 'Сканиране, разпознаване и корекция', date('Y'))
 		$this->users = array('zelenkroki' => array(30, 'Форматиране и последна редакция', date('Y')));
 		$this->year2 = null;
@@ -515,7 +515,7 @@ EOT
 
 	private $_curIds = array();
 	private $_ids = array(
-		'text' => array(504,2318,3569),
+		'text' => array(),
 		'book' => array(534,1113,1186,1224,1249,1299,1303,1697,2004,2115),
 	);
 	private function getNextId($table)
