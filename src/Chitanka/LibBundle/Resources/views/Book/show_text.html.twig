@@ -6,7 +6,7 @@
 
 <div class="cover-and-links">
 	{{ booktools.cover_div(book, 200) }}
-	{% if book.mode == 'public' %}
+	{% if book.removedNotice is empty %}
 		{{ booktools.download_links(book) }}
 	{% endif %}
 </div>

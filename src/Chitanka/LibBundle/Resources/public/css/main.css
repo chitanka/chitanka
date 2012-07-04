@@ -1363,6 +1363,21 @@ p.error {
 	text-align: center;
 	text-indent: 0;
 }
+/* съобщения за свален текст */
+.removed-notice {
+	clear: both;
+	padding: 1em;
+	border-radius: .5em;
+	color: white;
+	background-color: black;
+	font-weight: bold;
+	font-size: 200%;
+	line-height: 2em;
+}
+.removed-notice a {
+	color: white;
+	background-color: black;
+}
 
 table.content {
 	margin: .5em auto 1em auto;

@@ -223,14 +223,10 @@ class Text extends BaseWork
 	private $is_compilation = false;
 
 	/**
-	* @var string $mode
-	* @ORM\Column(type="string", length=8)
-	*/
-	private $mode = 'public';
-	static private $modeList = array(
-		'public' => 'Достъпно',
-		'private' => 'Свалено',
-	);
+	 * A notice if the content is removed
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $removedNotice;
 
 
 	/**
@@ -445,8 +441,8 @@ class Text extends BaseWork
 
 	public function isCompilation() { return $this->is_compilation; }
 
-	public function setMode($mode) { $this->mode = $mode; }
-	public function getMode() { return $this->mode; }
+	public function setRemovedNotice($removedNotice) { $this->removedNotice = $removedNotice; }
+	public function getRemovedNotice() { return $this->removedNotice; }
 
 	public function getUserContribs() { return $this->userContribs; }
 
@@ -1401,8 +1397,4 @@ EOS;
 		return Legacy::getContentFilePath('text', $this->id);
 	}
 
-	static public function getModeList()
-	{
-		return self::$modeList;
-	}
 }

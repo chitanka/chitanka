@@ -132,14 +132,10 @@ class Book extends BaseWork
 	private $has_cover;
 
 	/**
-	* @var string $mode
-	* @ORM\Column(type="string", length=8)
-	*/
-	private $mode;
-	static private $modeList = array(
-		'public' => 'Достъпна',
-		'private' => 'Свалена',
-	);
+	 * A notice if the content is removed
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $removedNotice;
 
 	/** FIXME doctrine:schema:create does not allow this relation
 	* @ORM\ManyToMany(targetEntity="Person", inversedBy="books")
@@ -214,8 +210,8 @@ class Book extends BaseWork
 	public function setType($type) { $this->type = $type; }
 	public function getType() { return $this->type; }
 
-	public function setMode($mode) { $this->mode = $mode; }
-	public function getMode() { return $this->mode; }
+	public function setRemovedNotice($removedNotice) { $this->removedNotice = $removedNotice; }
+	public function getRemovedNotice() { return $this->removedNotice; }
 
 	public function getAuthors() { return $this->authors; }
 	public function getAuthorsPlain($separator = ', ')
@@ -1206,11 +1202,6 @@ class Book extends BaseWork
 	static public function getTypeList()
 	{
 		return self::$typeList;
-	}
-
-	static public function getModeList()
-	{
-		return self::$modeList;
 	}
 
 }

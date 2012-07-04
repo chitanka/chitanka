@@ -31,8 +31,8 @@
 
 	{% include 'LibBundle:Text:toc.html.twig' %}
 
-	{% if text.mode == 'private' %}
-		<p class="error">Текстът е свален от библиотеката.</p>
+	{% if text.removedNotice is not empty %}
+		<div class="removed-notice">{{ text.removedNotice|raw }}</div>
 	{% else %}
 		{% include 'LibBundle:Text:content.html.twig' %}
 	{% endif %}
@@ -40,7 +40,7 @@
 	{% include 'LibBundle:Text:end_message.html.twig' %}
 {% endblock %}
 
-{% if text.mode == "public" %}
+{% if text.removedNotice is empty %}
 	{% set download_links %}
 		{% import 'LibBundle::text.html.twig' as texttools %}
 		<div class="text-entity" data-id="{{ text.id }}">

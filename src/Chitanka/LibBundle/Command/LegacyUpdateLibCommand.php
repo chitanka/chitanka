@@ -286,7 +286,6 @@ EOT
 				'zsize' => $zl,
 				'id' => $textId,
 				'headlevel' => (isset($headlevel) ? $headlevel : 0),
-				'mode' => 'public',
 			);
 			if ($series) {
 				$set['series_id'] = is_numeric($series) ? $series : $this->getSeriesId($series);
@@ -333,7 +332,6 @@ EOT
 					'type' => 'single',
 					'has_anno' => strpos($textContent, 'A>') !== false ? 1 : 0,
 					'has_cover' => 1,
-					'mode' => 'public',
 					'created_at' => $this->entrydate,
 				);
 				$qs[] = $this->db->insertQ(DBT_BOOK, $set, true);

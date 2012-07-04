@@ -64,7 +64,7 @@ class BookAdmin extends Admin
 			->add('category', null, array('required' => false, 'query_builder' => function ($repo) {
 				return $repo->createQueryBuilder('e')->orderBy('e.name');
 			}))
-			->add('mode', 'choice', array('choices' => Book::getModeList()))
+			->add('removedNotice')
 			->add('links', 'sonata_type_collection', array(
 				'by_reference' => false,
 				'required' => false,

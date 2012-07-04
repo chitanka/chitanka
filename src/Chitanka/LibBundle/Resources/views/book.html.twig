@@ -15,7 +15,7 @@
 			<br><span class="bookcat">{{ link.category(book.category) }}</span>
 		{% endif %}
 		</dd>
-		{% if book.mode == 'public' %}
+		{% if book.removedNotice is empty %}
 			<dd class="download">{{ _self.download_links(book) }}</dd>
 		{% endif %}
 	</dl>

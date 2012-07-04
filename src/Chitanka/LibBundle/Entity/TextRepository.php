@@ -277,7 +277,7 @@ class TextRepository extends EntityRepository
 
 	public function getRandomId($where = '')
 	{
-		return parent::getRandomId("e.mode = 'public'");
+		return parent::getRandomId("e.removedNotice IS NULL");
 	}
 
 	public function isValidType($type)

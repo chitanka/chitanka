@@ -33,7 +33,7 @@ class BookRepository extends EntityRepository
 
 	public function getIdsByCategory($category, $page = 1, $limit = null)
 	{
-		$dql = sprintf('SELECT b.id FROM %s b WHERE b.mode = \'public\' AND b.category = %d ORDER BY b.title', $this->getEntityName(), $category->getId());
+		$dql = sprintf('SELECT b.id FROM %s b WHERE b.removedNotice IS NULL AND b.category = %d ORDER BY b.title', $this->getEntityName(), $category->getId());
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 
 		return $query->getResult('id');
@@ -49,7 +49,7 @@ class BookRepository extends EntityRepository
 
 	public function getIdsBySequence($sequence, $page = 1, $limit = null)
 	{
-		$dql = sprintf('SELECT b.id FROM %s b WHERE b.mode = \'public\' AND b.sequence = %d ORDER BY b.seqnr, b.title', $this->getEntityName(), $sequence->getId());
+		$dql = sprintf('SELECT b.id FROM %s b WHERE b.removedNotice IS NULL AND b.sequence = %d ORDER BY b.seqnr, b.title', $this->getEntityName(), $sequence->getId());
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 
 		return $query->getResult('id');
@@ -66,7 +66,7 @@ class BookRepository extends EntityRepository
 	public function getIdsByPrefix($prefix, $page, $limit)
 	{
 		$where = $prefix ? "AND b.title LIKE '$prefix%'" : '';
-		$dql = sprintf('SELECT b.id FROM %s b WHERE b.mode = \'public\' %s ORDER BY b.title', $this->getEntityName(), $where);
+		$dql = sprintf('SELECT b.id FROM %s b WHERE b.removedNotice IS NULL %s ORDER BY b.title', $this->getEntityName(), $where);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 
 		return $query->getResult('id');
@@ -76,7 +76,7 @@ class BookRepository extends EntityRepository
 	public function countByPrefix($prefix)
 	{
 		$where = $prefix ? "AND b.title LIKE '$prefix%'" : '';
-		$dql = sprintf('SELECT COUNT(b.id) FROM %s b WHERE b.mode = \'public\' %s', $this->getEntityName(), $where);
+		$dql = sprintf('SELECT COUNT(b.id) FROM %s b WHERE b.removedNotice IS NULL %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
 
 		return $query->getSingleScalarResult();
@@ -111,7 +111,7 @@ class BookRepository extends EntityRepository
 			->leftJoin('e.authors', 'a')
 			->leftJoin('e.sequence', 's')
 			->leftJoin('e.category', 'c')
-			->where("e.mode = 'public'");
+			->where("e.removedNotice IS NULL");
 
 		return $qb;
 	}

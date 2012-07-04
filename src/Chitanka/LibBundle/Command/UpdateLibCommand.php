@@ -370,7 +370,6 @@ EOT
 				'has_anno' => 0,
 				'has_cover' => 0,
 				'is_compilation' => isset($work['tmpl']),
-				'mode' => 'public',
 
 				'sernr' => (isset($work['ser_nr']) ? $work['ser_nr'] : 0),
 				'orig_title' => (empty($work['orig_title']) ? '' : self::fixOrigTitle($work['orig_title'])),
@@ -520,7 +519,6 @@ EOT
 				'created_at' => $this->entrydate,
 				'has_anno' => 0,
 				'has_cover' => 0,
-				'mode' => 'public',
 			);
 		}
 		if (isset($book['type']))  $set['type'] = $book['type'];

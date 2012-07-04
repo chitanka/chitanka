@@ -67,7 +67,7 @@ class TextAdmin extends Admin
 			->add('sernr2', null, array('required' => false))
 			->add('headlevel', null, array('required' => false))
 			->add('source', null, array('required' => false))
-			->add('mode', 'choice', array('choices' => Text::getModeList()))
+			->add('removedNotice')
 			->setHelps(array(
 				'sernr2' => $this->trans('help.text.sernr2')
 			))
@@ -90,7 +90,7 @@ class TextAdmin extends Admin
 			->add('orig_license')
 			->add('trans_license')
 			->add('type')
-			->add('mode')
+			->add('removedNotice')
 		;
 	}
 

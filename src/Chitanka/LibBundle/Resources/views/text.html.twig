@@ -76,7 +76,7 @@
 	</dt>
 	<dd class="tauthor">{{ _self.author_list(text.authors) }}</dd>
 	<!--<dd class="extra">{#{{ _self.text_extra_info(text) }}#}</dd>-->
-	{% if text.mode == 'public' and options.download_links is defined %}
+	{% if text.removedNotice is empty and options.download_links is defined %}
 		<dd class="download">{{ _self.download_links(text) }}</dd>
 	{% endif %}
 </dl>
@@ -93,7 +93,7 @@
 		{{ link.text(text) }}
 	</dt>
 	<dd class="extra">{{ _self.text_extra_info(text) }}</dd>
-	{% if text.mode == 'public' and options.download_links is defined %}
+	{% if text.removedNotice is empty and options.download_links is defined %}
 		<dd class="download">{{ _self.download_links(text) }}</dd>
 	{% endif %}
 </dl>
