@@ -258,11 +258,6 @@ var togglerCookieName = "nomenu";
 })();
 
 
-function flashActaBanner()
-{
-	$("#logo").append('<a id="logoflash" href="http://forum.chitanka.info/topic2930.html" style="position:absolute;top:30px;left:5%;padding-left:0"><img src="http://haripetrov.com/chitanka/site/images/banner/stopacta.png"></a>');
-}
-
 $(function(){
 	if (user.isAuthenticated()) {
 		showBookmarks();
@@ -278,8 +273,6 @@ $(function(){
 	enhanceModifying();
 
 	$("#toc").boxcollapse();
-
-	flashActaBanner();
 });
 
 
