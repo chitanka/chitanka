@@ -4,29 +4,30 @@
 	<div class="subheader">{{ book.titleextra|nl2br|raw }}</div>
 {% endif %}
 
-<div class="cover-and-links">
-	{{ booktools.cover_div(book, 200) }}
-	{% if book.removedNotice is empty %}
+{% if book.removedNotice is not empty %}
+	<div class="removed-notice">{{ book.removedNotice }}</div>
+{% else %}
+	<div class="cover-and-links">
+		{{ booktools.cover_div(book, 200) }}
 		{{ booktools.download_links(book) }}
+	</div>
+	{% if annotation %}
+		<fieldset class="annotation">
+			<legend>Анотация</legend>
+			{{ annotation|raw }}
+		</fieldset>
 	{% endif %}
-</div>
 
-{% if annotation %}
-	<fieldset class="annotation">
-		<legend>Анотация</legend>
-		{{ annotation|raw }}
+	<fieldset class="book-content superlist">
+		<legend>Съдържание</legend>
+		{% import 'LibBundle::text.html.twig' as texttools %}
+		{% for text in book.texts %}
+			{% set template = template|replace_var(['text:'~text.id, 'file:'~text.id, 'text:'~text.id~'-*', 'file:'~text.id~'-*'], (book.isFromSameAuthor(text) ? texttools.text(text) : texttools.text_with_author(text))) %}
+		{% endfor %}
+
+		{{ template|join_lists|raw }}
 	</fieldset>
 {% endif %}
-
-<fieldset class="book-content superlist">
-	<legend>Съдържание</legend>
-	{% import 'LibBundle::text.html.twig' as texttools %}
-	{% for text in book.texts %}
-		{% set template = template|replace_var(['text:'~text.id, 'file:'~text.id, 'text:'~text.id~'-*', 'file:'~text.id~'-*'], (book.isFromSameAuthor(text) ? texttools.text(text) : texttools.text_with_author(text))) %}
-	{% endfor %}
-
-	{{ template|join_lists|raw }}
-</fieldset>
 
 {% if book.links|length %}
 	<div class="menu">
