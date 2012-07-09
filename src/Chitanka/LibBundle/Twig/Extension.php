@@ -45,6 +45,7 @@ class Extension extends \Twig_Extension
 			'user_markup' => new \Twig_Filter_Method($this, 'formatUserMarkup'),
 			'striptags' => new \Twig_Filter_Method($this, 'stripTags'),
 			'domain' => new \Twig_Filter_Method($this, 'getDomain'),
+			'link' => new \Twig_Filter_Method($this, 'formatLinks'),
 			'encoding' => new \Twig_Filter_Method($this, 'changeEncoding'),
 			'urlencode' => new \Twig_Filter_Method($this, 'getUrlEncode'),
 			'qrcode' => new \Twig_Filter_Method($this, 'getQrCode'),
@@ -255,6 +256,11 @@ class Extension extends \Twig_Extension
 	public function getDomain($url)
 	{
 		return parse_url($url, PHP_URL_HOST);
+	}
+
+	public function formatLinks($text)
+	{
+		return preg_replace('|https?://\S+[^,.\s]|e', "'<a href=\"$0\">'.\$this->getDomain('$0', '$2').'</a>'", $text);
 	}
 
 	public function isUrl($string)
