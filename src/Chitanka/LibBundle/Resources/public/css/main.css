@@ -1229,6 +1229,15 @@ a.dl:hover {
 .dl-list li:last-child {
 	margin-right: 0;
 }
+.superlist .action {
+	display: none;
+}
+.superlist li:hover .action,
+.superlist .action.active {
+	display: inline;
+}
+
+
 
 /* менюта, обикновено чрез списъци */
 .menu {

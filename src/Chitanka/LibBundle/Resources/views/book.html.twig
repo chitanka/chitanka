@@ -23,7 +23,7 @@
 
 {% macro download_link(book, format) %}
 	{% spaceless %}
-	<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug, '_format': format}) }}" title="Сваляне във формат {{ format }}" class="dl dl-{{ format|replace({'.zip': ''}) }}"><span>{{ format }}</span></a>
+	<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug, '_format': format}) }}" title="Сваляне във формат {{ format }}" class="dl dl-{{ format|replace({'.zip': ''}) }} action"><span>{{ format }}</span></a>
 	{% endspaceless %}
 {% endmacro %}
 
