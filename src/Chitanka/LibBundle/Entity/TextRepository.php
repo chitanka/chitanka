@@ -10,6 +10,7 @@ class TextRepository extends EntityRepository
 		'anecdote',
 		'fable',
 		'biography',
+		'dialogue',
 		'docu',
 		'essay',
 		'interview',

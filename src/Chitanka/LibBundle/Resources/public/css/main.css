@@ -908,6 +908,7 @@ li.title {
 .t-interview,
 .t-memo,
 .t-docu,
+.t-dialogue,
 .t-speech {
 	background-position: 0 -48px;
 }
