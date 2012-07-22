@@ -37,7 +37,7 @@ jQuery.fn.boxcollapse = function(putLink) {
 			contentIsShown = ! contentIsShown;
 		}
 		if (putLink) {
-			var $toggleLink = $('<a/>').attr('href', '#' + $(this).attr('id'))
+			var $toggleLink = $('<a/>')
 				.text(_togHideText)
 				.click(function() {
 					$toggleLink.text( contentIsShown ? _togShowText : _togHideText );
