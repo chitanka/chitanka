@@ -13,7 +13,7 @@ class WantedController extends Controller
 
 	public function stripeAction()
 	{
-		if ( rand(0, 2) === 0 /*every third*/ ) {
+		if ( rand(0, 1) === 0 /*every second*/ ) {
 			$book = $this->getWantedBookRepository()->getRandom();
 			$this->view = array(
 				'book' => $book,
