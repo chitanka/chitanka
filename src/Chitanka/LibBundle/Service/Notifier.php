@@ -20,10 +20,16 @@ class Notifier {
 	{
 		/* @var $recipient User */
 		$recipient = $comment->hasParent() ? $comment->getParent()->getAuthor() : $workEntry->getUser();
-		$message = Swift_Message::newInstance('Нов коментар в работното ателие')
-			->setFrom(array('notifier@chitanka.info' => 'Моята библиотека'))
-			->setTo(array($recipient->getEmail() => $recipient->getName()))
+		$sender = array('notifier@chitanka.info' => 'Моята библиотека');
+		$message = Swift_Message::newInstance('Kоментар в ателието — '.$workEntry->getTitle())
+			->setFrom($sender)
+			->setTo(array(
+				$recipient->getEmail() => $recipient->getName(),
+				'chitanka+workroom@gmail.com' => 'Работно ателие',
+			))
 			->setBody($this->createMailBodyByNewWorkroomComment($comment, $workEntry));
+		$headers = $message->getHeaders();
+		$headers->addMailboxHeader('Reply-To', $sender);
 
 		$this->mailer->send($message);
 	}
@@ -35,13 +41,15 @@ class Notifier {
 		$title = $workEntry->getTitle();
 		$link = $comment->getThread()->getPermalink().'#fos_comment_'.$comment->getId();
 		return <<<BODY
-Здравейте!
-
-В работното ателие на Моята библиотека е пуснато следното съобщение относно „{$title}“. Негов автор е $authorName.
-
 $commentBody
-
+_______________________________________________________________________________
+Автор на коментара: $authorName
+Относно: $title
 $link
+_______________________________________________________________________________
+
+Посетете работното ателие на Моята библиотека, за да отговорите на съобщението.
+
 BODY;
 	}
 }
