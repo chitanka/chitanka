@@ -6,7 +6,7 @@ use Doctrine\ORM\Internal\Hydration\AbstractHydrator;
 
 class KeyValueHydrator extends AbstractHydrator
 {
-	protected function _hydrateAll()
+	protected function hydrateAllData()
 	{
 		$pairs = array();
 		foreach ($this->_stmt->fetchAll(\PDO::FETCH_NUM) as $row) {

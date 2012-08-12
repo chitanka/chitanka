@@ -2,6 +2,9 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+/**
+ *
+ */
 class UserTextContribRepository extends EntityRepository
 {
 

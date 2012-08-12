@@ -2,6 +2,9 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+/**
+ *
+ */
 class SequenceRepository extends EntityRepository
 {
 	protected $queryableFields = array('id', 'slug', 'name', 'publisher');

@@ -2,6 +2,9 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+/**
+ *
+ */
 class BookmarkRepository extends EntityRepository
 {
 	public function getLatestByUser($user, $limit = null)
@@ -34,7 +37,7 @@ class BookmarkRepository extends EntityRepository
 
 
 	/**
-	* @RawSql
+	* RAW_SQL
 	*/
 	public function getValidTextIds($user, $textIds)
 	{

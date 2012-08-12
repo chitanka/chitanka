@@ -16,8 +16,8 @@ use Chitanka\LibBundle\Entity\TextRating;
 use Chitanka\LibBundle\Entity\UserTextRead;
 use Chitanka\LibBundle\Entity\TextLabel;
 use Chitanka\LibBundle\Entity\Bookmark;
-//use Chitanka\LibBundle\Form\Type\TextRatingType;
-//use Chitanka\LibBundle\Form\Type\TextLabelType;
+use Chitanka\LibBundle\Form\Type\TextRatingType;
+use Chitanka\LibBundle\Form\Type\TextLabelType;
 use Chitanka\LibBundle\Legacy\Setup;
 use Chitanka\LibBundle\Legacy\ZipFile;
 use Chitanka\LibBundle\Legacy\CacheManager;
@@ -253,7 +253,7 @@ class TextController extends Controller
 		if ( ! $rating) {
 			$rating = new TextRating($text, $user);
 		}
-		$form = $this->createForm('text_rating_form', $rating);
+		$form = $this->createForm(new TextRatingType, $rating);
 
 		// TODO replace with DoctrineListener
 		$oldRating = $rating->getRating();
@@ -304,7 +304,7 @@ class TextController extends Controller
 
 		$textLabel = new TextLabel;
 		$textLabel->setText($text);
-		$form = $this->createForm('text_label_form', $textLabel);
+		$form = $this->createForm(new TextLabelType, $textLabel);
 
 		$this->view = array(
 			'text' => $text,

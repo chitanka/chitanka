@@ -2,28 +2,34 @@
 
 namespace Chitanka\LibBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
+
 
 class TextLabelType extends AbstractType
 {
-	public function buildForm(FormBuilder $builder, array $options)
+	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
-			->add('text', 'hidden')
+			->add('text', 'hidden', array(
+				'data' => $options['data']->getText()->getId(),
+				'property_path' => false,
+			))
 			->add('label', 'entity', array(
 				'class' => 'LibBundle:Label',
-				'query_builder' => function ($repo) {
+				'query_builder' => function (EntityRepository $repo) {
 					return $repo->createQueryBuilder('l')->orderBy('l.name');
 				}
 			));
 	}
 
-	public function getDefaultOptions(array $options)
+	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
-		return array(
+		$resolver->setDefaults(array(
 			'data_class' => 'Chitanka\LibBundle\Entity\TextLabel',
-		);
+		));
 	}
 
 	public function getName()

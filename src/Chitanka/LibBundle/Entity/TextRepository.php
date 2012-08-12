@@ -165,7 +165,7 @@ class TextRepository extends EntityRepository
 	}
 
 	/**
-	* @RawSql
+	* RAW_SQL
 	*/
 	public function countByLabel($labels)
 	{
@@ -174,7 +174,7 @@ class TextRepository extends EntityRepository
 
 
 	/**
-	* @RawSql
+	* RAW_SQL
 	*/
 	public function deleteTextLabel($text, $label)
 	{

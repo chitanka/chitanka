@@ -2,6 +2,9 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+/**
+ *
+ */
 class ForeignBookRepository extends EntityRepository
 {
 	public function getLatest($limit = null)

@@ -13,10 +13,12 @@ class AppKernel extends Kernel
 			new Symfony\Bundle\TwigBundle\TwigBundle(),
 			new Symfony\Bundle\MonologBundle\MonologBundle(),
 			new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-			new Symfony\Bundle\DoctrineBundle\DoctrineBundle(),
 			new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+			new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
 			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-			//new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
+			new JMS\AopBundle\JMSAopBundle(),
+			new JMS\DiExtraBundle\JMSDiExtraBundle($this),
+			new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
 			//new FOS\UserBundle\FOSUserBundle(),
 			new Sonata\AdminBundle\SonataAdminBundle(),
@@ -25,7 +27,6 @@ class AppKernel extends Kernel
 			new Sonata\jQueryBundle\SonatajQueryBundle(),
 			new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
 			new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-
 			new JMS\SerializerBundle\JMSSerializerBundle($this),
 			new FOS\RestBundle\FOSRestBundle(),
 			new FOS\CommentBundle\FOSCommentBundle(),
@@ -57,10 +58,5 @@ class AppKernel extends Kernel
 	protected function getConfigurationFile($environment, $format = 'yml')
 	{
 		return __DIR__."/config/config_$environment.$format";
-	}
-
-	public function registerRootDir()
-	{
-		return __DIR__;
 	}
 }

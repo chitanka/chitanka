@@ -2,6 +2,9 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+/**
+ *
+ */
 class TextRevisionRepository extends RevisionRepository
 {
 	public function getQueryBuilder($orderBys = null)

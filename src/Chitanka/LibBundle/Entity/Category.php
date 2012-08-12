@@ -3,6 +3,7 @@
 namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Chitanka\LibBundle\Util\String;
 
 /**
@@ -20,14 +21,14 @@ class Category
 	/**
 	* @var string $slug
 	* @ORM\Column(type="string", length=50, unique=true)
-	* @assert:NotBlank()
+	* @Assert\NotBlank
 	*/
 	private $slug = '';
 
 	/**
 	* @var string $name
 	* @ORM\Column(type="string", length=80, unique=true)
-	* @assert:NotBlank()
+	* @Assert\NotBlank
 	*/
 	private $name = '';
 

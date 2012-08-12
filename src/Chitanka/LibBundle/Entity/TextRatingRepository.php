@@ -4,6 +4,9 @@ namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\NoResultException;
 
+/**
+ *
+ */
 class TextRatingRepository extends EntityRepository
 {
 	static public $ratings = array(

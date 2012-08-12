@@ -4,6 +4,9 @@ namespace Chitanka\LibBundle\Entity;
 
 use Chitanka\LibBundle\Util\Datetime;
 
+/**
+ *
+ */
 class RevisionRepository extends EntityRepository
 {
 
@@ -75,7 +78,7 @@ class RevisionRepository extends EntityRepository
 
 	/**
 	* Uses raw SQL and DATE_FORMAT, a MySQL specific function
-	* @RawSql
+	* RAW_SQL
 	*/
 	public function getMonths()
 	{
@@ -91,7 +94,7 @@ class RevisionRepository extends EntityRepository
 
 
 	/**
-	 * @RawSql
+	 * RAW_SQL
 	 */
 	public function getMaxDate()
 	{

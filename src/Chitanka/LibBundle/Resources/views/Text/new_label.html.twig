@@ -5,7 +5,7 @@
 <form action="{{ path('text_label_new', {'id': text.id}) }}" method="post" class="new-form">
 	{{ form_errors(form) }}
 	<div>
-		{{ form_label(form.label, '') }}
+		{{ form_label(form.label, ' ') }}
 		{{ form_widget(form.label) }}
 		{{ form_rest(form) }}
 		<input type="submit" value="Добавяне">

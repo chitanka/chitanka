@@ -1,15 +1,14 @@
 <?php
-
 namespace Chitanka\LibBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Chitanka\LibBundle\Util\String;
 
 class FeedbackType extends AbstractType
 {
 
-	public function buildForm(FormBuilder $builder, array $options)
+	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
 			->add('referer', 'hidden')

@@ -2,6 +2,9 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+/**
+ *
+ */
 class WorkEntryRepository extends EntityRepository
 {
 	public function getLatest($limit = null)

@@ -6,8 +6,9 @@ framework:
     esi:             ~
     translator:      { fallback: en }
     secret:          %secret%
-    charset:         UTF-8
-    router:          { resource: "%kernel.root_dir%/config/routing.yml" }
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: %kernel.debug%
     form:            true
     csrf_protection: true
     validation:      { enable_annotations: true }
@@ -15,11 +16,11 @@ framework:
         engines: ['twig']
         assets_base_urls: %assets_base_urls%
         #assets_version: SomeVersionScheme
+    default_locale:  %locale%
+    trust_proxy_headers: false # Should Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
     session:
-        default_locale: %locale%
-        lifetime:       3600
-        auto_start:     true
-        name:           _CHITANKA
+        lifetime:  3600
+        name:      _CHITANKA
 
 services:
     twig.extension.chitanka:
@@ -202,13 +203,14 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    # java: /usr/bin/java
+    bundles:        [ ]
+    #java: /usr/bin/java
     filters:
         cssrewrite: ~
-        # closure:
-        #     jar: %kernel.root_dir%/java/compiler.jar
-        # yui_css:
-        #     jar: %kernel.root_dir%/java/yuicompressor-2.4.2.jar
+        #closure:
+        #    jar: %kernel.root_dir%/Resources/java/compiler.jar
+        #yui_css:
+        #    jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
 
 # Doctrine Configuration
 doctrine:
@@ -220,17 +222,19 @@ doctrine:
         user:     %database_user%
         password: %database_password%
         charset:  UTF8
-
+#        types:
+#            json: Sonata\Doctrine\Types\JsonType
     orm:
         auto_generate_proxy_classes: %kernel.debug%
-#        auto_mapping: true
-        default_entity_manager: default
-        entity_managers:
-            default:
-                mappings:
-                    #FOSUserBundle: ~
-                    LibBundle: ~
-                    FOSCommentBundle: ~
+        auto_mapping: true
+# #        auto_mapping: true
+#         default_entity_manager: default
+#         entity_managers:
+#             default:
+#                 mappings:
+#                     #FOSUserBundle: ~
+#                     LibBundle: ~
+#                     FOSCommentBundle: ~
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -238,10 +242,12 @@ swiftmailer:
     host:      %mailer_host%
     username:  %mailer_user%
     password:  %mailer_password%
+    spool:     { type: memory }
 
 sensio_framework_extra:
     view:
         annotations: false
+
 
 sonata_admin:
     dashboard:

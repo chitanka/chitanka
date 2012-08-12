@@ -2,6 +2,9 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+/**
+ *
+ */
 class PersonRepository extends EntityRepository
 {
 	protected $asAuthor = false;

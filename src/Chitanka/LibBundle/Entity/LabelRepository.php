@@ -2,6 +2,9 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+/**
+ *
+ */
 class LabelRepository extends EntityRepository
 {
 	public function findBySlug($slug)
@@ -19,7 +22,7 @@ class LabelRepository extends EntityRepository
 	}
 
 	/**
-	* @RawSql
+	* RAW_SQL
 	*/
 	public function getAllAsTree()
 	{

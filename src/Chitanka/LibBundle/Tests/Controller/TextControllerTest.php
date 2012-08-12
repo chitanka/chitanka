@@ -15,6 +15,20 @@ class TextControllerTest extends WebTestCase
 	}
 
 	/**
+	 * @group html
+	 */
+	public function testShow()
+	{
+		$client = static::createClient();
+
+		$page = $client->request('GET', "/text/1");
+
+		$this->assertTrue($client->getResponse()->isSuccessful(), "Response should be successful.");
+		$this->assertHtmlPageIs($page, 'text_show');
+		$this->assertCount(1, $page->filter('h1'));
+	}
+
+	/**
 	 * @group opds
 	 */
 	public function testIndexOpds()

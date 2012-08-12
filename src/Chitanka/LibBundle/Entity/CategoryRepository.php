@@ -2,6 +2,9 @@
 
 namespace Chitanka\LibBundle\Entity;
 
+/**
+ *
+ */
 class CategoryRepository extends EntityRepository
 {
 	/** @return Category */
@@ -11,7 +14,7 @@ class CategoryRepository extends EntityRepository
 	}
 
 	/**
-	 * @RawSql
+	 * RAW_SQL
 	 */
 	public function getAllAsTree()
 	{
@@ -21,7 +24,7 @@ class CategoryRepository extends EntityRepository
 	}
 
 	/**
-	 * @RawSql
+	 * RAW_SQL
 	 */
 	public function getAll()
 	{
@@ -31,7 +34,7 @@ class CategoryRepository extends EntityRepository
 	}
 
 	/**
-	 * @RawSql
+	 * RAW_SQL
 	 */
 	public function getRoots()
 	{

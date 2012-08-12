@@ -1,0 +1,84 @@
+{
+	"name": "symfony/framework-standard-edition",
+	"description": "The \"Symfony Standard Edition\" distribution",
+	"autoload": {
+		"psr-0": { "": "src/" }
+	},
+	"require": {
+		"php": ">=5.3.3",
+		"symfony/symfony": "2.1.*",
+		"doctrine/orm": ">=2.2.3,<2.4-dev",
+		"doctrine/doctrine-bundle": "dev-master",
+		"twig/extensions": "dev-master",
+		"symfony/assetic-bundle": "dev-master",
+		"symfony/swiftmailer-bundle": "dev-master",
+		"symfony/monolog-bundle": "dev-master",
+		"sensio/distribution-bundle": "dev-master",
+		"sensio/framework-extra-bundle": "dev-master",
+		"sensio/generator-bundle": "dev-master",
+		"jms/security-extra-bundle": "1.2.*",
+		"jms/di-extra-bundle": "1.1.*",
+		"friendsofsymfony/user-bundle": "*",
+		"sonata-project/admin-bundle": "dev-master",
+		"sonata-project/doctrine-orm-admin-bundle": "dev-master",
+		"sonata-project/user-bundle": "dev-master",
+		"sonata-project/easy-extends-bundle": "dev-master",
+		"simplethings/entity-audit-bundle": "dev-master",
+		"friendsofsymfony/comment-bundle": "dev-master",
+		"sfblib": "*",
+		"apibot": "*"
+	},
+	"repositories": [
+		{
+			"type": "package",
+			"package": {
+				"name": "sfblib",
+				"version": "master",
+				"source": {
+					"url": "git://gitorious.org/sfb-converter/mainline.git",
+					"type": "git",
+					"reference": "master"
+				},
+				"autoload": {
+					"psr-0": {
+						"Sfblib_": "lib/"
+					}
+				}
+			}
+		},
+		{
+			"type": "package",
+			"package": {
+				"name": "apibot",
+				"version": "master",
+				"source": {
+					"url": "git://gitorious.org/apibot/apibot.git",
+					"type": "git",
+					"reference": "0.32"
+				}
+			}
+		}
+	],
+	"scripts": {
+		"post-install-cmd": [
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
+		],
+		"post-update-cmd": [
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
+		]
+	},
+	"config": {
+		"bin-dir": "bin"
+	},
+	"minimum-stability": "dev",
+	"extra": {
+		"symfony-app-dir": "app",
+		"symfony-web-dir": "web"
+	}
+}
