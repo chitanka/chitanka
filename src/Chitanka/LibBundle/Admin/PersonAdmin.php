@@ -25,6 +25,11 @@ class PersonAdmin extends Admin
 			->add('is_author')
 			->add('is_translator')
 			->add('info')
+			->add('type')
+			->add('textsAsAuthor')
+			->add('textsAsTranslator')
+			->add('books')
+			->add('series')
 		;
 	}
 

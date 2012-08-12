@@ -42,12 +42,14 @@ class Category
 	* The children of this category
 	* @var array
 	* @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
+	* @ORM\OrderBy({"name" = "ASC"})
 	*/
 	private $children;
 
 	/**
 	* @var array
 	* @ORM\OneToMany(targetEntity="Book", mappedBy="category")
+	* @ORM\OrderBy({"title" = "ASC"})
 	*/
 	private $books;
 

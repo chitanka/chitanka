@@ -42,6 +42,7 @@ class Sequence
 	/**
 	* @var array
 	* @ORM\OneToMany(targetEntity="Book", mappedBy="sequence")
+	* @ORM\OrderBy({"seqnr" = "ASC"})
 	*/
 	private $books;
 

@@ -18,6 +18,7 @@ class SequenceAdmin extends Admin
 			->add('name')
 			->add('slug')
 			->add('publisher')
+			->add('books')
 		;
 	}
 

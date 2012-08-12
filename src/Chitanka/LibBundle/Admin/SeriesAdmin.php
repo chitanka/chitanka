@@ -18,7 +18,8 @@ class SeriesAdmin extends Admin
 			->add('slug')
 			->add('name')
 			->add('orig_name')
-			->add('seriesAuthors')
+			->add('authors')
+			->add('texts')
 		;
 	}
 

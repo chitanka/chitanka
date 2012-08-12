@@ -192,6 +192,11 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_intern, label: admin.user }
         arguments: [null, Chitanka\LibBundle\Entity\User, LibBundle:UserAdmin]
+    chitanka.admin.user_text_contrib:
+        class: Chitanka\LibBundle\Admin\UserTextContribAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_intern, label: admin.usertextcontrib }
+        arguments: [null, Chitanka\LibBundle\Entity\UserTextContrib, LibBundle:UserTextContribAdmin]
 
 
 # Twig Configuration

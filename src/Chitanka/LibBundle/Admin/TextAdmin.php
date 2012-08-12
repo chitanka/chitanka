@@ -22,6 +22,7 @@ class TextAdmin extends Admin
 			->add('title')
 			->add('authors')
 			->add('translators')
+			->add('books')
 			->add('subtitle')
 			->add('lang')
 			->add('trans_year')
@@ -40,6 +41,18 @@ class TextAdmin extends Admin
 			->add('headlevel')
 			->add('source')
 			->add('removedNotice')
+			->add('comment_count')
+//			->add('dl_count')
+//			->add('read_count')
+			->add('rating')
+			->add('votes')
+			->add('is_compilation')
+			->add('labels')
+			->add('headers')
+			//->add('readers')
+			->add('userContribs')
+			->add('revisions')
+			->add('created_at')
 		;
 	}
 

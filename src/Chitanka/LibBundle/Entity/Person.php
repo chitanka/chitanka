@@ -199,7 +199,10 @@ class Person
 	public function setType($type) { $this->type = $type; }
 	public function getType() { return $this->type; }
 
+	public function getTextsAsAuthor() { return $this->textsAsAuthor; }
+	public function getTextsAsTranslator() { return $this->textsAsTranslator; }
 	public function getBooks() { return $this->books; }
+	public function getSeries() { return $this->series; }
 
 	public function __toString()
 	{

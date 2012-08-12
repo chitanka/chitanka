@@ -18,6 +18,8 @@ class CategoryAdmin extends Admin
 			->add('name')
 			->add('slug')
 			->add('parent')
+			->add('children')
+			->add('books')
 		;
 	}
 

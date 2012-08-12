@@ -68,4 +68,8 @@ class TextRevision
 	public function setFirst($first) { $this->first = $first; }
 	public function getFirst() { return $this->first; }
 
+	public function __toString()
+	{
+		return sprintf('%s (%s, %s)', $this->getComment(), $this->getUser(), $this->getDate()->format('Y-m-d H:i:s'));
+	}
 }

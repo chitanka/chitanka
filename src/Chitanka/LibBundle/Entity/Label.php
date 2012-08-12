@@ -54,7 +54,8 @@ class Label
 
 	/**
 	* @var array
-	* @ORM\ManyToMany(targetEntity="Text", inversedBy="labels")
+	* @ORM\ManyToMany(targetEntity="Text", mappedBy="labels")
+	* @ORM\OrderBy({"title" = "ASC"})
 	*/
 	private $texts;
 

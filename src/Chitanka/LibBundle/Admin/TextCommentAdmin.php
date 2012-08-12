@@ -16,6 +16,7 @@ class TextCommentAdmin extends Admin
 	{
 		$showMapper
 			->add('text')
+			->add('user')
 			->add('rname')
 			->add('time')
 			->add('content')

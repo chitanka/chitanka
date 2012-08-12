@@ -75,4 +75,8 @@ class TextHeader
 	public function setLinecnt($linecnt) { $this->linecnt = $linecnt; }
 	public function getLinecnt() { return $this->linecnt; }
 
+	public function __toString()
+	{
+		return str_repeat('—', $this->getLevel()-1) .' '. $this->getName();
+	}
 }

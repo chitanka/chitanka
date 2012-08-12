@@ -56,7 +56,7 @@ class BookLink
 
 	public function __toString()
 	{
-		return $this->code;
+		return $this->getSite() .' ('.$this->code.')';
 	}
 
 }

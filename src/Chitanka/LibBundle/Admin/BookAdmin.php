@@ -32,7 +32,9 @@ class BookAdmin extends Admin
 			->add('seqnr')
 			->add('category')
 			->add('removedNotice')
-			//->add('links')
+			->add('texts')
+			->add('links')
+			->add('created_at')
 		;
 	}
 

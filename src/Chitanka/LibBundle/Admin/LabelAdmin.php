@@ -18,6 +18,9 @@ class LabelAdmin extends Admin
 			->add('name')
 			->add('slug')
 			->add('parent')
+			->add('nr_of_texts')
+			->add('children')
+			->add('texts')
 		;
 	}
 

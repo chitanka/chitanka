@@ -307,6 +307,11 @@ class Text extends BaseWork
 	*/
 	private $userContribs;
 
+	/**
+	* @var array
+	* @ORM\OneToMany(targetEntity="TextRevision", mappedBy="text")
+	*/
+	private $revisions;
 
 	public function __construct($id = null)
 	{
@@ -332,7 +337,8 @@ class Text extends BaseWork
 
 	public function __toString()
 	{
-		return "$this->id";
+		return $this->getTitle();
+		//return "$this->id";
 	}
 
 	public function getId() { return $this->id; }
@@ -462,6 +468,8 @@ class Text extends BaseWork
 
 	public function addBook(Book $book) { $this->books[] = $book; }
 	public function getBooks() { return $this->books; }
+
+	public function getRevisions() { return $this->revisions; }
 
 	/**
 	* Return the main book for the text

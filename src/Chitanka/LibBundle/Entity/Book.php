@@ -259,6 +259,8 @@ class Book extends BaseWork
 	public function setCategory($category) { $this->category = $category; }
 	public function getCategory() { return $this->category; }
 
+	public function setCreatedAt($created_at) { $this->created_at = $created_at; }
+	public function getCreatedAt() { return $this->created_at; }
 
 	public function getSfbg()
 	{

@@ -57,6 +57,7 @@ class Series
 	/**
 	* @var array
 	* @ORM\OneToMany(targetEntity="Text", mappedBy="series")
+	* @ORM\OrderBy({"sernr" = "ASC"})
 	*/
 	private $texts;
 
