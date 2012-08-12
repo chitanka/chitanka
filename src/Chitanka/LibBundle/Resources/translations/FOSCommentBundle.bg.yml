@@ -1,6 +1,7 @@
 fos_comment_comment_new_headline_first:       Добавяне на коментар
 fos_comment_comment_new_headline:             Добавяне на коментар
 fos_comment_comment_new_submit:               Пращане
+fos_comment_comment_new_cancel:               Отказ
 
 fos_comment_comment_reply_reply_to:           Отговор на %name%
 fos_comment_comment_reply_cancel:             Отказ
@@ -21,6 +22,7 @@ fos_comment_rss_feed:                         Емисия на RSS
 fos_comment_thread_close:                     Затваряне на темата
 fos_comment_thread_open:                      Отваряне на темата
 fos_comment_thread_comment_count:             Един коментар|%count% коментара
+fos_comment_comment_edit:                     Редактиране
 fos_comment_comment_delete:                   Изтриване на коментара
 fos_comment_comment_undelete:                 Възвръщане на коментара
 fos_comment_comment_deleted:                  "[изтрит]"

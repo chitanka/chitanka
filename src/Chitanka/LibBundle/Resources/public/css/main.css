@@ -1112,8 +1112,6 @@ div.fos_comment_comment_metas {
 div.fos_comment_comment_reply {
 	text-align: right;
 }
-/* currently broken */
-.fos_comment_thread_commentable_action, .fos_comment_comment_remove { display: none }
 
 #tooltip {
 	position: absolute;
