@@ -20,7 +20,7 @@ class Notifier {
 	{
 		/* @var $recipient User */
 		$recipient = $comment->hasParent() ? $comment->getParent()->getAuthor() : $workEntry->getUser();
-		$sender = array('notifier@chitanka.info' => $comment->getAuthorName().' (Моята библиотека)');
+		$sender = array('NO_REPLY_I_REPEAT_NO_REPLY@chitanka.info' => $comment->getAuthorName().' (Моята библиотека)');
 		$message = Swift_Message::newInstance('Kоментар в ателието — '.$workEntry->getTitle())
 			->setFrom($sender)
 			->setTo(array(
