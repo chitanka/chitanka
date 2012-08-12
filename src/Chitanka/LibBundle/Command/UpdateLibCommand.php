@@ -238,10 +238,10 @@ EOT
 		$parts = explode($separator, $line);
 		$var = trim(array_shift($parts));
 		$value = trim(implode($separator, $parts));
-		if (empty($value) || $value == '?') {
+		if (empty($value)) {
 			return array();
 		}
-		if ($value == '-') {
+		if ($value == '-' || $value == '?') {
 			$value = '';
 		}
 		return array($var => $value);
