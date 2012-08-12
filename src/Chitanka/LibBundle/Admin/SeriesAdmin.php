@@ -4,12 +4,23 @@ namespace Chitanka\LibBundle\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 class SeriesAdmin extends Admin
 {
 	protected $baseRoutePattern = 'series';
 	protected $baseRouteName = 'admin_series';
 	protected $translationDomain = 'admin';
+
+	protected function configureShowField(ShowMapper $showMapper)
+	{
+		$showMapper
+			->add('slug')
+			->add('name')
+			->add('orig_name')
+			->add('seriesAuthors')
+		;
+	}
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
@@ -18,8 +29,9 @@ class SeriesAdmin extends Admin
 			->add('slug')
 			->add('_action', 'actions', array(
 				'actions' => array(
-					'delete' => array(),
+					'view' => array(),
 					'edit' => array(),
+					'delete' => array(),
 				)
 			))
 		;

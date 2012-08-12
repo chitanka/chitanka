@@ -4,6 +4,7 @@ namespace Chitanka\LibBundle\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 use Chitanka\LibBundle\Entity\Text;
 use Chitanka\LibBundle\Util\Language;
 use Chitanka\LibBundle\Legacy\Legacy;
@@ -14,6 +15,34 @@ class TextAdmin extends Admin
 	protected $baseRouteName = 'admin_text';
 	protected $translationDomain = 'admin';
 
+	protected function configureShowField(ShowMapper $showMapper)
+	{
+		$showMapper
+			->add('slug')
+			->add('title')
+			->add('authors')
+			->add('translators')
+			->add('subtitle')
+			->add('lang')
+			->add('trans_year')
+			->add('trans_year2')
+			->add('orig_title')
+			->add('orig_subtitle')
+			->add('orig_lang')
+			->add('year')
+			->add('year2')
+			->add('orig_license')
+			->add('trans_license')
+			->add('type')
+			->add('series')
+			->add('sernr')
+			->add('sernr2')
+			->add('headlevel')
+			->add('source')
+			->add('removedNotice')
+		;
+	}
+
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
@@ -22,8 +51,9 @@ class TextAdmin extends Admin
 
 			->add('_action', 'actions', array(
 				'actions' => array(
-					'delete' => array(),
+					'view' => array(),
 					'edit' => array(),
+					'delete' => array(),
 				)
 			))
 		;
@@ -62,7 +92,7 @@ class TextAdmin extends Admin
 			->add('orig_license', null, array('required' => false))
 			->add('trans_license', null, array('required' => false))
 			->add('type', 'choice', array('choices' => array('' => '') + Legacy::workTypes()))
-			->add('series', 'sonata_type_model', array('required' => false), array('edit' => 'list'))
+			->add('series', 'sonata_type_model_list', array('required' => false))
 			->add('sernr', null, array('required' => false))
 			->add('sernr2', null, array('required' => false))
 			->add('headlevel', null, array('required' => false))

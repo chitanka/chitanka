@@ -4,6 +4,7 @@ namespace Chitanka\LibBundle\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 use Chitanka\LibBundle\Entity\User;
 
 class UserAdmin extends Admin
@@ -11,6 +12,21 @@ class UserAdmin extends Admin
 	protected $baseRoutePattern = 'user';
 	protected $baseRouteName = 'admin_user';
 	protected $translationDomain = 'admin';
+
+	protected function configureShowField(ShowMapper $showMapper)
+	{
+		$showMapper
+			->add('username')
+			//->add('password')
+			->add('realname')
+			->add('email')
+			->add('allowemail')
+			->add('groups')
+			->add('news')
+			->add('opts')
+			->add('token')
+		;
+	}
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
@@ -21,8 +37,9 @@ class UserAdmin extends Admin
 			->add('touched')
 			->add('_action', 'actions', array(
 				'actions' => array(
-					'delete' => array(),
+					'view' => array(),
 					'edit' => array(),
+					'delete' => array(),
 				)
 			))
 		;

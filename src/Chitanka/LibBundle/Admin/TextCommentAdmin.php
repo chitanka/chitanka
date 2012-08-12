@@ -4,12 +4,24 @@ namespace Chitanka\LibBundle\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 class TextCommentAdmin extends Admin
 {
 	protected $baseRoutePattern = 'text-comment';
 	protected $baseRouteName = 'admin_text_comment';
 	protected $translationDomain = 'admin';
+
+	protected function configureShowField(ShowMapper $showMapper)
+	{
+		$showMapper
+			->add('text')
+			->add('rname')
+			->add('time')
+			->add('content')
+			->add('is_shown')
+		;
+	}
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
@@ -20,8 +32,9 @@ class TextCommentAdmin extends Admin
 			->add('is_shown')
 			->add('_action', 'actions', array(
 				'actions' => array(
-					'delete' => array(),
+					'view' => array(),
 					'edit' => array(),
+					'delete' => array(),
 				)
 			))
 		;

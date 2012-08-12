@@ -4,7 +4,7 @@ namespace Chitanka\LibBundle\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-
+use Sonata\AdminBundle\Show\ShowMapper;
 use Chitanka\LibBundle\Entity\Book;
 use Chitanka\LibBundle\Util\Language;
 
@@ -13,6 +13,28 @@ class BookAdmin extends Admin
 	protected $baseRoutePattern = 'book';
 	protected $baseRouteName = 'admin_book';
 	protected $translationDomain = 'admin';
+
+	protected function configureShowField(ShowMapper $showMapper)
+	{
+		$showMapper
+			->add('slug')
+			->add('title')
+			->add('authors')
+			->add('subtitle')
+			->add('title_extra')
+			->add('orig_title')
+			->add('lang')
+			->add('orig_lang')
+			->add('year')
+			->add('trans_year')
+			->add('type')
+			->add('sequence')
+			->add('seqnr')
+			->add('category')
+			->add('removedNotice')
+			//->add('links')
+		;
+	}
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
@@ -26,8 +48,9 @@ class BookAdmin extends Admin
 			->add('puk', 'string', array('template' => 'LibBundle:BookAdmin:list_puk.html.twig'))
 			->add('_action', 'actions', array(
 				'actions' => array(
-					'delete' => array(),
+					'view' => array(),
 					'edit' => array(),
+					'delete' => array(),
 				)
 			))
 		;

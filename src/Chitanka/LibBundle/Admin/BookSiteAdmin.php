@@ -4,12 +4,21 @@ namespace Chitanka\LibBundle\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 class BookSiteAdmin extends Admin
 {
 	protected $baseRoutePattern = 'book-site';
 	protected $baseRouteName = 'admin_book_site';
 	protected $translationDomain = 'admin';
+
+	protected function configureShowField(ShowMapper $showMapper)
+	{
+		$showMapper
+			->add('name')
+			->add('url')
+		;
+	}
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
@@ -18,8 +27,9 @@ class BookSiteAdmin extends Admin
 			->add('url')
 			->add('_action', 'actions', array(
 				'actions' => array(
-					'delete' => array(),
+					'view' => array(),
 					'edit' => array(),
+					'delete' => array(),
 				)
 			))
 		;

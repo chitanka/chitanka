@@ -4,11 +4,21 @@ namespace Chitanka\LibBundle\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 class TextTranslatorAdmin extends Admin
 {
 	protected $baseRouteName = 'admin_text_translator';
 	protected $translationDomain = 'admin';
+
+	protected function configureShowField(ShowMapper $showMapper)
+	{
+		$showMapper
+			->add('person')
+			->add('pos')
+			->add('year')
+		;
+	}
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
@@ -18,8 +28,9 @@ class TextTranslatorAdmin extends Admin
 			->add('year')
 			->add('_action', 'actions', array(
 				'actions' => array(
-					'delete' => array(),
+					'view' => array(),
 					'edit' => array(),
+					'delete' => array(),
 				)
 			))
 		;
@@ -29,7 +40,7 @@ class TextTranslatorAdmin extends Admin
 	{
 		$formMapper
 			//->add('text')
-			->add('person', 'sonata_type_model', array('required' => false), array('edit' => 'list'))
+			->add('person', 'sonata_type_model_list', array('required' => false))
 			->add('pos')
 			->add('year')
 		;

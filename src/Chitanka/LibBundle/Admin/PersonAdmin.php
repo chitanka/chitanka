@@ -13,6 +13,21 @@ class PersonAdmin extends Admin
 	protected $baseRouteName = 'admin_person';
 	protected $translationDomain = 'admin';
 
+	protected function configureShowField(ShowMapper $showMapper)
+	{
+		$showMapper
+			->add('slug')
+			->add('name')
+			->add('orig_name')
+			->add('real_name')
+			->add('oreal_name')
+			->add('country')
+			->add('is_author')
+			->add('is_translator')
+			->add('info')
+		;
+	}
+
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
@@ -22,8 +37,9 @@ class PersonAdmin extends Admin
 
 			->add('_action', 'actions', array(
 				'actions' => array(
-					'delete' => array(),
+					'view' => array(),
 					'edit' => array(),
+					'delete' => array(),
 				)
 			))
 		;
@@ -54,7 +70,7 @@ class PersonAdmin extends Admin
 					'required' => false,
 					'label' => 'Person Type',
 				))
-				->add('person', 'sonata_type_model', array('required' => false, 'label' => 'Main Person'), array('edit' => 'list'))
+				->add('person', 'sonata_type_model_list', array('required' => false, 'label' => 'Main Person'))
 			->end()
 			->setHelps(array(
 				'info' => $this->trans('help.person.info')

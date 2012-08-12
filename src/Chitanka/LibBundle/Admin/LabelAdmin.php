@@ -4,12 +4,22 @@ namespace Chitanka\LibBundle\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 class LabelAdmin extends Admin
 {
 	protected $baseRoutePattern = 'label';
 	protected $baseRouteName = 'admin_label';
 	protected $translationDomain = 'admin';
+
+	protected function configureShowField(ShowMapper $showMapper)
+	{
+		$showMapper
+			->add('name')
+			->add('slug')
+			->add('parent')
+		;
+	}
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
@@ -18,8 +28,9 @@ class LabelAdmin extends Admin
 			->add('slug')
 			->add('_action', 'actions', array(
 				'actions' => array(
-					'delete' => array(),
+					'view' => array(),
 					'edit' => array(),
+					'delete' => array(),
 				)
 			))
 		;

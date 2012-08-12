@@ -4,12 +4,31 @@ namespace Chitanka\LibBundle\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 class WorkEntryAdmin extends Admin
 {
 	protected $baseRoutePattern = 'work-entry';
 	protected $baseRouteName = 'admin_work_entry';
 	protected $translationDomain = 'admin';
+
+	protected function configureShowField(ShowMapper $showMapper)
+	{
+		$showMapper
+			->add('type')
+			->add('title')
+			->add('author')
+			->add('user')
+			->add('comment')
+			->add('status')
+			->add('progress')
+			->add('is_frozen')
+			->add('tmpfiles')
+			->add('tfsize')
+			->add('uplfile')
+			->add('deleted_at')
+		;
+	}
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
@@ -18,8 +37,9 @@ class WorkEntryAdmin extends Admin
 			->add('author')
 			->add('_action', 'actions', array(
 				'actions' => array(
-					'delete' => array(),
+					'view' => array(),
 					'edit' => array(),
+					'delete' => array(),
 				)
 			))
 		;
@@ -31,7 +51,7 @@ class WorkEntryAdmin extends Admin
 			->add('type')
 			->add('title')
 			->add('author', null, array('required' => false))
-			->add('user', 'sonata_type_model', array('required' => false), array('edit' => 'list'))
+			->add('user', 'sonata_type_model_list', array('required' => false))
 			->add('comment', null, array('required' => false))
 			->add('status')
 			->add('progress')
