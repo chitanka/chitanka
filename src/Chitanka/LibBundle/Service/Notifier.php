@@ -36,16 +36,12 @@ class Notifier {
 
 	private function createMailBodyByNewWorkroomComment(Comment $comment, WorkEntry $workEntry)
 	{
-		$commentBody = $comment->getBody();
-		$authorName = $comment->getAuthorName();
-		$title = $workEntry->getTitle();
-		$link = $comment->getThread()->getPermalink().'#fos_comment_'.$comment->getId();
 		return <<<BODY
-$commentBody
+{$comment->getBody()}
 _______________________________________________________________________________
-Автор на коментара: $authorName
-Относно: $title
-$link
+Автор на коментара: {$comment->getAuthorName()}
+Относно: {$workEntry->getTitle()} ({$workEntry->getAuthor()})
+{$comment->getThread()->getPermalink()}#fos_comment_{$comment->getId()}
 _______________________________________________________________________________
 
 Посетете работното ателие на Моята библиотека, за да отговорите на съобщението.
