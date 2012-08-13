@@ -33,7 +33,7 @@ class BookAdmin extends Admin
 			->add('category')
 			->add('removed_notice')
 			->add('texts')
-			->add('links')
+			->add('links', null, array('label' => 'Site Links'))
 			->add('created_at')
 		;
 	}
@@ -93,6 +93,7 @@ class BookAdmin extends Admin
 			->add('links', 'sonata_type_collection', array(
 				'by_reference' => false,
 				'required' => false,
+				'label' => 'Site Links',
 			), array(
 				'edit' => 'inline',
 				'inline' => 'table',
