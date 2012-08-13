@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="user_idx", columns={"user_id"})}
 * )
 */
-class TextRating
+class TextRating extends Entity
 {
 	/**
 	* @var integer $id

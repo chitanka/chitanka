@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 *	indexes={
 *		@ORM\Index(name="label_idx", columns={"label_id"})})
 */
-class TextLabel
+class TextLabel extends Entity
 {
 	/**
 	* @var integer

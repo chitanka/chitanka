@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Table(name="user_text_contrib"
 * )
 */
-class UserTextContrib
+class UserTextContrib extends Entity
 {
 	/**
 	* @var integer $id

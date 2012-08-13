@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 *	uniqueConstraints={@ORM\UniqueConstraint(name="uniq_key", columns={"folder_id", "text_id", "user_id"})}
 * )
 */
-class Bookmark
+class Bookmark extends Entity
 {
 	/**
 	* @var integer

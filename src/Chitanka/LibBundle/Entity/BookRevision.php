@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="book_idx", columns={"book_id"})}
 * )
 */
-class BookRevision
+class BookRevision extends Entity
 {
 	/**
 	* @var integer $id

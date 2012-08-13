@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="text_idx", columns={"text_id"})}
 * )
 */
-class TextTranslator
+class TextTranslator extends Entity
 {
 	/**
 	* @var integer $id

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 *	indexes={@ORM\Index(name="text_idx", columns={"text_id"})}
 * )
 */
-class DownloadCacheText
+class DownloadCacheText extends Entity
 {
 	/**
 	* @var integer $id

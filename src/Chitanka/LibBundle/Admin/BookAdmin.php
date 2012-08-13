@@ -31,7 +31,7 @@ class BookAdmin extends Admin
 			->add('sequence')
 			->add('seqnr')
 			->add('category')
-			->add('removedNotice')
+			->add('removed_notice')
 			->add('texts')
 			->add('links')
 			->add('created_at')
@@ -89,7 +89,7 @@ class BookAdmin extends Admin
 			->add('category', null, array('required' => false, 'query_builder' => function ($repo) {
 				return $repo->createQueryBuilder('e')->orderBy('e.name');
 			}))
-			->add('removedNotice')
+			->add('removed_notice')
 			->add('links', 'sonata_type_collection', array(
 				'by_reference' => false,
 				'required' => false,

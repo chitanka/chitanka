@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity
 * @ORM\Table(name="wiki_site")
 */
-class WikiSite
+class WikiSite extends Entity
 {
 	/**
 	* @var integer

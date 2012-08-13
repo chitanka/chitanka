@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity
 * @ORM\Table(name="download_cache")
 */
-class DownloadCache
+class DownloadCache extends Entity
 {
 	/**
 	* @var integer $id

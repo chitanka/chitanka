@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity
 * @ORM\Table(name="question")
 */
-class Question
+class Question extends Entity
 {
 	/**
 	* @var integer $id

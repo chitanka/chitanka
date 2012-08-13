@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\SearchStringRepository")
 * @ORM\Table(name="search_string")
 */
-class SearchString
+class SearchString extends Entity
 {
 	/**
 	* @var integer

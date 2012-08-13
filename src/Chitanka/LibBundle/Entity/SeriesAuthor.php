@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 *	uniqueConstraints={@ORM\UniqueConstraint(name="person_series_uniq", columns={"person_id", "series_id"})}
 * )
 */
-class SeriesAuthor
+class SeriesAuthor extends Entity
 {
 	/**
 	* @var integer $id

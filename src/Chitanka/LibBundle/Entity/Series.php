@@ -13,7 +13,7 @@ use Chitanka\LibBundle\Util\String;
 *		@ORM\Index(name="orig_name_idx", columns={"orig_name"})}
 * )
 */
-class Series
+class Series extends Entity
 {
 	/**
 	* @var integer $id

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\ForeignBookRepository")
 * @ORM\Table(name="foreign_book")
 */
-class ForeignBook
+class ForeignBook extends Entity
 {
 	/**
 	* @var integer

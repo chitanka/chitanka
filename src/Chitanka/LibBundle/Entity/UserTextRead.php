@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 * )
 * TODO replace this entity with a new "read" bookmark folder
 */
-class UserTextRead
+class UserTextRead extends Entity
 {
 	/**
 	* @var integer $id

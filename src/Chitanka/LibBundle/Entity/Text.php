@@ -226,7 +226,7 @@ class Text extends BaseWork
 	 * A notice if the content is removed
 	 * @ORM\Column(type="text", nullable=true)
 	 */
-	private $removedNotice;
+	private $removed_notice;
 
 
 	/**
@@ -447,8 +447,8 @@ class Text extends BaseWork
 
 	public function isCompilation() { return $this->is_compilation; }
 
-	public function setRemovedNotice($removedNotice) { $this->removedNotice = $removedNotice; }
-	public function getRemovedNotice() { return $this->removedNotice; }
+	public function setRemovedNotice($removed_notice) { $this->removed_notice = $removed_notice; }
+	public function getRemovedNotice() { return $this->removed_notice; }
 
 	public function getUserContribs() { return $this->userContribs; }
 

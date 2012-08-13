@@ -20,7 +20,7 @@ use Chitanka\LibBundle\Util\String;
 *		@ORM\Index(name="is_translator_idx", columns={"is_translator"})}
 * )
 */
-class Person
+class Person extends Entity
 {
 	/**
 	* @var integer $id

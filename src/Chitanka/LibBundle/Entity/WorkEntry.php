@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="status_idx", columns={"status"})}
 * )
 */
-class WorkEntry
+class WorkEntry extends Entity
 {
 	/**
 	* @var integer $id

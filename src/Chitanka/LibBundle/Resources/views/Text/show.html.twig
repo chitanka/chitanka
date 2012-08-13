@@ -31,8 +31,8 @@
 
 	{% include 'LibBundle:Text:toc.html.twig' %}
 
-	{% if text.removedNotice is not empty %}
-		<div class="removed-notice">{{ text.removedNotice|raw }}</div>
+	{% if text.removed_notice is not empty %}
+		<div class="removed-notice">{{ text.removed_notice|raw }}</div>
 	{% else %}
 		{% include 'LibBundle:Text:content.html.twig' %}
 	{% endif %}
@@ -40,7 +40,7 @@
 	{% include 'LibBundle:Text:end_message.html.twig' %}
 {% endblock %}
 
-{% if text.removedNotice is empty %}
+{% if text.removed_notice is empty %}
 	{% set download_links %}
 		{% import 'LibBundle::text.html.twig' as texttools %}
 		<div class="text-entity" data-id="{{ text.id }}">

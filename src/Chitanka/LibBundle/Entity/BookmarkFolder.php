@@ -14,7 +14,7 @@ use Chitanka\LibBundle\Util\String;
 *		@ORM\Index(name="slug_idx", columns={"slug"})}
 * )
 */
-class BookmarkFolder
+class BookmarkFolder extends Entity
 {
 	/**
 	* @var integer

@@ -10,7 +10,7 @@ use Chitanka\LibBundle\Util\String;
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\CategoryRepository")
 * @ORM\Table(name="category")
 */
-class Category
+class Category extends Entity
 {
 	/**
 	* @var integer $id

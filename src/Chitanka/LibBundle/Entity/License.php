@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity
 * @ORM\Table(name="license")
 */
-class License
+class License extends Entity
 {
 	/**
 	* @var integer $id

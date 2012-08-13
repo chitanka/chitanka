@@ -135,7 +135,7 @@ class Book extends BaseWork
 	 * A notice if the content is removed
 	 * @ORM\Column(type="text", nullable=true)
 	 */
-	private $removedNotice;
+	private $removed_notice;
 
 	/** FIXME doctrine:schema:create does not allow this relation
 	* @ORM\ManyToMany(targetEntity="Person", inversedBy="books")
@@ -210,8 +210,8 @@ class Book extends BaseWork
 	public function setType($type) { $this->type = $type; }
 	public function getType() { return $this->type; }
 
-	public function setRemovedNotice($removedNotice) { $this->removedNotice = $removedNotice; }
-	public function getRemovedNotice() { return $this->removedNotice; }
+	public function setRemovedNotice($removed_notice) { $this->removed_notice = $removed_notice; }
+	public function getRemovedNotice() { return $this->removed_notice; }
 
 	public function getAuthors() { return $this->authors; }
 	public function getAuthorsPlain($separator = ', ')

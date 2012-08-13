@@ -32,7 +32,7 @@
 		</category>
 		{% if book.has_anno %}<has-annotation/>{% endif %}
 		{% if book.has_cover %}<has-cover/>{% endif %}
-		<removed-notice>{{ book.removedNotice }}</removed-notice>
+		<removed-notice>{{ book.removed_notice }}</removed-notice>
 		<created-at>{{ book.created_at.format('Y-m-d') }}</created-at>
 	</book>
 {% endfor %}

@@ -40,7 +40,7 @@ class TextAdmin extends Admin
 			->add('sernr2')
 			->add('headlevel')
 			->add('source')
-			->add('removedNotice')
+			->add('removed_notice')
 			->add('comment_count')
 //			->add('dl_count')
 //			->add('read_count')
@@ -110,7 +110,7 @@ class TextAdmin extends Admin
 			->add('sernr2', null, array('required' => false))
 			->add('headlevel', null, array('required' => false))
 			->add('source', null, array('required' => false))
-			->add('removedNotice')
+			->add('removed_notice')
 			->setHelps(array(
 				'sernr2' => $this->trans('help.text.sernr2')
 			))
@@ -133,7 +133,7 @@ class TextAdmin extends Admin
 			->add('orig_license')
 			->add('trans_license')
 			->add('type')
-			->add('removedNotice')
+			->add('removed_notice')
 		;
 	}
 

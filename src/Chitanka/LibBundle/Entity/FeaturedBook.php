@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\FeaturedBookRepository")
 * @ORM\Table(name="featured_book")
 */
-class FeaturedBook
+class FeaturedBook extends Entity
 {
 	/**
 	* @var integer

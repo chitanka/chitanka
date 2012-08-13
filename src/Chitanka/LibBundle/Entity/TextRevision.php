@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="user_idx", columns={"user_id"})}
 * )
 */
-class TextRevision
+class TextRevision extends Entity
 {
 	/**
 	* @var integer $id

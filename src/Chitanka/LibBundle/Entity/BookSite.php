@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity
 * @ORM\Table(name="book_site")
 */
-class BookSite
+class BookSite extends Entity
 {
 	/**
 	* @var integer

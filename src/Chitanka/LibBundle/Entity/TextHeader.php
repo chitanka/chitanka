@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 *	uniqueConstraints={@ORM\UniqueConstraint(name="key_uniq", columns={"text_id", "nr", "level"})}
 * )
 */
-class TextHeader
+class TextHeader extends Entity
 {
 	/**
 	* @var integer $id
