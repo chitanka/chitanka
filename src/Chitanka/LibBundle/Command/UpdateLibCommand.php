@@ -147,6 +147,9 @@ EOT
 		} else if ($work['is_new'] && $work['lang'] != $work['orig_lang']) {
 			$work['trans_license'] = 'fc';
 		}
+		if (isset($work['labels'])) {
+			$work['labels'] = explode(',', $work['labels']);
+		}
 		if (isset($work['users'])) {
 			if ($work['users'][0] == '*') {
 				$work['users_as_new'] = true;
@@ -429,6 +432,16 @@ EOT
 				list($personId, $transYear) = $translator;
 				$set = array('person_id' => $personId, 'text_id' => $work['id'], 'pos' => $pos, 'year' => $transYear);
 				$qs[] = $this->olddb()->insertQ(DBT_TRANSLATOR_OF, $set, false, false);
+			}
+		}
+
+		if ( ! empty($work['labels'])) {
+			$qs[] = $this->olddb()->deleteQ('text_label', array('text_id' => $work['id']));
+			foreach ($work['labels'] as $label) {
+				$qs[] = $this->olddb()->insertQ('text_label', array(
+					'label_id' => $this->getObjectId('label', $label),
+					'text_id' => $work['id']
+				));
 			}
 		}
 
