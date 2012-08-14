@@ -37,7 +37,7 @@
 		<link rel="alternate" type="application/rss+xml" title="RSS 2.0 — {{ page_feed.title is defined ? page_feed.title : block('title') }}" href="{{ page_feed.url }}">
 	{% endif %}
 	<link rel="related" type="application/atom+xml;profile=opds-catalog" href="{{ path('catalog', {'_format': 'opds'}) }}" title="Каталог на Моята библиотека чрез OPDS" />
-	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('search', {'_format': 'osd'}) }}" title="Търсене в Моята библиотека" />
+	{#<link rel="search" type="application/opensearchdescription+xml" href="{{ path('search', {'_format': 'osd'}) }}" title="Търсене в Моята библиотека" />#}
 {% endblock %}
 
 {% block body_class %}
