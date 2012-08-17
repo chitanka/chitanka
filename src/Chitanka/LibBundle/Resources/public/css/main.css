@@ -1227,11 +1227,13 @@ a.dl:hover {
 	margin-right: 0;
 }
 .superlist .action {
-	display: none;
+	opacity: 0.05;
 }
 .superlist li:hover .action,
-.superlist .action.active {
-	display: inline;
+.superlist li:focus .action,
+.superlist .action.active,
+.superlist .action:focus {
+	opacity: 1;
 }
 
 
