@@ -383,6 +383,7 @@ EOT
 		if (isset($work['year'])) $set['year'] = $work['year'];
 		if (isset($work['year2'])) $set['year2'] = $work['year2'];
 		if (isset($work['trans_year'])) $set['trans_year'] = $work['trans_year'];
+		if (isset($work['anno'])) $set['has_anno'] = 1;
 
 		if (isset($work['series'])) $set['series_id'] = $this->getObjectId('series', $work['series']);
 
@@ -537,7 +538,7 @@ EOT
 		if (isset($book['type']))  $set['type'] = $book['type'];
 		if (isset($book['orig_title'])) $set['orig_title'] = self::fixOrigTitle($book['orig_title']);
 		if (isset($book['seq_nr']))  $set['seqnr'] = $book['seq_nr'];
-		if (isset($book['anno']))  $set['has_anno'] = 1;
+		if (isset($book['anno']) && filesize($book['anno']))  $set['has_anno'] = 1;
 		if (isset($book['cover']))  $set['has_cover'] = 1;
 		if (isset($book['subtitle'])) $set['subtitle'] = String::my_replace($book['subtitle']);
 		if (isset($book['year'])) $set['year'] = $book['year'];
@@ -611,6 +612,10 @@ EOT
 
 	static private function copyTextFile($source, $dest, $replaceChars = true)
 	{
+		if (filesize($source) == 0) {
+			unlink($dest);
+			return;
+		}
 		$contents = file_get_contents($source);
 		if ($replaceChars) {
 			$contents = String::my_replace($contents);
