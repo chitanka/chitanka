@@ -239,6 +239,14 @@ class Book extends BaseWork
 	public function getLinks() { return $this->links; }
 	public function addLink($link) { $this->links[] = $link; }
 	public function addLinks($link) { $this->addLink($link); }
+	public function removeLink($linkToRemove)
+	{
+		foreach ($this->links as $i => $link) {
+			if ($link->getId() == $linkToRemove->getId()) {
+				unset($this->links[$i]);
+			}
+		}
+	}
 
 	public function setHasAnno($has_anno) { $this->has_anno = $has_anno; }
 	public function getHasAnno() { return $this->has_anno; }
