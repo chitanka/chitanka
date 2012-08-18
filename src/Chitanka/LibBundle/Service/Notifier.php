@@ -41,10 +41,9 @@ class Notifier {
 _______________________________________________________________________________
 Автор на коментара: {$comment->getAuthorName()}
 Относно: {$workEntry->getTitle()} ({$workEntry->getAuthor()})
-{$comment->getThread()->getPermalink()}#fos_comment_{$comment->getId()}
-_______________________________________________________________________________
 
 Посетете работното ателие на Моята библиотека, за да отговорите на съобщението.
+{$comment->getThread()->getPermalink()}#fos_comment_{$comment->getId()}
 
 BODY;
 	}
