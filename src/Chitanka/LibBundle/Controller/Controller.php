@@ -168,6 +168,7 @@ abstract class Controller extends SymfonyController
 		return $this->get('request')->attributes->get('_route');
 	}
 
+	/** @return \Doctrine\ORM\EntityManager */
 	public function getEntityManager()
 	{
 		if (is_null($this->_em)) {
