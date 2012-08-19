@@ -852,11 +852,11 @@ JS;
 		$tmpfiles = $this->out->textField('tmpfiles', '', rawurldecode($this->tmpfiles), 50, 255)
 			. ' &#160; '.$this->out->label('Размер: ', 'tfsize') .
 				$this->out->textField('tfsize', '', $this->tfsize, 2, 4) .
-				'<abbr title="Мегабайта">MB</abbr>';
+				'<abbr title="Мегабайта">MiB</abbr>';
 
 		$flink = $this->tmpfiles == self::DEF_TMPFILE ? ''
 			: $this->out->link( $this->makeTmpFilePath($this->tmpfiles), String::limitLength($this->tmpfiles)) .
-			($this->tfsize > 0 ? " ($this->tfsize&#160;MB)" : '');
+			($this->tfsize > 0 ? " ($this->tfsize&#160;MiB)" : '');
 
 		return <<<EOS
 	<tr>
@@ -936,7 +936,7 @@ EOS;
 			$tmpfiles = $this->out->textField('tmpfiles', '', rawurldecode($this->tmpfiles), 50, 255);
 			$tmpfiles .= ' &#160; '.$this->out->label('Размер: ', 'tfsize') .
 				$this->out->textField('tfsize', '', $this->tfsize, 2, 4) .
-				'<abbr title="Мегабайта">MB</abbr>';
+				'<abbr title="Мегабайта">MiB</abbr>';
 		} else {
 			$status = $this->statuses[$cstatus];
 			$is_frozen = $this->is_frozen ? "($is_frozenLabel)" : '';
@@ -948,7 +948,7 @@ EOS;
 			$user->getEmail(), $user->getAllowemail());
 		$flink = $this->tmpfiles == self::DEF_TMPFILE ? ''
 			: $this->out->link( $this->makeTmpFilePath($this->tmpfiles), String::limitLength($this->tmpfiles)) .
-			($this->tfsize > 0 ? " ($this->tfsize&#160;MB)" : '');
+			($this->tfsize > 0 ? " ($this->tfsize&#160;MiB)" : '');
 		$file = $this->out->fileField('file', '');
 		$maxFileSize = $this->out->makeMaxFileSizeField();
 		$maxUploadSizeInMiB = Legacy::getMaxUploadSizeInMiB();
@@ -1033,7 +1033,7 @@ EOS;
 		$remoteFile = $this->out->textField('uplfile', 'uplfile2', rawurldecode($uplfile), 50, 255)
 			. ' &#160; '.$this->out->label('Размер: ', 'filesize2') .
 				$this->out->textField('filesize', 'filesize2', $filesize, 2, 4) .
-				'<abbr title="Мегабайта">MB</abbr>';
+				'<abbr title="Мегабайта">MiB</abbr>';
 
 		return <<<EOS
 
@@ -1419,7 +1419,7 @@ EOS;
 			? $file
 			: "Качен файл от $username — $file";
 		if ($filesize) {
-			$title .= " ($filesize MB)";
+			$title .= " ($filesize MiB)";
 		}
 
 		return $this->out->link_raw(
