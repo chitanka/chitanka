@@ -9,7 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Table(name="text_comment",
 *	uniqueConstraints={@ORM\UniqueConstraint(name="user_comment_uniq", columns={"text_id", "rname", "contenthash"})},
 *	indexes={
-*		@ORM\Index(name="user_idx", columns={"user_id"})}
+*		@ORM\Index(name="user_idx", columns={"user_id"}),
+*		@ORM\Index(name="is_shown_idx", columns={"is_shown"})}
 * )
 */
 class TextComment extends Entity
