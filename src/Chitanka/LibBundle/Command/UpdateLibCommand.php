@@ -572,6 +572,7 @@ EOT
 				$set = array('person_id' => $author, 'book_id' => $book['id']);
 				$qs[] = $this->olddb()->insertQ('book_author', $set, false, false);
 			}
+			$qs[] = $this->buildBookTitleAuthorQuery($book['id']);
 		}
 
 		if ( ! empty($book['works'])) {
@@ -609,6 +610,21 @@ EOT
 		return $qs;
 	}
 
+	private function buildBookTitleAuthorQuery($bookId)
+	{
+		return str_replace("\n", ' ', <<<QUERY
+UPDATE book b
+SET title_author = (
+	SELECT GROUP_CONCAT(p.name SEPARATOR ', ')
+	FROM book_author ba
+	LEFT JOIN person p ON p.id = ba.person_id
+	WHERE b.id = $bookId AND b.id = ba.book_id
+	GROUP BY b.id
+)
+WHERE id = $bookId
+QUERY
+		);
+	}
 
 	static private function copyTextFile($source, $dest, $replaceChars = true)
 	{
