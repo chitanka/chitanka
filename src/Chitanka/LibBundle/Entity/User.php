@@ -13,7 +13,8 @@ use Chitanka\LibBundle\Legacy\Legacy;
 * @ORM\HasLifecycleCallbacks
 * @ORM\Table(name="user",
 *	indexes={
-*		@ORM\Index(name="realname_idx", columns={"realname"})}
+*		@ORM\Index(name="realname_idx", columns={"realname"}),
+*		@ORM\Index(name="email_idx", columns={"email"})}
 * )
 */
 class User /*extends BaseUser*/ implements UserInterface
