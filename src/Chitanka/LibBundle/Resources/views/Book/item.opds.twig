@@ -31,6 +31,9 @@
 	#}
 
 	{{ _self.download_link(book, 'epub', 'application/epub+zip') }}
+	{{ _self.download_link(book, 'fb2.zip', 'application/x-fictionbook+xml') }}
+	{{ _self.download_link(book, 'txt.zip', 'application/zip') }}
+	{{ _self.download_link(book, 'sfb.zip', 'application/zip') }}
 
 	{% set cover_format = book.has_cover ? 'jpeg' : 'png' %}
 	<link rel="http://opds-spec.org/image"

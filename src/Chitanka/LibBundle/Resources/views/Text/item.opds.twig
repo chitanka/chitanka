@@ -5,7 +5,7 @@
 {% endmacro %}
 <entry>
 	<title>
-		{% if text.sernr is not empty %}{{ text.sernr }}.{% endif %}
+		{% if show_sernr is defined and show_sernr and text.sernr is not empty and text.sernr > 0 %}{{ text.sernr }}.{% endif %}
 		{{ text.title }}
 	</title>
 	<id>{{ helper.urn('text', text.id) }}</id>
@@ -29,11 +29,9 @@
 	#}
 
 	{{ _self.download_link(text, 'epub', 'application/epub+zip') }}
-	{#
 	{{ _self.download_link(text, 'fb2.zip', 'application/x-fictionbook+xml') }}
 	{{ _self.download_link(text, 'txt.zip', 'application/zip') }}
 	{{ _self.download_link(text, 'sfb.zip', 'application/zip') }}
-	#}
 	{#<link href="{{ helper.url('text_show', {'id': text.id}) }}" type="application/atom+xml; type=entry" rel="alternate" title="Подробна информация"/>#}
 
 	<rights>

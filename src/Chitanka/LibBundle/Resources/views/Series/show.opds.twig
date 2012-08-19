@@ -6,6 +6,6 @@
 {% set subtitle = 'поредица' %}
 {% block content %}
 	{% for text in texts %}
-		{% include 'LibBundle:Text:item.opds.twig' %}
+		{% include 'LibBundle:Text:item.opds.twig' with {"show_sernr": true} %}
 	{% endfor %}
 {% endblock %}

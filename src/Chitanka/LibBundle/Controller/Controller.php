@@ -107,6 +107,20 @@ abstract class Controller extends SymfonyController
 			$controller = $this->getName();
 		}
 		$response = $this->render(sprintf('LibBundle:%s:%s.%s.twig', $controller, $action, $format), $this->view + $globals);
+		if ($format == 'opds') {
+			$normalizedContent = $response->getContent();
+			$normalizedContent = strtr($normalizedContent, array(
+				"\t" => ' ',
+				"\n" => ' ',
+			));
+			$normalizedContent = preg_replace('/  +/', ' ', $normalizedContent);
+			$normalizedContent = preg_replace('/> </', ">\n<", $normalizedContent);
+			$normalizedContent = strtr($normalizedContent, array(
+				'> ' => '>',
+				' <' => '<',
+			));
+			$response->setContent($normalizedContent);
+		}
 		if ($this->responseAge) {
 			$response->setPublic();
 			$response->setSharedMaxAge($this->responseAge);
