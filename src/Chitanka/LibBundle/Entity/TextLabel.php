@@ -4,7 +4,10 @@ namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/** FIXME doctrine:schema:create does not allow this entity table
+/*
+* Not an entity but needed for putting labels on texts.
+* See Chitanka\LibBundle\Form\Type\TextLabelType.
+*
 * @ORM\Entity
 * @ORM\Table(name="text_label",
 *	indexes={
