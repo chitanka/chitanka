@@ -252,6 +252,10 @@ class WorkPage extends Page {
 			'is_frozen' => $this->is_frozen,
 			'deleted_at = null',
 		);
+		if ($this->request->value('uplfile') != '') {
+			$set['uplfile'] = $this->request->value('uplfile');
+			$set['filesize'] = $this->request->value('filesize');
+		}
 		if ( $this->handleUpload() && !empty($this->uplfile) ) {
 			$set['uplfile'] = $this->uplfile;
 		}
@@ -1002,7 +1006,7 @@ EOS;
 	protected function makeMultiEditMyInput() {
 		$msg = '';
 		if ( empty($this->multidata[$this->user->getId()]) ) {
-			$comment = $progress = '';
+			$comment = $progress = $uplfile = $filesize = '';
 			$is_frozen = false;
 			$msg = '<p>Вие също може да се включите в подготовката на текста.</p>';
 		} else {
@@ -1020,11 +1024,16 @@ EOS;
 		$progress = $this->out->textField('progress', '', $progress, 2, 3);
 		$is_frozen = $this->out->checkbox('is_frozen', 'is_frozen_e', $this->is_frozen,
 			'Корекцията е спряна за известно време');
-		$file = $this->out->fileField('file', '');
+		$file = $this->out->fileField('file', 'file2');
 		$readytogo = $this->userCanMarkAsReady()
 			? $this->out->checkbox('ready', 'ready', false, 'Готово е за добавяне')
 			: '';
 		$action = $this->controller->generateUrl('workroom');
+
+		$remoteFile = $this->out->textField('uplfile', 'uplfile2', rawurldecode($uplfile), 50, 255)
+			. ' &#160; '.$this->out->label('Размер: ', 'filesize2') .
+				$this->out->textField('filesize', 'filesize2', $filesize, 2, 4) .
+				'<abbr title="Мегабайта">MB</abbr>';
 
 		return <<<EOS
 
@@ -1045,8 +1054,16 @@ EOS;
 		<td><label for="progress">Напредък:</label></td>
 		<td>$progress<label for="progress">%</label> $is_frozen</td>
 	</tr><tr>
-		<td><label for="file">Файл:</label></td>
+		<td><label for="file2">Файл:</label></td>
 		<td>$file</td>
+	</tr></tr>
+		<td>или</td>
+		<td></td>
+	</tr></tr>
+		<td><label for="uplfile2">Външен файл:</label></td>
+		<td>
+			$remoteFile
+		</td>
 	</tr></tr>
 		<td></td><td>$readytogo</td>
 	</tr>
@@ -1070,7 +1087,7 @@ EOS;
 			$ulink = $this->makeUserLinkWithEmail($username, $email, $allowemail);
 			$comment = strtr($comment, array("\n" => "<br>\n"));
 			if ( !empty($uplfile) ) {
-				$comment .= ' ' . $this->makeFileLink($uplfile, $username);
+				$comment .= ' ' . $this->makeFileLink($uplfile, $username, $filesize);
 			}
 			$progressbar = $this->makeProgressBar($progress);
 			if ($is_frozen) {
@@ -1396,11 +1413,14 @@ EOS;
 	}
 
 
-	protected function makeFileLink($file, $username = '')
+	protected function makeFileLink($file, $username = '', $filesize = null)
 	{
 		$title = empty($username)
 			? $file
 			: "Качен файл от $username — $file";
+		if ($filesize) {
+			$title .= " ($filesize MB)";
+		}
 
 		return $this->out->link_raw(
 			$this->makeTmpFilePath($file),

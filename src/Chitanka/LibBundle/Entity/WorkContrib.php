@@ -63,6 +63,11 @@ class WorkContrib extends Entity
 	private $uplfile;
 
 	/**
+	* @ORM\Column(type="smallint", nullable=true)
+	*/
+	private $filesize;
+
+	/**
 	* @var datetime
 	* @ORM\Column(type="datetime", nullable=true)
 	*/
@@ -91,6 +96,9 @@ class WorkContrib extends Entity
 
 	public function setUplfile($uplfile) { $this->uplfile = $uplfile; }
 	public function getUplfile() { return $this->uplfile; }
+
+	public function setFilesize($filesize) { $this->filesize = $filesize; }
+	public function getFilesize() { return $this->filesize; }
 
 	public function setDeletedAt($deleted_at) { $this->deleted_at = $deleted_at; }
 	public function delete()
