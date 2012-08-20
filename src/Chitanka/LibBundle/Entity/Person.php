@@ -84,7 +84,7 @@ class Person extends Entity
 
 	/**
 	* @var integer $person
-	* @ORM\ManyToOne(targetEntity="Person", cascade={"remove"})
+	* @ORM\ManyToOne(targetEntity="Person")
 	*/
 	private $person;
 
