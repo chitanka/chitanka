@@ -163,6 +163,9 @@ EOT
 					$parts[0] = '?';
 					$parts[] = null;
 				} else {
+					if (strpos($parts[0], '(') !== false) {
+						throw new \Exception("Username contains parentheses: '$parts[0]' (ID $work[id])");
+					}
 					try {
 						$parts[] = $this->getObjectId('user', $parts[0], 'username');
 					} catch (\Exception $e) {
