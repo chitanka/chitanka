@@ -2,7 +2,7 @@
 	<li><a href="{{ path('sequences') }}">Поредици</a></li>
 	{% if book.sequence %}
 		{% import 'LibBundle::link.html.twig' as link %}
-		<li>{{ link.sequence(book.sequence) }}{%if book.seqnr %} №&nbsp;{{ book.seqnr }}{%endif%}</li>
+		<li>{{ link.sequence(book.sequence) }}{%if book.seqnr and book.sequence.is_seqnr_visible %} №&nbsp;{{ book.seqnr }}{%endif%}</li>
 	{% endif %}
 </div>
 

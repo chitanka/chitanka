@@ -26,6 +26,7 @@ return array(
 	'Is Author' => 'Автор?',
 	'Is Free' => 'Свободен?',
 	'Is Shown' => 'Да се показва?',
+	'Is Seqnr Visible' => 'Видим номер на поредица?',
 	'Is Translator' => 'Преводач?',
 	'Labels' => 'Етикети',
 	'Lang' => 'Език',

@@ -40,6 +40,11 @@ class Sequence extends Entity
 	private $publisher = '';
 
 	/**
+	* @ORM\Column(type="boolean")
+	*/
+	private $is_seqnr_visible = true;
+
+	/**
 	* @var array
 	* @ORM\OneToMany(targetEntity="Book", mappedBy="sequence")
 	* @ORM\OrderBy({"seqnr" = "ASC"})
@@ -56,6 +61,10 @@ class Sequence extends Entity
 
 	public function setPublisher($publisher) { $this->publisher = $publisher; }
 	public function getPublisher() { return $this->publisher; }
+
+	public function setIsSeqnrVisible($is_seqnr_visible) { $this->is_seqnr_visible = $is_seqnr_visible; }
+	public function getIsSeqnrVisible() { return $this->is_seqnr_visible; }
+	public function isSeqnrVisible() { return $this->is_seqnr_visible; }
 
 	public function getBooks() { return $this->books; }
 

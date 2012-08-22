@@ -43,7 +43,7 @@
 		{% endif %}
 	</div>
 	{% if book.sequence is defined and book.sequence is not empty %}
-		<div>Поредица: {{ link.sequence(book.sequence) }}{% if book.seqnr is defined %}, № {{ book.seqnr }}{% endif %}</div>
+		<div>Поредица: {{ link.sequence(book.sequence) }}{% if book.seqnr is defined and book.sequence.is_seqnr_visible %}, № {{ book.seqnr }}{% endif %}</div>
 	{% endif %}
 	{% if book.category is defined %}
 		<div>Категория: {{ link.category(book.category) }}</div>

@@ -17,7 +17,7 @@
 			</author>
 		{% endfor %}
 		{% if book.sequence is not empty %}
-			<sequence {% if book.seqnr is defined %} nr="{{ book.seqnr }}"{% endif %}>
+			<sequence {% if book.seqnr is defined and book.sequence.is_seqnr_visible %} nr="{{ book.seqnr }}"{% endif %}>
 				<id>{{ book.sequence.id }}</id>
 				<slug>{{ book.sequence.slug }}</slug>
 				<name>{{ book.sequence.name }}</name>
