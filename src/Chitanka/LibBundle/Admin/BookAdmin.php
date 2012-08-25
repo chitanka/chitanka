@@ -26,7 +26,7 @@ class BookAdmin extends Admin
 			->add('lang')
 			->add('orig_lang')
 			->add('year')
-			->add('trans_year')
+			//->add('trans_year')
 			->add('type')
 			->add('sequence')
 			->add('seqnr')
@@ -80,7 +80,7 @@ class BookAdmin extends Admin
 			->add('lang', 'choice', array('choices' => Language::getLangs()))
 			->add('orig_lang', 'choice', array('required' => false, 'choices' => Language::getLangs()))
 			->add('year')
-			->add('trans_year', null, array('required' => false))
+			//->add('trans_year', null, array('required' => false))
 			->add('type', 'choice', array('choices' => Book::getTypeList()))
 			->add('sequence', null, array('required' => false, 'query_builder' => function ($repo) {
 				return $repo->createQueryBuilder('e')->orderBy('e.name');
