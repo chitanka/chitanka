@@ -54,6 +54,7 @@ class LabelAdmin extends Admin
 	protected function configureDatagridFilters(DatagridMapper $datagrid)
 	{
 		$datagrid
+			->add('slug')
 			->add('name')
 		;
 	}

@@ -58,6 +58,7 @@ class SeriesAdmin extends Admin
 	protected function configureDatagridFilters(DatagridMapper $datagrid)
 	{
 		$datagrid
+			->add('slug')
 			->add('name')
 			->add('orig_name')
 		;

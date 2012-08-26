@@ -52,6 +52,7 @@ class SequenceAdmin extends Admin
 	protected function configureDatagridFilters(DatagridMapper $datagrid)
 	{
 		$datagrid
+			->add('slug')
 			->add('name')
 			->add('publisher')
 			->add('is_seqnr_visible')
