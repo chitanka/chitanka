@@ -597,16 +597,10 @@ EOT
 				self::copyTextFile($book['info'], "$this->contentDir/book-info/$path");
 			}
 			if (isset($book['cover'])) {
-				$dest = "$this->contentDir/book-cover/$path.jpg";
-				File::make_parent($dest);
-				`cp $book[cover] $dest`;
+				self::copyFile($book['cover'], "$this->contentDir/book-cover/$path.jpg");
 			}
 			if (isset($book['img'])) {
-				$dir = "$this->contentDir/book-img/$path";
-				if ( ! file_exists($dir)) {
-					mkdir($dir, 0755, true);
-				}
-				`cp $book[img]/* $dir`;
+				self::copyDir($book['img'], "$this->contentDir/book-img/$path");
 			}
 		}
 
@@ -645,6 +639,25 @@ QUERY
 		File::myfile_put_contents($dest, $contents);
 	}
 
+	static private function copyFile($source, $dest)
+	{
+		if (is_dir($dest)) {
+			$dest .= '/'.basename($source);
+		}
+		if (filesize($source) == 0) {
+			unlink($dest);
+			return;
+		}
+		File::make_parent($dest);
+		copy($source, $dest);
+	}
+
+	static private function copyDir($sourceDir, $destDir)
+	{
+		foreach (glob("$sourceDir/*") as $source) {
+			self::copyFile($source, $destDir);
+		}
+	}
 
 	static public function guessTocLevel($text)
 	{
