@@ -44,6 +44,11 @@ class TextTranslator extends Entity
 	*/
 	private $year;
 
+	public function equals(TextTranslator $textTranslator)
+	{
+		return $this->getId() == $textTranslator->getId();
+	}
+
 	public function getId() { return $this->id; }
 
 	public function setPerson($person) { $this->person = $person; }

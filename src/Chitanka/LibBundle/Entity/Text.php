@@ -455,14 +455,28 @@ class Text extends BaseWork
 	public function addAuthor(Person $author) { $this->authors[] = $author; }
 	public function getAuthors() { return $this->authors; }
 
-	public function addTextAuthors(TextAuthor $textAuthor) { $this->textAuthors[] = $textAuthor; }
-	public function setTextAuthors($textAuthors) { $this->textAuthors = $textAuthors; }
-	public function getTextAuthors() { return $this->textAuthors; }
-
 	public function addTranslator(Person $translator) { $this->translators[] = $translator; }
 	public function getTranslators() { return $this->translators; }
 
-	public function addTextTranslators(TextTranslator $textTranslator) { $this->textTranslators[] = $textTranslator; }
+	public function addTextAuthor(TextAuthor $textAuthor)
+	{
+		$this->textAuthors[] = $textAuthor;
+	}
+	public function removeTextAuthor(TextAuthor $textAuthor)
+	{
+		$this->textAuthors->removeElement($textAuthor);
+	}
+	public function setTextAuthors($textAuthors) { $this->textAuthors = $textAuthors; }
+	public function getTextAuthors() { return $this->textAuthors; }
+
+	public function addTextTranslator(TextTranslator $textTranslator)
+	{
+		$this->textTranslators[] = $textTranslator;
+	}
+	public function removeTextTranslator(TextTranslator $textTranslator)
+	{
+		$this->textTranslators->removeElement($textTranslator);
+	}
 	public function setTextTranslators($textTranslators) { $this->textTranslators = $textTranslators; }
 	public function getTextTranslators() { return $this->textTranslators; }
 
