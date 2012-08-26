@@ -65,7 +65,7 @@ EOT
 			list($prefix, $name) = explode(':', $person->getInfo(), 2);
 			$site = $siteRepo->findOneBy(array('code' => $prefix));
 			$url = $site->getUrl($name);
-			$this->output->writeln("/* ($i) Checking $url */");
+			$this->output->writeln("/* ({$person->getId()}) Checking $url */");
 			if ( ! $httpAgent->urlExists($url)) {
 				$ids[] = $person->getId();
 				$this->output->writeln("/* {$person->getName()}: $url is a broken link */");
