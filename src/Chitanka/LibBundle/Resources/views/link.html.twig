@@ -38,13 +38,13 @@
 	<a href="{{ path('series_show', {'slug': series.slug}) }}" data-edit="{{ path('admin_series_edit', {'id': series.id}) }}"><i>{{ series.name }}</i></a>
 {% endmacro %}
 
-{% macro text(text) %}
+{% macro text(text, options) %}
 {% spaceless %}<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}" class="textlink"  data-edit="{{ path('admin_text_edit', {'id': text.id}) }}"
 {% if text.lang != text.orig_lang %}
 	{% if text.translators is defined %}
 		title="Превод: {{ _self.translators_plain(text.translators) }} {{ text.trans_year is defined ? '(' ~ text.trans_year ~ ')' : '' }}"
 	{% endif %}
-{% endif %}><i>{{ text.title }}</i></a>{% endspaceless %}
+{% endif %}><i>{{ options.title is defined ? options.title : text.title }}</i></a>{% endspaceless %}
 {% endmacro %}
 
 {% macro book(book) %}

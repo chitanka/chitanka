@@ -6,6 +6,7 @@ use Chitanka\LibBundle\Util\Number;
 use Chitanka\LibBundle\Util\Char;
 use Chitanka\LibBundle\Util\String;
 use Chitanka\LibBundle\Legacy\Legacy;
+use Chitanka\LibBundle\Entity\Text;
 
 class Extension extends \Twig_Extension
 {
@@ -37,7 +38,6 @@ class Extension extends \Twig_Extension
 			'lower' => new \Twig_Filter_Method($this, 'strtolower'),
 			'json' => new \Twig_Filter_Method($this, 'getJson'),
 			'repeat' => new \Twig_Filter_Method($this, 'repeatString'),
-			'replace_var' => new \Twig_Filter_Method($this, 'replaceVar'),
 			'join_lists' => new \Twig_Filter_Method($this, 'joinLists'),
 			'humandate' => new \Twig_Filter_Method($this, 'getHumanDate'),
 			'nl2br' => new \Twig_Filter_Method($this, 'nl2br', array('pre_escape' => 'html', 'is_safe' => array('html'))),
@@ -49,6 +49,8 @@ class Extension extends \Twig_Extension
 			'encoding' => new \Twig_Filter_Method($this, 'changeEncoding'),
 			'urlencode' => new \Twig_Filter_Method($this, 'getUrlEncode'),
 			'qrcode' => new \Twig_Filter_Method($this, 'getQrCode'),
+
+			'put_text_in_template' => new \Twig_Filter_Method($this, 'putTextInBookTemplate'),
 		);
 	}
 
@@ -144,22 +146,20 @@ class Extension extends \Twig_Extension
 		return str_repeat($string, $count);
 	}
 
-	/**
-	* @param mixed   $string     Base string to work with
-	* @param string  $vars       Array with strings or a string
-	* @param string  $value      A replacement value
-	*/
-	public function replaceVar($string, $vars, $value)
+	public function putTextInBookTemplate($template, Text $text, $htmlTextView)
 	{
-		foreach ((array) $vars as $var) {
-			if ($var[strlen($var)-1] == '*') {
-				$string = preg_replace('/\{'.substr($var, 0, strlen($var)-1).'.+\}/', $value, $string);
-			} else {
-				$string = str_replace('{'.$var.'}', $value, $string);
-			}
-		}
+		$textId = $text->getId();
+		$regexp = "/\{text:$textId\|(.+)\}/";
+		if (preg_match($regexp, $template, $matches)) {
+			$htmlTextView = str_replace('TEXT_TITLE', $matches[1], $htmlTextView);
+			$template = preg_replace($regexp, $htmlTextView, $template);
 
-		return $string;
+			return $template;
+		}
+		$htmlTextView = str_replace('TEXT_TITLE', $text->getTitle(), $htmlTextView);
+		$template = preg_replace("/\{(text|file):$textId(-.+)?\}/", $htmlTextView, $template);
+
+		return $template;
 	}
 
 	public function joinLists($string)

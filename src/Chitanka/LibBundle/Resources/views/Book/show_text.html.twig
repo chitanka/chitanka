@@ -21,8 +21,10 @@
 	<fieldset class="book-content superlist">
 		<legend>Съдържание</legend>
 		{% import 'LibBundle::text.html.twig' as texttools %}
+		{# TODO refactor and improve this template expansion #}
+		{% set options = {'title': 'TEXT_TITLE'} %}
 		{% for text in book.texts %}
-			{% set template = template|replace_var(['text:'~text.id, 'file:'~text.id, 'text:'~text.id~'-*', 'file:'~text.id~'-*'], (book.isFromSameAuthor(text) ? texttools.text(text) : texttools.text_with_author(text))) %}
+			{% set template = template|put_text_in_template(text, (book.isFromSameAuthor(text) ? texttools.text(text, options) : texttools.text_with_author(text, options))) %}
 		{% endfor %}
 
 		{{ template|join_lists|raw }}

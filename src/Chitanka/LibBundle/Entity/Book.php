@@ -725,16 +725,19 @@ class Book extends BaseWork
 			} else {
 				list($command, $content) = explode("\t", $line);
 				if ($content[0] == '{') {
-					if (preg_match('/\{(text|file):(\d+)(-.+)?\}/', $content, $matches)) {
+					if (preg_match('/\{(text|file):(\d+)(-[^|]+)?(\|(.+))?\}/', $content, $matches)) {
 						$text = $texts[$matches[2]];
 						if ($matches[1] == 'text') {
-							$authors = implode(', ', $this->getBookAuthorIfNotInTitle($text));
-							if ( ! empty($authors) ) {
-								$authors = $command . \Sfblib_SfbConverter::CMD_DELIM . $authors . \Sfblib_SfbConverter::EOL;
+							if (isset($matches[5])) {
+								$title = $command . \Sfblib_SfbConverter::CMD_DELIM . $matches[5];
+							} else {
+								$authors = implode(', ', $this->getBookAuthorIfNotInTitle($text));
+								if ( ! empty($authors) ) {
+									$authors = $command . \Sfblib_SfbConverter::CMD_DELIM . $authors . \Sfblib_SfbConverter::EOL;
+								}
+								$title = $authors . strtr($text->getTitleAsSfb(), array(\Sfblib_SfbConverter::HEADER => $command));
 							}
-							$title = $text->getTitleAsSfb();
-							$title = strtr($title, array(\Sfblib_SfbConverter::HEADER => $command));
-							$sfb .= $authors . $title . $div . ltrim(strtr("\n".$text->getRawContent(), $this->headingRepl[$command]), "\n");
+							$sfb .= $title . $div . ltrim(strtr("\n".$text->getRawContent(), $this->headingRepl[$command]), "\n");
 						} else { // file:
 							if (empty($matches[3])) {
 								$textContent = $text->getRawContent();
