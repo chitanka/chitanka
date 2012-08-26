@@ -92,7 +92,7 @@ class Book extends BaseWork
 	*/
 	private $type;
 	static private $typeList = array(
-		'book' => 'Обикновена книга',
+		'single' => 'Обикновена книга',
 		'collection' => 'Сборник',
 		'poetry' => 'Стихосбирка',
 		'anthology' => 'Антология',
