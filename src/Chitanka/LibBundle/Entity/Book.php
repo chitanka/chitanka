@@ -144,7 +144,7 @@ class Book extends BaseWork
 	private $authors;
 
 	/**
-	* @var array
+	* @var ArrayCollection
 	* @ORM\OneToMany(targetEntity="BookAuthor", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
 	*/
 	private $bookAuthors;
@@ -158,7 +158,7 @@ class Book extends BaseWork
 	private $texts;
 
 	/**
-	* @var array
+	* @var ArrayCollection
 	* @ORM\OneToMany(targetEntity="BookLink", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
 	*/
 	private $links;
@@ -169,6 +169,12 @@ class Book extends BaseWork
 	*/
 	private $created_at;
 
+
+	public function __construct()
+	{
+		$this->bookAuthors = new ArrayCollection;
+		$this->links = new ArrayCollection;
+	}
 
 	public function __toString()
 	{
@@ -229,7 +235,14 @@ class Book extends BaseWork
 		$this->authors[] = $author;
 	}
 
-	public function addBookAuthors(BookAuthor $bookAuthor) { $this->bookAuthors[] = $bookAuthor; }
+	public function addBookAuthor(BookAuthor $bookAuthor)
+	{
+		$this->bookAuthors[] = $bookAuthor;
+	}
+	public function removeBookAuthor(BookAuthor $bookAuthor)
+	{
+		$this->bookAuthors->removeElement($bookAuthor);
+	}
 	public function setBookAuthors($bookAuthors) { $this->bookAuthors = $bookAuthors; }
 	public function getBookAuthors() { return $this->bookAuthors; }
 
@@ -237,26 +250,22 @@ class Book extends BaseWork
 
 	public function setLinks($links) { $this->links = $links; }
 	public function getLinks() { return $this->links; }
-	public function addLink($link) { $this->links[] = $link; }
-	public function addLinks($link) { $this->addLink($link); }
-	public function removeLink($linkToRemove)
+	public function addLink(BookLink $link)
 	{
-		foreach ($this->links as $i => $link) {
-			if ($link->getId() == $linkToRemove->getId()) {
-				unset($this->links[$i]);
-			}
-		}
+		$this->links[] = $link;
+	}
+	public function removeLink(BookLink $link)
+	{
+		$this->links->removeElement($link);
 	}
 
 	public function setHasAnno($has_anno) { $this->has_anno = $has_anno; }
 	public function getHasAnno() { return $this->has_anno; }
 	public function hasAnno() { return $this->has_anno; }
-	public function has_anno() { return $this->has_anno; }
 
 	public function setHasCover($has_cover) { $this->has_cover = $has_cover; }
 	public function getHasCover() { return $this->has_cover; }
 	public function hasCover() { return $this->has_cover; }
-	public function has_cover() { return $this->has_cover; }
 
 	public function setSequence($sequence) { $this->sequence = $sequence; }
 	public function getSequence() { return $this->sequence; }
