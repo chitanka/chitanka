@@ -243,6 +243,9 @@ class Book extends BaseWork
 	{
 		$this->bookAuthors->removeElement($bookAuthor);
 	}
+	// TODO needed by admin; why?
+	public function addBookAuthors(BookAuthor $bookAuthor) { $this->addBookAuthor($bookAuthor); }
+
 	public function setBookAuthors($bookAuthors) { $this->bookAuthors = $bookAuthors; }
 	public function getBookAuthors() { return $this->bookAuthors; }
 
@@ -258,6 +261,8 @@ class Book extends BaseWork
 	{
 		$this->links->removeElement($link);
 	}
+	// TODO needed by admin; why?
+	public function addLinks(BookLink $link) { $this->addLink($link); }
 
 	public function setHasAnno($has_anno) { $this->has_anno = $has_anno; }
 	public function getHasAnno() { return $this->has_anno; }

@@ -466,6 +466,9 @@ class Text extends BaseWork
 	{
 		$this->textAuthors->removeElement($textAuthor);
 	}
+	// TODO needed by admin; why?
+	public function addTextAuthors(TextAuthor $textAuthor) { $this->addTextAuthor($textAuthor); }
+
 	public function setTextAuthors($textAuthors) { $this->textAuthors = $textAuthors; }
 	public function getTextAuthors() { return $this->textAuthors; }
 
@@ -477,6 +480,9 @@ class Text extends BaseWork
 	{
 		$this->textTranslators->removeElement($textTranslator);
 	}
+	// TODO needed by admin; why?
+	public function addTextTranslators(TextTranslator $textTranslator) { $this->addTextTranslator($textTranslator); }
+
 	public function setTextTranslators($textTranslators) { $this->textTranslators = $textTranslators; }
 	public function getTextTranslators() { return $this->textTranslators; }
 
