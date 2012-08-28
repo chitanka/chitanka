@@ -164,26 +164,30 @@ class WorkPage extends Page {
 		$this->btitle = String::my_replace($this->btitle);
 
 		if ($this->entry == 0) { // check if this text exists in the library
-			// TODO does not work if there are more than one titles with the same name
-			$text = $this->controller->getRepository('Text')->findOneBy(array('title' => $this->btitle));
 			$this->scanuser_view = 0;
-			if ( !empty($text) && $text->getAuthorNames() == $this->author && !$this->bypassExisting ) {
-				$wl = $this->makeSimpleTextLink($text->getTitle(), $text->getId());
-				$this->addMessage('В библиотеката вече съществува произведение'.
-					$this->makeFromAuthorSuffix($text) .
-					" със същото заглавие: <div class='standalone'>$wl.</div>", true);
-				$this->addMessage('Повторното съхраняване ще добави вашия запис въпреки горното предупреждение.');
-				$this->bypassExisting = 1;
+			if ( ! $this->bypassExisting) {
+				// TODO does not work if there are more than one titles with the same name
+				$texts = $this->controller->getRepository('Text')->findBy(array('title' => $this->btitle));
+				foreach ($texts as $text) {
+					if ($text->getAuthorNames() == $this->author) {
+						$wl = $this->makeSimpleTextLink($text->getTitle(), $text->getId());
+						$this->addMessage('В библиотеката вече съществува произведение'.
+							$this->makeFromAuthorSuffix($text) .
+							" със същото заглавие: <div class='standalone'>$wl.</div>", true);
+						$this->addMessage('Повторното съхраняване ще добави вашия запис въпреки горното предупреждение.');
+						$this->bypassExisting = 1;
 
-				return $this->makeForm();
-			}
-			$key = array('title' => $this->btitle, 'deleted_at IS NULL');
-			if ( !$this->bypassExisting && $this->db->exists(self::DB_TABLE, $key) ) {
-				$this->addMessage('Вече се подготвя произведение със същото заглавие', true);
-				$this->addMessage('Повторното съхраняване ще добави вашия запис въпреки горното предупреждение.');
-				$this->bypassExisting = 1;
+						return $this->makeForm();
+					}
+				}
+				$key = array('title' => $this->btitle, 'deleted_at IS NULL');
+				if ($this->db->exists(self::DB_TABLE, $key)) {
+					$this->addMessage('Вече се подготвя произведение със същото заглавие', true);
+					$this->addMessage('Повторното съхраняване ще добави вашия запис въпреки горното предупреждение.');
+					$this->bypassExisting = 1;
 
-				return $this->makeWorkList(0, 0, null, false, $key) . $this->makeForm();
+					return $this->makeWorkList(0, 0, null, false, $key) . $this->makeForm();
+				}
 			}
 		}
 
