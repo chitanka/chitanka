@@ -326,8 +326,15 @@ EOT
 	}
 
 	private $_curIds = array();
+	private $_ids = array(
+		'text' => array(),
+		'book' => array(),
+	);
 	private function getNextId($table)
 	{
+		if (isset($this->_ids[$table]) && count($this->_ids[$table])) {
+			return array_shift($this->_ids[$table]);
+		}
 		if ( ! isset($this->_curIds[$table])) {
 			$this->_curIds[$table] = $this->olddb()->autoIncrementId($table);
 		} else {
@@ -540,9 +547,9 @@ EOT
 		}
 		if (isset($book['type']))  $set['type'] = $book['type'];
 		if (isset($book['orig_title'])) $set['orig_title'] = self::fixOrigTitle($book['orig_title']);
-		if (isset($book['seq_nr']))  $set['seqnr'] = $book['seq_nr'];
-		if (isset($book['anno']) && filesize($book['anno']))  $set['has_anno'] = 1;
-		if (isset($book['cover']))  $set['has_cover'] = 1;
+		if (isset($book['seq_nr'])) $set['seqnr'] = $book['seq_nr'];
+		if (isset($book['anno'])) $set['has_anno'] = filesize($book['anno']) ? 1 : 0;
+		if (isset($book['cover'])) $set['has_cover'] = filesize($book['cover']) ? 1 : 0;
 		if (isset($book['subtitle'])) $set['subtitle'] = String::my_replace($book['subtitle']);
 		if (isset($book['year'])) $set['year'] = $book['year'];
 		if (isset($book['trans_year'])) $set['trans_year'] = $book['trans_year'];
@@ -579,9 +586,22 @@ EOT
 		}
 
 		if ( ! empty($book['works'])) {
+			$bookTextRepo = $this->em->getRepository('LibBundle:BookText');
 			foreach ($book['works'] as $work) {
-				$set = array('book_id' => $book['id'], 'text_id' => $work['id'], 'share_info' => (int)$work['is_new']);
-				$qs[] = $this->olddb()->insertQ('book_text', $set, false, false);
+				$key = 'book_text'.$book['id'].'_'.$work['id'];
+				if ($book['is_new'] || $work['is_new']) {
+					$set = array('book_id' => $book['id'], 'text_id' => $work['id'], 'share_info' => (int) $work['is_new']);
+					$qs[$key] = $this->olddb()->insertQ('book_text', $set, false, false);
+				} else {
+					$relationExists = $bookTextRepo->findOneBy(array(
+						'book' => $book['id'],
+						'text' => $work['id'],
+					));
+					if (!$relationExists) {
+						$set = array('book_id' => $book['id'], 'text_id' => $work['id'], 'share_info' => 0);
+						$qs[$key] = $this->olddb()->insertQ('book_text', $set, false, false);
+					}
+				}
 			}
 		}
 
@@ -654,6 +674,9 @@ QUERY
 
 	static private function copyDir($sourceDir, $destDir)
 	{
+		if ( ! file_exists($destDir)) {
+			mkdir($destDir, 0755, true);
+		}
 		foreach (glob("$sourceDir/*") as $source) {
 			self::copyFile($source, $destDir);
 		}
