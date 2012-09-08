@@ -14,9 +14,9 @@
 		{% if text.books|length %}
 			<li>
 			{% if text.books|length == 1 %}
-				Част от книгата
+				Включено в книгата
 			{% elseif text.books|length > 1 %}
-				Част от книгите:
+				Включено в книгите:
 			{% endif %}
 			{% include 'LibBundle:Book:list.html.twig' with {'books': text.books} %}
 			</li>
