@@ -37,6 +37,7 @@ class PersonRepository extends EntityRepository
 		'agr',
 		'zm',
 		'ec',
+		'ee',
 		'et',
 		'il',
 		'in',
