@@ -29,8 +29,12 @@ class WorkPage extends Page {
 		STATUS_6 = 6,
 		STATUS_7 = 7;
 
-	protected
-		$action = 'work',
+	protected $action = 'work';
+	protected $defViewList = 'work';
+	protected $defListLimit = 50;
+	protected $maxListLimit = 500;
+
+	private
 		$tabs = array('Самостоятелна подготовка', 'Работа в екип'),
 		$tabImgs = array('singleuser', 'multiuser'),
 		$tabImgAlts = array('сам', 'екип'),
@@ -52,18 +56,15 @@ class WorkPage extends Page {
 			'my' => 'Мое участие',
 			'waiting' => 'Търси се коректор',
 		),
-		$defViewList = 'work',
-		$defListLimit = 50, $maxListLimit = 500,
 		$progressBarWidth = '20',
 
-		// copied from MediaWiki
-		$fileBlacklist = array(
-			# HTML may contain cookie-stealing JavaScript and web bugs
-			'html', 'htm', 'js', 'jsb',
-			# PHP scripts may execute arbitrary code on the server
-			'php', 'phtml', 'php3', 'php4', 'php5', 'phps',
-			# Other types that may be interpreted by some servers
-			'shtml', 'jhtml', 'pl', 'py', 'cgi');
+		$fileWhiteList = array(
+			'txt', 'sfb', 'fb2',
+			'zip', 'rar',
+			'7z', 'gz', 'tar', 'tgz', 'bz2',
+			'odt', 'pdf', 'doc', 'rtf',
+			'jpg', 'png', 'gif',
+		);
 
 
 	public function __construct($fields) {
@@ -1394,12 +1395,8 @@ EOS;
 
 
 	protected function escapeBlackListedExt($filename) {
-		$fext = File::getFileExtension($this->uplfile);
-		foreach ($this->fileBlacklist as $blext) {
-			if ($fext == $blext) {
-				$filename = preg_replace("/$fext$/", '$0.txt', $filename);
-				break;
-			}
+		if ( ! File::hasValidExtension($filename, $this->fileWhiteList)) {
+			$filename .= '.txt';
 		}
 		// remove leading dots
 		$filename = ltrim($filename, '.');

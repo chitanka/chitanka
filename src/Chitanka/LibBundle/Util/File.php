@@ -73,7 +73,8 @@ class File
 	}
 
 
-	static public function cleanFileName($fname, $woDiac = true) {
+	static public function cleanFileName($fname, $woDiac = true)
+	{
 		$fname = preg_replace('![^a-zA-Z0-9_. -]!u', '', $fname);
 		if ( $woDiac ) {
 			$fname = Legacy::removeDiacritics($fname);
@@ -88,15 +89,26 @@ class File
 
 		return $fname;
 	}
-	
 
-	static public function isSFB($file) {
+
+	static public function isSFB($file)
+	{
 		if ( (strpos($file, '.sfb') !== false) && file_exists($file) ) {
 			$cont = file_get_contents( $file,  false, NULL, -1, 10 );
 			if ( strpos($cont, chr(124).chr(9)) !== false )
 				return true;
 		}
 
+		return false;
+	}
+
+	static public function hasValidExtension($filename, $validExtensions)
+	{
+		foreach ($validExtensions as $validExtension) {
+			if (preg_match("/\.$validExtension$/i", $filename)) {
+				return true;
+			}
+		}
 		return false;
 	}
 }
