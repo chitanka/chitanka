@@ -40,6 +40,7 @@ class TextRepository extends EntityRepository
 		'textbook',
 		'feuilleton',
 		'haiku',
+		'jure',
 		'other',
 	);
 

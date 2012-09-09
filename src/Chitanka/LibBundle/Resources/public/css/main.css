@@ -907,7 +907,8 @@ li.title {
 .t-memo,
 .t-docu,
 .t-dialogue,
-.t-speech {
+.t-speech,
+.t-jure {
 	background-position: 0 -48px;
 }
 .t-shortstory,
