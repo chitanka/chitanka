@@ -258,9 +258,14 @@ class Extension extends \Twig_Extension
 		return parse_url($url, PHP_URL_HOST);
 	}
 
+	// TODO unit test
 	public function formatLinks($text)
 	{
-		return preg_replace('|https?://\S+[^,.\s]|e', "'<a href=\"$0\">'.\$this->getDomain('$0', '$2').'</a>'", $text);
+		$patterns = array(
+			'/\[\[(.+)\|(.+)\]\]/Us' => '<a href="$1">$2</a>',
+			'|(?<!")https?://\S+[^,.\s]|e' => "'<a href=\"$0\">'.\$this->getDomain('$0', '$2').'</a>'",
+		);
+		return preg_replace(array_keys($patterns), array_values($patterns), $text);
 	}
 
 	public function isUrl($string)
