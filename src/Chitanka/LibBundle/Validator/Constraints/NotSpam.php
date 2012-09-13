@@ -13,5 +13,6 @@ class NotSpam extends Constraint
 	public $stopWords = array(
 		'CASH & CARRY',
 		'НЕ ОТВЕЧАЙТЕ НА ЭТО ПИСЬМО',
+		' еба ',
 	);
 }
