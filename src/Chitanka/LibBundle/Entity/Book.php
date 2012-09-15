@@ -479,11 +479,7 @@ class Book extends BaseWork
 	public function getTemplate()
 	{
 		if ( ! isset($this->_template)) {
-			$file = Legacy::getContentFilePath('book', $this->id);
-			$this->_template = '';
-			if ( file_exists($file) ) {
-				$this->_template = file_get_contents($file);
-			}
+			$this->_template = Legacy::getContentFile('book', $this->id);
 		}
 
 		return $this->_template;
