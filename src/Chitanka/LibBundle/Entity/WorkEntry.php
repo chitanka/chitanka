@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 *	indexes={
 *		@ORM\Index(name="title_idx", columns={"title"}),
 *		@ORM\Index(name="author_idx", columns={"author"}),
-*		@ORM\Index(name="status_idx", columns={"status"})}
+*		@ORM\Index(name="status_idx", columns={"status"}),
+*		@ORM\Index(name="date_idx", columns={"date"})}
 * )
 */
 class WorkEntry extends Entity

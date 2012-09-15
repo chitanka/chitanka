@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Table(name="text_rating",
 *	uniqueConstraints={@ORM\UniqueConstraint(name="text_user_uniq", columns={"text_id", "user_id"})},
 *	indexes={
-*		@ORM\Index(name="user_idx", columns={"user_id"})}
+*		@ORM\Index(name="user_idx", columns={"user_id"}),
+*		@ORM\Index(name="date_idx", columns={"date"})}
 * )
 */
 class TextRating extends Entity

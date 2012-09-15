@@ -114,7 +114,7 @@ class User /*extends BaseUser*/ implements UserInterface
 	* Token used to access private user lists, e.g. read texts
 	*
 	* @var string
-	* @ORM\Column(type="string", length=40, nullable=true)
+	* @ORM\Column(type="string", length=40, unique=true)
 	*/
 	private $token;
 

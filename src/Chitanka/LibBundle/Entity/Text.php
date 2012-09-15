@@ -19,7 +19,10 @@ use Chitanka\LibBundle\Legacy\Setup;
 *		@ORM\Index(name="title_idx", columns={"title"}),
 *		@ORM\Index(name="subtitle_idx", columns={"subtitle"}),
 *		@ORM\Index(name="orig_title_idx", columns={"orig_title"}),
-*		@ORM\Index(name="orig_subtitle_idx", columns={"orig_subtitle"})}
+*		@ORM\Index(name="orig_subtitle_idx", columns={"orig_subtitle"}),
+*		@ORM\Index(name="type_idx", columns={"type"}),
+*		@ORM\Index(name="lang_idx", columns={"lang"}),
+*		@ORM\Index(name="orig_lang_idx", columns={"orig_lang"})}
 * )
 */
 class Text extends BaseWork

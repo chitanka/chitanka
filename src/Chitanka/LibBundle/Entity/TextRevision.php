@@ -9,7 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Table(name="text_revision",
 *	indexes={
 *		@ORM\Index(name="text_idx", columns={"text_id"}),
-*		@ORM\Index(name="user_idx", columns={"user_id"})}
+*		@ORM\Index(name="user_idx", columns={"user_id"}),
+*		@ORM\Index(name="date_idx", columns={"date"})}
 * )
 */
 class TextRevision extends Entity

@@ -6,7 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\UserTextContribRepository")
-* @ORM\Table(name="user_text_contrib"
+* @ORM\Table(name="user_text_contrib",
+*	indexes={
+*		@ORM\Index(name="date_idx", columns={"date"})}
 * )
 */
 class UserTextContrib extends Entity

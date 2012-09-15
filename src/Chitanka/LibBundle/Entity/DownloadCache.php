@@ -12,7 +12,7 @@ class DownloadCache extends Entity
 {
 	/**
 	* @var integer $id
-	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
+	* @ORM\Id @ORM\Column(type="bigint")
 	*/
 	private $id;
 

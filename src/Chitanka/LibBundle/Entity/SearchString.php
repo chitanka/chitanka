@@ -6,7 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\SearchStringRepository")
-* @ORM\Table(name="search_string")
+* @ORM\Table(name="search_string",
+*	indexes={
+*		@ORM\Index(name="date_idx", columns={"date"})})
 */
 class SearchString extends Entity
 {

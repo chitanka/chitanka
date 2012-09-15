@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Table(name="user_text_read",
 *	uniqueConstraints={@ORM\UniqueConstraint(name="user_text_uniq", columns={"user_id", "text_id"})},
 *	indexes={
-*		@ORM\Index(name="text_idx", columns={"text_id"})}
+*		@ORM\Index(name="text_idx", columns={"text_id"}),
+*		@ORM\Index(name="created_at_idx", columns={"created_at"})}
 * )
 * TODO replace this entity with a new "read" bookmark folder
 */

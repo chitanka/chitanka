@@ -13,24 +13,16 @@ use Doctrine\ORM\Mapping as ORM;
 class DownloadCacheText extends Entity
 {
 	/**
-	* @var integer $id
-	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue(strategy="AUTO")
-	*/
-	private $id;
-
-	/**
-	* @var integer $dc
+	* @ORM\Id
 	* @ORM\ManyToOne(targetEntity="DownloadCache")
 	*/
 	private $dc;
 
 	/**
-	* @var integer $text
+	* @ORM\Id
 	* @ORM\ManyToOne(targetEntity="Text")
 	*/
 	private $text;
-
-	public function getId() { return $this->id; }
 
 	public function setDc($dc) { $this->dc = $dc; }
 	public function getDc() { return $this->dc; }
