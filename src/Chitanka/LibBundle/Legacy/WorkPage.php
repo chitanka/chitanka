@@ -146,7 +146,7 @@ class WorkPage extends Page {
 
 	protected function updateMainUserData() {
 		$key = array('id' => $this->entry);
-		if ($this->delete) {
+		if ($this->delete && $this->userIsAdmin()) {
 			$this->db->update(self::DB_TABLE, array('deleted_at' => new \DateTime), $key);
 			if ( $this->isMultiUser($this->workType) ) {
 				$this->db->update(self::DB_TABLE2, array('deleted_at' => new \DateTime), array('entry_id'=>$this->entry));
@@ -683,7 +683,7 @@ EOS;
 			$author = $this->out->textField('author', '', $this->author, 50, 255,
 				0, 'Ако авторите са няколко, ги разделете със запетаи');
 			$comment = $this->out->textarea(self::FF_COMMENT, '', $this->comment, 10, 80);
-			$delete = empty($this->entry) ? ''
+			$delete = empty($this->entry) || !$this->userIsAdmin() ? ''
 				: '<div class="error" style="margin-bottom:1em">'.
 				$this->out->checkbox('delete', '', false, 'Изтриване на записа') .
 				' (напр., ако произведението вече е добавено в библиотеката)</div>';
