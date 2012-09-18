@@ -1227,7 +1227,7 @@ a.dl:hover {
 .dl-list li:last-child {
 	margin-right: 0;
 }
-.superlist .action {
+body:hover .superlist .action {
 	opacity: 0.05;
 }
 .superlist li:hover .action,
