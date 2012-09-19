@@ -322,7 +322,7 @@ class Legacy
 	);
 
 	static public function getContentFile($key, $num) {
-		$file = __DIR__ .'/../../../../web/'. self::getContentFilePath($key, $num);
+		$file = self::getInternalContentFilePath($key, $num);
 		if ( file_exists($file) ) {
 			return file_get_contents($file);
 		}
@@ -334,6 +334,10 @@ class Legacy
 		$pref = Ary::arrVal(self::$contentDirs, $key, $key .'/');
 
 		return $pref . self::makeContentFilePath($num, $full);
+	}
+
+	static public function getInternalContentFilePath($key, $num, $full = true) {
+		return __DIR__ .'/../../../../web/'. self::getContentFilePath($key, $num, $full);
 	}
 
 	// use this for sfbzip too

@@ -667,12 +667,12 @@ class Text extends BaseWork
 
 	public function getImages()
 	{
-		return $this->getImagesFromDir(Legacy::getContentFilePath('img', $this->id));
+		return $this->getImagesFromDir(Legacy::getInternalContentFilePath('img', $this->id));
 	}
 
 	public function getThumbImages()
 	{
-		return $this->getImagesFromDir(Legacy::getContentFilePath('img', $this->id) . '/thumb');
+		return $this->getImagesFromDir(Legacy::getInternalContentFilePath('img', $this->id) . '/thumb');
 	}
 
 	public function getImagesFromDir($dir)
@@ -1071,13 +1071,13 @@ EOS;
 		return $this->getOrigTitleAsSfb() . "\n\n"
 			. $this->getExtraInfo()      . "\n\n"
 			. "\tСвалено от [[ „Моята библиотека“ | ".$this->getDocId()." ]]\n"
-			. "\tПоследна редакция: ".Legacy::humanDate($this->cur_rev->getDate())."\n";
+			. "\tПоследна корекция: ".Legacy::humanDate($this->cur_rev->getDate())."\n";
 	}
 
 
 	public function getContentAsFb2()
 	{
-		$conv = new \Sfblib_SfbToFb2Converter($this->getContentAsSfb(), Legacy::getContentFilePath('img', $this->id));
+		$conv = new \Sfblib_SfbToFb2Converter($this->getContentAsSfb(), Legacy::getInternalContentFilePath('img', $this->id));
 
 		$conv->setObjectCount(1);
 		$conv->setSubtitle($this->subtitle);
