@@ -4,7 +4,7 @@ namespace Chitanka\LibBundle\Entity;
 use Chitanka\LibBundle\Util\File;
 use Chitanka\LibBundle\Legacy\Legacy;
 
-class BaseWork extends Entity
+abstract class BaseWork extends Entity
 {
 
 	const TITLE_NEW_LINE = "<br>\n";
@@ -121,6 +121,7 @@ class BaseWork extends Entity
 			. self::clearSfbMarkers( $this->getContentAsSfb() );
 	}
 
+	abstract public function getContentAsFb2();
 
 	static public function clearSfbMarkers($sfbContent)
 	{
