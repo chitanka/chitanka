@@ -98,26 +98,32 @@ EOT
 
 	private function validateTexts($textIds)
 	{
-		foreach ($textIds as $textId) {
-			$this->output->writeln("Validating text $textId");
-			/* @var $text Text */
-			$text = $this->em->getRepository('LibBundle:Text')->find($textId);
-			if (!$this->validator->isValid($text->getContentAsFb2())) {
-				throw new \Exception($this->validator->getErrors());
-			}
-		}
+		$this->validateWorks($textIds, 'Text');
 	}
 
 	private function validateBooks($bookIds)
 	{
-		foreach ($bookIds as $bookId) {
-			$this->output->writeln("Validating book $bookId");
-			/* @var $book Book */
-			$book = $this->em->getRepository('LibBundle:Book')->find($bookId);
-			if (!$this->validator->isValid($book->getContentAsFb2())) {
+		$this->validateWorks($bookIds, 'Book');
+	}
+
+	private function validateWorks($workIds, $entity)
+	{
+		foreach ($workIds as $workId) {
+			$work = $this->em->getRepository("LibBundle:$entity")->find($workId);
+			if (!$work) {
+				continue;
+			}
+			$this->output->writeln("Validating $entity $workId");
+			$fb2 = $work->getContentAsFb2();
+			if (!$this->validator->isValid($fb2)) {
+				$this->saveFileInTmpDir($entity.'-'.$work->getId().'.fb2', $fb2);
 				throw new \Exception($this->validator->getErrors());
 			}
 		}
 	}
 
+	private function saveFileInTmpDir($filename, $contents)
+	{
+		file_put_contents(sys_get_temp_dir().'/'.$filename, $contents);
+	}
 }
