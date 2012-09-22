@@ -36,30 +36,20 @@ class Fb2Validator
 		return implode("\n", $errors);
 	}
 
-	/**
-	* from Mike A. (17-Feb-2006 09:03)
-	* http://de3.php.net/manual/en/domdocument.schemavalidate.php
-	*/
 	private function formatError($error)
 	{
-		$return = "\n";
-		switch ($error->level) {
-			case LIBXML_ERR_WARNING:
-				$return .= "Warning $error->code: ";
-				break;
-			case LIBXML_ERR_ERROR:
-				$return .= "Error $error->code: ";
-				break;
-			case LIBXML_ERR_FATAL:
-				$return .= "Fatal Error $error->code: ";
-				break;
-		}
-		$return .= "\n" . trim($error->message);
-		if ($error->file) {
-			$return .= "\n\tin $error->file";
-		}
-		$return .= "\n\ton line $error->line\n";
+		$titles = array(
+			LIBXML_ERR_WARNING	=> "Warning",
+			LIBXML_ERR_ERROR	=> "Error",
+			LIBXML_ERR_FATAL	=> "Fatal error",
+		);
+		return <<<MSG
 
-		return $return;
+{$titles[$error->level]} {$error->code}:
+{$error->message}
+    in {$error->file}
+    on line {$error->line}
+
+MSG;
 	}
 }
