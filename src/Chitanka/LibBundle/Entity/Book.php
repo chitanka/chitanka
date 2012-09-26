@@ -721,41 +721,47 @@ class Book extends BaseWork
 		$sfb = '';
 		$texts = $this->getTextsById();
 		foreach (explode("\n", $template) as $line) {
+			$line = rtrim($line, "\t");
 			if (empty($line)) {
 				$sfb .= \Sfblib_SfbConverter::EOL;
-			} else {
-				list($command, $content) = explode("\t", $line);
-				if ($content[0] == '{') {
-					if (preg_match('/\{(text|file):(\d+)(-[^|]+)?(\|(.+))?\}/', $content, $matches)) {
-						$text = $texts[$matches[2]];
-						if ($matches[1] == 'text') {
-							if (isset($matches[5])) {
-								$title = $command . \Sfblib_SfbConverter::CMD_DELIM . $matches[5];
-							} else {
-								$authors = implode(', ', $this->getBookAuthorIfNotInTitle($text));
-								if ( ! empty($authors) ) {
-									$authors = $command . \Sfblib_SfbConverter::CMD_DELIM . $authors . \Sfblib_SfbConverter::EOL;
-								}
-								$title = $authors . strtr($text->getTitleAsSfb(), array(\Sfblib_SfbConverter::HEADER => $command));
-							}
-							$sfb .= $title . $div . ltrim(strtr("\n".$text->getRawContent(), $this->headingRepl[$command]), "\n");
-						} else { // file:
-							if (empty($matches[3])) {
-								$textContent = $text->getRawContent();
-							} else {
-								$textContent = Legacy::getContentFile('text', $matches[2].$matches[3]);
-							}
-							if (empty($command)) {
-								$sfb .= $textContent;
-							} else {
-								$sfb .= ltrim(strtr("\n".$textContent, $this->headingRepl[$command]), "\n");
-							}
+				continue;
+			}
+			$lineParts = explode("\t", $line);
+			if (count($lineParts) == 1 || $lineParts[1][0] != '{') {
+				$sfb .= $line . \Sfblib_SfbConverter::EOL;
+				continue;
+			}
+			list($command, $content) = $lineParts;
+			if (preg_match('/\{(text|file):(\d+)(-[^|]+)?(\|(.+))?\}/', $content, $matches)) {
+				$text = $texts[$matches[2]];
+				if ($matches[1] == 'text') {
+					if (isset($matches[5])) {
+						$title = $command . \Sfblib_SfbConverter::CMD_DELIM . $matches[5];
+					} else {
+						$authors = implode(', ', $this->getBookAuthorIfNotInTitle($text));
+						if ( ! empty($authors) ) {
+							$authors = $command . \Sfblib_SfbConverter::CMD_DELIM . $authors . \Sfblib_SfbConverter::EOL;
 						}
-						$sfb .= $div;
+						$title = $authors . strtr($text->getTitleAsSfb(), array(\Sfblib_SfbConverter::HEADER => $command));
 					}
-				} else {
-					$sfb .= $line . \Sfblib_SfbConverter::EOL;
+					$textContent = $text->getRawContent();
+					if (strpos($textContent, \Sfblib_SfbConverter::EOL.">") !== false) {
+						$textContent = $command . \Sfblib_SfbConverter::CMD_DELIM . \Sfblib_SfbConverter::EOL . $textContent;
+					}
+					$sfb .= $title . $div . ltrim(strtr("\n".$textContent, $this->headingRepl[$command]), "\n");
+				} else { // file:
+					if (empty($matches[3])) {
+						$textContent = $text->getRawContent();
+					} else {
+						$textContent = Legacy::getContentFile('text', $matches[2].$matches[3]);
+					}
+					if (empty($command)) {
+						$sfb .= $textContent;
+					} else {
+						$sfb .= ltrim(strtr("\n".$textContent, $this->headingRepl[$command]), "\n");
+					}
 				}
+				$sfb .= $div;
 			}
 		}
 
