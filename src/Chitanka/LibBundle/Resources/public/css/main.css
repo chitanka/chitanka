@@ -863,6 +863,9 @@ span.frozen {
 span.frozen {
 	background-position: 0 -462px;
 }
+.is_frozen {
+	opacity: .6;
+}
 .close,
 #cluetip-close a {
 	background-position: 0 -396px;
