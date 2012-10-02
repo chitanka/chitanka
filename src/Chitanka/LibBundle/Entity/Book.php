@@ -872,7 +872,7 @@ class Book extends BaseWork
 
 	public function getOriginMarker()
 	{
-		return sprintf('Свалено от [[ „Моята библиотека“ | %s ]]', $this->getDocId());
+		return sprintf('Свалено от „Моята библиотека“: %s', $this->getDocId());
 	}
 
 	public function getContentAsFb2()

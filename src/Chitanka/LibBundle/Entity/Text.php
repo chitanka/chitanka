@@ -1070,7 +1070,7 @@ EOS;
 	{
 		return $this->getOrigTitleAsSfb() . "\n\n"
 			. $this->getExtraInfo()      . "\n\n"
-			. "\tСвалено от [[ „Моята библиотека“ | ".$this->getDocId()." ]]\n"
+			. "\tСвалено от „Моята библиотека“: ".$this->getDocId()."\n"
 			. "\tПоследна корекция: ".Legacy::humanDate($this->cur_rev->getDate())."\n";
 	}
 
