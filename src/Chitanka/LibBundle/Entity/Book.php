@@ -949,7 +949,7 @@ class Book extends BaseWork
 
 	public function getNameForFile()
 	{
-		return trim("$this->title_author - $this->title - $this->subtitle-$this->id", '- ');
+		return trim("$this->title_author - $this->title - $this->subtitle-b$this->id", '- ');
 	}
 
 
