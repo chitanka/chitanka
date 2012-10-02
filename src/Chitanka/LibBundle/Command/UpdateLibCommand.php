@@ -270,7 +270,7 @@ EOT
 	{
 		$bookTmpl = file_get_contents($file);
 		$bookWorks = array();
-		if (preg_match_all('/\{(file|text):(\d+)\}/', $bookTmpl, $m)) {
+		if (preg_match_all('/\{(file|text):(\d+)/', $bookTmpl, $m)) {
 			// already existing in the database works included in this book
 			foreach ($m[2] as $oldWork) {
 				$bookWorks[] = array('id' => $oldWork, 'is_new' => false);
@@ -281,6 +281,7 @@ EOT
 				$bookTmpl = strtr($bookTmpl, array(
 					":$packetId}" => ":$work[id]}",
 					":$packetId-" => ":$work[id]-",
+					":$packetId|" => ":$work[id]|",
 				));
 				$bookWorks[] = $work;
 			}
