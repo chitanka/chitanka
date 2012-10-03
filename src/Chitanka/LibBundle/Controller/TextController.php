@@ -202,11 +202,11 @@ class TextController extends Controller
 	*/
 	public function showMultiAction(Request $request, $id, $_format)
 	{
-		$mirror = $this->tryMirrorRedirect($id, $_format);
+		$mirror = $this->tryMirrorRedirect(explode(',', $id), $_format);
 		if ($mirror) {
 			$filename = $request->get('filename');
 			if ( ! empty($filename)) {
-				$mirror .= '&filename=' . urlencode($filename);
+				$mirror .= '?filename=' . urlencode($filename);
 			}
 			return $this->urlRedirect($mirror);
 		}
@@ -495,14 +495,14 @@ class TextController extends Controller
 	{
 		$dlSite = $this->getMirrorServer();
 
-		if ( $dlSite !== false ) {
-			$params = '?action=text&textId=';
-			$params .= is_array($ids) ? implode(', ', $ids) : $ids;
+		if ($dlSite !== false) {
+			$ids = (array) $ids;
+			$url = (count($ids) > 1 ? '/text-multi/' : '/text/') . implode(',', $ids);
 			if ($format) {
-				$params .= '.' . $format;
+				$url .= '.' . $format;
 			}
 
-			return $dlSite . $params;
+			return $dlSite . $url;
 		}
 
 		return false;
