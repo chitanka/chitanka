@@ -775,7 +775,11 @@ class Book extends BaseWork
 			return $this->_mainBodyAsSfbFile;
 		}
 
-		$this->_mainBodyAsSfbFile = tempnam(BASEDIR . '/cache', 'book');
+		$tmpdir = BASEDIR . '/cache/book';
+		if (!file_exists($tmpdir)) {
+			mkdir($tmpdir, 0777, true);
+		}
+		$this->_mainBodyAsSfbFile = tempnam($tmpdir, 'book');
 		file_put_contents($this->_mainBodyAsSfbFile, $this->getMainBodyAsSfb());
 
 		return $this->_mainBodyAsSfbFile;
