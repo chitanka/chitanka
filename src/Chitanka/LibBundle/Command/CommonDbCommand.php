@@ -27,7 +27,7 @@ class CommonDbCommand extends ContainerAwareCommand
 	protected function updateTextCountByLabels(OutputInterface $output, $em)
 	{
 		$output->writeln('Updating texts count by labels');
-		$update = $this->noLoggingSql('UPDATE label l SET nr_of_texts = (SELECT COUNT(*) FROM text_label WHERE label_id = l.id)');
+		$update = $this->maintenanceSql('UPDATE label l SET nr_of_texts = (SELECT COUNT(*) FROM text_label WHERE label_id = l.id)');
 		$em->getConnection()->executeUpdate($update);
 	}
 
@@ -73,7 +73,7 @@ class CommonDbCommand extends ContainerAwareCommand
 	protected function updateCommentCountByTexts(OutputInterface $output, $em)
 	{
 		$output->writeln('Updating comments count by texts');
-		$update = $this->noLoggingSql('UPDATE text t SET comment_count = (SELECT COUNT(*) FROM text_comment WHERE text_id = t.id)');
+		$update = $this->maintenanceSql('UPDATE text t SET comment_count = (SELECT COUNT(*) FROM text_comment WHERE text_id = t.id)');
 		$em->getConnection()->executeUpdate($update);
 	}
 
@@ -84,7 +84,7 @@ class CommonDbCommand extends ContainerAwareCommand
 	protected function updateBookCountByCategories(OutputInterface $output, $em)
 	{
 		$output->writeln('Updating books count by categories');
-		$update = $this->noLoggingSql('UPDATE category c SET nr_of_books = (SELECT COUNT(*) FROM book WHERE category_id = c.id)');
+		$update = $this->maintenanceSql('UPDATE category c SET nr_of_books = (SELECT COUNT(*) FROM book WHERE category_id = c.id)');
 		$em->getConnection()->executeUpdate($update);
 	}
 
@@ -141,8 +141,8 @@ class CommonDbCommand extends ContainerAwareCommand
 		return $this->_olddb;
 	}
 
-	private function noLoggingSql($sql)
+	private function maintenanceSql($sql)
 	{
-		return '/*NOLOGGING*/'.$sql;
+		return '/*MAINTENANCESQL*/'.$sql;
 	}
 }
