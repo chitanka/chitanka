@@ -40,6 +40,8 @@ parameters:
     mirror_sites: ~
     mirror_sites_graphic: ~
 
+    update_url: http://api.chitanka.info
+
     sitename:    Моята библиотека
 
     webroot: ~

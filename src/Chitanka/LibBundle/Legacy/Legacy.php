@@ -392,9 +392,10 @@ class Legacy
 			CURLOPT_URL            => $url,
 			CURLOPT_RETURNTRANSFER => true,    // return content
 			CURLOPT_HEADER         => false,   // don't return headers
-			CURLOPT_CONNECTTIMEOUT => 10,      // timeout on connect
-			CURLOPT_TIMEOUT        => 10,      // timeout on response
+			CURLOPT_CONNECTTIMEOUT => 30,      // timeout on connect
+			CURLOPT_TIMEOUT        => 60,      // timeout on response
 			CURLOPT_USERAGENT      => 'Mylib (http://chitanka.info)',
+			CURLOPT_FOLLOWLOCATION => true,
 		);
 		if ( ! empty($postData)) {
 			$options[CURLOPT_POST] = true;

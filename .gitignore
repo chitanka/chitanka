@@ -9,6 +9,8 @@
 /web/bundles/*
 *.min.js
 *.php~
+*.last
+*.lock
 .DS_Store
 !.gitignore
 !.gitkeep
