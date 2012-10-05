@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Chitanka\LibBundle\Legacy\Legacy;
+use Chitanka\LibBundle\Service\Mutex;
 
 class AutoUpdateCommand extends CommonDbCommand
 {
@@ -40,14 +41,18 @@ EOT
 		$this->updateUrl = $this->getContainer()->getParameter('update_url');
 		$this->updateDir = $this->getContainer()->getParameter('kernel.root_dir').'/../update';
 
-		if ($input->getOption('skip-db') === false) {
-			$this->executeDbUpdate();
-		}
-		if ($input->getOption('skip-content') === false) {
-			$this->executeContentUpdate();
-		}
-		if ($input->getOption('skip-src') === false) {
-			$this->executeSrcUpdate();
+		$mutex = new Mutex($this->updateDir);
+		if ($mutex->acquireLock()) {
+			if ($input->getOption('skip-db') === false) {
+				$this->executeDbUpdate();
+			}
+			if ($input->getOption('skip-content') === false) {
+				$this->executeContentUpdate();
+			}
+			if ($input->getOption('skip-src') === false) {
+				$this->executeSrcUpdate();
+			}
+			$mutex->releaseLock();
 		}
 
 		$output->writeln('Done.');
@@ -55,12 +60,7 @@ EOT
 
 	private function executeDbUpdate()
 	{
-		$updateDir = $this->updateDir.'/db';
-		$lockFile = "$updateDir/.lock";
-		if (file_exists($lockFile)) {
-			return false;
-		}
-		touch($lockFile);
+		$updateDir = "$this->updateDir/db";
 		$lastModFile = "$updateDir/.last";
 		$lastmod = file_get_contents($lastModFile);
 		$file = Legacy::getFromUrl("$this->updateUrl/db/$lastmod");
@@ -79,8 +79,6 @@ EOT
 		$sqlImporter = $this->createSqlImporter();
 		$sqlImporter->importFile("$updateDir/db.sql");
 		unlink("$updateDir/db.sql");
-
-		unlink($lockFile);
 
 		return true;
 	}
@@ -107,12 +105,6 @@ EOT
 	private function executeContentUpdate()
 	{
 		$updateDir = $this->updateDir.'/content';
-		$lockFile = "$updateDir/.lock";
-		if (file_exists($lockFile)) {
-			return false;
-		}
-		touch($lockFile);
-		unlink($lockFile);
 
 		return true;
 	}
@@ -121,12 +113,6 @@ EOT
 	private function executeSrcUpdate()
 	{
 		$updateDir = $this->updateDir.'/src';
-		$lockFile = "$updateDir/.lock";
-		if (file_exists($lockFile)) {
-			return false;
-		}
-		touch($lockFile);
-		unlink($lockFile);
 
 		return true;
 	}
