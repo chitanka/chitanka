@@ -93,6 +93,8 @@ class PersonAdmin extends Admin
 			->add('slug')
 			->add('name')
 			->add('orig_name')
+			->add('real_name')
+			->add('oreal_name')
 			->add('country')
 		;
 	}
