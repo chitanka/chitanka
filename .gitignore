@@ -11,6 +11,7 @@
 *.php~
 *.last
 *.lock
+/update/*/*
 .DS_Store
 !.gitignore
 !.gitkeep
