@@ -7,7 +7,7 @@ class DirectoryCopier
 	public function copy($sourceDir, $destDir)
 	{
 		$iterator = new \RecursiveIteratorIterator(
-			new \RecursiveDirectoryIterator($sourceDir),
+			new \RecursiveDirectoryIterator($sourceDir, \RecursiveDirectoryIterator::SKIP_DOTS),
 			\RecursiveIteratorIterator::SELF_FIRST);
 		foreach ($iterator as $item) {
 			$dest = $destDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
