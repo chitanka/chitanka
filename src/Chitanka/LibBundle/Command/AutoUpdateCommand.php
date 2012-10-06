@@ -18,6 +18,7 @@ class AutoUpdateCommand extends CommonDbCommand
 		$this
 			->setName('auto-update')
 			->setDescription('Execute an auto-update of the whole system')
+			->addOption('no-wait', null, InputOption::VALUE_NONE, 'Skip waiting time at the beginning. Not recommended for mirror servers.')
 			->addOption('skip-content', null, InputOption::VALUE_NONE, 'Skip content update')
 			->addOption('skip-db', null, InputOption::VALUE_NONE, 'Skip database update')
 			->addOption('skip-src', null, InputOption::VALUE_NONE, 'Skip software update')
@@ -36,6 +37,10 @@ EOT
 		$mutex = new Mutex($updateDir);
 		if ( ! $mutex->acquireLock()) {
 			return;
+		}
+		if ($input->getOption('no-wait') === false) {
+			// this will spread check requests from mirrors in time
+			sleep(rand(0, 30));
 		}
 		if ($input->getOption('skip-content') === false) {
 			$this->executeContentUpdate($container->getParameter('update_content_url'), "$updateDir/content");
