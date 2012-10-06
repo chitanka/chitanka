@@ -31,31 +31,29 @@ EOT
 	{
 		$this->output = $output;
 
-		$this->updateUrl = $this->getContainer()->getParameter('update_url');
-		$this->updateDir = $this->getContainer()->getParameter('kernel.root_dir').'/../update';
-
-		$mutex = new Mutex($this->updateDir);
+		$container = $this->getContainer();
+		$updateDir = $container->getParameter('kernel.root_dir').'/../update';
+		$mutex = new Mutex($updateDir);
 		if ( ! $mutex->acquireLock()) {
 			return;
 		}
 		if ($input->getOption('skip-content') === false) {
-			$this->executeContentUpdate();
+			$this->executeContentUpdate($container->getParameter('update_content_url'), "$updateDir/content");
 		}
 		if ($input->getOption('skip-db') === false) {
-			$this->executeDbUpdate();
+			$this->executeDbUpdate($container->getParameter('update_db_url'), "$updateDir/db");
 		}
 		if ($input->getOption('skip-src') === false) {
-			$this->executeSrcUpdate();
+			$this->executeSrcUpdate($container->getParameter('update_src_url'), "$updateDir/src");
 		}
 		$mutex->releaseLock();
 
 		$output->writeln('Done.');
 	}
 
-	private function executeDbUpdate()
+	private function executeDbUpdate($fetchUrl, $updateDir)
 	{
-		$updateDir = "$this->updateDir/db";
-		$zip = $this->fetchUpdate("$this->updateUrl/db", $updateDir);
+		$zip = $this->fetchUpdate($fetchUrl, $updateDir);
 		if ( ! $zip) {
 			return false;
 		}
@@ -87,10 +85,9 @@ EOT
 		return new \SqlImporter($dsn, $dbuser, $dbpassword);
 	}
 
-	private function executeContentUpdate()
+	private function executeContentUpdate($fetchUrl, $updateDir)
 	{
-		$updateDir = "$this->updateDir/content";
-		$zip = $this->fetchUpdate("$this->updateUrl/content", $updateDir);
+		$zip = $this->fetchUpdate($fetchUrl, $updateDir);
 		if ( ! $zip) {
 			return false;
 		}
@@ -99,29 +96,28 @@ EOT
 		$zip->extractTo($extractDir);
 		$zip->close();
 
+		$copier = new DirectoryCopier;
+		$copier->copy($extractDir, $this->contentDir());
+
 		foreach (file("$extractDir/.deleted", FILE_IGNORE_NEW_LINES) as $filename) {
 			unlink($this->contentDir($filename));
 		}
+
 		copy("$extractDir/.last", "$updateDir/.last");
-		$copier = new DirectoryCopier;
-		$copier->copy($extractDir, $this->contentDir());
 
 		return true;
 	}
 
 	// TODO
-	private function executeSrcUpdate()
+	private function executeSrcUpdate($fetchUrl, $updateDir)
 	{
-		$updateDir = "$this->updateDir/src";
-
 		return true;
 	}
 
 	/** @return \ZipArchive */
 	private function fetchUpdate($fetchUrl, $updateDir)
 	{
-		$lastModFile = "$updateDir/.last";
-		$lastmod = trim(file_get_contents($lastModFile));
+		$lastmod = trim(file_get_contents("$updateDir/.last"));
 		$url = "$fetchUrl/$lastmod";
 		$this->output->writeln("Fetching update from $url");
 		$file = Legacy::getFromUrl($url);

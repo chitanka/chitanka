@@ -40,7 +40,9 @@ parameters:
     mirror_sites: ~
     mirror_sites_graphic: ~
 
-    update_url: http://api.chitanka.info
+    update_db_url: http://api.chitanka.info/db
+    update_content_url: http://api.chitanka.info/content
+    update_src_url: http://api.chitanka.info/src
 
     sitename:    Моята библиотека
 
