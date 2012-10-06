@@ -5,13 +5,14 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Chitanka\LibBundle\Entity\PersonRepository;
 
 class PersonAdmin extends Admin
 {
 	protected $baseRoutePattern = 'person';
 	protected $baseRouteName = 'admin_person';
 	protected $translationDomain = 'admin';
+
+	public $extraActions = 'LibBundle:PersonAdmin:extra_actions.html.twig';
 
 	protected function configureShowField(ShowMapper $showMapper)
 	{

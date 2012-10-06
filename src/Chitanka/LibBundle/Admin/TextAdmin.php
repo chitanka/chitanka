@@ -15,6 +15,8 @@ class TextAdmin extends Admin
 	protected $baseRouteName = 'admin_text';
 	protected $translationDomain = 'admin';
 
+	public $extraActions = 'LibBundle:TextAdmin:extra_actions.html.twig';
+
 	protected function configureShowField(ShowMapper $showMapper)
 	{
 		$showMapper

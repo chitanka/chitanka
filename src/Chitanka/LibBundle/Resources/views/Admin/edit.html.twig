@@ -1,5 +1,14 @@
 {% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
 
+{% block actions %}
+	{{ parent() }}
+	{% if admin.extraActions is defined %}
+		<div class="sonata-actions sonata-extra-actions" style="text-align: right">
+			{% include admin.extraActions %}
+		</div>
+	{% endif %}
+{% endblock %}
+
 {% block form %}
 	{% if admin.preFormContent is defined %}
 		{% include admin.preFormContent %}

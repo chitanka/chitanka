@@ -14,6 +14,8 @@ class BookAdmin extends Admin
 	protected $baseRouteName = 'admin_book';
 	protected $translationDomain = 'admin';
 
+	public $extraActions = 'LibBundle:BookAdmin:extra_actions.html.twig';
+
 	protected function configureShowField(ShowMapper $showMapper)
 	{
 		$showMapper
