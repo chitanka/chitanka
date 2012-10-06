@@ -376,7 +376,7 @@ class Legacy
 		$image = imagecreatefromjpeg($filename);
 		imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 
-		$temp = tempnam(Setup::setting('tmp_dir'), 'thumb-') . basename($filename);
+		$temp = Setup::setting('tmp_dir').'/thumb-'.uniqid().'-'.basename($filename);
 		imagejpeg($image_p, $temp, 80);
 
 		return $temp;
