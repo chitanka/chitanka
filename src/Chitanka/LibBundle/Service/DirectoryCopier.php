@@ -12,7 +12,9 @@ class DirectoryCopier
 		foreach ($iterator as $item) {
 			$dest = $destDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
 			if ($item->isDir()) {
-				mkdir($dest);
+				if ( ! file_exists($item)) {
+					mkdir($dest);
+				}
 			} else {
 				copy($item, $dest);
 			}
