@@ -121,7 +121,7 @@ EOT
 	private function fetchUpdate($fetchUrl, $updateDir)
 	{
 		$lastModFile = "$updateDir/.last";
-		$lastmod = file_get_contents($lastModFile);
+		$lastmod = trim(file_get_contents($lastModFile));
 		$url = "$fetchUrl/$lastmod";
 		$this->output->writeln("Fetching update from $url");
 		$file = Legacy::getFromUrl($url);
