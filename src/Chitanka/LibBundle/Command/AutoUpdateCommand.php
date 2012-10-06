@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Chitanka\LibBundle\Legacy\Legacy;
 use Chitanka\LibBundle\Service\Mutex;
+use Chitanka\LibBundle\Service\DirectoryCopier;
 
 class AutoUpdateCommand extends CommonDbCommand
 {
@@ -17,8 +18,8 @@ class AutoUpdateCommand extends CommonDbCommand
 		$this
 			->setName('auto-update')
 			->setDescription('Execute an auto-update of the whole system')
-			->addOption('skip-db', null, InputOption::VALUE_NONE, 'Skip database update')
 			->addOption('skip-content', null, InputOption::VALUE_NONE, 'Skip content update')
+			->addOption('skip-db', null, InputOption::VALUE_NONE, 'Skip database update')
 			->addOption('skip-src', null, InputOption::VALUE_NONE, 'Skip software update')
 			->setHelp(<<<EOT
 The <info>auto-update</info> auto-update the whole system - software, database, and content.
@@ -26,34 +27,27 @@ EOT
 		);
 	}
 
-	/**
-	 * Executes the current command.
-	 *
-	 * @param InputInterface  $input  An InputInterface instance
-	 * @param OutputInterface $output An OutputInterface instance
-	 *
-	 * @return integer 0 if everything went fine, or an error code
-	 *
-	 * @throws \LogicException When this abstract class is not implemented
-	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		$this->output = $output;
+
 		$this->updateUrl = $this->getContainer()->getParameter('update_url');
 		$this->updateDir = $this->getContainer()->getParameter('kernel.root_dir').'/../update';
 
 		$mutex = new Mutex($this->updateDir);
-		if ($mutex->acquireLock()) {
-			if ($input->getOption('skip-db') === false) {
-				$this->executeDbUpdate();
-			}
-			if ($input->getOption('skip-content') === false) {
-				$this->executeContentUpdate();
-			}
-			if ($input->getOption('skip-src') === false) {
-				$this->executeSrcUpdate();
-			}
-			$mutex->releaseLock();
+		if ( ! $mutex->acquireLock()) {
+			return;
 		}
+		if ($input->getOption('skip-content') === false) {
+			$this->executeContentUpdate();
+		}
+		if ($input->getOption('skip-db') === false) {
+			$this->executeDbUpdate();
+		}
+		if ($input->getOption('skip-src') === false) {
+			$this->executeSrcUpdate();
+		}
+		$mutex->releaseLock();
 
 		$output->writeln('Done.');
 	}
@@ -61,16 +55,8 @@ EOT
 	private function executeDbUpdate()
 	{
 		$updateDir = "$this->updateDir/db";
-		$lastModFile = "$updateDir/.last";
-		$lastmod = file_get_contents($lastModFile);
-		$file = Legacy::getFromUrl("$this->updateUrl/db/$lastmod");
-		if (strlen($file) == 0) {
-			return false;
-		}
-		$tmpfile = tempnam(sys_get_temp_dir(), 'chitanka-db').'.zip';
-		file_put_contents($tmpfile, $file);
-		$zip = new \ZipArchive;
-		if ($zip->open($tmpfile) !== true) {
+		$zip = $this->fetchUpdate("$this->updateUrl/db", $updateDir);
+		if ( ! $zip) {
 			return false;
 		}
 		$zip->extractTo($updateDir);
@@ -101,10 +87,24 @@ EOT
 		return new \SqlImporter($dsn, $dbuser, $dbpassword);
 	}
 
-	// TODO
 	private function executeContentUpdate()
 	{
-		$updateDir = $this->updateDir.'/content';
+		$updateDir = "$this->updateDir/content";
+		$zip = $this->fetchUpdate("$this->updateUrl/content", $updateDir);
+		if ( ! $zip) {
+			return false;
+		}
+		$extractDir = sys_get_temp_dir().'/chitanka-content-'.time();
+		mkdir($extractDir);
+		$zip->extractTo($extractDir);
+		$zip->close();
+
+		foreach (file("$extractDir/.deleted", FILE_IGNORE_NEW_LINES) as $filename) {
+			unlink($this->contentDir($filename));
+		}
+		copy("$extractDir/.last", "$updateDir/.last");
+		$copier = new DirectoryCopier;
+		$copier->copy($extractDir, $this->contentDir());
 
 		return true;
 	}
@@ -112,9 +112,34 @@ EOT
 	// TODO
 	private function executeSrcUpdate()
 	{
-		$updateDir = $this->updateDir.'/src';
+		$updateDir = "$this->updateDir/src";
 
 		return true;
 	}
 
+	/** @return \ZipArchive */
+	private function fetchUpdate($fetchUrl, $updateDir)
+	{
+		$lastModFile = "$updateDir/.last";
+		$lastmod = file_get_contents($lastModFile);
+		$url = "$fetchUrl/$lastmod";
+		$this->output->writeln("Fetching update from $url");
+		$file = Legacy::getFromUrl($url);
+		if (strlen($file) == 0) {
+			return false;
+		}
+		return $this->initZipFileFromContent($file);
+	}
+
+	/** @return \ZipArchive */
+	private function initZipFileFromContent($content)
+	{
+		$tmpfile = sys_get_temp_dir().'/chitanka-'.uniqid().'.zip';
+		file_put_contents($tmpfile, $content);
+		$zip = new \ZipArchive;
+		if ($zip->open($tmpfile) === true) {
+			return $zip;
+		}
+		return false;
+	}
 }

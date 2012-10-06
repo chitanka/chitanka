@@ -130,6 +130,11 @@ class CommonDbCommand extends ContainerAwareCommand
 		return __DIR__ . '/../../../../web' . ($file ? "/$file" : '');
 	}
 
+	public function contentDir($file = null)
+	{
+		return __DIR__ . '/../../../../web/content' . ($file ? "/$file" : '');
+	}
+
 	private $_olddb;
 	/** @return mlDatabase */
 	protected function olddb()
