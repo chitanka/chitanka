@@ -104,7 +104,7 @@ EOT
 		$copier = new DirectoryCopier;
 		$copier->copy($extractDir, $this->contentDir());
 
-		foreach (file("$extractDir/.deleted", FILE_IGNORE_NEW_LINES) as $filename) {
+		foreach (file("$extractDir/.deleted", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $filename) {
 			unlink($this->contentDir($filename));
 		}
 
