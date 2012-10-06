@@ -44,6 +44,8 @@ parameters:
     update_content_url: http://api.chitanka.info/content
     update_src_url: http://api.chitanka.info/src
 
+    admin_max_per_page: 15
+
     sitename:    Моята библиотека
 
     webroot: ~
