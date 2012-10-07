@@ -169,6 +169,8 @@ class Book extends BaseWork
 	*/
 	private $created_at;
 
+	private $fb2CoverWidth = 400;
+
 
 	public function __construct()
 	{
@@ -886,7 +888,7 @@ class Book extends BaseWork
 		$conv->setKeywords( implode(', ', $this->getLabels()) );
 		$conv->setTextDate($this->getYear());
 
-		if ( ($cover = $this->getCover()) ) {
+		if ( ($cover = $this->getCover($this->fb2CoverWidth)) ) {
 			$conv->addCoverpage($cover);
 		}
 
