@@ -3,11 +3,14 @@
 namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
-* @ORM\Entity
-* @ORM\Table(name="wiki_site")
-*/
+ * @ORM\Entity
+ * @ORM\Table(name="wiki_site")
+ * @UniqueEntity(fields="code")
+ * @UniqueEntity(fields="name")
+ */
 class WikiSite extends Entity
 {
 	/**

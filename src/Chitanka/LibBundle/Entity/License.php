@@ -3,11 +3,13 @@
 namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
-* @ORM\Entity
-* @ORM\Table(name="license")
-*/
+ * @ORM\Entity
+ * @ORM\Table(name="license")
+ * @UniqueEntity(fields="code")
+ */
 class License extends Entity
 {
 	/**

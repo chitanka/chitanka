@@ -3,16 +3,18 @@
 namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Chitanka\LibBundle\Util\String;
 
 /**
-* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\SeriesRepository")
-* @ORM\Table(name="series",
-*	indexes={
-*		@ORM\Index(name="name_idx", columns={"name"}),
-*		@ORM\Index(name="orig_name_idx", columns={"orig_name"})}
-* )
-*/
+ * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\SeriesRepository")
+ * @ORM\Table(name="series",
+ *	indexes={
+ *		@ORM\Index(name="name_idx", columns={"name"}),
+ *		@ORM\Index(name="orig_name_idx", columns={"orig_name"})}
+ * )
+ * @UniqueEntity(fields="slug", message="This slug is already in use.")
+ */
 class Series extends Entity
 {
 	/**

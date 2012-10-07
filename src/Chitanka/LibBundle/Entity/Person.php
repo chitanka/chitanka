@@ -3,23 +3,22 @@
 namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Chitanka\LibBundle\Util\String;
 
-#use Symfony\Component\Validator\Constraints;
-#use Symfony\Component\Validator\Mapping\ClassMetadata;
-
 /**
-* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\PersonRepository")
-* @ORM\Table(name="person",
-*	indexes={
-*		@ORM\Index(name="name_idx", columns={"name"}),
-*		@ORM\Index(name="last_name_idx", columns={"last_name"}),
-*		@ORM\Index(name="orig_name_idx", columns={"orig_name"}),
-*		@ORM\Index(name="country_idx", columns={"country"}),
-*		@ORM\Index(name="is_author_idx", columns={"is_author"}),
-*		@ORM\Index(name="is_translator_idx", columns={"is_translator"})}
-* )
-*/
+ * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\PersonRepository")
+ * @ORM\Table(name="person",
+ *	indexes={
+ *		@ORM\Index(name="name_idx", columns={"name"}),
+ *		@ORM\Index(name="last_name_idx", columns={"last_name"}),
+ *		@ORM\Index(name="orig_name_idx", columns={"orig_name"}),
+ *		@ORM\Index(name="country_idx", columns={"country"}),
+ *		@ORM\Index(name="is_author_idx", columns={"is_author"}),
+ *		@ORM\Index(name="is_translator_idx", columns={"is_translator"})}
+ * )
+ * @UniqueEntity(fields="slug", message="This slug is already in use.")
+ */
 class Person extends Entity
 {
 	/**

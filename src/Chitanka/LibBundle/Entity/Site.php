@@ -3,14 +3,16 @@
 namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
-* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\SiteRepository")
-* @ORM\Table(name="site",
-*	indexes={
-*		@ORM\Index(name="name_idx", columns={"name"})}
-* )
-*/
+ * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\SiteRepository")
+ * @ORM\Table(name="site",
+ *	indexes={
+ *		@ORM\Index(name="name_idx", columns={"name"})}
+ * )
+ * @UniqueEntity(fields="url")
+ */
 class Site extends Entity
 {
 	/**

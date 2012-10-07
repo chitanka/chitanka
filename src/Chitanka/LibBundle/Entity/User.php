@@ -4,19 +4,21 @@ namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #use FOS\UserBundle\Entity\User as BaseUser;
 use Chitanka\LibBundle\Legacy\Setup;
 use Chitanka\LibBundle\Legacy\Legacy;
 
 /**
-* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\UserRepository")
-* @ORM\HasLifecycleCallbacks
-* @ORM\Table(name="user",
-*	indexes={
-*		@ORM\Index(name="realname_idx", columns={"realname"}),
-*		@ORM\Index(name="email_idx", columns={"email"})}
-* )
-*/
+ * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\UserRepository")
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="user",
+ *	indexes={
+ *		@ORM\Index(name="realname_idx", columns={"realname"}),
+ *		@ORM\Index(name="email_idx", columns={"email"})}
+ * )
+ * @UniqueEntity(fields="username")
+ */
 class User /*extends BaseUser*/ implements UserInterface
 {
 	/**

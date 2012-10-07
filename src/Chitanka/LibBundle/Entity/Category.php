@@ -4,12 +4,15 @@ namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Chitanka\LibBundle\Util\String;
 
 /**
-* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\CategoryRepository")
-* @ORM\Table(name="category")
-*/
+ * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\CategoryRepository")
+ * @ORM\Table(name="category")
+ * @UniqueEntity(fields="slug", message="This slug is already in use.")
+ * @UniqueEntity(fields="name")
+ */
 class Category extends Entity
 {
 	/**
