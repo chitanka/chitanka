@@ -12,6 +12,7 @@
 *.last
 *.lock
 /update/*/*
+/app/spool/*
 .DS_Store
 !.gitignore
 !.gitkeep

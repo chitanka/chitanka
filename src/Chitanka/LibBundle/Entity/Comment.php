@@ -37,6 +37,8 @@ class Comment extends BaseComment implements SignedCommentInterface
 	 */
 	protected $author;
 
+	protected $cc;
+
 	public function setAuthor(UserInterface $author)
 	{
 		$this->author = $author;
@@ -64,6 +66,16 @@ class Comment extends BaseComment implements SignedCommentInterface
 	public function getWorkEntry()
 	{
 		return $this->getThread()->getWorkEntry();
+	}
+
+	public function setCc($cc)
+	{
+		$this->cc = $cc;
+	}
+
+	public function getCc()
+	{
+		return $this->cc;
 	}
 
 	public function hasParent()

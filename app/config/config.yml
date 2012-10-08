@@ -75,6 +75,13 @@ services:
         tags:
            -  { name: form.type }
 
+    comment_form:
+        class: Chitanka\LibBundle\Form\Type\CommentType
+        arguments: [%fos_comment.model.comment.class%]
+        tags:
+           -  { name: form.type }
+
+
 # Twig Configuration
 twig:
     debug:            %kernel.debug%
@@ -123,7 +130,10 @@ swiftmailer:
     host:      %mailer_host%
     username:  %mailer_user%
     password:  %mailer_password%
-    spool:     { type: memory }
+    spool:
+        #type: memory
+        type: file
+        path: "%kernel.root_dir%/spool"
 
 sensio_framework_extra:
     view:
@@ -214,6 +224,9 @@ fos_comment:
         model:
             comment: Chitanka\LibBundle\Entity\Comment
             thread: Chitanka\LibBundle\Entity\Thread
+    form:
+        comment:
+            type: comment_form
     acl: true
     service:
         sorting:

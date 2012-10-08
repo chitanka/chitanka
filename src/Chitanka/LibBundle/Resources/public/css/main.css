@@ -1108,6 +1108,12 @@ div.fos_comment_comment_form_holder textarea {
 	height: 6em;
 	padding: 1%;
 }
+div.fos_comment_comment_form_holder label {
+	margin-right: 0.5em;
+}
+div.fos_comment_comment_form_holder input[type=text] {
+	width: 500px;
+}
 div.fos_comment_comment_metas {
 	margin-bottom: 0.5em;
 	padding-bottom: 0.5em;

@@ -24,8 +24,19 @@ class CommentListener
 		$comment = $event->getComment();
 		if ($comment->isForWorkEntry()) {
 			$notifier = new Notifier($this->mailer);
-			$notifier->sendMailByNewWorkroomComment($comment, $comment->getWorkEntry());
+			$notifier->sendMailByNewWorkroomComment($comment, $comment->getWorkEntry(), $this->loadExtraRecipientsForWorkEntryComment($comment));
 		}
+	}
+
+	protected function loadExtraRecipientsForWorkEntryComment(Comment $comment)
+	{
+		$recipients = array();
+		$usernames = array_map('trim', explode(',', $comment->getCc()));
+		$users = $this->em->getRepository('LibBundle:User')->findByUsernames($usernames);
+		foreach ($users as $user) {
+			$recipients[$user->getEmail()] = $user->getName();
+		}
+		return $recipients;
 	}
 
 	public function onThreadPostPersist(ThreadEvent $event)
