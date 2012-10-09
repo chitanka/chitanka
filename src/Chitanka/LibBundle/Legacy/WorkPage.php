@@ -688,6 +688,9 @@ EOS;
 				$this->out->checkbox('delete', '', false, 'Изтриване на записа') .
 				' (напр., ако произведението вече е добавено в библиотеката)</div>';
 			$button = $this->makeSubmitButton();
+			if ($this->status == self::STATUS_7 && !$this->userCanSetStatus(self::STATUS_7)) {
+				$button = $delete = '';
+			}
 		} else {
 			$title = $this->btitle;
 			$author = $this->author;
