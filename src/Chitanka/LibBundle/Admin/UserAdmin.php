@@ -71,6 +71,9 @@ class UserAdmin extends Admin
 		$datagrid
 			->add('username')
 			->add('email')
+			->add('realname')
+			->add('allowemail')
+			->add('news')
 			->add('registration')
 			->add('touched')
 		;
