@@ -4,6 +4,7 @@ namespace Chitanka\LibBundle\Legacy;
 use Chitanka\LibBundle\Util\Char;
 use Chitanka\LibBundle\Util\String;
 use Chitanka\LibBundle\Util\Ary;
+use Buzz\Browser;
 
 class Legacy
 {
@@ -429,7 +430,7 @@ class Legacy
 	}
 
 
-	static public function getMwContent($url, $cacheDays = 7)
+	static public function getMwContent($url, Browser $browser, $cacheDays = 7)
 	{
 		$id = md5($url);
 		$action = 'info';
@@ -438,11 +439,12 @@ class Legacy
 			return CacheManager::getCache($action, $id);
 		}
 
-		$content = self::getFromUrl("$url?action=render");
-		if ( empty($content) ) {
-			return '';
+		$response = $browser->get("$url?action=render", array('User-Agent: Mylib (http://chitanka.info)'));
+		if ($response->isOk()) {
+			$content = self::processMwContent($response->getContent(), $url);
+		} else {
+			$content = '';
 		}
-		$content = self::processMwContent($content, $url);
 
 		return CacheManager::setCache($action, $id, $content);
 	}

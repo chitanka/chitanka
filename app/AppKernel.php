@@ -23,7 +23,7 @@ class AppKernel extends Kernel
 			//new FOS\UserBundle\FOSUserBundle(),
 			new Sonata\AdminBundle\SonataAdminBundle(),
 			new Sonata\BlockBundle\SonataBlockBundle(),
-			new Sonata\CacheBundle\SonataCacheBundle(),
+			//new Sonata\CacheBundle\SonataCacheBundle(),
 			new Sonata\jQueryBundle\SonatajQueryBundle(),
 			new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
 			new SimpleThings\EntityAudit\SimpleThingsEntityAuditBundle(),
@@ -31,6 +31,7 @@ class AppKernel extends Kernel
 			new JMS\SerializerBundle\JMSSerializerBundle($this),
 			new FOS\RestBundle\FOSRestBundle(),
 			new FOS\CommentBundle\FOSCommentBundle(),
+			new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
 
 			new Chitanka\LibBundle\LibBundle(),
 		);

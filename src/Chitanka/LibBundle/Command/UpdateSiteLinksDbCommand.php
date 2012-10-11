@@ -61,7 +61,7 @@ EOT
 	protected function fetchWikiContent(OutputInterface $output)
 	{
 		$output->writeln('Fetching wiki content...');
-		return Legacy::getMwContent('http://wiki.chitanka.info/Links', 0);
+		return Legacy::getMwContent('http://wiki.chitanka.info/Links', $this->getContainer()->get('buzz'), 0);
 	}
 
 	protected function extractLinkData($wikiContent)
