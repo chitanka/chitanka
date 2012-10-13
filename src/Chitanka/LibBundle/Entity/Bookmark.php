@@ -33,7 +33,7 @@ class Bookmark extends Entity
 
 	/**
 	* @var integer
-	* @ORM\ManyToOne(targetEntity="User")
+	* @ORM\ManyToOne(targetEntity="User", inversedBy="bookmarks")
 	*/
 	private $user;
 

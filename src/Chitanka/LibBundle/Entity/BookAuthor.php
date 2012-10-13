@@ -20,7 +20,7 @@ class BookAuthor extends Entity
 
 	/**
 	* @var integer $person
-	* @ORM\ManyToOne(targetEntity="Person", inversedBy="bookAuthors")
+	* @ORM\ManyToOne(targetEntity="Person")
 	*/
 	private $person;
 

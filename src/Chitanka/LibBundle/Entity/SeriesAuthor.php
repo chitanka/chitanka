@@ -20,7 +20,7 @@ class SeriesAuthor extends Entity
 
 	/**
 	* @var integer $person
-	* @ORM\ManyToOne(targetEntity="Person", inversedBy="seriesAuthors")
+	* @ORM\ManyToOne(targetEntity="Person")
 	*/
 	private $person;
 

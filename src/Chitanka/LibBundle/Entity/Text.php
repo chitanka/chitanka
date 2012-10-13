@@ -273,7 +273,7 @@ class Text extends BaseWork
 	private $bookTexts;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	* @ORM\ManyToMany(targetEntity="Book", inversedBy="texts")
+	* @ORM\ManyToMany(targetEntity="Book", mappedBy="texts")
 	* @ORM\JoinTable(name="book_text",
 	*	joinColumns={@ORM\JoinColumn(name="text_id", referencedColumnName="id")},
 	*	inverseJoinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id")})

@@ -104,6 +104,16 @@ class Person extends Entity
 	private $textsAsTranslator;
 
 	/**
+	 * @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="person")
+	 */
+	private $textAuthors;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="TextTranslator", mappedBy="person")
+	 */
+	private $textTranslators;
+
+	/**
 	* @ORM\ManyToMany(targetEntity="Book", mappedBy="authors")
 	*/
 	private $books;

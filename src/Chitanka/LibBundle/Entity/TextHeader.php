@@ -20,7 +20,7 @@ class TextHeader extends Entity
 
 	/**
 	* @var integer $text
-	* @ORM\ManyToOne(targetEntity="Text")
+	* @ORM\ManyToOne(targetEntity="Text", inversedBy="headers")
 	*/
 	private $text;
 

@@ -22,7 +22,7 @@ class WorkContrib extends Entity
 
 	/**
 	* @var integer $entry
-	* @ORM\ManyToOne(targetEntity="WorkEntry")
+	* @ORM\ManyToOne(targetEntity="WorkEntry", inversedBy="contribs")
 	*/
 	private $entry;
 

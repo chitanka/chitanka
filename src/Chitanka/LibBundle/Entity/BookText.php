@@ -28,7 +28,7 @@ class BookText extends Entity
 
 	/**
 	* @var integer $text
-	* @ORM\ManyToOne(targetEntity="Text")
+	* @ORM\ManyToOne(targetEntity="Text", inversedBy="bookTexts")
 	*/
 	private $text;
 

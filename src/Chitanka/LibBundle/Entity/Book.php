@@ -138,9 +138,9 @@ class Book extends BaseWork
 	private $removed_notice;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	* @ORM\ManyToMany(targetEntity="Person", inversedBy="books")
-	* @ORM\JoinTable(name="book_author")
-	*/
+	 * @ORM\ManyToMany(targetEntity="Person", inversedBy="books")
+	 * @ORM\JoinTable(name="book_author")
+	 */
 	private $authors;
 
 	/**
@@ -308,9 +308,8 @@ class Book extends BaseWork
 		return null;
 	}
 
-	public
-		$textIds = array(),
-		$textsById = array();
+	private $textIds = array();
+	private $textsById = array();
 
 	protected
 		$annotationDir = 'book-anno',
