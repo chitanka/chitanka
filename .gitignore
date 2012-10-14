@@ -9,8 +9,8 @@
 /web/bundles/*
 *.min.js
 *.php~
-*.last
-*.lock
+.last
+.lock
 /update/*/*
 /app/spool/*
 .DS_Store
