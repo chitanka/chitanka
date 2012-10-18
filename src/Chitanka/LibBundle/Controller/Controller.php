@@ -304,53 +304,53 @@ abstract class Controller extends SymfonyController
 		return false; // main site
 	}
 
-	/** @return Chitanka\LibBundle\Entity\BookRepository */
+	/** @return \Chitanka\LibBundle\Entity\BookRepository */
 	protected function getBookRepository() { return $this->getRepository('Book'); }
-	/** @return Chitanka\LibBundle\Entity\BookmarkRepository */
+	/** @return \Chitanka\LibBundle\Entity\BookmarkRepository */
 	protected function getBookmarkRepository() { return $this->getRepository('Bookmark'); }
-	/** @return Chitanka\LibBundle\Entity\BookmarkFolderRepository */
+	/** @return \Chitanka\LibBundle\Entity\BookmarkFolderRepository */
 	protected function getBookmarkFolderRepository() { return $this->getRepository('BookmarkFolder'); }
-	/** @return Chitanka\LibBundle\Entity\BookRevisionRepository */
+	/** @return \Chitanka\LibBundle\Entity\BookRevisionRepository */
 	protected function getBookRevisionRepository() { return $this->getRepository('BookRevision'); }
-	/** @return Chitanka\LibBundle\Entity\CategoryRepository */
+	/** @return \Chitanka\LibBundle\Entity\CategoryRepository */
 	protected function getCategoryRepository() { return $this->getRepository('Category'); }
-	/** @return Chitanka\LibBundle\Entity\FeaturedBookRepository */
+	/** @return \Chitanka\LibBundle\Entity\FeaturedBookRepository */
 	protected function getFeaturedBookRepository() { return $this->getRepository('FeaturedBook'); }
-	/** @return Chitanka\LibBundle\Entity\ForeignBookRepository */
+	/** @return \Chitanka\LibBundle\Entity\ForeignBookRepository */
 	protected function getForeignBookRepository() { return $this->getRepository('ForeignBook'); }
-	/** @return Chitanka\LibBundle\Entity\LabelRepository */
+	/** @return \Chitanka\LibBundle\Entity\LabelRepository */
 	protected function getLabelRepository() { return $this->getRepository('Label'); }
-	/** @return Chitanka\LibBundle\Entity\PersonRepository */
+	/** @return \Chitanka\LibBundle\Entity\PersonRepository */
 	protected function getPersonRepository() { return $this->getRepository('Person'); }
-	/** @return Chitanka\LibBundle\Entity\SearchStringRepository */
+	/** @return \Chitanka\LibBundle\Entity\SearchStringRepository */
 	protected function getSearchStringRepository() { return $this->getRepository('SearchString'); }
-	/** @return Chitanka\LibBundle\Entity\SequenceRepository */
+	/** @return \Chitanka\LibBundle\Entity\SequenceRepository */
 	protected function getSequenceRepository() { return $this->getRepository('Sequence'); }
-	/** @return Chitanka\LibBundle\Entity\SeriesRepository */
+	/** @return \Chitanka\LibBundle\Entity\SeriesRepository */
 	protected function getSeriesRepository() { return $this->getRepository('Series'); }
-	/** @return Chitanka\LibBundle\Entity\SiteRepository */
+	/** @return \Chitanka\LibBundle\Entity\SiteRepository */
 	protected function getSiteRepository() { return $this->getRepository('Site'); }
-	/** @return Chitanka\LibBundle\Entity\TextRepository */
+	/** @return \Chitanka\LibBundle\Entity\TextRepository */
 	protected function getTextRepository() { return $this->getRepository('Text'); }
-	/** @return Chitanka\LibBundle\Entity\TextCommentRepository */
+	/** @return \Chitanka\LibBundle\Entity\TextCommentRepository */
 	protected function getTextCommentRepository() { return $this->getRepository('TextComment'); }
-	/** @return Chitanka\LibBundle\Entity\TextRatingRepository */
+	/** @return \Chitanka\LibBundle\Entity\TextRatingRepository */
 	protected function getTextRatingRepository() { return $this->getRepository('TextRating'); }
-	/** @return Chitanka\LibBundle\Entity\TextRevisionRepository */
+	/** @return \Chitanka\LibBundle\Entity\TextRevisionRepository */
 	protected function getTextRevisionRepository() { return $this->getRepository('TextRevision'); }
-	/** @return Chitanka\LibBundle\Entity\UserRepository */
+	/** @return \Chitanka\LibBundle\Entity\UserRepository */
 	protected function getUserRepository() { return $this->getRepository('User'); }
-	/** @return Chitanka\LibBundle\Entity\UserTextContribRepository */
+	/** @return \Chitanka\LibBundle\Entity\UserTextContribRepository */
 	protected function getUserTextContribRepository() { return $this->getRepository('UserTextContrib'); }
-	/** @return Chitanka\LibBundle\Entity\UserTextReadRepository */
+	/** @return \Chitanka\LibBundle\Entity\UserTextReadRepository */
 	protected function getUserTextReadRepository() { return $this->getRepository('UserTextRead'); }
-	/** @return Chitanka\LibBundle\Entity\WantedBookRepository */
+	/** @return \Chitanka\LibBundle\Entity\WantedBookRepository */
 	protected function getWantedBookRepository() { return $this->getRepository('WantedBook'); }
-	/** @return Chitanka\LibBundle\Entity\WikiSiteRepository */
+	/** @return \Chitanka\LibBundle\Entity\WikiSiteRepository */
 	protected function getWikiSiteRepository() { return $this->getRepository('WikiSite'); }
-	/** @return Chitanka\LibBundle\Entity\WorkEntryRepository */
+	/** @return \Chitanka\LibBundle\Entity\WorkEntryRepository */
 	protected function getWorkEntryRepository() { return $this->getRepository('WorkEntry'); }
-	/** @return Chitanka\LibBundle\Entity\WorkContribRepository */
+	/** @return \Chitanka\LibBundle\Entity\WorkContribRepository */
 	protected function getWorkContribRepository() { return $this->getRepository('WorkContrib'); }
 
 }
