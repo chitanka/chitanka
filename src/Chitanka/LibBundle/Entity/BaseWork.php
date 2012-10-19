@@ -284,12 +284,14 @@ abstract class BaseWork extends Entity
 	}
 
 
+	abstract public function getEpubChunks($imgDir);
+
 	protected function getEpubChunksFrom($input, $imgDir)
 	{
 		$chapters = array();
 
 		$headers = $this->getHeaders();
-		if ( empty($headers) ) {
+		if (count($headers) == 0) {
 			$header = new TextHeader;
 			$header->setName('Основен текст');
 			$header->setFpos(0);

@@ -221,7 +221,7 @@ class DownloadFile
 	}
 
 
-	protected function addChaptersForEpub($work, $epubFile)
+	protected function addChaptersForEpub(BaseWork $work, $epubFile)
 	{
 		$curObjCount = \Sfblib_SfbConverter::getObjectCount();
 		$chapters = $work->getEpubChunks($epubFile->getImagesDir(false));
