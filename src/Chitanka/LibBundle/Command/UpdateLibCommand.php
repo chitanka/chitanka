@@ -513,6 +513,7 @@ EOT
 				if ( ! file_exists($dir)) {
 					mkdir($dir, 0755, true);
 				}
+				`touch $work[img]/*`;
 				`cp $work[img]/* $dir`;
 				// TODO check if images are referenced from the text file
 			}
@@ -670,6 +671,7 @@ QUERY
 		}
 		File::make_parent($dest);
 		copy($source, $dest);
+		touch($dest);
 	}
 
 	static private function copyDir($sourceDir, $destDir)
