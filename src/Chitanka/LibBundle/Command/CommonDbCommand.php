@@ -4,6 +4,7 @@ namespace Chitanka\LibBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Output\OutputInterface;
+use Doctrine\ORM\EntityManager;
 use Chitanka\LibBundle\Legacy\Setup;
 use Chitanka\LibBundle\Util\String;
 
@@ -24,7 +25,7 @@ class CommonDbCommand extends ContainerAwareCommand
 	/**
 	 * @RawSql
 	 */
-	protected function updateTextCountByLabels(OutputInterface $output, $em)
+	protected function updateTextCountByLabels(OutputInterface $output, EntityManager $em)
 	{
 		$output->writeln('Updating texts count by labels');
 		$update = $this->maintenanceSql('UPDATE label l SET nr_of_texts = (SELECT COUNT(*) FROM text_label WHERE label_id = l.id)');
@@ -32,19 +33,19 @@ class CommonDbCommand extends ContainerAwareCommand
 	}
 
 
-	protected function updateTextCountByLabelsParents(OutputInterface $output, $em)
+	protected function updateTextCountByLabelsParents(OutputInterface $output, EntityManager $em)
 	{
 		$output->writeln('Updating texts count by labels parents');
 		$this->_updateCountByParents($em, 'LibBundle:Label', 'NrOfTexts');
 	}
 
-	protected function updateBookCountByCategoriesParents(OutputInterface $output, $em)
+	protected function updateBookCountByCategoriesParents(OutputInterface $output, EntityManager $em)
 	{
 		$output->writeln('Updating books count by categories parents');
 		$this->_updateCountByParents($em, 'LibBundle:Category', 'NrOfBooks');
 	}
 
-	protected function _updateCountByParents($em, $entity, $field)
+	protected function _updateCountByParents(EntityManager $em, $entity, $field)
 	{
 		$dirty = array();
 		$repo = $em->getRepository($entity);
@@ -70,7 +71,7 @@ class CommonDbCommand extends ContainerAwareCommand
 	/**
 	 * @RawSql
 	 */
-	protected function updateCommentCountByTexts(OutputInterface $output, $em)
+	protected function updateCommentCountByTexts(OutputInterface $output, EntityManager $em)
 	{
 		$output->writeln('Updating comments count by texts');
 		$update = $this->maintenanceSql('UPDATE text t SET comment_count = (SELECT COUNT(*) FROM text_comment WHERE text_id = t.id)');
@@ -81,7 +82,7 @@ class CommonDbCommand extends ContainerAwareCommand
 	/**
 	 * @RawSql
 	 */
-	protected function updateBookCountByCategories(OutputInterface $output, $em)
+	protected function updateBookCountByCategories(OutputInterface $output, EntityManager $em)
 	{
 		$output->writeln('Updating books count by categories');
 		$update = $this->maintenanceSql('UPDATE category c SET nr_of_books = (SELECT COUNT(*) FROM book WHERE category_id = c.id)');
@@ -89,7 +90,7 @@ class CommonDbCommand extends ContainerAwareCommand
 	}
 
 
-	protected function executeUpdates($updates, $connection)
+	protected function executeUpdates($updates, \Doctrine\DBAL\Connection $connection)
 	{
 		$connection->beginTransaction();
 		foreach ($updates as $update) {
@@ -149,5 +150,11 @@ class CommonDbCommand extends ContainerAwareCommand
 	private function maintenanceSql($sql)
 	{
 		return '/*MAINTENANCESQL*/'.$sql;
+	}
+
+	/** @return \Doctrine\ORM\EntityManager */
+	protected function getEntityManager()
+	{
+		return $this->getContainer()->get('doctrine.orm.default_entity_manager');
 	}
 }
