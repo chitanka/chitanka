@@ -2,6 +2,8 @@
 
 namespace Chitanka\LibBundle\Controller;
 
+use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
+
 class SandboxController extends Controller
 {
 	public function indexAction()
@@ -12,7 +14,7 @@ class SandboxController extends Controller
 		$this->view = compact('image_dir', 'content');
 
 		if ($content) {
-			$converter = new \Sfblib_SfbToHtmlConverter($content, $image_dir);
+			$converter = new SfbToHtmlConverter($content, $image_dir);
 			$this->view['html_content'] = $converter->convert()->getContent();
 		}
 

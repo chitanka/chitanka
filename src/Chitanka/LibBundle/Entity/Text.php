@@ -11,6 +11,9 @@ use Chitanka\LibBundle\Util\Language;
 use Chitanka\LibBundle\Util\String;
 use Chitanka\LibBundle\Legacy\Legacy;
 use Chitanka\LibBundle\Legacy\Setup;
+use Sfblib_SfbConverter as SfbConverter;
+use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
+use Sfblib_SfbToFb2Converter as SfbToFb2Converter;
 
 /**
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\TextRepository")
@@ -612,7 +615,7 @@ class Text extends BaseWork
 		$title = $this->getTitle();
 
 		if ( $this->hasTitleNote() ) {
-			$suffix = \Sfblib_SfbConverter::createNoteIdSuffix($cnt, 0);
+			$suffix = SfbConverter::createNoteIdSuffix($cnt, 0);
 			$title .= sprintf('<sup id="ref_%s" class="ref"><a href="#note_%s">[0]</a></sup>', $suffix, $suffix);
 		}
 
@@ -633,7 +636,7 @@ class Text extends BaseWork
 			return $this->_hasTitleNote;
 		}
 
-		$conv = new \Sfblib_SfbToHtmlConverter( Legacy::getContentFilePath( 'text', $this->id ) );
+		$conv = new SfbToHtmlConverter( Legacy::getContentFilePath( 'text', $this->id ) );
 		return $this->_hasTitleNote = $conv->hasTitleNote();
 	}
 
@@ -714,7 +717,7 @@ class Text extends BaseWork
 	protected function _getContentHtml($content, $imgDirPrefix)
 	{
 		$imgDir = $imgDirPrefix . Legacy::getContentFilePath('img', $this->id);
-		$conv = new \Sfblib_SfbToHtmlConverter($content, $imgDir);
+		$conv = new SfbToHtmlConverter($content, $imgDir);
 
 		return $conv->convert()->getContent();
 	}
@@ -1077,7 +1080,7 @@ EOS;
 
 	public function getContentAsFb2()
 	{
-		$conv = new \Sfblib_SfbToFb2Converter($this->getContentAsSfb(), Legacy::getInternalContentFilePath('img', $this->id));
+		$conv = new SfbToFb2Converter($this->getContentAsSfb(), Legacy::getInternalContentFilePath('img', $this->id));
 
 		$conv->setObjectCount(1);
 		$conv->setSubtitle($this->subtitle);
@@ -1123,7 +1126,7 @@ EOS;
 
 		if ($this->type == 'gamebook') {
 			// recognize section links
-			$conv->addRegExpPattern('/#(\d+)/', '<a l:href="#t-_$1">$1</a>');
+			$conv->addRegExpPattern('/#(\d+)/', '<a l:href="#l-$1">$1</a>');
 		}
 
 		$conv->enablePrettyOutput();
@@ -1355,7 +1358,9 @@ EOS;
 	public function getContentHtml($imgDirPrefix = '', $part = 1, $objCount = 0)
 	{
 		$imgDir = $imgDirPrefix . Legacy::getContentFilePath('img', $this->id);
-		$conv = new \Sfblib_SfbToHtmlConverter($this->getRawContent(true), $imgDir);
+		$conv = new SfbToHtmlConverter($this->getRawContent(true), $imgDir);
+		// TODO do not hardcode it; inject it through parameter
+		$conv->setInternalLinkTarget("/text/$this->id/0");
 
 		if ( ! empty( $objCount ) ) {
 			$conv->setObjectCount($objCount);
@@ -1367,7 +1372,7 @@ EOS;
 		}
 		if ($this->type == 'gamebook') {
 			// recognize section links
-			$conv->patterns['/#(\d+)/'] = '<a href="#t-_$1" class="ep" title="Към част $1">$1</a>';
+			$conv->patterns['/#(\d+)/'] = '<a href="#l-$1" class="ep" title="Към част $1">$1</a>';
 		}
 
 		return $conv->convert()->getContent();

@@ -2,6 +2,7 @@
 namespace Chitanka\LibBundle\Legacy;
 
 use Chitanka\LibBundle\Util\String;
+use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
 
 class UserPage extends Page {
 
@@ -74,7 +75,7 @@ class UserPage extends Page {
 			return '';
 		}
 
-		$converter = new \Sfblib_SfbToHtmlConverter($this->filename);
+		$converter = new SfbToHtmlConverter($this->filename);
 
 		return $this->userpage = $converter->convert()->getContent();
 	}

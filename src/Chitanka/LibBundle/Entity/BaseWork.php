@@ -3,6 +3,7 @@ namespace Chitanka\LibBundle\Entity;
 
 use Chitanka\LibBundle\Util\File;
 use Chitanka\LibBundle\Legacy\Legacy;
+use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
 
 abstract class BaseWork extends Entity
 {
@@ -318,10 +319,10 @@ abstract class BaseWork extends Entity
 
 	protected function _getSfbConverter($file, $imgDir)
 	{
-		$conv = new \Sfblib_SfbToHtmlConverter($file, $imgDir);
+		$conv = new SfbToHtmlConverter($file, $imgDir);
 		if ($this->isGamebook()) {
 			// recognize section links
-			$conv->patterns['/#(\d+)/'] = '<a href="#t-_$1" class="ep" title="Към част $1">$1</a>';
+			$conv->patterns['/#(\d+)/'] = '<a href="#l-$1" class="ep" title="Към част $1">$1</a>';
 		}
 
 		return $conv;

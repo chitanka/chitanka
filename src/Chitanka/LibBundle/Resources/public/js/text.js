@@ -26,7 +26,7 @@ function prepareGamebook()
 	var $help = $('<div class="notice" style="margin-top: 5em">\
 		<hr/>\
 		<p>Неактивните епизоди бяха скрити. Ще се покажат в хода на играта.</p>\
-		<div class="standalone"><a href="#t-_1">Показване на всички епизоди</a></div>\
+		<div class="standalone"><a href="#l-1">Показване на всички епизоди</a></div>\
 		<hr/>\
 		</div>');
 	$help.find("a").click(function() {

@@ -7,6 +7,9 @@ use Chitanka\LibBundle\Util\String;
 use Chitanka\LibBundle\Legacy\Legacy;
 use Chitanka\LibBundle\Legacy\Setup;
 use Chitanka\LibBundle\Util\Ary;
+use Sfblib_SfbConverter as SfbConverter;
+use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
+use Sfblib_SfbToFb2Converter as SfbToFb2Converter;
 
 /**
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\BookRepository")
@@ -486,12 +489,19 @@ class Book extends BaseWork
 		return $this->_template;
 	}
 
+	private function clearSpecialBookSyntax($template)
+	{
+		return strtr($template, array(
+			"\t<!--AUTOHIDE-->\n" => '',
+		));
+	}
+
 	public function getTemplateAsXhtml()
 	{
 		$template = $this->getTemplate();
 		if ($template) {
 			$imgDir = '/' . Legacy::getContentFilePath('book-img', $this->id).'/';
-			$converter = new \Sfblib_SfbToHtmlConverter($template, $imgDir);
+			$converter = new SfbToHtmlConverter($template, $imgDir);
 			$content = $converter->convert()->getContent();
 			//$content = preg_replace('|<p>\n\{(\d+)\}\n</p>|', '{$1}', $content);
 			$content = preg_replace('#<h(\d)>(\{text:\d+\})</h\d>#', '<h$1 class="inner-text">$2</h$1>', $content);
@@ -514,7 +524,7 @@ class Book extends BaseWork
 		$file = $matches[2];
 
 		$imgDir = Legacy::getContentFilePath('book-img', (int) $file) . '/';
-		$converter = new \Sfblib_SfbToHtmlConverter(Legacy::getContentFile('text', $file), $imgDir);
+		$converter = new SfbToHtmlConverter(Legacy::getContentFile('text', $file), $imgDir);
 
 		return $converter->convert()->getContent();
 	}
@@ -664,7 +674,7 @@ class Book extends BaseWork
 
 	public function getContentAsSfb()
 	{
-		return $this->getTitleAsSfb() . \Sfblib_SfbConverter::EOL
+		return $this->getTitleAsSfb() . SfbConverter::EOL
 			. $this->getAllAnnotationsAsSfb()
 			. $this->getMainBodyAsSfb()
 			. $this->getInfoAsSfb();
@@ -715,21 +725,21 @@ class Book extends BaseWork
 			return $this->_mainBodyAsSfb;
 		}
 
-		$nextHeading = \Sfblib_SfbConverter::TITLE_1;
+		$nextHeading = SfbConverter::TITLE_1;
 
-		$template = $this->getTemplate();
-		$div = str_repeat(\Sfblib_SfbConverter::EOL, 2);
+		$template = $this->clearSpecialBookSyntax($this->getTemplate());
+		$div = str_repeat(SfbConverter::EOL, 2);
 		$sfb = '';
 		$texts = $this->getTextsById();
 		foreach (explode("\n", $template) as $line) {
 			$line = rtrim($line, "\t");
 			if (empty($line)) {
-				$sfb .= \Sfblib_SfbConverter::EOL;
+				$sfb .= SfbConverter::EOL;
 				continue;
 			}
 			$lineParts = explode("\t", $line);
 			if (count($lineParts) == 1 || $lineParts[1][0] != '{') {
-				$sfb .= $line . \Sfblib_SfbConverter::EOL;
+				$sfb .= $line . SfbConverter::EOL;
 				continue;
 			}
 			list($command, $content) = $lineParts;
@@ -737,17 +747,17 @@ class Book extends BaseWork
 				$text = $texts[$matches[2]];
 				if ($matches[1] == 'text') {
 					if (isset($matches[5])) {
-						$title = $command . \Sfblib_SfbConverter::CMD_DELIM . $matches[5];
+						$title = $command . SfbConverter::CMD_DELIM . $matches[5];
 					} else {
 						$authors = implode(', ', $this->getBookAuthorIfNotInTitle($text));
 						if ( ! empty($authors) ) {
-							$authors = $command . \Sfblib_SfbConverter::CMD_DELIM . $authors . \Sfblib_SfbConverter::EOL;
+							$authors = $command . SfbConverter::CMD_DELIM . $authors . SfbConverter::EOL;
 						}
-						$title = $authors . strtr($text->getTitleAsSfb(), array(\Sfblib_SfbConverter::HEADER => $command));
+						$title = $authors . strtr($text->getTitleAsSfb(), array(SfbConverter::HEADER => $command));
 					}
 					$textContent = $text->getRawContent();
-					if (strpos($textContent, \Sfblib_SfbConverter::EOL.">") !== false) {
-						$textContent = $command . \Sfblib_SfbConverter::CMD_DELIM . \Sfblib_SfbConverter::EOL . $textContent;
+					if (strpos($textContent, SfbConverter::EOL.">") !== false) {
+						$textContent = $command . SfbConverter::CMD_DELIM . SfbConverter::EOL . $textContent;
 					}
 					$sfb .= $title . $div . ltrim(strtr("\n".$textContent, $this->headingRepl[$command]), "\n");
 				} else { // file:
@@ -803,16 +813,16 @@ class Book extends BaseWork
 	public function getTitleAsSfb()
 	{
 		$sfb = '';
-		$prefix = \Sfblib_SfbConverter::HEADER . \Sfblib_SfbConverter::CMD_DELIM;
+		$prefix = SfbConverter::HEADER . SfbConverter::CMD_DELIM;
 
 		if ('' != $authors = $this->getAuthorsPlain()) {
-			$sfb .= $prefix . $authors . \Sfblib_SfbConverter::EOL;
+			$sfb .= $prefix . $authors . SfbConverter::EOL;
 		}
 
-		$sfb .= $prefix . $this->title . \Sfblib_SfbConverter::EOL;
+		$sfb .= $prefix . $this->title . SfbConverter::EOL;
 
 		if ( ! empty($this->subtitle) ) {
-			$sfb .= $prefix . $this->subtitle . \Sfblib_SfbConverter::EOL;
+			$sfb .= $prefix . $this->subtitle . SfbConverter::EOL;
 		}
 
 		return $sfb;
@@ -850,24 +860,24 @@ class Book extends BaseWork
 		$putTitles = count($annotations) > 1;
 		foreach ($annotations as $title => $annotation) {
 			if ($putTitles) {
-				$bannotation .= \Sfblib_SfbConverter::EOL . \Sfblib_SfbConverter::EOL
-					. \Sfblib_SfbConverter::SUBHEADER . \Sfblib_SfbConverter::CMD_DELIM . $title
-					. \Sfblib_SfbConverter::EOL;
+				$bannotation .= SfbConverter::EOL . SfbConverter::EOL
+					. SfbConverter::SUBHEADER . SfbConverter::CMD_DELIM . $title
+					. SfbConverter::EOL;
 			}
 			$bannotation .= $annotation;
 		}
 
-		return \Sfblib_SfbConverter::ANNO_S . \Sfblib_SfbConverter::EOL
-			. rtrim($bannotation) . \Sfblib_SfbConverter::EOL
-			. \Sfblib_SfbConverter::ANNO_E . \Sfblib_SfbConverter::EOL;
+		return SfbConverter::ANNO_S . SfbConverter::EOL
+			. rtrim($bannotation) . SfbConverter::EOL
+			. SfbConverter::ANNO_E . SfbConverter::EOL;
 	}
 
 	public function getInfoAsSfb()
 	{
-		return \Sfblib_SfbConverter::INFO_S . \Sfblib_SfbConverter::EOL
-			. \Sfblib_SfbConverter::CMD_DELIM . $this->getOriginMarker() . \Sfblib_SfbConverter::EOL
-			. rtrim($this->getExtraInfo()) . \Sfblib_SfbConverter::EOL
-			. \Sfblib_SfbConverter::INFO_E . \Sfblib_SfbConverter::EOL;
+		return SfbConverter::INFO_S . SfbConverter::EOL
+			. SfbConverter::CMD_DELIM . $this->getOriginMarker() . SfbConverter::EOL
+			. rtrim($this->getExtraInfo()) . SfbConverter::EOL
+			. SfbConverter::INFO_E . SfbConverter::EOL;
 	}
 
 
@@ -880,7 +890,7 @@ class Book extends BaseWork
 	{
 		$imgdir = $this->initTmpImagesDir();
 
-		$conv = new \Sfblib_SfbToFb2Converter($this->getContentAsSfb(), $imgdir);
+		$conv = new SfbToFb2Converter($this->getContentAsSfb(), $imgdir);
 
 		$conv->setObjectCount(1);
 		$conv->setSubtitle($this->subtitle);

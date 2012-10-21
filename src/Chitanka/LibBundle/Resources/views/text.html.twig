@@ -186,7 +186,7 @@
 	<li>
 
 	{% if is_full_text %}
-		<a href="#t-{{ anchor_name(header.name) }}">{{ header.name }}</a>
+		<a href="#l-{{ anchor_name(header.name) }}">{{ header.name }}</a>
 	{% else %}
 		{% if cur_part - 1 == header.nr %}
 			{% set rel = 'prev' %}
