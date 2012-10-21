@@ -15,11 +15,6 @@ class OutputMaker {
 		$argSeparator = '&',
 		$queryStart = '?';
 
-	private
-		/** Here we keep track of all generated anchor names */
-		$_anchorNames = array();
-
-
 	public function textField($name, $id = '', $value = '', $size = 30,
 			$maxlength = 255, $tabindex = null, $title = '', $attrs = array()) {
 		Legacy::fillOnEmpty($id, $name);
@@ -369,46 +364,6 @@ class OutputMaker {
 		$end = $xml ? '/>' : ' />';
 		return '<'. $elm . $this->makeAttribs($attrs) . $end;
 	}
-
-	/**
-		Generate an anchor name for a given string.
-
-		@param $text    A string
-		@param $unique  Always generate a unique name
-		                (consider all previously generated names)
-	*/
-	public function getAnchorName($text, $unique = true)
-	{
-		$text = Char::cyr2lat($text);
-		$text = strtolower($text);
-		$text = strtr($text, array(
-			' ' => '_',
-			'/' => '-',
-			'<br />' => '_',
-		));
-		$text = strip_tags($text);
-		$text = preg_replace('/[^\w_-]/', '', $text);
-		$text = urlencode( iconv($this->inencoding, 'ISO-8859-1//TRANSLIT', $text) );
-		if ( $text === '' || is_numeric($text[0]) ) {
-			$text = '_' . $text;
-		}
-
-		if ( isset($this->_anchorNames[$text]) ) {
-			$this->_anchorNames[$text]++;
-			$text .= '.' . $this->_anchorNames[$text];
-		} else {
-			$this->_anchorNames[$text] = 1;
-		}
-
-		return $text;
-	}
-
-
-	public function resetAnchorNames()
-	{
-		$this->_anchorNames = array();
-	}
-
 
 	public function getRssLink($url, $title = '')
 	{
