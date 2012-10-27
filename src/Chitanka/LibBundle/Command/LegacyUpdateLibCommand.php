@@ -514,7 +514,7 @@ EOT
 	private $_curIds = array();
 	private $_ids = array(
 		'text' => array(),
-		'book' => array(534,1113,1186,1224,1249,1299,1303,1697,2004,2115),
+		'book' => array(),
 	);
 	private function getNextId($table)
 	{
