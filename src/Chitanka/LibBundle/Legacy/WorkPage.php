@@ -62,7 +62,7 @@ class WorkPage extends Page {
 			'txt', 'sfb', 'fb2',
 			'zip', 'rar',
 			'7z', 'gz', 'tar', 'tgz', 'bz2',
-			'odt', 'pdf', 'doc', 'rtf',
+			'odt', 'pdf', 'doc', 'rtf', 'djvu',
 			'jpg', 'png', 'gif',
 		);
 
