@@ -51,6 +51,21 @@ class DownloadFile
 		return $this->getDlFileForBook($book, 'epub', 'addEpubEntries');
 	}
 
+	public function getDjvuForBook(Book $book)
+	{
+		$dlFileName = $this->getFullDlFileName($this->createWorkFileName($book, 'djvu'));
+		if (file_exists($dlFileName)) {
+			return $dlFileName;
+		}
+		$sourceFile = $book->getDjvuFile();
+		if ( !file_exists($sourceFile)) {
+			throw new \Exception("DjVu file for book #{$book->getId()} does not exist: '$sourceFile'");
+		}
+		copy($sourceFile, $dlFileName);
+
+		return $dlFileName;
+	}
+
 	public function getEpubForText($text)
 	{
 		return $this->getDlFileForText($text, 'epub', 'addEpubEntries');
@@ -78,7 +93,7 @@ class DownloadFile
 			}
 		}
 
-		$filename = File::cleanFileName( Char::cyr2lat($book->getNameForFile()) );
+		$filename = $this->createWorkFileName($book);
 
 		$getMethod = sprintf('getContentAs%s', ucfirst($format));
 		if ( method_exists($book, $getMethod) ) {
@@ -141,7 +156,7 @@ class DownloadFile
 			}
 		}
 
-		$filename = File::cleanFileName( Char::cyr2lat($text->getNameForFile()) );
+		$filename = $this->createWorkFileName($text);
 
 		$getMethod = sprintf('getContentAs%s', ucfirst($format));
 		if ( method_exists($text, $getMethod) ) {
@@ -429,4 +444,12 @@ class DownloadFile
 		}
 	}
 
+	private function createWorkFileName(BaseWork $work, $format = '')
+	{
+		$filename = File::cleanFileName( Char::cyr2lat($work->getNameForFile()) );
+		if ($format !== '') {
+			$filename .= ".$format";
+		}
+		return $filename;
+	}
 }

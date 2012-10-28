@@ -135,6 +135,12 @@ class Book extends BaseWork
 	private $has_cover;
 
 	/**
+	 * List of formats in which the book is available
+	 * @ORM\Column(type="array")
+	 */
+	private $formats = array();
+
+	/**
 	 * A notice if the content is removed
 	 * @ORM\Column(type="text", nullable=true)
 	 */
@@ -220,6 +226,9 @@ class Book extends BaseWork
 
 	public function setType($type) { $this->type = $type; }
 	public function getType() { return $this->type; }
+
+	public function setFormats($formats) { $this->formats = $formats; }
+	public function getFormats() { return $this->formats; }
 
 	public function setRemovedNotice($removed_notice) { $this->removed_notice = $removed_notice; }
 	public function getRemovedNotice() { return $this->removed_notice; }
@@ -1041,6 +1050,10 @@ class Book extends BaseWork
 	}
 	public function setDatafiles($f) {} // dummy for sonata admin
 
+	public function getDjvuFile()
+	{
+		return Legacy::getContentFilePath('book', $this->id) . '.djvu';
+	}
 
 	##################
 	# legacy pic stuff

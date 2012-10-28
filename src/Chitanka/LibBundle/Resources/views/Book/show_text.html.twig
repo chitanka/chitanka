@@ -18,6 +18,7 @@
 		</fieldset>
 	{% endif %}
 
+	{% if template != "" %}
 	<fieldset class="book-content superlist">
 		<legend>Съдържание</legend>
 		{% import 'LibBundle::text.html.twig' as texttools %}
@@ -29,6 +30,7 @@
 
 		{{ template|join_lists|raw }}
 	</fieldset>
+	{% endif %}
 {% endif %}
 
 {% if book.links|length %}
@@ -50,4 +52,6 @@
 	</fieldset>
 {% endif %}
 
+{#
 {% include 'LibBundle::color_legend.html.twig' %}
+#}

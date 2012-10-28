@@ -29,18 +29,15 @@
 
 {% macro download_links(book, class) %}
 	<ul class="{{ class|default('dl-list') }}">
-		{% if book.type == 'pic' %}
-			{% set formats = [] %}
-		{% elseif book.type == 'djvu' %}
-			{% set formats = ['djvu'] %}
-		{% else %}
-			{% set formats = ['fb2.zip', 'epub', 'txt.zip', 'sfb.zip'] %}
+		{% if "sfb" in book.formats %}
+			<li>{{ _self.download_link(book, "fb2.zip") }}</li>
+			<li>{{ _self.download_link(book, "epub") }}</li>
+			<li>{{ _self.download_link(book, "txt.zip") }}</li>
+			<li>{{ _self.download_link(book, "sfb.zip") }}</li>
 		{% endif %}
-		{% for format in formats %}
-			<li>{{ _self.download_link(book, format) }}</li>
-		{% else %}
-			<li></li>
-		{% endfor %}
+		{% if "djvu" in book.formats %}
+			<li>{{ _self.download_link(book, "djvu") }}</li>
+		{% endif %}
 	</ul>
 {% endmacro %}
 

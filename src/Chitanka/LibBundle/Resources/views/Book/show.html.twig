@@ -15,8 +15,6 @@
 
 	{% if book.type == 'pic' %}
 		{% include 'LibBundle:Book:show_pic.html.twig' %}
-	{% elseif book.type == 'djvu' %}
-		{% include 'LibBundle:Book:show_djvu.html.twig' %}
 	{% else %}
 		{% include 'LibBundle:Book:show_text.html.twig' %}
 	{% endif %}

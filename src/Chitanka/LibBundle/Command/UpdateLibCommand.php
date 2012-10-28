@@ -232,6 +232,20 @@ EOT
 		if (file_exists($dir = strtr($dataFile, array('.data' => ''))) && is_dir($dir)) {
 			$book['img'] = $dir;
 		}
+		if (file_exists($file = str_replace('.data', '.djvu', $dataFile))) {
+			$book['djvu'] = $file;
+		}
+		if (empty($book['formats'])) {
+			$book['formats'] = array();
+			if ( ! empty($book['works'])) {
+				$book['formats'][] = 'sfb';
+			}
+			if ( ! empty($book['djvu'])) {
+				$book['formats'][] = 'djvu';
+			}
+		} else {
+			$book['formats'] = array_map('trim', explode(',', $book['formats']));
+		}
 
 		return $book;
 	}
@@ -554,6 +568,7 @@ EOT
 		if (isset($book['subtitle'])) $set['subtitle'] = String::my_replace($book['subtitle']);
 		if (isset($book['year'])) $set['year'] = $book['year'];
 		if (isset($book['trans_year'])) $set['trans_year'] = $book['trans_year'];
+		if (isset($book['formats'])) $set['formats'] = serialize($book['formats']);
 
 		if (isset($book['sequence'])) $set['sequence_id'] = $this->getObjectId('sequence', $book['sequence']);
 		if (isset($book['category'])) $set['category_id'] = $this->getObjectId('category', $book['category']);
@@ -619,6 +634,9 @@ EOT
 			}
 			if (isset($book['cover'])) {
 				self::copyFile($book['cover'], "$this->contentDir/book-cover/$path.jpg");
+			}
+			if (isset($book['djvu'])) {
+				self::copyFile($book['djvu'], "$this->contentDir/book/$path.djvu");
 			}
 			if (isset($book['img'])) {
 				self::copyDir($book['img'], "$this->contentDir/book-img/$path");

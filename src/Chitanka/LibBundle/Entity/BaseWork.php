@@ -115,6 +115,7 @@ abstract class BaseWork extends Entity
 		return $filename;
 	}
 
+	abstract public function getNameForFile();
 
 	public function getContentAsTxt($withBom = true)
 	{
