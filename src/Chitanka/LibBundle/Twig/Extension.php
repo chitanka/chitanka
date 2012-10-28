@@ -220,7 +220,7 @@ class Extension extends \Twig_Extension
 
 	public function dot2br($value)
 	{
-		return str_replace('.', "<br>\n", $value);
+		return preg_replace('/\. (?=[A-ZА-Я])/u', "<br>\n", $value);
 	}
 
 
