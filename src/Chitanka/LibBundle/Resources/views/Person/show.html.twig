@@ -17,14 +17,14 @@
 		{% include 'LibBundle:Book:list.html.twig' %}
 	{% endif %}
 
-	{% if person.is_author %}
+	{% if texts_as_author is defined and texts_as_author is not empty %}
 		<h2 id="author">Произведения</h2>
 		{% for series in texts_as_author %}
 			{% include 'LibBundle:Author:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
 		{% endfor %}
 	{% endif %}
 
-	{% if person.is_translator %}
+	{% if texts_as_translator is defined and texts_as_translator is not empty %}
 		<h2 id="translator">Преводни произведения</h2>
 		{% for series in texts_as_translator %}
 			{% include 'LibBundle:Translator:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
