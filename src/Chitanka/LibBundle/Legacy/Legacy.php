@@ -439,10 +439,14 @@ class Legacy
 			return CacheManager::getCache($action, $id);
 		}
 
-		$response = $browser->get("$url?action=render", array('User-Agent: Mylib (http://chitanka.info)'));
-		if ($response->isOk()) {
-			$content = self::processMwContent($response->getContent(), $url);
-		} else {
+		try {
+			$response = $browser->get("$url?action=render", array('User-Agent: Mylib (http://chitanka.info)'));
+			if ($response->isOk()) {
+				$content = self::processMwContent($response->getContent(), $url);
+			} else {
+				$content = '';
+			}
+		} catch (\RuntimeException $e) {
 			$content = '';
 		}
 
