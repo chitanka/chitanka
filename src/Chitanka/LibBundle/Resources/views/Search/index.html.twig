@@ -37,12 +37,12 @@
 		<h2>Категории</h2>
 		{% include 'LibBundle:Book:category_list.html.twig' %}
 	{% endif %}
-
+{#
 	{% if work_entries|length %}
 		<h2>Работно ателие</h2>
 		{% include 'LibBundle:WorkEntry:list.html.twig' with {'entries': work_entries} %}
 	{% endif %}
-
+#}
 	{% if not found %}
 		<p class="no-items">Нямате късмет. Не открихме нищо за „{{ query.text }}“.</p>
 	{% endif %}

@@ -28,7 +28,7 @@ class SearchController extends Controller
 			'books'        => $this->getBookRepository()->getByTitles($query['text']),
 			'series'       => $this->getSeriesRepository()->getByNames($query['text']),
 			'sequences'    => $this->getSequenceRepository()->getByNames($query['text']),
-			'work_entries' => $this->getWorkEntryRepository()->getByTitleOrAuthor($query['text']),
+			//'work_entries' => $this->getWorkEntryRepository()->getByTitleOrAuthor($query['text']),
 			'labels'       => $this->getLabelRepository()->getByNames($query['text']),
 			'categories'   => $this->getCategoryRepository()->getByNames($query['text']),
 		);

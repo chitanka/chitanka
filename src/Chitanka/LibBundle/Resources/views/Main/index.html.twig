@@ -69,13 +69,13 @@
 		{% render 'LibBundle:Feed:lastForumPosts' with {}, {'standalone': true} %}
 	</section>
 	<div class="separator"></div>
-
+{#
 	<section id="mp-workroom">
 		<h2><a href="{{ path('workroom') }}">Ново в ателието</a></h2>
 		{% render 'LibBundle:Workroom:latest' with {}, {'standalone': true} %}
 		<div class="more">Към <a href="{{ path('workroom') }}">работното ателие</a></div>
 	</section>
-
+#}
 {% endblock %}
 {% block inline_js %}
 (function(){
