@@ -88,11 +88,14 @@ class BookRepository extends EntityRepository
 
 	public function getByTitles($title, $limit = null)
 	{
-		return $this->getQueryBuilder()
+		$q = $this->getQueryBuilder()
 			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.orig_title LIKE ?1')
 			->setParameter(1, "%$title%")
-			->getQuery()//->setMaxResults($limit)
-			->getArrayResult();
+			->getQuery();
+		if ($limit) {
+			$q->setMaxResults($limit);
+		}
+		return $q->getArrayResult();
 	}
 
 

@@ -23,11 +23,11 @@ class SearchController extends Controller
 		}
 
 		$lists = array(
-			'persons'      => $this->getPersonRepository()->getByNames($query['text']),
-			'texts'        => $this->getTextRepository()->getByTitles($query['text']),
-			'books'        => $this->getBookRepository()->getByTitles($query['text']),
-			'series'       => $this->getSeriesRepository()->getByNames($query['text']),
-			'sequences'    => $this->getSequenceRepository()->getByNames($query['text']),
+			'persons'      => $this->getPersonRepository()->getByNames($query['text'], 15),
+			'texts'        => $this->getTextRepository()->getByTitles($query['text'], 15),
+			'books'        => $this->getBookRepository()->getByTitles($query['text'], 15),
+			'series'       => $this->getSeriesRepository()->getByNames($query['text'], 15),
+			'sequences'    => $this->getSequenceRepository()->getByNames($query['text'], 15),
 			//'work_entries' => $this->getWorkEntryRepository()->getByTitleOrAuthor($query['text']),
 			'labels'       => $this->getLabelRepository()->getByNames($query['text']),
 			'categories'   => $this->getCategoryRepository()->getByNames($query['text']),

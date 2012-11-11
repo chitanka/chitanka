@@ -34,11 +34,14 @@ class SequenceRepository extends EntityRepository
 
 	public function getByNames($name, $limit = null)
 	{
-		return $this->getQueryBuilder()
+		$q = $this->getQueryBuilder()
 			->where('e.name LIKE ?1')
 			->setParameter(1, "%$name%")
-			->getQuery()//->setMaxResults($limit)
-			->getArrayResult();
+			->getQuery();
+		if ($limit) {
+			$q->setMaxResults($limit);
+		}
+		return $q->getArrayResult();
 	}
 
 }
