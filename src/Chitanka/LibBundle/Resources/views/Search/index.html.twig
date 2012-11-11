@@ -1,6 +1,6 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title = 'Търсене' ~ (query ? ' на „'~query.text~'“' : '') %}
+{% set title = 'Търсене' ~ (query ? ' на „'~query.text|e~'“' : '') %}
 {% block content %}
 
 	{% if persons|length %}
