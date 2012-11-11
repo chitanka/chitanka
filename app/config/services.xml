@@ -206,7 +206,7 @@
 			</call>
 		</service>
 		<service id="chitanka.admin.user" class="Chitanka\LibBundle\Admin\UserAdmin">
-			<tag name="sonata.admin" manager_type="orm" group="library_intern" label="admin.user"/>
+			<tag name="sonata.admin" manager_type="orm" audit="false" group="library_intern" label="admin.user"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\User</argument>
 			<argument>LibBundle:UserAdmin</argument>
