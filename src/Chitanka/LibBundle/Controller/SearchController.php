@@ -12,6 +12,7 @@ class SearchController extends Controller
 {
 	protected $responseAge = 86400; // 24 hours
 	private $minQueryLength = 3;
+	private $maxQueryLength = 60;
 
 	public function indexAction($_format)
 	{
@@ -325,11 +326,20 @@ class SearchController extends Controller
 		$query = String::fixEncoding($query);
 
 		$matchType = $request->get('match');
-		if ($matchType != 'exact' && mb_strlen($query, 'utf-8') < $this->minQueryLength) {
-			$this->view['message'] = sprintf('Трябва да въведете поне %d знака.', $this->minQueryLength);
-			$this->responseStatusCode = 400;
+		if ($matchType != 'exact') {
+			$queryLength = mb_strlen($query, 'utf-8');
+			$error = '';
+			if ($queryLength < $this->minQueryLength) {
+				$error = sprintf('Трябва да въведете поне %d знака.', $this->minQueryLength);
+			} else if ($queryLength > $this->maxQueryLength) {
+				$error = sprintf('Не може да въвеждате повече от %d знака.', $this->maxQueryLength);
+			}
+			if ($error) {
+				$this->view['message'] = $error;
+				$this->responseStatusCode = 400;
 
-			return $this->display("message.$_format");
+				return $this->display("message.$_format");
+			}
 		}
 
 		return array(
