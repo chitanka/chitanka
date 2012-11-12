@@ -3,12 +3,15 @@ use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
 $rootDir = __DIR__.'/..';
-$loader = require_once $rootDir.'/app/bootstrap.php.cache';
+require_once $rootDir.'/app/bootstrap.php.cache';
 
-// Use APC for autoloading to improve performance
-// Change 'sf2' by the prefix you want in order to prevent key conflict with another application
-// $loader = new ApcClassLoader('sf2', $loader);
-// $loader->register(true);
+try {
+	// Use APC for autoloading to improve performance
+	$loader = new ApcClassLoader('chitanka', $loader);
+	$loader->register(true);
+} catch (\RuntimeException $e) {
+	// APC not enabled
+}
 
 require_once $rootDir.'/app/AppKernel.php';
 require_once $rootDir.'/app/AppCache.php';
