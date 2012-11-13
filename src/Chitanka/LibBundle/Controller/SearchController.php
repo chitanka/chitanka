@@ -314,7 +314,7 @@ class SearchController extends Controller
 		$request = $this->get('request')->query;
 		$query = trim($request->get('q'));
 
-		if ( ! $query) {
+		if (empty($query)) {
 			$this->view = array(
 				'latest_strings' => $this->getSearchStringRepository()->getLatest(30),
 				'top_strings' => $this->getSearchStringRepository()->getTop(30),
@@ -328,13 +328,7 @@ class SearchController extends Controller
 		$matchType = $request->get('match');
 		if ($matchType != 'exact') {
 			try {
-				$queryLength = mb_strlen($query, 'utf-8');
-				if ($queryLength < $this->minQueryLength) {
-					throw new \Exception(sprintf('Трябва да въведете поне %d знака.', $this->minQueryLength));
-				}
-				if ($queryLength > $this->maxQueryLength) {
-					throw new \Exception(sprintf('Не може да въвеждате повече от %d знака.', $this->maxQueryLength));
-				}
+				$this->validateQueryLength($query);
 			} catch (\Exception $e) {
 				$this->view['message'] = $e->getMessage();
 				$this->responseStatusCode = 400;
@@ -348,6 +342,16 @@ class SearchController extends Controller
 			'by'    => $request->get('by'),
 			'match' => $matchType,
 		);
+	}
+
+	private function validateQueryLength($query) {
+		$queryLength = mb_strlen($query, 'utf-8');
+		if ($queryLength < $this->minQueryLength) {
+			throw new \Exception(sprintf('Трябва да въведете поне %d знака.', $this->minQueryLength));
+		}
+		if ($queryLength > $this->maxQueryLength) {
+			throw new \Exception(sprintf('Не може да въвеждате повече от %d знака.', $this->maxQueryLength));
+		}
 	}
 
 	private function logSearch($query)
