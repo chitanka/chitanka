@@ -327,15 +327,16 @@ class SearchController extends Controller
 
 		$matchType = $request->get('match');
 		if ($matchType != 'exact') {
-			$queryLength = mb_strlen($query, 'utf-8');
-			$error = '';
-			if ($queryLength < $this->minQueryLength) {
-				$error = sprintf('Трябва да въведете поне %d знака.', $this->minQueryLength);
-			} else if ($queryLength > $this->maxQueryLength) {
-				$error = sprintf('Не може да въвеждате повече от %d знака.', $this->maxQueryLength);
-			}
-			if ($error) {
-				$this->view['message'] = $error;
+			try {
+				$queryLength = mb_strlen($query, 'utf-8');
+				if ($queryLength < $this->minQueryLength) {
+					throw new \Exception(sprintf('Трябва да въведете поне %d знака.', $this->minQueryLength));
+				}
+				if ($queryLength > $this->maxQueryLength) {
+					throw new \Exception(sprintf('Не може да въвеждате повече от %d знака.', $this->maxQueryLength));
+				}
+			} catch (\Exception $e) {
+				$this->view['message'] = $e->getMessage();
 				$this->responseStatusCode = 400;
 
 				return $this->display("message.$_format");
