@@ -54,7 +54,7 @@ class SeriesRepository extends EntityRepository
 	{
 		$q = $this->getQueryBuilder()
 			->where('e.name LIKE ?1 OR e.orig_name LIKE ?1')
-			->setParameter(1, "%$name%")
+			->setParameter(1, $this->stringForLikeClause($name))
 			->getQuery();
 		if ($limit) {
 			$q->setMaxResults($limit);

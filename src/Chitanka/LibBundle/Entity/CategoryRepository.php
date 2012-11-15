@@ -66,7 +66,7 @@ class CategoryRepository extends EntityRepository
 	{
 		return $this->getQueryBuilder()
 			->where('e.name LIKE ?1')
-			->setParameter(1, "%$name%")
+			->setParameter(1, $this->stringForLikeClause($name))
 			->getQuery()
 			->getArrayResult();
 	}

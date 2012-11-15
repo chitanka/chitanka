@@ -233,7 +233,7 @@ class TextRepository extends EntityRepository
 	{
 		$q = $this->getQueryBuilder()
 			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.orig_title LIKE ?1')
-			->setParameter(1, "%$title%")
+			->setParameter(1, $this->stringForLikeClause($title))
 			->getQuery();
 		if ($limit) {
 			$q->setMaxResults($limit);
