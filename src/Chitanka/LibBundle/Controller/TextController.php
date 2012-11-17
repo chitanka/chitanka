@@ -187,7 +187,9 @@ class TextController extends Controller
 
 		if (empty($nextPart)) {
 			Setup::doSetup($this->container);
-			$ids = $text->getSimilar(5, $this->getUser());
+			// disable till there is an optimized version of getting similar texts
+			//$ids = $text->getSimilar(5, $this->getUser());
+			$ids = false;
 			$this->view['similar_texts'] = $ids ? $this->getTextRepository()->getByIds($ids) : array();
 		}
 
