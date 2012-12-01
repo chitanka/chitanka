@@ -1052,7 +1052,7 @@ class Book extends BaseWork
 
 	public function getDjvuFile()
 	{
-		return Legacy::getContentFilePath('book', $this->id) . '.djvu';
+		return Legacy::getContentFilePath('book-djvu', $this->id);
 	}
 
 	##################
