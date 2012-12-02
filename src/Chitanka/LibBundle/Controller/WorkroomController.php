@@ -23,6 +23,13 @@ class WorkroomController extends Controller
 		return $this->legacyPage('Work');
 	}
 
+	public function listAction($_format)
+	{
+		$_REQUEST['vl'] = 'listonly';
+		$this->responseFormat = $_format;
+
+		return $this->legacyPage('Work');
+	}
 
 	public function listContributorsAction()
 	{

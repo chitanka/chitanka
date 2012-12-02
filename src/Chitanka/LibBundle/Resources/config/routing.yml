@@ -520,6 +520,11 @@ workroom_contrib:
     defaults: { _controller: LibBundle:Workroom:listContributors }
     requirements: { _method: get }
 
+workroom_list:
+    pattern:   /workroom/list.{_format}
+    defaults: { _controller: LibBundle:Workroom:list }
+    requirements: { _method: get }
+
 workroom_contrib_delete:
     pattern:   /workroom/contrib/{id}
     defaults: { _controller: LibBundle:Workroom:deleteContrib }

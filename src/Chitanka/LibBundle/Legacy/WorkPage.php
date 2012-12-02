@@ -50,7 +50,9 @@ class WorkPage extends Page {
 		),
 		$viewLists = array(
 			'work' => 'списъка на подготвяните произведения',
-			'contrib' => 'списъка на помощниците'),
+			'contrib' => 'списъка на помощниците',
+			'listonly' => '',
+		),
 		$viewTypes = array(
 			'all' => 'Всички',
 			'my' => 'Мое участие',
@@ -124,10 +126,13 @@ class WorkPage extends Page {
 	public function setScanUserView($user)
 	{
 		$this->scanuser_view = $user;
+		$this->data_scanuser_view = $this->findUser($user);
+	}
+
+	private function findUser($user)
+	{
 		$userRepo = $this->controller->getRepository('User');
-		$this->data_scanuser_view = is_numeric($user)
-			? $userRepo->find($user)
-			: $userRepo->findOneBy(array('username' => $user));
+		return is_numeric($user) ? $userRepo->find($user) : $userRepo->findByUsername($user);
 	}
 
 	protected function processSubmission() {
@@ -330,6 +335,9 @@ class WorkPage extends Page {
 
 
 	protected function buildContent() {
+		if ($this->viewList == 'listonly') {
+			return $this->makeWorkList();
+		}
 		$content = $this->makeUserGuideLink();
 		if ($this->subaction == 'edit'/* && $this->userCanAddEntry()*/) {
 			$this->initData();
@@ -465,10 +473,8 @@ EOS;
 		if ($this->subaction == 'my') {
 			$showuser = $this->user->getId();
 		} else if ( ! empty($this->scanuser_view) ) {
-			if (is_numeric($this->scanuser_view)) {
-				$this->setScanUserView($this->scanuser_view);
-			}
-			$showuser = $this->data_scanuser_view->getId();
+			$user = $this->findUser($this->scanuser_view);
+			$showuser = $user ? $user->getId() : null;
 		}
 		if ( ! empty($showuser) ) {
 			$entry_idQ = $this->db->selectQ(self::DB_TABLE2, array('user_id' => $showuser, 'deleted_at IS NULL'), 'entry_id');
