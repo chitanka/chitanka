@@ -2361,7 +2361,10 @@ div.person-aleks_boldin .dl-epub {
 }
 
 /* for small displays */
-@media handheld, screen and (max-width: 900px), screen and (max-device-width: 900px) {
+@media
+handheld,
+screen and (max-width: 900px),
+screen and (max-device-width: 900px) {
 /* one of two boxes in a row */
 .box2 {
 	width: 100%;
@@ -2378,7 +2381,9 @@ div.person-aleks_boldin .dl-epub {
 }
 } /* end small displays */
 
-@media (max-width: 800px) {
+@media
+(max-width: 800px),
+(max-device-width: 800px) {
 #main-content-wrapper {
 	float: none;
 	margin-top: 0;
@@ -2400,13 +2405,15 @@ div.person-aleks_boldin .dl-epub {
 	padding: .5em;
 }
 #personal {
-	width: 60%;
+	width: auto;
+	position: static;
+	display: block;
 }
 #search form {
 	margin: 0;
 }
 #q {
-	width: 30%;
+	width: 70%;
 }
 #toggle-nav-link {
 	display: none;
@@ -2449,6 +2456,9 @@ dd.download {
 }
 dl.download-multi dt {
 	text-align: left;
+}
+.qrcode {
+	display: none;
 }
 }
 
