@@ -49,7 +49,7 @@ EOT
 		$this->output->writeln('Commiting current changes');
 		shell_exec("git commit --file='$messageFile'");
 		$this->output->writeln('Pushing commit to remote server');
-		shell_exec('git push');
+		shell_exec('git push; git push all');
 	}
 
 	private function createMessageFile($description, $fromTime)
