@@ -86,6 +86,7 @@ parameters:
 
     workroom_remote: false
     workroom_root: ~
+    workroom_url: http://workroom.chitanka.info
 
     wiki_url: http://wiki.chitanka.info/$1
 

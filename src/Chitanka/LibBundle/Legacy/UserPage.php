@@ -184,18 +184,13 @@ EOS;
 
 
 	protected function makeCurrentContribList() {
-		$page = Setup::getPage('Work', $this->controller, $this->container, false);
-		$page->setScanUserView($this->userId);
-		$list = $page->makeWorkList(0, 0, null, false);
-		if ( strpos($list, 'emptylist') !== false ) {
+		$listUrl = sprintf('%s/workroom/list.htmlx?user=%s', $this->container->getParameter('workroom_url'), $this->username);
+		$response = $this->container->get('buzz')->get($listUrl);
+		if ( !$response->isOk() || strpos($response->getContent(), 'emptylist') !== false ) {
 			return '';
 		}
 
-		return <<<EOS
-
-<h2>Подготвяни текстове</h2>
-$list
-EOS;
+		return '<h2>Подготвяни текстове</h2>'. $response->getContent();
 	}
 
 
