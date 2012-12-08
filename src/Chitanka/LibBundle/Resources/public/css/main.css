@@ -418,6 +418,7 @@ h2 a:visited {
 #content-wrapper {
 	position: relative;
 	padding: 0 1.5em;
+	clear: both;
 }
 /* елемент, обхващащ основното съдържание */
 #main-content-wrapper {
@@ -2301,6 +2302,9 @@ ul.two-columns {
 	background: url(images/bookmark_active.png) no-repeat 0 0;
 }
 
+.project-links {
+	clear: both;
+}
 .project-links h3 {
 	display: none;
 }
@@ -2373,6 +2377,80 @@ div.person-aleks_boldin .dl-epub {
 	width: 100%;
 }
 } /* end small displays */
+
+@media (max-width: 800px) {
+#main-content-wrapper {
+	float: none;
+	margin-top: 0;
+	padding-top: 4em;
+}
+#content-wrapper {
+	padding: 0 .5em;
+}
+#main-content {
+	margin: 0;
+}
+#navigation {
+	float: none;
+	width: auto;
+	max-width: 15em;
+	margin: 0 auto 1em auto;
+}
+#navigation li {
+	padding: .5em;
+}
+#personal {
+	width: 60%;
+}
+#search form {
+	margin: 0;
+}
+#q {
+	width: 30%;
+}
+#toggle-nav-link {
+	display: none;
+}
+#logo {
+	margin: 0 auto;
+	width: 12em;
+}
+#jump-to {
+	display: block;
+}
+#jump-to p, #jump-to ul, #jump-to li {
+	float: left;
+}
+#jump-to-content,
+#jump-to-search {
+	display: none;
+}
+#project-links {
+	display: none;
+}
+.project-links li a {
+	width: auto;
+	padding: 0 .5em;
+}
+.cover {
+	float: none;
+}
+.superlist dt,
+.superlist dd,
+dd.tauthor,
+dd.download,
+dl.download-multi dt {
+	float: none;
+	max-width: 100%;
+	width: 100%;
+}
+dd.download {
+	clear: both;
+}
+dl.download-multi dt {
+	text-align: left;
+}
+}
 
 @media print {
 
