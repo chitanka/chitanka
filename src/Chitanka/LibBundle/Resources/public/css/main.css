@@ -65,7 +65,6 @@ $sprites = array(
 	'actions'   => $imgDir . 'sprite-actions.png',
 	'basebig'   => $imgDir . 'sprite-basebig.png',
 	'progress'  => $imgDir . 'sprite-progress.png',
-	'rating'    => $imgDir . 'sprite-rating.png',
 	'sort'      => $imgDir . 'sprite-sort.png',
 );
 
@@ -879,7 +878,7 @@ span.frozen {
 	background-position: 0 -1052px;
 }
 .comments:after {
-	content: url(images/actions/034-comments.png);
+	content: url(<?php echo image('actions/034-comments.png') ?>);
 }
 
 /* Типове текстове */
@@ -961,22 +960,16 @@ li.title {
 .rating {
 	position: relative;
 	padding-left: 1.25em;
-	background: url(<?php echo $sprites['rating']?>) no-repeat top left;
 	font-weight: bold;
+	background-position: 0 50%;
+	background-repeat: no-repeat;
 }
-.rating-10 { background-position: 0 -29px; }
-.rating-1 { background-position: 0 -75px; }
-.rating-9 { background-position: 0 -121px; }
-.rating-6 { background-position: 0 -167px; }
-.rating-3 { background-position: 0 -213px; }
-.rating-12 { background-position: 0 -259px; }
-.rating-4 { background-position: 0 -305px; }
-.rating-5 { background-position: 0 -351px; }
-.rating-0 { background-position: 0 -397px; }
-.rating-11 { background-position: 0 -443px; }
-.rating-7 { background-position: 0 -489px; }
-.rating-2 { background-position: 0 -535px; }
-.rating-8 { background-position: 0 -581px; }
+<?php for ($rating = 0; $rating <= 12; $rating++): ?>
+
+.rating-<?php echo $rating ?> {
+	background-image: url(<?php echo image('rating/'.$rating.'.png') ?>);
+}
+<?php endfor ?>
 
 
 .feed-standalone a,
