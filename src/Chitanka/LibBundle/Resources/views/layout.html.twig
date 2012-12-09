@@ -49,8 +49,6 @@
 
 	{% include 'LibBundle::jumpto_links.html.twig' %}
 
-	{% include 'LibBundle::projects_toolbar.html.twig' %}
-
 	<div id="content-wrapper" class="p_{{ current_route }}">
 
 		<div id="main-content-wrapper">
@@ -122,6 +120,8 @@
 		</ul>
 	{% endblock %}
 	</div>
+
+	{% include 'LibBundle::projects_toolbar.html.twig' %}
 
 {% endblock body %}
 

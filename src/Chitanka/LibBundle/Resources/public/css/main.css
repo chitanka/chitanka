@@ -1970,21 +1970,26 @@ article h1 {
 .p_homepage article {
 	padding: 1.5em;
 }
-.special-books {
-	text-align: center;
-}
 .box {
-	display: inline-block;
+	float: left;
 	margin-right: 1%;
 	vertical-align: top;
 }
+.special-books {
+	text-align: center;
+}
+.special-books .box {
+	float: none;
+	display: inline-block;
+	text-align: center;
+}
 /* one of three boxes in a row */
 .box3 {
-	width: 32%;
+	width: 31%;
 }
 /* one of two boxes in a row */
 .box2 {
-	width: 49%;
+	width: 48%;
 }
 .bookbox {
 	text-align: center;
@@ -2451,13 +2456,6 @@ div.person-aleks_boldin .dl-epub {
 #jump-to-content,
 #jump-to-search {
 	display: none;
-}
-#project-links {
-	display: none;
-}
-.project-links li a {
-	width: auto;
-	padding: 0 .5em;
 }
 .cover {
 	float: none;
