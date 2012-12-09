@@ -10,7 +10,8 @@ function hex2rgba($hexColor, $alpha)
 
 function backgroundLinearGradient($value)
 {
-	return "background-image: -moz-linear-gradient($value);
+	return "background-image: linear-gradient($value);
+	background-image: -moz-linear-gradient($value);
 	background-image: -webkit-linear-gradient($value);";
 }
 function borderRadius($value)
@@ -2257,14 +2258,14 @@ ul.two-columns {
 .bookshelf {
 	margin: 0 auto;
 	padding: 0;
-	width: 51em;
+	text-align: center;
 }
 
 .bookshelf li {
-	float: left;
+	display: inline-block;
 	margin: 0 2em 1em 0;
 	padding: .8em;
-	height: 16em;
+	min-height: 16em;
 	width: 13em;
 	border: thin solid <?php echo $navTitleBgColor?>;
 	<?php echo borderRadius('.8em') ?>
@@ -2272,6 +2273,7 @@ ul.two-columns {
 	color: <?php echo $tocFgColor?>;
 	background-color: <?php echo $tocBgColor?>;
 	text-align: center;
+	vertical-align: top;
 }
 
 .action-new {
@@ -2442,7 +2444,7 @@ div.person-aleks_boldin .dl-epub {
 	max-width: 12em;
 }
 #logo a {
-	height: 150px;
+	height: 155px;
 }
 #logo span {
 	background-size: 100%;
