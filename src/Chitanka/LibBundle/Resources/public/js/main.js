@@ -181,7 +181,7 @@ function initCluetip()
 			_GLOBALS.showCluetip = false;
 		})
 		.cluetip({
-			width: 750,
+			width: ($(document).width() / 1.25),
 			positionBy: 'mouse',
 			//splitTitle: ';',
 			sticky: true,

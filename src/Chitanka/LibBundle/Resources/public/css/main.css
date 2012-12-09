@@ -25,6 +25,11 @@ function columnCount($value)
 {
 	return "column-count:$value;-moz-column-count:$value;";
 }
+function image($imageFile)
+{
+	$data = base64_encode(file_get_contents(dirname(__FILE__)."/images/$imageFile"));
+	return "data:image/png;base64,$data";
+}
 
 $defSkinName = 'orange';
 $defNavPos = 'right';
@@ -62,7 +67,6 @@ $sprites = array(
 	'progress'  => $imgDir . 'sprite-progress.png',
 	'rating'    => $imgDir . 'sprite-rating.png',
 	'sort'      => $imgDir . 'sprite-sort.png',
-	'texttypes' => $imgDir . 'sprite-texttypes.png',
 );
 
 if ( ! function_exists('valueAfterNav') ) {
@@ -882,7 +886,8 @@ span.frozen {
 .title,
 .texttype {
 	padding-left: 1.3em;
-	background: url(<?php echo $sprites['texttypes']?>) no-repeat top left;
+	background-position: 0 .2em;
+	background-repeat: no-repeat;
 }
 li.title {
 	margin-left: 0;
@@ -913,27 +918,27 @@ li.title {
 .t-dialogue,
 .t-speech,
 .t-jure {
-	background-position: 0 -48px;
+	background-image: url(<?php echo image('texttypes/othergenre.png') ?>);
 }
 .t-shortstory,
 .t-novelette {
-	background-position: 0 -114px;
+	background-image: url(<?php echo image('texttypes/shortstory.png') ?>);
 }
 .t-poetry,
 .t-poem,
 .t-prosepoetry,
 .t-haiku {
-	background-position: 0 -180px;
+	background-image: url(<?php echo image('texttypes/poetry.png') ?>);
 }
 .t-novel {
-	background-position: 0 -246px;
+	background-image: url(<?php echo image('texttypes/novel.png') ?>);
 }
 .t-novella {
-	background-position: 0 -312px;
+	background-image: url(<?php echo image('texttypes/novella.png') ?>);
 }
 .t-tale,
 .t-fable {
-	background-position: 0 -378px;
+	background-image: url(<?php echo image('texttypes/tale.png') ?>);
 }
 
 
@@ -1237,7 +1242,7 @@ a.dl:hover {
 .dl-list li:last-child {
 	margin-right: 0;
 }
-body:hover .superlist .action {
+.superlist .action {
 	opacity: 0.05;
 }
 .superlist li:hover .action,
@@ -2135,7 +2140,7 @@ table.toccolours td {
 .main-form select {
 	font-family: sans-serif;
 	font-size: 1em;
-	width: 30em;
+	width: 98%;
 }
 .main-form textarea {
 	height: 12em;
@@ -2361,10 +2366,7 @@ div.person-aleks_boldin .dl-epub {
 }
 
 /* for small displays */
-@media
-handheld,
-screen and (max-width: 900px),
-screen and (max-device-width: 900px) {
+@media screen and (max-width: 900px) {
 /* one of two boxes in a row */
 .box2 {
 	width: 100%;
@@ -2379,11 +2381,9 @@ screen and (max-device-width: 900px) {
 .insidenews {
 	width: 100%;
 }
-} /* end small displays */
+} /* end max-width: 900px */
 
-@media
-(max-width: 800px),
-(max-device-width: 800px) {
+@media screen and (max-width: 800px) {
 #main-content-wrapper {
 	float: none;
 	margin-top: 0;
@@ -2398,15 +2398,25 @@ screen and (max-device-width: 900px) {
 #navigation {
 	float: none;
 	width: auto;
-	max-width: 15em;
+	max-width: 14em;
 	margin: 0 auto 1em auto;
+}
+#navigation .navbody {
+	font-size: 1em;
 }
 #navigation li {
 	padding: .5em;
+	font-size: 1em;
 }
 #personal {
 	width: auto;
 	position: static;
+	display: block;
+}
+#personal h3 {
+	display: block;
+}
+#personal li {
 	display: block;
 }
 #search form {
@@ -2420,7 +2430,14 @@ screen and (max-device-width: 900px) {
 }
 #logo {
 	margin: 0 auto;
-	width: 12em;
+	width: 66%;
+	max-width: 12em;
+}
+#logo a {
+	height: 150px;
+}
+#logo span {
+	background-size: 100%;
 }
 #jump-to {
 	display: block;
@@ -2451,6 +2468,19 @@ dl.download-multi dt {
 	max-width: 100%;
 	width: 100%;
 }
+.superlist dt {
+	font-size: 115%;
+	padding: .3em 0;
+}
+.superlist li {
+	border-bottom: medium dotted <?php echo $fieldsetBordColor?>;
+	padding-bottom: .5em;
+	margin-bottom: .5em;
+}
+.superlist .action {
+	opacity: 1;
+	margin-left: 1em;
+}
 dd.download {
 	clear: both;
 }
@@ -2460,7 +2490,40 @@ dl.download-multi dt {
 .qrcode {
 	display: none;
 }
+.buttonmenu a,
+.pagination a {
+	padding: .6em .8em;
+	line-height: 3.5em;
 }
+#footer li {
+	white-space: nowrap;
+}
+input,
+button {
+	font-size: 110%;
+}
+ul,
+ol,
+dl {
+	margin-left: 1em;
+	padding-left: .5em;
+}
+ul.two-columns {
+	-moz-column-count: 1;
+}
+.main-form {
+	width: 100%;
+}
+.main-form dt {
+	width: 98%;
+	float: none;
+	text-align: left;
+}
+.main-form dd {
+	margin-left: 0;
+	width: 98%;
+}
+}  /* end max-width: 800px */
 
 @media print {
 
