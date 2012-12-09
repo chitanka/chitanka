@@ -20,18 +20,20 @@
 		</ul>
 	</div>
 
-	<section id="mp-review" class="box box3 bookbox">
-		<h2><a href="{{ path('reviews') }}">Открийте</a></h2>
-		{% render 'LibBundle:Feed:randomReview' with {}, {'standalone': true} %}
-	</section>
-	<section id="mp-foreign-book" class="box box3 bookbox">
-		<h2><a href="{{ path('foreign_books') }}">Купете си</a></h2>
-		{% render 'LibBundle:ForeignBook:book' with {}, {'standalone': true} %}
-	</section>
-	<section id="mp-featured-book" class="box box3 bookbox">
-		<h2><a href="{{ path('featured_books') }}">Прочетете</a></h2>
-		{% render 'LibBundle:FeaturedBook:book' with {}, {'standalone': true} %}
-	</section>
+	<div class="special-books">
+		<section id="mp-review" class="box box3 bookbox">
+			<h2><a href="{{ path('reviews') }}">Открийте</a></h2>
+			{% render 'LibBundle:Feed:randomReview' with {}, {'standalone': true} %}
+		</section>
+		<section id="mp-foreign-book" class="box box3 bookbox">
+			<h2><a href="{{ path('foreign_books') }}">Купете си</a></h2>
+			{% render 'LibBundle:ForeignBook:book' with {}, {'standalone': true} %}
+		</section>
+		<section id="mp-featured-book" class="box box3 bookbox">
+			<h2><a href="{{ path('featured_books') }}">Прочетете</a></h2>
+			{% render 'LibBundle:FeaturedBook:book' with {}, {'standalone': true} %}
+		</section>
+	</div>
 	<div class="separator"></div>
 
 	<section id="mp-new-books" class="box box2">

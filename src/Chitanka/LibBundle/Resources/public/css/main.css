@@ -1970,9 +1970,13 @@ article h1 {
 .p_homepage article {
 	padding: 1.5em;
 }
+.special-books {
+	text-align: center;
+}
 .box {
-	float: left;
+	display: inline-block;
 	margin-right: 1%;
+	vertical-align: top;
 }
 /* one of three boxes in a row */
 .box3 {
@@ -2374,6 +2378,12 @@ div.person-aleks_boldin .dl-epub {
 .insidenews {
 	width: 100%;
 }
+.p_homepage .textbox .superlist {
+	margin: 0;
+}
+.p_homepage article {
+	margin: 1.5em 0 0 0;
+}
 } /* end max-width: 900px */
 
 @media screen and (max-width: 800px) {
@@ -2501,6 +2511,18 @@ dl {
 	margin-left: 1em;
 	padding-left: .5em;
 }
+.dashboard {
+	width: 100%;
+}
+.welcome {
+	padding: .2em;
+}
+.box3 {
+	width: 18em;
+}
+.p_homepage .separator {
+	height: 0;
+}
 ul.two-columns {
 	-moz-column-count: 1;
 }
@@ -2516,7 +2538,22 @@ ul.two-columns {
 	margin-left: 0;
 	width: 98%;
 }
+.title,
+.texttype {
+	background-position: 0 .6em;
+}
 }  /* end max-width: 800px */
+
+
+@media screen and (max-width: 600px) {
+#mp-insidenews {
+	width: 100%;
+}
+#mp-search {
+	clear: both;
+	width: 100%;
+}
+}  /* end max-width: 480px */
 
 @media print {
 
