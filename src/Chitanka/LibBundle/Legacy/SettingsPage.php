@@ -101,8 +101,7 @@ class SettingsPage extends RegisterPage {
 		$allowemail = $this->out->checkbox('allowemail', '', $this->allowemail,
 			'Разрешаване на писма от другите потребители', null, $this->tabindex++);
 		$common = $this->makeCommonInput();
-		$css = $this->makeCssInput();
-		$js = $this->makeJsInput();
+		$customInput = $this->makeCustomInput();
 		$news = $this->out->checkbox('news', '', $this->news,
 			'Получаване на месечен бюлетин', null, $this->tabindex++);
 		$formEnd = $this->makeFormEnd();
@@ -136,8 +135,7 @@ $formBegin
 			$allowemail
 		</td>
 	</tr>$common
-	<tr><td colspan="2">$css</td></tr>
-	<tr><td colspan="2">$js</td></tr>
+	<tr><td colspan="2">$customInput</td></tr>
 	<tr>
 		<td colspan="2">
 			$news
@@ -200,7 +198,7 @@ EOS;
 	}
 
 
-	protected function makeCssInput() {
+	protected function makeCustomInput() {
 		$inputs = array();
 		$files = $this->container->getParameter('user_css');
 		foreach ($files as $file => $title) {
@@ -210,24 +208,6 @@ EOS;
 				(isset($this->opts['css'][$file]) ? 'checked="checked"' : ''),
 				$title);
 		}
-		$inputs[] = sprintf('<li><label>Собствени стилове: <input type="text" name="css[custom]" size="50" value="%s"></label></li>',
-			(isset($this->opts['css']['custom']) ? $this->opts['css']['custom'] : '')
-		);
-		$inputs = implode("\n", $inputs);
-
-		return <<<EOS
-<fieldset>
-	<legend>Допълнителни стилове</legend>
-	<ul>
-		$inputs
-	</ul>
-</fieldset>
-EOS;
-	}
-
-
-	protected function makeJsInput() {
-		$inputs = array();
 		$files = $this->container->getParameter('user_js');
 		foreach ($files as $file => $title) {
 			$inputs[] = sprintf('<li><label><input type="checkbox" name="js[%s]" value="%s" %s> %s</label></li>',
@@ -236,6 +216,9 @@ EOS;
 				(isset($this->opts['js'][$file]) ? 'checked="checked"' : ''),
 				$title);
 		}
+		$inputs[] = sprintf('<li><label>Собствени стилове: <input type="text" name="css[custom]" size="50" value="%s"></label></li>',
+			(isset($this->opts['css']['custom']) ? $this->opts['css']['custom'] : '')
+		);
 		$inputs[] = sprintf('<li><label>Собствени скриптове: <input type="text" name="js[custom]" size="50" value="%s"></label></li>',
 			(isset($this->opts['js']['custom']) ? $this->opts['js']['custom'] : '')
 		);
@@ -243,7 +226,7 @@ EOS;
 
 		return <<<EOS
 <fieldset>
-	<legend>Допълнителни скриптове</legend>
+	<legend>Допълнителни стилове и скриптове</legend>
 	<ul>
 		$inputs
 	</ul>
