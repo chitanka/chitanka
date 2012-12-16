@@ -152,6 +152,14 @@ class CommonDbCommand extends ContainerAwareCommand
 		return '/*MAINTENANCESQL*/'.$sql;
 	}
 
+	protected function getRepository($entityName)
+	{
+		if (strpos($entityName, ':') === false) {
+			$entityName = "LibBundle:$entityName";
+		}
+		return $this->getEntityManager()->getRepository($entityName);
+	}
+
 	/** @return \Doctrine\ORM\EntityManager */
 	protected function getEntityManager()
 	{
