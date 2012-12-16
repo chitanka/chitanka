@@ -811,7 +811,7 @@ li img {
 .save,
 .email,
 .close,
-#cluetip-close a,
+.cluetip-close a,
 .idea,
 .stop,
 .error,
@@ -865,7 +865,7 @@ span.frozen {
 	opacity: .6;
 }
 .close,
-#cluetip-close a {
+.cluetip-close a {
 	background-position: 0 -396px;
 }
 .idea {
@@ -1462,7 +1462,7 @@ th.headerSortDown {
 .singleuser span,
 .multiuser span,
 .rating span,
-#cluetip-close a span,
+.cluetip-close a span,
 .feed-standalone a span,
 .texttype span,
 .dl-list span {
@@ -1783,7 +1783,7 @@ div.tabbedpanebody {
 	margin: .2em 0 .1em 0;
 	padding: .1em;
 }
-#cluetip-title #cluetip-close {
+.cluetip-title .cluetip-close {
 	float: left;
 }
 
