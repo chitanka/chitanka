@@ -10,9 +10,9 @@ function hex2rgba($hexColor, $alpha)
 
 function backgroundLinearGradient($value)
 {
-	return "background-image: linear-gradient($value);
-	background-image: -moz-linear-gradient($value);
-	background-image: -webkit-linear-gradient($value);";
+	return "background-image: -moz-linear-gradient($value);
+	background-image: -webkit-linear-gradient($value);
+	background-image: linear-gradient($value);";
 }
 function borderRadius($value)
 {
@@ -210,17 +210,10 @@ fieldset > ul,
 }
 form fieldset > ul {
 	margin: 0 auto;
-	text-align: center;
 }
 form fieldset > ul li,
 noscript div {
-	display: inline;
-}
-form fieldset > ul li {
-	padding: .4em .3em;
-	border: thin solid transparent;
-	line-height: 2em;
-	white-space: nowrap;
+	list-style-type: none;
 }
 
 /* заглавията в кутиите за групиране */
@@ -2430,7 +2423,12 @@ div.person-aleks_boldin .dl-epub {
 	display: block;
 }
 #search form {
+	display: block;
 	margin: 0;
+	width: 100%;
+}
+#search li {
+	padding: 0;
 }
 #q {
 	width: 70%;
@@ -2542,6 +2540,10 @@ ul.two-columns {
 .texttype {
 	background-position: 0 .6em;
 }
+.project-links li a {
+	width: auto;
+	font-size: 80%;
+}
 }  /* end max-width: 800px */
 
 
@@ -2552,8 +2554,27 @@ ul.two-columns {
 #mp-search {
 	clear: both;
 	width: 100%;
+} /* end max-width: 600px */
+
+@media screen and (max-width: 480px) {
+.project-links li a {
+	font-size: 70%;
+	padding: 0;
 }
-}  /* end max-width: 480px */
+} /* end max-width: 480px */
+
+@media screen and (max-width: 320px) {
+.project-links li a {
+	font-size: 60%;
+	padding: 0;
+}
+} /* end max-width: 320px */
+
+@media screen and (max-width: 260px) {
+#q {
+	width: 60%;
+}
+} /* end max-width: 260px */
 
 @media print {
 
