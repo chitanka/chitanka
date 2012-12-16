@@ -48,7 +48,7 @@
 {% endmacro %}
 
 {% macro book(book) %}
-{% spaceless %}<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}" rel="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}" class="booklink" data-edit="{{ path('admin_book_edit', {'id': book.id}) }}"><i>{{ book.title }}</i></a>{% endspaceless %}
+{% spaceless %}<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}" {% if book.has_anno %}rel="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"{% endif %} class="booklink" data-edit="{{ path('admin_book_edit', {'id': book.id}) }}"><i>{{ book.title }}</i></a>{% endspaceless %}
 {% endmacro %}
 
 {% macro sequence(sequence) %}
