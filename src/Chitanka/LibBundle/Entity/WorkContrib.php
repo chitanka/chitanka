@@ -80,6 +80,7 @@ class WorkContrib extends Entity
 	public function getEntry() { return $this->entry; }
 
 	public function setUser($user) { $this->user = $user; }
+	/** @return User */
 	public function getUser() { return $this->user; }
 
 	public function setComment($comment) { $this->comment = $comment; }
@@ -99,6 +100,11 @@ class WorkContrib extends Entity
 
 	public function setFilesize($filesize) { $this->filesize = $filesize; }
 	public function getFilesize() { return $this->filesize; }
+
+	public function isFinished()
+	{
+		return $this->getProgress() == 100;
+	}
 
 	public function setDeletedAt($deleted_at) { $this->deleted_at = $deleted_at; }
 	public function delete()

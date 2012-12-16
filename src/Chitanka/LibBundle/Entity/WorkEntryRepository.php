@@ -32,6 +32,15 @@ class WorkEntryRepository extends EntityRepository
 			->getArrayResult();
 	}
 
+	public function findOlderThan($date)
+	{
+		return $this->getQueryBuilder()
+			->where('e.deleted_at IS NULL')
+			->andWhere('e.date < ?1')
+			->setParameter(1, $date)
+			->getQuery()
+			->getResult();
+	}
 
 	public function getQueryBuilder($orderBys = null)
 	{

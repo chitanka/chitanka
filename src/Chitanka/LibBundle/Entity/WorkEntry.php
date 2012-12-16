@@ -95,6 +95,13 @@ class WorkEntry extends Entity
 	private $uplfile;
 
 	/**
+	 * Every user gets an automatic e-mail if his entry reaches some predefined
+	 * period without updates. Here we track the date of the most recent notification.
+	 * @ORM\Column(type="datetime", nullable=true)
+	 */
+	private $last_notification_date;
+
+	/**
 	* @var datetime
 	* @ORM\Column(type="datetime", nullable=true)
 	*/
@@ -123,6 +130,7 @@ class WorkEntry extends Entity
 	public function getAuthor() { return $this->author; }
 
 	public function setUser($user) { $this->user = $user; }
+	/** @return User */
 	public function getUser() { return $this->user; }
 
 	public function setComment($comment) { $this->comment = $comment; }
@@ -149,6 +157,17 @@ class WorkEntry extends Entity
 	public function setUplfile($uplfile) { $this->uplfile = $uplfile; }
 	public function getUplfile() { return $this->uplfile; }
 
+	public function setLastNotificationDate($date) { $this->last_notification_date = $date; }
+	public function getLastNotificationDate() { return $this->last_notification_date; }
+
+	public function isNotifiedWithin($interval)
+	{
+		if ($this->getLastNotificationDate() === null) {
+			return false;
+		}
+		return $this->getLastNotificationDate() > new \DateTime("-$interval");
+	}
+
 	public function setCommentThread(Thread $thread)
 	{
 		$this->comment_thread = $thread;
@@ -161,5 +180,18 @@ class WorkEntry extends Entity
 	public function delete()
 	{
 		$this->setDeletedAt(new \DateTime);
+	}
+
+	public function getContribs() { return $this->contribs; }
+
+	public function getOpenContribs()
+	{
+		$openContribs = array();
+		foreach ($this->getContribs() as $contrib/*@var $contrib WorkContrib*/) {
+			if ( ! $contrib->isFinished()) {
+				$openContribs[] = $contrib;
+			}
+		}
+		return $openContribs;
 	}
 }
