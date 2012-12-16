@@ -107,6 +107,7 @@ class WorkContrib extends Entity
 	}
 
 	public function setDeletedAt($deleted_at) { $this->deleted_at = $deleted_at; }
+	public function isDeleted() { return $this->deleted_at !== null; }
 	public function delete()
 	{
 		$this->setDeletedAt(new \DateTime);

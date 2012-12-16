@@ -188,7 +188,7 @@ class WorkEntry extends Entity
 	{
 		$openContribs = array();
 		foreach ($this->getContribs() as $contrib/*@var $contrib WorkContrib*/) {
-			if ( ! $contrib->isFinished()) {
+			if ( ! $contrib->isFinished() && ! $contrib->isDeleted()) {
 				$openContribs[] = $contrib;
 			}
 		}
