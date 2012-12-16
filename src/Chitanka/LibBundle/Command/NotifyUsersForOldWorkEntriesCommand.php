@@ -29,7 +29,6 @@ EOT
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		$oldEntries = $this->getRepository('WorkEntry')->findOlderThan($this->getThresholdDate($input));
-		$oldEntries = array($this->getRepository('WorkEntry')->find(3759));
 		$notifer = new Notifier($this->getContainer()->get('mailer'));
 		foreach ($oldEntries as $entry) {
 			$this->sendNotification($notifer, $entry, $input->getArgument('stalk-interval'));
@@ -42,7 +41,7 @@ EOT
 	private function sendNotification(Notifier $notifier, WorkEntry $entry, $stalkInterval)
 	{
 		if ($entry->isNotifiedWithin("$stalkInterval days")) {
-			#return;
+			return;
 		}
 		$notifier->sendMailByOldWorkEntry($entry);
 		$entry->setLastNotificationDate(new \DateTime);
