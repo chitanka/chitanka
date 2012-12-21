@@ -25,7 +25,7 @@
  *     var fos_comment_remote_cors_url = 'http://example.org/cors/index.html';
  *
  *     // Optionally set a custom callback function to update the comment count elements
- *     var window.fos_comment_thread_comment_count_callback = function(elem, threadObject){}
+ *     var fos_comment_thread_comment_count_callback = function(elem, threadObject){}
  *
  *     // Optionally set a different element than div#fos_comment_thread as container
  *     var fos_comment_thread_container = $('#other_element');
@@ -52,14 +52,17 @@
          * @param function success Optional callback function to use in case of succes.
          * @param function error Optional callback function to use in case of error.
          */
-        post: function(url, data, success, error) {
+        post: function(url, data, success, error, complete) {
             // Wrap the error callback to match return data between jQuery and easyXDM
             var wrappedErrorCallback = function(response){
                 if('undefined' !== typeof error) {
                     error(response.responseText, response.status);
                 }
             };
-            $.post(url, data, success).error(wrappedErrorCallback);
+            var wrappedCompleteCallback = function(response){
+                complete(response.responseText, response.status);
+            };
+            $.post(url, data, success).error(wrappedErrorCallback).complete(wrappedCompleteCallback);
         },
 
         /**
@@ -87,16 +90,22 @@
          * @param string url Optional url for the thread. Defaults to current location.
          */
         getThreadComments: function(identifier, permalink) {
-            if('undefined' == typeof permalink) {
-                permalink = window.location.href;
-            }
+            var event = jQuery.Event('fos_comment_before_load_thread');
 
+            event.identifier = identifier;
+            event.params = {
+                permalink: encodeURIComponent(permalink || window.location.href)
+            };
+
+            FOS_COMMENT.thread_container.trigger(event);
             FOS_COMMENT.get(
-                FOS_COMMENT.base_url  + '/' + encodeURIComponent(identifier) + '/comments',
-                {permalink: encodeURIComponent(permalink)},
+                FOS_COMMENT.base_url  + '/' + encodeURIComponent(event.identifier) + '/comments',
+                event.params,
+                // success
                 function(data) {
                     FOS_COMMENT.thread_container.html(data);
-                    FOS_COMMENT.thread_container.attr('data-thread', identifier);
+                    FOS_COMMENT.thread_container.attr('data-thread', event.identifier);
+                    FOS_COMMENT.thread_container.trigger('fos_comment_load_thread', event.identifier);
                 }
             );
         },
@@ -109,11 +118,6 @@
                 'form.fos_comment_comment_new_form',
                 function(e) {
                     var that = $(this);
-                    if (that.is(".loading")) {
-                        e.preventDefault();
-                        return;
-                    }
-                    that.addClass("loading");
 
                     FOS_COMMENT.post(
                         this.action,
@@ -121,16 +125,20 @@
                         // success
                         function(data, statusCode) {
                             FOS_COMMENT.appendComment(data, that);
-                            that.removeClass("loading");
+                            that.trigger('fos_comment_new_comment', data);
                         },
                         // error
                         function(data, statusCode) {
                             var parent = that.parent();
                             parent.after(data);
                             parent.remove();
-                            that.removeClass("loading");
+                        },
+                        // complete
+                        function(data, statusCode) {
+                            that.trigger('fos_comment_submitted_form', statusCode);
                         }
                     );
+                    that.trigger('fos_comment_submitting_form');
 
                     e.preventDefault();
                 }
@@ -140,14 +148,19 @@
                 '.fos_comment_comment_reply_show_form',
                 function(e) {
                     var form_data = $(this).data();
-                    var that = this;
+                    var that = $(this);
+
+                    if(that.closest('.fos_comment_comment_reply').hasClass('fos_comment_replying')) {
+                        return that;
+                    }
 
                     FOS_COMMENT.get(
                         form_data.url,
                         {parentId: form_data.parentId},
                         function(data) {
-                            $(that).parent().addClass('fos_comment_replying');
-                            $(that).after(data);
+                            that.closest('.fos_comment_comment_reply').addClass('fos_comment_replying');
+                            that.after(data);
+                            that.trigger('fos_comment_show_form', data);
                         }
                     );
                 }
@@ -156,9 +169,10 @@
             FOS_COMMENT.thread_container.on('click',
                 '.fos_comment_comment_reply_cancel',
                 function(e) {
-                    var form_holder = $(this).parent().parent().parent();
-                    form_holder.parent().removeClass('fos_comment_replying');
+                    var form_holder = $(this).closest('.fos_comment_comment_form_holder');
+                    form_holder.closest('.fos_comment_comment_reply').removeClass('fos_comment_replying');
                     form_holder.remove();
+                    form_holder.trigger('fos_comment_cancel_form');
                 }
             );
 
@@ -195,6 +209,7 @@
                         // success
                         function(data) {
                             FOS_COMMENT.editComment(data);
+                            that.trigger('fos_comment_edit_comment', data);
                         },
 
                         // error
@@ -235,6 +250,7 @@
                                 FOS_COMMENT.serializeObject(form),
                                 function(data) {
                                     $('#' + form_data.scoreHolder).html(data);
+                                    form.trigger('fos_comment_vote_comment', data);
                                 }
                             );
                         }
@@ -305,23 +321,29 @@
             var form_data = form.data();
 
             if('' != form_data.parent) {
-                var form_parent = form.parent();
+                var form_parent = form.closest('.fos_comment_comment_form_holder');
 
                 // reply button holder
-                var reply_button_holder = form_parent.parent();
+                var reply_button_holder = form.closest('.fos_comment_comment_reply');
+
+                var comment_element = form.closest('.fos_comment_comment_show')
+                    .children('.fos_comment_comment_replies');
+
                 reply_button_holder.removeClass('fos_comment_replying');
 
-                reply_button_holder.after(commentHtml);
+                comment_element.prepend(commentHtml);
+                comment_element.trigger('fos_comment_add_comment', commentHtml);
 
                 // Remove the form
                 form_parent.remove();
             } else {
                 // Insert the comment
                 form.after(commentHtml);
+                form.trigger('fos_comment_add_comment', commentHtml);
 
                 // "reset" the form
                 form = $(form[0]);
-                form.children('textarea')[0].value = '';
+                form[0].reset();
                 form.children('.fos_comment_form_errors').remove();
             }
         },
@@ -399,7 +421,7 @@
 
         setCommentCount: function(elem, threadObject) {
             if (threadObject == undefined) {
-                elem.innerHTML = '';
+                elem.innerHTML = '0';
 
                 return;
             }
@@ -491,4 +513,4 @@
 
     window.fos = window.fos || {};
     window.fos.Comment = FOS_COMMENT;
-})(window, window.jQuery, window.easyXDM)
+})(window, window.jQuery, window.easyXDM);
