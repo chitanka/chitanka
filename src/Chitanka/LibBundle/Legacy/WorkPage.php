@@ -820,8 +820,9 @@ EOS;
 		if (empty($entry)) {
 			return '';
 		}
+		$user = $this->controller->getRepository('User')->find($this->scanuser);
 		$threadUrl = $this->controller->generateUrl('fos_comment_post_threads');
-		$commentJs = $this->container->getParameter('assets_base_urls') . '/js/comments_1.js';
+		$commentJs = $this->container->getParameter('assets_base_urls') . '/js/comments.js';
 		return <<<JS
 var fos_comment_thread_id = 'WorkEntry:$entry';
 
@@ -837,6 +838,13 @@ var fos_comment_thread_api_base_url = '$threadUrl';
 
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(fos_comment_script);
 })();
+
+$(document)
+	.on('fos_comment_before_load_thread', '#fos_comment_thread', function (event, data) {
+		setTimeout(function(){
+			$("#fos_comment_comment_cc").val("{$user->getUsername()}");
+		}, 2000);
+	});
 JS;
 	}
 
