@@ -34,7 +34,7 @@ class Notifier {
 
 		foreach ($recipients as $recipientEmail => $recipientName) {
 			$message->setTo($recipientEmail, $recipientName);
-			$this->mailer->send($message);
+			$this->sendMessage($message);
 		}
 	}
 
@@ -63,7 +63,7 @@ BODY;
 
 		$recipient = $workEntry->getUser();
 		$message->setTo($recipient->getEmail(), $recipient->getName());
-		$this->mailer->send($message);
+		$this->sendMessage($message);
 
 		foreach ($workEntry->getOpenContribs() as $contrib) {
 			$this->sendMailByOldWorkContrib($contrib);
@@ -82,7 +82,7 @@ BODY;
 
 		$recipient = $contrib->getUser();
 		$message->setTo($recipient->getEmail(), $recipient->getName());
-		$this->mailer->send($message);
+		$this->sendMessage($message);
 	}
 
 	private function createMailBodyByOldWorkEntry(WorkEntry $workEntry)
@@ -118,4 +118,8 @@ _______________________________________________________________________________
 BODY;
 	}
 
+	private function sendMessage(Swift_Message $message)
+	{
+		$this->mailer->send($message);
+	}
 }
