@@ -235,7 +235,9 @@ EOT
 		if (file_exists($file = str_replace('.data', '.djvu', $dataFile))) {
 			$book['djvu'] = $file;
 		}
-		if (empty($book['formats'])) {
+		if (isset($book['formats'])) {
+			$book['formats'] = array_map('trim', explode(',', $book['formats']));
+		} else if ($book['is_new']) {
 			$book['formats'] = array();
 			if ( ! empty($book['works'])) {
 				$book['formats'][] = 'sfb';
@@ -243,8 +245,6 @@ EOT
 			if ( ! empty($book['djvu'])) {
 				$book['formats'][] = 'djvu';
 			}
-		} else {
-			$book['formats'] = array_map('trim', explode(',', $book['formats']));
 		}
 
 		return $book;
@@ -636,7 +636,7 @@ EOT
 				self::copyFile($book['cover'], "$this->contentDir/book-cover/$path.jpg");
 			}
 			if (isset($book['djvu'])) {
-				self::copyFile($book['djvu'], "$this->contentDir/book/$path.djvu");
+				self::copyFile($book['djvu'], "$this->contentDir/book-djvu/$path");
 			}
 			if (isset($book['img'])) {
 				self::copyDir($book['img'], "$this->contentDir/book-img/$path");
