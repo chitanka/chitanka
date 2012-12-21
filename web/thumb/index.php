@@ -55,7 +55,7 @@ if (file_exists($file)) {
 	header("Cache-Control: maxage=$expires");
 	header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
 	header('Content-Type: image/'.$format);
-	$thumb = sprintf('%s/../cache/thumb/%s', dirname(__FILE__), $query);
+	$thumb = dirname(__FILE__) . '/../cache' . $_SERVER['REQUEST_URI'];
 	readfile(genThumbnail($file, $thumb, $width, 90));
 } else {
 	header('HTTP/1.1 404 Not Found');
