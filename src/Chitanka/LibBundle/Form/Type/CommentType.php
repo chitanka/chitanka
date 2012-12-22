@@ -15,7 +15,10 @@ class CommentType extends BaseCommentType
 		parent::buildForm($builder, $options);
 		$builder->add('cc', 'text', array(
 			'required' => false,
-			'label' => 'Копие до', // TODO move to translation
+			'label' => 'Уведомяване на', // TODO move to translation
+			'attr' => array(
+				'title' => 'Няколко имена се разделят със запетаи, напр. „Иванчо, Марийка, Гошко“',
+			)
 		));
 	}
 

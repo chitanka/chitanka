@@ -17,15 +17,10 @@ class Notifier {
         $this->mailer = $mailer;
     }
 
-	public function sendMailByNewWorkroomComment(Comment $comment, WorkEntry $workEntry, array $extraRecipients)
+	public function sendMailByNewWorkroomComment(Comment $comment, WorkEntry $workEntry, array $recipients)
 	{
-		$recipients = array(
-			// TODO remove this and make it injectable
-			'chitanka+workroom@gmail.com' => 'Работно ателие',
-		) + $extraRecipients;
-		if ($comment->hasParent()) {
-			$commentAuthor = $comment->getParent()->getAuthor();/* @var $commentAuthor User */
-			$recipients[$commentAuthor->getEmail()] = $commentAuthor->getName();
+		if (empty($recipients)) {
+			return;
 		}
 		$sender = array('NO_REPLY_I_REPEAT_NO_REPLY@chitanka.info' => $comment->getAuthorName().' (Моята библиотека)');
 		$message = Swift_Message::newInstance('Kоментар в ателието — '.$workEntry->getTitle())

@@ -36,6 +36,8 @@ class CommentListener
 		foreach ($users as $user) {
 			$recipients[$user->getEmail()] = $user->getName();
 		}
+		$recipients['chitanka+workroom@gmail.com'] = 'Работно ателие';
+
 		return $recipients;
 	}
 

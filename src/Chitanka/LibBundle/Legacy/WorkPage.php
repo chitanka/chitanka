@@ -844,6 +844,10 @@ $(document)
 		setTimeout(function(){
 			$("#fos_comment_comment_cc").val("{$user->getUsername()}");
 		}, 2000);
+	})
+	.on('fos_comment_show_form', '#fos_comment_thread', function (data) {
+		var button = $(data.target);
+		button.next().find('input[name="fos_comment_comment[cc]"]').val(button.data("name"));
 	});
 JS;
 	}
