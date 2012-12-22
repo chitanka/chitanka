@@ -102,6 +102,18 @@ class WorkEntry extends Entity
 	private $last_notification_date;
 
 	/**
+	 * A status managed and seen only from the adminstrator
+	 * @ORM\Column(type="string", length=100, nullable=true)
+	 */
+	private $admin_status;
+
+	/**
+	 * A comment managed and seen only from the adminstrator
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $admin_comment;
+
+	/**
 	* @var datetime
 	* @ORM\Column(type="datetime", nullable=true)
 	*/
@@ -117,6 +129,11 @@ class WorkEntry extends Entity
 	 */
 	private $comment_thread;
 
+
+	public function __toString()
+	{
+		return $this->getTitle();
+	}
 
 	public function getId() { return $this->id; }
 
@@ -159,6 +176,12 @@ class WorkEntry extends Entity
 
 	public function setLastNotificationDate($date) { $this->last_notification_date = $date; }
 	public function getLastNotificationDate() { return $this->last_notification_date; }
+
+	public function setAdminStatus($admin_status) { $this->admin_status = $admin_status; }
+	public function getAdminStatus() { return $this->admin_status; }
+
+	public function setAdminComment($admin_comment) { $this->admin_comment = $admin_comment; }
+	public function getAdminComment() { return $this->admin_comment; }
 
 	public function isNotifiedWithin($interval)
 	{

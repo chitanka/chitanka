@@ -26,6 +26,8 @@ class WorkEntryAdmin extends Admin
 			->add('tmpfiles')
 			->add('tfsize')
 			->add('uplfile')
+			->add('admin_status')
+			->add('admin_comment')
 			->add('deleted_at')
 		;
 	}
@@ -55,10 +57,12 @@ class WorkEntryAdmin extends Admin
 			->add('comment', null, array('required' => false))
 			->add('status')
 			->add('progress')
-			->add('is_frozen')
+			->add('is_frozen', null, array('required' => false))
 			->add('tmpfiles', null, array('required' => false))
 			->add('tfsize', null, array('required' => false))
 			->add('uplfile', null, array('required' => false))
+			->add('admin_status')
+			->add('admin_comment')
 			->add('deleted_at', null, array('required' => false))
 		;
 
@@ -74,6 +78,7 @@ class WorkEntryAdmin extends Admin
 			->add('progress')
 			->add('is_frozen')
 			->add('type')
+			->add('admin_status')
 //			->add('date')
 			->add('is_deleted', 'doctrine_orm_callback', array(
 				'callback' => function($queryBuilder, $alias, $field, $value) {
