@@ -430,6 +430,8 @@ EOS;
 		if ($showWarning) {
 			$this->addMessage($this->makeCaptchaWarning(), true);
 		}
+		$this->logFailedCaptcha("$row[question] [$row[answers]] -> \"$_answer\"");
+
 		return false;
 	}
 
@@ -480,6 +482,10 @@ EOS;
 
 	protected function showCaptchaToUser() {
 		return $this->user->isAnonymous() && !$this->user->isHuman();
+	}
+
+	private function logFailedCaptcha($msg) {
+		file_put_contents(__DIR__."/../../../../app/logs/failed_captcha.log", "$msg\n", FILE_APPEND);
 	}
 
 	protected function getFreeId($dbtable) {
