@@ -421,6 +421,7 @@ EOS;
 		}
 		$row = $this->db->fetchAssoc($res);
 		$answers = explode(',', $row['answers']);
+		$_answer = trim($_answer);
 		foreach ($answers as $answer) {
 			if ($_answer == $answer) {
 				$this->user->setIsHuman(true);
