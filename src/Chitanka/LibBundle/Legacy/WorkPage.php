@@ -939,6 +939,9 @@ EOS;
 
 	private function makeAdminOnlyFields()
 	{
+		if (empty($this->entry)) {
+			return '';
+		}
 		$status = $this->out->textField('admin_status', '', $this->entry->getAdminStatus());
 		$comment = $this->out->textarea('admin_comment', '', $this->entry->getAdminComment(), 3, 80);
 		return <<<FIELDS
