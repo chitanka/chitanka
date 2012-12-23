@@ -429,12 +429,14 @@ EOS;
 		} else {
 			$pagelinks = '';
 		}
+		$adminStatus = $this->userIsAdmin() ? '<th title="Администраторски статус"></th>' : '';
 
 		return <<<EOS
 <table class="content sortable">
 <thead>
 	<tr>
 		<th>Дата</th>
+		$adminStatus
 		<th title="Тип на записа"></th>
 		<th title="Информация"></th>
 		<th title="Коментари към записа"></th>
@@ -564,11 +566,15 @@ EOS;
 			}
 		}
 		$umarker = $this->_getUserTypeMarker($type);
+
+		$adminFields = $this->userIsAdmin() ? $this->makeAdminFieldsForTable($dbrow) : '';
+
 		if ($astable) {
 			return <<<EOS
 
 	<tr class="$this->rowclass$extraclass" id="e$id">
 		<td class="date" title="$date">$ddate</td>
+		$adminFields
 		<td>$umarker</td>
 		<td>$info</td>
 		<td>$commentsLink</td>
@@ -593,6 +599,18 @@ EOS;
 EOS;
 	}
 
+	private function makeAdminFieldsForTable($dbrow)
+	{
+		$comment = htmlspecialchars(nl2br($dbrow['admin_comment']));
+		$class = htmlspecialchars(str_replace(' ', '-', $dbrow['admin_status']));
+		return <<<HTML
+<td>
+<span class="tooltip workroom-$class" title="$comment">
+	<span>$dbrow[admin_status]</span>
+</span>
+</td>
+HTML;
+	}
 
 	protected function _getUserTypeMarker($type)
 	{
