@@ -22,7 +22,7 @@ framework:
     trusted_proxies: ~
     session:
         lifetime:  3600
-        name:      _CHITANKA
+        name:      CHITANKASESSID
 
 services:
     twig.extension.chitanka:
