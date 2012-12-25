@@ -28,6 +28,7 @@ use Chitanka\LibBundle\Legacy\Legacy;
 class TextController extends Controller
 {
 	protected $repository = 'Text';
+	protected $responseAge = 86400; // 24 hours
 
 	public function indexAction($_format)
 	{
@@ -173,8 +174,6 @@ class TextController extends Controller
 
 	public function showHtml($text, $part)
 	{
-		$this->responseAge = 86400; // 24 hours
-
 		$nextHeader = $text->getNextHeaderByNr($part);
 		$nextPart = $nextHeader ? $nextHeader->getNr() : 0;
 		$this->view = array(
