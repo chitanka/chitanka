@@ -153,6 +153,10 @@ abstract class Controller extends SymfonyController
 		foreach ($headers as $header => $value) {
 			$response->headers->set($header, $value);
 		}
+		if ($this->responseAge) {
+			$response->setPublic();
+			$response->setSharedMaxAge($this->responseAge);
+		}
 
 		return $response;
 	}
