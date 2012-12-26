@@ -8,6 +8,8 @@ use Chitanka\LibBundle\Form\Type\FeedbackType;
 
 class FeedbackController extends Controller
 {
+	protected $responseAge = 86400; // 24 hours
+
 	public function indexAction(Request $request)
 	{
 		$adminEmail = $this->container->getParameter('admin_email');
