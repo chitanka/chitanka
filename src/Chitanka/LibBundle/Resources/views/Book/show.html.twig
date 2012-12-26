@@ -8,7 +8,7 @@
 	<a class="selflink" data-edit="{{ path('admin_book_edit', {'id': book.id}) }}">{{ book.title|dot2br|raw }}</a>
 {% endset %}
 {% if book.subtitle %}
-	{% set subtitle = book.subtitle|dot2br %}
+	{% set subtitle = book.subtitle %}
 {% endif %}
 
 {% block content %}
