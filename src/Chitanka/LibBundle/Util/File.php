@@ -23,7 +23,6 @@ class File
 		}
 		self::make_parent($filename);
 		$res = file_put_contents($filename, $data, $flags);
-		chmod($filename, 0644);
 
 		return $res;
 	}
