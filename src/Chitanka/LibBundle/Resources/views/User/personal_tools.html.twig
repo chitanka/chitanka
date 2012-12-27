@@ -2,7 +2,7 @@
 	<h3 class="assistive">Лични инструменти</h3>
 	<ul>
 	{% if _user.isAuthenticated() %}
-		<li class="user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" title="Лична страница">{{ _user.username }}</a></li>
+		<li class="user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" class="user" title="Лична страница">{{ _user.username }}</a></li>
 		<li class="user-settings"><a href="{{ path('user_edit', {'username': _user.username}) }}" title="Потребителски настройки">Настройки</a></li>
 		{% if _user.inGroup('admin') %}
 			<li class="user-dashboard"><a href="{{ path('sonata_admin_dashboard') }}" title="Администрация"><span>Администрация</span></a></li>

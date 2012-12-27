@@ -19,7 +19,7 @@
 		</ul>
 		<strong>
 			{% if comment.user is not empty %}
-				<a href="{{ path('user_show', {'username': comment.user.username}) }}">{{ comment.user.username }}</a>
+				<a href="{{ path('user_show', {'username': comment.user.username}) }}" class="user">{{ comment.user.username }}</a>
 			{% else %}
 				{{ comment.rname }}
 			{% endif %}

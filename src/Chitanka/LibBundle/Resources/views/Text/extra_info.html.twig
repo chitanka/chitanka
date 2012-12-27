@@ -14,7 +14,7 @@
 		<p>
 			{{ contrib.comment }}:
 			{% if contrib.user %}
-				<a href="{{ path('user_show', {'username': contrib.username}) }}">{{ contrib.username }}</a>
+				<a href="{{ path('user_show', {'username': contrib.username}) }}" class="user">{{ contrib.username }}</a>
 			{% else %}
 				{{ contrib.username }}
 			{% endif %}

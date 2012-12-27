@@ -355,7 +355,7 @@ EOS;
 	}
 
 	protected function makeUserLink($name) {
-		return sprintf('<a href="%s" title="Към личната страница на %s">%s</a>', $this->controller->generateUrl('user_show', array('username' => $name)), $name, $name);
+		return sprintf('<a href="%s" class="user" title="Към личната страница на %s">%s</a>', $this->controller->generateUrl('user_show', array('username' => $name)), $name, $name);
 	}
 
 	protected function makeUserLinkWithEmail($username, $email, $allowemail) {
