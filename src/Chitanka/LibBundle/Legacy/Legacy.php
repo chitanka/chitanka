@@ -320,7 +320,7 @@ class Legacy
 		'book-cover' => 'thumb/book-cover/',
 		'book-cover-content' => 'content/book-cover/',
 		'book-djvu' => 'content/book-djvu/',
-		'pic' => 'content/pic/',
+		'book-pic' => 'content/book-pic/',
 	);
 
 	static public function getContentFile($key, $num) {
