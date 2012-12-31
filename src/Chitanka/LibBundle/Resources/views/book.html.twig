@@ -21,9 +21,9 @@
 	</dl>
 {% endmacro %}
 
-{% macro download_link(book, format) %}
+{% macro download_link(book, format, title) %}
 	{% spaceless %}
-	<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug, '_format': format}) }}" title="Сваляне във формат {{ format }}" class="dl dl-{{ format|replace({'.zip': ''}) }} action"><span>{{ format }}</span></a>
+	<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug, '_format': format}) }}" title="{{title|default('Сваляне във формат '~format)}}" class="dl dl-{{ format|replace({'.zip': ''}) }} action"><span>{{ format }}</span></a>
 	{% endspaceless %}
 {% endmacro %}
 
@@ -37,6 +37,9 @@
 		{% endif %}
 		{% if "djvu" in book.formats %}
 			<li>{{ _self.download_link(book, "djvu") }}</li>
+		{% endif %}
+		{% if "pic" in book.formats %}
+			<li>{{ _self.download_link(book, "pic", "Преглед в галерия") }}</li>
 		{% endif %}
 	</ul>
 {% endmacro %}

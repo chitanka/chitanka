@@ -1,10 +1,8 @@
-<div class="breadcrumbs">
-	<li><a href="{{ path('sequences') }}">Поредици</a></li>
-	{% if book.sequence %}
-		{% import 'LibBundle::link.html.twig' as link %}
-		<li>{{ link.sequence(book.sequence) }}{%if book.seqnr and book.sequence.is_seqnr_visible %} №&nbsp;{{ book.seqnr }}{%endif%}</li>
-	{% endif %}
-</div>
+{% extends 'LibBundle:Book:show.html.twig' %}
+
+{% block content %}
+
+{% include 'LibBundle:Book:_breadcrumb_sequences.html.twig' %}
 
 {% if info %}
 	<fieldset class="infobox">
@@ -35,3 +33,16 @@
 <p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p>
 <p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p>
 <p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p>
+{% endblock %}
+
+{% set css_extra = ['css/pic.css'] %}
+{% set js_extra = ['jquery-galleriffic', 'jquery-hotkeys', 'pic'] %}
+{% set inline_js %}
+	$("#help-instructions").html("\
+		<p>Разглеждането на изображенията може да се управлява и чрез клавиатурата:</p>\
+		<ul>\
+			<li>CTRL + дясна стрелка — едно напред</li>\
+			<li>CTRL + лява стрелка — едно назад</li>\
+			<li><b>f</b> — включване/изключване на режим „Пълен екран“</li>\
+		</ul>");
+{% endset %}

@@ -99,8 +99,7 @@ class Book extends BaseWork
 		'collection' => 'Сборник',
 		'poetry' => 'Стихосбирка',
 		'anthology' => 'Антология',
-		'pic' => 'Разкази в картинки',
-		'djvu' => 'DjVu',
+		'magazine' => 'Списание',
 	);
 
 

@@ -13,27 +13,13 @@
 
 {% block content %}
 
-	{% if book.type == 'pic' %}
-		{% include 'LibBundle:Book:show_pic.html.twig' %}
-	{% else %}
-		{% include 'LibBundle:Book:show_text.html.twig' %}
-	{% endif %}
+	{% include 'LibBundle:Book:_breadcrumb_sequences.html.twig' %}
+
+	{% include 'LibBundle:Book:show_text.html.twig' %}
 
 {% endblock %}
 
-{% if book.type == 'pic' %}
-	{% set css_extra = ['css/pic.css'] %}
-	{% set js_extra = ['jquery-galleriffic', 'jquery-hotkeys', 'pic'] %}
-	{% set inline_js %}
-		$("#help-instructions").html("\
-			<p>Разглеждането на изображенията може да се управлява и чрез клавиатурата:</p>\
-			<ul>\
-				<li>CTRL + дясна стрелка — едно напред</li>\
-				<li>CTRL + лява стрелка — едно назад</li>\
-				<li><b>f</b> — включване/изключване на режим „Пълен екран“</li>\
-			</ul>");
-	{% endset %}
-{% elseif book.withAutohide() %}
+{% if book.withAutohide() %}
 	{% set inline_js %}
 		$(":header.inline-text").parent().addClass("collapsed").boxcollapse(false);
 	{% endset %}

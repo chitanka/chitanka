@@ -129,11 +129,10 @@ class BookController extends Controller
 				return $this->displayText($book->getAnnotationAsXhtml());
 			case 'opds':
 				break;
+			case 'pic':
+				Setup::doSetup($this->container);
 			case 'html':
 			default:
-				if ($book->getType() == 'pic') {
-					Setup::doSetup($this->container);
-				}
 		}
 
 		$this->view = array(

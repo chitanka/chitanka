@@ -233,7 +233,7 @@ dd {
 /* абзаци */
 p {
 	margin: 0;
-	text-indent: 20px;
+	text-indent: 2.5em;
 }
 ul,
 ol,
@@ -1212,6 +1212,7 @@ a.dl:hover {
 .dl-epub { background-image: url(<?php echo $imgDir ?>dl04-epub.png); }
 .dl-sfb { background-image: url(<?php echo $imgDir ?>dl01-sfb.png); }
 .dl-djvu { background-image: url(<?php echo $imgDir ?>dl05-djvu.png); }
+.dl-pic { background-image: url(<?php echo $imgDir ?>dl06-jpg.png); }
 
 .dl-list, .dl-list li {
 	display: inline;
