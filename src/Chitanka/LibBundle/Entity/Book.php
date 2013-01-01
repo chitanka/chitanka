@@ -912,6 +912,7 @@ class Book extends BaseWork
 
 		$conv->setObjectCount(1);
 		$conv->setSubtitle($this->subtitle);
+		$conv->setGenre($this->getGenresForFb2());
 		$conv->setKeywords( implode(', ', $this->getLabels()) );
 		$conv->setTextDate($this->getYear());
 
@@ -936,6 +937,15 @@ class Book extends BaseWork
 		return $content;
 	}
 
+	private function getGenresForFb2()
+	{
+		$genres = array();
+		foreach ($this->getTexts() as $text) {
+			$genres = array_merge($genres, $text->getGenresForFb2());
+		}
+		$genres = array_unique($genres);
+		return $genres;
+	}
 
 	public function getHeaders()
 	{

@@ -1084,11 +1084,8 @@ EOS;
 
 		$conv->setObjectCount(1);
 		$conv->setSubtitle($this->subtitle);
-		$keywords = array();
-		foreach ($this->getLabels() as $label) {
-			$keywords[] = $label->getName();
-		}
-		$conv->setKeywords(implode(', ', $keywords));
+		$conv->setGenre($this->getGenresForFb2());
+		$conv->setKeywords($this->getKeywordsForFb2());
 		$conv->setTextDate($this->year);
 
 		$conv->setLang($this->lang);
@@ -1134,6 +1131,136 @@ EOS;
 		return $conv->convert()->getContent();
 	}
 
+	// TODO move this to a proper generation class
+	private $labelsToGenres = array(
+		'Алтернативна история' => 'sf_history',
+		'Антиутопия' => 'sf_social',
+		'Антична литература' => 'antique_ant',
+		'Антропология' => 'science',
+		'Археология' => 'science',
+		'Биография' => 'nonf_biography',
+		'Будизъм' => 'religion',
+		'Военна фантастика' => 'sf_action',
+		'Втора световна война' => 'sci_history',
+		'Готварство' => 'home_cooking',
+		'Готически роман' => 'sf_horror',
+		'Дамска проза (чиклит)' => 'love_contemporary',
+		'Даоизъм' => 'religion',
+		'Детска литература' => 'child_prose',
+		'Документална литература' => array('sci_history', 'nonfiction'),
+		'Древен Египет' => 'sci_history',
+		'Древен Рим' => 'sci_history',
+		'Древна Гърция' => 'sci_history',
+		'Епос' => 'antique_myths',
+		'Еротика' => 'love_erotica',
+		'Идеи и идеали' => 'sci_philosophy',
+		'Икономика' => 'sci_business',
+		'Индианска литература' => 'adv_indian',
+		'Индия' => 'sci_culture',
+		'Исторически роман' => 'prose_history',
+		'История' => 'sci_history',
+		'Киберпънк' => 'sf_cyberpunk',
+		'Китай' => 'sci_culture',
+		'Комедия' => 'humor',
+		'Контракултура' => 'prose_counter',
+		'Криминална литература' => 'detective',
+		'Културология' => 'sci_culture',
+		'Любовен роман' => 'love_contemporary',
+		'Любовна лирика' => 'poetry',
+		'Магически реализъм' => 'sf_horror',
+		'Медицина' => 'sci_medicine',
+		'Мемоари' => 'prose_history',
+		'Мистика' => 'sf_horror',
+		'Митология' => 'sci_culture',
+		'Модернизъм' => array('sci_culture', 'design'),
+		'Морска тематика' => 'adv_maritime',
+		'Музика' => array('sci_culture', 'design'),
+		'Народно творчество' => array('sci_culture', 'design'),
+		'Научна фантастика' => 'sf',
+		'Научнопопулярна литература' => 'science',
+		'Окултизъм' => 'religion',
+		'Организирана престъпност' => 'det_political',
+		'Паралелни вселени' => array('sf', 'sf_epic', 'sf_heroic'),
+		'Политология' => 'sci_politics',
+		'Полусвободна литература' => 'home',
+		'Постапокалипсис' => 'sf_history',
+		'Приключенска литература' => 'adventure',
+		'Психология' => 'sci_psychology',
+		'Психофактор' => 'sci_philosophy',
+		'Пътешествия' => 'adv_geo',
+		'Разказ с (не)очакван край' => 'prose',
+		'Реализъм' => array('sci_culture', 'design'),
+		'Религия' => 'religion_rel',
+		'Ренесанс' => 'sci_history',
+		'Рицарски роман' => 'adv_history',
+		'Робинзониада' => 'sf_heroic',
+		'Родителство' => array('home_health', 'home'),
+		'Романтизъм' => array('sci_culture', 'design'),
+		'Руска класика' => 'prose_rus_classic',
+		'Сатанизъм' => 'religion',
+		'Сатира' => 'humor',
+		'Световна класика' => 'prose_classic',
+		'Секс' => 'home_sex',
+		'Символизъм' => array('sci_culture', 'design'),
+		'Средновековие' => 'antique',
+		'Средновековна литература' => 'antique_european',
+		'Старобългарска литература' => 'antique',
+		'Съвременен роман (XX–XXI век)' => 'prose_contemporary',
+		'Съвременна проза' => 'prose_contemporary',
+		'Тайни и загадки' => 'sf_horror',
+		'Трагедия' => 'antique',
+		'Трилър' => 'thriller',
+		'Уестърн' => 'adv_western',
+		'Ужаси' => 'sf_horror',
+		'Утопия' => 'sf_social',
+		'Фантастика' => 'sf',
+		'Фентъзи' => 'sf_fantasy',
+		'Философия' => 'sci_philosophy',
+		'Флора' => 'sci_biology',
+		'Хумор' => 'humor',
+		'Човек и бунт' => 'sci_philosophy',
+		'Шпионаж' => 'det_espionage',
+		'Япония' => 'sci_culture',
+
+//		'Любовен роман+Исторически роман' => 'love_history',
+//		'Детска литература+Фантастика' => 'child_sf',
+//		'type play' => 'dramaturgy',
+//		'type poetry' => 'poetry',
+//		'type poetry+Детска литература' => 'child_verse',
+//		'type tale+Детска литература' => 'child_tale',
+	);
+	public function getGenresForFb2()
+	{
+		$genres = array();
+		$labels = $this->getLabelsNames();
+		foreach ($labels as $label) {
+			if (array_key_exists($label, $this->labelsToGenres)) {
+				$genres = array_merge($genres, (array) $this->labelsToGenres[$label]);
+			}
+		}
+		$genres = array_unique($genres);
+		if (empty($genres)) {
+			switch ($this->getType()) {
+				case 'poetry': $genres[] = 'poetry'; break;
+				default:       $genres[] = 'prose';
+			}
+		}
+		return $genres;
+	}
+
+	private function getKeywordsForFb2()
+	{
+		return implode(', ', $this->getLabelsNames());
+	}
+
+	public function getLabelsNames()
+	{
+		$names = array();
+		foreach ($this->getLabels() as $label) {
+			$names[] = $label->getName();
+		}
+		return $names;
+	}
 
 	static public function newFromId($id, $reader = 0) {
 		return self::newFromDB( array('t.id' => $id), $reader );
