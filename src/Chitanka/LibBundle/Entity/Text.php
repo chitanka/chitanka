@@ -636,7 +636,7 @@ class Text extends BaseWork
 			return $this->_hasTitleNote;
 		}
 
-		$conv = new SfbToHtmlConverter( Legacy::getContentFilePath( 'text', $this->id ) );
+		$conv = new SfbToHtmlConverter( Legacy::getInternalContentFilePath( 'text', $this->id ) );
 		return $this->_hasTitleNote = $conv->hasTitleNote();
 	}
 
@@ -727,7 +727,7 @@ class Text extends BaseWork
 		$info = '';
 		foreach ($this->bookTexts as $bookText) {
 			if ($bookText->getShareInfo()) {
-				$file = Legacy::getContentFilePath('book-info', $bookText->getBook()->getId());
+				$file = Legacy::getInternalContentFilePath('book-info', $bookText->getBook()->getId());
 				if ( file_exists($file) ) {
 					$info .= "\n\n" . file_get_contents($file);
 				}
