@@ -929,6 +929,7 @@ class Book extends BaseWork
 		}
 
 		$conv->setDocId($this->getDocId());
+		$conv->setDocAuthor('Моята библиотека');
 
 		$conv->enablePrettyOutput();
 

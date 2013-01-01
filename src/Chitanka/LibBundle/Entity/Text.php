@@ -1120,6 +1120,7 @@ EOS;
 		list($history, $version) = $this->getHistoryAndVersion();
 		$conv->setDocVersion($version);
 		$conv->setHistory($history);
+		$conv->setDocAuthor('Моята библиотека');
 
 		if ($this->type == 'gamebook') {
 			// recognize section links
