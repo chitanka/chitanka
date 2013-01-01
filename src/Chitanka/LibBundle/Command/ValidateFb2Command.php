@@ -115,6 +115,9 @@ EOT
 			}
 			$this->output->writeln("Validating $entity $workId");
 			$fb2 = $work->getContentAsFb2();
+			if (!$fb2) {
+				continue;
+			}
 			if (!$this->validator->isValid($fb2)) {
 				$this->saveFileInTmpDir($entity.'-'.$work->getId().'.fb2', $fb2);
 				throw new \Exception($this->validator->getErrors());

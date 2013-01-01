@@ -228,6 +228,10 @@ class Book extends BaseWork
 
 	public function setFormats($formats) { $this->formats = $formats; }
 	public function getFormats() { return $this->formats; }
+	public function isInSfbFormat()
+	{
+		return in_array('sfb', $this->formats);
+	}
 
 	public function setRemovedNotice($removed_notice) { $this->removed_notice = $removed_notice; }
 	public function getRemovedNotice() { return $this->removed_notice; }
@@ -682,6 +686,9 @@ class Book extends BaseWork
 
 	public function getContentAsSfb()
 	{
+		if (!$this->isInSfbFormat()) {
+			return null;
+		}
 		return $this->getTitleAsSfb() . SfbConverter::EOL
 			. $this->getAllAnnotationsAsSfb()
 			. $this->getMainBodyAsSfb()
@@ -746,7 +753,7 @@ class Book extends BaseWork
 				continue;
 			}
 			$lineParts = explode("\t", $line);
-			if (count($lineParts) == 1 || $lineParts[1][0] != '{') {
+			if (count($lineParts) == 1 || ($lineParts[1] && $lineParts[1][0] != '{')) {
 				$sfb .= $line . SfbConverter::EOL;
 				continue;
 			}
@@ -896,6 +903,9 @@ class Book extends BaseWork
 
 	public function getContentAsFb2()
 	{
+		if (!$this->isInSfbFormat()) {
+			return null;
+		}
 		$imgdir = $this->initTmpImagesDir();
 
 		$conv = new SfbToFb2Converter($this->getContentAsSfb(), $imgdir);
