@@ -28,7 +28,7 @@
 			{% set template = template|put_text_in_template(text, (book.isFromSameAuthor(text) ? texttools.text(text, options) : texttools.text_with_author(text, options))) %}
 		{% endfor %}
 
-		{{ template|join_lists|raw }}
+		{{ template|join_lists|replace({'IMG_DIR_PREFIX': asset('/')})|raw }}
 	</fieldset>
 	{% endif %}
 {% endif %}

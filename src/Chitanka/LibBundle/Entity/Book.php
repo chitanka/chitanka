@@ -512,7 +512,7 @@ class Book extends BaseWork
 	{
 		$template = $this->getTemplate();
 		if ($template) {
-			$imgDir = '/' . Legacy::getContentFilePath('book-img', $this->id).'/';
+			$imgDir = 'IMG_DIR_PREFIX' . Legacy::getContentFilePath('book-img', $this->id).'/';
 			$converter = new SfbToHtmlConverter($template, $imgDir);
 			$content = $converter->convert()->getContent();
 			//$content = preg_replace('|<p>\n\{(\d+)\}\n</p>|', '{$1}', $content);
