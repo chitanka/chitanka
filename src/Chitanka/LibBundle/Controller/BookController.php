@@ -139,7 +139,6 @@ class BookController extends Controller
 			'book' => $book,
 			'authors' => $book->getAuthors(),
 			'template' => $book->getTemplateAsXhtml(),
-			'annotation' => $book->getAnnotationAsXhtml(),
 			'info' => $book->getExtraInfoAsXhtml(),
 		);
 

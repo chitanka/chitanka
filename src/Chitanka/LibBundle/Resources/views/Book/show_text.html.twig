@@ -11,10 +11,10 @@
 		{{ booktools.cover_div(book, 200) }}
 		{{ booktools.download_links(book) }}
 	</div>
-	{% if annotation %}
+	{% if book.hasAnno %}
 		<fieldset class="annotation">
 			<legend>Анотация</legend>
-			{{ annotation|raw }}
+			{{ book.annotationAsXhtml|replace({'IMG_DIR_PREFIX': asset('/')})|raw }}
 		</fieldset>
 	{% endif %}
 

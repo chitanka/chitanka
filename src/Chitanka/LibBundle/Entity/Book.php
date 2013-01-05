@@ -853,6 +853,14 @@ class Book extends BaseWork
 		return $this->getTextAnnotations();
 	}
 
+	public function getAnnotationAsXhtml($imgDir = null)
+	{
+		if ($imgDir === null) {
+			$imgDir = 'IMG_DIR_PREFIX' . Legacy::getContentFilePath('book-img', $this->id);
+		}
+		return parent::getAnnotationAsXhtml($imgDir);
+	}
+
 
 	/* TODO remove: there should not be any annotations by texts */
 	public function getTextAnnotations()
