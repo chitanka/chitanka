@@ -18,8 +18,8 @@ class SqlImporter {
 			echo substr($query, 0, 80), "\n";
 			$result = $db->exec($query);
 			if ($result === false) {
-				echo 'Error by ', $query, "\n";
-				echo print_r($db->errorInfo(), true), "\n\n";
+				error_log("Error by $query");
+				error_log(print_r($db->errorInfo(), true));
 			}
 		});
 
