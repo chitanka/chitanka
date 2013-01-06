@@ -125,16 +125,24 @@ EOT
 		$lastmod = trim(file_get_contents("$updateDir/.last"));
 		$url = "$fetchUrl/$lastmod";
 		$this->output->writeln("Fetching update from $url");
-		$file = Legacy::getFromUrl($url);
-		if (strlen($file) == 0) {
+		$browser = $this->getContainer()->get('buzz');
+		$response = $browser->get($url, array('User-Agent: Mylib (http://chitanka.info)'));
+		if ($response->isRedirection()) { // most probably not modified - 304
 			return false;
 		}
-		return $this->initZipFileFromContent($file);
+		if ( ! $response->isSuccessful()) {
+			error_log("fetch error by $url (code {$response->getStatusCode()})");
+			return false;
+		}
+		return $this->initZipFileFromContent($response->getContent());
 	}
 
 	/** @return \ZipArchive */
 	private function initZipFileFromContent($content)
 	{
+		if (empty($content)) {
+			return false;
+		}
 		$tmpfile = sys_get_temp_dir().'/chitanka-'.uniqid().'.zip';
 		file_put_contents($tmpfile, $content);
 		$zip = new \ZipArchive;
