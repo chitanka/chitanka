@@ -126,6 +126,7 @@ EOT
 		$url = "$fetchUrl/$lastmod";
 		$this->output->writeln("Fetching update from $url");
 		$browser = $this->getContainer()->get('buzz');
+		$browser->getClient()->setTimeout(120);
 		$response = $browser->get($url, array('User-Agent: Mylib (http://chitanka.info)'));
 		if ($response->isRedirection()) { // most probably not modified - 304
 			return false;
