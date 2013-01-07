@@ -2277,10 +2277,10 @@ ul.two-columns {
 .image-form {
 	display: inline;
 }
-.image-form button span {
+.dl-list .image-form button span {
 	display: none;
 }
-.image-form button {
+.dl-list .image-form button {
 	margin-top: 2px;
 	vertical-align: top;
 	height: 16px;
@@ -2288,21 +2288,36 @@ ul.two-columns {
 	border: none;
 	<?php echo borderRadius('0') ?>
 	<?php echo boxShadow('none') ?>
-	background: none;
 	cursor: pointer;
+	padding-left: 16px;
 }
 .with-actions li:hover .delete-form button,
 .delete-form button:focus,
 .delete-form button:hover {
-	background: url(images/002-delete.png) no-repeat 0 0;
+	background: url(<?php echo image('002-delete.png') ?>) no-repeat 0 0;
 }
 .bookmark-form button {
-	background: url(images/bookmark.png) no-repeat 0 0;
+	background-image: url(<?php echo image('bookmark.png') ?>);
+	background-repeat: no-repeat;
+	background-position: 2px 50%;
+	padding-left: 18px;
+}
+.dl-list .bookmark-form button {
+	background-color: transparent;
 }
 .bookmark-form button.active,
 .bookmark-form button:focus,
 .bookmark-form button:hover {
-	background: url(images/bookmark_active.png) no-repeat 0 0;
+	background-image: url(<?php echo image('bookmark_active.png') ?>);
+}
+.user-actions {
+	text-align: center;
+}
+.user-actions li {
+	display: inline-block;
+}
+.user-actions li+li {
+	margin-left: 1em;
 }
 
 .project-links {

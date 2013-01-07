@@ -164,7 +164,10 @@ function showBookmarks()
 					$("a.textlink", this).addClass("read");
 				}
 				if (typeof response.favorities[id] == "number") {
-					$("form.bookmark-form button", this).addClass("active").attr("title", "Премахване от отметките");
+					var newText = "Премахване от Избрани";
+					$("form.bookmark-form button", this)
+						.addClass("active")
+						.attr("title", newText);
 ;
 				}
 			});

@@ -1,6 +1,6 @@
 {% import 'LibBundle::text.html.twig' as textinfo %}
 {% import 'LibBundle::link.html.twig' as link %}
-<fieldset class="infobox">
+<fieldset class="infobox text-entity" data-id="{{ text.id }}">
 	<legend>Информация<a href="#after-infobox" class="assistive"> (Прескачане на информацията)</a></legend>
 	<ul>
 		{% if text.series.slug is defined %}
@@ -64,10 +64,13 @@
 			</a>
 		</li>
 		<li>Оценка: {{ textinfo.rating_expanded(text) }}</li>
+	</ul>
+	<ul class="user-actions">
 		<li>Вашата оценка:
 			{% render 'LibBundle:Text:rating' with {'id': text.id}, {'standalone': true} %}
 		</li>
 		<li>{% render 'LibBundle:Text:markReadForm' with {'id': text.id}, {'standalone': true} %}</li>
+		<li>{{ textinfo.bookmark_form(text) }}</li>
 	</ul>
 </fieldset>
 <div id="after-infobox" class="assistive"></div>

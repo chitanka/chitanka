@@ -428,7 +428,7 @@ class TextController extends Controller
 			$em->remove($bookmark);
 			$response = array(
 				'removeClass' => 'active',
-				'setTitle' => 'Добавяне в отметките',
+				'setTitle' => 'Добавяне в Избрани',
 			);
 		} else {
 			$bookmark = new Bookmark(compact('folder', 'text', 'user'));
@@ -439,7 +439,7 @@ class TextController extends Controller
 			$em->persist($user);
 			$response = array(
 				'addClass' => 'active',
-				'setTitle' => 'Премахване от отметките',
+				'setTitle' => 'Премахване от Избрани',
 			);
 		}
 		$em->flush();
