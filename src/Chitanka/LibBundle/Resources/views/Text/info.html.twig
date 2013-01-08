@@ -70,7 +70,7 @@
 			{% render 'LibBundle:Text:rating' with {'id': text.id}, {'standalone': true} %}
 		</li>
 		<li>{% render 'LibBundle:Text:markReadForm' with {'id': text.id}, {'standalone': true} %}</li>
-		<li>{{ textinfo.bookmark_form(text) }}</li>
+		<li>{{ textinfo.bookmark_form(text, ' ') }}</li>
 	</ul>
 </fieldset>
 <div id="after-infobox" class="assistive"></div>

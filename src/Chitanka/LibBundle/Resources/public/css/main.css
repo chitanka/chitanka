@@ -2277,10 +2277,10 @@ ul.two-columns {
 .image-form {
 	display: inline;
 }
-.dl-list .image-form button span {
+.image-form button span {
 	display: none;
 }
-.dl-list .image-form button {
+.image-form button {
 	margin-top: 2px;
 	vertical-align: top;
 	height: 16px;
