@@ -56,7 +56,11 @@
 
 {% macro rating_expanded(text) %}
 	{% if text.votes %}
-		<a href="{{ path('text_ratings', {'id': text.id}) }}">{{ text.rating|rating_format }} (× {{ text.votes }} {{ text.votes == 1 ? 'глас' : 'гласа' }})</a>
+	<span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+		<meta itemprop="worstRating" content="1">
+		<meta itemprop="bestRating" content="6">
+		<a href="{{ path('text_ratings', {'id': text.id}) }}"><meta itemprop="ratingValue" content="{{ text.rating }}">{{ text.rating|rating_format }} (× <span itemprop="ratingCount">{{ text.votes }}</span> {{ text.votes == 1 ? 'глас' : 'гласа' }})</a>
+	</span>
 	{% else %}
 		няма
 	{% endif %}
