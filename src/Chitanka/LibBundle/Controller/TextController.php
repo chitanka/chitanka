@@ -749,7 +749,7 @@ class TextController extends Controller
 
 	protected function addTextFileEntry($textId, $suffix = '.txt') {
 		$fEntry = $this->zf->newFileEntry($this->fPrefix .
-			$this->getContentData($textId) ."\n\n\tКРАЙ".
+			$this->getContentData($textId) .
 			$this->fSuffix, $this->filename . $suffix);
 		CacheManager::setDlCache($textId, serialize($fEntry));
 		$this->zf->addFileEntry($fEntry);
