@@ -2290,6 +2290,7 @@ ul.two-columns {
 	<?php echo boxShadow('none') ?>
 	cursor: pointer;
 	padding-left: 16px;
+	background-color: transparent;
 }
 .with-actions li:hover .delete-form button,
 .delete-form button:focus,
