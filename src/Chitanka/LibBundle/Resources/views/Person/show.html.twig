@@ -1,6 +1,7 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title = '<a class="selflink" data-edit="'~ path('admin_person_edit', {'id': person.id}) ~'">'~ person.name ~'</a>' %}
+{% set itemtype = "Person" %}
+{% set title = '<a class="selflink" itemprop="name" data-edit="'~ path('admin_person_edit', {'id': person.id}) ~'">'~ person.name ~'</a>' %}
 {% set subtitle = ('person.role.'~person.role)|trans %}
 {% block content %}
 

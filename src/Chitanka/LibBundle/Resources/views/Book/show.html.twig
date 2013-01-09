@@ -1,11 +1,12 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
+{% set itemtype = "Book" %}
 {% set title %}
 	{% if authors|length %}
 		{% import 'LibBundle::link.html.twig' as link %}
 		{{ link.persons_comma(authors) }}<br>
 	{% endif %}
-	<a class="selflink" data-edit="{{ path('admin_book_edit', {'id': book.id}) }}">{{ book.title|dot2br|raw }}</a>
+	<a class="selflink" itemprop="name" data-edit="{{ path('admin_book_edit', {'id': book.id}) }}">{{ book.title|dot2br|raw }}</a>
 {% endset %}
 {% if book.subtitle %}
 	{% set subtitle = book.subtitle %}

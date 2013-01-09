@@ -54,7 +54,7 @@
 	<div id="content-wrapper" class="p_{{ current_route }}">
 
 		<div id="main-content-wrapper">
-			<div id="main-content" role="main">
+			<div id="main-content" role="main" {% if itemtype is defined %}itemscope itemtype="http://schema.org/{{ itemtype }}"{% endif %}>
 				{% render 'LibBundle:Wanted:stripe' %}
 
 				<div id="first-heading">
