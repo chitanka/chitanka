@@ -1,11 +1,11 @@
 {% macro list_item(series) %}
 	{% import 'LibBundle::text.html.twig' as text_lister %}
-	<dl>
+	<dl itemscope itemtype="http://schema.org/CreativeWork">
 		<dt>
-			<a href="{{ path('series_show', {'slug': series.slug}) }}"><em>{{ series.name }}</em></a>
+			<a href="{{ path('series_show', {'slug': series.slug}) }}" itemprop="name"><em>{{ series.name }}</em></a>
 		</dt>
-		<dd class="orig-name"><em>{{ series.orig_name ? series.orig_name : '—' }}</em></dd>
-		<dd class="tauthor">{{ text_lister.author_list(series.authors, ' ') }}</dd>
+		<dd class="orig-name"><i>{{ series.orig_name ? series.orig_name : '—' }}</i></dd>
+		<dd class="tauthor" itemprop="author">{{ text_lister.author_list(series.authors, ' ') }}</dd>
 	</dl>
 {% endmacro %}
 

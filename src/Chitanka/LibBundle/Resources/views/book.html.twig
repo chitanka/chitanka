@@ -1,12 +1,25 @@
 {% macro book(book) %}
 	{% import 'LibBundle::link.html.twig' as link %}
-	<dl>
+	<dl itemscope itemtype="http://schema.org/Book">
 		<dt>
-			<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}" {% if book.has_anno %}rel="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"{% endif %} class="booklink" data-edit="{{ path('admin_book_edit', {'id': book.id}) }}">{{ _self.cover(book, 90) }}<br> <i>{{ book.title }}</i>{% if book.subtitle is defined %}<br>{{ book.subtitle|replace({'\\n': '<br>'})|raw }}{% endif %}</a>
+			<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}"
+				{% if book.has_anno %}
+					rel="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"
+				{% endif %}
+				class="booklink"
+				data-edit="{{ path('admin_book_edit', {'id': book.id}) }}">
+				{{ _self.cover(book, 90) }}
+				<br>
+				<i itemprop="name">{{ book.title }}</i>
+				{% if book.subtitle is not empty %}
+					<br>
+					<span itemprop="alternativeHeadline">{{ book.subtitle|replace({'\\n': '<br>'})|raw }}</span>
+				{% endif %}
+			</a>
 		</dt>
 		<dd>
 		{% if book.authors|length %}
-			<span class="bookauthor">{{ link.persons_comma(book.authors) }}</span>
+			<span class="bookauthor" itemprop="author">{{ link.persons_comma(book.authors) }}</span>
 		{% endif %}
 		{% if book.sequence is not empty %}
 			<br><span class="bookseq">{{ link.sequence(book.sequence) }}{% if book.seqnr is not empty and book.sequence.is_seqnr_visible %}, №&nbsp;{{ book.seqnr }}{% endif %}</span>
@@ -45,15 +58,15 @@
 {% endmacro %}
 
 {% macro cover(book, width) %}
-	<img class="cover" src="{{ asset(book.has_cover ? cover(book.id, width) : cover(0, width, 'png')) }}" alt="Корица" width="{{ width }}">
+	<img class="cover" src="{{ asset(book.has_cover ? cover(book.id, width) : cover(0, width, 'png')) }}" alt="Корица" width="{{ width }}" itemprop="image">
 {% endmacro %}
 
 {% macro cover_div(book, width) %}
 	<div class="cover">
 		{% if book.has_cover %}
-			<a href="{{ asset(cover(book.id, 'max')) }}"><img src="{{ asset(cover(book.id, width)) }}" alt="Корица" width="{{ width }}"></a>
+			<a href="{{ asset(cover(book.id, 'max')) }}"><img src="{{ asset(cover(book.id, width)) }}" alt="Корица" width="{{ width }}" itemprop="image"></a>
 		{% else %}
-			<img src="{{ asset(cover(0, width, 'png')) }}" alt="Корица" width="{{ width }}">
+			<img src="{{ asset(cover(0, width, 'png')) }}" alt="Корица" width="{{ width }}" itemprop="image">
 		{% endif %}
 	</div>
 {% endmacro %}

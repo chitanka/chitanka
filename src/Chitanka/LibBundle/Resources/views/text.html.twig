@@ -4,7 +4,7 @@
 	{% elseif text.year < 0 %}
 		{{ -1 * text.year }}{{ text.year2 > 0 ? '–' ~ text.year2 : '' }} пр.н.е.
 	{% else %}
-		{{ text.year }}{{ text.year2 > 0 ? '–' ~ text.year2 : '' }}
+		<span itemprop="datePublished">{{ text.year }}</span>{{ text.year2 > 0 ? '–' ~ text.year2 : '' }}
 	{% endif %}
 {% endmacro %}
 
@@ -51,7 +51,13 @@
 {% endmacro %}
 
 {% macro rating(text) %}
-	<a href="{{ path('text_ratings', {'id': text.id}) }}" title="Оценка: {{ text.rating|rating_format }} (× {{ text.votes }} {{ text.votes == 1 ? 'глас' : 'гласа' }})" class="rating rating-{{ text.rating|rating_class }}"><span>{{ text.rating|rating_format }}</span></a>
+	<span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+		<meta itemprop="worstRating" content="1">
+		<meta itemprop="bestRating" content="6">
+		<meta itemprop="ratingValue" content="{{ text.rating }}">
+		<meta itemprop="ratingCount" content="{{ text.votes }}">
+		<a href="{{ path('text_ratings', {'id': text.id}) }}" title="Оценка: {{ text.rating|rating_format }} (× {{ text.votes }} {{ text.votes == 1 ? 'глас' : 'гласа' }})" class="rating rating-{{ text.rating|rating_class }}"><span>{{ text.rating|rating_format }}</span></a>
+	</span>
 {% endmacro %}
 
 {% macro rating_expanded(text) %}
@@ -69,7 +75,7 @@
 
 {% macro text_with_author(text, options) %}
 	{% import 'LibBundle::link.html.twig' as link %}
-<dl class="text-entity" data-id="{{ text.id }}">
+<dl class="text-entity" itemscope itemtype="http://schema.org/CreativeWork" data-id="{{ text.id }}">
 	<dt>
 		{{ _self.rating(text) }}
 		{{ options.prefix is defined ? options.prefix : '' }}
@@ -78,7 +84,7 @@
 		{% endif %}
 		{{ link.text(text, options) }}
 	</dt>
-	<dd class="tauthor">{{ _self.author_list(text.authors) }}</dd>
+	<dd class="tauthor" itemprop="author">{{ _self.author_list(text.authors) }}</dd>
 	<!--<dd class="extra">{#{{ _self.text_extra_info(text) }}#}</dd>-->
 	{% if text.removed_notice is empty and options.download_links is defined %}
 		<dd class="download">{{ _self.download_links(text) }}</dd>
@@ -89,7 +95,7 @@
 
 {% macro text(text, options) %}
 	{% import 'LibBundle::link.html.twig' as link %}
-<dl class="text-entity" data-id="{{ text.id }}">
+<dl class="text-entity" itemscope itemtype="http://schema.org/CreativeWork" data-id="{{ text.id }}">
 	<dt>
 		{{ _self.rating(text) }}
 		{{ options.prefix is defined ? options.prefix : '' }}
@@ -106,25 +112,34 @@
 
 {% macro text_extra_info(text) %}
 	{% if text.orig_title is not empty %}
-		<em>{{ text.orig_title }}</em>{% if text.year is not empty %}, {{ text.year }}{% endif %}
+		<em>{{ text.orig_title }}</em>{% if text.year is not empty %}, {{ _self.text_year(text) }}{% endif %}
 	{% elseif text.year is not empty %}
-		{{ text.year }}
+		{{ _self.text_year(text) }}
 	{% endif %}
+{% endmacro %}
+
+{% macro text_year(text) %}
+	<span itemprop="datePublished">{{ text.year }}</span>
 {% endmacro %}
 
 
 {% macro author_list(authors, prefix, format) %}
 	{% if authors|length == 1 %}
-		{{ prefix|default('от') }} <a href="{{ path('person_show', {'slug': authors[0].slug, '_format': format|default('html')}) }}">{{ authors[0].name }}</a>
+		{{ prefix|default('от') }} {{ _self.author_link(authors[0], format) }}
 	{% elseif authors|length > 1 %}
 		{{ prefix|default('от') }} <ul class="simplelist">
 		{% for author in authors %}
-			<li><a href="{{ path('person_show', {'slug': author.slug, '_format': format|default('html')}) }}">{{ author.name }}</a></li>
+			<li>{{ _self.author_link(author, format) }}</li>
 		{% endfor %}
 		</ul>
 	{% endif %}
 {% endmacro %}
 
+{% macro author_link(author, format) %}
+	{% spaceless %}
+	<span itemscope itemtype="http://schema.org/Person"><a href="{{ path('person_show', {'slug': author.slug, '_format': format|default('html')}) }}" data-edit="{{ path('admin_person_edit', {'id': author.id}) }}" itemprop="name">{{ author.name }}</a></span>
+	{% endspaceless %}
+{% endmacro %}
 
 {% macro download_link(text, format, size) %}
 	{% spaceless %}

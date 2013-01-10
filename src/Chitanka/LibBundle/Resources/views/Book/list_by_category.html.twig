@@ -4,7 +4,7 @@
 {% set subtitle = category.name %}
 {% block content %}
 
-	<ul class="breadcrumbs">
+	<ul class="breadcrumbs" itemprop="breadcrumb">
 		<li><a href="{{ path('books') }}">Книги</a></li>
 		{% for parent in parents %}
 			<li><a href="{{ path('books_by_category', {'slug': parent.slug}) }}">{{ parent.name }}</a></li>

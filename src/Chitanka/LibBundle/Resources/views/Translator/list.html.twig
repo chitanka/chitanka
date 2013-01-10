@@ -1,8 +1,8 @@
 <ul class="superlist">
 {% for translator in persons %}
-	<li><dl>
-		<dt><a href="{{ path('person_show', {'slug': translator.slug}) }}">{{ translator.name|name_format(by)|raw }}</a></dt>
-		<dd class="country">{{ ('country.'~translator.country) | trans }}</dd>
+	<li><dl itemscope itemtype="http://schema.org/Person">
+		<dt><a href="{{ path('person_show', {'slug': translator.slug}) }}" itemprop="url" data-edit="{{ path('admin_person_edit', {'id': translator.id}) }}">{{ translator.name|name_format(by)|raw }}</a></dt>
+		<dd class="country" itemprop="nationality" itemscope itemtype="http://schema.org/Country"><span itemprop="name">{{ ('country.'~translator.country) | trans }}</span></dd>
 	</dl></li>
 {% else %}
 	<li class="no-items">Няма намерени преводачи.</li>

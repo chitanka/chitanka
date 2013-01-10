@@ -6,7 +6,7 @@
 {% endif %}
 {% block content %}
 
-	<ul class="breadcrumbs">
+	<ul class="breadcrumbs" itemprop="breadcrumb">
 		<li><a href="{{ path('texts') }}">Произведения</a></li>
 		<li>{{ letter == '-' ? 'Всички' : letter }}</li>
 	</ul>

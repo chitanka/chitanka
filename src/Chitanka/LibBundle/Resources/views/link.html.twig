@@ -1,5 +1,5 @@
 {% macro person(person) %}
-{% spaceless %}<a href="{{ path('person_show', {'slug': person.slug}) }}" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name }}</a>{% endspaceless %}
+{% spaceless %}<a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="name" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name }}</a>{% endspaceless %}
 {% endmacro %}
 
 {% macro persons(persons) %}
@@ -16,7 +16,7 @@
 
 {% macro persons_comma(persons) %}
 	{% for person in persons %}
-		<a href="{{ path('person_show', {'slug': person.slug}) }}" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name }}</a>{{ loop.last ? '' : ',' }}
+		<span itemscope itemtype="http://schema.org/Person"><a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="name" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name }}</a></span>{{ loop.last ? '' : ',' }}
 	{% endfor %}
 {% endmacro %}
 
@@ -31,15 +31,15 @@
 {% endmacro %}
 
 {% macro authors_by_country(country) %}
-	<a href="{{ path('authors_by_country', {'country': country}) }}">{{ ('country.'~country) | trans }}</a>
+	<a href="{{ path('authors_by_country', {'country': country}) }}" itemprop="name">{{ ('country.'~country) | trans }}</a>
 {% endmacro %}
 
 {% macro series(series) %}
-	<a href="{{ path('series_show', {'slug': series.slug}) }}" data-edit="{{ path('admin_series_edit', {'id': series.id}) }}"><i>{{ series.name }}</i></a>
+	<a href="{{ path('series_show', {'slug': series.slug}) }}" itemprop="name" data-edit="{{ path('admin_series_edit', {'id': series.id}) }}"><i>{{ series.name }}</i></a>
 {% endmacro %}
 
 {% macro text(text, options) %}
-{% spaceless %}<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}" class="textlink"  data-edit="{{ path('admin_text_edit', {'id': text.id}) }}"
+{% spaceless %}<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}" class="textlink" itemprop="name" data-edit="{{ path('admin_text_edit', {'id': text.id}) }}"
 {% if text.lang != text.orig_lang %}
 	{#% if text.translators is defined %}
 		title="Превод: {{ _self.translators_plain(text.translators) }} {{ text.trans_year is defined ? '(' ~ text.trans_year ~ ')' : '' }}"
@@ -48,7 +48,7 @@
 {% endmacro %}
 
 {% macro book(book) %}
-{% spaceless %}<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}" {% if book.has_anno %}rel="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"{% endif %} class="booklink" data-edit="{{ path('admin_book_edit', {'id': book.id}) }}"><i>{{ book.title }}</i></a>{% endspaceless %}
+{% spaceless %}<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}" {% if book.has_anno %}rel="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"{% endif %} class="booklink" itemprop="name" data-edit="{{ path('admin_book_edit', {'id': book.id}) }}"><i>{{ book.title }}</i></a>{% endspaceless %}
 {% endmacro %}
 
 {% macro sequence(sequence) %}

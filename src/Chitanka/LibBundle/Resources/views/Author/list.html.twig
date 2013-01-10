@@ -1,10 +1,10 @@
 {% macro link(person, by) %}
-	<a href="{{ path('person_show', {'slug': person.slug}) }}" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name|name_format(by)|raw }}</a>
+	<a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="url" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name|name_format(by)|raw }}</a>
 {% endmacro %}
 
 <ul class="superlist">
 {% for author in persons %}
-	<li><dl>
+	<li><dl itemscope itemtype="http://schema.org/Person">
 		{% if author.person is not empty %}
 			<dt>{{ author.name|name_format(by)|raw }} &rarr; {{ _self.link(author.person, by) }}</dt>
 		{% else %}

@@ -1,9 +1,11 @@
 {% macro list_item(sequence) %}
-	<dl>
+	<dl itemscope itemtype="http://schema.org/CreativeWork">
 		<dt>
-			<a href="{{ path('sequence_show', {'slug': sequence.slug}) }}">{{ sequence.name }}</a>
+			<a href="{{ path('sequence_show', {'slug': sequence.slug}) }}" itemprop="name">{{ sequence.name }}</a>
 		</dt>
-		<dd>{{ sequence.publisher }}</dd>
+		<dd itemprop="author" itemscope itemtype="http://schema.org/Organization">
+			<span itemprop="name">{{ sequence.publisher }}</span>
+		</dd>
 	</dl>
 {% endmacro %}
 
