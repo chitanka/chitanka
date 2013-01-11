@@ -3,7 +3,7 @@ chitanka:
 
 _internal:
     resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
-    prefix:   /_50m3th1ng_w1ck3d_c0m35_th15_way
+    prefix:   /_internal
 
 admin:
     resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
