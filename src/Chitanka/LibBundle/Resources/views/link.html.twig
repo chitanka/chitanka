@@ -1,5 +1,7 @@
 {% macro person(person) %}
-{% spaceless %}<a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="name" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name }}</a>{% endspaceless %}
+{% spaceless %}
+	<span itemscope itemtype="http://schema.org/Person"><a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="name" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name }}</a></span>
+{% endspaceless %}
 {% endmacro %}
 
 {% macro persons(persons) %}
@@ -35,7 +37,7 @@
 {% endmacro %}
 
 {% macro series(series) %}
-	<a href="{{ path('series_show', {'slug': series.slug}) }}" itemprop="name" data-edit="{{ path('admin_series_edit', {'id': series.id}) }}"><i>{{ series.name }}</i></a>
+	<a href="{{ path('series_show', {'slug': series.slug}) }}" data-edit="{{ path('admin_series_edit', {'id': series.id}) }}"><i>{{ series.name }}</i></a>
 {% endmacro %}
 
 {% macro text(text, options) %}

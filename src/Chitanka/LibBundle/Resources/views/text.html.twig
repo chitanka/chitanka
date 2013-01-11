@@ -12,7 +12,7 @@
 	{% if text.trans_year is empty %}
 		<a href="{{ path('text_suggest_info', {'id': text.id, 'object': 'trans_year'}) }}">????</a>
 	{% else %}
-		{{ text.trans_year }}
+		<span itemprop="datePublished">{{ text.trans_year }}</span>
 	{% endif %}
 {% endmacro %}
 
@@ -33,7 +33,9 @@
 	{% import 'LibBundle::link.html.twig' as link %}
 	{% spaceless %}
 	{% if text.translators|length %}
+		<span itemprop="author">
 		{{ link.persons(text.translators) }}
+		</span>
 	{% else %}
 		[Няма данни за преводача; <a href="{{ path('text_suggest_info', {'id': text.id, 'object': 'translator'}) }}">помогнете</a> за добавянето му]
 	{% endif %}
