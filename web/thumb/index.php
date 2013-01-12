@@ -59,5 +59,5 @@ if (file_exists($file)) {
 	readfile(genThumbnail($file, $thumb, $width, 90));
 } else {
 	header('HTTP/1.1 404 Not Found');
-	echo $file, ' no found';
+	error_log($file.' not found');
 }
