@@ -58,7 +58,7 @@ EOT
 
 	private function executeDbUpdate($fetchUrl, $updateDir)
 	{
-		$zip = $this->fetchUpdate($fetchUrl, $updateDir);
+		$zip = $this->fetchUpdate($fetchUrl, $updateDir, date('Y-m-d/1'));
 		if ( ! $zip) {
 			return false;
 		}
@@ -92,7 +92,7 @@ EOT
 
 	private function executeContentUpdate($fetchUrl, $updateDir)
 	{
-		$zip = $this->fetchUpdate($fetchUrl, $updateDir);
+		$zip = $this->fetchUpdate($fetchUrl, $updateDir, time());
 		if ( ! $zip) {
 			return false;
 		}
@@ -120,9 +120,10 @@ EOT
 	}
 
 	/** @return \ZipArchive */
-	private function fetchUpdate($fetchUrl, $updateDir)
+	private function fetchUpdate($fetchUrl, $updateDir, $now)
 	{
-		$lastmod = trim(file_get_contents("$updateDir/.last"));
+		$lastmodFile = "$updateDir/.last";
+		$lastmod = file_exists($lastmodFile) ? trim(file_get_contents($lastmodFile)) : $now;
 		$url = "$fetchUrl/$lastmod";
 		$this->output->writeln("Fetching update from $url");
 		$browser = $this->getContainer()->get('buzz');
