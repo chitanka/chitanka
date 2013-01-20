@@ -115,6 +115,8 @@ EOT
 		$updater->extractArchive($zip);
 		// update app/config/parameters.yml if needed
 		$this->clearCache();
+		// make sure cache dir is world-writable (somehow the 0000 umask is sometimes not enough)
+		chmod("$rootDir/app/cache/prod", 0777);
 		$updater->unlockFrontController();
 		return true;
 	}
