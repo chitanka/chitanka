@@ -97,7 +97,7 @@ class CacheFile {
 }
 
 // uncomment to enter maintenance mode
-// DO NOT remove this line - it is used by the auto-update command
+// DO NOT remove next line - it is used by the auto-update command
 //exitWithMessage('maintenance');
 
 $cache = new Cache($_SERVER['REQUEST_URI'], __DIR__.'/../app/cache/prod/simple_http_cache');

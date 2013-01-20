@@ -116,7 +116,7 @@ EOT
 		// update app/config/parameters.yml if needed
 		$this->runCommand('cache:clear');
 		$this->runCommand('cache:create-cache-class');
-		// make sure cache dir is world-writable (somehow the 0000 umask is sometimes not enough)
+		// make sure cache dir is world-writable (the 0000 umask is sometimes not enough)
 		chmod("$rootDir/app/cache/prod", 0777);
 		$updater->unlockFrontController();
 		return true;
