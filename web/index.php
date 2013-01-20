@@ -1,4 +1,12 @@
 <?php
+function exitWithMessage($template = 'error', $retryAfter = 300) {
+	header('HTTP/1.0 503 Service Temporarily Unavailable');
+	header('Status: 503 Service Temporarily Unavailable');
+	header("Retry-After: $retryAfter");
+	readfile(__DIR__ . "/$template.html");
+	exit;
+}
+
 function isCacheable() {
 	return $_SERVER['REQUEST_METHOD'] == 'GET' && !array_key_exists('mlt', $_COOKIE);
 }
@@ -88,6 +96,10 @@ class CacheFile {
 	}
 }
 
+// uncomment to enter maintenance mode
+// DO NOT remove this line - it is used by the auto-update command
+//exitWithMessage('maintenance');
+
 $cache = new Cache($_SERVER['REQUEST_URI'], __DIR__.'/../app/cache/prod/simple_http_cache');
 
 if (isCacheable() && null !== ($cachedContent = $cache->get())) {
@@ -121,8 +133,7 @@ register_shutdown_function(function(){
 			exit;
 		}
 		ob_clean();
-		header('HTTP/1.1 503 Service Unavailable');
-		readfile(__DIR__ . '/503.html');
+		exitWithMessage('error');
 	}
 });
 
