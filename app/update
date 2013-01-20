@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+$console = __DIR__.'/console';
+$_SERVER['argv'] = array(
+	$console,
+	'auto-update',
+	'--env=prod',
+);
+ob_start();
+require $console;
