@@ -114,16 +114,16 @@ EOT
 		$updater->lockFrontController();
 		$updater->extractArchive($zip);
 		// update app/config/parameters.yml if needed
-		$this->clearCache();
+		$this->runCommand('cache:clear');
+		$this->runCommand('cache:create-cache-class');
 		// make sure cache dir is world-writable (somehow the 0000 umask is sometimes not enough)
 		chmod("$rootDir/app/cache/prod", 0777);
 		$updater->unlockFrontController();
 		return true;
 	}
 
-	private function clearCache()
+	private function runCommand($commandName)
 	{
-		$commandName = 'cache:clear';
 		$command = $this->getApplication()->find($commandName);
 		$arguments = array('command' => $commandName);
 		return $command->run(new ArrayInput($arguments), $this->output);
