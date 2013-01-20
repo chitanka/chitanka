@@ -132,7 +132,11 @@ EOT
 	private function fetchUpdate($fetchUrl, $updateDir, $now)
 	{
 		$lastmodFile = "$updateDir/.last";
-		$lastmod = file_exists($lastmodFile) ? trim(file_get_contents($lastmodFile)) : $now;
+		if ( ! file_exists($lastmodFile)) {
+			file_put_contents($lastmodFile, $now);
+			return false;
+		}
+		$lastmod = trim(file_get_contents($lastmodFile));
 		$url = "$fetchUrl/$lastmod";
 		$this->output->writeln("Fetching update from $url");
 		$browser = $this->getContainer()->get('buzz');
