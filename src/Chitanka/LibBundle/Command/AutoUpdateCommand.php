@@ -99,8 +99,8 @@ EOT
 		if ( ! $zip) {
 			return false;
 		}
-		$updater = new FileUpdater();
-		$updater->extractArchive($updateDir, $contentDir);
+		$updater = new FileUpdater($contentDir, $updateDir);
+		$updater->extractArchive($zip);
 		return true;
 	}
 
