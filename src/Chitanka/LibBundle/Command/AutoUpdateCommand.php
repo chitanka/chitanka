@@ -4,10 +4,12 @@ namespace Chitanka\LibBundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Chitanka\LibBundle\Legacy\Legacy;
 use Chitanka\LibBundle\Service\Mutex;
-use Chitanka\LibBundle\Service\DirectoryCopier;
+use Chitanka\LibBundle\Service\DbUpdater;
+use Chitanka\LibBundle\Service\FileUpdater;
+use Chitanka\LibBundle\Service\SourceUpdater;
 
 class AutoUpdateCommand extends CommonDbCommand
 {
@@ -33,7 +35,8 @@ EOT
 		$this->output = $output;
 
 		$container = $this->getContainer();
-		$updateDir = $container->getParameter('kernel.root_dir').'/../update';
+		$rootDir = $container->getParameter('kernel.root_dir').'/..';
+		$updateDir = "$rootDir/update";
 		$mutex = new Mutex($updateDir);
 		if ( ! $mutex->acquireLock()) {
 			return;
@@ -43,13 +46,13 @@ EOT
 			sleep(rand(0, 30));
 		}
 		if ($input->getOption('skip-content') === false) {
-			$this->executeContentUpdate($container->getParameter('update_content_url'), "$updateDir/content");
+			$this->executeContentUpdate($container->getParameter('update_content_url'), "$updateDir/content", $this->contentDir());
 		}
 		if ($input->getOption('skip-db') === false) {
 			$this->executeDbUpdate($container->getParameter('update_db_url'), "$updateDir/db");
 		}
 		if ($input->getOption('skip-src') === false) {
-			$this->executeSrcUpdate($container->getParameter('update_src_url'), "$updateDir/src");
+			$this->executeSrcUpdate($container->getParameter('update_src_url'), "$updateDir/src", $rootDir);
 		}
 		$mutex->releaseLock();
 
@@ -90,33 +93,39 @@ EOT
 		return new \SqlImporter($dsn, $dbuser, $dbpassword);
 	}
 
-	private function executeContentUpdate($fetchUrl, $updateDir)
+	private function executeContentUpdate($fetchUrl, $updateDir, $contentDir)
 	{
 		$zip = $this->fetchUpdate($fetchUrl, $updateDir, time());
 		if ( ! $zip) {
 			return false;
 		}
-		$extractDir = sys_get_temp_dir().'/chitanka-content-'.time();
-		mkdir($extractDir);
-		$zip->extractTo($extractDir);
-		$zip->close();
-
-		$copier = new DirectoryCopier;
-		$copier->copy($extractDir, $this->contentDir());
-
-		foreach (file("$extractDir/.deleted", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $filename) {
-			unlink($this->contentDir($filename));
-		}
-
-		copy("$extractDir/.last", "$updateDir/.last");
-
+		$updater = new FileUpdater();
+		$updater->extractArchive($updateDir, $contentDir);
 		return true;
 	}
 
-	// TODO
-	private function executeSrcUpdate($fetchUrl, $updateDir)
+	private function executeSrcUpdate($fetchUrl, $updateDir, $rootDir)
 	{
+		$zip = $this->fetchUpdate($fetchUrl, $updateDir, time());
+		if ( ! $zip) {
+			return false;
+		}
+		$updater = new SourceUpdater($rootDir, $updateDir);
+		$updater->lockFrontController();
+		$updater->extractArchive($zip);
+		$updater->clearCache();
+		// update app/config/parameters.yml if needed
+		$this->warmupCache();
+		$updater->unlockFrontController();
 		return true;
+	}
+
+	private function warmupCache()
+	{
+		$commandName = 'cache:warmup';
+		$command = $this->getApplication()->find($commandName);
+		$arguments = array('command' => $commandName);
+		return $command->run(new ArrayInput($arguments), $this->output);
 	}
 
 	/** @return \ZipArchive */
