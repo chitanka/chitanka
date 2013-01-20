@@ -47,6 +47,9 @@ class AppKernel extends Kernel
 
 	public function registerContainerConfiguration(LoaderInterface $loader)
 	{
+		// allow generated files (cache, logs) to be world-writable
+		umask(0000);
+
 		$loader->load($this->getConfigurationFile($this->getEnvironment()));
 	}
 

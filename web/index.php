@@ -99,9 +99,6 @@ if (isCacheable() && null !== ($cachedContent = $cache->get())) {
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
-// allow generated files (cache, logs) to be world-writable
-umask(0000);
-
 $rootDir = __DIR__.'/..';
 require_once $rootDir.'/app/bootstrap.php.cache';
 

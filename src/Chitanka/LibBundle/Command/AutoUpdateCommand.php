@@ -25,7 +25,7 @@ class AutoUpdateCommand extends CommonDbCommand
 			->addOption('skip-db', null, InputOption::VALUE_NONE, 'Skip database update')
 			->addOption('skip-src', null, InputOption::VALUE_NONE, 'Skip software update')
 			->setHelp(<<<EOT
-The <info>auto-update</info> auto-update the whole system - software, database, and content.
+The <info>auto-update</info> updates the whole system - software, database, and content.
 EOT
 		);
 	}
@@ -113,16 +113,15 @@ EOT
 		$updater = new SourceUpdater($rootDir, $updateDir);
 		$updater->lockFrontController();
 		$updater->extractArchive($zip);
-		$updater->clearCache();
 		// update app/config/parameters.yml if needed
-		$this->warmupCache();
+		$this->clearCache();
 		$updater->unlockFrontController();
 		return true;
 	}
 
-	private function warmupCache()
+	private function clearCache()
 	{
-		$commandName = 'cache:warmup';
+		$commandName = 'cache:clear';
 		$command = $this->getApplication()->find($commandName);
 		$arguments = array('command' => $commandName);
 		return $command->run(new ArrayInput($arguments), $this->output);

@@ -36,11 +36,4 @@ header('Retry-After: 60');
 PHP;
 	}
 
-	public function clearCache()
-	{
-		foreach (array('prod', 'dev') as $env) {
-			$this->rmdir("$this->rootDir/app/cache/$env");
-		}
-	}
-
 }
