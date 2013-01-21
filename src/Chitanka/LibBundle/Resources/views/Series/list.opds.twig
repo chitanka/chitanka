@@ -6,6 +6,7 @@
 		<id>{{ helper.urn('series_show', [serie.slug]) }}</id>
 		{{ helper.link(helper.url('series_show', {'slug': serie.slug})) }}
 		<content type="html">
+			{% filter escape %}
 			<dl>
 				{% if serie.orig_name is defined %}
 					<dt>Оригинално име</dt>
@@ -14,6 +15,7 @@
 				<dt>Автор</dt>
 				<dd>{{ text_lister.author_list(serie.authors, ' ', 'opds') }}</dd>
 			</dl>
+			{% endfilter %}
 		</content>
 	</entry>
 {% endfor %}
