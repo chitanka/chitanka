@@ -753,7 +753,7 @@ class Book extends BaseWork
 				continue;
 			}
 			$lineParts = explode("\t", $line);
-			if (count($lineParts) == 1 || ($lineParts[1] && $lineParts[1][0] != '{')) {
+			if (count($lineParts) == 1) {
 				$sfb .= $line . SfbConverter::EOL;
 				continue;
 			}
@@ -788,6 +788,8 @@ class Book extends BaseWork
 					}
 				}
 				$sfb .= $div;
+			} else {
+				$sfb .= $line . SfbConverter::EOL;
 			}
 		}
 
