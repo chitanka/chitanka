@@ -121,6 +121,11 @@ class User /*extends BaseUser*/ implements UserInterface
 	private $token;
 
 
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	private $is_active = true;
+
 	/** FIXME doctrine:schema:create does not allow this relation
 	* @var array
 	* @ORM\ManyToMany(targetEntity="Text", mappedBy="readers")

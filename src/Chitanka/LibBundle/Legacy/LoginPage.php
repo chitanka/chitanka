@@ -27,7 +27,7 @@ class LoginPage extends RegisterPage {
 
 			return $this->buildContent();
 		}
-		$user = $this->controller->getRepository('User')->findOneBy(array('username' => $this->username));
+		$user = $this->controller->getRepository('User')->findOneBy(array('username' => $this->username, 'is_active' => 1));
 		if ( ! $user) {
 			$this->addMessage("Не съществува потребител с име <strong>$this->username</strong>.", true );
 
