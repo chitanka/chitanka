@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Chitanka\LibBundle\Service\Mutex;
 use Chitanka\LibBundle\Service\DbUpdater;
 use Chitanka\LibBundle\Service\FileUpdater;
@@ -114,8 +115,12 @@ EOT
 		$updater->lockFrontController();
 		$updater->extractArchive($zip);
 		// update app/config/parameters.yml if needed
-		$this->runCommand('cache:clear');
-		$this->runCommand('cache:create-cache-class');
+		try {
+			$this->runCommand('cache:clear');
+			$this->runCommand('cache:create-cache-class');
+		} catch (IOException $e) {
+			error_log("Auto-update: ".$e->getMessage());
+		}
 		// make sure cache dir is world-writable (the 0000 umask is sometimes not enough)
 		chmod("$rootDir/app/cache/prod", 0777);
 		$updater->unlockFrontController();
