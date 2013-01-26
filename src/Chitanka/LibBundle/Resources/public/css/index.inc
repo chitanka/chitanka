@@ -20,8 +20,16 @@ function getCombiFile($source)
 
 	ob_start();
 	require dirname(__FILE__) . "/main.css";
-	$out .= ob_get_contents() . "\n";
-	ob_end_clean();
+
+	$parts = array_slice(explode(',', $_GET['o']), 2);
+	foreach ($parts as $part) {
+		$cssfile = dirname(__FILE__) . "/$part.css";
+		if (file_exists($cssfile)) {
+			include $cssfile;
+		}
+	}
+
+	$out .= ob_get_clean() . "\n";
 
 	return $out;
 }
