@@ -1,9 +1,9 @@
 #!/usr/bin/env php
 <?php
 
-// if you don't want to setup permissions the proper way, just uncomment the following PHP line
 // read http://symfony.com/doc/current/book/installation.html#configuration-and-setup for more information
-//umask(0000);
+// allow generated files (cache, logs) to be world-writable
+umask(0000);
 
 if (ob_get_level()) {
 	ob_end_clean();
