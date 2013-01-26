@@ -8,17 +8,11 @@
 	".js" is automatically appended.
 */
 
-$query = $_SERVER['QUERY_STRING'];
-
-if (strpos(realpath(dirname(__FILE__)), 'LibBundle') === false) {
-	$cacheDir = dirname(__FILE__) . '/../cache'; // non-Symfony
-} else {
-	$cacheDir = __DIR__ . '/../../../../../../web/cache';
-}
+$query = sanitizeInput($_SERVER['QUERY_STRING']);
 
 // remove bad symbols from query
 $query = preg_replace( '![^\w\d,.:;=-]!', '', $query );
-$combiFile = "$cacheDir/js/$query"/* . @$_REQUEST['debug']*/;
+$combiFile = dirname(__FILE__) . '/../../../cache'.sanitizeInput($_SERVER['REQUEST_URI']);
 
 if ( ! file_exists($combiFile) ) {
 	createCombiFile($query, $combiFile);
@@ -57,4 +51,9 @@ function createCombiFile($query, $combiName)
 		mkdir($dir, 0777, true);
 	}
 	file_put_contents($combiName, $out);
+}
+
+function sanitizeInput($input) {
+	$input = strtr($input, array('..' => '.'));
+	return $input;
 }

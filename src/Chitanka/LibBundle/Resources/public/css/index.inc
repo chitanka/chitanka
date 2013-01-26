@@ -56,3 +56,8 @@ function minifyStyle($content)
 	$content = preg_replace('/; *}/', '}', $content);
 	return $content;
 }
+
+function sanitizeInput($input) {
+	$input = strtr($input, array('..' => '.'));
+	return $input;
+}

@@ -18,16 +18,10 @@
 
 require dirname(__FILE__) . '/index.inc';
 
-if (strpos(realpath(dirname(__FILE__)), 'LibBundle') === false) {
-	$cacheDir = dirname(__FILE__) . '/../cache'; // non-Symfony
-} else {
-	$cacheDir = __DIR__ . '/../../../../../../web/cache';
-}
-
-$query = $_SERVER['QUERY_STRING'];
+$query = sanitizeInput($_SERVER['QUERY_STRING']);
 // remove bad symbols from query
 $query = preg_replace( '![^\w\d,.:;=-]!', '', $query );
-$combiFile =  "$cacheDir/css/$query";
+$combiFile = dirname(__FILE__) . '/../../../cache'.sanitizeInput($_SERVER['REQUEST_URI']);
 
 if ( ! file_exists($combiFile) ) {
 	createCombiFile($query, $combiFile);
