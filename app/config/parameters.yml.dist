@@ -24,8 +24,8 @@ parameters:
     #assets_base_urls: http://chitanka.local
     assets_base_urls: ~
 
-    #style_url:  http://chitanka.local/css/FILE.css
-    style_url:  /css/FILE.css
+    #style_url:  http://chitanka.local/bundles/lib/css/FILE.css
+    style_url:  /bundles/lib/css/FILE.css
 
     # Следните променливи се ползват при пращането на електронна поща
     admin:              Администратор
