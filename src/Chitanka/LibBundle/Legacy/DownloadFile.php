@@ -447,6 +447,7 @@ class DownloadFile
 	private function createWorkFileName(BaseWork $work, $format = '')
 	{
 		$filename = File::cleanFileName( Char::cyr2lat($work->getNameForFile()) );
+		$filename = substr($filename, 0, 150);
 		if ($format !== '') {
 			$filename .= ".$format";
 		}
