@@ -8,6 +8,8 @@ use Symfony\Component\Security\Encoder\MessageDigestPasswordEncoder;
 
 class SecurityController extends Controller
 {
+	protected $responseAge = 0;
+
 	public function loginAction()
 	{
 		return $this->legacyPage('Login');
