@@ -46,14 +46,14 @@ EOT
 			// this will spread check requests from mirrors in time
 			sleep(rand(0, 30));
 		}
+		if ($input->getOption('skip-src') === false) {
+			$this->executeSrcUpdate($container->getParameter('update_src_url'), "$updateDir/src", $rootDir);
+		}
 		if ($input->getOption('skip-content') === false) {
 			$this->executeContentUpdate($container->getParameter('update_content_url'), "$updateDir/content", $this->contentDir());
 		}
 		if ($input->getOption('skip-db') === false) {
 			$this->executeDbUpdate($container->getParameter('update_db_url'), "$updateDir/db");
-		}
-		if ($input->getOption('skip-src') === false) {
-			$this->executeSrcUpdate($container->getParameter('update_src_url'), "$updateDir/src", $rootDir);
 		}
 		$mutex->releaseLock();
 
