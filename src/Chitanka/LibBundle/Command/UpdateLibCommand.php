@@ -41,9 +41,12 @@ EOT
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		$this->input = $input;
+		$this->output = $output;
+
 		$this->saveFiles = $input->getOption('save') === true;
 		$this->dumpSql = $input->getOption('dump-sql') === true;
-		$queries = $this->conquerTheWorld($input, $output, $this->getContainer()->get('doctrine.orm.default_entity_manager'));
+		$queries = $this->conquerTheWorld($this->getContainer()->get('doctrine.orm.default_entity_manager'));
 
 		$this->printQueries($queries);
 
@@ -65,12 +68,12 @@ EOT
 		$this->errors = array();
 	}
 
-	function conquerTheWorld(InputInterface $input, OutputInterface $output, $em)
+	private function conquerTheWorld($em)
 	{
 		$this->defineVars($em);
 
 		$queries = array();
-		$dir = $input->getArgument('input');
+		$dir = $this->input->getArgument('input');
 		if (count(glob("$dir/*.data")) == 0) {
 			foreach (glob("$dir/*", GLOB_ONLYDIR) as $dir) {
 				$queries = array_merge($queries, $this->processPacket($dir));
@@ -499,7 +502,7 @@ EOT
 				$fullText = $work['tmpl'];
 				foreach ($work['text'] as $key => $textFile) {
 					$entryFile = dirname("$this->contentDir/text/$path") . "/$key";
-					self::copyTextFile($textFile, $entryFile);
+					$this->copyTextFile($textFile, $entryFile);
 
 					$fullText = str_replace("\t{file:$key}", String::my_replace(file_get_contents($textFile)), $fullText);
 				}
@@ -511,16 +514,16 @@ EOT
 				unlink($tmpname);
 			} else if (isset($work['text'])) {
 				$entryFile = "$this->contentDir/text/$path";
-				self::copyTextFile($work['text'], $entryFile);
+				$this->copyTextFile($work['text'], $entryFile);
 				if (isset($work['toc_level'])) {
 					$qs = array_merge($qs, $this->buildTextHeadersUpdateQuery($entryFile, $work['id'], $work['toc_level']));
 				}
 			}
 			if (isset($work['anno'])) {
-				self::copyTextFile($work['anno'], "$this->contentDir/text-anno/$path");
+				$this->copyTextFile($work['anno'], "$this->contentDir/text-anno/$path");
 			}
 			if (isset($work['info'])) {
-				self::copyTextFile($work['info'], "$this->contentDir/text-info/$path");
+				$this->copyTextFile($work['info'], "$this->contentDir/text-info/$path");
 			}
 			if (isset($work['img'])) {
 				$dir = "$this->contentDir/img/$path";
@@ -627,10 +630,10 @@ EOT
 				File::myfile_put_contents("$this->contentDir/book/$path", String::my_replace($book['tmpl']));
 			}
 			if (isset($book['anno'])) {
-				self::copyTextFile($book['anno'], "$this->contentDir/book-anno/$path");
+				$this->copyTextFile($book['anno'], "$this->contentDir/book-anno/$path");
 			}
 			if (isset($book['info'])) {
-				self::copyTextFile($book['info'], "$this->contentDir/book-info/$path");
+				$this->copyTextFile($book['info'], "$this->contentDir/book-info/$path");
 			}
 			if (isset($book['cover'])) {
 				self::copyFile($book['cover'], "$this->contentDir/book-cover/$path.jpg");
@@ -662,7 +665,7 @@ QUERY
 		);
 	}
 
-	static private function copyTextFile($source, $dest, $replaceChars = true)
+	private function copyTextFile($source, $dest, $replaceChars = true)
 	{
 		if (filesize($source) == 0) {
 			unlink($dest);
@@ -670,10 +673,12 @@ QUERY
 		}
 		$contents = file_get_contents($source);
 		if ($replaceChars) {
-			$contents = String::my_replace($contents);
-		}
-		if (empty($contents)) {
-			throw new \Exception(sprintf('CharReplace failed by %s', $source));
+			$enhancedContents = String::my_replace($contents);
+			if (empty($enhancedContents)) {
+				$this->output->writeln(sprintf('<error>CharReplace failed by %s</error>', $source));
+			} else {
+				$contents = $enhancedContents;
+			}
 		}
 		File::myfile_put_contents($dest, $contents);
 	}
