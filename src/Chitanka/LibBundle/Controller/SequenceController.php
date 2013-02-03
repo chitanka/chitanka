@@ -40,7 +40,7 @@ class SequenceController extends Controller
 		$slug = String::slugify($slug);
 		$sequence = $this->getSequenceRepository()->findBySlug($slug);
 		if ($sequence === null) {
-			throw new NotFoundHttpException("Няма издателска поредица с код $slug.");
+			throw new NotFoundHttpException("Няма поредица с код $slug.");
 		}
 
 		$this->view = array(

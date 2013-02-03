@@ -546,7 +546,7 @@ EOT
 		$id = $this->db->getFields(DBT_SERIES, array('slug' => trim($name)), 'id');
 
 		if ( empty($id) ) {
-			$this->errors[] = "Поредицата $name не съществува";
+			$this->errors[] = "Серията $name не съществува";
 		}
 
 		return $id;

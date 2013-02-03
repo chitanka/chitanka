@@ -1,11 +1,11 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
 {% set title = '<a class="selflink" data-edit="' ~ path('admin_series_edit', {'id': series.id}) ~'">'~ series.name ~'</a>' %}
-{% set subtitle = 'поредица' %}
+{% set subtitle = 'серия' %}
 {% block content %}
 	{% import 'LibBundle::text.html.twig' as text_lister %}
 	<ul class="breadcrumbs" itemprop="breadcrumb">
-		<li><a href="{{ path('series') }}">Поредици</a></li>
+		<li><a href="{{ path('series') }}">Серии</a></li>
 		<li><a href="{{ path('series_by_alpha', {'letter': series.name|first_char}) }}">{{ series.name|first_char }}</a></li>
 		<li><em>{{ series.name }}</em> {{ text_lister.author_list(series.authors) }}</li>
 	</ul>

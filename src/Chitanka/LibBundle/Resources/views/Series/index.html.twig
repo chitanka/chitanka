@@ -1,9 +1,9 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title = 'Поредици' %}
+{% set title = 'Серии' %}
 {% block head %}
 	{{ parent() }}
-	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('series_search', {'_format': 'osd'}) }}" title="Търсене по поредици в Моята библиотека" />
+	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('series_search', {'_format': 'osd'}) }}" title="Търсене по серии в Моята библиотека" />
 {% endblock %}
 {% block content %}
 	{% include 'LibBundle:Series:navigation.html.twig' with {'letter': ''} %}

@@ -38,7 +38,7 @@
 		{% endif %}
 	</div>
 	{% if text.seeries is defined %}
-		<div>Поредица: {{ link.series(text.series) }}{% if text.sernr is defined %}, № {{ text.sernr }}{% endif %}</div>
+		<div>Серия: {{ link.series(text.series) }}{% if text.sernr is defined %}, № {{ text.sernr }}{% endif %}</div>
 	{% endif %}
 	<div>Форма: {{ ('text.type.singular.'~text.type) | trans }}</div>
 	<div>Сваляне: {{ _self.download_links(text) }}</div>

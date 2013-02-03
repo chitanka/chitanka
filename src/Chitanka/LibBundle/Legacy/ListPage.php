@@ -199,7 +199,7 @@ class TitleList extends ObjectList {
 			'author' => 'Автор',
 			'title' => 'Заглавие',
 			//'sernr' => '',
-			'series' => 'Поредица',
+			'series' => 'Серия',
 			'translator' => 'Преводач',
 			'year' => 'Година',
 			'orig_title' => 'Оригинално заглавие',

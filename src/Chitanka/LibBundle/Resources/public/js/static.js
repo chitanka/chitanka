@@ -2,7 +2,7 @@ var actionNames = {
 	"author" : "Автор",
 	"translator" : "Преводач",
 	"text" : "Заглавие",
-	"series" : "Поредица",
+	"series" : "Серия",
 	"book" : "Книга",
 	"label" : "Етикет"
 };

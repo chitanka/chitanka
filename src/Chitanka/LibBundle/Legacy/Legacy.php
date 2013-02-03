@@ -85,7 +85,7 @@ class Legacy
 	static private $seriesTypes = array(
 		// code => array(singular, plural, sing. article, pl. article)
 		'newspaper' => array('вестник', 'вестници', 'вестника', 'вестниците'),
-		'series' => array('поредица', 'поредици', 'поредицата', 'поредиците'),
+		'series' => array('серия', 'серии', 'серията', 'сериите'),
 		'collection' => array('сборник', 'сборници', 'сборника', 'сборниците'),
 		'poetry' => array('стихосбирка', 'стихосбирки', 'стихосбирката', 'стихосбирките'),
 	);

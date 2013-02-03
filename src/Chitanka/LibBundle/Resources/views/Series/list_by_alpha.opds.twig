@@ -5,7 +5,7 @@
 {% set id = helper.urn(current_route, self_route_params) %}
 {% set link_self = helper.url(current_route, self_route_params) %}
 {% set link_up = helper.url('series') %}
-{% set title = 'Поредици: ' ~ (letter == '-' ? 'Всички' : letter) %}
+{% set title = 'Серии: ' ~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
 	{% include 'LibBundle::pager.opds.twig' %}
 	{% include 'LibBundle:Series:list.opds.twig' %}

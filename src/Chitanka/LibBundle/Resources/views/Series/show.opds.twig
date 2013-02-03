@@ -3,7 +3,7 @@
 
 {% set link_self = helper.url(current_route, {'slug': series.slug}) %}
 {% set title = series.name %}
-{% set subtitle = 'поредица' %}
+{% set subtitle = 'серия' %}
 {% block content %}
 	{% for text in texts %}
 		{% include 'LibBundle:Text:item.opds.twig' with {"show_sernr": true} %}
