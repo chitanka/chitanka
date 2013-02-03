@@ -145,8 +145,13 @@ EOT
 		$lastmod = trim(file_get_contents($lastmodFile));
 		$url = "$fetchUrl/$lastmod";
 		$this->output->writeln("Fetching update from $url");
+
 		$browser = $this->getContainer()->get('buzz');
-		$browser->getClient()->setTimeout(1200);
+		$client = new \Chitanka\LibBundle\Service\ResumeCurlClient();
+		$client->setSaveDir($updateDir);
+		$browser->setClient($client);
+		$browser->addListener($client);
+
 		$response = $browser->get($url, array('User-Agent: Mylib (http://chitanka.info)'));
 		if ($response->isRedirection()) { // most probably not modified - 304
 			return false;
