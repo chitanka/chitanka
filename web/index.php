@@ -100,7 +100,7 @@ class CacheFile {
 // DO NOT remove next line - it is used by the auto-update command
 //exitWithMessage('maintenance');
 
-$cache = new Cache($_SERVER['REQUEST_URI'], __DIR__.'/../app/cache/prod/simple_http_cache');
+$cache = new Cache($_SERVER['REQUEST_URI'], __DIR__.'/../app/cache/simple_http_cache');
 
 if (isCacheable() && null !== ($cachedContent = $cache->get())) {
 	header("Cache-Control: public, max-age=".$cachedContent['ttl']);
