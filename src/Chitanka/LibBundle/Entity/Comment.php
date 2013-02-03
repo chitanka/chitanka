@@ -15,9 +15,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class Comment extends BaseComment implements SignedCommentInterface
 {
 	/**
-	 * @ORM\Id
 	 * @ORM\Column(type="integer")
-	 * @ORM\GeneratedValue(strategy="AUTO")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="CUSTOM")
+	 * @ORM\CustomIdGenerator(class="Chitanka\LibBundle\Doctrine\CustomIdGenerator")
 	 */
 	protected $id;
 

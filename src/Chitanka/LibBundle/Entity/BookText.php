@@ -15,9 +15,11 @@ use Doctrine\ORM\Mapping as ORM;
 class BookText extends Entity
 {
 	/**
-	* @var integer $id
-	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
-	*/
+	 * @ORM\Column(type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="CUSTOM")
+	 * @ORM\CustomIdGenerator(class="Chitanka\LibBundle\Doctrine\CustomIdGenerator")
+	 */
 	private $id;
 
 	/**

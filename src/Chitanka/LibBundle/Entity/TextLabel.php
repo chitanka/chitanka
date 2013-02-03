@@ -16,9 +16,11 @@ use Doctrine\ORM\Mapping as ORM;
 class TextLabel extends Entity
 {
 	/**
-	* @var integer
-	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue(strategy="AUTO")
-	*/
+	 * @ORM\Column(type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="CUSTOM")
+	 * @ORM\CustomIdGenerator(class="Chitanka\LibBundle\Doctrine\CustomIdGenerator")
+	 */
 	private $id;
 
 	/**

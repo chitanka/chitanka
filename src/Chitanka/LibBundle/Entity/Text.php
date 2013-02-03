@@ -31,9 +31,11 @@ use Sfblib_SfbToFb2Converter as SfbToFb2Converter;
 class Text extends BaseWork
 {
 	/**
-	* @var integer $id
-	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
-	*/
+	 * @ORM\Column(type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="CUSTOM")
+	 * @ORM\CustomIdGenerator(class="Chitanka\LibBundle\Doctrine\CustomIdGenerator")
+	 */
 	protected $id;
 
 	/**

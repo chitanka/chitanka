@@ -18,9 +18,11 @@ use Chitanka\LibBundle\Util\String;
 class Sequence extends Entity
 {
 	/**
-	* @var integer $id
-	* @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
-	*/
+	 * @ORM\Column(type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="CUSTOM")
+	 * @ORM\CustomIdGenerator(class="Chitanka\LibBundle\Doctrine\CustomIdGenerator")
+	 */
 	private $id;
 
 	/**
