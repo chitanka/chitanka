@@ -12,7 +12,7 @@ use Buzz\Message\RequestInterface;
 class ResumeCurlClient extends Curl implements ListenerInterface
 {
 
-    protected $timeout = 1800;
+	protected $timeout = 1800;
 	private $headers = array();
 	private $saveDir;
 	private $saveFile;
