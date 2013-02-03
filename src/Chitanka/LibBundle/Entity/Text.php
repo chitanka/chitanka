@@ -1189,7 +1189,6 @@ EOS;
 		'Психология' => 'sci_psychology',
 		'Психофактор' => 'sci_philosophy',
 		'Пътешествия' => 'adv_geo',
-		'Разказ с (не)очакван край' => 'prose',
 		'Реализъм' => array('sci_culture', 'design'),
 		'Религия' => 'religion_rel',
 		'Ренесанс' => 'sci_history',
@@ -1243,7 +1242,7 @@ EOS;
 		if (empty($genres)) {
 			switch ($this->getType()) {
 				case 'poetry': $genres[] = 'poetry'; break;
-				default:       $genres[] = 'prose';
+				default:       $genres[] = 'prose_contemporary';
 			}
 		}
 		return $genres;
