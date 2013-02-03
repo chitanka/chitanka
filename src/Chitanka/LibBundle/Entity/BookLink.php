@@ -21,21 +21,21 @@ class BookLink extends Entity
 	private $id;
 
 	/**
-	* @var integer
-	* @ORM\ManyToOne(targetEntity="Book", inversedBy="links")
-	*/
+	 * @var integer
+	 * @ORM\ManyToOne(targetEntity="Book", inversedBy="links")
+	 */
 	private $book;
 
 	/**
-	* @var integer
-	* @ORM\ManyToOne(targetEntity="BookSite")
-	*/
+	 * @var integer
+	 * @ORM\ManyToOne(targetEntity="BookSite")
+	 */
 	private $site;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=50)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=50)
+	 */
 	private $code;
 
 	public function getId() { return $this->id; }

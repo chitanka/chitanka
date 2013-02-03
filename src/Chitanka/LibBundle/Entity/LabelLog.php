@@ -23,45 +23,45 @@ class LabelLog extends Entity
 	private $id;
 
 	/**
-	* @var integer $text
-	* @ORM\ManyToOne(targetEntity="Text")
-	*/
+	 * @var integer $text
+	 * @ORM\ManyToOne(targetEntity="Text")
+	 */
 	private $text;
 
 	/**
-	* @var integer $user
-	* @ORM\ManyToOne(targetEntity="User")
-	*/
+	 * @var integer $user
+	 * @ORM\ManyToOne(targetEntity="User")
+	 */
 	private $user;
 
 	/**
-	* @var string $title
-	* @ORM\Column(type="string", length=100)
-	*/
+	 * @var string $title
+	 * @ORM\Column(type="string", length=100)
+	 */
 	private $title;
 
 	/**
-	* @var string $author
-	* @ORM\Column(type="string", length=200)
-	*/
+	 * @var string $author
+	 * @ORM\Column(type="string", length=200)
+	 */
 	private $author;
 
 	/**
-	* @var string $action
-	* @ORM\Column(type="string", length=1)
-	*/
+	 * @var string $action
+	 * @ORM\Column(type="string", length=1)
+	 */
 	private $action;
 
 	/**
-	* @var string $labels
-	* @ORM\Column(type="string", length=255)
-	*/
+	 * @var string $labels
+	 * @ORM\Column(type="string", length=255)
+	 */
 	private $labels;
 
 	/**
-	* @var datetime $time
-	* @ORM\Column(type="datetime")
-	*/
+	 * @var datetime $time
+	 * @ORM\Column(type="datetime")
+	 */
 	private $time;
 
 	public function getId() { return $this->id; }

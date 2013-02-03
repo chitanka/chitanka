@@ -23,27 +23,27 @@ class BookRevision extends Entity
 	private $id;
 
 	/**
-	* @var integer
-	* @ORM\ManyToOne(targetEntity="Book")
-	*/
+	 * @var integer
+	 * @ORM\ManyToOne(targetEntity="Book")
+	 */
 	private $book;
 
 	/**
-	* @var string $comment
-	* @ORM\Column(type="string", length=255)
-	*/
+	 * @var string $comment
+	 * @ORM\Column(type="string", length=255)
+	 */
 	private $comment;
 
 	/**
-	* @var datetime $date
-	* @ORM\Column(type="datetime")
-	*/
+	 * @var datetime $date
+	 * @ORM\Column(type="datetime")
+	 */
 	private $date;
 
 	/**
-	* @var boolean
-	* @ORM\Column(type="boolean")
-	*/
+	 * @var boolean
+	 * @ORM\Column(type="boolean")
+	 */
 	private $first;
 
 

@@ -21,15 +21,15 @@ class BookAuthor extends Entity
 	private $id;
 
 	/**
-	* @var integer $person
-	* @ORM\ManyToOne(targetEntity="Person")
-	*/
+	 * @var integer $person
+	 * @ORM\ManyToOne(targetEntity="Person")
+	 */
 	private $person;
 
 	/**
-	* @var integer $book
-	* @ORM\ManyToOne(targetEntity="Book", inversedBy="bookAuthors")
-	*/
+	 * @var integer $book
+	 * @ORM\ManyToOne(targetEntity="Book", inversedBy="bookAuthors")
+	 */
 	private $book;
 
 	public function getId() { return $this->id; }

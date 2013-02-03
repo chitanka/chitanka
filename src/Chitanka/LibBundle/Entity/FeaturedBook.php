@@ -19,33 +19,33 @@ class FeaturedBook extends Entity
 	private $id;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=100)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=100)
+	 */
 	private $title;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=100)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=100)
+	 */
 	private $author;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=255)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=255)
+	 */
 	private $url;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=255)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=255)
+	 */
 	private $cover;
 
 	/**
-	* @var string
-	* @ORM\Column(type="text", nullable=true)
-	*/
+	 * @var string
+	 * @ORM\Column(type="text", nullable=true)
+	 */
 	private $description;
 
 	public function getId() { return $this->id; }

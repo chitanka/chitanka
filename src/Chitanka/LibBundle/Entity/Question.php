@@ -19,62 +19,62 @@ class Question extends Entity
 	private $id;
 
 	/**
-	* @var string $question
-	* @ORM\Column(type="string", length=255)
-	*/
+	 * @var string $question
+	 * @ORM\Column(type="string", length=255)
+	 */
 	private $question;
 
 	/**
-	* @var string $answers
-	* @ORM\Column(type="string", length=255)
-	*/
+	 * @var string $answers
+	 * @ORM\Column(type="string", length=255)
+	 */
 	private $answers;
 
 	/**
-	* Get id
-	*
-	* @return integer $id
-	*/
+	 * Get id
+	 *
+	 * @return integer $id
+	 */
 	public function getId()
 	{
 		return $this->id;
 	}
 
 	/**
-	* Set question
-	*
-	* @param string $question
-	*/
+	 * Set question
+	 *
+	 * @param string $question
+	 */
 	public function setQuestion($question)
 	{
 		$this->question = $question;
 	}
 
 	/**
-	* Get question
-	*
-	* @return string $question
-	*/
+	 * Get question
+	 *
+	 * @return string $question
+	 */
 	public function getQuestion()
 	{
 		return $this->question;
 	}
 
 	/**
-	* Set answers
-	*
-	* @param string $answers
-	*/
+	 * Set answers
+	 *
+	 * @param string $answers
+	 */
 	public function setAnswers($answers)
 	{
 		$this->answers = $answers;
 	}
 
 	/**
-	* Get answers
-	*
-	* @return string $answers
-	*/
+	 * Get answers
+	 *
+	 * @return string $answers
+	 */
 	public function getAnswers()
 	{
 		return $this->answers;

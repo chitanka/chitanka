@@ -166,8 +166,8 @@ class TextRepository extends EntityRepository
 	}
 
 	/**
-	* RAW_SQL
-	*/
+	 * RAW_SQL
+	 */
 	public function countByLabel($labels)
 	{
 		return $this->_em->getConnection()->fetchColumn(sprintf('SELECT COUNT(DISTINCT tl.text_id) FROM text_label tl WHERE tl.label_id IN (%s)', implode(',', $labels)), array(), 0);
@@ -175,8 +175,8 @@ class TextRepository extends EntityRepository
 
 
 	/**
-	* RAW_SQL
-	*/
+	 * RAW_SQL
+	 */
 	public function deleteTextLabel($text, $label)
 	{
 		if ($text instanceof Text) {

@@ -22,27 +22,27 @@ class Bookmark extends Entity
 	private $id;
 
 	/**
-	* @var integer
-	* @ORM\ManyToOne(targetEntity="BookmarkFolder")
-	*/
+	 * @var integer
+	 * @ORM\ManyToOne(targetEntity="BookmarkFolder")
+	 */
 	private $folder;
 
 	/**
-	* @var integer
-	* @ORM\ManyToOne(targetEntity="Text")
-	*/
+	 * @var integer
+	 * @ORM\ManyToOne(targetEntity="Text")
+	 */
 	private $text;
 
 	/**
-	* @var integer
-	* @ORM\ManyToOne(targetEntity="User", inversedBy="bookmarks")
-	*/
+	 * @var integer
+	 * @ORM\ManyToOne(targetEntity="User", inversedBy="bookmarks")
+	 */
 	private $user;
 
 	/**
-	* @var date
-	* @ORM\Column(type="datetime")
-	*/
+	 * @var date
+	 * @ORM\Column(type="datetime")
+	 */
 	private $created_at;
 
 

@@ -25,57 +25,57 @@ class TextComment extends Entity
 	private $id;
 
 	/**
-	* @var integer $text
-	* @ORM\ManyToOne(targetEntity="Text")
-	*/
+	 * @var integer $text
+	 * @ORM\ManyToOne(targetEntity="Text")
+	 */
 	private $text;
 
 	/**
-	* @var string $rname
-	* @ORM\Column(type="string", length=100)
-	*/
+	 * @var string $rname
+	 * @ORM\Column(type="string", length=100)
+	 */
 	private $rname;
 
 	/**
-	* @var integer $user
-	* @ORM\ManyToOne(targetEntity="User")
-	*/
+	 * @var integer $user
+	 * @ORM\ManyToOne(targetEntity="User")
+	 */
 	private $user;
 
 	/**
-	* @var text
-	* @ORM\Column(type="text")
-	*/
+	 * @var text
+	 * @ORM\Column(type="text")
+	 */
 	private $content;
 
 	/**
-	* @var string $contenthash
-	* @ORM\Column(type="string", length=32)
-	*/
+	 * @var string $contenthash
+	 * @ORM\Column(type="string", length=32)
+	 */
 	private $contenthash;
 
 	/**
-	* @var datetime $time
-	* @ORM\Column(type="datetime")
-	*/
+	 * @var datetime $time
+	 * @ORM\Column(type="datetime")
+	 */
 	private $time;
 
 	/**
-	* @var string $ip
-	* @ORM\Column(type="string", length=15)
-	*/
+	 * @var string $ip
+	 * @ORM\Column(type="string", length=15)
+	 */
 	private $ip;
 
 	/**
-	* @var integer $replyto
-	* @ORM\ManyToOne(targetEntity="TextComment")
-	*/
+	 * @var integer $replyto
+	 * @ORM\ManyToOne(targetEntity="TextComment")
+	 */
 	private $replyto;
 
 	/**
-	* @var boolean $is_shown
-	* @ORM\Column(type="boolean")
-	*/
+	 * @var boolean $is_shown
+	 * @ORM\Column(type="boolean")
+	 */
 	private $is_shown;
 
 	public function getId() { return $this->id; }

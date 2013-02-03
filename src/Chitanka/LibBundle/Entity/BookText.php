@@ -23,27 +23,27 @@ class BookText extends Entity
 	private $id;
 
 	/**
-	* @var integer $book
-	* @ORM\ManyToOne(targetEntity="Book")
-	*/
+	 * @var integer $book
+	 * @ORM\ManyToOne(targetEntity="Book")
+	 */
 	private $book;
 
 	/**
-	* @var integer $text
-	* @ORM\ManyToOne(targetEntity="Text", inversedBy="bookTexts")
-	*/
+	 * @var integer $text
+	 * @ORM\ManyToOne(targetEntity="Text", inversedBy="bookTexts")
+	 */
 	private $text;
 
 	/**
-	* @var integer $pos
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer $pos
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $pos;
 
 	/**
-	* @var boolean $share_info
-	* @ORM\Column(type="boolean")
-	*/
+	 * @var boolean $share_info
+	 * @ORM\Column(type="boolean")
+	 */
 	private $share_info;
 
 	public function getId() { return $this->id; }

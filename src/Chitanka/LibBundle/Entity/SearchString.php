@@ -21,21 +21,21 @@ class SearchString extends Entity
 	private $id;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=100, unique=true)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=100, unique=true)
+	 */
 	private $name;
 
 	/**
-	* @var integer
-	* @ORM\Column(type="integer")
-	*/
+	 * @var integer
+	 * @ORM\Column(type="integer")
+	 */
 	private $count = 0;
 
 	/**
-	* @var \DateTime
-	* @ORM\Column(type="datetime")
-	*/
+	 * @var \DateTime
+	 * @ORM\Column(type="datetime")
+	 */
 	private $date;
 
 	public function __construct($name)

@@ -30,45 +30,45 @@ class Person extends Entity
 	private $id;
 
 	/**
-	* @var string $slug
-	* @ORM\Column(type="string", length=50, unique=true)
-	*/
+	 * @var string $slug
+	 * @ORM\Column(type="string", length=50, unique=true)
+	 */
 	private $slug;
 
 	/**
-	* @var string $name
-	* @ORM\Column(type="string", length=100)
-	*/
+	 * @var string $name
+	 * @ORM\Column(type="string", length=100)
+	 */
 	private $name;
 
 	/**
-	* @var string $orig_name
-	* @ORM\Column(type="string", length=100, nullable=true)
-	*/
+	 * @var string $orig_name
+	 * @ORM\Column(type="string", length=100, nullable=true)
+	 */
 	private $orig_name;
 
 	/**
-	* @var string $real_name
-	* @ORM\Column(type="string", length=100, nullable=true)
-	*/
+	 * @var string $real_name
+	 * @ORM\Column(type="string", length=100, nullable=true)
+	 */
 	private $real_name;
 
 	/**
-	* @var string $oreal_name
-	* @ORM\Column(type="string", length=100, nullable=true)
-	*/
+	 * @var string $oreal_name
+	 * @ORM\Column(type="string", length=100, nullable=true)
+	 */
 	private $oreal_name;
 
 	/**
-	* @var string $last_name
-	* @ORM\Column(type="string", length=50, nullable=true)
-	*/
+	 * @var string $last_name
+	 * @ORM\Column(type="string", length=50, nullable=true)
+	 */
 	private $last_name;
 
 	/**
-	* @var string $country
-	* @ORM\Column(type="string", length=10)
-	*/
+	 * @var string $country
+	 * @ORM\Column(type="string", length=10)
+	 */
 	private $country;
 
 	/** @ORM\Column(type="boolean") */
@@ -78,31 +78,31 @@ class Person extends Entity
 	private $is_translator = false;
 
 	/**
-	* @var string $info
-	* @ORM\Column(type="string", length=160, nullable=true)
-	*/
+	 * @var string $info
+	 * @ORM\Column(type="string", length=160, nullable=true)
+	 */
 	private $info;
 
 	/**
-	* @var integer $person
-	* @ORM\ManyToOne(targetEntity="Person")
-	*/
+	 * @var integer $person
+	 * @ORM\ManyToOne(targetEntity="Person")
+	 */
 	private $person;
 
 	/**
-	* @var string $type
-	* @ORM\Column(type="string", length=1, nullable=true)
-	*/
+	 * @var string $type
+	 * @ORM\Column(type="string", length=1, nullable=true)
+	 */
 	private $type;
 
 	/**
-	* @ORM\ManyToMany(targetEntity="Text", mappedBy="authors")
-	*/
+	 * @ORM\ManyToMany(targetEntity="Text", mappedBy="authors")
+	 */
 	private $textsAsAuthor;
 
 	/**
-	* @ORM\ManyToMany(targetEntity="Text", mappedBy="translators")
-	*/
+	 * @ORM\ManyToMany(targetEntity="Text", mappedBy="translators")
+	 */
 	private $textsAsTranslator;
 
 	/**
@@ -116,14 +116,14 @@ class Person extends Entity
 	private $textTranslators;
 
 	/**
-	* @ORM\ManyToMany(targetEntity="Book", mappedBy="authors")
-	*/
+	 * @ORM\ManyToMany(targetEntity="Book", mappedBy="authors")
+	 */
 	private $books;
 
 	/**
-	* @ORM\ManyToMany(targetEntity="Series", mappedBy="authors")
-	* @ORM\JoinTable(name="series_author")
-	*/
+	 * @ORM\ManyToMany(targetEntity="Series", mappedBy="authors")
+	 * @ORM\JoinTable(name="series_author")
+	 */
 	private $series;
 
 

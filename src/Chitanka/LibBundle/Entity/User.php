@@ -30,51 +30,51 @@ class User /*extends BaseUser*/ implements UserInterface
 	private $id;
 
 	/**
-	* @var string $username
-	* @ORM\Column(type="string", length=100, unique=true)
-	*/
+	 * @var string $username
+	 * @ORM\Column(type="string", length=100, unique=true)
+	 */
 	private $username = '~anon';
 
 	/**
-	* @var string $realname
-	* @ORM\Column(type="string", length=120, nullable=true)
-	*/
+	 * @var string $realname
+	 * @ORM\Column(type="string", length=120, nullable=true)
+	 */
 	private $realname;
 
 	/**
-	* @var string $password
-	* @ORM\Column(type="string", length=40)
-	*/
+	 * @var string $password
+	 * @ORM\Column(type="string", length=40)
+	 */
 	private $password;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=100, nullable=true)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=100, nullable=true)
+	 */
 	private $algorithm;
 
 	/**
-	* @var string $newpassword
-	* @ORM\Column(type="string", length=40, nullable=true)
-	*/
+	 * @var string $newpassword
+	 * @ORM\Column(type="string", length=40, nullable=true)
+	 */
 	private $newpassword;
 
 	/**
-	* @var string $email
-	* @ORM\Column(type="string", length=100, nullable=true)
-	*/
+	 * @var string $email
+	 * @ORM\Column(type="string", length=100, nullable=true)
+	 */
 	private $email;
 
 	/**
-	* @var boolean $allowemail
-	* @ORM\Column(type="boolean")
-	*/
+	 * @var boolean $allowemail
+	 * @ORM\Column(type="boolean")
+	 */
 	private $allowemail = false;
 
 	/**
-	* @var array
-	* @ORM\Column(type="array")
-	*/
+	 * @var array
+	 * @ORM\Column(type="array")
+	 */
 	private $groups = array();
 	static private $groupList = array(
 		'user',
@@ -85,55 +85,55 @@ class User /*extends BaseUser*/ implements UserInterface
 	);
 
 	/**
-	* @var boolean $news
-	* @ORM\Column(type="boolean")
-	*/
+	 * @var boolean $news
+	 * @ORM\Column(type="boolean")
+	 */
 	private $news = false;
 
 	/**
-	* @var array $opts
-	* @ORM\Column(type="array")
-	*/
+	 * @var array $opts
+	 * @ORM\Column(type="array")
+	 */
 	private $opts = array();
 
 	/**
-	* @var integer $login_tries
-	* @ORM\Column(type="smallint")
-	*/
+	 * @var integer $login_tries
+	 * @ORM\Column(type="smallint")
+	 */
 	private $login_tries = 0;
 
 	/**
-	* @var datetime $registration
-	* @ORM\Column(type="datetime")
-	*/
+	 * @var datetime $registration
+	 * @ORM\Column(type="datetime")
+	 */
 	private $registration;
 
 	/**
-	* @var datetime $touched
-	* @ORM\Column(type="datetime")
-	*/
+	 * @var datetime $touched
+	 * @ORM\Column(type="datetime")
+	 */
 	private $touched;
 
 	/**
-	* Token used to access private user lists, e.g. read texts
-	*
-	* @var string
-	* @ORM\Column(type="string", length=40, unique=true)
-	*/
+	 * Token used to access private user lists, e.g. read texts
+	 *
+	 * @var string
+	 * @ORM\Column(type="string", length=40, unique=true)
+	 */
 	private $token;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	* @var array
-	* @ORM\ManyToMany(targetEntity="Text", mappedBy="readers")
-	* @ORM\JoinTable(name="user_text_read",
-	*	joinColumns={@ORM\JoinColumn(name="user_id")},
-	*	inverseJoinColumns={@ORM\JoinColumn(name="text_id")})
-	*/
+	 * @var array
+	 * @ORM\ManyToMany(targetEntity="Text", mappedBy="readers")
+	 * @ORM\JoinTable(name="user_text_read",
+	 *	joinColumns={@ORM\JoinColumn(name="user_id")},
+	 *	inverseJoinColumns={@ORM\JoinColumn(name="text_id")})
+	 */
 	private $readTexts;
 
 	/**
-	* @ORM\OneToMany(targetEntity="Bookmark", mappedBy="user")
-	*/
+	 * @ORM\OneToMany(targetEntity="Bookmark", mappedBy="user")
+	 */
 	private $bookmarks;
 
 
@@ -424,7 +424,7 @@ class User /*extends BaseUser*/ implements UserInterface
 
 		@param string $username
 		@return mixed true if the user name is ok, or the invalid character
-	*/
+	 */
 	static public function isValidUsername($username) {
 		$forbidden = '/+#"(){}[]<>!?|~*$&%=\\';
 		$len = strlen($forbidden);
@@ -504,11 +504,11 @@ class User /*extends BaseUser*/ implements UserInterface
 
 
 	/**
-	* Encode a password in order to save it in the database.
-	*
-	* @param string $password
-	* @return string Encoded password
-	*/
+	 * Encode a password in order to save it in the database.
+	 *
+	 * @param string $password
+	 * @return string Encoded password
+	 */
 	public function encodePasswordDB($plainPassword)
 	{
 		return sha1(str_repeat($plainPassword . $this->username, 2));
@@ -516,13 +516,13 @@ class User /*extends BaseUser*/ implements UserInterface
 
 
 	/**
-	* Encode a password in order to save it in a cookie.
-	*
-	* @param string $password
-	* @param bool $plainpass Is this a real password or one already stored
-	*                        encoded in the database
-	* @return string Encoded password
-	*/
+	 * Encode a password in order to save it in a cookie.
+	 *
+	 * @param string $password
+	 * @param bool $plainpass Is this a real password or one already stored
+	 *                        encoded in the database
+	 * @return string Encoded password
+	 */
 	public function encodePasswordCookie($password, $plainpass = true)
 	{
 		if ($plainpass) {
@@ -534,13 +534,13 @@ class User /*extends BaseUser*/ implements UserInterface
 
 
 	/**
-	* Validate an entered password.
-	* Encodes an entered password and compares it to the password from the database.
-	*
-	* @param string $inputPass The password from the input
-	* @param string $dbPass The password stored in the database
-	* @return bool
-	*/
+	 * Validate an entered password.
+	 * Encodes an entered password and compares it to the password from the database.
+	 *
+	 * @param string $inputPass The password from the input
+	 * @param string $dbPass The password stored in the database
+	 * @return bool
+	 */
 	public function validatePassword($inputPass)
 	{
 		if (empty($this->algorithm)) {
@@ -558,13 +558,13 @@ class User /*extends BaseUser*/ implements UserInterface
 	}
 
 	/**
-	* Validate a token from a cookie.
-	* Properly encodes the password from the database and compares it to the token.
-	*
-	* @param string $cookieToken The token from the cookie
-	* @param string $dbPass The password stored in the database
-	* @return bool
-	*/
+	 * Validate a token from a cookie.
+	 * Properly encodes the password from the database and compares it to the token.
+	 *
+	 * @param string $cookieToken The token from the cookie
+	 * @param string $dbPass The password stored in the database
+	 * @return bool
+	 */
 	public function validateToken($cookieToken, $dbPass) {
 		$enc = $this->encodePasswordCookie($dbPass, false);
 

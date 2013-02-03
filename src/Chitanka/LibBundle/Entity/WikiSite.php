@@ -22,27 +22,27 @@ class WikiSite extends Entity
 	private $id;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=10, unique=true)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=10, unique=true)
+	 */
 	private $code;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=50, unique=true)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=50, unique=true)
+	 */
 	private $name;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=100)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=100)
+	 */
 	private $url;
 
 	/**
-	* @var string
-	* @ORM\Column(type="text")
-	*/
+	 * @var string
+	 * @ORM\Column(type="text")
+	 */
 	private $intro;
 
 	public function getId() { return $this->id; }

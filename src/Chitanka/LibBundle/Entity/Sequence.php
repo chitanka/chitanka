@@ -26,33 +26,33 @@ class Sequence extends Entity
 	private $id;
 
 	/**
-	* @var string $slug
-	* @ORM\Column(type="string", length=50, unique=true)
-	*/
+	 * @var string $slug
+	 * @ORM\Column(type="string", length=50, unique=true)
+	 */
 	private $slug = '';
 
 	/**
-	* @var string $name
-	* @ORM\Column(type="string", length=100)
-	*/
+	 * @var string $name
+	 * @ORM\Column(type="string", length=100)
+	 */
 	private $name = '';
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=100, nullable=true)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=100, nullable=true)
+	 */
 	private $publisher = '';
 
 	/**
-	* @ORM\Column(type="boolean")
-	*/
+	 * @ORM\Column(type="boolean")
+	 */
 	private $is_seqnr_visible = true;
 
 	/**
-	* @var array
-	* @ORM\OneToMany(targetEntity="Book", mappedBy="sequence")
-	* @ORM\OrderBy({"seqnr" = "ASC"})
-	*/
+	 * @var array
+	 * @ORM\OneToMany(targetEntity="Book", mappedBy="sequence")
+	 * @ORM\OrderBy({"seqnr" = "ASC"})
+	 */
 	private $books;
 
 	public function getId() { return $this->id; }

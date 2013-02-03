@@ -21,15 +21,15 @@ class SeriesAuthor extends Entity
 	private $id;
 
 	/**
-	* @var integer $person
-	* @ORM\ManyToOne(targetEntity="Person")
-	*/
+	 * @var integer $person
+	 * @ORM\ManyToOne(targetEntity="Person")
+	 */
 	private $person;
 
 	/**
-	* @var integer $series
-	* @ORM\ManyToOne(targetEntity="Series", inversedBy="seriesAuthors")
-	*/
+	 * @var integer $series
+	 * @ORM\ManyToOne(targetEntity="Series", inversedBy="seriesAuthors")
+	 */
 	private $series;
 
 	public function getId() { return $this->id; }

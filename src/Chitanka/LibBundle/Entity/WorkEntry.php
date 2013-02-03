@@ -25,75 +25,75 @@ class WorkEntry extends Entity
 	private $id;
 
 	/**
-	* @var integer $type
-	* @ORM\Column(type="smallint")
-	*/
+	 * @var integer $type
+	 * @ORM\Column(type="smallint")
+	 */
 	private $type;
 
 	/**
-	* @var string $title
-	* @ORM\Column(type="string", length=100)
-	*/
+	 * @var string $title
+	 * @ORM\Column(type="string", length=100)
+	 */
 	private $title;
 
 	/**
-	* @var string $author
-	* @ORM\Column(type="string", length=100, nullable=true)
-	*/
+	 * @var string $author
+	 * @ORM\Column(type="string", length=100, nullable=true)
+	 */
 	private $author;
 
 	/**
-	* @var integer $user
-	* @ORM\ManyToOne(targetEntity="User")
-	*/
+	 * @var integer $user
+	 * @ORM\ManyToOne(targetEntity="User")
+	 */
 	private $user;
 
 	/**
-	* @var text $comment
-	* @ORM\Column(type="text")
-	*/
+	 * @var text $comment
+	 * @ORM\Column(type="text")
+	 */
 	private $comment;
 
 	/**
-	* @var datetime $date
-	* @ORM\Column(type="datetime")
-	*/
+	 * @var datetime $date
+	 * @ORM\Column(type="datetime")
+	 */
 	private $date;
 
 	/**
-	* @var integer $status
-	* @ORM\Column(type="smallint")
-	*/
+	 * @var integer $status
+	 * @ORM\Column(type="smallint")
+	 */
 	private $status = 0;
 
 	/**
-	* @var integer $progress
-	* @ORM\Column(type="smallint")
-	*/
+	 * @var integer $progress
+	 * @ORM\Column(type="smallint")
+	 */
 	private $progress = 0;
 
 	/**
-	* @var boolean $is_frozen
-	* @ORM\Column(type="boolean")
-	*/
+	 * @var boolean $is_frozen
+	 * @ORM\Column(type="boolean")
+	 */
 	private $is_frozen = false;
 
 	/**
-	* @var string $tmpfiles
-	* @ORM\Column(type="string", length=255, nullable=true)
-	*/
+	 * @var string $tmpfiles
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
 	private $tmpfiles;
 
 	/**
-	* @var integer $tfsize
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer $tfsize
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $tfsize;
 
 	/**
-	* @var string $uplfile
-	* @ORM\Column(type="string", length=255, nullable=true)
-	*/
+	 * @var string $uplfile
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
 	private $uplfile;
 
 	/**
@@ -116,14 +116,14 @@ class WorkEntry extends Entity
 	private $admin_comment;
 
 	/**
-	* @var datetime
-	* @ORM\Column(type="datetime", nullable=true)
-	*/
+	 * @var datetime
+	 * @ORM\Column(type="datetime", nullable=true)
+	 */
 	private $deleted_at;
 
 	/**
-	* @ORM\OneToMany(targetEntity="WorkContrib", mappedBy="entry")
-	*/
+	 * @ORM\OneToMany(targetEntity="WorkContrib", mappedBy="entry")
+	 */
 	private $contribs;
 
 	/**

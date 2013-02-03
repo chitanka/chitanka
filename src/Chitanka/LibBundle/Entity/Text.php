@@ -39,195 +39,195 @@ class Text extends BaseWork
 	protected $id;
 
 	/**
-	* @var string $slug
-	* @ORM\Column(type="string", length=50)
-	*/
+	 * @var string $slug
+	 * @ORM\Column(type="string", length=50)
+	 */
 	private $slug;
 
 	/**
-	* @var string $title
-	* @ORM\Column(type="string", length=255)
-	*/
+	 * @var string $title
+	 * @ORM\Column(type="string", length=255)
+	 */
 	private $title;
 
 	/**
-	* @var string $subtitle
-	* @ORM\Column(type="string", length=255, nullable=true)
-	*/
+	 * @var string $subtitle
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
 	private $subtitle;
 
 	/**
-	* @var string $lang
-	* @ORM\Column(type="string", length=2)
-	*/
+	 * @var string $lang
+	 * @ORM\Column(type="string", length=2)
+	 */
 	private $lang = 'bg';
 
 	/**
-	* @var integer $trans_year
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer $trans_year
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $trans_year;
 
 	/**
-	* @var integer $trans_year2
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer $trans_year2
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $trans_year2;
 
 	/**
-	* @var string $orig_title
-	* @ORM\Column(type="string", length=255, nullable=true)
-	*/
+	 * @var string $orig_title
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
 	private $orig_title;
 
 	/**
-	* @var string $orig_subtitle
-	* @ORM\Column(type="string", length=255, nullable=true)
-	*/
+	 * @var string $orig_subtitle
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
 	private $orig_subtitle;
 
 	/**
-	* @var string $orig_lang
-	* @ORM\Column(type="string", length=3)
-	*/
+	 * @var string $orig_lang
+	 * @ORM\Column(type="string", length=3)
+	 */
 	private $orig_lang;
 
 	/**
-	* @var integer $year
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer $year
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $year;
 
 	/**
-	* @var integer $year2
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer $year2
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $year2;
 
 	/**
-	* @var integer $orig_license
-	* @ORM\ManyToOne(targetEntity="License")
-	*/
+	 * @var integer $orig_license
+	 * @ORM\ManyToOne(targetEntity="License")
+	 */
 	private $orig_license;
 
 	/**
-	* @var integer $trans_license
-	* @ORM\ManyToOne(targetEntity="License")
-	*/
+	 * @var integer $trans_license
+	 * @ORM\ManyToOne(targetEntity="License")
+	 */
 	private $trans_license;
 
 	/**
-	* @var string $type
-	* @ORM\Column(type="string", length=12)
-	*/
+	 * @var string $type
+	 * @ORM\Column(type="string", length=12)
+	 */
 	private $type;
 
 	/**
-	* @var integer $series
-	* @ORM\ManyToOne(targetEntity="Series", inversedBy="texts")
-	*/
+	 * @var integer $series
+	 * @ORM\ManyToOne(targetEntity="Series", inversedBy="texts")
+	 */
 	private $series;
 
 	/**
-	* @var integer $sernr
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer $sernr
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $sernr;
 
 	/**
-	* @var integer $sernr2
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer $sernr2
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $sernr2;
 
 	/**
-	* @var integer $headlevel
-	* @ORM\Column(type="smallint")
-	*/
+	 * @var integer $headlevel
+	 * @ORM\Column(type="smallint")
+	 */
 	private $headlevel = 0;
 
 	/**
-	* @var integer $size
-	* @ORM\Column(type="integer")
-	*/
+	 * @var integer $size
+	 * @ORM\Column(type="integer")
+	 */
 	private $size;
 
 	/**
-	* @var integer $zsize
-	* @ORM\Column(type="integer")
-	*/
+	 * @var integer $zsize
+	 * @ORM\Column(type="integer")
+	 */
 	private $zsize;
 
 	/**
-	* @var date
-	* @ORM\Column(type="date")
-	*/
+	 * @var date
+	 * @ORM\Column(type="date")
+	 */
 	private $created_at;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=1000, nullable=true)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=1000, nullable=true)
+	 */
 	private $source;
 
 	/**
-	* @var integer $cur_rev
-	* @ORM\ManyToOne(targetEntity="TextRevision")
-	*/
+	 * @var integer $cur_rev
+	 * @ORM\ManyToOne(targetEntity="TextRevision")
+	 */
 	private $cur_rev;
 
 	/**
-	* @var integer $dl_count
-	* @ORM\Column(type="integer")
-	*/
+	 * @var integer $dl_count
+	 * @ORM\Column(type="integer")
+	 */
 	private $dl_count = 0;
 
 	/**
-	* @var integer $read_count
-	* @ORM\Column(type="integer")
-	*/
+	 * @var integer $read_count
+	 * @ORM\Column(type="integer")
+	 */
 	private $read_count = 0;
 
 	/**
-	* @var integer $comment_count
-	* @ORM\Column(type="integer")
-	*/
+	 * @var integer $comment_count
+	 * @ORM\Column(type="integer")
+	 */
 	private $comment_count = 0;
 
 	/**
-	* @var float $rating
-	* @ORM\Column(type="float")
-	*/
+	 * @var float $rating
+	 * @ORM\Column(type="float")
+	 */
 	private $rating = 0;
 
 	/**
-	* @var integer $votes
-	* @ORM\Column(type="integer")
-	*/
+	 * @var integer $votes
+	 * @ORM\Column(type="integer")
+	 */
 	private $votes = 0;
 
 	/**
-	* @var boolean $has_anno
-	* @ORM\Column(type="boolean")
-	*/
+	 * @var boolean $has_anno
+	 * @ORM\Column(type="boolean")
+	 */
 	private $has_anno = false;
 
 	/**
-	* @var boolean
-	* @ORM\Column(type="boolean")
-	*/
+	 * @var boolean
+	 * @ORM\Column(type="boolean")
+	 */
 	private $has_cover = false;
 
 	/*
-	* @var boolean
-	* @ORM\Column(type="boolean")
-	*/
+	 * @var boolean
+	 * @ORM\Column(type="boolean")
+	 */
 	private $has_title_note;
 
 	/**
-	* @var boolean
-	* @ORM\Column(type="boolean")
-	*/
+	 * @var boolean
+	 * @ORM\Column(type="boolean")
+	 */
 	private $is_compilation = false;
 
 	/**
@@ -238,87 +238,87 @@ class Text extends BaseWork
 
 
 	/**
-	* @var array
-	* @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
-	*/
+	 * @var array
+	 * @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
+	 */
 	private $textAuthors;
 
 	/**
-	* @var array
-	* @ORM\OneToMany(targetEntity="TextTranslator", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
-	*/
+	 * @var array
+	 * @ORM\OneToMany(targetEntity="TextTranslator", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
+	 */
 	private $textTranslators;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	* @ORM\ManyToMany(targetEntity="Person", inversedBy="textsAsAuthor")
-	* @ORM\JoinTable(name="text_author")
-	*/
+	 * @ORM\ManyToMany(targetEntity="Person", inversedBy="textsAsAuthor")
+	 * @ORM\JoinTable(name="text_author")
+	 */
 	private $authors;
 
 	/**
-	* Comma separated list of author names
-	*/
+	 * Comma separated list of author names
+	 */
 	private $authorNames;
 
 	/**
-	* Comma separated list of author original names
-	*/
+	 * Comma separated list of author original names
+	 */
 	private $authorOrigNames;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	* @ORM\ManyToMany(targetEntity="Person", inversedBy="textsAsTranslator")
-	* @ORM\JoinTable(name="text_translator")
-	*/
+	 * @ORM\ManyToMany(targetEntity="Person", inversedBy="textsAsTranslator")
+	 * @ORM\JoinTable(name="text_translator")
+	 */
 	private $translators;
 
 	/**
-	* @var array
-	* @ORM\OneToMany(targetEntity="BookText", mappedBy="text")
-	*/
+	 * @var array
+	 * @ORM\OneToMany(targetEntity="BookText", mappedBy="text")
+	 */
 	private $bookTexts;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	* @ORM\ManyToMany(targetEntity="Book", mappedBy="texts")
-	* @ORM\JoinTable(name="book_text",
-	*	joinColumns={@ORM\JoinColumn(name="text_id", referencedColumnName="id")},
-	*	inverseJoinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id")})
-	* @ORM\OrderBy({"title" = "ASC"})
-	*/
+	 * @ORM\ManyToMany(targetEntity="Book", mappedBy="texts")
+	 * @ORM\JoinTable(name="book_text",
+	 *	joinColumns={@ORM\JoinColumn(name="text_id", referencedColumnName="id")},
+	 *	inverseJoinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"title" = "ASC"})
+	 */
 	private $books;
 
 	/**
-	* @var array
-	* @ORM\ManyToMany(targetEntity="Label", inversedBy="texts")
-	* @ORM\OrderBy({"name" = "ASC"})
-	*/
+	 * @var array
+	 * @ORM\ManyToMany(targetEntity="Label", inversedBy="texts")
+	 * @ORM\OrderBy({"name" = "ASC"})
+	 */
 	private $labels;
 
 	/**
-	* @var array
-	* @ORM\OneToMany(targetEntity="TextHeader", mappedBy="text")
-	* @ORM\OrderBy({"nr" = "ASC"})
-	*/
+	 * @var array
+	 * @ORM\OneToMany(targetEntity="TextHeader", mappedBy="text")
+	 * @ORM\OrderBy({"nr" = "ASC"})
+	 */
 	private $headers;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	* @var array
-	* @ORM\ManyToMany(targetEntity="User", inversedBy="readTexts")
-	* @ORM\JoinTable(name="user_text_read",
-	*	joinColumns={@ORM\JoinColumn(name="text_id")},
-	*	inverseJoinColumns={@ORM\JoinColumn(name="user_id")})
-	*/
+	 * @var array
+	 * @ORM\ManyToMany(targetEntity="User", inversedBy="readTexts")
+	 * @ORM\JoinTable(name="user_text_read",
+	 *	joinColumns={@ORM\JoinColumn(name="text_id")},
+	 *	inverseJoinColumns={@ORM\JoinColumn(name="user_id")})
+	 */
 	private $readers;
 
 	/**
-	* @var array
-	* @ORM\OneToMany(targetEntity="UserTextContrib", mappedBy="text")
-	*/
+	 * @var array
+	 * @ORM\OneToMany(targetEntity="UserTextContrib", mappedBy="text")
+	 */
 	private $userContribs;
 
 	/**
-	* @var array
-	* @ORM\OneToMany(targetEntity="TextRevision", mappedBy="text")
-	*/
+	 * @var array
+	 * @ORM\OneToMany(targetEntity="TextRevision", mappedBy="text")
+	 */
 	private $revisions;
 
 	public function __construct($id = null)
@@ -500,8 +500,8 @@ class Text extends BaseWork
 	public function getRevisions() { return $this->revisions; }
 
 	/**
-	* Return the main book for the text
-	*/
+	 * Return the main book for the text
+	 */
 	public function getBook()
 	{
 		if ( ! isset($this->_book)) {
@@ -815,7 +815,7 @@ class Text extends BaseWork
 
 	/**
 		Return fiction book info for this work
-	*/
+	 */
 	public function getFbi()
 	{
 		return ''; // TODO rewrite legacy code
@@ -1362,7 +1362,7 @@ EOS;
 		Get similar texts based ot readers count.
 		@param $limit   Return up to this limit number of texts
 		@param $reader  Do not return texts marked as read by this reader
-	*/
+	 */
 	public function getSimilar($limit = 10, $reader = null)
 	{
 		$db = Setup::db();
@@ -1416,7 +1416,7 @@ EOS;
 		Get similar texts based ot readers count.
 		@param $limit   Return up to this limit number of texts
 		@param $reader  Do not return texts marked as read by this reader
-	*/
+	 */
 	public function getSimilarByLabel($limit = 10, $reader = null)
 	{
 		$db = Setup::db();
@@ -1539,12 +1539,12 @@ EOS;
 	}
 
 	/**
-	* Update average rating
-	*
-	* @param int Newly given rating
-	* @param int (optional) An old rating which should be overwritten by the new one
-	* @return this
-	*/
+	 * Update average rating
+	 *
+	 * @param int Newly given rating
+	 * @param int (optional) An old rating which should be overwritten by the new one
+	 * @return this
+	 */
 	public function updateAvgRating($newRating, $oldRating = null)
 	{
 		if ( is_null($oldRating) ) {

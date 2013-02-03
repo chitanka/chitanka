@@ -51,9 +51,9 @@ abstract class BaseWork extends Entity
 	}
 
 	/**
-	* Return title and subtitle if any
-	* @param string $format   Output format: %t1 — title, %t2 — subtitle
-	*/
+	 * Return title and subtitle if any
+	 * @param string $format   Output format: %t1 — title, %t2 — subtitle
+	 */
 	public function getTitles($format = '%t1 — %t2')
 	{
 		if ( ($subtitle = $this->getSubtitle()) ) {

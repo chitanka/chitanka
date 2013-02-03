@@ -23,56 +23,56 @@ class WorkContrib extends Entity
 	private $id;
 
 	/**
-	* @var integer $entry
-	* @ORM\ManyToOne(targetEntity="WorkEntry", inversedBy="contribs")
-	*/
+	 * @var integer $entry
+	 * @ORM\ManyToOne(targetEntity="WorkEntry", inversedBy="contribs")
+	 */
 	private $entry;
 
 	/**
-	* @var integer $user
-	* @ORM\ManyToOne(targetEntity="User")
-	*/
+	 * @var integer $user
+	 * @ORM\ManyToOne(targetEntity="User")
+	 */
 	private $user;
 
 	/**
-	* @var text $comment
-	* @ORM\Column(type="text")
-	*/
+	 * @var text $comment
+	 * @ORM\Column(type="text")
+	 */
 	private $comment;
 
 	/**
-	* @var integer $progress
-	* @ORM\Column(type="smallint")
-	*/
+	 * @var integer $progress
+	 * @ORM\Column(type="smallint")
+	 */
 	private $progress = 0;
 
 	/**
-	* @var boolean $is_frozen
-	* @ORM\Column(type="boolean")
-	*/
+	 * @var boolean $is_frozen
+	 * @ORM\Column(type="boolean")
+	 */
 	private $is_frozen = false;
 
 	/**
-	* @var datetime $date
-	* @ORM\Column(type="datetime")
-	*/
+	 * @var datetime $date
+	 * @ORM\Column(type="datetime")
+	 */
 	private $date;
 
 	/**
-	* @var string $uplfile
-	* @ORM\Column(type="string", length=255, nullable=true)
-	*/
+	 * @var string $uplfile
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
 	private $uplfile;
 
 	/**
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $filesize;
 
 	/**
-	* @var datetime
-	* @ORM\Column(type="datetime", nullable=true)
-	*/
+	 * @var datetime
+	 * @ORM\Column(type="datetime", nullable=true)
+	 */
 	private $deleted_at;
 
 

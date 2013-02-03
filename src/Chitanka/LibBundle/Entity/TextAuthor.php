@@ -23,27 +23,27 @@ class TextAuthor extends Entity
 	private $id;
 
 	/**
-	* @var integer $person
-	* @ORM\ManyToOne(targetEntity="Person", inversedBy="textAuthors")
-	*/
+	 * @var integer $person
+	 * @ORM\ManyToOne(targetEntity="Person", inversedBy="textAuthors")
+	 */
 	private $person;
 
 	/**
-	* @var integer $text
-	* @ORM\ManyToOne(targetEntity="Text", inversedBy="textAuthors")
-	*/
+	 * @var integer $text
+	 * @ORM\ManyToOne(targetEntity="Text", inversedBy="textAuthors")
+	 */
 	private $text;
 
 	/**
-	* @var integer $pos
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer $pos
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $pos;
 
 	/**
-	* @var integer $year
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer $year
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $year;
 
 
@@ -62,40 +62,40 @@ class TextAuthor extends Entity
 	public function getYear() { return $this->year; }
 
 	/**
-	* Add Text
-	*
-	* @param Chitanka\LibBundle\Entity\Text $text
-	*/
+	 * Add Text
+	 *
+	 * @param Chitanka\LibBundle\Entity\Text $text
+	 */
 	public function addText(\Chitanka\LibBundle\Entity\Text $text)
 	{
 		$this->texts[] = $text;
 	}
 
 	/**
-	* Get Text
-	*
-	* @return Doctrine\Common\Collections\Collection $text
-	*/
+	 * Get Text
+	 *
+	 * @return Doctrine\Common\Collections\Collection $text
+	 */
 	public function getTexts()
 	{
 		return $this->texts;
 	}
 
 	/**
-	* Add Person
-	*
-	* @param Chitanka\LibBundle\Entity\Person $person
-	*/
+	 * Add Person
+	 *
+	 * @param Chitanka\LibBundle\Entity\Person $person
+	 */
 	public function addPerson(\Chitanka\LibBundle\Entity\Person $person)
 	{
 		$this->persons[] = $person;
 	}
 
 	/**
-	* Get Person
-	*
-	* @return Doctrine\Common\Collections\Collection $person
-	*/
+	 * Get Person
+	 *
+	 * @return Doctrine\Common\Collections\Collection $person
+	 */
 	public function getPersons()
 	{
 		return $this->persons;

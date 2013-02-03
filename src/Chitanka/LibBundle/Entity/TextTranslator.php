@@ -23,27 +23,27 @@ class TextTranslator extends Entity
 	private $id;
 
 	/**
-	* @var integer $person
-	* @ORM\ManyToOne(targetEntity="Person", inversedBy="textTranslators")
-	*/
+	 * @var integer $person
+	 * @ORM\ManyToOne(targetEntity="Person", inversedBy="textTranslators")
+	 */
 	private $person;
 
 	/**
-	* @var integer $text
-	* @ORM\ManyToOne(targetEntity="Text", inversedBy="textTranslators")
-	*/
+	 * @var integer $text
+	 * @ORM\ManyToOne(targetEntity="Text", inversedBy="textTranslators")
+	 */
 	private $text;
 
 	/**
-	* @var integer $pos
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer $pos
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $pos;
 
 	/**
-	* @var integer $year
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer $year
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $year;
 
 	public function equals(TextTranslator $textTranslator)
@@ -60,40 +60,40 @@ class TextTranslator extends Entity
 	public function getText() { return $this->text; }
 
 	/**
-	* Set pos
-	*
-	* @param integer $pos
-	*/
+	 * Set pos
+	 *
+	 * @param integer $pos
+	 */
 	public function setPos($pos)
 	{
 		$this->pos = $pos;
 	}
 
 	/**
-	* Get pos
-	*
-	* @return integer $pos
-	*/
+	 * Get pos
+	 *
+	 * @return integer $pos
+	 */
 	public function getPos()
 	{
 		return $this->pos;
 	}
 
 	/**
-	* Set year
-	*
-	* @param integer $year
-	*/
+	 * Set year
+	 *
+	 * @param integer $year
+	 */
 	public function setYear($year)
 	{
 		$this->year = $year;
 	}
 
 	/**
-	* Get year
-	*
-	* @return integer $year
-	*/
+	 * Get year
+	 *
+	 * @return integer $year
+	 */
 	public function getYear()
 	{
 		return $this->year;

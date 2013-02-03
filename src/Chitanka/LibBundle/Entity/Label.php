@@ -24,44 +24,44 @@ class Label extends Entity
 	private $id;
 
 	/**
-	* @var string $slug
-	* @ORM\Column(type="string", length=80, unique=true)
-	* @Assert\NotBlank
-	*/
+	 * @var string $slug
+	 * @ORM\Column(type="string", length=80, unique=true)
+	 * @Assert\NotBlank
+	 */
 	private $slug = '';
 
 	/**
-	* @var string $name
-	* @ORM\Column(type="string", length=80, unique=true)
-	* @Assert\NotBlank
-	*/
+	 * @var string $name
+	 * @ORM\Column(type="string", length=80, unique=true)
+	 * @Assert\NotBlank
+	 */
 	private $name = '';
 
 	/**
-	* @var integer $parent
-	* @ORM\ManyToOne(targetEntity="Label", inversedBy="children")
-	*/
+	 * @var integer $parent
+	 * @ORM\ManyToOne(targetEntity="Label", inversedBy="children")
+	 */
 	private $parent;
 
 	/**
-	* Number of texts having this label
-	* @var integer $nr_of_texts
-	* @ORM\Column(type="integer")
-	*/
+	 * Number of texts having this label
+	 * @var integer $nr_of_texts
+	 * @ORM\Column(type="integer")
+	 */
 	private $nr_of_texts = 0;
 
 	/**
-	* The children of this label
-	* @var array
-	* @ORM\OneToMany(targetEntity="Label", mappedBy="parent")
-	*/
+	 * The children of this label
+	 * @var array
+	 * @ORM\OneToMany(targetEntity="Label", mappedBy="parent")
+	 */
 	private $children;
 
 	/**
-	* @var array
-	* @ORM\ManyToMany(targetEntity="Text", mappedBy="labels")
-	* @ORM\OrderBy({"title" = "ASC"})
-	*/
+	 * @var array
+	 * @ORM\ManyToMany(targetEntity="Text", mappedBy="labels")
+	 * @ORM\OrderBy({"title" = "ASC"})
+	 */
 	private $texts;
 
 
@@ -95,18 +95,18 @@ class Label extends Entity
 	}
 
 	/**
-	* Add child label
-	*/
+	 * Add child label
+	 */
 	public function addChild($label)
 	{
 		$this->children[] = $label;
 	}
 
 	/**
-	* Get all ancestors
-	*
-	* @return array
-	*/
+	 * Get all ancestors
+	 *
+	 * @return array
+	 */
 	public function getAncestors()
 	{
 		$ancestors = array();
@@ -125,10 +125,10 @@ class Label extends Entity
 	}
 
 	/**
-	* Get all descendants
-	*
-	* @return array
-	*/
+	 * Get all descendants
+	 *
+	 * @return array
+	 */
 	public function getDescendantIds()
 	{
 		$ids = array();

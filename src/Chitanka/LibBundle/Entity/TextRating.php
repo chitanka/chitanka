@@ -25,27 +25,27 @@ class TextRating extends Entity
 	private $id;
 
 	/**
-	* @var integer $text
-	* @ORM\ManyToOne(targetEntity="Text")
-	*/
+	 * @var integer $text
+	 * @ORM\ManyToOne(targetEntity="Text")
+	 */
 	private $text;
 
 	/**
-	* @var integer $user
-	* @ORM\ManyToOne(targetEntity="User")
-	*/
+	 * @var integer $user
+	 * @ORM\ManyToOne(targetEntity="User")
+	 */
 	private $user;
 
 	/**
-	* @var integer $rating
-	* @ORM\Column(type="smallint")
-	*/
+	 * @var integer $rating
+	 * @ORM\Column(type="smallint")
+	 */
 	private $rating;
 
 	/**
-	* @var date $date
-	* @ORM\Column(type="datetime")
-	*/
+	 * @var date $date
+	 * @ORM\Column(type="datetime")
+	 */
 	private $date;
 
 

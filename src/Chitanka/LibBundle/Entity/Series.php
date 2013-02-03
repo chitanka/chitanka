@@ -26,43 +26,43 @@ class Series extends Entity
 	private $id;
 
 	/**
-	* @var string $slug
-	* @ORM\Column(type="string", length=50, unique=true)
-	*/
+	 * @var string $slug
+	 * @ORM\Column(type="string", length=50, unique=true)
+	 */
 	private $slug;
 
 	/**
-	* @var string $name
-	* @ORM\Column(type="string", length=100)
-	*/
+	 * @var string $name
+	 * @ORM\Column(type="string", length=100)
+	 */
 	private $name;
 
 	/**
-	* @var string $orig_name
-	* @ORM\Column(type="string", length=100, nullable=true)
-	*/
+	 * @var string $orig_name
+	 * @ORM\Column(type="string", length=100, nullable=true)
+	 */
 	private $orig_name;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	* @var array
-	* @ORM\ManyToMany(targetEntity="Person", inversedBy="series")
-	* @ORM\JoinTable(name="series_author",
-	*	joinColumns={@ORM\JoinColumn(name="series_id", referencedColumnName="id")},
-	*	inverseJoinColumns={@ORM\JoinColumn(name="person_id", referencedColumnName="id")})
-	*/
+	 * @var array
+	 * @ORM\ManyToMany(targetEntity="Person", inversedBy="series")
+	 * @ORM\JoinTable(name="series_author",
+	 *	joinColumns={@ORM\JoinColumn(name="series_id", referencedColumnName="id")},
+	 *	inverseJoinColumns={@ORM\JoinColumn(name="person_id", referencedColumnName="id")})
+	 */
 	private $authors;
 
 	/**
-	* @var array
-	* @ORM\OneToMany(targetEntity="SeriesAuthor", mappedBy="series", cascade={"persist", "remove"}, orphanRemoval=true)
-	*/
+	 * @var array
+	 * @ORM\OneToMany(targetEntity="SeriesAuthor", mappedBy="series", cascade={"persist", "remove"}, orphanRemoval=true)
+	 */
 	private $seriesAuthors;
 
 	/**
-	* @var array
-	* @ORM\OneToMany(targetEntity="Text", mappedBy="series")
-	* @ORM\OrderBy({"sernr" = "ASC"})
-	*/
+	 * @var array
+	 * @ORM\OneToMany(targetEntity="Text", mappedBy="series")
+	 * @ORM\OrderBy({"sernr" = "ASC"})
+	 */
 	private $texts;
 
 	public function getId() { return $this->id; }

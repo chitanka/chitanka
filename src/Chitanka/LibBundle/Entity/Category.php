@@ -24,45 +24,45 @@ class Category extends Entity
 	private $id;
 
 	/**
-	* @var string $slug
-	* @ORM\Column(type="string", length=50, unique=true)
-	* @Assert\NotBlank
-	*/
+	 * @var string $slug
+	 * @ORM\Column(type="string", length=50, unique=true)
+	 * @Assert\NotBlank
+	 */
 	private $slug = '';
 
 	/**
-	* @var string $name
-	* @ORM\Column(type="string", length=80, unique=true)
-	* @Assert\NotBlank
-	*/
+	 * @var string $name
+	 * @ORM\Column(type="string", length=80, unique=true)
+	 * @Assert\NotBlank
+	 */
 	private $name = '';
 
 	/**
-	* @var integer $parent
-	* @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
-	*/
+	 * @var integer $parent
+	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
+	 */
 	private $parent;
 
 	/**
-	* The children of this category
-	* @var array
-	* @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
-	* @ORM\OrderBy({"name" = "ASC"})
-	*/
+	 * The children of this category
+	 * @var array
+	 * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
+	 * @ORM\OrderBy({"name" = "ASC"})
+	 */
 	private $children;
 
 	/**
-	* @var array
-	* @ORM\OneToMany(targetEntity="Book", mappedBy="category")
-	* @ORM\OrderBy({"title" = "ASC"})
-	*/
+	 * @var array
+	 * @ORM\OneToMany(targetEntity="Book", mappedBy="category")
+	 * @ORM\OrderBy({"title" = "ASC"})
+	 */
 	private $books;
 
 	/**
-	* Number of books in this category
-	* @var integer
-	* @ORM\Column(type="integer")
-	*/
+	 * Number of books in this category
+	 * @var integer
+	 * @ORM\Column(type="integer")
+	 */
 	private $nr_of_books = 0;
 
 
@@ -96,10 +96,10 @@ class Category extends Entity
 	}
 
 	/**
-	* Get all ancestors
-	*
-	* @return array
-	*/
+	 * Get all ancestors
+	 *
+	 * @return array
+	 */
 	public function getAncestors()
 	{
 		$ancestors = array();
@@ -118,10 +118,10 @@ class Category extends Entity
 	}
 
 	/**
-	* Get all descendants
-	*
-	* @return array
-	*/
+	 * Get all descendants
+	 *
+	 * @return array
+	 */
 	public function getDescendantIds()
 	{
 		$ids = array();

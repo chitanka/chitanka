@@ -37,8 +37,8 @@ class BookmarkRepository extends EntityRepository
 
 
 	/**
-	* RAW_SQL
-	*/
+	 * RAW_SQL
+	 */
 	public function getValidTextIds($user, $textIds)
 	{
 		if (is_array($textIds)) {

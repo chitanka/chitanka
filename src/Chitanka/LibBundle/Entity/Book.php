@@ -32,69 +32,69 @@ class Book extends BaseWork
 	protected $id;
 
 	/**
-	* @var string $slug
-	* @ORM\Column(type="string", length=50)
-	*/
+	 * @var string $slug
+	 * @ORM\Column(type="string", length=50)
+	 */
 	private $slug;
 
 	/**
-	* @var string $title_author
-	* @ORM\Column(type="string", length=255, nullable=true)
-	*/
+	 * @var string $title_author
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
 	private $title_author;
 
 	/**
-	* @var string $title
-	* @ORM\Column(type="string", length=255)
-	*/
+	 * @var string $title
+	 * @ORM\Column(type="string", length=255)
+	 */
 	private $title;
 
 	/**
-	* @var string $subtitle
-	* @ORM\Column(type="string", length=255, nullable=true)
-	*/
+	 * @var string $subtitle
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
 	private $subtitle;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=1000, nullable=true)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=1000, nullable=true)
+	 */
 	private $title_extra;
 
 	/**
-	* @var string $orig_title
-	* @ORM\Column(type="string", length=255, nullable=true)
-	*/
+	 * @var string $orig_title
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
 	private $orig_title;
 
 	/**
-	* @var string $lang
-	* @ORM\Column(type="string", length=2)
-	*/
+	 * @var string $lang
+	 * @ORM\Column(type="string", length=2)
+	 */
 	private $lang;
 
 	/**
-	* @var string $orig_lang
-	* @ORM\Column(type="string", length=3, nullable=true)
-	*/
+	 * @var string $orig_lang
+	 * @ORM\Column(type="string", length=3, nullable=true)
+	 */
 	private $orig_lang;
 
 	/**
-	* @var integer $year
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer $year
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $year;
 
 	/**
-	* @var integer $trans_year
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer $trans_year
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $trans_year;
 
 	/**
-	* @var string $type
-	* @ORM\Column(type="string", length=10)
-	*/
+	 * @var string $type
+	 * @ORM\Column(type="string", length=10)
+	 */
 	private $type;
 	static private $typeList = array(
 		'single' => 'Обикновена книга',
@@ -106,33 +106,33 @@ class Book extends BaseWork
 
 
 	/**
-	* @var integer
-	* @ORM\ManyToOne(targetEntity="Sequence", inversedBy="books")
-	*/
+	 * @var integer
+	 * @ORM\ManyToOne(targetEntity="Sequence", inversedBy="books")
+	 */
 	private $sequence;
 
 	/**
-	* @var integer
-	* @ORM\Column(type="smallint", nullable=true)
-	*/
+	 * @var integer
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
 	private $seqnr;
 
 	/**
-	* @var integer
-	* @ORM\ManyToOne(targetEntity="Category", inversedBy="books")
-	*/
+	 * @var integer
+	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="books")
+	 */
 	private $category;
 
 	/**
-	* @var boolean
-	* @ORM\Column(type="boolean")
-	*/
+	 * @var boolean
+	 * @ORM\Column(type="boolean")
+	 */
 	private $has_anno;
 
 	/**
-	* @var boolean
-	* @ORM\Column(type="boolean")
-	*/
+	 * @var boolean
+	 * @ORM\Column(type="boolean")
+	 */
 	private $has_cover;
 
 	/**
@@ -154,29 +154,29 @@ class Book extends BaseWork
 	private $authors;
 
 	/**
-	* @var ArrayCollection
-	* @ORM\OneToMany(targetEntity="BookAuthor", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
-	*/
+	 * @var ArrayCollection
+	 * @ORM\OneToMany(targetEntity="BookAuthor", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
+	 */
 	private $bookAuthors;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	* @ORM\ManyToMany(targetEntity="Text", inversedBy="books")
-	* @ORM\JoinTable(name="book_text",
-	*	joinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id")},
-	*	inverseJoinColumns={@ORM\JoinColumn(name="text_id", referencedColumnName="id")})
-	*/
+	 * @ORM\ManyToMany(targetEntity="Text", inversedBy="books")
+	 * @ORM\JoinTable(name="book_text",
+	 *	joinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id")},
+	 *	inverseJoinColumns={@ORM\JoinColumn(name="text_id", referencedColumnName="id")})
+	 */
 	private $texts;
 
 	/**
-	* @var ArrayCollection
-	* @ORM\OneToMany(targetEntity="BookLink", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
-	*/
+	 * @var ArrayCollection
+	 * @ORM\OneToMany(targetEntity="BookLink", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
+	 */
 	private $links;
 
 	/**
-	* @var date
-	* @ORM\Column(type="date")
-	*/
+	 * @var date
+	 * @ORM\Column(type="date")
+	 */
 	private $created_at;
 
 	private $fb2CoverWidth = 400;
@@ -590,9 +590,9 @@ class Book extends BaseWork
 	}
 
 	/**
-	* @param $id Text or book ID
-	* @param $defCover Default covers if there aren’t any for $id
-	*/
+	 * @param $id Text or book ID
+	 * @param $defCover Default covers if there aren’t any for $id
+	 */
 	static public function getCovers($id, $defCover = null)
 	{
 		$key = 'book-cover-content';
@@ -813,8 +813,8 @@ class Book extends BaseWork
 
 
 	/**
-	* Return the author of a text if he/she is not on the book title
-	*/
+	 * Return the author of a text if he/she is not on the book title
+	 */
 	public function getBookAuthorIfNotInTitle($text)
 	{
 		$bookAuthorsIds = $this->getAuthorIds();

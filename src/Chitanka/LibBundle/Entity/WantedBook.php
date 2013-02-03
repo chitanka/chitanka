@@ -22,15 +22,15 @@ class WantedBook extends Entity
 	private $id;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=60)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=60)
+	 */
 	private $name;
 
 	/**
-	* @var string
-	* @ORM\Column(type="text")
-	*/
+	 * @var string
+	 * @ORM\Column(type="text")
+	 */
 	private $description;
 
 	public function getId() { return $this->id; }

@@ -26,21 +26,21 @@ class UserTextRead extends Entity
 	private $id;
 
 	/**
-	* @var integer $user
-	* @ORM\ManyToOne(targetEntity="User")
-	*/
+	 * @var integer $user
+	 * @ORM\ManyToOne(targetEntity="User")
+	 */
 	private $user;
 
 	/**
-	* @var integer $text
-	* @ORM\ManyToOne(targetEntity="Text")
-	*/
+	 * @var integer $text
+	 * @ORM\ManyToOne(targetEntity="Text")
+	 */
 	private $text;
 
 	/**
-	* @var datetime
-	* @ORM\Column(type="datetime")
-	*/
+	 * @var datetime
+	 * @ORM\Column(type="datetime")
+	 */
 	private $created_at;
 
 

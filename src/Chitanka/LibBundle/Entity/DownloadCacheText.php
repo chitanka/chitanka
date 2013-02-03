@@ -13,15 +13,15 @@ use Doctrine\ORM\Mapping as ORM;
 class DownloadCacheText extends Entity
 {
 	/**
-	* @ORM\Id
-	* @ORM\ManyToOne(targetEntity="DownloadCache")
-	*/
+	 * @ORM\Id
+	 * @ORM\ManyToOne(targetEntity="DownloadCache")
+	 */
 	private $dc;
 
 	/**
-	* @ORM\Id
-	* @ORM\ManyToOne(targetEntity="Text")
-	*/
+	 * @ORM\Id
+	 * @ORM\ManyToOne(targetEntity="Text")
+	 */
 	private $text;
 
 	public function setDc($dc) { $this->dc = $dc; }

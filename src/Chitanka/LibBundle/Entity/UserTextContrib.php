@@ -24,51 +24,51 @@ class UserTextContrib extends Entity
 	private $id;
 
 	/**
-	* @var integer $user
-	* @ORM\ManyToOne(targetEntity="User")
-	*/
+	 * @var integer $user
+	 * @ORM\ManyToOne(targetEntity="User")
+	 */
 	private $user;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=100)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=100)
+	 */
 	private $username;
 
 	/**
-	* @var integer $text
-	* @ORM\ManyToOne(targetEntity="Text", inversedBy="userContribs")
-	*/
+	 * @var integer $text
+	 * @ORM\ManyToOne(targetEntity="Text", inversedBy="userContribs")
+	 */
 	private $text;
 
 	/**
-	* @var integer $size
-	* @ORM\Column(type="integer")
-	*/
+	 * @var integer $size
+	 * @ORM\Column(type="integer")
+	 */
 	private $size;
 
 	/**
-	* @var integer $percent
-	* @ORM\Column(type="smallint")
-	*/
+	 * @var integer $percent
+	 * @ORM\Column(type="smallint")
+	 */
 	private $percent;
 
 	/**
-	* @var string $comment
-	* @ORM\Column(type="string", length=255)
-	*/
+	 * @var string $comment
+	 * @ORM\Column(type="string", length=255)
+	 */
 	private $comment;
 
 	/**
-	* @var date
-	* @ORM\Column(type="datetime")
-	*/
+	 * @var date
+	 * @ORM\Column(type="datetime")
+	 */
 	private $date;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=30, nullable=true)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=30, nullable=true)
+	 */
 	private $humandate;
 
 	public function getId() { return $this->id; }

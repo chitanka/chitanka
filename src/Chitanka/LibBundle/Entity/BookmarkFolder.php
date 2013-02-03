@@ -25,27 +25,27 @@ class BookmarkFolder extends Entity
 	private $id;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=40)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=40)
+	 */
 	private $slug = '';
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=80)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=80)
+	 */
 	private $name = '';
 
 	/**
-	* @var integer
-	* @ORM\ManyToOne(targetEntity="User")
-	*/
+	 * @var integer
+	 * @ORM\ManyToOne(targetEntity="User")
+	 */
 	private $user;
 
 	/**
-	* @var date
-	* @ORM\Column(type="datetime")
-	*/
+	 * @var date
+	 * @ORM\Column(type="datetime")
+	 */
 	private $created_at;
 
 

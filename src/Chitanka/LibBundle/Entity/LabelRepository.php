@@ -22,8 +22,8 @@ class LabelRepository extends EntityRepository
 	}
 
 	/**
-	* RAW_SQL
-	*/
+	 * RAW_SQL
+	 */
 	public function getAllAsTree()
 	{
 		$labels = $this->_em->getConnection()->fetchAll('SELECT * FROM label ORDER BY name');

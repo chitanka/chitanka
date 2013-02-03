@@ -77,9 +77,9 @@ class RevisionRepository extends EntityRepository
 
 
 	/**
-	* Uses raw SQL and DATE_FORMAT, a MySQL specific function
-	* RAW_SQL
-	*/
+	 * Uses raw SQL and DATE_FORMAT, a MySQL specific function
+	 * RAW_SQL
+	 */
 	public function getMonths()
 	{
 		$sql = sprintf('SELECT

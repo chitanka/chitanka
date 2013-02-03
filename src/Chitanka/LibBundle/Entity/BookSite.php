@@ -21,15 +21,15 @@ class BookSite extends Entity
 	private $id;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=50, unique=true)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=50, unique=true)
+	 */
 	private $name;
 
 	/**
-	* @var string
-	* @ORM\Column(type="string", length=100)
-	*/
+	 * @var string
+	 * @ORM\Column(type="string", length=100)
+	 */
 	private $url;
 
 	public function __toString()

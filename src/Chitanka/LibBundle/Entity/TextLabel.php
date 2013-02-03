@@ -24,17 +24,17 @@ class TextLabel extends Entity
 	private $id;
 
 	/**
-	* @var integer
-	* @ORM\Id
-	* @ORM\ManyToOne(targetEntity="Text", inversedBy="textLabels")
-	*/
+	 * @var integer
+	 * @ORM\Id
+	 * @ORM\ManyToOne(targetEntity="Text", inversedBy="textLabels")
+	 */
 	private $text;
 
 	/**
-	* @var integer
-	* @ORM\Id
-	* @ORM\ManyToOne(targetEntity="Label")
-	*/
+	 * @var integer
+	 * @ORM\Id
+	 * @ORM\ManyToOne(targetEntity="Label")
+	 */
 	private $label;
 
 	public function getId() { return $this->id; }
