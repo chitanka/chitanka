@@ -4,6 +4,7 @@ namespace Chitanka\LibBundle\Legacy;
 use Chitanka\LibBundle\Util\String;
 use Chitanka\LibBundle\Util\Ary;
 use Chitanka\LibBundle\Entity\Text;
+use Chitanka\LibBundle\Entity\TextComment;
 use Chitanka\LibBundle\Pagination\Pager;
 
 class CommentPage extends Page {
@@ -81,29 +82,28 @@ class CommentPage extends Page {
 				$showComment = 0;
 			}
 		}
-		$id = $this->db->autoIncrementId(DBT_COMMENT);
-		$set = array(
-			'id' => $id,
-			'text_id' => $this->textId,
-			'rname' => $this->reader,
-			'content' => $this->comment,
-			'contenthash' => md5($this->comment),
-			'time' => date('Y-m-d H:i:s'),
-			'ip' => @$_SERVER['REMOTE_ADDR'],
-			'is_shown' => $showComment,
-		);
+		$em = $this->controller->getEntityManager();
+		$comment = new TextComment;
+		$comment->setText($em->find('LibBundle:Text', $this->textId));
+		$comment->setRname($this->reader);
+		$comment->setContent($this->comment);
+		$comment->setContenthash(md5($this->comment));
+		$comment->setTime(new \DateTime());
+		$comment->setIp(@$_SERVER['REMOTE_ADDR']);
+		$comment->setIsShown($showComment);
 		if ($this->user->isAuthenticated()) {
-			$set['user_id'] = $this->user->getId();
+			$comment->setUser($em->merge($this->user));
 		}
 		if ($this->replyto) {
-			$set['replyto_id'] = $this->replyto;
+			$comment->setReplyto($em->find('LibBundle:TextComment', $this->replyto));
 		}
-		$this->db->insert(DBT_COMMENT, $set, true);
+		$em->persist($comment);
+		$em->flush();
 		if ($showComment) {
 			$this->db->query(sprintf('UPDATE %s SET comment_count = comment_count + 1 WHERE id = %d', DBT_TEXT, $this->textId));
 
 			// TODO rewrite
-			$chatMsg = sprintf('Нов [url=http://chitanka.info/text/%d/comments#e%d]читателски коментар[/url] от [b]%s[/b] за „%s“', $this->textId, $id, $this->reader, $this->work->getTitle());
+			$chatMsg = sprintf('Нов [url=http://chitanka.info/text/%d/comments#e%d]читателски коментар[/url] от [b]%s[/b] за „%s“', $this->textId, $comment->getId(), $this->reader, $this->work->getTitle());
 			Legacy::getFromUrl('http://forum.chitanka.info/chat/post.php', array('m' => $chatMsg));
 		}
 		$this->addMessage('Мнението ви беше получено.');
