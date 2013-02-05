@@ -9,9 +9,6 @@
 */
 
 $query = sanitizeInput($_SERVER['QUERY_STRING']);
-
-// remove bad symbols from query
-$query = preg_replace( '![^\w\d,.:;=-]!', '', $query );
 $combiFile = dirname(__FILE__) . '/../../../cache'.sanitizeInput($_SERVER['REQUEST_URI']);
 
 if ( ! file_exists($combiFile) ) {
@@ -54,6 +51,7 @@ function createCombiFile($query, $combiName)
 }
 
 function sanitizeInput($input) {
+	$input = preg_replace('#[^/a-zA-Z\d,._-]#', '', $input);
 	$input = strtr($input, array('..' => '.'));
 	return $input;
 }

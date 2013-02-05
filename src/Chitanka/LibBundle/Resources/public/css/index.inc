@@ -66,6 +66,7 @@ function minifyStyle($content)
 }
 
 function sanitizeInput($input) {
+	$input = preg_replace('/[^a-zA-Z\d,._-]/', '', $input);
 	$input = strtr($input, array('..' => '.'));
 	return $input;
 }
