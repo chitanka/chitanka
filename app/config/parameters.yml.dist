@@ -35,12 +35,9 @@ parameters:
     site_email:         admin@localhost
     work_email:         admin@localhost
 
-#   Път до библиотеката jQuery. По подразбиране false.
-#   При false, се ползва локалното копие
+    # Път до библиотеката jQuery. По подразбиране false.
+    # При false, се ползва локалното копие
     script_library: false
-
-    mirror_sites: ~
-    mirror_sites_graphic: ~
 
     update_db_url: http://api.chitanka.info/db
     update_content_url: http://api.chitanka.info/content
@@ -59,30 +56,6 @@ parameters:
 
     tmp_dir: /tmp
 
-    # Облици
-    skins:
-        blackwhite: Белчо
-        purple:     Люляк
-        olive:      Маслинова нощ
-        neg:        Негортокал
-        orange:     Портокал
-        pink:       Роза
-        blue:       Синева
-        phoenix:    Феникс
-
-    # Позиция на навигационното меню
-    navpos:
-        right: Вдясно
-        left:  Вляво
-
-    user_css:
-        css/onecolumn_frontpage.css: Едноколонна начална страница
-        css/show_filesize.css: Видим размер на произведенията
-        css/projectlinks_ontop.css: Преместване на връзките към отделните проекти отгоре
-
-    user_js:
-        js/move_projects_links.js: Преместване на връзките към отделните проекти в страничното меню
-
     download_formats: [txt.zip, fb2.zip, epub, sfb.zip]
 
     download_file: AUTHOR - SERIES - SERNO. TITLE-ID
@@ -93,42 +66,4 @@ parameters:
 
     wiki_url: http://wiki.chitanka.info/$1
 
-    menu:
-        Читалня:
-            authors:
-                text: Автори
-                title: Начална страница за преглед на авторите
-            translators:
-                text: Преводачи
-                title: Начална страница за преглед на преводачите
-            books:
-                text: Книги
-                title: Начална страница за преглед на книгите
-            texts:
-                text: Произведения
-                title: Начална страница за преглед на произведенията
-            text_random:
-                text: Случайна творба
-                title: Показване на случайно произведение
-            series:
-                text: Серии
-                title: Начална страница за преглед на авторските серии
-            sequences:
-                text: Поредици
-                title: Начална страница за преглед на издателските поредици
-            texts_comments:
-                text: Читателски мнения
-                title: Читателски коментари за произведенията
-        Работилница:
-            new:
-                text: Новодобавено
-                title: Списък на произведенията по месец на добавяне
-            workroom:
-                text: Работно ателие
-                title: Списък на произведения, подготвящи се за добавяне
-            torrents:
-                text: Торенти
-                title: ~
-            statistics:
-                text: Статистика
-                title: ~
+    mirror_sites: ~
