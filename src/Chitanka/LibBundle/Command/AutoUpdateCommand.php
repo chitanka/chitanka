@@ -123,11 +123,9 @@ EOT
 
 	private function updateParametersFileIfNeeded(\ZipArchive $zip, $configDir)
 	{
-		$parametersFile = "$configDir/parameters.yml";
-		$parametersDistFile = "$parametersFile.dist";
-		if ($zip->locateName($parametersDistFile) !== false) {
+		if ($zip->locateName('app/config/parameters.yml.dist') !== false) {
 			$yamlUpdater = new ParametersYamlUpdater;
-			$yamlUpdater->update($parametersDistFile, $parametersFile);
+			$yamlUpdater->update("$configDir/parameters.yml.dist", "$configDir/parameters.yml");
 		}
 	}
 
