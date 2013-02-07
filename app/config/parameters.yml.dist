@@ -27,6 +27,8 @@ parameters:
     #style_url:  http://chitanka.local/bundles/lib/css/FILE.css
     style_url:  /bundles/lib/css/FILE.css
 
+    use_http_cache: true
+
     # Следните променливи се ползват при пращането на електронна поща
     admin:              Администратор
     admin_email:        { admin@localhost: Администратор }

@@ -62,10 +62,7 @@ abstract class Controller extends SymfonyController
 		}
 
 		$response = $this->render("LibBundle:$controller.$format.twig", $this->view + $data);
-		if ($this->responseAge) {
-			$response->setPublic();
-			$response->setSharedMaxAge($this->responseAge);
-		}
+		$this->setCacheStatusByResponse($response);
 
 		return $response;
 	}
@@ -121,10 +118,7 @@ abstract class Controller extends SymfonyController
 			));
 			$response->setContent($normalizedContent);
 		}
-		if ($this->responseAge) {
-			$response->setPublic();
-			$response->setSharedMaxAge($this->responseAge);
-		}
+		$this->setCacheStatusByResponse($response);
 		if ($this->responseStatusCode) {
 			$response->setStatusCode($this->responseStatusCode);
 		}
@@ -153,10 +147,7 @@ abstract class Controller extends SymfonyController
 		foreach ($headers as $header => $value) {
 			$response->headers->set($header, $value);
 		}
-		if ($this->responseAge) {
-			$response->setPublic();
-			$response->setSharedMaxAge($this->responseAge);
-		}
+		$this->setCacheStatusByResponse($response);
 
 		return $response;
 	}
@@ -171,6 +162,14 @@ abstract class Controller extends SymfonyController
 	{
 	}
 
+	protected function setCacheStatusByResponse(Response $response)
+	{
+		if ($this->responseAge && $this->container->getParameter('use_http_cache')) {
+			$response->setPublic();
+			$response->setSharedMaxAge($this->responseAge);
+		}
+		return $response;
+	}
 
 	public function getName()
 	{
