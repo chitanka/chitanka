@@ -114,7 +114,25 @@ EOT
 		$updater = new SourceUpdater($rootDir, $updateDir);
 		$updater->lockFrontController();
 		$updater->extractArchive($zip);
-		// update app/config/parameters.yml if needed
+		$this->updateParametersFileIfNeeded($zip, "$rootDir/app/config");
+		$this->clearAppCache("$rootDir/app/cache/prod");
+		$updater->unlockFrontController();
+
+		return true;
+	}
+
+	private function updateParametersFileIfNeeded(\ZipArchive $zip, $configDir)
+	{
+		$parametersFile = "$configDir/parameters.yml";
+		$parametersDistFile = "$parametersFile.dist";
+		if ($zip->locateName($parametersDistFile) !== false) {
+			$yamlUpdater = new ParametersYamlUpdater;
+			$yamlUpdater->update($parametersDistFile, $parametersFile);
+		}
+	}
+
+	private function clearAppCache($cacheDir)
+	{
 		try {
 			$this->runCommand('cache:clear');
 			$this->runCommand('cache:create-cache-class');
@@ -122,9 +140,7 @@ EOT
 			error_log("Auto-update: ".$e->getMessage());
 		}
 		// make sure cache dir is world-writable (the 0000 umask is sometimes not enough)
-		chmod("$rootDir/app/cache/prod", 0777);
-		$updater->unlockFrontController();
-		return true;
+		chmod($cacheDir, 0777);
 	}
 
 	private function runCommand($commandName)
