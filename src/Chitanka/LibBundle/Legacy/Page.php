@@ -489,10 +489,6 @@ EOS;
 		file_put_contents(__DIR__."/../../../../app/logs/failed_captcha.log", "$msg\n", FILE_APPEND);
 	}
 
-	protected function getFreeId($dbtable) {
-		return $this->db->autoIncrementId($dbtable);
-	}
-
 	protected function addUrlQuery($args) {
 		return $this->out->addUrlQuery($this->request->requestUri(), $args);
 	}
