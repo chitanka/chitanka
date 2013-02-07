@@ -1146,23 +1146,11 @@ class Book extends BaseWork
 	}
 
 
-	public function getMirrors()
+	// deprecated
+	private function getMirrors()
 	{
-		if ( isset($this->_mirrors) ) {
-			return $this->_mirrors;
-		}
-
-		$file = Legacy::getContentFilePath('book-pic', $this->id) . '/' . self::MIRRORS_FILE;
-
-		$mirrors = Setup::setting('mirror_sites_graphic');
-		if ( file_exists($file) && filesize($file) > 0 ) {
-			$mirrors = array_merge($mirrors,
-				file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
-		}
-
-		return $this->_mirrors = $mirrors;
+		return array();
 	}
-
 
 	public function getDocRoot($cache = true)
 	{
