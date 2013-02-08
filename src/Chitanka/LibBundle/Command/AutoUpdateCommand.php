@@ -114,19 +114,10 @@ EOT
 		$updater = new SourceUpdater($rootDir, $updateDir);
 		$updater->lockFrontController();
 		$updater->extractArchive($zip);
-		$this->updateParametersFileIfNeeded($zip, "$rootDir/app/config");
 		$this->clearAppCache("$rootDir/app/cache/prod");
 		$updater->unlockFrontController();
 
 		return true;
-	}
-
-	private function updateParametersFileIfNeeded(\ZipArchive $zip, $configDir)
-	{
-		if ($zip->locateName('app/config/parameters.yml.dist') !== false) {
-			$yamlUpdater = new ParametersYamlUpdater;
-			$yamlUpdater->update("$configDir/parameters.yml.dist", "$configDir/parameters.yml");
-		}
 	}
 
 	private function clearAppCache($cacheDir)

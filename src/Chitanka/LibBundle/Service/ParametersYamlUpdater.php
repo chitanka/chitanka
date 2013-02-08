@@ -7,14 +7,13 @@ class ParametersYamlUpdater
 {
 	public function update($distFileName, $yamlFileName)
 	{
-		$yamlFile = new \SplFileObject($yamlFileName);
 		$yamlBackupFileName = $yamlFileName.'.bak';
 		if ( ! copy($yamlFileName, $yamlBackupFileName)) {
 			error_log("Failed to create '$yamlBackupFileName'");
-			return $yamlFile;
+			return false;
 		}
-		$yamlFile->fwrite($this->updateYaml(file_get_contents($distFileName), file_get_contents($yamlFileName)));
-		return $yamlFile;
+		$updatedYaml = $this->updateYaml(file_get_contents($distFileName), file_get_contents($yamlFileName));
+		return file_put_contents($yamlFileName, $updatedYaml);
 	}
 
 	public function updateYaml($distYaml, $yaml)

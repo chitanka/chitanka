@@ -16,6 +16,7 @@ class FileUpdater
 		$extractDir = sys_get_temp_dir().'/chitanka-'.uniqid();
 		mkdir($extractDir);
 		$zip->extractTo($extractDir);
+		$this->onAfterExtract($zip);
 		$zip->close();
 
 		$copier = new DirectoryCopier;
@@ -28,6 +29,9 @@ class FileUpdater
 		copy("$extractDir/.last", "$this->updateDir/.last");
 	}
 
+	protected function onAfterExtract(\ZipArchive $zip)
+	{
+	}
 
 	public function rmdir($path)
 	{

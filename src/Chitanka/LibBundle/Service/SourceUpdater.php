@@ -21,6 +21,15 @@ class SourceUpdater extends FileUpdater
 		file_put_contents($this->frontControllerName(), $unlockedContent);
 	}
 
+	protected function onAfterExtract(\ZipArchive $zip)
+	{
+		if ($zip->locateName('app/config/parameters.yml.dist') !== false) {
+			$yamlUpdater = new ParametersYamlUpdater;
+			$configDir = "$this->rootDir/app/config";
+			$yamlUpdater->update("$configDir/parameters.yml.dist", "$configDir/parameters.yml");
+		}
+	}
+
 	private function frontControllerName()
 	{
 		return "$this->rootDir/web/index.php";

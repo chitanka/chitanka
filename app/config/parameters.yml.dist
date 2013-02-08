@@ -22,7 +22,6 @@ parameters:
     locale: bg
 
     assets_base_urls: ~
-
     style_url:  /bundles/lib/css/FILE.css
 
     use_http_cache: true
@@ -55,7 +54,6 @@ parameters:
     tmp_dir: /tmp
 
     download_formats: [txt.zip, fb2.zip, epub, sfb.zip]
-
     download_file: AUTHOR - SERIES - SERNO. TITLE-ID
 
     workroom_remote: false
