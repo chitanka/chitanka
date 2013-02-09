@@ -353,7 +353,9 @@ EOT
 			return array_shift($this->_ids[$table]);
 		}
 		if ( ! isset($this->_curIds[$table])) {
-			$this->_curIds[$table] = $this->olddb()->autoIncrementId($table);
+			$tableClass = 'Chitanka\LibBundle\Entity\\'.  str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+			$nextId = $this->em->find('LibBundle:NextId', $tableClass);
+			$this->_curIds[$table] = $nextId ? $nextId->getValue() : $this->em->createQuery(sprintf('SELECT MAX(e.id) FROM %s e', $tableClass))->getSingleScalarResult() + 1;
 		} else {
 			$this->_curIds[$table]++;
 		}
@@ -443,12 +445,21 @@ EOT
 		if ( ! empty($work['authors'])) {
 			$qs[] = $this->olddb()->deleteQ(DBT_AUTHOR_OF, array('text_id' => $work['id']));
 			foreach ($work['authors'] as $pos => $author) {
-				$set = array('person_id' => $author, 'text_id' => $work['id'], 'pos' => $pos);
+				$set = array(
+					'id' => $this->getNextId(DBT_AUTHOR_OF),
+					'person_id' => $author,
+					'text_id' => $work['id'],
+					'pos' => $pos,
+				);
 				$qs[] = $this->olddb()->insertQ(DBT_AUTHOR_OF, $set, false, false);
 			}
 			if (isset($set['series_id'])) {
 				foreach ($work['authors'] as $pos => $author) {
-					$set = array('person_id' => $author, 'series_id' => $set['series_id']);
+					$set = array(
+						'id' => $this->getNextId(DBT_SER_AUTHOR_OF),
+						'person_id' => $author,
+						'series_id' => $set['series_id'],
+					);
 					$qs[] = $this->olddb()->insertQ(DBT_SER_AUTHOR_OF, $set, true, false);
 				}
 			}
@@ -458,7 +469,13 @@ EOT
 			$qs[] = $this->olddb()->deleteQ(DBT_TRANSLATOR_OF, array('text_id' => $work['id']));
 			foreach ($work['translators'] as $pos => $translator) {
 				list($personId, $transYear) = $translator;
-				$set = array('person_id' => $personId, 'text_id' => $work['id'], 'pos' => $pos, 'year' => $transYear);
+				$set = array(
+					'id' => $this->getNextId(DBT_TRANSLATOR_OF),
+					'person_id' => $personId,
+					'text_id' => $work['id'],
+					'pos' => $pos,
+					'year' => $transYear,
+				);
 				$qs[] = $this->olddb()->insertQ(DBT_TRANSLATOR_OF, $set, false, false);
 			}
 		}
@@ -467,6 +484,7 @@ EOT
 			$qs[] = $this->olddb()->deleteQ('text_label', array('text_id' => $work['id']));
 			foreach ($work['labels'] as $label) {
 				$qs[] = $this->olddb()->insertQ('text_label', array(
+					'id' => $this->getNextId('text_label'),
 					'label_id' => $this->getObjectId('label', $label),
 					'text_id' => $work['id']
 				));
@@ -481,6 +499,7 @@ EOT
 				list($username, $percent, $comment, $date, $userId) = $user;
 				$usize = $percent/100 * $size;
 				$set = array(
+					'id' => $this->getNextId(DBT_USER_TEXT),
 					'text_id' => $work['id'],
 					'size' => $usize,
 					'percent' => $percent,
@@ -598,7 +617,11 @@ EOT
 		if ( ! empty($book['authors'])) {
 			$qs[] = $this->olddb()->deleteQ('book_author', array('book_id' => $book['id']));
 			foreach ($book['authors'] as $pos => $author) {
-				$set = array('person_id' => $author, 'book_id' => $book['id']);
+				$set = array(
+					'id' => $this->getNextId('book_author'),
+					'person_id' => $author,
+					'book_id' => $book['id'],
+				);
 				$qs[] = $this->olddb()->insertQ('book_author', $set, false, false);
 			}
 			$qs[] = $this->buildBookTitleAuthorQuery($book['id']);
@@ -609,7 +632,12 @@ EOT
 			foreach ($book['works'] as $work) {
 				$key = 'book_text'.$book['id'].'_'.$work['id'];
 				if ($book['is_new'] || $work['is_new']) {
-					$set = array('book_id' => $book['id'], 'text_id' => $work['id'], 'share_info' => (int) $work['is_new']);
+					$set = array(
+						'id' => $this->getNextId('book_text'),
+						'book_id' => $book['id'],
+						'text_id' => $work['id'],
+						'share_info' => (int) $work['is_new'],
+					);
 					$qs[$key] = $this->olddb()->insertQ('book_text', $set, false, false);
 				} else {
 					$relationExists = $bookTextRepo->findOneBy(array(
@@ -617,7 +645,12 @@ EOT
 						'text' => $work['id'],
 					));
 					if (!$relationExists) {
-						$set = array('book_id' => $book['id'], 'text_id' => $work['id'], 'share_info' => 0);
+						$set = array(
+							'id' => $this->getNextId('book_text'),
+							'book_id' => $book['id'],
+							'text_id' => $work['id'],
+							'share_info' => 0,
+						);
 						$qs[$key] = $this->olddb()->insertQ('book_text', $set, false, false);
 					}
 				}
