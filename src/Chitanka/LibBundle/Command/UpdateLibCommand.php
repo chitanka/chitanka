@@ -484,7 +484,6 @@ EOT
 			$qs[] = $this->olddb()->deleteQ('text_label', array('text_id' => $work['id']));
 			foreach ($work['labels'] as $label) {
 				$qs[] = $this->olddb()->insertQ('text_label', array(
-					'id' => $this->getNextId('text_label'),
 					'label_id' => $this->getObjectId('label', $label),
 					'text_id' => $work['id']
 				));

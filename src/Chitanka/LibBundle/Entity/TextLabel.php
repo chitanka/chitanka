@@ -18,8 +18,7 @@ class TextLabel extends Entity
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="CUSTOM")
-	 * @ORM\CustomIdGenerator(class="Chitanka\LibBundle\Doctrine\CustomIdGenerator")
+	 * @ORM\GeneratedValue
 	 */
 	private $id;
 
