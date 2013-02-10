@@ -11,18 +11,19 @@ abstract class EntityRepository extends DoctrineEntityRepository
 
 	public function persist($object)
 	{
-		$this->_em->persist($object);
-		$this->_em->flush();
+		$em = $this->getEntityManager();
+		$em->persist($object);
+		$em->flush();
 	}
 
 	public function flush()
 	{
-		$this->_em->flush();
+		$this->getEntityManager()->flush();
 	}
 
 	public function getCount($where = null)
 	{
-		$qb = $this->_em->createQueryBuilder()
+		$qb = $this->getEntityManager()->createQueryBuilder()
 			->select('COUNT(e.id)')
 			->from($this->getEntityName(), 'e');
 		if ($where) {
@@ -45,7 +46,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
 	public function getRandom()
 	{
 		$dql = sprintf('SELECT e FROM %s e WHERE e.id <= %d ORDER BY e.id DESC', $this->getEntityName(), rand(1, $this->getCount()));
-		$query = $this->_em->createQuery($dql);
+		$query = $this->getEntityManager()->createQuery($dql);
 		$query->setMaxResults(1);
 
 		return $query->getSingleResult();
@@ -58,7 +59,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
 			$where = 'AND '.$where;
 		}
 		$dql = sprintf('SELECT e.id FROM %s e WHERE e.id <= %d %s ORDER BY e.id DESC', $this->getEntityName(), rand(1, $this->getCount()), $where);
-		$query = $this->_em->createQuery($dql);
+		$query = $this->getEntityManager()->createQuery($dql);
 		$query->setMaxResults(1);
 
 		return $query->getSingleScalarResult();
@@ -130,9 +131,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
 
 	public function getQueryBuilder($orderBys = null)
 	{
-		$qb = $this->_em->createQueryBuilder()
-			->select('e')
-			->from($this->getEntityName(), 'e');
+		$qb = $this->createQueryBuilder('e');
 
 		if ($orderBys) {
 			foreach (explode(',', $orderBys) as $orderBy) {
