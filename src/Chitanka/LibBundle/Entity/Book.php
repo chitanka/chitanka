@@ -3,6 +3,7 @@
 namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Chitanka\LibBundle\Util\String;
 use Chitanka\LibBundle\Legacy\Legacy;
 use Chitanka\LibBundle\Legacy\Setup;
