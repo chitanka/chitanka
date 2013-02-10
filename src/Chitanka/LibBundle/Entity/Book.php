@@ -641,7 +641,7 @@ class Book extends BaseWork
 	{
 		$images = array();
 
-		$dir = Legacy::getContentFilePath('book-img', $this->id);
+		$dir = Legacy::getInternalContentFilePath('book-img', $this->id);
 		foreach (glob("$dir/*") as $img) {
 			$images[] = $img;
 		}
