@@ -142,22 +142,18 @@ EOT
 	/** @return \ZipArchive */
 	private function fetchUpdate($fetchUrl, $updateDir, $now)
 	{
-		$lastmodFile = "$updateDir/.last";
-		if ( ! file_exists($lastmodFile)) {
-			file_put_contents($lastmodFile, $now);
+		$url = $this->prepareFetchUrl($fetchUrl, $updateDir, $now);
+		if ($url == null) {
 			return false;
 		}
-		$lastmod = trim(file_get_contents($lastmodFile));
-		$url = "$fetchUrl/$lastmod";
 		$this->output->writeln("Fetching update from $url");
 
-		$browser = $this->getContainer()->get('buzz');
-		$client = new \Chitanka\LibBundle\Service\ResumeCurlClient();
-		$client->setSaveDir($updateDir);
-		$browser->setClient($client);
-		$browser->addListener($client);
-
-		$response = $browser->get($url, array('User-Agent: Mylib (http://chitanka.info)'));
+		try {
+			$response = $this->downloadUpdate($url, $updateDir);
+		} catch (\RuntimeException $e) {
+			error_log("fetch error by $url ({$e->getMessage()})");
+			return false;
+		}
 		if ($response->isRedirection()) { // most probably not modified - 304
 			return false;
 		}
@@ -166,6 +162,28 @@ EOT
 			return false;
 		}
 		return $this->initZipFileFromContent($response->getContent());
+	}
+
+	private function prepareFetchUrl($fetchUrl, $updateDir, $now)
+	{
+		$lastmodFile = "$updateDir/.last";
+		if ( ! file_exists($lastmodFile)) {
+			file_put_contents($lastmodFile, $now);
+			return null;
+		}
+		$lastmod = trim(file_get_contents($lastmodFile));
+		return "$fetchUrl/$lastmod";
+	}
+
+	private function downloadUpdate($url, $updateDir)
+	{
+		$browser = $this->getContainer()->get('buzz');
+		$client = new \Chitanka\LibBundle\Service\ResumeCurlClient();
+		$client->setSaveDir($updateDir);
+		$browser->setClient($client);
+		$browser->addListener($client);
+
+		return $browser->get($url, array('User-Agent: Mylib (http://chitanka.info)'));
 	}
 
 	/** @return \ZipArchive */
