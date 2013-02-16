@@ -149,15 +149,11 @@ class Extension extends \Twig_Extension
 	public function putTextInBookTemplate($template, Text $text, $htmlTextView)
 	{
 		$textId = $text->getId();
-		$regexp = "/\{text:$textId\|(.+)\}/";
+		$regexp = "/\{(text|file):$textId(-[^|}]+)?\|(.+)\}/";
 		if (preg_match($regexp, $template, $matches)) {
-			$htmlTextView = str_replace('TEXT_TITLE', $matches[1], $htmlTextView);
-			$template = preg_replace($regexp, $htmlTextView, $template);
-
-			return $template;
+			$template = preg_replace($regexp, str_replace('TEXT_TITLE', $matches[3], $htmlTextView), $template);
 		}
-		$htmlTextView = str_replace('TEXT_TITLE', $text->getTitle(), $htmlTextView);
-		$template = preg_replace("/\{(text|file):$textId(-.+)?\}/", $htmlTextView, $template);
+		$template = preg_replace("/\{(text|file):$textId(-.+)?\}/", str_replace('TEXT_TITLE', $text->getTitle(), $htmlTextView), $template);
 
 		return $template;
 	}
