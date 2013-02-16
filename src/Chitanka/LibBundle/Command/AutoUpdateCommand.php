@@ -73,6 +73,8 @@ EOT
 		$sqlImporter->importFile("$updateDir/db.sql");
 		unlink("$updateDir/db.sql");
 
+		$this->deleteRemovedNoticesIfDisallowed();
+
 		return true;
 	}
 
@@ -92,6 +94,17 @@ EOT
 		}
 
 		return new \SqlImporter($dsn, $dbuser, $dbpassword);
+	}
+
+	private function deleteRemovedNoticesIfDisallowed()
+	{
+		$c = $this->getContainer();
+		$param = 'allow_removed_notice';
+		if ($c->hasParameter($param) && $c->getParameter($param) === false) {
+			$db = $c->get('doctrine.orm.default_entity_manager')->getConnection();
+			$db->executeUpdate('UPDATE text SET removed_notice = NULL');
+			$db->executeUpdate('UPDATE book SET removed_notice = NULL');
+		}
 	}
 
 	private function executeContentUpdate($fetchUrl, $updateDir, $contentDir)

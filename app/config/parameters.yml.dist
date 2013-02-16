@@ -25,6 +25,7 @@ parameters:
     style_url:  /bundles/lib/css/FILE.css
 
     use_http_cache: true
+    allow_removed_notice: true
 
     # Следните променливи се ползват при пращането на електронна поща
     admin:              Администратор
