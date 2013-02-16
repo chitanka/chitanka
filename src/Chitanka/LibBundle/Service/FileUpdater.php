@@ -16,7 +16,7 @@ class FileUpdater
 		$extractDir = sys_get_temp_dir().'/chitanka-'.uniqid();
 		mkdir($extractDir);
 		$zip->extractTo($extractDir);
-		$this->onAfterExtract($zip);
+		$this->onAfterExtract($zip, $extractDir);
 		$zip->close();
 
 		$copier = new DirectoryCopier;
