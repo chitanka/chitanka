@@ -5,7 +5,7 @@
 {% endif %}
 
 {% if book.removed_notice is not empty %}
-	<div class="removed-notice">{{ book.removed_notice }}</div>
+	<div class="removed-notice">{{ book.removed_notice|raw }}</div>
 {% else %}
 	<div class="cover-and-links">
 		{{ booktools.cover_div(book, 200) }}
