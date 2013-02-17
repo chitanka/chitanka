@@ -36,7 +36,7 @@ class BookRepository extends EntityRepository
 
 	public function getIdsByCategory($category, $page = 1, $limit = null)
 	{
-		$dql = sprintf('SELECT b.id FROM %s b WHERE b.removed_notice IS NULL AND b.category = %d ORDER BY b.title', $this->getEntityName(), $category->getId());
+		$dql = sprintf('SELECT b.id FROM %s b WHERE b.category = %d ORDER BY b.title', $this->getEntityName(), $category->getId());
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 
 		return $query->getResult('id');
@@ -52,7 +52,7 @@ class BookRepository extends EntityRepository
 
 	public function getIdsBySequence($sequence, $page = 1, $limit = null)
 	{
-		$dql = sprintf('SELECT b.id FROM %s b WHERE b.removed_notice IS NULL AND b.sequence = %d ORDER BY b.seqnr, b.title', $this->getEntityName(), $sequence->getId());
+		$dql = sprintf('SELECT b.id FROM %s b WHERE b.sequence = %d ORDER BY b.seqnr, b.title', $this->getEntityName(), $sequence->getId());
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 
 		return $query->getResult('id');
@@ -68,8 +68,8 @@ class BookRepository extends EntityRepository
 
 	public function getIdsByPrefix($prefix, $page, $limit)
 	{
-		$where = $prefix ? "AND b.title LIKE '$prefix%'" : '';
-		$dql = sprintf('SELECT b.id FROM %s b WHERE b.removed_notice IS NULL %s ORDER BY b.title', $this->getEntityName(), $where);
+		$where = $prefix ? "b.title LIKE '$prefix%'" : '';
+		$dql = sprintf('SELECT b.id FROM %s b WHERE %s ORDER BY b.title', $this->getEntityName(), $where);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 
 		return $query->getResult('id');
@@ -78,8 +78,8 @@ class BookRepository extends EntityRepository
 
 	public function countByPrefix($prefix)
 	{
-		$where = $prefix ? "AND b.title LIKE '$prefix%'" : '';
-		$dql = sprintf('SELECT COUNT(b.id) FROM %s b WHERE b.removed_notice IS NULL %s', $this->getEntityName(), $where);
+		$where = $prefix ? "b.title LIKE '$prefix%'" : '';
+		$dql = sprintf('SELECT COUNT(b.id) FROM %s b WHERE %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
 
 		return $query->getSingleScalarResult();
@@ -116,8 +116,7 @@ class BookRepository extends EntityRepository
 			->addSelect('a', 's', 'c')
 			->leftJoin('e.authors', 'a')
 			->leftJoin('e.sequence', 's')
-			->leftJoin('e.category', 'c')
-			->where("e.removed_notice IS NULL");
+			->leftJoin('e.category', 'c');
 
 		return $qb;
 	}
