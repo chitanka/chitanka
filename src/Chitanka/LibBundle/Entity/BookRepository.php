@@ -101,7 +101,7 @@ class BookRepository extends EntityRepository
 
 	public function getByAuthor($author)
 	{
-		return $this->getQueryBuilder()
+		return $this->getQueryBuilder('s.name, e.seqnr, e.title')
 			->andWhere('a.id = ?1')->setParameter(1, $author->getId())
 			->getQuery()
 			->getArrayResult();
