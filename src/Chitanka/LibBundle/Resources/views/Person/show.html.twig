@@ -6,12 +6,7 @@
 {% block content %}
 
 	<div class="person-{{ person.slug }}">
-	{% if person.person is empty %}
-		{% include 'LibBundle:Person:info.html.twig' %}
-	{% else %}
-		{% import 'LibBundle::link.html.twig' as link %}
-		<p>{{ ('person.alt.'~person.type) | trans({'%current%': person.name, '%target%': link.person(person.person)})|raw }}</p>
-	{% endif %}
+	{% include 'LibBundle:Person:info.html.twig' %}
 
 	{% if books is defined %}
 		<h2 id="books">Книги</h2>

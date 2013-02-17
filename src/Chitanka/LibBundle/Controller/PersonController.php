@@ -56,8 +56,6 @@ class PersonController extends Controller
 
 	public function showAction($slug, $_format)
 	{
-		$this->responseAge = 86400; // 24 hours
-
 		$person = $this->tryToFindPerson($slug);
 		if ( ! $person instanceof Person) {
 			return $person;
@@ -70,18 +68,32 @@ class PersonController extends Controller
 		return $this->display("show.$_format");
 	}
 
+	public function showInfoAction($slug, $_format)
+	{
+		$person = $this->tryToFindPerson($slug);
+		if ( ! $person instanceof Person) {
+			return $person;
+		}
+
+		$this->view = array(
+			'person' => $person,
+		);
+
+		return $this->display("show_info.$_format");
+	}
+
 	protected function tryToFindPerson($slug)
 	{
 		$person = $this->getPersonRepository()->findBySlug(String::slugify($slug));
-
-		if ($person == null) {
-			$person = $this->getPersonRepository()->findOneBy(array('name' => $slug));
-			if ($person) {
-				return $this->urlRedirect($this->generateUrl('person_show', array('slug' => $person->getSlug())), true);
-			}
-			throw new NotFoundHttpException("Няма личност с код $slug.");
+		if ($person) {
+			return $person;
 		}
-		return $person;
+
+		$person = $this->getPersonRepository()->findOneBy(array('name' => $slug));
+		if ($person) {
+			return $this->urlRedirect($this->generateUrl('person_show', array('slug' => $person->getSlug())), true);
+		}
+		throw new NotFoundHttpException("Няма личност с код $slug.");
 	}
 
 	protected function prepareViewForShow(Person $person, $format)
