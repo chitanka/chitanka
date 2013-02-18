@@ -1,6 +1,7 @@
 <?php
 namespace Chitanka\LibBundle\Legacy;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Chitanka\LibBundle\Util\String;
 use Chitanka\LibBundle\Util\Number;
 use Chitanka\LibBundle\Util\Char;
@@ -1289,7 +1290,10 @@ EOS;
 	protected function initData() {
 		$entry = $this->repo()->find($this->entryId);
 		if ($entry == null) {
-			return;
+			throw new NotFoundHttpException("Няма запис с номер $this->entryId.");
+		}
+		if ($entry->isDeleted() && !$this->userIsAdmin()) {
+			throw new NotFoundHttpException("Изтрит запис.");
 		}
 		$this->btitle = $entry->getTitle();
 		$this->author = $entry->getAuthor();

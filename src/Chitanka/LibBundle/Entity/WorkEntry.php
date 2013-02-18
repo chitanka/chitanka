@@ -206,6 +206,10 @@ class WorkEntry extends Entity
 	{
 		$this->setDeletedAt(new \DateTime);
 	}
+	public function isDeleted()
+	{
+		return $this->deleted_at !== null;
+	}
 
 	public function getContribs() { return $this->contribs; }
 
