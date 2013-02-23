@@ -348,7 +348,9 @@ class WorkPage extends Page {
 		}
 		$content = $this->makeUserGuideLink();
 		if ($this->subaction == 'edit'/* && $this->userCanAddEntry()*/) {
-			$this->initData();
+			if ($this->entryId) {
+				$this->initData();
+			}
 			$content .= $this->makeForm();
 		} else {
 			$this->addRssLink();
