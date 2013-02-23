@@ -743,8 +743,6 @@ class Book extends BaseWork
 			return $this->_mainBodyAsSfb;
 		}
 
-		$nextHeading = SfbConverter::TITLE_1;
-
 		$template = $this->clearSpecialBookSyntax($this->getTemplate());
 		$div = str_repeat(SfbConverter::EOL, 2);
 		$sfb = '';
@@ -774,7 +772,7 @@ class Book extends BaseWork
 						$title = $authors . strtr($text->getTitleAsSfb(), array(SfbConverter::HEADER => $command));
 					}
 					$textContent = $text->getRawContent();
-					if (strpos($textContent, SfbConverter::EOL.">") !== false) {
+					if (strpos($textContent, SfbConverter::EOL.">") !== false && $textContent[0] !== '>') {
 						$textContent = $command . SfbConverter::CMD_DELIM . SfbConverter::EOL . $textContent;
 					}
 					$sfb .= $title . $div . ltrim(strtr("\n".$textContent, $this->headingRepl[$command]), "\n");
