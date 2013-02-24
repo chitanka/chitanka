@@ -492,56 +492,19 @@ class Book extends BaseWork
 
 	public function withAutohide()
 	{
-		return strpos($this->getTemplate(), '<!--AUTOHIDE-->') !== false;
-	}
-
-	public function getTemplate()
-	{
-		if ( ! isset($this->_template)) {
-			$this->_template = Legacy::getContentFile('book', $this->id);
-		}
-
-		return $this->_template;
-	}
-
-	private function clearSpecialBookSyntax($template)
-	{
-		return strtr($template, array(
-			"\t<!--AUTOHIDE-->\n" => '',
-		));
+		return $this->getTemplate()->hasAutohide();
 	}
 
 	public function getTemplateAsXhtml()
 	{
-		$template = $this->getTemplate();
-		if ($template) {
-			$imgDir = 'IMG_DIR_PREFIX' . Legacy::getContentFilePath('book-img', $this->id).'/';
-			$converter = new SfbToHtmlConverter($template, $imgDir);
-			$content = $converter->convert()->getContent();
-			//$content = preg_replace('|<p>\n\{(\d+)\}\n</p>|', '{$1}', $content);
-			$content = preg_replace('#<h(\d)>(\{text:\d+\})</h\d>#', '<h$1 class="inner-text">$2</h$1>', $content);
-			$content = preg_replace('#<h(\d)>([^{].+)</h\d>#', '<h$1 class="inline-text">$2</h$1>', $content);
-			// remove comments
-			$content = preg_replace('/&lt;!--.+--&gt;/U', '', $content);
-			$content = strtr($content, array("<p>\n----\n</p>" => '<hr/>'));
-			$content = preg_replace_callback('#<h(\d)>\{file:(.+)\}</h\d>#', array($this, 'pregGetInlineFileForTemplate'), $content);
-
-			return $content;
-		}
-
-		return '';
+		return $this->getTemplate()->getAsXhtml();
 	}
 
-
-	public function pregGetInlineFileForTemplate($matches)
+	private $template;
+	/** @return Content\BookTemplate */
+	public function getTemplate()
 	{
-		$headingLevel = $matches[1];
-		$file = $matches[2];
-
-		$imgDir = Legacy::getContentFilePath('book-img', (int) $file) . '/';
-		$converter = new SfbToHtmlConverter(Legacy::getContentFile('text', $file), $imgDir);
-
-		return $converter->convert()->getContent();
+		return $this->template ?: $this->template = new Content\BookTemplate($this);
 	}
 
 
@@ -699,102 +662,9 @@ class Book extends BaseWork
 	}
 
 
-	protected $headingRepl = array(
-		'>' => array(
-			"\n>" => "\n>>",
-			"\n>>" => "\n>>>",
-			"\n>>>" => "\n>>>>",
-			"\n>>>>" => "\n>>>>>",
-			"\n>>>>>" => "\n#",
-		),
-		'>>' => array(
-			"\n>" => "\n>>>",
-			"\n>>" => "\n>>>>",
-			"\n>>>" => "\n>>>>>",
-			"\n>>>>" => "\n#",
-			"\n>>>>>" => "\n#",
-		),
-		'>>>' => array(
-			"\n>" => "\n>>>>",
-			"\n>>" => "\n>>>>>",
-			"\n>>>" => "\n#",
-			"\n>>>>" => "\n#",
-			"\n>>>>>" => "\n#",
-		),
-		'>>>>' => array(
-			"\n>" => "\n>>>>>",
-			"\n>>" => "\n#",
-			"\n>>>" => "\n#",
-			"\n>>>>" => "\n#",
-			"\n>>>>>" => "\n#",
-		),
-		'>>>>>' => array(
-			"\n>" => "\n#",
-			"\n>>" => "\n#",
-			"\n>>>" => "\n#",
-			"\n>>>>" => "\n#",
-			"\n>>>>>" => "\n#",
-		),
-	);
-
 	public function getMainBodyAsSfb()
 	{
-		if ( isset($this->_mainBodyAsSfb) ) {
-			return $this->_mainBodyAsSfb;
-		}
-
-		$template = $this->clearSpecialBookSyntax($this->getTemplate());
-		$div = str_repeat(SfbConverter::EOL, 2);
-		$sfb = '';
-		$texts = $this->getTextsById();
-		foreach (explode("\n", $template) as $line) {
-			$line = rtrim($line, "\t");
-			if (empty($line)) {
-				$sfb .= SfbConverter::EOL;
-				continue;
-			}
-			$lineParts = explode("\t", $line);
-			if (count($lineParts) == 1) {
-				$sfb .= $line . SfbConverter::EOL;
-				continue;
-			}
-			list($command, $content) = $lineParts;
-			if (preg_match('/\{(text|file):(\d+)(-[^|]+)?(\|(.+))?\}/', $content, $matches)) {
-				$text = $texts[$matches[2]];
-				if ($matches[1] == 'text') {
-					if (isset($matches[5])) {
-						$title = $command . SfbConverter::CMD_DELIM . $matches[5];
-					} else {
-						$authors = implode(', ', $this->getBookAuthorIfNotInTitle($text));
-						if ( ! empty($authors) ) {
-							$authors = $command . SfbConverter::CMD_DELIM . $authors . SfbConverter::EOL;
-						}
-						$title = $authors . strtr($text->getTitleAsSfb(), array(SfbConverter::HEADER => $command));
-					}
-					$textContent = $text->getRawContent();
-					if (strpos($textContent, SfbConverter::EOL.">") !== false && $textContent[0] !== '>') {
-						$textContent = $command . SfbConverter::CMD_DELIM . SfbConverter::EOL . $textContent;
-					}
-					$sfb .= $title . $div . ltrim(strtr("\n".$textContent, $this->headingRepl[$command]), "\n");
-				} else { // file:
-					if (empty($matches[3])) {
-						$textContent = $text->getRawContent();
-					} else {
-						$textContent = Legacy::getContentFile('text', $matches[2].$matches[3]);
-					}
-					if (empty($command)) {
-						$sfb .= $textContent;
-					} else {
-						$sfb .= ltrim(strtr("\n".$textContent, $this->headingRepl[$command]), "\n");
-					}
-				}
-				$sfb .= $div;
-			} else {
-				$sfb .= $line . SfbConverter::EOL;
-			}
-		}
-
-		return $this->_mainBodyAsSfb = $sfb;
+		return $this->getTemplate()->generateSfb();
 	}
 
 
@@ -1007,13 +877,19 @@ class Book extends BaseWork
 	public function getTextIds()
 	{
 		if ( empty($this->textIds) ) {
-			preg_match_all('/\{(text|file):(\d+)/', $this->getTemplate(), $matches);
+			preg_match_all('/\{(text|file):(\d+)/', $this->getTemplate()->getContent(), $matches);
 			$this->textIds = $matches[2];
 		}
 
 		return $this->textIds;
 	}
 
+
+	public function getTextById($textId)
+	{
+		$texts = $this->getTextsById();
+		return isset($texts[$textId]) ? $texts[$textId] : null;
+	}
 
 	public function getTextsById()
 	{
