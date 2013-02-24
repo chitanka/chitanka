@@ -39,7 +39,7 @@ EOT
 		$rootDir = $container->getParameter('kernel.root_dir').'/..';
 		$updateDir = "$rootDir/update";
 		$mutex = new Mutex($updateDir);
-		if ( ! $mutex->acquireLock()) {
+		if ( ! $mutex->acquireLock(1800/*secs*/)) {
 			return;
 		}
 		if ($input->getOption('no-wait') === false) {
