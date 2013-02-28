@@ -3,7 +3,7 @@ namespace Chitanka\LibBundle\Service;
 
 class Mutex
 {
-	static private $expirationTime = 86400; // 24 hours
+	const EXPIRATION_TIME = 86400; // 24 hours
 	private $directory;
 	private $id;
 
@@ -13,7 +13,7 @@ class Mutex
 		$this->id = $id;
 	}
 
-	public function acquireLock($expirationTime = self::$expirationTime)
+	public function acquireLock($expirationTime = self::EXPIRATION_TIME)
 	{
 		if ($this->hasValidLockFile($expirationTime)) {
 			return false;
@@ -34,7 +34,7 @@ class Mutex
 
 	private function hasValidLockFile($expirationTime)
 	{
-		return file_exists($this->getLockFile()) && (time() - filemtime($this->getLockFile) < $expirationTime);
+		return file_exists($this->getLockFile()) && (time() - filemtime($this->getLockFile()) < $expirationTime);
 	}
 
 	private function getLockFile()
