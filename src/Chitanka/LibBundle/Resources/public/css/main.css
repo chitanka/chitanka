@@ -1207,12 +1207,12 @@ a.dl:hover {
 	padding-left: 20px;
 	background-repeat: no-repeat;
 }
-.dl-txt { background-image: url(<?php echo $imgDir ?>dl03-txt.png); }
-.dl-fb2 { background-image: url(<?php echo $imgDir ?>dl02-fb2.png); }
-.dl-epub { background-image: url(<?php echo $imgDir ?>dl04-epub.png); }
-.dl-sfb { background-image: url(<?php echo $imgDir ?>dl01-sfb.png); }
-.dl-djvu { background-image: url(<?php echo $imgDir ?>dl05-djvu.png); }
-.dl-pic { background-image: url(<?php echo $imgDir ?>dl06-jpg.png); }
+.dl-txt { background-image: url(<?php echo image('dl03-txt.png') ?>); }
+.dl-fb2 { background-image: url(<?php echo image('dl02-fb2.png') ?>); }
+.dl-epub { background-image: url(<?php echo image('dl04-epub.png') ?>); }
+.dl-sfb { background-image: url(<?php echo image('dl01-sfb.png') ?>); }
+.dl-djvu { background-image: url(<?php echo image('dl05-djvu.png') ?>); }
+.dl-pic { background-image: url(<?php echo image('dl06-jpg.png') ?>); }
 
 .dl-list, .dl-list li {
 	display: inline;
@@ -1364,7 +1364,6 @@ p.error {
 /* допълнителни връзки в информационна страница */
 .info-top-links {
 	margin-bottom: 1em;
-	/*list-style-image: url(arrow-left);*/
 	text-align: right;
 }
 
@@ -2011,7 +2010,7 @@ button.expander {
 	cursor: pointer;
 }
 button.expander span {
-	background: url(images/double_arrow_down.png) no-repeat center right;
+	background: url(<?php echo image('double_arrow_down.png') ?>) no-repeat center right;
 	padding-right: 1.1em;
 }
 button.expander:hover span {
