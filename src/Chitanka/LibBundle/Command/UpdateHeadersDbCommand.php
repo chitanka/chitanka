@@ -3,6 +3,7 @@
 namespace Chitanka\LibBundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -16,6 +17,7 @@ class UpdateHeadersDbCommand extends CommonDbCommand
 		$this
 			->setName('db:update-headers')
 			->setDescription('Update text headers in the database')
+			->addArgument('texts', InputArgument::OPTIONAL, 'Texts which headers should be updated (comma separated)')
 			->addOption('dump-sql', null, InputOption::VALUE_NONE, 'Output SQL queries instead of executing them')
 			->setHelp(<<<EOT
 The <info>db:update-headers</info> command updates the text headers in the database.
@@ -37,16 +39,21 @@ EOT
 	{
 		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->output = $output;
-		$this->dumpSql = $input->getOption('dump-sql') === true;
-		$this->updateHeaders($this->dumpSql);
+		$texts = trim($input->getArgument('texts'));
+		$dumpSql = $input->getOption('dump-sql') === true;
+		$this->updateHeaders($texts, $dumpSql);
 		$output->writeln('/*Done.*/');
 	}
 
 
-	protected function updateHeaders($dumpSql)
+	protected function updateHeaders($texts, $dumpSql)
 	{
 		$queries = array();
-		$iterableResult = $this->em->createQuery('SELECT t FROM LibBundle:Text t WHERE t.headlevel > 0')->iterate();
+		$dql = 'SELECT t FROM LibBundle:Text t WHERE t.headlevel > 0';
+		if ($texts) {
+			$dql .= " AND t.id IN ($texts)";
+		}
+		$iterableResult = $this->em->createQuery($dql)->iterate();
 		foreach ($iterableResult AS $row) {
 			$text = $row[0];
 			if ($text->isCompilation()) {
