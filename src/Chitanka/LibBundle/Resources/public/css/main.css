@@ -1759,6 +1759,10 @@ div.tabbedpanebody {
 	background: url(<?php echo $imgDir?>loading.gif) right center no-repeat;
 }
 
+form.loading {
+	background-position: center center !important;
+	opacity: 0.3;
+}
 #loadingIndicator {
 	position: fixed;
 	top: 30%;

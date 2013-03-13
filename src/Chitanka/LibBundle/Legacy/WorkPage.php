@@ -853,7 +853,7 @@ EOS;
 		}
 		$user = $this->controller->getRepository('User')->find($this->scanuser);
 		$threadUrl = $this->controller->generateUrl('fos_comment_post_threads');
-		$commentJs = $this->container->getParameter('assets_base_urls') . '/js/comments.js';
+		$commentJs = $this->container->getParameter('assets_base_urls') . '/bundles/lib/js/comments.js';
 		return <<<JS
 var fos_comment_thread_id = 'WorkEntry:$entry';
 
@@ -879,7 +879,20 @@ $(document)
 	.on('fos_comment_show_form', '#fos_comment_thread', function (data) {
 		var button = $(data.target);
 		button.next().find('input[name="fos_comment_comment[cc]"]').val(button.data("name"));
-	});
+	})
+	.on('fos_comment_submitting_form', '#fos_comment_thread', function (event, data) {
+		var form = $(event.target);
+		if (form.is(".loading")) {
+			event.preventDefault();
+			return;
+		}
+		form.addClass("loading").find(":submit").attr("disabled", true);
+	})
+	.on('fos_comment_submitted_form', '#fos_comment_thread', function (event, data) {
+		var form = $(event.target);
+		form.removeClass("loading").find(":submit").removeAttr("disabled");
+	})
+;
 JS;
 	}
 
