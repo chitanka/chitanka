@@ -6,7 +6,11 @@
 {% for author in persons %}
 	<li><dl itemscope itemtype="http://schema.org/Person">
 		{% if author.person is not empty %}
-			<dt>{{ author.name|name_format(by)|raw }} &rarr; {{ _self.link(author.person, by) }}</dt>
+			<dt>
+				{{ _self.link(author, by) }}
+				&rarr;
+				{{ _self.link(author.person, by) }}
+			</dt>
 		{% else %}
 			<dt>{{ _self.link(author, by) }}</dt>
 		{% endif %}

@@ -6,7 +6,11 @@
 {% for author in persons %}
 	<li><dl itemscope itemtype="http://schema.org/Person">
 		{% if author.person is not empty %}
-			<dt>{{ author.name|name_format(by)|raw }} &rarr; <a href="{{ path('person_show', {'slug': author.person.slug}) }}" itemprop="url" data-edit="{{ path('admin_person_edit', {'id': author.id}) }}">{{ author.person.name|name_format(by)|raw }}</a></dt>
+			<dt>
+				<a href="{{ path('person_show', {'slug': author.slug}) }}" itemprop="url" data-edit="{{ path('admin_person_edit', {'id': author.id}) }}">{{ author.name|name_format(by)|raw }}</a>
+				&rarr;
+				<a href="{{ path('person_show', {'slug': author.person.slug}) }}" itemprop="url" data-edit="{{ path('admin_person_edit', {'id': author.person.id}) }}">{{ author.person.name|name_format(by)|raw }}</a>
+			</dt>
 			<dd class="orig-name">{{ author.orig_name ? author.orig_name|name_format(by)|raw : '—' }}</dd>
 			<dd class="country">{{ link.authors_by_country(author.person.country) }}</dd>
 		{% else %}
