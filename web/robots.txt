@@ -12,6 +12,9 @@ Disallow: *txt
 Disallow: *ratings
 Disallow: /text/*/0
 
+# For registered users
+Disallow: */label/new
+
 # legacy urls
 Disallow: */raw*
 Disallow: /lib
