@@ -68,7 +68,7 @@ class BookRepository extends EntityRepository
 
 	public function getIdsByPrefix($prefix, $page, $limit)
 	{
-		$where = $prefix ? "b.title LIKE '$prefix%'" : '';
+		$where = $prefix ? "b.title LIKE '$prefix%'" : '1=1';
 		$dql = sprintf('SELECT b.id FROM %s b WHERE %s ORDER BY b.title', $this->getEntityName(), $where);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 
@@ -78,7 +78,7 @@ class BookRepository extends EntityRepository
 
 	public function countByPrefix($prefix)
 	{
-		$where = $prefix ? "b.title LIKE '$prefix%'" : '';
+		$where = $prefix ? "b.title LIKE '$prefix%'" : '1=1';
 		$dql = sprintf('SELECT COUNT(b.id) FROM %s b WHERE %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
 
