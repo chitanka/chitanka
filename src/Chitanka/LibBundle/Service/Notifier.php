@@ -23,7 +23,7 @@ class Notifier {
 			return;
 		}
 		$sender = array('NO_REPLY_I_REPEAT_NO_REPLY@chitanka.info' => $comment->getAuthorName().' (Моята библиотека)');
-		$message = Swift_Message::newInstance('Kоментар в ателието — '.$workEntry->getTitle())
+		$message = Swift_Message::newInstance('Коментар в ателието — '.$workEntry->getTitle())
 			->setFrom($sender)
 			->setBody($this->createMailBodyByNewWorkroomComment($comment, $workEntry));
 		$headers = $message->getHeaders();
