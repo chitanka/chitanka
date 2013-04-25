@@ -199,7 +199,7 @@ class PersonRepository extends EntityRepository
 	public function getByNames($name, $limit = null)
 	{
 		$q = $this->getQueryBuilder()
-			->where('e.name LIKE ?1 OR e.orig_name LIKE ?1')
+			->where('e.name LIKE ?1 OR e.orig_name LIKE ?1 OR e.real_name LIKE ?1 OR e.oreal_name LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($name))
 			->getQuery();
 		if ($limit) {

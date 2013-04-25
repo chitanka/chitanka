@@ -78,7 +78,7 @@ class SearchController extends Controller
 		}
 
 		if (empty($query['by'])) {
-			$query['by'] = 'name,orig_name';
+			$query['by'] = 'name,orig_name,real_name,orig_real_name';
 		}
 		$persons = $this->getPersonRepository()->getByQuery($query);
 		if ( ! ($found = count($persons) > 0)) {

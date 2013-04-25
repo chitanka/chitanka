@@ -13,6 +13,8 @@ use Chitanka\LibBundle\Util\String;
  *		@ORM\Index(name="name_idx", columns={"name"}),
  *		@ORM\Index(name="last_name_idx", columns={"last_name"}),
  *		@ORM\Index(name="orig_name_idx", columns={"orig_name"}),
+ *		@ORM\Index(name="real_name_idx", columns={"real_name"}),
+ *		@ORM\Index(name="oreal_name_idx", columns={"oreal_name"}),
  *		@ORM\Index(name="country_idx", columns={"country"}),
  *		@ORM\Index(name="is_author_idx", columns={"is_author"}),
  *		@ORM\Index(name="is_translator_idx", columns={"is_translator"})}
