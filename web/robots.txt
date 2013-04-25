@@ -11,6 +11,7 @@ Disallow: *zip
 Disallow: *txt
 Disallow: *ratings
 Disallow: /text/*/0
+Disallow: /index.php
 
 # For registered users
 Disallow: */label/new
