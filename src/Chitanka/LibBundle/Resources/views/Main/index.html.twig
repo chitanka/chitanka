@@ -52,13 +52,15 @@
 		<h2><a href="http://planet.chitanka.info/">От литературните блогове</a></h2>
 		{% render 'LibBundle:Feed:lastLiternews' with {}, {'standalone': true} %}
 	</section>
+{#
 	<section id="mp-insidenews" class="box box3 insidenews">
 		<h2><a href="http://identi.ca/chitanka">Кратки съобщения</a></h2>
 		{% render 'LibBundle:Feed:lastInsideNews' with {}, {'standalone': true} %}
 	</section>
+#}
 	<section id="mp-search" class="box box3">
 		<h2><a href="{{ path('search') }}">Потърсено</a></h2>
-		{% render 'LibBundle:Search:latest' with {'limit': 20}, {'standalone': true} %}
+		{% render 'LibBundle:Search:latest' with {'limit': 50}, {'standalone': true} %}
 	</section>
 	<div class="separator"></div>
 
