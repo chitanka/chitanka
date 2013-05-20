@@ -182,6 +182,7 @@ class BookTemplate
 	}
 	public function setContent($content)
 	{
+		file_put_contents(Legacy::getContentFilePath('book', $this->book->getId()), $content);
 		$this->content = $content;
 	}
 

@@ -524,9 +524,8 @@ class Text extends BaseWork
 	public function getReaders() { return $this->readers; }
 
 
-	protected
-		$annotationDir = 'text-anno',
-		$infoDir = 'text-info';
+	static protected $annotationDir = 'text-anno';
+	static protected $infoDir = 'text-info';
 
 
 	public function getDocId()
@@ -699,15 +698,14 @@ class Text extends BaseWork
 		return $images;
 	}
 
-
-	public function getExtraInfo() {
-		return parent::getExtraInfo() . $this->getBookExtraInfo();
+	public function getFullExtraInfo()
+	{
+		return $this->getExtraInfo() . $this->getBookExtraInfo();
 	}
 
-
-	public function getExtraInfoHtml($imgDirPrefix = '')
+	public function getFullExtraInfoForHtml($imgDirPrefix = '')
 	{
-		return $this->_getContentHtml($this->getExtraInfo(), $imgDirPrefix);
+		return $this->_getContentHtml($this->getFullExtraInfo(), $imgDirPrefix);
 	}
 
 	public function getAnnotationHtml($imgDirPrefix = '')
@@ -1029,7 +1027,7 @@ EOS;
 			$sfb .= "A>\n$anno\nA$\n\n";
 		}
 		$sfb .= $this->getRawContent();
-		$extra = $this->getFullExtraInfo();
+		$extra = $this->getExtraInfoForDownload();
 		$extra = preg_replace('/\n\n+/', "\n\n", $extra);
 		$sfb .= "\nI>\n".trim($extra, "\n")."\nI$\n";
 
@@ -1071,10 +1069,10 @@ EOS;
 	}
 
 
-	public function getFullExtraInfo()
+	public function getExtraInfoForDownload()
 	{
 		return $this->getOrigTitleAsSfb() . "\n\n"
-			. $this->getExtraInfo()      . "\n\n"
+			. $this->getFullExtraInfo()      . "\n\n"
 			. "\tСвалено от „Моята библиотека“: ".$this->getDocId()."\n"
 			. "\tПоследна корекция: ".Legacy::humanDate($this->cur_rev->getDate())."\n";
 	}

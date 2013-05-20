@@ -5,6 +5,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\FormEvents;
 use Chitanka\LibBundle\Entity\Text;
 use Chitanka\LibBundle\Util\Language;
 use Chitanka\LibBundle\Legacy\Legacy;
@@ -79,6 +80,9 @@ class TextAdmin extends Admin
 		$formMapper
 			->add('slug')
 			->add('title')
+			->add('lang', 'choice', array('choices' => Language::getLangs()))
+			->add('orig_lang', 'choice', array('choices' => Language::getLangs()))
+			->add('type', 'choice', array('choices' => array('' => '') + Legacy::workTypes()))
 			->add('textAuthors', 'sonata_type_collection', array(
 				'by_reference' => false,
 				'required' => false,
@@ -95,28 +99,45 @@ class TextAdmin extends Admin
 				'inline' => 'table',
 				'sortable' => 'pos',
 			))
-			->add('subtitle', null, array('required' => false))
-			->add('lang', 'choice', array('choices' => Language::getLangs()))
-			->add('trans_year', null, array('required' => false))
-			->add('trans_year2', null, array('required' => false))
-			->add('orig_title', null, array('required' => false))
-			->add('orig_subtitle', null, array('required' => false))
-			->add('orig_lang', 'choice', array('choices' => Language::getLangs()))
-			->add('year', null, array('required' => false))
-			->add('year2', null, array('required' => false))
-			->add('orig_license', null, array('required' => false))
-			->add('trans_license', null, array('required' => false))
-			->add('type', 'choice', array('choices' => array('' => '') + Legacy::workTypes()))
-			->add('series', 'sonata_type_model_list', array('required' => false))
-			->add('sernr', null, array('required' => false))
-			->add('sernr2', null, array('required' => false))
-			->add('headlevel', null, array('required' => false))
-			->add('source', null, array('required' => false))
-			->add('removed_notice')
+			->with($this->trans('Extra attributes'), array('collapsed' => true))
+				->add('subtitle', null, array('required' => false))
+				->add('orig_title', null, array('required' => false))
+				->add('orig_subtitle', null, array('required' => false))
+				->add('year', null, array('required' => false))
+				->add('year2', null, array('required' => false))
+				->add('trans_year', null, array('required' => false))
+				->add('trans_year2', null, array('required' => false))
+				->add('orig_license', null, array('required' => false))
+				->add('trans_license', null, array('required' => false))
+				->add('series', 'sonata_type_model_list', array('required' => false))
+				->add('sernr', null, array('required' => false))
+				->add('sernr2', null, array('required' => false))
+				->add('headlevel', null, array('required' => false))
+				->add('source', null, array('required' => false))
+			->end()
+			->with($this->trans('Textual content'), array('collapsed' => true))
+				->add('annotation', 'textarea', array(
+					'required' => false,
+					'trim' => false,
+					'attr' => array(
+						'class' => 'span12',
+					),
+				))
+				->add('extra_info', 'textarea', array(
+					'required' => false,
+					'trim' => false,
+					'attr' => array(
+						'class' => 'span12',
+					),
+				))
+				#->add('content')
+				->add('removed_notice')
+			->end()
 			->setHelps(array(
 				'sernr2' => $this->trans('help.text.sernr2')
 			))
 		;
+		$formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_BIND, array($this, 'fixNewLines'));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid)

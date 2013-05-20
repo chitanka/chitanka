@@ -20,14 +20,12 @@ abstract class BaseWork extends Entity
 			1 => 'Отвратително',
 		);
 
-	static protected
-		$_minRating = null, $_maxRating = null;
+	static protected $_minRating = null;
+	static protected $_maxRating = null;
+	static protected $annotationDir = 'anno';
+	static protected $infoDir = 'info';
 
-
-	protected
-		$annotationDir = 'anno',
-		$infoDir = 'info',
-		$_hasTitleNote = null;
+	protected $_hasTitleNote = null;
 
 
 	public function getDocId()
@@ -216,19 +214,31 @@ abstract class BaseWork extends Entity
 		return $xml;
 	}
 
-
-	public function getAnnotation()
+	static public function loadAnnotation($id)
 	{
-		$file = Legacy::getContentFilePath($this->annotationDir, $this->id);
-		$text = '';
-		if ( file_exists($file) ) {
-			$text = file_get_contents($file);
-		}
-
-		return $text;
+		$file = Legacy::getContentFilePath(static::$annotationDir, $id);
+		return file_exists($file) ? file_get_contents($file) : '';
 	}
 
+	private $annotation;
+	public function getAnnotation()
+	{
+		return isset($this->annotation) ? $this->annotation : $this->annotation = static::loadAnnotation($this->id);
+	}
 
+	public function setAnnotation($annotation)
+	{
+		$file = Legacy::getContentFilePath(static::$annotationDir, $this->id);
+		if ($annotation) {
+			file_put_contents($file, $annotation);
+			$this->setHasAnno(true);
+		} else {
+			unlink($file);
+			$this->setHasAnno(false);
+		}
+		$this->annotation = $annotation;
+		return $this;
+	}
 
 	public function getAnnotationAsSfb()
 	{
@@ -255,17 +265,26 @@ abstract class BaseWork extends Entity
 		return $text;
 	}
 
-
-	public function getExtraInfo() {
-		$file = Legacy::getContentFilePath($this->infoDir, $this->id);
-		$info = '';
-		if ( file_exists($file) ) {
-			$info = file_get_contents($file);
-		}
-
-		return $info;
+	static public function loadExtraInfo($id) {
+		$file = Legacy::getContentFilePath(static::$infoDir, $id);
+		return file_exists($file) ? file_get_contents($file) : '';
 	}
 
+	private $extraInfo;
+	public function getExtraInfo() {
+		return isset($this->extraInfo) ? $this->extraInfo : $this->extraInfo = static::loadExtraInfo($this->id);
+	}
+
+	public function setExtraInfo($extraInfo) {
+		$file = Legacy::getContentFilePath(static::$infoDir, $this->id);
+		if ($extraInfo) {
+			file_put_contents($file, $extraInfo);
+		} else {
+			unlink($file);
+		}
+		$this->extraInfo = $extraInfo;
+		return $this;
+	}
 
 	public function getExtraInfoAsXhtml($imgDir = null)
 	{

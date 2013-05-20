@@ -25,7 +25,7 @@
 	{% if text.source is not empty %}
 		<p>Източник: {{ text.source|link|raw }}</p>
 	{% endif %}
-	{{ text.extrainfohtml(asset('/'))|raw }}
+	{{ text.fullExtraInfoForHtml(asset('/'))|raw }}
 
 	<hr>
 	<p>Последна редакция: {{ text.currev.date|humandate }}</p>

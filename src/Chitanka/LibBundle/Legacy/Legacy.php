@@ -329,7 +329,7 @@ class Legacy
 			return file_get_contents($file);
 		}
 
-		return false;
+		return null;
 	}
 
 	static public function getContentFilePath($key, $num, $full = true) {

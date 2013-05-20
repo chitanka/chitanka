@@ -329,10 +329,9 @@ class Book extends BaseWork
 	private $textIds = array();
 	private $textsById = array();
 
-	protected
-		$annotationDir = 'book-anno',
-		$infoDir = 'book-info',
-		$covers = array();
+	static protected $annotationDir = 'book-anno';
+	static protected $infoDir = 'book-info';
+	protected $covers = array();
 
 
 
@@ -507,6 +506,15 @@ class Book extends BaseWork
 		return $this->template ?: $this->template = new Content\BookTemplate($this);
 	}
 
+	public function getRawTemplate()
+	{
+		return $this->getTemplate()->getContent();
+	}
+
+	public function setRawTemplate($template)
+	{
+		return $this->getTemplate()->setContent($template);
+	}
 
 	public function getCover($width = null)
 	{
