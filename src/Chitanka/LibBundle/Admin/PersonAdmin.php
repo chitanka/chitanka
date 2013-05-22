@@ -61,18 +61,20 @@ class PersonAdmin extends Admin
 			$countryList[$countryCode] = "country.$countryCode";
 		}
 		$formMapper
-			->add('slug', null, array('required' => false))
-			->add('name')
-			->add('orig_name', null, array('required' => false))
-			->add('real_name', null, array('required' => false))
-			->add('oreal_name', null, array('required' => false))
-			->add('country', 'choice', array(
-				'choices' => $countryList,
-			))
-			->add('is_author', null, array('required' => false))
-			->add('is_translator', null, array('required' => false))
-			->add('info', null, array('required' => false))
-			->with($this->trans('Main Person'), array('collapsed' => true))
+			->with('General attributes')
+				->add('slug', null, array('required' => false))
+				->add('name')
+				->add('orig_name', null, array('required' => false))
+				->add('real_name', null, array('required' => false))
+				->add('oreal_name', null, array('required' => false))
+				->add('country', 'choice', array(
+					'choices' => $countryList,
+				))
+				->add('is_author', null, array('required' => false))
+				->add('is_translator', null, array('required' => false))
+				->add('info', null, array('required' => false))
+			->end()
+			->with('Main Person')
 				->add('type', 'choice', array(
 					'choices' => $this->getRepository()->getTypeList(),
 					//'expanded' => true,

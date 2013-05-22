@@ -217,7 +217,7 @@ abstract class BaseWork extends Entity
 	static public function loadAnnotation($id)
 	{
 		$file = Legacy::getContentFilePath(static::$annotationDir, $id);
-		return file_exists($file) ? file_get_contents($file) : '';
+		return file_exists($file) ? file_get_contents($file) : null;
 	}
 
 	private $annotation;
@@ -233,7 +233,7 @@ abstract class BaseWork extends Entity
 			file_put_contents($file, $annotation);
 			$this->setHasAnno(true);
 		} else {
-			unlink($file);
+			file_exists($file) && unlink($file);
 			$this->setHasAnno(false);
 		}
 		$this->annotation = $annotation;
@@ -246,7 +246,8 @@ abstract class BaseWork extends Entity
 		if ($text) {
 			$text = \Sfblib_SfbConverter::ANNO_S . \Sfblib_SfbConverter::EOL
 				. rtrim($text) . \Sfblib_SfbConverter::EOL
-				. \Sfblib_SfbConverter::ANNO_E . \Sfblib_SfbConverter::EOL . \Sfblib_SfbConverter::EOL;
+				. \Sfblib_SfbConverter::ANNO_E . \Sfblib_SfbConverter::EOL
+				. \Sfblib_SfbConverter::EOL;
 		}
 
 		return $text;
@@ -267,7 +268,7 @@ abstract class BaseWork extends Entity
 
 	static public function loadExtraInfo($id) {
 		$file = Legacy::getContentFilePath(static::$infoDir, $id);
-		return file_exists($file) ? file_get_contents($file) : '';
+		return file_exists($file) ? file_get_contents($file) : null;
 	}
 
 	private $extraInfo;
@@ -280,7 +281,7 @@ abstract class BaseWork extends Entity
 		if ($extraInfo) {
 			file_put_contents($file, $extraInfo);
 		} else {
-			unlink($file);
+			file_exists($file) && unlink($file);
 		}
 		$this->extraInfo = $extraInfo;
 		return $this;

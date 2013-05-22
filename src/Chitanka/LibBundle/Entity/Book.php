@@ -11,9 +11,12 @@ use Chitanka\LibBundle\Util\Ary;
 use Sfblib_SfbConverter as SfbConverter;
 use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
 use Sfblib_SfbToFb2Converter as SfbToFb2Converter;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\BookRepository")
+* @ORM\HasLifecycleCallbacks
 * @ORM\Table(name="book",
 *	indexes={
 *		@ORM\Index(name="title_idx", columns={"title"}),
@@ -48,7 +51,7 @@ class Book extends BaseWork
 	 * @var string $title
 	 * @ORM\Column(type="string", length=255)
 	 */
-	private $title;
+	private $title = '';
 
 	/**
 	 * @var string $subtitle
@@ -143,6 +146,11 @@ class Book extends BaseWork
 	private $formats = array();
 
 	/**
+	 * @ORM\OneToMany(targetEntity="BookRevision", mappedBy="book", cascade={"persist"})
+	 */
+	private $revisions;
+
+	/**
 	 * A notice if the content is removed
 	 * @ORM\Column(type="text", nullable=true)
 	 */
@@ -234,6 +242,12 @@ class Book extends BaseWork
 	public function isInSfbFormat()
 	{
 		return in_array('sfb', $this->formats);
+	}
+
+	public function getRevisions() { return $this->revisions; }
+	public function addRevision(BookRevision $revision)
+	{
+		$this->revisions[] = $revision;
 	}
 
 	public function setRemovedNotice($removed_notice) { $this->removed_notice = $removed_notice; }
@@ -1158,6 +1172,49 @@ class Book extends BaseWork
 	static public function getTypeList()
 	{
 		return self::$typeList;
+	}
+
+	/**
+	 * @Assert\File
+	 * @var UploadedFile
+	 */
+	private $content_file;
+	public function getContentFile()
+	{
+		return $this->content_file;
+	}
+
+	/** @param UploadedFile $file */
+	public function setContentFile(UploadedFile $file = null)
+	{
+		$this->content_file = $file;
+	}
+
+	/**
+	 * @ORM\PostPersist()
+	 * @ORM\PostUpdate()
+	 */
+	public function postUpload()
+	{
+		$this->moveUploadedContentFile($this->getContentFile());
+	}
+
+	private function moveUploadedContentFile(UploadedFile $file = null) {
+		if ($file) {
+			$filename = Legacy::getContentFilePath('book', $this->id);
+			$file->move(dirname($filename), basename($filename));
+		}
+	}
+
+	private $revisionComment;
+	public function getRevisionComment()
+	{
+		return $this->revisionComment;
+	}
+
+	public function setRevisionComment($comment)
+	{
+		$this->revisionComment = $comment;
 	}
 
 }

@@ -22,7 +22,7 @@ class FeaturedBook extends Entity
 	 * @var string
 	 * @ORM\Column(type="string", length=100)
 	 */
-	private $title;
+	private $title = '';
 
 	/**
 	 * @var string
@@ -64,4 +64,9 @@ class FeaturedBook extends Entity
 
 	public function setDescription($description) { $this->description = $description; }
 	public function getDescription() { return $this->description; }
+
+	public function __toString()
+	{
+		return $this->title;
+	}
 }

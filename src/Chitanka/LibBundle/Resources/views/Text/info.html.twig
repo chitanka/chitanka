@@ -67,9 +67,9 @@
 	</ul>
 	<ul class="user-actions">
 		<li>Вашата оценка:
-			{% render 'LibBundle:Text:rating' with {'id': text.id}, {'standalone': true} %}
+			{{ render_esi(controller('LibBundle:Text:rating', {'id': text.id})) }}
 		</li>
-		<li>{% render 'LibBundle:Text:markReadForm' with {'id': text.id}, {'standalone': true} %}</li>
+		<li>{{ render_esi(controller('LibBundle:Text:markReadForm', {'id': text.id})) }}
 		<li>{{ textinfo.bookmark_form(text, ' ') }}</li>
 	</ul>
 </fieldset>

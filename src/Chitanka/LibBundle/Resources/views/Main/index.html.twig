@@ -1,7 +1,7 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
 {% block navigation %}
-	{% render 'LibBundle:User:personalTools' with {}, {'standalone': true} %}
+	{{ render_esi(controller('LibBundle:User:personalTools')) }}
 	{% include 'LibBundle::search_form.html.twig' %}
 {% endblock %}
 
@@ -23,63 +23,56 @@
 	<div class="special-books">
 		<section id="mp-review" class="box box3 bookbox">
 			<h2><a href="{{ path('reviews') }}">Открийте</a></h2>
-			{% render 'LibBundle:Feed:randomReview' with {}, {'standalone': true} %}
+			{{ render_esi(controller('LibBundle:Feed:randomReview')) }}
 		</section>
 		<section id="mp-foreign-book" class="box box3 bookbox">
 			<h2><a href="{{ path('foreign_books') }}">Купете си</a></h2>
-			{% render 'LibBundle:ForeignBook:book' with {}, {'standalone': true} %}
+			{{ render_esi(controller('LibBundle:ForeignBook:book')) }}
 		</section>
 		<section id="mp-featured-book" class="box box3 bookbox">
 			<h2><a href="{{ path('featured_books') }}">Прочетете</a></h2>
-			{% render 'LibBundle:FeaturedBook:book' with {}, {'standalone': true} %}
+			{{ render_esi(controller('LibBundle:FeaturedBook:book')) }}
 		</section>
 	</div>
 	<div class="separator"></div>
 
 	<section id="mp-new-books" class="box box2">
 		<h2><a href="{{ path('new_books') }}">Нови книги</a></h2>
-		{% render 'LibBundle:Main:lastBooks' with {}, {'standalone': true} %}
+		{{ render_esi(controller('LibBundle:Main:lastBooks')) }}
 		<div class="more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
 	</section>
 	<section id="mp-new-texts" class="box box2 textbox">
 		<h2><a href="{{ path('new_texts') }}">Нови произведения</a></h2>
-		{% render 'LibBundle:Main:lastTexts' with {}, {'standalone': true} %}
+		{{ render_esi(controller('LibBundle:Main:lastTexts')) }}
 		<div class="more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
 	</section>
 	<div class="separator"></div>
 
 	<section id="mp-liternews" class="box liternewsbox">
 		<h2><a href="http://planet.chitanka.info/">От литературните блогове</a></h2>
-		{% render 'LibBundle:Feed:lastLiternews' with {}, {'standalone': true} %}
+		{{ render_esi(controller('LibBundle:Feed:lastLiternews')) }}
 	</section>
 {#
 	<section id="mp-insidenews" class="box box3 insidenews">
 		<h2><a href="http://identi.ca/chitanka">Кратки съобщения</a></h2>
-		{% render 'LibBundle:Feed:lastInsideNews' with {}, {'standalone': true} %}
+		{{ render_esi(controller('LibBundle:Feed:lastInsideNews')) }}
 	</section>
 #}
 	<section id="mp-search" class="box box3">
 		<h2><a href="{{ path('search') }}">Потърсено</a></h2>
-		{% render 'LibBundle:Search:latest' with {'limit': 50}, {'standalone': true} %}
+		{{ render_esi(controller('LibBundle:Search:latest', {'limit': 50})) }}
 	</section>
 	<div class="separator"></div>
 
 	<section id="mp-reader-comments" class="box box2 commentbox">
 		<h2><a href="{{ path('texts_comments') }}">Читателите казват</a></h2>
-		{% render 'LibBundle:TextComment:latest' with {}, {'standalone': true} %}
+		{{ render_esi(controller('LibBundle:TextComment:latest')) }}
 	</section>
 	<section id="mp-forum-posts" class="box box2 forumbox">
 		<h2><a href="http://forum.chitanka.info">От форума</a></h2>
-		{% render 'LibBundle:Feed:lastForumPosts' with {}, {'standalone': true} %}
+		{{ render_esi(controller('LibBundle:Feed:lastForumPosts')) }}
 	</section>
 	<div class="separator"></div>
-{#
-	<section id="mp-workroom">
-		<h2><a href="{{ path('workroom') }}">Ново в ателието</a></h2>
-		{% render 'LibBundle:Workroom:latest' with {}, {'standalone': true} %}
-		<div class="more">Към <a href="{{ path('workroom') }}">работното ателие</a></div>
-	</section>
-#}
 {% endblock %}
 {% block inline_js %}
 (function(){

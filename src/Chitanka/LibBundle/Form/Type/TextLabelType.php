@@ -15,7 +15,7 @@ class TextLabelType extends AbstractType
 		$builder
 			->add('text', 'hidden', array(
 				'data' => $options['data']->getText()->getId(),
-				'property_path' => false,
+				'mapped' => false,
 			))
 			->add('label', 'entity', array(
 				'class' => 'LibBundle:Label',

@@ -37,8 +37,10 @@ class WantedBookAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('name')
-			->add('description')
+			->with('General attributes')
+				->add('name')
+				->add('description')
+			->end()
 		;
 
 	}

@@ -29,14 +29,16 @@ class UserTextContribAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('user', 'sonata_type_model_list')
-			->add('username')
-			->add('text', 'sonata_type_model_list')
-			->add('size')
-			->add('percent')
-			->add('comment')
-			->add('date')
-			->add('humandate')
+			->with('General attributes')
+				->add('user', 'sonata_type_model_list')
+				->add('username')
+				->add('text', 'sonata_type_model_list')
+				->add('size')
+				->add('percent')
+				->add('comment')
+				->add('date')
+				->add('humandate')
+			->end()
 		;
 
 	}

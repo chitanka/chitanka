@@ -37,8 +37,10 @@ class SeriesAuthorAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			//->add('series')
-			->add('person', 'sonata_type_model_list', array('required' => false))
+			->with('General attributes')
+				//->add('series')
+				->add('person', 'sonata_type_model_list', array('required' => false))
+			->end()
 		;
 	}
 

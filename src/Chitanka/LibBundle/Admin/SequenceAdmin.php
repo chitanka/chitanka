@@ -43,10 +43,12 @@ class SequenceAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('name')
-			->add('slug')
-			->add('publisher', null, array('required' => false))
-			->add('is_seqnr_visible', null, array('required' => false))
+			->with('General attributes')
+				->add('name')
+				->add('slug')
+				->add('publisher', null, array('required' => false))
+				->add('is_seqnr_visible', null, array('required' => false))
+			->end()
 		;
 
 	}

@@ -5,8 +5,10 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\FormEvents;
 use Chitanka\LibBundle\Entity\Book;
+use Chitanka\LibBundle\Entity\BookRevision;
 use Chitanka\LibBundle\Util\Language;
 
 class BookAdmin extends Admin
@@ -16,6 +18,10 @@ class BookAdmin extends Admin
 	protected $translationDomain = 'admin';
 
 	public $extraActions = 'LibBundle:BookAdmin:extra_actions.html.twig';
+
+	protected function configureRoutes(RouteCollection $collection) {
+		$collection->remove('create');
+	}
 
 	protected function configureShowField(ShowMapper $showMapper)
 	{
@@ -61,26 +67,28 @@ class BookAdmin extends Admin
 		;
 	}
 
-	public $preFormContent = 'LibBundle:BookAdmin:form_datafiles.html.twig';
+	//public $preFormContent = 'LibBundle:BookAdmin:form_datafiles.html.twig';
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
 			//->add('sfbg', 'string', array('template' => 'LibBundle:BookAdmin:form_sfbg.html.twig'))
 			//->add('datafiles', 'string', array('template' => 'LibBundle:BookAdmin:form_datafiles.html.twig'))
-			->add('slug')
-			->add('title')
-			->add('lang', 'choice', array('choices' => Language::getLangs()))
-			->add('orig_lang', 'choice', array('required' => false, 'choices' => Language::getLangs()))
-			->add('type', 'choice', array('choices' => Book::getTypeList()))
-			->add('bookAuthors', 'sonata_type_collection', array(
-				'by_reference' => false,
-				'required' => false,
-			), array(
-				'edit' => 'inline',
-				'inline' => 'table',
-			))
-			->with($this->trans('Extra attributes'), array('collapsed' => true))
+			->with('General attributes')
+				->add('slug')
+				->add('title')
+				->add('lang', 'choice', array('choices' => Language::getLangs()))
+				->add('orig_lang', 'choice', array('required' => false, 'choices' => Language::getLangs()))
+				->add('type', 'choice', array('choices' => Book::getTypeList()))
+				->add('bookAuthors', 'sonata_type_collection', array(
+					'by_reference' => false,
+					'required' => false,
+				), array(
+					'edit' => 'inline',
+					'inline' => 'table',
+				))
+			->end()
+			->with('Extra attributes')
 				->add('subtitle', null, array('required' => false))
 				->add('title_extra', null, array('required' => false))
 				->add('orig_title', null, array('required' => false))
@@ -103,7 +111,7 @@ class BookAdmin extends Admin
 					'sortable' => 'site_id'
 				))
 			->end()
-			->with($this->trans('Textual content'), array('collapsed' => true))
+			->with('Textual content')
 				->add('raw_template', 'textarea', array(
 					'label' => 'Template',
 					'required' => false,
@@ -126,7 +134,7 @@ class BookAdmin extends Admin
 						'class' => 'span12',
 					),
 				))
-				//->add('content')
+				->add('revision_comment', 'text', array('required' => false))
 				->add('removed_notice')
 			->end()
 		;
@@ -152,6 +160,14 @@ class BookAdmin extends Admin
 			if ($bookAuthor->getPerson()) {
 				$bookAuthor->setBook($book);
 			}
+		}
+		if ($book->getRevisionComment()) {
+			$revision = new BookRevision;
+			$revision->setComment($book->getRevisionComment());
+			$revision->setBook($book);
+			$revision->setDate(new \DateTime);
+			$revision->setFirst(false);
+			$book->addRevision($revision);
 		}
 	}
 

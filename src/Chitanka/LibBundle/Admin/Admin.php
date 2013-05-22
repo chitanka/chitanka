@@ -21,7 +21,9 @@ abstract class Admin extends BaseAdmin
 	{
 		$data = $event->getData();
 		foreach ($data as $field => $value) {
-			$data[$field] = str_replace("\r\n", "\n", $value);
+			if (is_string($value)) {
+				$data[$field] = str_replace("\r\n", "\n", $value);
+			}
 		}
 		$event->setData($data);
 	}

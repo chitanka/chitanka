@@ -25,7 +25,7 @@ class WantedBook extends Entity
 	 * @var string
 	 * @ORM\Column(type="string", length=60)
 	 */
-	private $name;
+	private $name = '';
 
 	/**
 	 * @var string
@@ -41,4 +41,8 @@ class WantedBook extends Entity
 	public function setDescription($description) { $this->description = $description; }
 	public function getDescription() { return $this->description; }
 
+	public function __toString()
+	{
+		return $this->name;
+	}
 }

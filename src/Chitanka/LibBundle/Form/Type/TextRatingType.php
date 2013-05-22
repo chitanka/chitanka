@@ -15,7 +15,7 @@ class TextRatingType extends AbstractType
 		$builder
 			->add('text', 'hidden', array(
 				'data' => $options['data']->getText()->getId(),
-				'property_path' => false,
+				'mapped' => false,
 			))
 			//->add('user', 'hidden')
 			->add('rating', 'choice', array(

@@ -5,10 +5,11 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\FormEvents;
-use Chitanka\LibBundle\Entity\Text;
 use Chitanka\LibBundle\Util\Language;
 use Chitanka\LibBundle\Legacy\Legacy;
+use Chitanka\LibBundle\Entity\TextRevision;
 
 class TextAdmin extends Admin
 {
@@ -17,6 +18,10 @@ class TextAdmin extends Admin
 	protected $translationDomain = 'admin';
 
 	public $extraActions = 'LibBundle:TextAdmin:extra_actions.html.twig';
+
+	protected function configureRoutes(RouteCollection $collection) {
+		$collection->remove('create');
+	}
 
 	protected function configureShowField(ShowMapper $showMapper)
 	{
@@ -78,28 +83,30 @@ class TextAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('slug')
-			->add('title')
-			->add('lang', 'choice', array('choices' => Language::getLangs()))
-			->add('orig_lang', 'choice', array('choices' => Language::getLangs()))
-			->add('type', 'choice', array('choices' => array('' => '') + Legacy::workTypes()))
-			->add('textAuthors', 'sonata_type_collection', array(
-				'by_reference' => false,
-				'required' => false,
-			), array(
-				'edit' => 'inline',
-				'inline' => 'table',
-				'sortable' => 'pos',
-			))
-			->add('textTranslators', 'sonata_type_collection', array(
-				'by_reference' => false,
-				'required' => false,
-			), array(
-				'edit' => 'inline',
-				'inline' => 'table',
-				'sortable' => 'pos',
-			))
-			->with($this->trans('Extra attributes'), array('collapsed' => true))
+			->with('General attributes')
+				->add('slug')
+				->add('title')
+				->add('lang', 'choice', array('choices' => Language::getLangs()))
+				->add('orig_lang', 'choice', array('choices' => Language::getLangs()))
+				->add('type', 'choice', array('choices' => array('' => '') + Legacy::workTypes()))
+				->add('textAuthors', 'sonata_type_collection', array(
+					'by_reference' => false,
+					'required' => false,
+				), array(
+					'edit' => 'inline',
+					'inline' => 'table',
+					'sortable' => 'pos',
+				))
+				->add('textTranslators', 'sonata_type_collection', array(
+					'by_reference' => false,
+					'required' => false,
+				), array(
+					'edit' => 'inline',
+					'inline' => 'table',
+					'sortable' => 'pos',
+				))
+			->end()
+			->with('Extra attributes')
 				->add('subtitle', null, array('required' => false))
 				->add('orig_title', null, array('required' => false))
 				->add('orig_subtitle', null, array('required' => false))
@@ -115,7 +122,7 @@ class TextAdmin extends Admin
 				->add('headlevel', null, array('required' => false))
 				->add('source', null, array('required' => false))
 			->end()
-			->with($this->trans('Textual content'), array('collapsed' => true))
+			->with('Textual content')
 				->add('annotation', 'textarea', array(
 					'required' => false,
 					'trim' => false,
@@ -130,7 +137,8 @@ class TextAdmin extends Admin
 						'class' => 'span12',
 					),
 				))
-				#->add('content')
+				->add('content_file', 'file', array('required' => false))
+				->add('revision_comment', 'text', array('required' => false))
 				->add('removed_notice')
 			->end()
 			->setHelps(array(
@@ -170,6 +178,14 @@ class TextAdmin extends Admin
 			if ($textTranslator->getPerson()) {
 				$textTranslator->setText($text);
 			}
+		}
+		if ($text->getRevisionComment()) {
+			$revision = new TextRevision;
+			$revision->setComment($text->getRevisionComment());
+			$revision->setText($text);
+			$revision->setDate(new \DateTime);
+			$revision->setFirst(false);
+			$text->addRevision($revision);
 		}
 	}
 }

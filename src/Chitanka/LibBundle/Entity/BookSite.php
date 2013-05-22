@@ -24,7 +24,7 @@ class BookSite extends Entity
 	 * @var string
 	 * @ORM\Column(type="string", length=50, unique=true)
 	 */
-	private $name;
+	private $name = '';
 
 	/**
 	 * @var string

@@ -1,3 +1,5 @@
 <ul>
-	<li class="btn sonata-action-element"><a href="{{ path('series_show', {'slug': object.slug}) }}">{{ 'library_link_action_show'|trans({}, 'admin') }}</a></li>
+	{% if object.slug is not empty %}
+		<li class="btn sonata-action-element"><a href="{{ path('series_show', {'slug': object.slug}) }}">{{ 'library_link_action_show'|trans({}, 'admin') }}</a></li>
+	{% endif %}
 </ul>

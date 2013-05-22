@@ -40,9 +40,11 @@ class BookLinkAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			//->add('book')
-			->add('site')
-			->add('code')
+			->with('General attributes')
+				//->add('book')
+				->add('site')
+				->add('code')
+			->end()
 		;
 	}
 

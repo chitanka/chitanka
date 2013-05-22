@@ -19,7 +19,7 @@
 
 {% block stylesheets %}
 	{#% if stylesheet %#}
-		{% render 'LibBundle:User:stylesheet' with {}, {'standalone': true} %}
+		{{ render_esi(controller('LibBundle:User:stylesheet')) }}
 	{#% endif %#}
 	{% if css_extra is defined %}
 		{% for extra_stylesheet in css_extra %}
@@ -55,7 +55,7 @@
 
 		<div id="main-content-wrapper">
 			<div id="main-content" role="main" itemscope itemtype="http://schema.org/{{ itemtype|default('WebPage') }}">
-				{% render 'LibBundle:Wanted:stripe' %}
+				{{ render(controller('LibBundle:Wanted:stripe')) }}
 
 				<div id="first-heading">
 					{% if subtitle is defined %}
@@ -68,14 +68,12 @@
 					{% endif %}
 				</div>
 
-				{% if app.session.hasFlash('error') %}
-					<div class="messages error">{{ app.session.flash('error')|raw }}</div>
-					{{ app.session.removeFlash('error') }}
-				{% endif %}
-				{% if app.session.hasFlash('notice') %}
-					<div class="messages">{{ app.session.flash('notice')|raw }}</div>
-					{{ app.session.removeFlash('notice') }}
-				{% endif %}
+				{% for flashMessage in app.session.flashbag.get('error') %}
+					<div class="messages error alert alert-error">{{ flashMessage|raw }}</div>
+				{% endfor %}
+				{% for flashMessage in app.session.flashbag.get('notice') %}
+					<div class="messages alert alert-info">{{ flashMessage|raw }}</div>
+				{% endfor %}
 
 				{% block content '' %}
 			</div>
@@ -91,7 +89,7 @@
 			</div>
 
 			{% block personal_tools %}
-				{% render 'LibBundle:User:personalTools' with {}, {'standalone': true} %}
+				{{ render_esi(controller('LibBundle:User:personalTools')) }}
 			{% endblock %}
 
 			{% block navlinks %}

@@ -39,10 +39,12 @@ class TextTranslatorAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			//->add('text')
-			->add('person', 'sonata_type_model_list', array('required' => false))
-			->add('pos')
-			->add('year')
+			->with('General attributes')
+				//->add('text')
+				->add('person', 'sonata_type_model_list', array('required' => false))
+				->add('pos')
+				->add('year')
+			->end()
 		;
 	}
 

@@ -27,7 +27,7 @@ class Site extends Entity
 	 * @var string
 	 * @ORM\Column(type="string", length=60)
 	 */
-	private $name;
+	private $name = '';
 
 	/**
 	 * @var string
@@ -54,5 +54,10 @@ class Site extends Entity
 	public function setDescription($description)
 	{
 		$this->description = ltrim($description, ' ,—');
+	}
+
+	public function __toString()
+	{
+		return $this->name;
 	}
 }

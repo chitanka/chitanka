@@ -4,6 +4,8 @@ namespace Chitanka\LibBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Chitanka\LibBundle\Util\Char;
 use Chitanka\LibBundle\Util\File;
@@ -17,6 +19,7 @@ use Sfblib_SfbToFb2Converter as SfbToFb2Converter;
 
 /**
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\TextRepository")
+* @ORM\HasLifecycleCallbacks
 * @ORM\Table(name="text",
 *	indexes={
 *		@ORM\Index(name="title_idx", columns={"title"}),
@@ -48,7 +51,7 @@ class Text extends BaseWork
 	 * @var string $title
 	 * @ORM\Column(type="string", length=255)
 	 */
-	private $title;
+	private $title = '';
 
 	/**
 	 * @var string $subtitle
@@ -317,7 +320,7 @@ class Text extends BaseWork
 
 	/**
 	 * @var array
-	 * @ORM\OneToMany(targetEntity="TextRevision", mappedBy="text")
+	 * @ORM\OneToMany(targetEntity="TextRevision", mappedBy="text", cascade={"persist"})
 	 */
 	private $revisions;
 
@@ -417,7 +420,11 @@ class Text extends BaseWork
 	public function setHeadlevel($headlevel) { $this->headlevel = $headlevel; }
 	public function getHeadlevel() { return $this->headlevel; }
 
-	public function setSize($size) { $this->size = $size; }
+	public function setSize($size)
+	{
+		$this->size = $size;
+		$this->setZsize($size / 3.5);
+	}
 	public function getSize() { return $this->size; }
 
 	public function setZsize($zsize) { $this->zsize = $zsize; }
@@ -498,6 +505,10 @@ class Text extends BaseWork
 	public function getBooks() { return $this->books; }
 
 	public function getRevisions() { return $this->revisions; }
+	public function addRevision(TextRevision $revision)
+	{
+		$this->revisions[] = $revision;
+	}
 
 	/**
 	 * Return the main book for the text
@@ -1017,6 +1028,52 @@ EOS;
 		return $rows;
 	}
 
+	/**
+	 * @Assert\File
+	 * @var UploadedFile
+	 */
+	private $content_file;
+	public function getContentFile()
+	{
+		return $this->content_file;
+	}
+
+	/** @param UploadedFile $file */
+	public function setContentFile(UploadedFile $file = null)
+	{
+		$this->content_file = $file;
+		if ($file) {
+			$this->setSize($file->getSize() / 1000);
+			// TODO update headers
+		}
+	}
+
+	/**
+	 * @ORM\PostPersist()
+	 * @ORM\PostUpdate()
+	 */
+	public function postUpload()
+	{
+		$this->moveUploadedContentFile($this->getContentFile());
+	}
+
+	private function moveUploadedContentFile(UploadedFile $file = null) {
+		if ($file) {
+			$filename = Legacy::getContentFilePath('text', $this->id);
+			$file->move(dirname($filename), basename($filename));
+		}
+	}
+
+	private $revisionComment;
+	public function getRevisionComment()
+	{
+		return $this->revisionComment;
+	}
+
+	public function setRevisionComment($comment)
+	{
+		$this->revisionComment = $comment;
+	}
 
 	public function getContentAsSfb()
 	{

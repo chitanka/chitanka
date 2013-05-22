@@ -45,12 +45,14 @@ class ForeignBookAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('title')
-			->add('author')
-			->add('url')
-			->add('cover')
-			->add('description')
-			->add('isFree')
+			->with('General attributes')
+				->add('title')
+				->add('author')
+				->add('url')
+				->add('cover')
+				->add('description')
+				->add('isFree')
+			->end()
 		;
 
 	}

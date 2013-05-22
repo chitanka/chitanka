@@ -5,12 +5,17 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class TextCommentAdmin extends Admin
 {
 	protected $baseRoutePattern = 'text-comment';
 	protected $baseRouteName = 'admin_text_comment';
 	protected $translationDomain = 'admin';
+
+	protected function configureRoutes(RouteCollection $collection) {
+		$collection->remove('create');
+	}
 
 	protected function configureShowField(ShowMapper $showMapper)
 	{
@@ -44,9 +49,11 @@ class TextCommentAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('rname')
-			->add('content')
-			->add('is_shown')
+			->with('General attributes')
+				->add('rname')
+				->add('content')
+				->add('is_shown')
+			->end()
 		;
 
 	}

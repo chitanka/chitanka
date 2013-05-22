@@ -35,7 +35,7 @@ class Series extends Entity
 	 * @var string $name
 	 * @ORM\Column(type="string", length=100)
 	 */
-	private $name;
+	private $name = '';
 
 	/**
 	 * @var string $orig_name

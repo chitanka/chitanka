@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" target-language="bg" datatype="plaintext" original="AdminBundle.en.xliff" >
+    <file source-language="en" target-language="bg" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
@@ -21,6 +21,10 @@
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
                 <target>Създаване и добавяне на нов елемент</target>
+            </trans-unit>
+            <trans-unit id="btn_create_and_return_to_list">
+                <source>btn_create_and_return_to_list</source>
+                <target>Създаване и обратно към списъка</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
@@ -131,40 +135,40 @@
                 <target>Всички елементи</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
-              <source>flash_batch_empty</source>
-              <target>Действието беше прекъснато. Няма избрани елементи.</target>
+                <source>flash_batch_empty</source>
+                <target>Действието беше прекъснато. Няма избрани елементи.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
-              <source>flash_create_success</source>
-              <target>Елементът беше създаден.</target>
+                <source>flash_create_success</source>
+                <target>Елементът беше създаден.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
-              <source>flash_create_error</source>
-              <target>Възникна грешка по време на създаването.</target>
+                <source>flash_create_error</source>
+                <target>Възникна грешка по време на създаването.</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
-              <source>flash_edit_success</source>
-              <target>Елементът беше обновен.</target>
+                <source>flash_edit_success</source>
+                <target>Елементът беше обновен.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
-              <source>flash_edit_error</source>
-              <target>Възникна грешка по време на обновяването.</target>
+                <source>flash_edit_error</source>
+                <target>Възникна грешка по време на обновяването.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
-              <source>flash_batch_delete_success</source>
-              <target>Избраните елементи бяха изтрити.</target>
+                <source>flash_batch_delete_success</source>
+                <target>Избраните елементи бяха изтрити.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
-              <source>flash_batch_delete_error</source>
-              <target>Възникна грешка по време на изтриването на избраните елементи.</target>
+                <source>flash_batch_delete_error</source>
+                <target>Възникна грешка по време на изтриването на избраните елементи.</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
-              <source>flash_delete_error</source>
-              <target>Възникна грешка по време на изтриването.</target>
+                <source>flash_delete_error</source>
+                <target>Възникна грешка по време на изтриването.</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
-              <source>flash_delete_success</source>
-              <target>Елементът беше изтрит.</target>
+                <source>flash_delete_success</source>
+                <target>Елементът беше изтрит.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -199,95 +203,93 @@
                 <target>Да</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
-              <source>label_type_yes</source>
-              <target>да</target>
+                <source>label_type_yes</source>
+                <target>да</target>
             </trans-unit>
             <trans-unit id="label_type_no">
-              <source>label_type_no</source>
-              <target>не</target>
+                <source>label_type_no</source>
+                <target>не</target>
             </trans-unit>
             <trans-unit id="label_type_contains">
-              <source>label_type_contains</source>
-              <target>съдържа</target>
+                <source>label_type_contains</source>
+                <target>съдържа</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
-              <source>label_type_not_contains</source>
-              <target>не съдържа</target>
+                <source>label_type_not_contains</source>
+                <target>не съдържа</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
-              <source>label_type_equals</source>
-              <target>съвпада със</target>
+                <source>label_type_equals</source>
+                <target>съвпада със</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
-              <source>label_type_not_equals</source>
-              <target>не съвпада със</target>
+                <source>label_type_not_equals</source>
+                <target>не съвпада със</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
-              <source>label_type_equal</source>
-              <target>=</target>
+                <source>label_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_equal">
-              <source>label_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_than">
-              <source>label_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_type_less_equal">
-              <source>label_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_type_less_than">
-              <source>label_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_equal">
-              <source>label_date_type_equal</source>
-              <target>=</target>
+                <source>label_date_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_equal">
-              <source>label_date_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_date_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_than">
-              <source>label_date_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_date_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_equal">
-              <source>label_date_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_date_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_than">
-              <source>label_date_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_date_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_null">
-              <source>label_date_type_null</source>
-              <target>е празно</target>
+                <source>label_date_type_null</source>
+                <target>е празно</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
-              <source>label_date_type_not_null</source>
-              <target>не е празно</target>
+                <source>label_date_type_not_null</source>
+                <target>не е празно</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
-              <source>label_date_type_between</source>
-              <target>между</target>
+                <source>label_date_type_between</source>
+                <target>между</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
-              <source>label_date_type_not_between</source>
-              <target>не е между</target>
+                <source>label_date_type_not_between</source>
+                <target>не е между</target>
             </trans-unit>
             <trans-unit id="label_filters">
-              <source>label_filters</source>
-              <target>Филтри</target>
+                <source>label_filters</source>
+                <target>Филтри</target>
             </trans-unit>
-
             <trans-unit id="delete_or">
-              <source>delete_or</source>
-              <target>или</target>
+                <source>delete_or</source>
+                <target>или</target>
             </trans-unit>
-
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
                 <target>Версии</target>
@@ -312,20 +314,18 @@
                 <source>label_view_revision</source>
                 <target>Преглед на версията</target>
             </trans-unit>
-
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>Един резултат|%count% резултата</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Сваляне : </target>
+                <target>Изтегляне: </target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
                 <target>Зареждане на информацията…</target>
             </trans-unit>
-
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
                 <target>Предварителен преглед</target>
@@ -337,6 +337,10 @@
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
                 <target>Отказване</target>
+            </trans-unit>
+            <trans-unit id="label_per_page">
+                <source>label_per_page</source>
+                <target>На страница</target>
             </trans-unit>
         </body>
     </file>

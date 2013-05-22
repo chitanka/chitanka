@@ -38,11 +38,13 @@ class QuestionAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('question')
-			->add('answers')
-			->setHelps(array(
-				'answers' => $this->trans('help.question.answers'),
-			))
+			->with('General attributes')
+				->add('question')
+				->add('answers')
+				->setHelps(array(
+					'answers' => $this->trans('help.question.answers'),
+				))
+			->end()
 		;
 
 	}

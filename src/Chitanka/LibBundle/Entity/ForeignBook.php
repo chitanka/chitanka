@@ -22,7 +22,7 @@ class ForeignBook extends Entity
 	 * @var string
 	 * @ORM\Column(type="string", length=100)
 	 */
-	private $title;
+	private $title = '';
 
 	/**
 	 * @var string
@@ -73,4 +73,9 @@ class ForeignBook extends Entity
 
 	public function setIsFree($isFree) { $this->isFree = $isFree; }
 	public function getIsFree() { return $this->isFree; }
+
+	public function __toString()
+	{
+		return $this->title;
+	}
 }

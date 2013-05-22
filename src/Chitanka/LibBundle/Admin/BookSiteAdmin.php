@@ -38,11 +38,13 @@ class BookSiteAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('name')
-			->add('url')
-			->setHelps(array(
-				'url' => $this->trans('help.booksite.url')
-			))
+			->with('General attributes')
+				->add('name')
+				->add('url')
+				->setHelps(array(
+					'url' => $this->trans('help.booksite.url')
+				))
+			->end()
 		;
 
 	}

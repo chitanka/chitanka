@@ -43,12 +43,14 @@ class LicenseAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('code')
-			->add('name')
-			->add('fullname')
-			->add('free')
-			->add('copyright')
-			->add('uri')
+			->with('General attributes')
+				->add('code')
+				->add('name')
+				->add('fullname')
+				->add('free')
+				->add('copyright')
+				->add('uri')
+			->end()
 		;
 
 	}

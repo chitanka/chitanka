@@ -22,7 +22,7 @@ class Question extends Entity
 	 * @var string $question
 	 * @ORM\Column(type="string", length=255)
 	 */
-	private $question;
+	private $question = '';
 
 	/**
 	 * @var string $answers
@@ -78,5 +78,10 @@ class Question extends Entity
 	public function getAnswers()
 	{
 		return $this->answers;
+	}
+
+	public function __toString()
+	{
+		return $this->question;
 	}
 }

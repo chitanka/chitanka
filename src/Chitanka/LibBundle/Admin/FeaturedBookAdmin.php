@@ -43,11 +43,13 @@ class FeaturedBookAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('title')
-			->add('author')
-			->add('url')
-			->add('cover')
-			->add('description')
+			->with('General attributes')
+				->add('title')
+				->add('author')
+				->add('url')
+				->add('cover')
+				->add('description')
+			->end()
 		;
 
 	}

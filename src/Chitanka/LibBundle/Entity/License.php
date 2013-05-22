@@ -30,7 +30,7 @@ class License extends Entity
 	 * @var string $name
 	 * @ORM\Column(type="string", length=15)
 	 */
-	private $name;
+	private $name = '';
 
 	/**
 	 * @var string $fullname

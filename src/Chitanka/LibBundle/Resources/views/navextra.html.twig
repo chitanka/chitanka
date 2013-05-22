@@ -8,7 +8,7 @@
 <div id="nav-extra-books" class="navbody">
 	<h3>Препоръчано</h3>
 	<div class="navcontent">
-		{% render 'LibBundle:FeaturedBook:book' %}
+		{{ render(controller('LibBundle:FeaturedBook:book')) }}
 	</div>
 	<div class="navfooter"><a href="{{ path('featured_books') }}">още четива »</a></div>
 </div>
@@ -16,7 +16,7 @@
 <div id="nav-extra-links" class="navbody">
 	<h3>Из Мрежата</h3>
 	<div class="navcontent">
-		{% render 'LibBundle:Main:sitebox' %}
+		{{ render(controller('LibBundle:Main:sitebox')) }}
 	</div>
 	<div class="navfooter"><a href="{{ path('links') }}">още връзки »</a></div>
 </div>

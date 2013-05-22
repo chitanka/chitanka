@@ -31,7 +31,7 @@ class WikiSite extends Entity
 	 * @var string
 	 * @ORM\Column(type="string", length=50, unique=true)
 	 */
-	private $name;
+	private $name = '';
 
 	/**
 	 * @var string
@@ -65,4 +65,9 @@ class WikiSite extends Entity
 
 	public function setIntro($intro) { $this->intro = $intro; }
 	public function getIntro() { return $this->intro; }
+
+	public function __toString()
+	{
+		return $this->name;
+	}
 }
