@@ -45,14 +45,28 @@ class SfbParserSimple {
 	}
 
 
-	public function headers() { return $this->makeEndHeaders(); }
-
-	public function output() {
-		#print_r($this->headers);
-		print_r( $this->makeDbRows( $this->makeEndHeaders() ) );
-		echo "Брой редове: $this->lcnt\n";
+	public function headers() {
+		return $this->makeEndHeaders();
 	}
 
+	public function headersFlat() {
+		$flatHeaders = array();
+		foreach ($this->headers() as $nr => $hdata) {
+			if (empty($hdata['titles'])) {
+				continue;
+			}
+			foreach ($hdata['titles'] as $lev => $title) {
+				$flatHeaders[] = array(
+					'nr' => $nr,
+					'level' => $lev,
+					'title' => $title,
+					'file_pos' => $hdata['fpos'],
+					'line_count' => $hdata['lcnt'],
+				);
+			}
+		}
+		return $flatHeaders;
+	}
 
 	protected function nextLine() {
 		if ($this->hasNextLine) {
@@ -148,4 +162,3 @@ class SfbParserSimple {
 	}
 
 }
-

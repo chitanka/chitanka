@@ -119,8 +119,6 @@ class TextAdmin extends Admin
 				->add('series', 'sonata_type_model_list', array('required' => false))
 				->add('sernr', null, array('required' => false))
 				->add('sernr2', null, array('required' => false))
-				->add('headlevel', null, array('required' => false))
-				->add('source', null, array('required' => false))
 			->end()
 			->with('Textual content')
 				->add('annotation', 'textarea', array(
@@ -138,7 +136,9 @@ class TextAdmin extends Admin
 					),
 				))
 				->add('content_file', 'file', array('required' => false))
+				->add('headlevel', null, array('required' => false))
 				->add('revision_comment', 'text', array('required' => false))
+				->add('source', null, array('required' => false))
 				->add('removed_notice')
 			->end()
 			->setHelps(array(
