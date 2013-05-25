@@ -199,6 +199,7 @@ class Book extends BaseWork
 	public function __construct()
 	{
 		$this->bookAuthors = new ArrayCollection;
+		$this->bookTexts = new ArrayCollection;
 		$this->links = new ArrayCollection;
 	}
 
