@@ -5,13 +5,9 @@ namespace Chitanka\LibBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity
-* @ORM\Table(name="book_text",
-*	uniqueConstraints={@ORM\UniqueConstraint(name="book_text_uniq", columns={"book_id", "text_id"})},
-*	indexes={
-*		@ORM\Index(name="text_idx", columns={"text_id"})}
-* )
-*/
+ * @ORM\Entity
+ * @ORM\Table(name="book_text")
+ */
 class BookText extends Entity
 {
 	/**
