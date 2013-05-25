@@ -260,7 +260,7 @@ class TextController extends Controller
 		$oldRating = $rating->getRating();
 
 		if ($request->getMethod() == 'POST') {
-			$form->bindRequest($request);
+			$form->bind($request);
 			if ($form->isValid() && $this->getUser()->isAuthenticated()) {
 				// TODO replace with DoctrineListener
 				$text->updateAvgRating($rating->getRating(), $oldRating);
@@ -314,7 +314,7 @@ class TextController extends Controller
 		);
 
 		if ($request->getMethod() == 'POST') {
-			$form->bindRequest($request);
+			$form->bind($request);
 			if ($form->isValid()) {
 				// TODO bind overwrites the Text object with an id
 				$textLabel->setText($text);

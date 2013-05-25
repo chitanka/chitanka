@@ -18,7 +18,7 @@ class FeedbackController extends Controller
 		$form = $this->createForm(new FeedbackType, $feedback);
 
 		if ($request->getMethod() == 'POST') {
-			$form->bindRequest($request);
+			$form->bind($request);
 
 			if ($form->isValid()) {
 				$form->getData()->process();
