@@ -6,7 +6,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class NotSpamValidator extends ConstraintValidator
 {
-	public function isValid($value, Constraint $constraint)
+	public function validate($value, Constraint $constraint)
 	{
 		$isSpam = false;
 		$isSpam = $isSpam || $this->containsUrl($value);
