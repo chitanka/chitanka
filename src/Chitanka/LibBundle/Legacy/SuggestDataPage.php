@@ -47,7 +47,7 @@ class SuggestDataPage extends MailPage {
 			return $this->buildContent();
 		}
 		$notSpamValidator = new NotSpamValidator;
-		if ( $this->user->isAnonymous() && !$notSpamValidator->isValid($this->info, new NotSpam) ) {
+		if ( $this->user->isAnonymous() && !$notSpamValidator->validate($this->info, new NotSpam) ) {
 			$this->addMessage('Съобщението ви е определено като спам. Вероятно съдържа прекалено много уеб адреси.', true);
 			return $this->buildContent();
 		}
