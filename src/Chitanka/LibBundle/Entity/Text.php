@@ -302,7 +302,7 @@ class Text extends BaseWork
 
 	/**
 	 * @var ArrayCollection
-	 * @ORM\OneToMany(targetEntity="TextHeader", mappedBy="text", cascade={"persist", "remove"})
+	 * @ORM\OneToMany(targetEntity="TextHeader", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"nr" = "ASC"})
 	 */
 	private $headers;
@@ -420,19 +420,6 @@ class Text extends BaseWork
 	public function getSernr() { return $this->sernr; }
 	public function setSernr2($sernr2) { $this->sernr2 = $sernr2; }
 	public function getSernr2() { return $this->sernr2; }
-
-	public function setHeadlevel($headlevel) { $this->headlevel = $headlevel; }
-	public function getHeadlevel() { return $this->headlevel; }
-
-	public function setSize($size)
-	{
-		$this->size = $size;
-		$this->setZsize($size / 3.5);
-	}
-	public function getSize() { return $this->size; }
-
-	public function setZsize($zsize) { $this->zsize = $zsize; }
-	public function getZsize() { return $this->zsize; }
 
 	public function setCreatedAt($created_at) { $this->created_at = $created_at; }
 	public function getCreatedAt() { return $this->created_at; }
@@ -1052,13 +1039,37 @@ EOS;
 		}
 	}
 
+	public function isContentFileUpdated()
+	{
+		return $this->getContentFile() !== null;
+	}
+
+	public function setHeadlevel($headlevel)
+	{
+		$this->headlevel = $headlevel;
+		if ( !$this->isContentFileUpdated()) {
+			$this->rebuildHeaders();
+		}
+	}
+	public function getHeadlevel() { return $this->headlevel; }
+
+	public function setSize($size)
+	{
+		$this->size = $size;
+		$this->setZsize($size / 3.5);
+	}
+	public function getSize() { return $this->size; }
+
+	public function setZsize($zsize) { $this->zsize = $zsize; }
+	public function getZsize() { return $this->zsize; }
+
 	/**
 	 * @ORM\PostPersist()
 	 * @ORM\PostUpdate()
 	 */
 	public function postUpload()
 	{
-		//$this->moveUploadedContentFile($this->getContentFile());
+		$this->moveUploadedContentFile($this->getContentFile());
 	}
 
 	private function moveUploadedContentFile(UploadedFile $file = null) {
@@ -1546,10 +1557,7 @@ EOS;
 
 	public function clearHeaders()
 	{
-		$this->getHeaders()->forAll(function($i, $header) {
-			$header->setText(null);
-			return true;
-		});
+		$this->clearCollection($this->getHeaders());
 	}
 
 	public function rebuildHeaders($file = null)

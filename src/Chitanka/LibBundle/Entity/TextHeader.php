@@ -5,11 +5,9 @@ namespace Chitanka\LibBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\TextHeaderRepository")
-* @ORM\Table(name="text_header",
-*	uniqueConstraints={@ORM\UniqueConstraint(name="key_uniq", columns={"text_id", "nr", "level"})}
-* )
-*/
+ * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\TextHeaderRepository")
+ * @ORM\Table(name="text_header")
+ */
 class TextHeader extends Entity
 {
 	/**

@@ -1,11 +1,21 @@
 <?php
 namespace Chitanka\LibBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
+
 /**
  * An abstract class for all entities in this bundle
  */
 abstract class Entity
 {
+
+	public function clearCollection(Collection $collection)
+	{
+		$collection->forAll(function($key) use ($collection) {
+			$collection->remove($key);
+			return true;
+		});
+	}
 
 	public function __call($method, $arguments)
 	{
