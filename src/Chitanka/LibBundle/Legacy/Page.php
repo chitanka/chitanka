@@ -145,7 +145,7 @@ abstract class Page
 	public function addMessage($message, $isError = false) {
 		$class = $isError ? 'error' : 'notice';
 
-		$this->controller->get('request')->getSession()->setFlash($class, $message);
+		$this->controller->get('request')->getSession()->getFlashBag()->set($class, $message);
 	}
 
 

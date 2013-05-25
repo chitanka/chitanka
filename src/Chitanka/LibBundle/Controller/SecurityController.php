@@ -49,7 +49,7 @@ class SecurityController extends Controller
 
 		$session = $request->getSession();
 		$session->invalidate();
-		$session->setFlash('notice', 'Излязохте от Моята библиотека.');
+		$session->getFlashBag()->set('notice', 'Излязохте от Моята библиотека.');
 
 		return $this->redirect('homepage');
 	}
