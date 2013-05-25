@@ -46,7 +46,7 @@ function prepareGamebook()
 }
 
 // goto next chapter links
-$("a[rel=next]").live("click", function(){
+$(document.body).on("click", "a[rel=next]", function(){
 	if ( $(this).isLoading() ) {
 		return false;
 	}
@@ -75,7 +75,7 @@ $("button.ok").click(function(){
 });
 
 if ( ! location.hash ) {
-	$("a.goto-toc").live("click", function(){
+	$(document.body).on("click", "a.goto-toc", function(){
 		$("#toc .collapsible-ctrl a").click(); // uncollapse toc
 		//$("html").animate({scrollTop: toc.offset().top}, 800);
 	});
