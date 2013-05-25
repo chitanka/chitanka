@@ -65,6 +65,15 @@ abstract class EntityRepository extends DoctrineEntityRepository
 		return $query->getSingleScalarResult();
 	}
 
+	public function findByIds(array $ids)
+	{
+		if (empty($ids)) {
+			return array();
+		}
+		return $this->getQueryBuilder()
+			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
+			->getQuery()->getResult();
+	}
 
 	public function getByIds($ids, $orderBy = null)
 	{

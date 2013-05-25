@@ -21,6 +21,9 @@
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
+			<call method="setEntityManager">
+				<argument type="service" id="doctrine.orm.default_entity_manager" />
+			</call>
 		</service>
 		<service id="chitanka.admin.text" class="Chitanka\LibBundle\Admin\TextAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.text"/>

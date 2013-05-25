@@ -24,7 +24,7 @@ class BookText extends Entity
 
 	/**
 	 * @var integer $book
-	 * @ORM\ManyToOne(targetEntity="Book")
+	 * @ORM\ManyToOne(targetEntity="Book", inversedBy="bookTexts")
 	 */
 	private $book;
 
@@ -44,7 +44,7 @@ class BookText extends Entity
 	 * @var boolean $share_info
 	 * @ORM\Column(type="boolean")
 	 */
-	private $share_info;
+	private $share_info = true;
 
 	public function getId() { return $this->id; }
 

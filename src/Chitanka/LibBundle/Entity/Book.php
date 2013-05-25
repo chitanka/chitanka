@@ -12,7 +12,6 @@ use Sfblib_SfbConverter as SfbConverter;
 use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
 use Sfblib_SfbToFb2Converter as SfbToFb2Converter;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\BookRepository")
@@ -168,6 +167,12 @@ class Book extends BaseWork
 	 */
 	private $bookAuthors;
 
+	/**
+	 * @var ArrayCollection
+	 * @ORM\OneToMany(targetEntity="BookText", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
+	 */
+	private $bookTexts;
+
 	/** FIXME doctrine:schema:create does not allow this relation
 	 * @ORM\ManyToMany(targetEntity="Text", inversedBy="books")
 	 * @ORM\JoinTable(name="book_text",
@@ -283,7 +288,40 @@ class Book extends BaseWork
 	public function setBookAuthors($bookAuthors) { $this->bookAuthors = $bookAuthors; }
 	public function getBookAuthors() { return $this->bookAuthors; }
 
+	public function getBookTexts() { return $this->bookTexts; }
+	public function setBookTexts($bookTexts) { $this->bookTexts = $bookTexts; }
+	public function addBookText(BookText $bookText)
+	{
+		$this->bookTexts[] = $bookText;
+	}
+
 	public function getTexts() { return $this->texts; }
+	public function setTexts($texts)
+	{
+		$bookTexts = $this->getBookTexts();
+		foreach ($texts as $key => $text) {
+			$bookText = $bookTexts->get($key);
+			if ($bookText === null) {
+				$bookText = new BookText;
+				$bookText->setBook($this);
+				$bookText->setShareInfo(true);
+				$this->addBookText($bookText);
+			}
+			$bookText->setText($text);
+			$bookText->setPos($key);
+		}
+		$keysToRemove = array_diff($bookTexts->getKeys(), array_keys($texts));
+		foreach ($keysToRemove as $key) {
+			$bookTexts->remove($key);
+		}
+		$this->textsNeedUpdate = false;
+	}
+
+	private $textsNeedUpdate = false;
+	public function textsNeedUpdate()
+	{
+		return $this->textsNeedUpdate;
+	}
 
 	public function setLinks($links) { $this->links = $links; }
 	public function getLinks() { return $this->links; }
@@ -527,7 +565,13 @@ class Book extends BaseWork
 
 	public function setRawTemplate($template)
 	{
-		return $this->getTemplate()->setContent($template);
+		$this->getTemplate()->setContent($template);
+		$this->textsNeedUpdate = true;
+	}
+
+	public function getTextIdsFromTemplate()
+	{
+		return $this->getTemplate()->getTextIds();
 	}
 
 	public function getCover($width = null)
@@ -1172,38 +1216,6 @@ class Book extends BaseWork
 	static public function getTypeList()
 	{
 		return self::$typeList;
-	}
-
-	/**
-	 * @Assert\File
-	 * @var UploadedFile
-	 */
-	private $content_file;
-	public function getContentFile()
-	{
-		return $this->content_file;
-	}
-
-	/** @param UploadedFile $file */
-	public function setContentFile(UploadedFile $file = null)
-	{
-		$this->content_file = $file;
-	}
-
-	/**
-	 * @ORM\PostPersist()
-	 * @ORM\PostUpdate()
-	 */
-	public function postUpload()
-	{
-		$this->moveUploadedContentFile($this->getContentFile());
-	}
-
-	private function moveUploadedContentFile(UploadedFile $file = null) {
-		if ($file) {
-			$filename = Legacy::getContentFilePath('book', $this->id);
-			$file->move(dirname($filename), basename($filename));
-		}
 	}
 
 	private $revisionComment;

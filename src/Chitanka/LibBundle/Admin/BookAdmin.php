@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\FormEvents;
+use Doctrine\ORM\EntityManager;
 use Chitanka\LibBundle\Entity\Book;
 use Chitanka\LibBundle\Entity\BookRevision;
 use Chitanka\LibBundle\Util\Language;
@@ -19,7 +20,15 @@ class BookAdmin extends Admin
 
 	public $extraActions = 'LibBundle:BookAdmin:extra_actions.html.twig';
 
-	protected function configureRoutes(RouteCollection $collection) {
+	private $em;
+
+	public function setEntityManager(EntityManager $em)
+	{
+		$this->em = $em;
+	}
+
+	protected function configureRoutes(RouteCollection $collection)
+	{
 		$collection->remove('create');
 	}
 
@@ -152,7 +161,8 @@ class BookAdmin extends Admin
 		;
 	}
 
-	public function preUpdate($book) {
+	public function preUpdate($book)
+	{
 		foreach ($book->getLinks() as $link) {
 			$link->setBook($book);
 		}
@@ -160,6 +170,11 @@ class BookAdmin extends Admin
 			if ($bookAuthor->getPerson()) {
 				$bookAuthor->setBook($book);
 			}
+		}
+		if ($book->textsNeedUpdate()) {
+			$textRepo = $this->em->getRepository('LibBundle:Text');
+			$texts = $textRepo->findByIds($book->getTextIdsFromTemplate());
+			$book->setTexts($texts);
 		}
 		if ($book->getRevisionComment()) {
 			$revision = new BookRevision;

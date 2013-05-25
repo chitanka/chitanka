@@ -184,6 +184,21 @@ class BookTemplate
 	{
 		file_put_contents(Legacy::getContentFilePath('book', $this->book->getId()), $content);
 		$this->content = $content;
+		$this->textIds = null;
+	}
+
+	private $textIds;
+	public function getTextIds()
+	{
+		return isset($this->textIds) ? $this->textIds : $this->textIds = $this->extractTextIds($this->getContent()) ;
+	}
+
+	static public function extractTextIds($template)
+	{
+		if (preg_match_all('/\{(file|text):(\d+)/', $template, $matches)) {
+			return $matches[2];
+		}
+		return array();
 	}
 
 	private function clearSpecialBookSyntax($template)
