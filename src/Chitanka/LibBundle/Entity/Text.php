@@ -318,13 +318,13 @@ class Text extends BaseWork
 
 	/**
 	 * @var ArrayCollection
-	 * @ORM\OneToMany(targetEntity="UserTextContrib", mappedBy="text")
+	 * @ORM\OneToMany(targetEntity="UserTextContrib", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 */
 	private $userContribs;
 
 	/**
 	 * @var ArrayCollection
-	 * @ORM\OneToMany(targetEntity="TextRevision", mappedBy="text", cascade={"persist"})
+	 * @ORM\OneToMany(targetEntity="TextRevision", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 */
 	private $revisions;
 
@@ -457,6 +457,11 @@ class Text extends BaseWork
 	public function getRemovedNotice() { return $this->removed_notice; }
 
 	public function getUserContribs() { return $this->userContribs; }
+	public function setUserContribs($userContribs) { $this->userContribs = $userContribs; }
+	public function addUserContribs(UserTextContrib $userContrib)
+	{
+		$this->userContribs[] = $userContrib;
+	}
 
 	public function addAuthor(Person $author) { $this->authors[] = $author; }
 	public function getAuthors() { return $this->authors; }

@@ -73,8 +73,12 @@ class UserTextContrib extends Entity
 
 	public function getId() { return $this->id; }
 
-	public function setUser($user) { $this->user = $user; }
 	public function getUser() { return $this->user; }
+	public function setUser(User $user)
+	{
+		$this->user = $user;
+		$this->setUsername($user->getUsername());
+	}
 
 	public function setUsername($username) { $this->username = $username; }
 	public function getUsername() { return $this->username; }
