@@ -264,7 +264,7 @@ EOT
 			return array();
 		}
 		if ($value == '-' || $value == '?') {
-			$value = '';
+			$value = null;
 		}
 		return array($var => $value);
 	}
