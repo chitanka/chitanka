@@ -36,10 +36,9 @@ class AppKernel extends Kernel
 			new Chitanka\LibBundle\LibBundle(),
 		);
 
-		if (in_array($this->getEnvironment(), array('dev', 'test'))) {
+		if ($this->getEnvironment() != 'prod') {
 			$bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-			//$bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-			$bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+//			$bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
 		}
 
 		return $bundles;
