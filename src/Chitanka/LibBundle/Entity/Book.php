@@ -902,7 +902,7 @@ class Book extends BaseWork
 			return $this->_headers;
 		}
 
-		require_once __DIR__ . '/../Legacy/headerextract.php';
+		require_once __DIR__ . '/../Legacy/SfbParserSimple.php';
 		$this->_headers = array();
 		foreach (\Chitanka\LibBundle\Legacy\makeDbRows($this->getMainBodyAsSfbFile(), 4) as $row) {
 			$header = new TextHeader;
