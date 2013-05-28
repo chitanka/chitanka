@@ -23,7 +23,7 @@ function prepareGamebook()
 		showAll : function()   { this.$eps.show(); return this; },
 		hideAll : function()   { this.$eps.hide(); return this; }
 	};
-	var $help = $('<div class="notice" style="margin-top: 5em">\
+	var $help = $('<div class="notice" style="margin: 15em auto 45em">\
 		<hr/>\
 		<p>Неактивните епизоди бяха скрити. Ще се покажат в хода на играта.</p>\
 		<div class="standalone"><a href="#l-1">Показване на всички епизоди</a></div>\
@@ -42,7 +42,7 @@ function prepareGamebook()
 	});
 
 	$epHeader.hide();
-	driver.hideAll().reveal(1);
+	driver.hideAll();
 }
 
 // goto next chapter links
