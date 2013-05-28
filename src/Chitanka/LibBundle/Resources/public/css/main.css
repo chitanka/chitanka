@@ -1500,6 +1500,7 @@ div.example {
 .text-content h5,
 .text-content h6,
 .text-content .subheader {
+	clear: both;
 	font-variant: small-caps;
 }
 
