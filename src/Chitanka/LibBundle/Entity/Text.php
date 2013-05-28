@@ -1596,8 +1596,9 @@ EOS;
 	{
 		$imgDir = $imgDirPrefix . Legacy::getContentFilePath('img', $this->id);
 		$conv = new SfbToHtmlConverter($this->getRawContent(true), $imgDir);
+
 		// TODO do not hardcode it; inject it through parameter
-		$conv->setInternalLinkTarget("/text/$this->id/0");
+		$internalLinkTarget = "/text/$this->id/0";
 
 		if ( ! empty( $objCount ) ) {
 			$conv->setObjectCount($objCount);
@@ -1606,11 +1607,14 @@ EOS;
 		if ($header) {
 			$conv->startpos = $header->getFpos();
 			$conv->maxlinecnt = $header->getLinecnt();
+		} else {
+			$internalLinkTarget = '';
 		}
 		if ($this->type == 'gamebook') {
 			// recognize section links
-			$conv->patterns['/#(\d+)/'] = '<a href="#l-$1" class="ep" title="Към част $1">$1</a>';
+			$conv->patterns['/#(\d+)/'] = '<a href="#l-$1" class="ep" title="Към епизод $1">$1</a>';
 		}
+		$conv->setInternalLinkTarget($internalLinkTarget);
 
 		return $conv->convert()->getContent();
 	}
