@@ -3,6 +3,7 @@ namespace Chitanka\LibBundle\Legacy;
 
 use Chitanka\LibBundle\Util\Number;
 use Chitanka\LibBundle\Util\String;
+use Chitanka\LibBundle\Util\Char;
 
 abstract class Page
 {
@@ -421,7 +422,7 @@ EOS;
 		}
 		$row = $this->db->fetchAssoc($res);
 		$answers = explode(',', $row['answers']);
-		$_answer = trim($_answer);
+		$_answer = Char::mystrtolower(trim($_answer));
 		foreach ($answers as $answer) {
 			if ($_answer == $answer) {
 				$this->user->setIsHuman(true);
