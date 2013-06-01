@@ -942,6 +942,7 @@ EOS;
 			$vdate = $this->created_at == '0000-00-00' ? LIB_OPEN_DATE : $this->created_at;
 			$history[] = "$ver ($vdate) — Добавяне";
 		}*/
+		$ver = '0';
 		foreach ( $historyRows as $data ) {
 			$ver = '0.' . ($verNo++);
 			$history[] = "$ver ($data[date]) — $data[comment]";
@@ -1007,18 +1008,19 @@ EOS;
 	public function getHistoryInfo()
 	{
 		$db = Setup::db();
-		$res = $db->select(DBT_EDIT_HISTORY, array('text_id' => $this->id),
-			'*', 'date ASC');
+		$res = $db->select(DBT_EDIT_HISTORY, array('text_id' => $this->id), '*', 'date ASC');
 		$rows = array();
 
 		while ( $row = $db->fetchAssoc($res) ) {
 			$rows[] = $row;
 		}
 
-		$isoEntryDate = $this->created_at->format('Y-m-d');
-		if ( "$isoEntryDate 24" < $rows[0]['date'] ) {
-			$date = is_null($this->created_at) ? LIB_OPEN_DATE : $isoEntryDate;
-			array_unshift($rows, array('date' => $date, 'comment' => 'Добавяне'));
+		if ($rows) {
+			$isoEntryDate = $this->created_at->format('Y-m-d');
+			if ( "$isoEntryDate 24" < $rows[0]['date'] ) {
+				$date = is_null($this->created_at) ? LIB_OPEN_DATE : $isoEntryDate;
+				array_unshift($rows, array('date' => $date, 'comment' => 'Добавяне'));
+			}
 		}
 
 		return $rows;
