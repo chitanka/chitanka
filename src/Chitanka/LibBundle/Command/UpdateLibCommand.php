@@ -260,7 +260,7 @@ EOT
 		$parts = explode($separator, $line);
 		$var = trim(array_shift($parts));
 		$value = trim(implode($separator, $parts));
-		if (empty($value)) {
+		if ($value === '') {
 			return array();
 		}
 		if ($value == '-' || $value == '?') {
@@ -354,8 +354,7 @@ EOT
 		}
 		if ( ! isset($this->_curIds[$table])) {
 			$tableClass = 'Chitanka\LibBundle\Entity\\'.  str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
-			$nextId = $this->em->find('LibBundle:NextId', $tableClass);
-			$this->_curIds[$table] = $nextId ? $nextId->getValue() : $this->em->createQuery(sprintf('SELECT MAX(e.id) FROM %s e', $tableClass))->getSingleScalarResult() + 1;
+			$this->_curIds[$table] = $this->em->createQuery(sprintf('SELECT MAX(e.id) FROM %s e', $tableClass))->getSingleScalarResult() + 1;
 		} else {
 			$this->_curIds[$table]++;
 		}
