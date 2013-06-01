@@ -487,7 +487,7 @@ EOS;
 	}
 
 	private function logFailedCaptcha($msg) {
-		file_put_contents(__DIR__."/../../../../app/logs/failed_captcha.log", "$msg\n", FILE_APPEND);
+		file_put_contents(__DIR__."/../../../../app/logs/failed_captcha.log", date('Y-m-d H:i:s').": $msg\n", FILE_APPEND);
 	}
 
 	protected function addUrlQuery($args) {
