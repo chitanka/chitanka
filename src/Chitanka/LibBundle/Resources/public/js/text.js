@@ -1,16 +1,20 @@
 function prepareGamebook()
 {
-	if ( ! $("div.gamebook").length ) {
+	var $container = $("div.gamebook");
+	if ($container.length === 0) {
 		return;
 	}
-	var $epHeader = $("h2:contains('Епизоди')");
-	if ( ! $epHeader.length ) {
+	var $epHeader = $container.find("h2:contains('Епизоди')");
+	if ($epHeader.length === 0) {
 		return;
 	}
 	var driver = {
-		$eps   : $epHeader.siblings(),
-		lastEp : 0,
-		reveal : function(ep) {
+		$eps: $epHeader.parent().find(".section"),
+		ep: function(ep) {
+			return $("#"+this.epId(ep));
+		},
+		lastEp: 0,
+		reveal: function(ep) {
 			if (this.lastEp) {
 				this.hide(this.lastEp);
 			}
@@ -18,26 +22,64 @@ function prepareGamebook()
 			this.lastEp = ep;
 			return this;
 		},
-		show    : function(ep) { this.$eps.eq(ep - 1).show(); },
-		hide    : function(ep) { this.$eps.eq(ep - 1).hide(); },
-		showAll : function()   { this.$eps.show(); return this; },
-		hideAll : function()   { this.$eps.hide(); return this; }
+		show: function(ep) {
+			var epElm = this.ep(ep).show();
+			var ancestor = epElm.parent();
+			while (ancestor.is(":hidden")) {
+				ancestor.show();
+				ancestor = ancestor.parent();
+			}
+			var target = epElm.attr("id");
+			if (location.hash !== target) {
+				location.hash = target;
+			}
+		},
+		hide: function(ep) {
+			this.ep(ep).hide().parents(".section").hide();
+		},
+		showAll: function() {
+			this.$eps.show();
+			return this;
+		},
+		hideAll: function() {
+			this.$eps.hide();
+			return this;
+		},
+		epId: function(ep) {
+			return "l-"+ep;
+		}
 	};
 	var $help = $('<div class="notice" style="margin: 15em auto 45em">\
 		<hr/>\
 		<p>Неактивните епизоди бяха скрити. Ще се покажат в хода на играта.</p>\
-		<div class="standalone"><a href="#l-1">Показване на всички епизоди</a></div>\
+		<div class="standalone"><a href="#l-1" class="ep-all">Показване на всички епизоди</a></div>\
+		<div class="standalone">Отиване на епизод <input type="text" name="ep-goto" size="4"></div>\
 		<hr/>\
 		</div>');
-	$help.find("a").click(function() {
+	$help.find(".ep-all").click(function() {
 		driver.showAll();
 		$help.hide();
-		$epHeader.parent().unbind("click");
+		$container.unbind("click");
+	});
+	$help.find('[name="ep-goto"]').on("change", function() {
+		driver.reveal(this.value);
+		$(this).val("").blur();
 	});
 	$epHeader.parent().append($help);
-	$epHeader.parent().parent().click(function(e) {
-		if ( $(e.target).is(".ep") ) {
-			driver.reveal( $(e.target).text() );
+	$container.on("click", "a", function() {
+		var match = $(this).attr("href").match(/#l-(\d+)/);
+		if (match) {
+			driver.reveal(match[1]);
+		} else {
+			$(".back-to-ep").remove();
+			var edge = $("#main-content").css("margin-left") == "0px" ? "right" : "left";
+			$backToEpLink = $('<a class="back-to-ep" style="position:fixed; top:3em">Назад към епизода</a>')
+				.css(edge, "1em")
+				.attr("href", "#"+driver.epId(driver.lastEp))
+				.appendTo("body")
+				.click(function(){
+					$(this).remove();
+				});
 		}
 	});
 
@@ -59,8 +101,21 @@ function prepareGamebook()
 	var enhanceInputCell = function(idx, cell) {
 		var $cell = $(cell);
 		var name = namePrefix + "-" + idx;
-		var htmlInput = $cell.text().replace(/…+/, '<input type="text" name="'+name+'" style="width: 100%">');
+		var htmlInput = $cell.text()
+			.replace(/………/g, '<textarea style="width: 99%; height: 5em"></textarea>')
+			.replace(/…+(\(([^)]+)\))?/g, '<input type="text" style="width: 99%" placeholder="$2">');
 		$cell.html(htmlInput);
+		var childrenCount = $cell.children().length;
+		if ($.trim($cell.text()) !== "") {
+			childrenCount++;
+		}
+		if (childrenCount > 1) {
+			var childrenWidth = Math.floor(100 / childrenCount) - 2/*give it some space*/;
+			$cell.children().width(childrenWidth+"%");
+		}
+		$cell.children().each(function(idx, input) {
+			$(input).attr("name", name+"-"+idx);
+		});
 		$cell.on("change", ":input", function() {
 			localStorage[this.name] = this.value;
 		});
