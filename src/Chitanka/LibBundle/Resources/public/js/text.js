@@ -14,11 +14,14 @@ function prepareGamebook()
 			return $("#"+this.epId(ep));
 		},
 		lastEp: 0,
+		allShown: false,
 		reveal: function(ep) {
-			if (this.lastEp) {
-				this.hide(this.lastEp);
+			if (!this.allShown) {
+				if (this.lastEp) {
+					this.hide(this.lastEp);
+				}
+				this.show(ep);
 			}
-			this.show(ep);
 			this.lastEp = ep;
 			return this;
 		},
@@ -39,6 +42,7 @@ function prepareGamebook()
 		},
 		showAll: function() {
 			this.$eps.show();
+			this.allShown = true;
 			return this;
 		},
 		hideAll: function() {
@@ -59,7 +63,6 @@ function prepareGamebook()
 	$help.find(".ep-all").click(function() {
 		driver.showAll();
 		$help.hide();
-		$container.unbind("click");
 	});
 	$help.find('[name="ep-goto"]').on("change", function() {
 		driver.reveal(this.value);
@@ -73,7 +76,7 @@ function prepareGamebook()
 		} else {
 			$(".back-to-ep").remove();
 			var edge = $("#main-content").css("margin-left") == "0px" ? "right" : "left";
-			$backToEpLink = $('<a class="back-to-ep" style="position:fixed; top:3em">Назад към епизода</a>')
+			$backToEpLink = $('<a class="back-to-ep" style="position:fixed; bottom:3em">Назад към епизода</a>')
 				.css(edge, "1em")
 				.attr("href", "#"+driver.epId(driver.lastEp))
 				.appendTo("body")
