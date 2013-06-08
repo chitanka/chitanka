@@ -2,6 +2,7 @@
 namespace Chitanka\LibBundle\Entity;
 
 use Chitanka\LibBundle\Util\File;
+use Chitanka\LibBundle\Util\String;
 use Chitanka\LibBundle\Legacy\Legacy;
 use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
 
@@ -230,7 +231,7 @@ abstract class BaseWork extends Entity
 	{
 		$file = Legacy::getContentFilePath(static::$annotationDir, $this->id);
 		if ($annotation) {
-			file_put_contents($file, $annotation);
+			file_put_contents($file, String::my_replace($annotation));
 			$this->setHasAnno(true);
 		} else {
 			file_exists($file) && unlink($file);
@@ -279,7 +280,7 @@ abstract class BaseWork extends Entity
 	public function setExtraInfo($extraInfo) {
 		$file = Legacy::getContentFilePath(static::$infoDir, $this->id);
 		if ($extraInfo) {
-			file_put_contents($file, $extraInfo);
+			file_put_contents($file, String::my_replace($extraInfo));
 		} else {
 			file_exists($file) && unlink($file);
 		}
