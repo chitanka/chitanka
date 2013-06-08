@@ -101,12 +101,55 @@ function prepareGamebook()
 	};
 	$(".js-chance-table table").each(enhanceChanceTable);
 
+	var InputStorage = function(storageKey) {
+		storageKey = storageKey || "gamebook-input";
+		this.container = localStorage[storageKey] ? JSON.parse(localStorage[storageKey]) : {};
+
+		var persist = function(container) {
+			localStorage[storageKey] = JSON.stringify(container);
+		};
+		this.get = function(key) {
+			return this.container[key];
+		};
+		this.set = function(key, value) {
+			this.container[key] = value;
+			persist(this.container);
+		};
+		this.has = function(key) {
+			return this.container[key];
+		};
+		this.clear = function(key) {
+			this.container[key] && delete this.container[key];
+			persist(this.container);
+		};
+		this.clearAll = function() {
+			this.container = {};
+			persist(this.container);
+		};
+	};
+	var storage = new InputStorage;
+
 	var enhanceInputCell = function(idx, cell) {
 		var $cell = $(cell);
 		var name = namePrefix + "-" + idx;
 		var htmlInput = $cell.text()
 			.replace(/………/g, '<textarea style="width: 99%; height: 5em"></textarea>')
+			.replace(/\(…=([^)]+)\)/, function(m0, m1) {
+				var radios = [];
+				m1.split(" / ").forEach(function(value, i) {
+					radios.push('<label><input type="radio" name="r-'+name+'" value="'+i+'">'+value+'</label>');
+				});
+				return radios.join(" ");
+			})
+			.replace(/\[…=([^\]]+)\]/, function(m0, m1) {
+				var radios = [];
+				m1.split(" / ").forEach(function(value, i) {
+					radios.push('<label><input type="checkbox" name="c-'+name+'-'+i+'">'+value+'</label>');
+				});
+				return radios.join(" ");
+			})
 			.replace(/…+(\(([^)]+)\))?/g, '<input type="text" style="width: 99%" placeholder="$2">');
+
 		$cell.html(htmlInput);
 		var childrenCount = $cell.children().length;
 		if ($.trim($cell.text()) !== "") {
@@ -120,15 +163,38 @@ function prepareGamebook()
 			$(input).attr("name", name+"-"+idx);
 		});
 		$cell.on("change", ":input", function() {
-			localStorage[this.name] = this.value;
+			if (this.type == "checkbox" && !$(this).prop("checked")) {
+				storage.clear(this.name);
+				return;
+			}
+			storage.set(this.name, this.value);
 		});
 		$cell.find(":input").each(function() {
-			if (localStorage[this.name]) {
-				$(this).val(localStorage[this.name]);
+			if (!storage.has(this.name)) {
+				return;
+			}
+			switch (this.type) {
+				case "radio":
+					if (this.value == storage.get(this.name)) {
+						$(this).prop("checked", true);
+					}
+					break;
+				case "checkbox":
+					$(this).prop("checked", true);
+					break;
+				default:
+					$(this).val(storage.get(this.name));
 			}
 		});
 	};
-	var $inputTables = $(".js-gamebook-input").find("table");
+	var $inputContainer = $(".js-gamebook-input");
+	$inputContainer
+		.wrap('<form></form>')
+		.append('<div style="text-align:right"><input type="reset" value="Зануляване на записите"></div>')
+		.closest("form").on("reset", function() {
+			storage.clearAll();
+		});
+	var $inputTables = $inputContainer.find("table");
 	$inputTables.css({ width: "100%" });
 	var $inputCells = $inputTables.find("td");
 	var namePrefix = location.pathname;
