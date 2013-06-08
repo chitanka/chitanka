@@ -82,11 +82,10 @@ EOT
 			$queries = $this->processPacket($dir);
 		}
 		array_unshift($queries, 'SET NAMES utf8');
+		$queries = array_merge($queries, $this->getNextIdUpdateQueries());
 
 		return $queries;
 	}
-
-
 
 
 	private function processPacket($dir)
@@ -360,6 +359,24 @@ EOT
 		}
 
 		return $this->_curIds[$table];
+	}
+
+	private function getNextIdUpdateQueries()
+	{
+		$tables = array(
+			'text_revision',
+			'book_revision',
+			'text_translator',
+			'text_author',
+			'book_text',
+			'series_author',
+		);
+		$queries = array();
+		foreach ($tables as $table) {
+			$entityName = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+			$queries[] = "UPDATE next_id SET value=(SELECT max(id)+1 FROM $table) WHERE id='Chitanka\\\\LibBundle\\\\Entity\\\\$entityName'";
+		}
+		return $queries;
 	}
 
 	private function insertWork(array $work)
