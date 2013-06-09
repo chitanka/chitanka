@@ -70,18 +70,21 @@ function prepareGamebook()
 	});
 	$epHeader.parent().append($help);
 	$container.on("click", "a", function() {
-		var match = $(this).attr("href").match(/#l-(\d+)/);
+		var match = $(this).attr("href").match(/#l-(\d+)$/);
 		if (match) {
 			driver.reveal(match[1]);
 		} else {
 			$(".back-to-ep").remove();
 			var edge = $("#main-content").css("margin-left") == "0px" ? "right" : "left";
-			$backToEpLink = $('<a class="back-to-ep" style="position:fixed; bottom:3em">Назад към епизода</a>')
-				.css(edge, "1em")
+			var linkText = driver.lastEp == 0 ? 'Назад' : 'Назад към епизода';
+			$backToEpLink = $('<a class="back-to-ep" style="position:fixed; bottom:2em">'+linkText+'</a>')
 				.attr("href", "#"+driver.epId(driver.lastEp))
+				.css(edge, "1em")
 				.appendTo("body")
-				.click(function(){
+				.click(function() {
 					$(this).remove();
+					history.go(-1);
+					return false;
 				});
 		}
 	});
@@ -148,7 +151,8 @@ function prepareGamebook()
 				});
 				return radios.join(" ");
 			})
-			.replace(/…+(\(([^)]+)\))?/g, '<input type="text" style="width: 99%" placeholder="$2">');
+			.replace(/…(\(=([^)]+)\))?/g, '<input type="text" style="width: 99%" value="$2">')
+			.replace(/…(\(([^)]+)\))?/g, '<input type="text" style="width: 99%" placeholder="$2">');
 
 		$cell.html(htmlInput);
 		var childrenCount = $cell.children().length;
