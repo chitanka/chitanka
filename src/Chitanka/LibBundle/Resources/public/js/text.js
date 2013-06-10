@@ -204,6 +204,31 @@ function prepareGamebook()
 	var namePrefix = location.pathname;
 	$inputCells.each(enhanceInputCell);
 
+
+	$(".js-gamebook-board").each(function() {
+		var width = 20;
+		var offset = width/2;
+		var top = $(this).offset().top;
+		var left = $(this).offset().left;
+		var $dot = $('<div style="background-color:red"></div>')
+			.css({
+				position: "absolute",
+				top: top,
+				left: left,
+				width: width+"px",
+				height: width+"px",
+				"border-radius": (width/2)+"px"
+			})
+			.appendTo('body');
+		$(this).click(function(event) {
+			top = event.pageY - offset;
+			left = event.pageX - offset;
+			$dot.css({ top: top, left: left });
+			return false;
+		})
+		.attr("title", "Щракнете, за да сложите или преместите пионката")
+		.find("img").removeAttr("title");
+	});
 }
 
 
