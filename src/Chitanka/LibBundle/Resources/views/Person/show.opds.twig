@@ -11,7 +11,7 @@
 	{% endif %#}
 
 	{% if books is defined %}
-		{{ helper.navi_entry('Книги', updated_at, 'person_show_books', {'slug': person.slug}, 'Книги от '~person.name) }}
+		{{ helper.navi_entry('Книги', updated_at, 'author_show_books', {'slug': person.slug}, 'Книги от '~person.name) }}
 	{% endif %}
 {#
 	{% if person.is_author %}
