@@ -1408,7 +1408,7 @@ table.content td {
 	padding: .1em .4em;
 }
 table.content caption {
-	margin: 1em auto 0 auto;
+	margin: 0 auto;
 	font-weight: bold;
 }
 th {
