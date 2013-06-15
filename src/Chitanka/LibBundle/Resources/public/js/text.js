@@ -132,29 +132,37 @@ function prepareGamebook()
 	};
 	var storage = new InputStorage;
 
+	function replaceInputPlaceholders(str, name) {
+		return str
+			// … x3
+			.replace(/………/g, '<textarea style="width: 99%; height: 5em"></textarea>')
+			// (…=radio 1 / radio 2 / radio 3)
+			.replace(/\(…=([^)]+)\)/, function(m0, m1) {
+				var elems = [];
+				m1.split(" / ").forEach(function(value, i) {
+					elems.push('<label><input type="radio" name="r-'+name+'" value="'+i+'">'+value+'</label>');
+				});
+				return elems.join(" ");
+			})
+			// […=checkbox 1 / checkbox 2 / checkbox 3]
+			.replace(/\[…=([^\]]+)\]/, function(m0, m1) {
+				var elems = [];
+				m1.split(" / ").forEach(function(value, i) {
+					elems.push('<label><input type="checkbox" name="c-'+name+'-'+i+'">'+value+'</label>');
+				});
+				return elems.join(" ");
+			})
+			// …(=initial value)
+			.replace(/…\(=([^)]+)\)/g, '<input type="text" style="width: 98%" value="$1">')
+			// …(placeholder value)
+			.replace(/…\(([^)]+)\)/g, '<input type="text" style="width: 99%" placeholder="$1">')
+			.replace(/…/g, '<input type="text" style="width: 99%">');
+	}
+
 	var enhanceInputCell = function(idx, cell) {
 		var $cell = $(cell);
 		var name = namePrefix + "-" + idx;
-		var htmlInput = $cell.text()
-			.replace(/………/g, '<textarea style="width: 99%; height: 5em"></textarea>')
-			.replace(/\(…=([^)]+)\)/, function(m0, m1) {
-				var radios = [];
-				m1.split(" / ").forEach(function(value, i) {
-					radios.push('<label><input type="radio" name="r-'+name+'" value="'+i+'">'+value+'</label>');
-				});
-				return radios.join(" ");
-			})
-			.replace(/\[…=([^\]]+)\]/, function(m0, m1) {
-				var radios = [];
-				m1.split(" / ").forEach(function(value, i) {
-					radios.push('<label><input type="checkbox" name="c-'+name+'-'+i+'">'+value+'</label>');
-				});
-				return radios.join(" ");
-			})
-			.replace(/…(\(=([^)]+)\))?/g, '<input type="text" style="width: 99%" value="$2">')
-			.replace(/…(\(([^)]+)\))?/g, '<input type="text" style="width: 99%" placeholder="$2">');
-
-		$cell.html(htmlInput);
+		$cell.html(replaceInputPlaceholders($cell.html(), name));
 		var childrenCount = $cell.children().length;
 		if ($.trim($cell.text()) !== "") {
 			childrenCount++;
