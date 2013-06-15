@@ -52,7 +52,7 @@ class TextCommentAdmin extends Admin
 			->with('General attributes')
 				->add('rname')
 				->add('content')
-				->add('is_shown')
+				->add('is_shown', null, array('required' => false))
 			->end()
 		;
 
