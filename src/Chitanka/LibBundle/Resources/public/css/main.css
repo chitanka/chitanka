@@ -1503,6 +1503,9 @@ div.example {
 	clear: both;
 	font-variant: small-caps;
 }
+.section {
+	clear: both;
+}
 
 /* за фамилии */
 .lastname {
