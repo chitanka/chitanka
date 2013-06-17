@@ -68,9 +68,13 @@ function submitEditForm(form)
 function submitDeleteForm(form)
 {
 	var $form = $(form);
-	$(":submit", $form).addClass("loading");
-	$.post(form.action, $form.serialize() + "&_method=DELETE", function(data){
-		var $parent = $form.parents(".deletable:eq(0)");
+	$form.find(":submit").addClass("loading");
+	$.ajax({
+		url: form.action,
+		type: "DELETE",
+		data: $form.serialize(),
+	}).done(function(data) {
+		var $parent = $form.closest(".deletable");
 		if ( ! $parent.length) {
 			$parent = $form.parent();
 		}
