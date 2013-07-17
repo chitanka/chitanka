@@ -24,7 +24,7 @@ class BookRevision extends Entity
 
 	/**
 	 * @var integer
-	 * @ORM\ManyToOne(targetEntity="Book")
+	 * @ORM\ManyToOne(targetEntity="Book", inversedBy="revisions")
 	 */
 	private $book;
 
