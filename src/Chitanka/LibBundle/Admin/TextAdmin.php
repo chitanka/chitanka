@@ -7,8 +7,10 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 use Chitanka\LibBundle\Util\Language;
 use Chitanka\LibBundle\Legacy\Legacy;
+use Chitanka\LibBundle\Entity\Text;
 use Chitanka\LibBundle\Entity\TextRevision;
 
 class TextAdmin extends Admin
@@ -150,10 +152,19 @@ class TextAdmin extends Admin
 				->add('removed_notice')
 			->end()
 			->setHelps(array(
-				'sernr2' => $this->trans('help.text.sernr2')
+				'sernr2' => $this->trans('help.text.sernr2'),
 			))
 		;
-		$formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_BIND, array($this, 'fixNewLines'));
+		$builder = $formMapper->getFormBuilder();
+		$builder->addEventListener(FormEvents::PRE_BIND, array($this, 'fixNewLines'));
+		$builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($formMapper) {
+			$text = $event->getData();
+			if ($text instanceof Text) {
+				$formMapper->setHelps(array(
+					'content_file' => sprintf('(<a href="/%s">настоящ файл</a>)', Legacy::getContentFilePath('text', $text->getId())),
+				));
+			}
+		});
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid)
