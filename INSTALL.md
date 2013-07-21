@@ -21,7 +21,7 @@
 
 Ако разполагате с git, може да изтеглите софтуера чрез клониране:
 
-	git clone git://gitorious.org/chitanka/chitanka.git
+	git clone git://gitorious.org/chitanka/chitanka-production.git
 
 Ще получите нова директория chitanka. По-нататък ще я наричам `/PATH/TO/chitanka`.
 
