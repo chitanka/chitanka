@@ -24,8 +24,8 @@ parameters:
     assets_base_urls: ~
     style_url:  /bundles/lib/css/FILE.css
 
-    use_http_cache: true
-    allow_removed_notice: true
+    use_http_cache: false
+    allow_removed_notice: false
 
     # Следните променливи се ползват при пращането на електронна поща
     admin:              Администратор
