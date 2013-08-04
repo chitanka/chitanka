@@ -182,7 +182,7 @@ book_random:
 book_show:
     pattern:        /book/{id}.{_format}
     defaults:       { _controller: LibBundle:Book:show, _format: html }
-    requirements:   { _method: get, _format: html|sfb|sfb\.zip|fb2|fb2\.zip|txt|txt\.zip|epub|djvu|clue|opds|pic }
+    requirements:   { _method: get, _format: html|sfb|sfb\.zip|fb2|fb2\.zip|txt|txt\.zip|epub|djvu|clue|opds|pic|data }
 
 book_comments:
     pattern:        /book/{id}/comments.{_format}
@@ -320,7 +320,7 @@ text_bookmark:
 text_show:
     pattern:        /text/{id}.{_format}
     defaults:       { _controller: LibBundle:Text:show, slug: test, _format: html }
-    requirements:   { _method: get, _format: html|sfb|fb2|sfb\.zip|fb2\.zip|txt|txt\.zip|epub|clue|opds }
+    requirements:   { _method: get, _format: html|sfb|fb2|sfb\.zip|fb2\.zip|txt|txt\.zip|epub|clue|opds|data }
 
 text_show_part:
     pattern:        /text/{id}/{part}

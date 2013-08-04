@@ -399,10 +399,18 @@ class Text extends BaseWork
 	public function setOrigLicense($origLicense) { $this->orig_license = $origLicense; }
 	public function getOrigLicense() { return $this->orig_license; }
 	public function orig_license() { return $this->orig_license; }
+	public function getOrigLicenseCode()
+	{
+		return $this->orig_license ? $this->orig_license->getCode() : null;
+	}
 
 	public function setTransLicense($transLicense) { $this->trans_license = $transLicense; }
 	public function getTransLicense() { return $this->trans_license; }
 	public function trans_license() { return $this->trans_license; }
+	public function getTransLicenseCode()
+	{
+		return $this->trans_license ? $this->trans_license->getCode() : null;
+	}
 
 	public function setType($type) { $this->type = $type; }
 	public function getType() { return $this->type; }
@@ -415,6 +423,10 @@ class Text extends BaseWork
 
 	public function setSeries($series) { $this->series = $series; }
 	public function getSeries() { return $this->series; }
+	public function getSeriesSlug()
+	{
+		return $this->series ? $this->series->getSlug() : null;
+	}
 
 	public function setSernr($sernr) { $this->sernr = $sernr; }
 	public function getSernr() { return $this->sernr; }
@@ -603,6 +615,28 @@ class Text extends BaseWork
 		}
 
 		return $this->authorOrigNames;
+	}
+
+	public function getAuthorSlugs()
+	{
+		if ( ! isset($this->authorSlugs)) {
+			$this->authorSlugs = array();
+			foreach ($this->getAuthors() as $author) {
+				$this->authorSlugs[] = $author->getSlug();
+			}
+		}
+		return $this->authorSlugs;
+	}
+
+	public function getTranslatorSlugs()
+	{
+		if ( ! isset($this->translatorSlugs)) {
+			$this->translatorSlugs = array();
+			foreach ($this->getTranslators() as $translator) {
+				$this->translatorSlugs[] = $translator->getSlug();
+			}
+		}
+		return $this->translatorSlugs;
 	}
 
 	public function getTitleAsSfb() {
@@ -966,6 +1000,46 @@ EOS;
 EOS;
 	}
 
+	public function getDataAsPlain()
+	{
+		$authors = implode($this->getAuthorSlugs());
+		$translators = implode($this->getTranslatorSlugs());
+		$labels = implode($this->getLabelSlugs());
+
+		$contributors = array();
+		foreach ($this->getUserContribs() as $userContrib/*@var $userContrib UserTextContrib*/) {
+			$contributors[] = implode(',', array(
+				$userContrib->getUsername(),
+				$userContrib->getPercent(),
+				'"'.$userContrib->getComment().'"',
+				$userContrib->getHumandate(),
+			));
+		}
+		$contributors = implode(';', $contributors);
+
+		return <<<EOS
+title         = {$this->getTitle()}
+subtitle      = {$this->getSubtitle()}
+authors       = $authors
+slug          = {$this->getSlug()}
+type          = {$this->getType()}
+lang          = {$this->getLang()}
+year          = {$this->getYear()}
+orig_license  = {$this->getOrigLicenseCode()}
+orig_title    = {$this->getOrigTitle()}
+orig_subtitle = {$this->getOrigsubtitle()}
+orig_lang     = {$this->getOrigLang()}
+translators   = $translators
+trans_license = {$this->getTransLicenseCode()}
+series        = {$this->getSeriesSlug()}
+ser_nr        = {$this->getSernr()}
+source        = {$this->getSource()}
+labels        = $labels
+toc_level     = {$this->getHeadlevel()}
+users         = $contributors
+id            = {$this->getId()}
+EOS;
+	}
 
 	public function getNameForFile()
 	{
@@ -1339,6 +1413,15 @@ EOS;
 			$names[] = $label->getName();
 		}
 		return $names;
+	}
+
+	public function getLabelSlugs()
+	{
+		$slugs = array();
+		foreach ($this->getLabels() as $label) {
+			$slugs[] = $label->getSlug();
+		}
+		return $slugs;
 	}
 
 	static public function newFromId($id, $reader = 0) {

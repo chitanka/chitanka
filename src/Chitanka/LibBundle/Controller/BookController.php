@@ -125,6 +125,8 @@ class BookController extends Controller
 			case 'sfb':
 				Setup::doSetup($this->container);
 				return $this->displayText($book->getContentAsSfb(), array('Content-Type' => 'text/plain'));
+			case 'data':
+				return $this->displayText($book->getDataAsPlain(), array('Content-Type' => 'text/plain'));
 			case 'opds':
 				break;
 			case 'pic':

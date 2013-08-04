@@ -150,6 +150,8 @@ class TextController extends Controller
 				return $this->displayText($text->getContentAsSfb(), array('Content-Type' => 'text/plain'));
 			case 'fbi':
 				return $this->displayText($text->getFbi(), array('Content-Type' => 'text/plain'));
+			case 'data':
+				return $this->displayText($text->getDataAsPlain(), array('Content-Type' => 'text/plain'));
 // 			case 'clue':
 // 				return $this->displayText($text->getClue());
 			case 'txt.zip':

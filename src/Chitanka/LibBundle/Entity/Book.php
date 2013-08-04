@@ -347,12 +347,20 @@ class Book extends BaseWork
 
 	public function setSequence($sequence) { $this->sequence = $sequence; }
 	public function getSequence() { return $this->sequence; }
+	public function getSequenceSlug()
+	{
+		return $this->sequence ? $this->sequence->getSlug() : null;
+	}
 
 	public function setSeqnr($seqnr) { $this->seqnr = $seqnr; }
 	public function getSeqnr() { return $this->seqnr; }
 
 	public function setCategory($category) { $this->category = $category; }
 	public function getCategory() { return $this->category; }
+	public function getCategorySlug()
+	{
+		return $this->category ? $this->category->getSlug() : null;
+	}
 
 	public function setCreatedAt($created_at) { $this->created_at = $created_at; }
 	public function getCreatedAt() { return $this->created_at; }
@@ -408,13 +416,22 @@ class Book extends BaseWork
 			foreach ($this->getTextsById() as $text) {
 				if ( self::isMainWorkType($text->getType()) ) {
 					foreach ($text->getAuthors() as $author) {
-						$this->mainAuthors[$author['id']] = $author;
+						$this->mainAuthors[$author->getId()] = $author;
 					}
 				}
 			}
 		}
 
 		return $this->mainAuthors;
+	}
+
+	public function getAuthorSlugs()
+	{
+		$slugs = array();
+		foreach ($this->getAuthors() as $author/*@var $author Person*/) {
+			$slugs[] = $author->getSlug();
+		}
+		return $slugs;
 	}
 
 	static public function isMainWorkType($type)
@@ -1005,6 +1022,29 @@ class Book extends BaseWork
 		}
 
 		return sprintf('Превод: %s', implode(', ', $info));
+	}
+
+
+	public function getDataAsPlain()
+	{
+		$authors = implode($this->getAuthorSlugs());
+
+		return <<<EOS
+title       = {$this->getTitle()}
+subtitle    = {$this->getSubtitle()}
+title_extra = {$this->getTitleExtra()}
+authors     = $authors
+slug        = {$this->getSlug()}
+lang        = {$this->getLang()}
+orig_title  = {$this->getOrigTitle()}
+orig_lang   = {$this->getOrigLang()}
+year        = {$this->getYear()}
+sequence    = {$this->getSequenceSlug()}
+seq_nr      = {$this->getSeqnr()}
+category    = {$this->getCategorySlug()}
+type        = {$this->getType()}
+id          = {$this->getId()}
+EOS;
 	}
 
 
