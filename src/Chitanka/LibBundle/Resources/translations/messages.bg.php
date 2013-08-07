@@ -328,6 +328,7 @@ return array(
 		'rules' => 'Правила за използване на Моята библиотека',
 		'blacklist' => 'Черен списък',
 		'links' => 'Връзки',
+		'torrents' => 'Торенти',
 	),
 
 	'workroom.status' => array(

@@ -346,6 +346,10 @@ blacklist:
 links:
     pattern:   /links
     defaults: { _controller: LibBundle:Wiki:index, page: links }
+torrents:
+    pattern:   /torrents
+    defaults: { _controller: LibBundle:Wiki:index, page: torrents }
+
 
 search:
     pattern:      /search.{_format}
@@ -368,10 +372,6 @@ statistics:
     pattern:   /statistics
     defaults: { _controller: LibBundle:Statistics:index }
 
-
-torrents:
-    pattern:   /torrents
-    defaults: { _controller: LibBundle:Torrent:index }
 
 wanted:
     pattern:   /wanted
