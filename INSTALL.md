@@ -91,13 +91,18 @@ _Тази стъпка се отнася за торента с динамичн
 
 Ако решите да ползвате друга конфигурация, напр. root с парола или пък съвсем друг потребител, просто въведете вашите данни във файла app/config/parameters.yml.
 
-(TODO) _Да се направи възможност за изтегляне на базата и без торент._
+Ето [актуална версия на базата от данни на Моята библиотека](http://download.chitanka.info/chitanka.sql.gz).
 
 
 5. Настройка на сървъра
 =======================
 
-Сега остава да се настрои нов виртуален хост при апача (Apache 2). Добавете това в конфигурацията му:
+Ето примерни конфигурации за Apache 2 и nginx:
+
+5.1. Apache 2
+-------------
+
+Настройте нов виртуален хост при апача (Apache 2), като добавите това в конфигурацията му:
 
 	<VirtualHost *:80>
 		DocumentRoot /PATH/TO/chitanka/web
@@ -107,17 +112,46 @@ _Тази стъпка се отнася за торента с динамичн
 			Allow from All
 		</Directory>
 		LogLevel warn
-		ErrorLog /PATH/TO/LOG/chitanka.local.error.log
-		CustomLog /PATH/TO/LOG/chitanka.local.access.log common
+		CustomLog /PATH/TO/LOG/chitanka.access.log common
+		ErrorLog /PATH/TO/LOG/chitanka.error.log
 	</VirtualHost>
 
 На мястото на /PATH/TO запишете съответните директории.
+
+5.2. nginx
+----------
+
+	server {
+		listen 80;
+
+		server_name chitanka.local;
+		root /PATH/TO/chitanka/web;
+
+		access_log /PATH/TO/LOG/chitanka.access.log;
+		error_log /PATH/TO/LOG/chitanka.error.log;
+
+		location / {
+			index index.php;
+			try_files $uri $uri/ /index.php$is_args$args;
+		}
+
+		location ~ ^/index\.php(/|$) {
+			fastcgi_pass 127.0.0.1:9000;
+			# or thru a unix socket
+			#fastcgi_pass unix:/var/run/php5-fpm.sock;
+			fastcgi_split_path_info ^(.+\.php)(/.*)$;
+			include fastcgi_params;
+		}
+	}
+
+5.3. Настройка на домейна
+-------------------------
 
 После в [/etc/hosts](http://en.wikipedia.org/wiki/Hosts_%28file%29#Location_in_the_file_system) добавете следното:
 
 	127.0.0.1	chitanka.local
 
-Така домейна `chitanka.local` ще се разпознава от системата ви.
+Така домейнът `chitanka.local` ще се разпознава от системата ви.
 
 Ако изберете да ползвате домейн, различен от `chitanka.local`, трябва да промените стандартната конфигурация на библиотеката. Отворете файла `app/config/parameters.yml` и заменете всички срещания на `chitanka.local` с името на избрания от вас домейн.
 
