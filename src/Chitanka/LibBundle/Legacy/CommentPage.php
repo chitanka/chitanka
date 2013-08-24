@@ -367,6 +367,7 @@ EOS;
 				'total' => $this->db->getCount(DBT_COMMENT . ' c', $this->wheres[$this->showMode]),
 			)),
 			'route' => 'texts_comments',
+			'current_route' => 'texts_comments',
 			'route_params' => array(),
 		);
 		if ( ! empty($this->username)) {
