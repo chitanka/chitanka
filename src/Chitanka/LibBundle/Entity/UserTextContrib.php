@@ -7,8 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
 * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\UserTextContribRepository")
 * @ORM\Table(name="user_text_contrib",
-*	uniqueConstraints={
-*		@ORM\UniqueConstraint(name="user_text_date_uniq", columns={"username", "text_id", "date"})},
 *	indexes={
 *		@ORM\Index(name="date_idx", columns={"date"})}
 * )
