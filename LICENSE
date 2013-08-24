@@ -1,10 +1,6 @@
-= Chitanka =
+This is the MIT License: http://opensource.org/licenses/MIT
 
-GNU Affero
-
-= Symfony2 =
-
-Copyright (c) 2004-2011 Fabien Potencier
+Copyright (c) 2013 Authors of Chitanka
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,3 +19,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
