@@ -18,11 +18,12 @@ framework:
         assets_base_urls: %assets_base_urls%
         #assets_version: SomeVersionScheme
     default_locale:  %locale%
-    trust_proxy_headers: false # Should Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
     trusted_proxies: ~
     session:
-        lifetime:  3600
+#        lifetime:  3600
         name:      CHITANKASESSID
+    fragments:       ~
+    http_method_override: true
 
 services:
     twig.extension.chitanka:
@@ -132,7 +133,6 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
     spool:
-        #type: memory
         type: file
         path: "%kernel.root_dir%/spool"
 
@@ -154,6 +154,9 @@ sonata_admin:
         show:    SonataAdminBundle:CRUD:show.html.twig
         #edit:    SonataAdminBundle:CRUD:edit.html.twig
         edit:    LibBundle:Admin:edit.html.twig
+        history: SonataAdminBundle:CRUD:history.html.twig
+        preview: SonataAdminBundle:CRUD:preview.html.twig
+        delete:  SonataAdminBundle:CRUD:delete.html.twig
     dashboard:
         blocks:
             # display a dashboard block
