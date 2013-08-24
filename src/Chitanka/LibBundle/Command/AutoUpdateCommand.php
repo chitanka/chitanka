@@ -135,14 +135,17 @@ EOT
 
 	private function clearAppCache($cacheDir)
 	{
+		$cacheDirOld = $cacheDir.'_old_'.time();
+		$fs = new \Symfony\Component\Filesystem\Filesystem;
 		try {
-			$this->runCommand('cache:clear');
+			$fs->rename($cacheDir, $cacheDirOld);
+			$fs->mkdir($cacheDir);
+			$this->runCommand('cache:warmup');
 			$this->runCommand('cache:create-cache-class');
+			$fs->remove($cacheDirOld);
 		} catch (IOException $e) {
 			error_log("Auto-update: ".$e->getMessage());
 		}
-		// make sure cache dir is world-writable (the 0000 umask is sometimes not enough)
-		chmod($cacheDir, 0777);
 	}
 
 	private function runCommand($commandName)
