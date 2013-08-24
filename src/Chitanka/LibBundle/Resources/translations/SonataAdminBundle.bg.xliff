@@ -342,6 +342,34 @@
                 <source>label_per_page</source>
                 <target>На страница</target>
             </trans-unit>
+            <trans-unit id="list_select">
+              <source>list_select</source>
+              <target>Избор</target>
+            </trans-unit>
+            <trans-unit id="confirm_exit">
+                <source>confirm_exit</source>
+                <target>Имате незаписани промени.</target>
+            </trans-unit>
+            <trans-unit id="link_edit_acl">
+              <source>link_edit_acl</source>
+              <target>Редактиране на ACL</target>
+            </trans-unit>
+            <trans-unit id="btn_update_acl">
+              <source>btn_update_acl</source>
+              <target>Запис на ACL</target>
+            </trans-unit>
+            <trans-unit id="flash_acl_update_success">
+                <source>flash_acl_edit_success</source>
+                <target>Списъкът за контрол на достъпа (ACL) беше обновен.</target>
+            </trans-unit>
+            <trans-unit id="link_action_acl">
+                <source>link_action_acl</source>
+                <target>ACL (списък за контрол на достъпа)</target>
+            </trans-unit>
+            <trans-unit id="short_object_description_placeholder">
+              <source>short_object_description_placeholder</source>
+              <target>Нищо не е избрано</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
