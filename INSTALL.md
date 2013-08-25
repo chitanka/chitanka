@@ -77,13 +77,13 @@ app/cache, app/logs, web/cache
 
 След това създайте нова база от данни с име chitanka. Например така:
 
-	mysql -uroot -e "CREATE DATABASE chitanka"
+	mysql -u root -e "CREATE DATABASE chitanka"
 
-Ако root има парола, ползвайте `mysql -uroot -p`.
+Ако root има парола, ползвайте `mysql -u root -p`.
 
-После вмъкнете съдържанието на файла db.sql в новата база:
+После вмъкнете съдържанието на файла `chitanka.sql.gz` в новата база:
 
-	gunzip -c chitanka.sql.gz | mysql -uroot chitanka
+	gunzip -c chitanka.sql.gz | mysql -u root chitanka
 
 При желание може да създадете специален потребител с достъп само да тази база от данни.
 
@@ -96,13 +96,13 @@ app/cache, app/logs, web/cache
 
 Това ще рече, че базата от данни се намира на локалния компютър и се нарича chitanka. За достъп до нея ще се ползва потребителят root, който няма парола.
 
-Ако решите да ползвате друга конфигурация, напр. root с парола или пък съвсем друг потребител, просто въведете вашите данни във файла `app/config/parameters.yml`.
+Ако решите да ползвате друга конфигурация, напр. root с парола или пък съвсем друг потребител, просто въведете нужните данни във файла `app/config/parameters.yml`.
 
 
 5. Настройка на сървъра
 =======================
 
-Ето примерни конфигурации за Apache 2 и nginx. На мястото на /PATH/TO запишете съответните директории.
+Ето примерни конфигурации за Apache 2 и nginx. На мястото на /PATH/TO запишете съответните директории. За име на сървъра по-долу се ползва `chitanka.local`, но може да го смените с какъвто домейн пожелаете.
 
 5.1. Apache 2
 -------------
@@ -138,7 +138,7 @@ app/cache, app/logs, web/cache
 			try_files $uri $uri/ /index.php$is_args$args;
 		}
 
-		location ~ ^/index\.php(/|$) {
+		location ~ ^/(index|index_dev)\.php(/|$) {
 			fastcgi_pass 127.0.0.1:9000;
 			# or thru a unix socket
 			#fastcgi_pass unix:/var/run/php5-fpm.sock;
