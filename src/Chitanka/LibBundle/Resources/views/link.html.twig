@@ -42,6 +42,7 @@
 
 {% macro text(text, options) %}
 {% spaceless %}<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}" class="textlink" itemprop="name" data-edit="{{ path('admin_text_edit', {'id': text.id}) }}"
+	title="{{ text.note }}"
 {% if text.lang != text.orig_lang %}
 	{#% if text.translators is defined %}
 		title="Превод: {{ _self.translators_plain(text.translators) }} {{ text.trans_year is defined ? '(' ~ text.trans_year ~ ')' : '' }}"

@@ -235,6 +235,12 @@ class Text extends BaseWork
 	private $is_compilation = false;
 
 	/**
+	 * An extra note about the text
+	 * @ORM\Column(type="string", length=100, nullable=true)
+	 */
+	private $note;
+
+	/**
 	 * A notice if the content is removed
 	 * @ORM\Column(type="text", nullable=true)
 	 */
@@ -464,6 +470,9 @@ class Text extends BaseWork
 // 	public function getHasTitleNote() { return $this->has_title_note; }
 
 	public function isCompilation() { return $this->is_compilation; }
+
+	public function setNote($note) { $this->note = $note; }
+	public function getNote() { return $this->note; }
 
 	public function setRemovedNotice($removed_notice) { $this->removed_notice = $removed_notice; }
 	public function getRemovedNotice() { return $this->removed_notice; }

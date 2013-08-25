@@ -121,6 +121,7 @@ class TextAdmin extends Admin
 				->add('series', 'sonata_type_model_list', array('required' => false))
 				->add('sernr', null, array('required' => false))
 				->add('sernr2', null, array('required' => false))
+				->add('note')
 			->end()
 			->with('Textual content')
 				->add('annotation', 'textarea', array(
