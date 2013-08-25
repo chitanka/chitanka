@@ -10,7 +10,7 @@ class Feedback
 	public $referer;
 
 	/**
-	 * @Assert\MinLength(3)
+	 * @Assert\Length(min=3)
 	 */
 	public $name;
 
@@ -24,8 +24,8 @@ class Feedback
 
 	/**
 	 * @Assert\NotBlank()
-     * @Assert\MinLength(80)
-     * @MyAssert\NotSpam()
+	 * @Assert\Length(min=80)
+	 * @MyAssert\NotSpam()
 	 */
 	public $comment;
 
