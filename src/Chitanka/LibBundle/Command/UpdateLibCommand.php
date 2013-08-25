@@ -418,10 +418,11 @@ EOT
 				'has_anno' => 0,
 				'has_cover' => 0,
 				'is_compilation' => isset($work['tmpl']),
-
-				'sernr' => (isset($work['ser_nr']) ? $work['ser_nr'] : 0),
 				'orig_title' => (empty($work['orig_title']) ? '' : self::fixOrigTitle($work['orig_title'])),
 			);
+			if (isset($work['ser_nr'])) {
+				$set['sernr'] = $work['ser_nr'];
+			}
 		}
 		if (isset($work['subtitle'])) $set['subtitle'] = String::my_replace($work['subtitle']);
 		if (isset($work['orig_subtitle'])) $set['orig_subtitle'] = self::fixOrigTitle($work['orig_subtitle']);
