@@ -132,7 +132,7 @@ register_shutdown_function(function(){
 	$error = error_get_last();
 	if ($error['type'] == E_ERROR) {
 		if (preg_match('/parameters\.yml.+does not exist/', $error['message'])) {
-			header('Location: /install.php');
+			header('Location: install.php');
 			exit;
 		}
 		ob_clean();
