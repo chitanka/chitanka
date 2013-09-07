@@ -18,6 +18,8 @@ Some more text
 < script >
 	alert('Boo!')
 < / script >
+
+<scr<script>Evil</script>ipt>alert("Hey!");</script>
 HTML;
 		$cleanedHtml = $service->removeScriptContent($html);
 		$this->assertNotContains('script', $cleanedHtml, 'Script tags should be removed');
