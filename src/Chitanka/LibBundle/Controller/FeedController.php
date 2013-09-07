@@ -2,6 +2,7 @@
 
 namespace Chitanka\LibBundle\Controller;
 
+use Chitanka\LibBundle\Service\FeedService;
 use Chitanka\LibBundle\Legacy\Legacy;
 
 class FeedController extends Controller
@@ -20,6 +21,8 @@ class FeedController extends Controller
 		}
 
 		$content = $this->limitArticles($content, $limit);
+		$feedService = new FeedService();
+		$content = $feedService->cleanup($content);
 
 		return $this->displayText($content);
 	}
