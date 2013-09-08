@@ -41,7 +41,15 @@ EOT
 		if ( ! file_exists($messageFile)) {
 			throw new \Exception("Message file '$messageFile' does not exist.");
 		}
-		chdir($contentDir);
+		$finder = new \Symfony\Component\Finder\Finder;
+		foreach ($finder->directories()->in($contentDir)->depth(0) as $directory) {
+			$this->gitCommitAndPush($directory, $messageFile);
+		}
+	}
+
+	private function gitCommitAndPush($directory, $messageFile)
+	{
+		chdir($directory);
 		$this->output->writeln('Pulling eventual changes');
 		shell_exec('git pull');
 		$this->output->writeln('Staging current changes');
