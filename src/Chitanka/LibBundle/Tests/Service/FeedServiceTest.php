@@ -11,9 +11,9 @@ class FeedServiceTest extends TestCase
 		$service = new FeedService;
 		$html = <<<HTML
 Some text
-<script src="http://example.com"></script>
+<script src="http://example"></script>
 More text
-<script src="http://example.com"><!-- dummy --></script>
+<script src="http://example"><!-- dummy --></script>
 Some more text
 < script >
 	alert('Boo!')
@@ -30,7 +30,7 @@ HTML;
 	public function testRemoveImageBeacons()
 	{
 		$service = new FeedService;
-		$html = 'Some text <img alt="" border="0" height="1" src="http://beacon.com" width="1">';
+		$html = 'Some text <img alt="" border="0" height="1" src="http://beacon" width="1">';
 		$cleanedHtml = $service->removeImageBeacons($html);
 		$this->assertNotContains('<img', $cleanedHtml);
 	}
@@ -39,11 +39,11 @@ HTML;
 	{
 		$service = new FeedService;
 		$html = <<<HTML
-<img src="http://example.com/normalimage" width="100">
-Some text <img alt="" border="0" height="1" src="http://beacon.com" width="1">
+<img src="http://example/normalimage" width="100">
+Some text <img alt="" border="0" height="1" src="http://beacon" width="1">
 HTML;
 		$cleanedHtml = $service->removeImageBeacons($html);
-		$this->assertNotContains('beacon.com', $cleanedHtml);
+		$this->assertNotContains('beacon', $cleanedHtml);
 		$this->assertContains('normalimage', $cleanedHtml);
 	}
 
