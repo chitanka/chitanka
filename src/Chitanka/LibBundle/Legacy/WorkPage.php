@@ -154,7 +154,7 @@ class WorkPage extends Page {
 	protected function updateMainUserData() {
 		$key = array('id' => $this->entryId);
 		if ($this->delete && $this->userIsAdmin()) {
-			$this->db->update(self::DB_TABLE, array('deleted_at' => new \DateTime), $key);
+			$this->db->update(self::DB_TABLE, array('deleted_at' => new \DateTime, 'is_frozen' => 0), $key);
 			if ( $this->isMultiUser($this->workType) ) {
 				$this->db->update(self::DB_TABLE2, array('deleted_at' => new \DateTime), array('entry_id'=>$this->entryId));
 			}
