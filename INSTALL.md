@@ -139,7 +139,6 @@ app/cache, app/logs, web/cache
 		}
 
 		location ~ /(index|index_dev)\.php($|/) {
-		location ~ ^/(index|index_dev)\.php(/|$) {
 			fastcgi_pass 127.0.0.1:9000;
 			# or thru a unix socket
 			#fastcgi_pass unix:/var/run/php5-fpm.sock;
