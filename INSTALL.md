@@ -138,6 +138,7 @@ app/cache, app/logs, web/cache
 			try_files $uri $uri/ /index.php$is_args$args;
 		}
 
+		location ~ /(index|index_dev)\.php($|/) {
 		location ~ ^/(index|index_dev)\.php(/|$) {
 			fastcgi_pass 127.0.0.1:9000;
 			# or thru a unix socket
@@ -145,6 +146,27 @@ app/cache, app/logs, web/cache
 			fastcgi_split_path_info ^(.+\.php)(/.*)$;
 			include fastcgi_params;
 		}
+
+		location /bundles/lib {
+			if (-f $request_filename) {
+				break;
+			}
+			if (-f $document_root/cache$request_uri) {
+				rewrite . /cache$request_uri break;
+			}
+			rewrite ^/(bundles/lib/(css|js))/(.+) /$1/index.php?$1/$3 last;
+		}
+
+		location /thumb {
+			if (-f $request_filename) {
+				break;
+			}
+			if (-f $document_root/cache$request_uri) {
+				rewrite . /cache$request_uri break;
+			}
+			rewrite ^/thumb/(.+) /thumb/index.php?$1 last;
+		}
+
 	}
 
 5.3. Настройка на домейна
