@@ -148,22 +148,15 @@ app/cache, app/logs, web/cache
 		}
 
 		location /bundles/lib {
-			if (-f $request_filename) {
-				break;
-			}
-			if (-f $document_root/cache$request_uri) {
-				rewrite . /cache$request_uri break;
-			}
+			try_files /cache$request_uri @asset_generator;
+		}
+		location @asset_generator {
 			rewrite ^/(bundles/lib/(css|js))/(.+) /$1/index.php?$1/$3 last;
 		}
-
 		location /thumb {
-			if (-f $request_filename) {
-				break;
-			}
-			if (-f $document_root/cache$request_uri) {
-				rewrite . /cache$request_uri break;
-			}
+			try_files /cache$request_uri @thumb_generator;
+		}
+		location @thumb_generator {
 			rewrite ^/thumb/(.+) /thumb/index.php?$1 last;
 		}
 
