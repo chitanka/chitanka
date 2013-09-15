@@ -150,13 +150,13 @@ app/cache, app/logs, web/cache
 			try_files /cache$request_uri @asset_generator;
 		}
 		location @asset_generator {
-			rewrite ^/(bundles/lib/(css|js))/(.+) /$1/index.php?$1/$3 last;
+			rewrite ^/(bundles/lib/(css|js))/(.+) /$1/index.php?$1/$3;
 		}
 		location /thumb {
 			try_files /cache$request_uri @thumb_generator;
 		}
 		location @thumb_generator {
-			rewrite ^/thumb/(.+) /thumb/index.php?$1 last;
+			rewrite ^/thumb/(.+) /thumb/index.php?$1;
 		}
 
 	}
