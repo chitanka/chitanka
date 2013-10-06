@@ -368,6 +368,7 @@ EOT
 			'book_revision',
 			'text_translator',
 			'text_author',
+			'book_author',
 			'book_text',
 			'series_author',
 		);
