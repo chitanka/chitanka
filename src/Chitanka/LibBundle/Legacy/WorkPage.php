@@ -188,7 +188,7 @@ class WorkPage extends Page {
 		}
 
 		if ( $this->entryId == 0 ) {
-			$id = $this->db->autoincrementId(self::DB_TABLE);
+			$id = $this->controller->getRepository('NextId')->findNextId('LibBundle:WorkEntry')->getValue();
 			$this->uplfile = preg_replace('/^0-/', "$id-", $this->uplfile);
 		} else {
 			$id = $this->entryId;
