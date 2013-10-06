@@ -284,6 +284,7 @@ class WorkPage extends Page {
 			$this->db->update(self::DB_TABLE2, $set, $key);
 			$msg = 'Данните бяха обновени.';
 		} else {
+			$set['id'] = $this->controller->getRepository('NextId')->findNextId('LibBundle:WorkContrib')->getValue();
 			$this->db->insert(self::DB_TABLE2, $set);
 			$msg = 'Току-що се включихте в подготовката на произведението.';
 			$this->informScanUser($this->entryId);
