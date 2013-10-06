@@ -22,6 +22,7 @@ framework:
     session:
 #        lifetime:  3600
         name:      CHITANKASESSID
+        save_path: null
     fragments:       ~
     http_method_override: true
 
