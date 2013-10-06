@@ -152,18 +152,6 @@ class WorkPage extends Page {
 
 
 	protected function updateMainUserData() {
-		$key = array('id' => $this->entryId);
-		if ($this->delete && $this->userIsAdmin()) {
-			$this->db->update(self::DB_TABLE, array('deleted_at' => new \DateTime, 'is_frozen' => 0), $key);
-			if ( $this->isMultiUser($this->workType) ) {
-				$this->db->update(self::DB_TABLE2, array('deleted_at' => new \DateTime), array('entry_id'=>$this->entryId));
-			}
-			$this->addMessage("Произведението „{$this->btitle}“ беше махнато от списъка.");
-			$this->deleteEntryFiles($this->entryId);
-			$this->scanuser_view = null;
-
-			return $this->makeLists();
-		}
 		if ( empty($this->btitle) ) {
 			$this->addMessage('Не сте посочили заглавие на произведението.', true);
 
@@ -225,6 +213,21 @@ class WorkPage extends Page {
 				'admin_comment' => $this->request->value('admin_comment'),
 			);
 		}
+
+		$key = array('id' => $this->entryId);
+		if ($this->delete && $this->userIsAdmin()) {
+			$set += array('deleted_at' => new \DateTime, 'is_frozen' => 0);
+			$this->db->update(self::DB_TABLE, $set, $key);
+			if ( $this->isMultiUser($this->workType) ) {
+				$this->db->update(self::DB_TABLE2, array('deleted_at' => new \DateTime), array('entry_id' => $this->entryId));
+			}
+			$this->addMessage("Произведението „{$this->btitle}“ беше махнато от списъка.");
+			$this->deleteEntryFiles($this->entryId);
+			$this->scanuser_view = null;
+
+			return $this->makeLists();
+		}
+
 		if ( $this->handleUpload() && !empty($this->uplfile) ) {
 			$set['uplfile'] = $this->uplfile;
 			//if ( $this->isMultiUser() ) {
