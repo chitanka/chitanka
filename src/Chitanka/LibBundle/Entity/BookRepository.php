@@ -79,7 +79,7 @@ class BookRepository extends EntityRepository
 
 	public function getByIds($ids, $orderBy = null)
 	{
-		return $this->joinPersonKeysForBooks(parent::getByIds($ids, $orderBy));
+		return static::joinPersonKeysForBooks(parent::getByIds($ids, $orderBy));
 	}
 
 	public function countByPrefix($prefix)
@@ -101,7 +101,7 @@ class BookRepository extends EntityRepository
 		if ($limit) {
 			$q->setMaxResults($limit);
 		}
-		return $q->getArrayResult();
+		return static::joinPersonKeysForBooks($q->getArrayResult());
 	}
 
 
@@ -111,7 +111,7 @@ class BookRepository extends EntityRepository
 			->andWhere('ap.id = ?1')->setParameter(1, $author->getId())
 			->getQuery()
 			->getArrayResult();
-		return $this->joinPersonKeysForBooks($books);
+		return static::joinPersonKeysForBooks($books);
 	}
 
 	public function getQueryBuilder($orderBys = null)
@@ -129,7 +129,7 @@ class BookRepository extends EntityRepository
 		return $qb;
 	}
 
-	private function joinPersonKeysForBooks($books)
+	public static function joinPersonKeysForBooks($books)
 	{
 		foreach ($books as $k => $book) {
 			if (isset($book['bookAuthors'])) {

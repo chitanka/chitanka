@@ -238,7 +238,7 @@ class TextRepository extends EntityRepository
 		if ($limit) {
 			$q->setMaxResults($limit);
 		}
-		return $q->getArrayResult();
+		return static::joinPersonKeysForTexts($q->getArrayResult());
 	}
 
 
