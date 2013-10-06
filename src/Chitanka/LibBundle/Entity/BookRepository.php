@@ -13,15 +13,17 @@ class BookRepository extends EntityRepository
 	public function get($id)
 	{
 		return $this->_em->createQueryBuilder()
-			->select('b', 'a', 's', 'c', 'l', 'ls', 't', 'ta')
+			->select('b', 'a', 'ap', 's', 'c', 'l', 'ls', 't', 'ta', 'tap')
 			->from($this->getEntityName(), 'b')
-			->leftJoin('b.authors', 'a')
+			->leftJoin('b.bookAuthors', 'a')
+			->leftJoin('a.person', 'ap')
 			->leftJoin('b.sequence', 's')
 			->leftJoin('b.category', 'c')
 			->leftJoin('b.links', 'l')
 			->leftJoin('l.site', 'ls')
 			->leftJoin('b.texts', 't')
-			->leftJoin('t.authors', 'ta')
+			->leftJoin('t.textAuthors', 'ta')
+			->leftJoin('ta.person', 'tap')
 			->where('b.id = ?1')->setParameter(1, $id)
 			->getQuery()->getSingleResult();
 	}
@@ -75,6 +77,10 @@ class BookRepository extends EntityRepository
 		return $query->getResult('id');
 	}
 
+	public function getByIds($ids, $orderBy = null)
+	{
+		return $this->joinPersonKeysForBooks(parent::getByIds($ids, $orderBy));
+	}
 
 	public function countByPrefix($prefix)
 	{
@@ -101,10 +107,11 @@ class BookRepository extends EntityRepository
 
 	public function getByAuthor($author)
 	{
-		return $this->getQueryBuilder('s.name, e.seqnr, e.title')
-			->andWhere('a.id = ?1')->setParameter(1, $author->getId())
+		$books = $this->getQueryBuilder('s.name, e.seqnr, e.title')
+			->andWhere('ap.id = ?1')->setParameter(1, $author->getId())
 			->getQuery()
 			->getArrayResult();
+		return $this->joinPersonKeysForBooks($books);
 	}
 
 	public function getQueryBuilder($orderBys = null)
@@ -113,12 +120,29 @@ class BookRepository extends EntityRepository
 			$orderBys = 'e.title';
 		}
 		$qb = parent::getQueryBuilder($orderBys)
-			->addSelect('a', 's', 'c')
-			->leftJoin('e.authors', 'a')
+			->addSelect('a', 'ap', 's', 'c')
+			->leftJoin('e.bookAuthors', 'a')
+			->leftJoin('a.person', 'ap')
 			->leftJoin('e.sequence', 's')
 			->leftJoin('e.category', 'c');
 
 		return $qb;
+	}
+
+	private function joinPersonKeysForBooks($books)
+	{
+		foreach ($books as $k => $book) {
+			if (isset($book['bookAuthors'])) {
+				$authors = array();
+				foreach ($book['bookAuthors'] as $bookAuthor) {
+					if ($bookAuthor['pos'] >= 0) {
+						$authors[] = $bookAuthor['person'];
+					}
+				}
+				$books[$k]['authors'] = $authors;
+			}
+		}
+		return $books;
 	}
 
 }

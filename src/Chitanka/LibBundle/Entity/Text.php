@@ -250,16 +250,18 @@ class Text extends BaseWork
 	/**
 	 * @var ArrayCollection
 	 * @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
+	 * @ORM\OrderBy({"pos" = "ASC"})
 	 */
 	private $textAuthors;
 
 	/**
 	 * @var ArrayCollection
 	 * @ORM\OneToMany(targetEntity="TextTranslator", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
+	 * @ORM\OrderBy({"pos" = "ASC"})
 	 */
 	private $textTranslators;
 
-	/** FIXME doctrine:schema:create does not allow this relation
+	/*
 	 * @var ArrayCollection
 	 * @ORM\ManyToMany(targetEntity="Person", inversedBy="textsAsAuthor")
 	 * @ORM\JoinTable(name="text_author")
@@ -485,7 +487,19 @@ class Text extends BaseWork
 	}
 
 	public function addAuthor(Person $author) { $this->authors[] = $author; }
-	public function getAuthors() { return $this->authors; }
+
+	public function getAuthors()
+	{
+		if (!isset($this->authors)) {
+			$this->authors = array();
+			foreach ($this->getTextAuthors() as $author) {
+				if ($author->getPos() >= 0) {
+					$this->authors[] = $author->getPerson();
+				}
+			}
+		}
+		return $this->authors;
+	}
 
 	public function addTranslator(Person $translator) { $this->translators[] = $translator; }
 	public function getTranslators() { return $this->translators; }

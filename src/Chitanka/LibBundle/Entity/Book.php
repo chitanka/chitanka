@@ -155,7 +155,7 @@ class Book extends BaseWork
 	 */
 	private $removed_notice;
 
-	/** FIXME doctrine:schema:create does not allow this relation
+	/*
 	 * @ORM\ManyToMany(targetEntity="Person", inversedBy="books")
 	 * @ORM\JoinTable(name="book_author")
 	 */
@@ -164,6 +164,7 @@ class Book extends BaseWork
 	/**
 	 * @var ArrayCollection
 	 * @ORM\OneToMany(targetEntity="BookAuthor", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
+	 * @ORM\OrderBy({"pos" = "ASC"})
 	 */
 	private $bookAuthors;
 
@@ -259,7 +260,19 @@ class Book extends BaseWork
 	public function setRemovedNotice($removed_notice) { $this->removed_notice = $removed_notice; }
 	public function getRemovedNotice() { return $this->removed_notice; }
 
-	public function getAuthors() { return $this->authors; }
+	public function getAuthors()
+	{
+		if (!isset($this->authors)) {
+			$this->authors = array();
+			foreach ($this->getBookAuthors() as $author) {
+				if ($author->getPos() >= 0) {
+					$this->authors[] = $author->getPerson();
+				}
+			}
+		}
+		return $this->authors;
+	}
+
 	public function getAuthorsPlain($separator = ', ')
 	{
 		$authors = array();

@@ -174,7 +174,7 @@ class TextController extends Controller
 		return $this->showHtml($this->getTextRepository()->get($id), $part);
 	}
 
-	public function showHtml($text, $part)
+	public function showHtml(Text $text, $part)
 	{
 		$nextHeader = $text->getNextHeaderByNr($part);
 		$nextPart = $nextHeader ? $nextHeader->getNr() : 0;

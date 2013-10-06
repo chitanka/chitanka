@@ -56,10 +56,10 @@ class TextRepository extends EntityRepository
 	public function get($id)
 	{
 		return $this->_em->createQueryBuilder()
-			->select('t', 'a', 'tr', 's', 'l', 'b', 'ol', 'tl', 'r')
+			->select('t', 'ta', 'tt', 's', 'l', 'b', 'ol', 'tl', 'r')
 			->from($this->getEntityName(), 't')
-			->leftJoin('t.authors', 'a')
-			->leftJoin('t.translators', 'tr')
+			->leftJoin('t.textAuthors', 'ta')
+			->leftJoin('t.textTranslators', 'tt')
 			->leftJoin('t.series', 's')
 			->leftJoin('t.labels', 'l')
 			->leftJoin('t.books', 'b')
@@ -225,7 +225,7 @@ class TextRepository extends EntityRepository
 			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
 			->getQuery()->getArrayResult();
 
-		return $texts;
+		return $this->joinPersonKeysForTexts($texts);
 	}
 
 
@@ -245,11 +245,13 @@ class TextRepository extends EntityRepository
 	public function getQueryBuilder($orderBys = null)
 	{
 		return $this->_em->createQueryBuilder()
-			->select('e', 'a', 't', 's')
+			->select('e', 'a', 'ap', 't', 'tp', 's')
 			->from($this->getEntityName(), 'e')
 			->leftJoin('e.series', 's')
-			->leftJoin('e.authors', 'a')
-			->leftJoin('e.translators', 't')
+			->leftJoin('e.textAuthors', 'a')
+			->leftJoin('a.person', 'ap')
+			->leftJoin('e.textTranslators', 't')
+			->leftJoin('t.person', 'tp')
 			->orderBy('e.title');
 	}
 
@@ -257,9 +259,10 @@ class TextRepository extends EntityRepository
 	public function getBySeries($series)
 	{
 		$texts = $this->_em->createQueryBuilder()
-			->select('e', 'a', 'ol', 'tl')
+			->select('e', 'a', 'ap', 'ol', 'tl')
 			->from($this->getEntityName(), 'e')
-			->leftJoin('e.authors', 'a')
+			->leftJoin('e.textAuthors', 'a')
+			->leftJoin('a.person', 'ap')
 			->leftJoin('e.orig_license', 'ol')
 			->leftJoin('e.trans_license', 'tl')
 			->where('e.series = ?1')->setParameter(1, $series->getId())
@@ -320,5 +323,21 @@ class TextRepository extends EntityRepository
 		}
 
 		return $textsById;
+	}
+
+	private function joinPersonKeysForTexts($texts)
+	{
+		foreach ($texts as $k => $text) {
+			if (isset($text['textAuthors'])) {
+				$authors = array();
+				foreach ($text['textAuthors'] as $textAuthor) {
+					if ($textAuthor['pos'] >= 0) {
+						$authors[] = $textAuthor['person'];
+					}
+				}
+				$texts[$k]['authors'] = $authors;
+			}
+		}
+		return $texts;
 	}
 }

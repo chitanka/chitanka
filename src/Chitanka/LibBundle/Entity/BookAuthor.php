@@ -32,6 +32,12 @@ class BookAuthor extends Entity
 	 */
 	private $book;
 
+	/**
+	 * @var integer $pos
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
+	private $pos;
+
 	public function getId() { return $this->id; }
 
 	public function setPerson($person) { $this->person = $person; }
@@ -40,4 +46,6 @@ class BookAuthor extends Entity
 	public function setBook($book) { $this->book = $book; }
 	public function getBook() { return $this->book; }
 
+	public function setPos($pos) { $this->pos = $pos; }
+	public function getPos() { return $this->pos; }
 }
