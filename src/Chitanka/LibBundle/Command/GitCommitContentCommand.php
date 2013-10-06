@@ -69,6 +69,7 @@ EOT
 
 	private function createMessageFileContents($description, $fromTime)
 	{
+		$messageId = date('#Ymd.His');
 		$booksChanges = $this->getChangedBooksDescriptions($fromTime);
 		$booksMessage = '';
 		if (count($booksChanges) > 0) {
@@ -84,7 +85,7 @@ EOT
 		}
 
 		return <<<MSG
-$description
+$description [$messageId]
 
 $booksMessage
 
