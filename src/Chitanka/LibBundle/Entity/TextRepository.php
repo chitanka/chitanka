@@ -225,7 +225,7 @@ class TextRepository extends EntityRepository
 			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
 			->getQuery()->getArrayResult();
 
-		return $this->joinPersonKeysForTexts($texts);
+		return static::joinPersonKeysForTexts($texts);
 	}
 
 
@@ -325,7 +325,7 @@ class TextRepository extends EntityRepository
 		return $textsById;
 	}
 
-	private function joinPersonKeysForTexts($texts)
+	public static function joinPersonKeysForTexts($texts)
 	{
 		foreach ($texts as $k => $text) {
 			if (isset($text['textAuthors'])) {

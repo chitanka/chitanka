@@ -24,20 +24,28 @@ class TextCommentRepository extends EntityRepository
 
 	public function getByText($text)
 	{
-		return $this->getQueryBuilder()
+		$texts = $this->getQueryBuilder()
 			->where('e.text = ?1')->setParameter(1, $text->getId())
 			->orderBy('e.time', 'ASC')
 			->getQuery()->getArrayResult();
+		return TextRepository::joinPersonKeysForTexts($texts);
+	}
+
+
+	public function getByIds($ids, $orderBy = null)
+	{
+		return TextRepository::joinPersonKeysForTexts(parent::getByIds($ids, $orderBy));
 	}
 
 
 	public function getQueryBuilder($orderBys = null)
 	{
 		$qb = parent::getQueryBuilder($orderBys)
-			->select('e', 't', 'a', 's', 'u')
+			->select('e', 't', 'a', 'ap', 's', 'u')
 			->leftJoin('e.text', 't')
 			->leftJoin('t.series', 's')
-			->leftJoin('t.authors', 'a')
+			->leftJoin('t.textAuthors', 'a')
+			->leftJoin('a.person', 'ap')
 			->leftJoin('e.user', 'u');
 
 		return $qb;

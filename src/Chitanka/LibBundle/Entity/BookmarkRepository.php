@@ -58,14 +58,19 @@ class BookmarkRepository extends EntityRepository
 		return $validTextIds;
 	}
 
+	public function getByIds($ids, $orderBy = null)
+	{
+		return TextRepository::joinPersonKeysForTexts(parent::getByIds($ids, $orderBy));
+	}
 
 	public function getQueryBuilder($orderBys = null)
 	{
 		return parent::getQueryBuilder($orderBys)
-			->addSelect('t', 's', 'a')
+			->addSelect('t', 's', 'a', 'ap')
 			->leftJoin('e.text', 't')
 			->leftJoin('t.series', 's')
-			->leftJoin('t.authors', 'a');
+			->leftJoin('t.textAuthors', 'a')
+			->leftJoin('a.person', 'ap');
 	}
 
 }

@@ -42,18 +42,19 @@ class UserTextContribRepository extends EntityRepository
 			->where(sprintf('c.id IN (%s)', implode(',', $ids)))
 			->getQuery()->getArrayResult();
 
-		return $texts;
+		return TextRepository::joinPersonKeysForTexts($texts);
 	}
 
 
 	public function getQueryBuilder($orderBys = null)
 	{
 		return $this->_em->createQueryBuilder()
-			->select('c', 't', 'a', 's')
+			->select('c', 't', 'a', 'ap', 's')
 			->from($this->getEntityName(), 'c')
 			->leftJoin('c.text', 't')
 			->leftJoin('t.series', 's')
-			->leftJoin('t.authors', 'a')
+			->leftJoin('t.textAuthors', 'a')
+			->leftJoin('a.person', 'ap')
 			->orderBy('c.date', 'DESC');
 	}
 
