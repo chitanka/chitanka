@@ -28,13 +28,13 @@ class TextCommentRepository extends EntityRepository
 			->where('e.text = ?1')->setParameter(1, $text->getId())
 			->orderBy('e.time', 'ASC')
 			->getQuery()->getArrayResult();
-		return TextRepository::joinPersonKeysForTexts($texts);
+		return WorkSteward::joinPersonKeysForTexts($texts);
 	}
 
 
 	public function getByIds($ids, $orderBy = null)
 	{
-		return TextRepository::joinPersonKeysForTexts(parent::getByIds($ids, $orderBy));
+		return WorkSteward::joinPersonKeysForTexts(parent::getByIds($ids, $orderBy));
 	}
 
 

@@ -225,7 +225,7 @@ class TextRepository extends EntityRepository
 			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
 			->getQuery()->getArrayResult();
 
-		return static::joinPersonKeysForTexts($texts);
+		return WorkSteward::joinPersonKeysForTexts($texts);
 	}
 
 
@@ -238,7 +238,7 @@ class TextRepository extends EntityRepository
 		if ($limit) {
 			$q->setMaxResults($limit);
 		}
-		return static::joinPersonKeysForTexts($q->getArrayResult());
+		return WorkSteward::joinPersonKeysForTexts($q->getArrayResult());
 	}
 
 
@@ -325,19 +325,4 @@ class TextRepository extends EntityRepository
 		return $textsById;
 	}
 
-	public static function joinPersonKeysForTexts($texts)
-	{
-		foreach ($texts as $k => $text) {
-			if (isset($text['textAuthors'])) {
-				$authors = array();
-				foreach ($text['textAuthors'] as $textAuthor) {
-					if ($textAuthor['pos'] >= 0) {
-						$authors[] = $textAuthor['person'];
-					}
-				}
-				$texts[$k]['authors'] = $authors;
-			}
-		}
-		return $texts;
-	}
 }

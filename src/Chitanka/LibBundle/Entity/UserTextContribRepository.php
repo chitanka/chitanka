@@ -42,7 +42,7 @@ class UserTextContribRepository extends EntityRepository
 			->where(sprintf('c.id IN (%s)', implode(',', $ids)))
 			->getQuery()->getArrayResult();
 
-		return TextRepository::joinPersonKeysForTexts($texts);
+		return WorkSteward::joinPersonKeysForWorks($texts);
 	}
 
 

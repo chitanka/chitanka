@@ -72,7 +72,7 @@ class RevisionRepository extends EntityRepository
 			->andWhere(sprintf('r.id IN (%s)', implode(',', $ids)))
 			->getQuery()->getArrayResult();
 
-		return $this->joinPersonKeysForWorks($texts);
+		return WorkSteward::joinPersonKeysForWorks($texts);
 	}
 
 
@@ -129,31 +129,6 @@ class RevisionRepository extends EntityRepository
 		}
 
 		return $grouped;
-	}
-
-	private function joinPersonKeysForWorks($works)
-	{
-		foreach ($works as $k => $work) {
-			if (isset($work['book']) && isset($work['book']['bookAuthors'])) {
-				$authors = array();
-				foreach ($work['book']['bookAuthors'] as $bookAuthor) {
-					if ($bookAuthor['pos'] >= 0) {
-						$authors[] = $bookAuthor['person'];
-					}
-				}
-				$works[$k]['book']['authors'] = $authors;
-			}
-			if (isset($work['text']) && isset($work['text']['textAuthors'])) {
-				$authors = array();
-				foreach ($work['text']['textAuthors'] as $textAuthor) {
-					if ($textAuthor['pos'] >= 0) {
-						$authors[] = $textAuthor['person'];
-					}
-				}
-				$works[$k]['text']['authors'] = $authors;
-			}
-		}
-		return $works;
 	}
 
 }
