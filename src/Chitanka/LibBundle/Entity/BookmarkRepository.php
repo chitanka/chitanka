@@ -60,7 +60,7 @@ class BookmarkRepository extends EntityRepository
 
 	public function getByIds($ids, $orderBy = null)
 	{
-		return WorkSteward::joinPersonKeysForTexts(parent::getByIds($ids, $orderBy));
+		return WorkSteward::joinPersonKeysForWorks(parent::getByIds($ids, $orderBy));
 	}
 
 	public function getQueryBuilder($orderBys = null)

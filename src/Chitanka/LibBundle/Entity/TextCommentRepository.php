@@ -34,7 +34,7 @@ class TextCommentRepository extends EntityRepository
 
 	public function getByIds($ids, $orderBy = null)
 	{
-		return WorkSteward::joinPersonKeysForTexts(parent::getByIds($ids, $orderBy));
+		return WorkSteward::joinPersonKeysForWorks(parent::getByIds($ids, $orderBy));
 	}
 
 
