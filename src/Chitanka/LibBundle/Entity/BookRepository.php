@@ -8,7 +8,7 @@ namespace Chitanka\LibBundle\Entity;
 class BookRepository extends EntityRepository
 {
 	protected $queryableFields = array('id', 'title', 'subtitle', 'orig_title');
-
+	
 	/** @return Book */
 	public function get($id)
 	{
@@ -28,7 +28,7 @@ class BookRepository extends EntityRepository
 			->getQuery()->getSingleResult();
 	}
 
-
+	
 	public function getByCategory($category, $page = 1, $limit = null)
 	{
 		$ids = $this->getIdsByCategory($category, $page, $limit);
@@ -43,7 +43,20 @@ class BookRepository extends EntityRepository
 
 		return $query->getResult('id');
 	}
-
+	
+	public function getByWoCover($page = 1, $limit = null)
+	{
+		$ids = $this->getIdsByWoCover($page, $limit);
+		return empty($ids) ? array() : $this->getByIds($ids);
+	}
+	
+	public function getIdsByWoCover($page = 1, $limit = null)
+	{
+		$dql = sprintf('SELECT b.id FROM %s b WHERE b.has_cover = 0 ORDER BY b.title ASC', $this->getEntityName());
+		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
+		return $query->getResult('id');
+	}
+	
 
 	public function getBySequence($sequence, $page = 1, $limit = null)
 	{
@@ -113,7 +126,17 @@ class BookRepository extends EntityRepository
 			->getArrayResult();
 		return WorkSteward::joinPersonKeysForBooks($books);
 	}
-
+	
+	public function getCountByWoCover()
+	{
+		$where = "b.has_cover = 0";
+		$dql = sprintf('SELECT COUNT(b.id) FROM %s b WHERE %s', $this->getEntityName(), $where);
+		$query = $this->_em->createQuery($dql);
+		
+		
+		return $query->getSingleScalarResult();
+	}
+	
 	public function getQueryBuilder($orderBys = null)
 	{
 		if (is_null($orderBys)) {

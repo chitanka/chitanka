@@ -9,7 +9,7 @@
 */
 
 $query = sanitizeInput($_SERVER['QUERY_STRING']);
-$combiFile = dirname(__FILE__) . '/../../../cache'.sanitizeInput($_SERVER['REQUEST_URI']);
+$combiFile = dirname(__FILE__) . '/../../../../../../web/cache'.sanitizeInput($_SERVER['REQUEST_URI']);
 
 if ( ! file_exists($combiFile) ) {
 	createCombiFile($query, $combiFile);

@@ -45,7 +45,7 @@ class BookController extends Controller
 	{
 		return $this->display("list_by_alpha_index.$_format");
 	}
-
+	
 	public function listByCategoryAction($slug, $page, $_format)
 	{
 		$slug = String::slugify($slug);
@@ -55,7 +55,6 @@ class BookController extends Controller
 			throw new NotFoundHttpException("Няма категория с код $slug.");
 		}
 		$limit = 30;
-
 		$this->view = array(
 			'category' => $category,
 			'parents' => array_reverse($category->getAncestors()),
@@ -70,8 +69,24 @@ class BookController extends Controller
 
 		return $this->display("list_by_category.$_format");
 	}
-
-
+	
+	public function listByWoCoverAction($page)
+	{
+		$limit = 30;
+		$bookRepo = $this->getBookRepository();
+		$_format = 'html';
+		$this->view = array(
+				'books' => $bookRepo->getByWoCover($page, $limit),
+				'pager'    => new Pager(array(
+						'page'  => $page,
+						'limit' => $limit,
+						'total' => $this->getBookRepository()->getCountByWoCover()
+				)),
+		);
+		
+		return $this->display("list_by_wo-cover.$_format");
+	}
+	
 	public function listByAlphaAction($letter, $page, $_format)
 	{
 		$bookRepo = $this->getBookRepository();

@@ -6,6 +6,9 @@
 		{% else %}
 			<b>{{ book.description|raw }}</b>
 		{% endif %}
+		{% if show_link_wo_cover %}
+			<br /><b><a href="{{ path('books_by_wo-cover') }}">Вижте списъка</a></b>
+		{% endif %}
 		</p>
 	</div>
 {% endif %}

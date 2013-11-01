@@ -8,7 +8,7 @@ function sendStyleFile($combiFile) {
 	header('Expires: Sun, 17-Jan-2038 19:14:07 GMT');
 	header('Cache-Control: max-age=315360000'); // 10 years
 	header('Last-Modified: Sun, 01 Jan 2001 00:00:01 GMT');
-
+	
 	readfile($combiFile);
 }
 
@@ -20,7 +20,7 @@ function getCombiFile($source)
 
 	ob_start();
 	require dirname(__FILE__) . "/main.css";
-
+	
 	$parts = array_slice(explode(',', $_GET['o']), 2);
 	foreach ($parts as $part) {
 		$cssfile = dirname(__FILE__) . "/$part.css";
@@ -42,6 +42,7 @@ function createCombiFile($source, $combiName)
 	if ( ! file_exists($dir)) {
 		mkdir($dir, 0777, true);
 	}
+	//echo minifyStyle($content);
 	file_put_contents($combiName, minifyStyle($content));
 }
 
