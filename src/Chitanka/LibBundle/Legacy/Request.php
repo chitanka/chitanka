@@ -165,7 +165,7 @@ class Request {
 
 		//setcookie($name, $value, $expire, $this->cookiePath);
 		if ($multiDomain) {
-			setcookie($name, $value, $expire, $this->cookiePath, '.'.$this->serverPlain());
+			setcookie($name, $value, $expire, $this->cookiePath, '.'.$this->serverPlain(), false, true);
 		}
 	}
 

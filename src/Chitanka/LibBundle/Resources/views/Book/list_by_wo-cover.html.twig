@@ -1,0 +1,10 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'Книги по категория' %}
+{% set subtitle = 'без корица' %}
+{% block content %}
+	
+	{% include 'LibBundle:Book:list.html.twig' %}
+	{% include 'LibBundle::pager.html.twig' %}
+
+{% endblock %}

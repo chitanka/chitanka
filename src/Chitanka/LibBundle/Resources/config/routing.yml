@@ -164,6 +164,11 @@ books_by_category:
     defaults:       { _controller: LibBundle:Book:listByCategory, page: 1, _format: html }
     requirements:   { _method: get, page: \d+, _format: html|opds }
 
+books_by_wo-cover:
+    pattern:        /books/wo-cover/{page}
+    defaults:       { _controller: LibBundle:Book:listByWoCover, page: 1 }
+    requirements:   { _method: get, page: \d+ }
+
 books_by_alpha_index:
     pattern:        /books/alpha.{_format}
     defaults:       { _controller: LibBundle:Book:listByAlphaIndex, _format: html }

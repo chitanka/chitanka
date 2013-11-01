@@ -23,6 +23,7 @@ framework:
 #        lifetime:  3600
         name:      CHITANKASESSID
         save_path: null
+        cookie_httponly: true
     fragments:       ~
     http_method_override: true
 
