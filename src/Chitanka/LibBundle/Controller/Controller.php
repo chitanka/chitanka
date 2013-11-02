@@ -133,10 +133,7 @@ abstract class Controller extends SymfonyController
 			return false;
 		}
 
-		$skin = $this->get('request')->query->get('useskin');
-		if ( ! $skin) {
-			$skin = $this->getUser()->getSkinPreference();
-		}
+		$skin = $this->getUser()->getSkinPreference();
 
 		return str_replace('FILE', $skin, $url);
 	}
@@ -156,10 +153,6 @@ abstract class Controller extends SymfonyController
 	protected function displayJson($content, $headers = array())
 	{
 		return $this->displayText(json_encode($content), $headers);
-	}
-
-	protected function display404($text)
-	{
 	}
 
 	protected function setCacheStatusByResponse(Response $response)
