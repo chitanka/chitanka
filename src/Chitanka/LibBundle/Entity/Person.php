@@ -98,16 +98,6 @@ class Person extends Entity
 	private $type;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Text", mappedBy="authors")
-	 */
-	private $textsAsAuthor;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Text", mappedBy="translators")
-	 */
-	private $textsAsTranslator;
-
-	/**
 	 * @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="person")
 	 */
 	private $textAuthors;
@@ -118,7 +108,7 @@ class Person extends Entity
 	private $textTranslators;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Book", mappedBy="authors")
+	 * @ORM\ManyToMany(targetEntity="Book")
 	 */
 	private $books;
 
@@ -212,8 +202,6 @@ class Person extends Entity
 	public function setType($type) { $this->type = $type; }
 	public function getType() { return $this->type; }
 
-	public function getTextsAsAuthor() { return $this->textsAsAuthor; }
-	public function getTextsAsTranslator() { return $this->textsAsTranslator; }
 	public function getBooks() { return $this->books; }
 	public function getSeries() { return $this->series; }
 

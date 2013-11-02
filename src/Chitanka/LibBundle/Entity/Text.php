@@ -261,10 +261,8 @@ class Text extends BaseWork
 	 */
 	private $textTranslators;
 
-	/*
+	/**
 	 * @var ArrayCollection
-	 * @ORM\ManyToMany(targetEntity="Person", inversedBy="textsAsAuthor")
-	 * @ORM\JoinTable(name="text_author")
 	 */
 	private $authors;
 
@@ -278,10 +276,8 @@ class Text extends BaseWork
 	 */
 	private $authorOrigNames;
 
-	/** FIXME doctrine:schema:create does not allow this relation
+	/**
 	 * @var ArrayCollection
-	 * @ORM\ManyToMany(targetEntity="Person", inversedBy="textsAsTranslator")
-	 * @ORM\JoinTable(name="text_translator")
 	 */
 	private $translators;
 
