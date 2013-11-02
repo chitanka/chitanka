@@ -21,7 +21,9 @@ require dirname(__FILE__) . '/index.inc';
 $query = sanitizeInput($_SERVER['QUERY_STRING']);
 // remove bad symbols from query
 $query = preg_replace( '![^\w\d,.:;=-]!', '', $query );
-$combiFile = dirname(__FILE__) . '/../../../cache'.sanitizeInput($_SERVER['REQUEST_URI']);
+$curdir = __DIR__;
+$path = strpos($curdir, '/web/') === false ? "$curdir/../../../../../../web/cache" : "$curdir/../../../cache";
+$combiFile = $path . sanitizeInput($_SERVER['REQUEST_URI']);
 
 if ( ! file_exists($combiFile) ) {
 	createCombiFile($query, $combiFile);
