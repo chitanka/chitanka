@@ -77,9 +77,7 @@ class FeedPage extends Page {
 
 		$this->addTemplates();
 		$feed = Legacy::expandTemplates($this->fullContent);
-		header("Content-Type: $this->contentType; charset=UTF-8");
-		header('Content-Length: '. strlen($feed));
-		echo <<<FEED
+		$page = <<<FEED
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0"
 	xmlns:content="http://purl.org/rss/1.0/modules/content/"
@@ -90,6 +88,9 @@ class FeedPage extends Page {
 </channel>
 </rss>
 FEED;
+		header("Content-Type: $this->contentType; charset=UTF-8");
+		header('Content-Length: '. strlen($page));
+		echo $page;
 		exit;
 
 		return '';
