@@ -128,5 +128,26 @@ class BookRepository extends EntityRepository
 
 		return $qb;
 	}
-
+	
+	public function getByWoCover($page = 1, $limit = null)
+	{
+		$ids = $this->getIdsByWoCover($page, $limit);
+		return empty($ids) ? array() : $this->getByIds($ids);
+	}
+	
+	public function getIdsByWoCover($page = 1, $limit = null)
+	{
+		$dql = sprintf('SELECT b.id FROM %s b WHERE b.has_cover = 0 ORDER BY b.title ASC', $this->getEntityName());
+		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
+		return $query->getResult('id');
+	}
+	
+	public function getCountByWoCover()
+	{
+		$where = "b.has_cover = 0";
+		$dql = sprintf('SELECT COUNT(b.id) FROM %s b WHERE %s', $this->getEntityName(), $where);
+		$query = $this->_em->createQuery($dql);
+		
+		return $query->getSingleScalarResult();
+	}
 }
