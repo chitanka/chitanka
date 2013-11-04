@@ -13,7 +13,7 @@ class StatisticsController extends Controller
 				'series'        => $this->getSeriesRepository()->getCount(),
 				'labels'        => $this->getLabelRepository()->getCount(),
 				'books'         => $this->getBookRepository()->getCount(),
-				'books_wo_cover'=> $this->getBookRepository()->getCountByWoCover(),
+				'books_wo_cover'=> $this->getBookRepository()->getCountWithMissingCover(),
 				'sequences'     => $this->getSequenceRepository()->getCount(),
 				'categories'    => $this->getCategoryRepository()->getCount(),
 				'text_comments' => $this->getTextCommentRepository()->getCount('e.is_shown = 1'),

@@ -1,9 +1,8 @@
 <?php
-
 namespace Chitanka\LibBundle\Entity;
 
 /**
- *
+ * A repository for books
  */
 class BookRepository extends EntityRepository
 {
@@ -36,14 +35,13 @@ class BookRepository extends EntityRepository
 		return empty($ids) ? array() : $this->getByIds($ids);
 	}
 
-	public function getIdsByCategory($category, $page = 1, $limit = null)
+	private function getIdsByCategory($category, $page = 1, $limit = null)
 	{
-		$dql = sprintf('SELECT b.id FROM %s b WHERE b.category = %d ORDER BY b.title', $this->getEntityName(), $category->getId());
+		$dql = "SELECT b.id FROM {$this->getEntityName()} b WHERE b.category = {$category->getId()} ORDER BY b.title";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 
 		return $query->getResult('id');
 	}
-
 
 	public function getBySequence($sequence, $page = 1, $limit = null)
 	{
@@ -52,14 +50,13 @@ class BookRepository extends EntityRepository
 		return empty($ids) ? array() : $this->getByIds($ids, 'e.seqnr, e.title');
 	}
 
-	public function getIdsBySequence($sequence, $page = 1, $limit = null)
+	private function getIdsBySequence($sequence, $page = 1, $limit = null)
 	{
-		$dql = sprintf('SELECT b.id FROM %s b WHERE b.sequence = %d ORDER BY b.seqnr, b.title', $this->getEntityName(), $sequence->getId());
+		$dql = "SELECT b.id FROM {$this->getEntityName()} b WHERE b.sequence = {$sequence->getId()} ORDER BY b.seqnr, b.title";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 
 		return $query->getResult('id');
 	}
-
 
 	public function getByPrefix($prefix, $page = 1, $limit = null)
 	{
@@ -68,10 +65,10 @@ class BookRepository extends EntityRepository
 		return empty($ids) ? array() : $this->getByIds($ids);
 	}
 
-	public function getIdsByPrefix($prefix, $page, $limit)
+	private function getIdsByPrefix($prefix, $page, $limit)
 	{
 		$where = $prefix ? "b.title LIKE '$prefix%'" : '1=1';
-		$dql = sprintf('SELECT b.id FROM %s b WHERE %s ORDER BY b.title', $this->getEntityName(), $where);
+		$dql = "SELECT b.id FROM {$this->getEntityName()} b WHERE $where ORDER BY b.title";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 
 		return $query->getResult('id');
@@ -85,12 +82,11 @@ class BookRepository extends EntityRepository
 	public function countByPrefix($prefix)
 	{
 		$where = $prefix ? "b.title LIKE '$prefix%'" : '1=1';
-		$dql = sprintf('SELECT COUNT(b.id) FROM %s b WHERE %s', $this->getEntityName(), $where);
+		$dql = "SELECT COUNT(b.id) FROM {$this->getEntityName()} b WHERE $where";
 		$query = $this->_em->createQuery($dql);
 
 		return $query->getSingleScalarResult();
 	}
-
 
 	public function getByTitles($title, $limit = null)
 	{
@@ -103,7 +99,6 @@ class BookRepository extends EntityRepository
 		}
 		return WorkSteward::joinPersonKeysForBooks($q->getArrayResult());
 	}
-
 
 	public function getByAuthor($author)
 	{
@@ -129,25 +124,24 @@ class BookRepository extends EntityRepository
 		return $qb;
 	}
 	
-	public function getByWoCover($page = 1, $limit = null)
+	public function getWithMissingCover($page = 1, $limit = null)
 	{
-		$ids = $this->getIdsByWoCover($page, $limit);
+		$ids = $this->getIdsWithMissingCover($page, $limit);
 		return empty($ids) ? array() : $this->getByIds($ids);
 	}
 	
-	public function getIdsByWoCover($page = 1, $limit = null)
+	private function getIdsWithMissingCover($page = 1, $limit = null)
 	{
-		$dql = sprintf('SELECT b.id FROM %s b WHERE b.has_cover = 0 ORDER BY b.title ASC', $this->getEntityName());
+		$dql = "SELECT b.id FROM {$this->getEntityName()} b WHERE b.has_cover = 0 ORDER BY b.title ASC";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		return $query->getResult('id');
 	}
 	
-	public function getCountByWoCover()
+	public function getCountWithMissingCover()
 	{
-		$where = "b.has_cover = 0";
-		$dql = sprintf('SELECT COUNT(b.id) FROM %s b WHERE %s', $this->getEntityName(), $where);
+		$dql = "SELECT COUNT(b.id) FROM {$this->getEntityName()} b WHERE b.has_cover = 0";
 		$query = $this->_em->createQuery($dql);
-		
+
 		return $query->getSingleScalarResult();
 	}
 }

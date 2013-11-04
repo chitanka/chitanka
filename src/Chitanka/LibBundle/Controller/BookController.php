@@ -92,21 +92,21 @@ class BookController extends Controller
 		return $this->display("list_by_alpha.$_format");
 	}
 
-	public function listByWoCoverAction($page)
+	public function listWoCoverAction($page)
 	{
 		$limit = 30;
 		$bookRepo = $this->getBookRepository();
 		$_format = 'html';
 		$this->view = array(
-				'books' => $bookRepo->getByWoCover($page, $limit),
-				'pager'    => new Pager(array(
-						'page'  => $page,
-						'limit' => $limit,
-						'total' => $this->getBookRepository()->getCountByWoCover()
-				)),
+			'books' => $bookRepo->getWithMissingCover($page, $limit),
+			'pager' => new Pager(array(
+				'page'  => $page,
+				'limit' => $limit,
+				'total' => $this->getBookRepository()->getCountWithMissingCover()
+			)),
 		);
-	
-		return $this->display("list_by_wo-cover.$_format");
+
+		return $this->display("list_wo_cover.$_format");
 	}
 
 	public function showAction($id, $_format)

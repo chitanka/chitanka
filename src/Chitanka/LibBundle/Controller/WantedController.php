@@ -18,7 +18,6 @@ class WantedController extends Controller
 			$this->view = array(
 				'book' => $book,
 				'put_link' => (strpos($book->getDescription(), '<a ') === false),
-				'show_link_wo_cover' => true,
 			);
 		}
 
