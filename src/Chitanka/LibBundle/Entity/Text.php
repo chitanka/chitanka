@@ -498,7 +498,18 @@ class Text extends BaseWork
 	}
 
 	public function addTranslator(Person $translator) { $this->translators[] = $translator; }
-	public function getTranslators() { return $this->translators; }
+	public function getTranslators()
+	{
+		if (!isset($this->translators)) {
+			$this->translators = array();
+			foreach ($this->getTextTranslators() as $translator) {
+				if ($translator->getPos() >= 0) {
+					$this->translators[] = $translator->getPerson();
+				}
+			}
+		}
+		return $this->translators;
+	}
 
 	public function addTextAuthor(TextAuthor $textAuthor)
 	{
