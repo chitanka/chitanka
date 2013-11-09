@@ -171,9 +171,9 @@ class Request {
 
 
 	public function deleteCookie($name, $multiDomain = true) {
-		setcookie($name, '', time() - 3600, $this->cookiePath);
+		setcookie($name, '', time() - 86400, $this->cookiePath);
 		if ($multiDomain) {
-			setcookie($name, '', time() - 3600, $this->cookiePath, '.'.$this->serverPlain());
+			setcookie($name, '', time() - 86400, $this->cookiePath, '.'.$this->serverPlain());
 		}
 	}
 
