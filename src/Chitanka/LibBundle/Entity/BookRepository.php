@@ -123,20 +123,20 @@ class BookRepository extends EntityRepository
 
 		return $qb;
 	}
-	
+
 	public function getWithMissingCover($page = 1, $limit = null)
 	{
 		$ids = $this->getIdsWithMissingCover($page, $limit);
 		return empty($ids) ? array() : $this->getByIds($ids);
 	}
-	
+
 	private function getIdsWithMissingCover($page = 1, $limit = null)
 	{
 		$dql = "SELECT b.id FROM {$this->getEntityName()} b WHERE b.has_cover = 0 ORDER BY b.title ASC";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		return $query->getResult('id');
 	}
-	
+
 	public function getCountWithMissingCover()
 	{
 		$dql = "SELECT COUNT(b.id) FROM {$this->getEntityName()} b WHERE b.has_cover = 0";
