@@ -117,6 +117,10 @@ BODY;
 
 	private function sendMessage(Swift_Message $message)
 	{
-		$this->mailer->send($message);
+		try {
+			$this->mailer->send($message);
+		} catch (\Swift_RfcComplianceException $e) {
+			error_log(__METHOD__.": {$e->getMessage()}");
+		}
 	}
 }
