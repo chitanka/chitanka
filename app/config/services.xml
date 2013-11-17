@@ -162,6 +162,15 @@
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
+		<service id="chitanka.admin.text_link" class="Chitanka\LibBundle\Admin\TextLinkAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="library_links" label="admin.text_link"/>
+			<argument />
+			<argument>Chitanka\LibBundle\Entity\TextLink</argument>
+			<argument>LibBundle:TextLinkAdmin</argument>
+			<call method="setMaxPerPage">
+				<argument>%admin_max_per_page%</argument>
+			</call>
+		</service>
 		<service id="chitanka.admin.book_author" class="Chitanka\LibBundle\Admin\BookAuthorAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_links" label="admin.book_author"/>
 			<argument />

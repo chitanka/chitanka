@@ -62,6 +62,7 @@ class TextAdmin extends Admin
 			//->add('readers')
 			->add('userContribs')
 			->add('revisions')
+			->add('links', null, array('label' => 'Site Links'))
 			->add('created_at')
 		;
 	}
@@ -122,6 +123,15 @@ class TextAdmin extends Admin
 				->add('sernr', null, array('required' => false))
 				->add('sernr2', null, array('required' => false))
 				->add('note')
+				->add('links', 'sonata_type_collection', array(
+					'by_reference' => false,
+					'required' => false,
+					'label' => 'Site Links',
+				), array(
+					'edit' => 'inline',
+					'inline' => 'table',
+					'sortable' => 'site_id'
+				))
 			->end()
 			->with('Textual content')
 				->add('annotation', 'textarea', array(
@@ -189,6 +199,9 @@ class TextAdmin extends Admin
 	}
 
 	public function preUpdate($text) {
+		foreach ($text->getLinks() as $link) {
+			$link->setText($text);
+		}
 		foreach ($text->getTextAuthors() as $textAuthor) {
 			if ($textAuthor->getPerson()) {
 				$textAuthor->setText($text);

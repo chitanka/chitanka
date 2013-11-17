@@ -27,6 +27,18 @@
 	{% endif %}
 	{{ text.fullExtraInfoForHtml(asset('/'))|raw }}
 
+	{% if text.links|length %}
+		<div class="menu">
+			<hr>
+			<p>В други сайтове:</p>
+			<ul class="buttonmenu">
+				{% for link in text.links %}
+					<li><a href="{{ link.url }}">{{ link.sitename }}{% if link.description is not empty %} ({{ link.description }}){% endif %}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+
 	<hr>
 	<p>Последна редакция: {{ text.currev.date|humandate }}</p>
 </fieldset>

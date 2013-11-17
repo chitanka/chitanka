@@ -332,6 +332,12 @@ class Text extends BaseWork
 	 */
 	private $revisions;
 
+	/**
+	 * @var ArrayCollection
+	 * @ORM\OneToMany(targetEntity="TextLink", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
+	 */
+	private $links;
+
 	public function __construct($id = null)
 	{
 		$this->id = $id;
@@ -345,6 +351,7 @@ class Text extends BaseWork
 		$this->headers = new ArrayCollection;
 		$this->readers = new ArrayCollection;
 		$this->userContribs = new ArrayCollection;
+		$this->links = new ArrayCollection;
 // 		if ( empty($this->year) ) {
 // 			$this->year = $this->author_year;
 // 		}
@@ -546,6 +553,22 @@ class Text extends BaseWork
 	public function addRevision(TextRevision $revision)
 	{
 		$this->revisions[] = $revision;
+	}
+
+	public function setLinks($links) { $this->links = $links; }
+	public function getLinks() { return $this->links; }
+	public function addLink(TextLink $link)
+	{
+		$this->links[] = $link;
+	}
+	// needed by SonataAdmin
+	public function addLinks(TextLink $link)
+	{
+		$this->addLink($link);
+	}
+	public function removeLink(TextLink $link)
+	{
+		$this->links->removeElement($link);
 	}
 
 	/**
