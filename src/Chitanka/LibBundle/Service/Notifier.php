@@ -30,7 +30,11 @@ class Notifier {
 		$headers->addMailboxHeader('Reply-To', $sender);
 
 		foreach ($recipients as $recipientEmail => $recipientName) {
-			$message->setTo($recipientEmail, $recipientName);
+			try {
+				$message->setTo($recipientEmail, $recipientName);
+			} catch (\Swift_RfcComplianceException $e) {
+				$this->logError(__METHOD__.": {$e->getMessage()} (recipient: {$recipientName})");
+			}
 			$this->sendMessage($message);
 		}
 	}
@@ -59,7 +63,11 @@ BODY;
 		$headers->addMailboxHeader('Reply-To', $sender);
 
 		$recipient = $workEntry->getUser();
-		$message->setTo($recipient->getEmail(), $recipient->getName());
+		try {
+			$message->setTo($recipient->getEmail(), $recipient->getName());
+		} catch (\Swift_RfcComplianceException $e) {
+			$this->logError(__METHOD__.": {$e->getMessage()} (recipient: {$recipient->getName()})");
+		}
 		$this->sendMessage($message);
 
 		foreach ($workEntry->getOpenContribs() as $contrib) {
@@ -78,7 +86,11 @@ BODY;
 		$headers->addMailboxHeader('Reply-To', $sender);
 
 		$recipient = $contrib->getUser();
-		$message->setTo($recipient->getEmail(), $recipient->getName());
+		try {
+			$message->setTo($recipient->getEmail(), $recipient->getName());
+		} catch (\Swift_RfcComplianceException $e) {
+			$this->logError(__METHOD__.": {$e->getMessage()} (recipient: {$recipient->getName()})");
+		}
 		$this->sendMessage($message);
 	}
 
@@ -117,10 +129,11 @@ BODY;
 
 	private function sendMessage(Swift_Message $message)
 	{
-		try {
-			$this->mailer->send($message);
-		} catch (\Swift_RfcComplianceException $e) {
-			error_log(__METHOD__.": {$e->getMessage()}");
-		}
+		$this->mailer->send($message);
+	}
+
+	private function logError($message)
+	{
+		error_log($message);
 	}
 }
