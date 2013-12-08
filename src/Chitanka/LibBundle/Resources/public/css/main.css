@@ -1247,6 +1247,7 @@ a.dl:hover {
 
 /* менюта, обикновено чрез списъци */
 .menu {
+	clear: both;
 	margin: .5em auto;
 	padding: 0;
 	font-size: 90%;
