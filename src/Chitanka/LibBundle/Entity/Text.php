@@ -910,7 +910,6 @@ class Text extends BaseWork
 	 */
 	public function getFbi()
 	{
-		return ''; // TODO rewrite legacy code
 		return $this->getFbiMain()
 			. "\n" . $this->getFbiOriginal()
 			. "\n" . $this->getFbiDocument()
@@ -922,7 +921,7 @@ class Text extends BaseWork
 	protected function getFbiMain()
 	{
 		$authors = '';
-		foreach ($this->authors as $author) {
+		foreach ($this->getAuthors() as $author) {
 			$authors .= "\n|Автор        = " . $author->getName();
 		}
 		$title = $this->title;
@@ -932,15 +931,16 @@ class Text extends BaseWork
 		}
 		$anno = $this->getAnnotation();
 		$translators = '';
-		foreach ($this->translators as $data) {
-			$year = empty( $data['year'] ) ? $this->trans_year : $data['year'];
-			$translators .= "\n|Преводач     = $data[name] [&$year]";
+		foreach ($this->getTextTranslators() as $textTranslator) {
+			$year = $textTranslator->getYear() ?: $this->trans_year;
+			$name = $textTranslator->getPerson()->getName();
+			$translators .= "\n|Преводач     = $name [&$year]";
 		}
 		$series = empty($this->series) ? Legacy::workType($this->type, false) : $this->series->getName();
 		if ( ! empty($this->series) && ! empty( $this->sernr ) ) {
 			$series .= " [$this->sernr]";
 		}
-		$keywords = implode(', ', $this->getLabels());
+		$keywords = implode(', ', $this->getLabelsNames());
 		$origLangView = $this->lang == $this->orig_lang ? '' : $this->orig_lang;
 		return <<<EOS
 {Произведение:$authors
@@ -966,8 +966,8 @@ EOS;
 			return '';
 		}
 		$authors = '';
-		foreach ($this->authors as $data) {
-			$name = $data['orig_name'];
+		foreach ($this->getAuthors() as $author) {
+			$name = $author->getOrigName();
 			$authors .= "\n|Автор        = $name";
 		}
 		$title = $this->orig_title;
@@ -1297,7 +1297,7 @@ EOS;
 		$conv->setLang($this->lang);
 		$conv->setSrcLang(empty($this->orig_lang) ? '?' : $this->orig_lang);
 
-		foreach ($this->translators as $translator) {
+		foreach ($this->getTranslators() as $translator) {
 			$conv->addTranslator($translator->getName());
 		}
 

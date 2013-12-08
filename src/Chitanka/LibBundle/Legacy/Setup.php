@@ -101,14 +101,6 @@ class Setup {
 		if ( ! isset(self::$db) ) {
 			$conn = self::$config->get('doctrine.dbal.default_connection');
 			self::$db = new mlDatabase($conn->getHost(), $conn->getUsername(), $conn->getPassword(), $conn->getDatabase());
-
-// 			if (isset($slave_server)) {
-// 				self::$db->setSlave($slave_server, $slave_user, $slave_pass, $slave_name);
-// 			}
-//
-// 			if (isset($master_server)) {
-// 				self::$db->setMaster($master_server, $master_user, $master_pass, $master_name);
-// 			}
 		}
 		return self::$db;
 	}

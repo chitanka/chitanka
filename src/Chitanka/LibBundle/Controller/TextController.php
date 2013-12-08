@@ -149,6 +149,7 @@ class TextController extends Controller
 			case 'sfb':
 				return $this->displayText($text->getContentAsSfb(), array('Content-Type' => 'text/plain'));
 			case 'fbi':
+				Setup::doSetup($this->container);
 				return $this->displayText($text->getFbi(), array('Content-Type' => 'text/plain'));
 			case 'data':
 				return $this->displayText($text->getDataAsPlain(), array('Content-Type' => 'text/plain'));

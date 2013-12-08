@@ -325,7 +325,7 @@ text_bookmark:
 text_show:
     pattern:        /text/{id}.{_format}
     defaults:       { _controller: LibBundle:Text:show, slug: test, _format: html }
-    requirements:   { _method: get, _format: html|sfb|fb2|sfb\.zip|fb2\.zip|txt|txt\.zip|epub|clue|opds|data }
+    requirements:   { _method: get, _format: html|sfb|fb2|sfb\.zip|fb2\.zip|txt|txt\.zip|epub|clue|opds|data|fbi }
 
 text_show_part:
     pattern:        /text/{id}/{part}
