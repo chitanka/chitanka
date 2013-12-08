@@ -18,8 +18,10 @@
 			<li>{{ subtitle }}</li>
 		</ul>
 
-		{% include 'LibBundle:Text:list.html.twig' %}
-		{% include 'LibBundle:Text:multi_download_form.html.twig' %}
+		<div class="superlist">
+			{% include 'LibBundle:Text:list.html.twig' %}
+			{% include 'LibBundle:Text:multi_download_form.html.twig' %}
+		</div>
 		{% include 'LibBundle::pager.html.twig' %}
 
 	{% endif %}
