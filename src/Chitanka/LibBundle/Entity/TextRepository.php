@@ -198,6 +198,8 @@ class TextRepository extends EntityRepository
 			->orderBy('s.name, e.sernr, e.type, e.title')
 			->getQuery()->getArrayResult();
 
+		$texts = WorkSteward::joinPersonKeysForTexts($texts);
+
 		if ($groupBySeries) {
 			$texts = $this->groupTexts($texts);
 		}
@@ -214,6 +216,7 @@ class TextRepository extends EntityRepository
 			->orderBy('e.type, e.title')
 			->getQuery()->getArrayResult();
 
+		$texts = WorkSteward::joinPersonKeysForTexts($texts);
 		$texts = $this->groupTexts($texts, false);
 
 		return $texts;

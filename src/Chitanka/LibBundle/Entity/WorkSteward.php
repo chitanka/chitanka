@@ -56,6 +56,15 @@ class WorkSteward
 				}
 				$texts[$k]['authors'] = $authors;
 			}
+			if (isset($text['textTranslators'])) {
+				$translators = array();
+				foreach ($text['textTranslators'] as $textTranslator) {
+					if ($textTranslator['pos'] >= 0) {
+						$translators[] = $textTranslator['person'];
+					}
+				}
+				$texts[$k]['translators'] = $translators;
+			}
 		}
 		return $texts;
 	}
