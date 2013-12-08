@@ -166,10 +166,10 @@
 {% endmacro %}
 
 
-{% macro text_list_with_author(texts) %}
+{% macro text_list_with_author(texts, options) %}
 	<ul class="superlist">
 	{% for text in texts %}
-		<li class="title t-{{ text.type }}">{{ _self.text_with_author(text) }}</li>
+		<li class="title t-{{ text.type }}">{{ _self.text_with_author(text, options) }}</li>
 	{% endfor %}
 	</ul>
 {% endmacro %}
