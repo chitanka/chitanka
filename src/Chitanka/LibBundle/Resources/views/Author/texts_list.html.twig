@@ -12,14 +12,7 @@
 	</legend>
 	{{ text_lister.text_list(texts) }}
 	{% if texts|length > 1 %}
-		{% set filename %}{% spaceless %}
-			{{ person .slug}} -
-			{% if series.slug is defined %}
-				{{ series.slug }}
-			{% else %}
-				{{ ('text.type.plular.'~series.name) | trans }}
-			{% endif %}
-		{% endspaceless %}{% endset %}
-		{% include 'LibBundle:Text:multi_download_form.html.twig' with {'filename': filename} %}
+		{% set filename = person.slug ~'_'~ ( series.slug is defined ? series.slug : ('text.type.plular.'~series.name) | trans ) %}
+		{% include 'LibBundle:Text:multi_download_form.html.twig' with {'filename': filename~''} %}
 	{% endif %}
 </fieldset>

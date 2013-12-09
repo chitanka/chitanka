@@ -487,7 +487,7 @@ class TextController extends Controller
 
 		$this->textIds = $textId;
 		$this->zf = new ZipFile;
-		$this->zipFileName = $this->get('request')->query->get('filename');
+		$this->zipFileName = 'chitanka-' . $this->get('request')->get('filename');
 		// track here how many times a filename occurs
 		$this->_fnameCount = array();
 
