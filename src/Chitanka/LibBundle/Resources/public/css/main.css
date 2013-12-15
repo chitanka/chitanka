@@ -1215,6 +1215,7 @@ a.dl:hover {
 .dl-epub { background-image: url(<?php echo image('dl04-epub.png') ?>); }
 .dl-sfb { background-image: url(<?php echo image('dl01-sfb.png') ?>); }
 .dl-djvu { background-image: url(<?php echo image('dl05-djvu.png') ?>); }
+.dl-pdf { background-image: url(<?php echo image('dl07-pdf.png') ?>); }
 .dl-pic { background-image: url(<?php echo image('dl06-jpg.png') ?>); }
 
 .dl-list, .dl-list li {

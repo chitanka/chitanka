@@ -130,6 +130,7 @@ class BookController extends Controller
 				Setup::doSetup($this->container);
 				return $this->urlRedirect($this->processDownload($book, $_format));
 			case 'djvu':
+			case 'pdf':
 				return $this->urlRedirect($this->processDownload($book, $_format));
 				break;
 			case 'txt':
@@ -193,7 +194,8 @@ class BookController extends Controller
 				$file = $dlFile->getEpubForBook($book);
 				break;
 			case 'djvu':
-				$file = $dlFile->getDjvuForBook($book);
+			case 'pdf':
+				$file = $dlFile->getStaticFileForBook($book, $format);
 				break;
 		}
 

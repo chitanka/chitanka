@@ -187,7 +187,7 @@ book_random:
 book_show:
     pattern:        /book/{id}.{_format}
     defaults:       { _controller: LibBundle:Book:show, _format: html }
-    requirements:   { _method: get, _format: html|sfb|sfb\.zip|fb2|fb2\.zip|txt|txt\.zip|epub|djvu|clue|opds|pic|data }
+    requirements:   { _method: get, _format: html|sfb|sfb\.zip|fb2|fb2\.zip|txt|txt\.zip|epub|djvu|pdf|clue|opds|pic|data }
 
 book_comments:
     pattern:        /book/{id}/comments.{_format}

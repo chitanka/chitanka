@@ -1077,9 +1077,12 @@ EOS;
 	}
 	public function setDatafiles($f) {} // dummy for sonata admin
 
-	public function getDjvuFile()
+	public function getStaticFile($format)
 	{
-		return Legacy::getContentFilePath('book-djvu', $this->id);
+		if (!in_array($format, array('djvu', 'pdf'))) {
+			throw new \Exception("Format $format is not a valid static format for a book.");
+		}
+		return Legacy::getContentFilePath('book-'.$format, $this->id);
 	}
 
 	##################

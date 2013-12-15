@@ -51,15 +51,15 @@ class DownloadFile
 		return $this->getDlFileForBook($book, 'epub', 'addEpubEntries');
 	}
 
-	public function getDjvuForBook(Book $book)
+	public function getStaticFileForBook(Book $book, $format)
 	{
-		$dlFileName = $this->getFullDlFileName($this->createWorkFileName($book, 'djvu'));
+		$dlFileName = $this->getFullDlFileName($this->createWorkFileName($book, $format));
 		if (file_exists($dlFileName)) {
 			return $dlFileName;
 		}
-		$sourceFile = $book->getDjvuFile();
+		$sourceFile = $book->getStaticFile($format);
 		if ( !file_exists($sourceFile)) {
-			throw new \Exception("DjVu file for book #{$book->getId()} does not exist: '$sourceFile'");
+			throw new \Exception("$format file for book #{$book->getId()} does not exist: '$sourceFile'");
 		}
 		copy($sourceFile, $dlFileName);
 

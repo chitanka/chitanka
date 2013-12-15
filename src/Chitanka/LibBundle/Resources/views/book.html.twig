@@ -51,6 +51,9 @@
 		{% if "djvu" in book.formats %}
 			<li>{{ _self.download_link(book, "djvu") }}</li>
 		{% endif %}
+		{% if "pdf" in book.formats %}
+			<li>{{ _self.download_link(book, "pdf") }}</li>
+		{% endif %}
 		{% if "pic" in book.formats %}
 			<li>{{ _self.download_link(book, "pic", "Преглед в галерия") }}</li>
 		{% endif %}
