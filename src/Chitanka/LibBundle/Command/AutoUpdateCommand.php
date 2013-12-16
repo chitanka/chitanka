@@ -127,21 +127,24 @@ EOT
 		$updater = new SourceUpdater($rootDir, $updateDir);
 		$updater->lockFrontController();
 		$updater->extractArchive($zip);
-		$this->clearAppCache("$rootDir/app/cache/prod");
+		$this->clearAppCache($rootDir);
 		$updater->unlockFrontController();
 
 		return true;
 	}
 
-	private function clearAppCache($cacheDir)
+	private function clearAppCache($rootDir)
 	{
+		$cacheDir = $this->getApplication()->getKernel()->getCacheDir();
 		$cacheDirOld = $cacheDir.'_old_'.time();
 		$fs = new \Symfony\Component\Filesystem\Filesystem;
 		try {
 			$fs->rename($cacheDir, $cacheDirOld);
 			$fs->mkdir($cacheDir);
-			$this->runCommand('cache:warmup');
-			$this->runCommand('cache:create-cache-class');
+			$php = isset($_SERVER['_']) ? $_SERVER['_'] : 'php';
+			$environment = $this->getApplication()->getKernel()->getEnvironment();
+			shell_exec("$php $rootDir/app/console cache:warmup --env=$environment");
+			shell_exec("$php $rootDir/app/console cache:create-cache-class --env=$environment");
 			$fs->remove($cacheDirOld);
 		} catch (IOException $e) {
 			error_log("Auto-update: ".$e->getMessage());
