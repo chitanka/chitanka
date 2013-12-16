@@ -127,13 +127,13 @@ EOT
 		$updater = new SourceUpdater($rootDir, $updateDir);
 		$updater->lockFrontController();
 		$updater->extractArchive($zip);
-		$this->clearAppCache($rootDir);
+		$this->clearAppCache();
 		$updater->unlockFrontController();
 
 		return true;
 	}
 
-	private function clearAppCache($rootDir)
+	private function clearAppCache()
 	{
 		$cacheDir = $this->getApplication()->getKernel()->getCacheDir();
 		$cacheDirOld = $cacheDir.'_old_'.time();
@@ -141,10 +141,8 @@ EOT
 		try {
 			$fs->rename($cacheDir, $cacheDirOld);
 			$fs->mkdir($cacheDir);
-			$php = isset($_SERVER['_']) ? $_SERVER['_'] : 'php';
-			$environment = $this->getApplication()->getKernel()->getEnvironment();
-			shell_exec("$php $rootDir/app/console cache:warmup --env=$environment");
-			shell_exec("$php $rootDir/app/console cache:create-cache-class --env=$environment");
+			$this->runCommand('cache:warmup');
+			$this->runCommand('cache:create-cache-class');
 			$fs->remove($cacheDirOld);
 		} catch (IOException $e) {
 			error_log("Auto-update: ".$e->getMessage());
@@ -153,9 +151,10 @@ EOT
 
 	private function runCommand($commandName)
 	{
-		$command = $this->getApplication()->find($commandName);
-		$arguments = array('command' => $commandName);
-		return $command->run(new ArrayInput($arguments), $this->output);
+		$php = isset($_SERVER['_']) ? $_SERVER['_'] : 'php';
+		$rootDir = $this->getApplication()->getKernel()->getRootDir();
+		$environment = $this->getApplication()->getKernel()->getEnvironment();
+		shell_exec("$php $rootDir/console $commandName --env=$environment");
 	}
 
 	/** @return \ZipArchive */
