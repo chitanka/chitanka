@@ -151,7 +151,7 @@ EOT
 
 	private function runCommand($commandName)
 	{
-		$php = isset($_SERVER['_']) ? $_SERVER['_'] : 'php';
+		$php = isset($_SERVER['_']) ? $_SERVER['_'] : PHP_BINDIR.'/php'; // PHP_BINARY available since 5.4
 		$rootDir = $this->getApplication()->getKernel()->getRootDir();
 		$environment = $this->getApplication()->getKernel()->getEnvironment();
 		shell_exec("$php $rootDir/console $commandName --env=$environment");
