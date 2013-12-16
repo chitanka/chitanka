@@ -29,7 +29,7 @@ class FileUpdater
 		copy("$extractDir/.last", "$this->updateDir/.last");
 	}
 
-	protected function onAfterExtract(\ZipArchive $zip)
+	protected function onAfterExtract(\ZipArchive $zip, $extractDir)
 	{
 	}
 
