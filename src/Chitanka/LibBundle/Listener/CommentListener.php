@@ -22,7 +22,7 @@ class CommentListener
 	{
 		/* @var $comment Comment */
 		$comment = $event->getComment();
-		if ($comment->isForWorkEntry()) {
+		if ($comment->isForWorkEntry() && !$comment->isDeleted()) {
 			$notifier = new Notifier($this->mailer);
 			$notifier->sendMailByNewWorkroomComment($comment, $comment->getWorkEntry(), $this->loadExtraRecipientsForWorkEntryComment($comment));
 		}
