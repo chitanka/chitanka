@@ -20,6 +20,7 @@
 		"sensio/generator-bundle": "2.3.*",
 		"sensio/buzz-bundle": "dev-master",
 		"incenteev/composer-parameter-handler": "~2.0",
+		"sonata-project/core-bundle": "~2.2@dev",
 		"sonata-project/admin-bundle": "2.2.*@dev",
 		"sonata-project/doctrine-orm-admin-bundle": "dev-master",
 		"sonata-project/easy-extends-bundle" : "dev-master",
@@ -27,7 +28,9 @@
 		"simplethings/entity-audit-bundle": "dev-master",
 		"friendsofsymfony/comment-bundle": "dev-master",
 		"sfblib": "dev-master",
-		"apibot": "dev-master"
+		"apibot": "dev-master",
+		"twbs/bootstrap": "3.0.*",
+		"leafo/lessphp": "0.4.0"
 	},
 	"repositories": [
 		{

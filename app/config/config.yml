@@ -219,8 +219,7 @@ sonata_block:
 
 fos_rest:
     body_listener: false
-    format_listener:
-        default_priorities: [html, atom, */*]
+    format_listener: false
     view:
         view_response_listener: true
 
