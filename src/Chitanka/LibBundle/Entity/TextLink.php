@@ -40,7 +40,7 @@ class TextLink extends Entity
 
 	/**
 	 * @var string
-	 * @ORM\Column(type="string", length=255)
+	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $description;
 
