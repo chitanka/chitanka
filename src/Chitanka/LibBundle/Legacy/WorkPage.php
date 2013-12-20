@@ -63,11 +63,10 @@ class WorkPage extends Page {
 		$progressBarWidth = '20',
 
 		$fileWhiteList = array(
-			'txt', 'sfb', 'fb2',
-			'zip', 'rar',
-			'7z', 'gz', 'tar', 'tgz', 'bz2',
-			'odt', 'pdf', 'doc', 'rtf', 'djvu',
-			'jpg', 'png', 'gif',
+			'sfb', 'fb2', 'txt',
+			'odt', 'rtf', 'djvu', 'pdf',
+			'zip', '7z', 'gz', 'tar', 'tgz', 'bz2',
+			'jpg', 'png',
 		);
 
 
@@ -97,7 +96,6 @@ class WorkPage extends Page {
 		$this->editComment = $this->request->value(self::FF_EDIT_COMMENT);
 
 		$this->uplfile = $this->makeUploadedFileName();
-		$this->uplfile = $this->escapeBlackListedExt($this->uplfile);
 
 		$this->searchQuery = $this->request->value(self::FF_LQUERY);
 
@@ -144,6 +142,13 @@ class WorkPage extends Page {
 
 			return $this->makeLists();
 		}
+		if ($this->uplfile && ! File::hasValidExtension($this->uplfile, $this->fileWhiteList)) {
+			$formatList = implode(', ', $this->fileWhiteList);
+			$this->addMessage("Файлът не е в един от разрешените формати: $formatList", true);
+
+			return $this->makeLists();
+		}
+
 		switch ($this->workType) {
 			case 0: return $this->updateMainUserData();
 			case 1: return $this->updateMultiUserData();
@@ -666,7 +671,7 @@ HTML;
 			return '';
 		}
 
-		return sprintf('<a href="%s">Подготовка на ново произведение</a>',
+		return sprintf('<a href="%s">Добавяне на нов запис</a>',
 			$this->controller->generateUrl('workroom_entry_new'));
 
 	}
@@ -1226,7 +1231,7 @@ EOS;
 		return <<<EOS
 
 <p>Тук може да разгледате списък на произведенията, които се подготвят за добавяне в библиотеката.</p>
-<p>За да започнете подготовката на нов текст, $ext последвайте връзката „Подготовка на ново произведение“. В случай че нямате възможност сами да сканирате текстове, може да се присъедините към коригирането на заглавията, отбелязани ето така: $umarker (може и да няма такива). Те са достъпни и чрез връзката „{$this->viewTypes['waiting']}“.</p>
+<p>За да започнете подготовката на нов текст, $ext последвайте връзката „Добавяне на нов запис“. В случай че нямате възможност сами да сканирате текстове, може да се присъедините към коригирането на заглавията, отбелязани ето така: $umarker (може и да няма такива). Те са достъпни и чрез връзката „{$this->viewTypes['waiting']}“.</p>
 <p>Бързината на добавянето на нови текстове в библиотеката зависи както от броя на грешките, останали след сканирането и разпознаването, така и от форма&#768;та на текста. Най-бързо ще бъдат добавяни отлично коригирани текстове, правилно преобразувани във <a href="http://wiki.chitanka.info/SFB">формат SFB</a>.</p>
 <p class="error newbooks-notice" style="margin:1em 0">Разрешено е да се добавят само книги, издадени на български преди 2011 г. Изключение се прави за онези текстове, които са пратени от авторите си, както и за фен-преводи.</p>
 EOS;
