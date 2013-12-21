@@ -22,7 +22,7 @@ parameters:
     locale: bg
 
     assets_base_urls: ~
-    style_url:  /bundles/lib/css/FILE.css
+    style_url:  /bundles/lib/css/?
 
     use_http_cache: false
     allow_removed_notice: false

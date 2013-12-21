@@ -30,7 +30,8 @@
 		"sfblib": "dev-master",
 		"apibot": "dev-master",
 		"twbs/bootstrap": "3.0.*",
-		"leafo/lessphp": "0.4.0"
+		"oyejorge/less.php": "v1.5.1b1",
+		"fortawesome/font-awesome": "v4.0.3"
 	},
 	"repositories": [
 		{

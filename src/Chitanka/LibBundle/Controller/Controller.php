@@ -133,9 +133,7 @@ abstract class Controller extends SymfonyController
 			return false;
 		}
 
-		$skin = $this->getUser()->getSkinPreference();
-
-		return str_replace('FILE', $skin, $url);
+		return $url . http_build_query($this->getUser()->getSkinPreference());
 	}
 
 	protected function displayText($text, $headers = array())

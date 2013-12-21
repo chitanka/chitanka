@@ -637,9 +637,9 @@ class User /*extends BaseUser*/ implements UserInterface
 
 	public function getSkinPreference()
 	{
-		$skin = $this->option('skin', 'orange');
-		$nav = $this->option('nav', 'right');
-
-		return "$skin,$nav";
+		return array(
+			'skin' => $this->option('skin', 'orange'),
+			'menu' => $this->option('nav', 'right'),
+		);
 	}
 }
