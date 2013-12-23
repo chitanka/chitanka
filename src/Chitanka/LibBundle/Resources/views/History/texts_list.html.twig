@@ -1,5 +1,5 @@
 <div class="feed-standalone">
-	<a href="{{ path('new_texts', {'_format': 'rss'}) }}" title="RSS 2.0 — нови произведения" rel="feed"><span>RSS</span></a>
+	<a href="{{ path('new_texts', {'_format': 'rss'}) }}" title="RSS 2.0 — нови произведения" rel="feed"><i class="fa fa-rss"> RSS</i></a>
 </div>
 {% import 'LibBundle::text.html.twig' as texttools %}
 {% for day, revisions in text_revisions_by_date %}
@@ -13,5 +13,8 @@
 	{% endfor %}
 	</ul>
 {% else %}
-	<p class="no-items">Няма намерени произведения.</p>
+	<p class="no-items">
+		{% import 'LibBundle::helper.html.twig' as helper %}
+		{{ helper.not_found('Няма намерени произведения.') }}
+	</p>
 {% endfor %}

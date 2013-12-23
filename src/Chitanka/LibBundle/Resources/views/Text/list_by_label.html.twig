@@ -6,16 +6,19 @@
 
 	{% if texts is empty %}
 
-		<p class="no-items">Няма намерени произведения.</p>
+		<p class="no-items">
+			{% import 'LibBundle::helper.html.twig' as helper %}
+			{{ helper.not_found('Няма намерени произведения.') }}
+		</p>
 
 	{% else %}
 
-		<ul class="breadcrumbs" itemprop="breadcrumb">
+		<ul class="breadcrumb" itemprop="breadcrumb">
 			<li><a href="{{ path('texts') }}">Произведения</a></li>
 			{% for parent in parents %}
 				<li><a href="{{ path('texts_by_label', {'slug': parent.slug}) }}">{{ parent.name }}</a></li>
 			{% endfor %}
-			<li>{{ subtitle }}</li>
+			<li class="active">{{ subtitle }}</li>
 		</ul>
 
 		<div class="superlist">

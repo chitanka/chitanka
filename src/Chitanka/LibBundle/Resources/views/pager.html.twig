@@ -1,29 +1,25 @@
 {% if pager.show %}
 	{% set route = route|default(current_route) %}
 	{% set route_params = route_params|default({}) %}
-	<dl class="menu buttonmenu">
-	<dt>Страници</dt>
-	<dd><ul>
+	<div class="text-center">
+	<ul class="pagination">
 		{% if pager.has_prev %}
 			<li class="prev"><a href="{{ path(route, route_params|merge({'page': pager.prev})) }}">Предишна</a></li>
-		{% endif %}
-		{% if pager.has_next %}
-			<li class="next"><a href="{{ path(route, route_params|merge({'page': pager.next})) }}">Следваща</a></li>
 		{% endif %}
 
 		{% set prev_page = 0 %}
 		{% for page, is_active in pager.pages %}
 			{% if prev_page < page - 1 %}
-				<li class="elipsis">…</li>
+				<li class="elipsis"><a>…</a></li>
 			{% endif %}
 
-			{% if is_active %}
-				<li class="selected">{{ page }}</li>
-			{% else %}
-				<li><a href="{{ path(route, route_params|merge({'page': page})) }}">{{ page }}</a></li>
-			{% endif %}
+			<li {% if is_active %}class="active"{% endif %}><a href="{{ path(route, route_params|merge({'page': page})) }}">{{ page }}</a></li>
 			{% set prev_page = page %}
 		{% endfor %}
-	</ul></dd>
-	</dl>
+
+		{% if pager.has_next %}
+			<li class="next"><a href="{{ path(route, route_params|merge({'page': pager.next})) }}">Следваща</a></li>
+		{% endif %}
+	</ul>
+	</div>
 {% endif %}

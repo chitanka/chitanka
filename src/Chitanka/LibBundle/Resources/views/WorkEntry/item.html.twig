@@ -4,7 +4,7 @@
 </td>
 <td>
 	{% if entry.comment %}
-		<span class="act-info tooltip" title="{{ entry.comment }}"><span>Инфо</span></span>
+		<span class="popover-trigger" data-content="{{ entry.comment }}"><i class="fa fa-info-circle"></i><span class="sr-only">Инфо</span></span>
 	{% endif %}
 </td>
 <td>
@@ -29,7 +29,7 @@
 	<ul class="simplelist">
 		<li>{{ link.user_with_email(entry.user) }}</li>
 		{% for contrib in entry.contribs %}
-			<li>{{ link.user_with_email(contrib.user) }}<span class="act-info tooltip" title="{{ contrib.comment }}"><span>Инфо</span></span></li>
+			<li>{{ link.user_with_email(contrib.user) }}<span class="popover-trigger" data-content="{{ contrib.comment }}"><i class="fa fa-info-circle"></i><span class="sr-only">Инфо</span></span></li>
 		{% endfor %}
 	</ul>
 </td>

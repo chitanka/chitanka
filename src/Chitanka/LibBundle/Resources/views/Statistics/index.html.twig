@@ -2,14 +2,15 @@
 
 {% set title = 'Статистика' %}
 {% block content %}
-	<div style="float:left; width:33%">
-		{% include 'LibBundle:Statistics:base.html.twig' %}
+	<div class="row">
+		<div class="col-md-4">
+			{% include 'LibBundle:Statistics:base.html.twig' %}
+		</div>
+		<div class="col-md-4">
+			{% include 'LibBundle:Statistics:authors.html.twig' %}
+		</div>
+		<div class="col-md-4">
+			{% include 'LibBundle:Statistics:texts.html.twig' %}
+		</div>
 	</div>
-	<div style="float:left; width:33%">
-		{% include 'LibBundle:Statistics:authors.html.twig' %}
-	</div>
-	<div style="float:left; width:33%">
-		{% include 'LibBundle:Statistics:texts.html.twig' %}
-	</div>
-	<div style="clear:left"></div>
 {% endblock %}

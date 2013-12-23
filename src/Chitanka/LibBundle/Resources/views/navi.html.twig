@@ -1,27 +1,19 @@
 {% macro letter_links(route, letter, suffix, params) %}
-	<ul role="navigation">
+	<ul role="navigation" class="pagination pagination-sm">
 	{% set letters = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ю', 'Я', '-'] %}
 	{% for aletter in letters %}
-		{% set text = aletter == '-' ? 'Всички' : aletter %}
-		{% if letter == aletter %}
-			<li class="selected">{{ text }}{{ suffix|raw }}</li>
-		{% else %}
-			{% if params is empty %}
-				{% set params = { 'letter': aletter } %}
-			{% else %}
-				{% set params = params|merge({ 'letter': aletter }) %}
-			{% endif %}
-			<li><a href="{{ path(route, params) }}">{{ text }}{{ suffix|raw }}</a></li>
-		{% endif %}
+		{% set text = aletter == '-' ? '»' : aletter %}
+		{% set params = params is empty ? { 'letter': aletter } : params|merge({ 'letter': aletter }) %}
+		<li {% if letter == aletter %}class="active"{% endif %}><a href="{{ path(route, params) }}">{{ text }}{{ suffix|raw }}</a></li>
 	{% endfor %}
 	</ul>
 {% endmacro %}
 
 
 {% macro person_first_letter_links(route, letter) %}
-	{{ _self.letter_links(route, letter|default(''), '<span> (първо име)</span>', {'by': 'first-name'}) }}
+	{{ _self.letter_links(route, letter|default(''), '<span class="sr-only"> (първо име)</span>', {'by': 'first-name'}) }}
 {% endmacro %}
 
 {% macro person_last_letter_links(route, letter) %}
-	{{ _self.letter_links(route, letter|default(''), '<span> (фамилия)</span>', {'by': 'last-name'}) }}
+	{{ _self.letter_links(route, letter|default(''), '<span class="sr-only"> (фамилия)</span>', {'by': 'last-name'}) }}
 {% endmacro %}

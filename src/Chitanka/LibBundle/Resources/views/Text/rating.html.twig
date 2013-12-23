@@ -1,6 +1,6 @@
 <form action="{{ path('text_rating', {'id': text.id}) }}" method="post" class="inline" onsubmit="return saveRating(this)">
 	<fieldset>
-		{{ form_widget(form.rating, {'attr' : {'onchange': 'if (this.value) saveRating(this.form)'}}) }}
+		{{ form_widget(form.rating, {'attr' : {'class': 'form-control', 'onchange': 'if (this.value) saveRating(this.form)'}}) }}
 		{{ form_rest(form) }}
 		<span class="extra indicator">
 			{% if rating.id > 0 %}

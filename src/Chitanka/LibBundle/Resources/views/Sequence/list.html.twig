@@ -13,6 +13,9 @@
 {% for sequence in sequences %}
 	<li>{{ _self.list_item(sequence) }}</li>
 {% else %}
-	<li class="no-items">Няма намерени поредици.</li>
+	<li class="no-items">
+		{% import 'LibBundle::helper.html.twig' as helper %}
+		{{ helper.not_found('Няма намерени поредици.') }}
+	</li>
 {% endfor %}
 </ul>

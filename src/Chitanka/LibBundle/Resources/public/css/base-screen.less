@@ -14,28 +14,16 @@ h3,
 h4,
 h5,
 h6 {
-	margin: 1em 0 1em;
-	padding: .2em 1em .1em;
-	.borderRadius(1em);
+	padding: .4em 0 .2em;
 	line-height: 1.3em;
 	font-weight: normal;
-	text-align: center;
 }
 h1, hgroup h2 {
 	color: @headerFgColor;
 	background-color: @headerBgColor;
 	border-bottom: none;
 	text-shadow: .1em .05em .1em @headerShadowColor;
-}
-h2,
-h3,
-h4,
-h5,
-h6 {
-	.borderRadius(0 1em);
-	.boxShadow(2px 4px 7px #e0e0e0);
-	color: @mainFgColor;
-	background-color: @mainBgColor;
+	text-align: center;
 }
 h1 p,
 h2 p,
@@ -72,7 +60,6 @@ hr {
 }
 
 // кутии за групиране
-fieldset,
 article,
 div.fos_comment_comment_show {
 	margin: 1em 0;
@@ -93,7 +80,6 @@ form.inline fieldset {
 	border: none;
 	vertical-align: middle;
 }
-fieldset > ul,
 #footer ul {
 	margin: 0 0 0 1em;
 	padding: 0 .6em;
@@ -125,11 +111,6 @@ p {
 	margin: 0;
 	text-indent: 2.5em;
 }
-ul,
-ol,
-dl {
-	margin: 0 .5em 0 25px;
-}
 em em {
 	font-weight: bold;
 }
@@ -146,6 +127,10 @@ pre p {
 }
 blockquote {
 	margin: 2.5em 2em;
+	p {
+		font-size: 1em;
+		font-weight: normal;
+	}
 }
 // полета за цитати
 blockquote.letter,
@@ -207,75 +192,27 @@ img[align=left] {
 img[align=right] {
 	margin: 1em 0 1em 1em !important;
 }
-// елементи на формуляри
-input,
-textarea,
-select,
-button {
-	color: inherit;
-	background-color: inherit;
-	border: thin solid @buttonLinksFgColor;
-}
-input,
-textarea,
-button {
-	.borderRadius(.5em);
-	padding: .05em .2em;
-}
-// фокусирани елементи на формуляри
-input:focus,
-textarea:focus,
-select:focus,
-button:focus {
-	color: inherit;
-	background-color: @formElemFocusBgColor;
-}
-// бутони за пращане на формуляр
-input[type=submit],
-button {
-	color: @buttonLinksFgColor;
-	background-color: @buttonLinksBgColor;
-	border: thin solid @buttonLinksFgColor;
-	.boxShadow(.15em .15em .3em #ccc);
-	font-weight: bold;
-	font-variant: small-caps;
-}
-input[type=submit]:focus,
-input[type=submit]:hover,
-button:focus,
-button:hover {
-	color: @buttonLinksBgColor;
-	background-color: @buttonLinksFgColor;
-}
 // картинки в ролята на бутони
 input[type=image] {
 	vertical-align: middle;
 }
 
-// етикети — наименования на елементите
-label {
-	cursor: pointer;
-}
 // span-ове, имащи атрибут „title“
 span[title] {
 	border-bottom: thin dotted @mainFgColor;
+}
+span.popover-trigger {
+	border-bottom: none;
 }
 abbr, acronym {
 	letter-spacing: .1em;
 }
 
-// връзките с техните състояния
-a {
-	color: @linkFgColor;
-	background-color: inherit;
-}
 a:active {
 	color: @alinkFgColor;
-	background-color: inherit;
 }
 a:visited {
 	color: @vlinkFgColor;
-	background-color: inherit;
 }
 a,
 .pseudolink {
@@ -358,6 +295,7 @@ h2 a:visited {
 }
 #navigation h3 {
 	margin: 0;
+	padding-left: .6em;
 	border: none;
 	.borderRadius(.6em .6em 0 0);
 	.boxShadow(none);
@@ -365,7 +303,6 @@ h2 a:visited {
 }
 #navigation h3,
 .tab.selected {
-	padding-left: .2em;
 	color: @navTitleFgColor;
 	background-color: @navTitleBgColor;
 	font-weight: bold;
@@ -453,7 +390,7 @@ option[selected=selected],
 	top: 1em;
 	margin: .2em 0 0 0;
 	padding: 0;
-	width: 25%; // liquid, should play well with the search form
+	width: 30%; // liquid, should play well with the search form
 	border: none;
 	text-align: left;
 }
@@ -466,7 +403,7 @@ option[selected=selected],
 	display: inline;
 	margin: 0;
 	padding: 0 .4em;
-	font-size: .9em;
+	font-size: .8em;
 }
 
 // формуляра за търсене
@@ -476,56 +413,20 @@ option[selected=selected],
 	top: 0;
 	left: 0;
 	margin: 0;
-	padding: 1.2em 0 1.2em 0;
+	padding: 1.2em 0 0 0;
 	width: 100%;
 	border: none;
 	color: @toolbarFgColor;
 	background-color: @toolbarBgColor;
 	background-image: linear-gradient(to bottom, @toolbarBgColor, @mainBgColor);
+	.form-group {
+		width: 90%;
+	}
+	input, button {
+		color: inherit;
+		background-color: inherit;
+	}
 }
-#search form,
-#search div {
-	display: inline;
-}
-#search form {
-	margin-left: (@contentMarginSide+1.5);
-	width: 75%; // liquid, should play well with the personal bar
-}
-#search ul,
-#search li {
-	display: inline;
-	padding: 0;
-}
-#search input, #search select, #search button {
-	border: thin solid @toolbarBordColor;
-}
-#search button {
-	color: inherit;
-	background-color: inherit;
-	.boxShadow(none);
-}
-// основното поле за търсене
-#q {
-	width: 45%;
-}
-.user-dashboard a {
-	padding-left: 1.6em;
-	background-image: url('images/sprite-progress.png');
-	background-repeat: no-repeat;
-	background-position: 2px -260px;
-}
-.user-dashboard a span {
-	display: none;
-}
-
-// полета за търсене
-input.search {
-	padding-left: 1.4em;
-	background-image: url('images/sprite-actions.png');
-	background-repeat: no-repeat;
-	background-position: 3px -523px;
-}
-
 // заглавие за група от текстове в списъчните страници
 .superlist legend,
 .superlist legend a {
@@ -534,8 +435,7 @@ input.search {
 	font-weight: bold;
 }
 .superlist {
-	/*clear: both;*/
-	padding: .5em 0 1em .5em;
+	padding: 0;
 	font-size: 1em;
 }
 .superlist dl:hover {
@@ -576,22 +476,24 @@ dd.extra {
 dd.download {
 	float: right;
 	max-width: 24%;
-	margin-right: .6em;
+	margin-right: 0;
 }
-dl.download-multi dt,
-dl.download-multi dd {
-	padding-top: .4em;
-}
-dl.download-multi dt {
-	width: 82%;
-	max-width: 82%;
-	text-align: right;
-	font-style: italic;
-	font-weight: normal;
-}
-dl.download-multi dd.download {
-	border-top: 1px solid @fieldsetBordColor;
-	padding-left: 20px;
+dl.download-multi {
+	padding-top: .5em;
+	dd, dt {
+		padding-top: .5em;
+	}
+	dt {
+		width: 82%;
+		max-width: 82%;
+		text-align: right;
+		font-style: italic;
+		font-weight: normal;
+	}
+	dd.download {
+		border-top: 1px solid @fieldsetBordColor;
+		padding-left: 20px;
+	}
 }
 dd.orig-name {
 	width: 20em;
@@ -627,16 +529,9 @@ dd.country {
 	font-size: 90%;
 }
 
-.cover-and-links {
-	float: left;
-	margin-bottom: 1em;
-}
-.cover-and-links .cover {
-	float: none;
-}
 .qrcode {
 	float: right;
-	margin: 20px;
+	margin: 0 0 20px 20px;
 }
 
 .book-content {
@@ -684,17 +579,11 @@ li img {
 .ok,
 .read,
 .feed,
-.singleuser,
-.multiuser,
-.act-info,
 .zoom,
-.save,
-.email,
 .close,
 .cluetip-close a,
 .idea,
 .stop,
-.error,
 .frozen .progress,
 span.frozen {
 	position: relative;
@@ -717,26 +606,10 @@ span.frozen {
 .feed {
 	background-position: 0 -854px;
 }
-.multiuser {
-	background-position: 0 -656px;
-}
-.singleuser {
-	background-position: 0 -590px;
-}
-.act-info {
-	background-position: 0 -920px;
-}
 .zoom {
 	background-position: 0 -330px;
 }
-.save {
-	background-position: 0 -198px;
-}
-.email {
-	background-position: 0 -986px;
-}
 .stop,
-.error,
 .frozen .progress,
 span.frozen {
 	background-position: 0 -462px;
@@ -750,9 +623,6 @@ span.frozen {
 }
 .idea {
 	background-position: 0 -1052px;
-}
-.comments:after {
-	content: data-uri('images/actions/034-comments.png');
 }
 
 // Типове текстове
@@ -852,26 +722,10 @@ li.title {
 .rating-11 { background-image: data-uri('images/rating/11.png') }
 .rating-12 { background-image: data-uri('images/rating/12.png') }
 
-.feed-standalone a,
-#helpus a {
-	background: url('images/sprite-basebig.png') no-repeat top left;
-}
-#helpus a {
-	display: block;
-	padding: 2.5em 0 0 0;
-	background-position: 50% -1164px;
-}
-.feed-standalone a {
-	position: relative;
-	padding-left: 1.25em;
-	background-position: 50% -1032px;
-}
-
-
 .feed-standalone {
 	float: right;
 	margin: 0 0 .5em .5em;
-	font-size: 2em;
+	font-size: 1.5em;
 }
 
 // кутия за съдържание — появява се на доста страници
@@ -948,11 +802,12 @@ li.title {
 .tabbedpanebody,
 #tooltip,
 article,
-fieldset,
 div.fos_comment_comment_show {
 	clear: both;
 	color: @mainFgColor;
 	background-color: @tocBgColor;
+	.well;
+	.well-sm;
 }
 .annotation {
 	clear: none;
@@ -1057,7 +912,7 @@ ul.superlist {
 	color: @mainFgColor;
 	background-color: transparent;
 	opacity: .3;
-	font-size: .9em;
+	font-size: .8em;
 	text-decoration: none;
 }
 
@@ -1105,17 +960,26 @@ a.dl:hover {
 	display: inline;
 	padding: 0;
 }
-.navbody .dl-list,
-.cover-and-links .dl-list {
-	display: block;
-	margin: 0;
-	text-align: center;
-}
 .dl-list li {
 	margin: 0 .5em 0 0;
 }
 .dl-list li:last-child {
 	margin-right: 0;
+}
+.expanded-links {
+	.dl-list, .dl-list li {
+		display: block;
+	}
+	.dl-list {
+		span {
+			display: inline;
+			margin-left: 0.5em;
+		}
+	}
+	// TODO hide in view
+	.bookmark-form {
+		display: none;
+	}
 }
 .superlist .action {
 	opacity: 0.05;
@@ -1142,16 +1006,13 @@ article footer .menu {
 	margin: 0;
 }
 // връзки, направени да приличат на бутони
-.buttonmenu a,
-.pagination a {
+.buttonmenu a {
 	color: @buttonLinksFgColor;
 	background-color: @buttonLinksBgColor;
 	text-decoration: none;
 }
 .buttonmenu a,
-.buttonmenu .selected,
-.pagination a,
-.pagination .selected {
+.buttonmenu .selected {
 	padding: .2em .3em;
 	border: thin solid @buttonLinksFgColor;
 	.borderRadius(.3em);
@@ -1161,10 +1022,7 @@ article footer .menu {
 // същите бутонни връзки — активни или с мишка отгоре им
 .buttonmenu a:hover,
 .buttonmenu a:active,
-.pagination a:hover,
-.pagination a:active,
-.buttonmenu .selected,
-.pagination .selected {
+.buttonmenu .selected {
 	color: @buttonLinksBgColor;
 	background-color: @buttonLinksFgColor;
 }
@@ -1202,8 +1060,7 @@ article footer .menu {
 	vertical-align: middle;
 }
 
-.buttonmenu li:after,
-.pagination li:after { content: ""; }
+.buttonmenu li:after { content: ""; }
 a[rel=prev]:before { content: "\2190\00A0"; /* left arrow */ }
 a[rel=next]:after { content: "\00A0\2192"; /* right arrow */ }
 .simplelist li:after,
@@ -1337,31 +1194,15 @@ th.headerSortDown {
 }
 
 // неща, предвидени за текстови браузъри и разни семантични части
-.assistive,
 .buttonmenu a span,
 .buttonmenu .selected span,
-.pagination a span,
-.pagination .selected a,
 // do this as a foreground image to support css on/img off
 .edit span,
-.save span,
-.email span,
-.act-info span,
-.singleuser span,
-.multiuser span,
 .rating span,
 .cluetip-close a span,
-.feed-standalone a span,
 .texttype span,
 .dl-list span {
 	display: none;
-// http://www.webaim.org/techniques/css/invisiblecontent/
-/*	position: absolute;
-	left: -10000px;
-	top: auto;
-	width: 1px;
-	height: 1px;
-	overflow: hidden;*/
 }
 
 
@@ -1387,6 +1228,10 @@ div.example {
 .text-content .subheader {
 	clear: both;
 	font-variant: small-caps;
+	text-align: center;
+}
+.text-content h2 {
+	border-bottom: 1px solid @nav-tabs-border-color;
 }
 .section {
 	clear: both;
@@ -1524,9 +1369,8 @@ div.poem-middle .subheader {
 // text or book covers
 .cover {
 	float: left;
-	margin: 1em 1em 1em 0;
+	margin: 0 1em 1em 0;
 	padding: .3ex;
-	.boxShadow(4px 4px 5px #bbb);
 }
 .post {
 	clear: both;
@@ -1635,6 +1479,9 @@ div.tabbedpanebody {
 	clear: both;
 	margin: .5em auto;
 	text-align: center;
+	.dropdown-menu {
+		text-align: left;
+	}
 }
 
 .selected {
@@ -1750,95 +1597,80 @@ form.loading {
 	text-decoration: none;
 }
 
-
-
-.dashboard a {
-	background: url('images/sprite-basebig.png') no-repeat top left;
-}
-.dashboard-author a { background-position: 50% 2px; }
-.dashboard-series a { background-position: 50% -130px; }
-.dashboard-history a { background-position: 50% -262px; }
-.dashboard-label a { background-position: 50% -394px; }
-.dashboard-pic a { background-position: 50% -526px; }
-.dashboard-book a { background-position: 50% -658px; }
-.dashboard-title a { background-position: 50% -786px; }
-.dashboard-translator a { background-position: 50% -906px; }
-.dashboard-workroom a { background-position: 50% -526px; }
-
 .dashboard {
 	margin: 1em auto 2em;
 	width: 60em;
 	text-align: center;
+	a {
+		display: block;
+		margin: 0;
+		padding: 0;
+		width: 5.5em;
+		color: white;
+		text-decoration: none;
+		text-align: center;
+		&:hover {
+			text-shadow: 1px 1px 10px #c0c0c0;
+		}
+	}
+	i {
+		margin: 0.2em 0;
+		font-size: 2.2em;
+	}
+	ul {
+		padding: 0;
+	}
+	li {
+		display: inline-block;
+		position: relative;
+		margin: 0 1.3em 1.3em 0;
+		padding: .5em;
+
+		border: 2px solid #ccc;
+		.borderRadius(1.3em);
+
+		list-style-type: none;
+		font-variant: small-caps;
+
+		text-shadow: black 1px 1px 0;
+		text-align: center;
+		vertical-align: middle;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		color: #fff;
+
+		border-color: @dashboardBorderColor;
+		background-color: @dashboardBgColor;
+		background-image: linear-gradient(@dashboardBg1Color 0%, @dashboardBg2Color 90%);
+		.boxShadow(@dashboardBoxShadowColor 0px 10px 16px);
+	}
+	span {
+		position: absolute;
+		top: 0;
+		left: .4em;
+		width: 5.7em;
+		padding: .5em 0;
+		.borderRadius(1.2em 1.2em .6em .6em);
+		background-color: rgba(255, 255, 255, 0.25);
+		background-image: linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 95%);
+	}
 }
-.dashboard ul {
-	padding: 0;
-}
-.dashboard li {
-	display: inline-block;
-	position: relative;
-	margin: 0 1.3em 1.3em 0;
-	padding: .5em;
 
-	border: 2px solid #ccc;
-	.borderRadius(1.3em);
-
-	list-style-type: none;
-	font-variant: small-caps;
-
-	text-shadow: black 1px 1px 0;
-	text-align: center;
-	vertical-align: middle;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-	color: #fff;
-
-	border-color: @dashboardBorderColor;
-	background-color: @dashboardBgColor;
-	background-image: linear-gradient(@dashboardBg1Color 0%, @dashboardBg2Color 90%);
-	.boxShadow(@dashboardBoxShadowColor 0px 10px 16px);
-}
-
-.dashboard a {
-	display: block;
-	margin: 0;
-	padding: 3em 0 0 0;
-	width: 5em;
-	color: white;
-	text-decoration: none;
-	text-align: center;
-}
-.dashboard li:hover {
-	text-shadow: 1px 1px 10px #c0c0c0;
-}
-.dashboard span {
-	position: absolute;
-	top: 0;
-	left: .4em;
-	width: 5.2em;
-	padding: .5em 0;
-	.borderRadius(1.2em 1.2em .6em .6em);
-	background-color: rgba(255, 255, 255, 0.25);
-	background-image: linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 95%);
-}
-
-
-
-#first-heading h1, #first-heading h2 {
+#first-heading {
+	margin-bottom: 1.5em;
 	.boxShadow(4px 5px 7px #ddd);
-}
-#first-heading hgroup h1, #first-heading hgroup h2 {
-	margin: 0;
-}
-#first-heading hgroup h1 {
-	.borderRadius(1em 1em 0 0);
-}
-#first-heading hgroup h2 {
-	margin-bottom: 1em;
-	.borderRadius(0 0 1.1em 1.1em);
-}
-#first-heading hgroup h2 span {
-	font-size: 85%;
+	hgroup {
+		h1, h2 {
+			margin: 0;
+		}
+		h2 {
+			padding-top: 0;
+			span {
+				font-size: 85%;
+			}
+		}
+	}
 }
 
 .welcome {
@@ -1911,14 +1743,11 @@ article h1 {
 	height: 3em;
 }
 button.expander {
-	width: 100%;
+	display: block;
+	margin: 0 auto;
+	width: 66%;
 	border: none;
-	text-align: center;
 	cursor: pointer;
-}
-button.expander span {
-	background: data-uri('images/double_arrow_down.png') no-repeat center right;
-	padding-right: 1.1em;
 }
 button.expander:hover span {
 	text-decoration: underline;
@@ -1931,14 +1760,20 @@ button.expander:hover span {
 }
 .wikiinfo {
 	position: relative;
-	max-height: 30em;
-	overflow: auto;
 }
-.infobox .intro {
+.wikiinfo h2 {
+	clear: both;
+}
+// edit section links
+.mw-editsection {
+	display: none;
+}
+.intro {
+	opacity: .6;
 	margin-bottom: 1em;
 	border-bottom: thin solid @fieldsetBordColor;
 	font-style: italic;
-	opacity: .6;
+	font-size: 0.9em;
 }
 table.infobox,
 table.toccolours {
@@ -1991,24 +1826,6 @@ table.toccolours td {
 
 .p-editWiki textarea {
 	width: 100%;
-}
-.breadcrumbs {
-	margin: .5em 0 1.5em;
-	padding: .2em .9em .1em;
-	.borderRadius(.9em);
-	color: @mainFgColor;
-	background-color: @tocBgColor;
-	.boxShadow(.1em .1em .2em #ddd);
-	font-size: 90%;
-}
-.breadcrumbs > li {
-	display: inline;
-}
-.breadcrumbs > li:after {
-	content: " »";
-}
-.breadcrumbs > li:last-child:after {
-	content: "";
 }
 
 .main-form {
@@ -2176,6 +1993,25 @@ ul.two-columns {
 	margin-left: 2em;
 }
 
+.with-actions li:hover .delete-form button,
+.delete-form button:focus,
+.delete-form button:hover {
+	background: data-uri('images/002-delete.png') no-repeat 0 0;
+}
+.bookmark-form button {
+	background-image: data-uri('images/bookmark.png');
+	background-repeat: no-repeat;
+	background-position: 4px 45%;
+	padding-left: 22px;
+}
+.dl-list .bookmark-form button {
+	background-color: transparent;
+}
+.bookmark-form button.active,
+.bookmark-form button:focus,
+.bookmark-form button:hover {
+	background-image: data-uri('images/bookmark_active.png');
+}
 .image-form {
 	display: inline;
 }
@@ -2191,27 +2027,8 @@ ul.two-columns {
 	.borderRadius(0);
 	.boxShadow(none);
 	cursor: pointer;
-	padding-left: 16px;
+	padding-left: 12px;
 	background-color: transparent;
-}
-.with-actions li:hover .delete-form button,
-.delete-form button:focus,
-.delete-form button:hover {
-	background: data-uri('images/002-delete.png') no-repeat 0 0;
-}
-.bookmark-form button {
-	background-image: data-uri('images/bookmark.png');
-	background-repeat: no-repeat;
-	background-position: 2px 50%;
-	padding-left: 18px;
-}
-.dl-list .bookmark-form button {
-	background-color: transparent;
-}
-.bookmark-form button.active,
-.bookmark-form button:focus,
-.bookmark-form button:hover {
-	background-image: data-uri('images/bookmark_active.png');
 }
 .user-actions {
 	text-align: center;
@@ -2278,4 +2095,31 @@ ul.two-columns {
 }
 div.person-aleks_boldin .dl-epub {
 	display: none;
+}
+.tab-content {
+	margin: 0 0 1.6em 0;
+	padding: 1.6em;
+	background-color: @tocBgColor;
+	border-width: 0 1px 1px 1px;
+	border-color: @nav-tabs-border-color;
+	border-style: solid;
+}
+.nav-tabs a {
+	text-decoration: none;
+}
+a.btn {
+	color: @buttonLinksBgColor;
+	text-decoration: none;
+}
+.btn-default:hover {
+	background-color: inherit;
+}
+.popover {
+	max-width: 650px;
+}
+.multiuser {
+	color: @brand-primary;
+}
+.singleuser {
+	color: @brand-success;
 }

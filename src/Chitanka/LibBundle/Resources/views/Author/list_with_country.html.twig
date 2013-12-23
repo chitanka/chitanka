@@ -20,6 +20,9 @@
 		{% endif %}
 	</dl></li>
 {% else %}
-	<li class="no-items">Няма намерени автори.</li>
+	<li class="no-items">
+		{% import 'LibBundle::helper.html.twig' as helper %}
+		{{ helper.not_found('Няма намерени автори.') }}
+	</li>
 {% endfor %}
 </ul>

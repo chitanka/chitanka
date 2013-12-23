@@ -6,13 +6,16 @@
 
 	{% if texts is empty %}
 
-		<p class="no-items">Няма намерени произведения.</p>
+		<p class="no-items">
+			{% import 'LibBundle::helper.html.twig' as helper %}
+			{{ helper.not_found('Няма намерени произведения.') }}
+		</p>
 
 	{% else %}
 
-		<ul class="breadcrumbs" itemprop="breadcrumb">
+		<ul class="breadcrumb" itemprop="breadcrumb">
 			<li><a href="{{ path('texts') }}">Произведения</a></li>
-			<li>{{ subtitle }}</li>
+			<li class="active">{{ subtitle }}</li>
 		</ul>
 
 		{% include 'LibBundle:Text:list.html.twig' %}

@@ -1,7 +1,7 @@
 {% set tooltip %}
 {{ book.author }} — <i>{{ book.title }}</i><br><img src="{{ book.cover }}" class="float-left">{{ book.description|replace({"\n": "<br>"})|raw }}
 {% endset %}
-<a href="{{ book.url }}" class="adbook tooltip" title="{{ tooltip|e }}" data-edit="{{ path('admin_foreign_book_edit', {'id': book.id}) }}">{{ book.author }}<br>
+<a href="{{ book.url }}" class="adbook popover-trigger" data-content="{{ tooltip|e }}" data-edit="{{ path('admin_foreign_book_edit', {'id': book.id}) }}">{{ book.author }}<br>
 	<img src="{{ book.cover }}" width="90" alt="{{ book.author }} — {{ book.title }}" /><br>
 	<b style="font-variant: small-caps"><i>{{ book.title }}</i></b>
 </a>

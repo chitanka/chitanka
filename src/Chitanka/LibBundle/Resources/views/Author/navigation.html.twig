@@ -1,13 +1,13 @@
 {% import 'LibBundle::navi.html.twig' as navi %}
 {% if by == 'first-name' or by == '' %}
 	<h2>Име</h2>
-	<div class="menu buttonmenu first-name">
+	<div class="first-name text-center">
 		{{ navi.person_first_letter_links('authors_by_alpha', (by == 'first-name' ? letter : '')) }}
 	</div>
 {% endif %}
 {% if by == 'last-name' or by == '' %}
 	<h2>Фамилия</h2>
-	<div class="menu buttonmenu last-name">
+	<div class="last-name text-center">
 		{{ navi.person_last_letter_links('authors_by_alpha', (by == 'last-name' ? letter : '')) }}
 	</div>
 {% endif %}

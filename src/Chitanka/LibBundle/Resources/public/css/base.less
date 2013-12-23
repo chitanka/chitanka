@@ -26,7 +26,7 @@
 @import "../bootstrap/less/pagination.less";
 @import "../bootstrap/less/pager.less";
 @import "../bootstrap/less/labels.less";
-@import "../bootstrap/less/badges.less";
+//@import "../bootstrap/less/badges.less";
 @import "../bootstrap/less/jumbotron.less";
 @import "../bootstrap/less/thumbnails.less";
 @import "../bootstrap/less/alerts.less";
@@ -38,7 +38,7 @@
 @import "../bootstrap/less/close.less";
 
 // Components w/ JavaScript
-@import "../bootstrap/less/modals.less";
+//@import "../bootstrap/less/modals.less";
 @import "../bootstrap/less/tooltip.less";
 @import "../bootstrap/less/popovers.less";
 //@import "../bootstrap/less/carousel.less";
@@ -67,7 +67,28 @@
 @contentMarginSide: @navWidth + 1.5;
 
 // bootstrap overwrites
+@brand-primary: @buttonLinksFgColor;
+@brand-success: @logoFgColor;
+@brand-warning: #f0ad4e;
+@brand-danger:  #d9534f;
+@brand-info:    #5bc0de;
+
+@link-color: @linkFgColor;
+
 @font-family-sans-serif: sans-serif;
+@nav-link-hover-bg: @headerBgColor;
+@nav-tabs-active-link-hover-bg: @tocBgColor;
+@pagination-bg: @tocBgColor;
+@breadcrumb-bg: @tocBgColor;
+@well-bg: @tocBgColor;
+@table-bg-accent: @tocBgColor;
+@table-border-color: #E0E0E0;
+@blockquote-border-color: @fieldsetBordColor;
+
+@input-border: darken(@mainBgColor, 15%);
+@input-border-focus: @logoFgColor;
+@input-group-addon-bg: lighten(@headerBgColor, 5%);
+@btn-default-border: @input-border;
 
 @media screen {
 	@import "base-screen.less";

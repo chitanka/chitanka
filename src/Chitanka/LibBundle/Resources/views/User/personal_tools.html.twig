@@ -1,13 +1,13 @@
 <div id="personal" title="Лични инструменти">
-	<h3 class="assistive">Лични инструменти</h3>
+	<h3 class="sr-only">Лични инструменти</h3>
 	<ul>
 	{% if _user.isAuthenticated() %}
-		<li class="user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" class="user" title="Лична страница">{{ _user.username }}</a></li>
-		<li class="user-settings"><a href="{{ path('user_edit', {'username': _user.username}) }}" title="Потребителски настройки">Настройки</a></li>
+		<li class="user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" class="user" title="Лична страница"><i class="fa fa-user"> {{ _user.username }}</i></a></li>
+		<li class="user-settings"><a href="{{ path('user_edit', {'username': _user.username}) }}" title="Потребителски настройки"><i class="fa fa-gear"> Настройки</i></a></li>
 		{% if _user.inGroup('admin') %}
-			<li class="user-dashboard"><a href="{{ path('sonata_admin_dashboard') }}" title="Администрация"><span>Администрация</span></a></li>
+			<li class="user-dashboard"><a href="{{ path('sonata_admin_dashboard') }}" title="Администрация"><i class="fa fa-gears"> Админ</i></a></li>
 		{% endif %}
-		<li class="user-signout" title="Изход от библиотеката"><a href="{{ path('logout') }}">Изход</a></li>
+		<li class="user-signout" title="Изход от библиотеката"><a href="{{ path('logout') }}"><i class="fa fa-sign-out"> Изход</i></a></li>
 	{% else %}
 		<li class="user-signin"><a href="{{ path('login') }}">Вход</a></li>
 		<li class="user-register"><a href="{{ path('register') }}">Регистрация</a></li>

@@ -4,6 +4,9 @@
 {% for book in books %}
 	<li>{{ booktools.book(book) }}</li>
 {% else %}
-	<li class="no-items">Няма намерени книги.</li>
+	<li class="no-items">
+		{% import 'LibBundle::helper.html.twig' as helper %}
+		{{ helper.not_found('Няма намерени книги.') }}
+	</li>
 {% endfor %}
 </ul>

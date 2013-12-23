@@ -1,7 +1,7 @@
-<table class="content">
+<table class="table table-condensed table-striped">
 	<caption>Автори по държава</caption>
 	{% for country, count in author_countries %}
-		<tr class="{{ cycle(['even', 'odd'], loop.index) }}">
+		<tr>
 			<td><a href="{{ path('authors_by_country', {'country': country}) }}">{{ ('country.'~country) | trans }}</a></td>
 			<td>{{ count }}</td>
 		</tr>

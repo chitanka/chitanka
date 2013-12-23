@@ -15,11 +15,6 @@ class WorkroomController extends Controller
 		$_REQUEST['status'] = $status;
 		$_REQUEST['page'] = $page;
 
-		$this->view = array(
-			'js_extra' => array('jquery-tablesorter'),
-			'inline_js' => 'initTableSorter();',
-		);
-
 		return $this->legacyPage('Work');
 	}
 

@@ -183,7 +183,7 @@ EOS;
 	public function getInlineRssLink($route, $data = array(), $title = null) {
 		Legacy::fillOnEmpty($title, $this->title());
 
-		$link = sprintf('<div class="feed-standalone"><a href="%s" title="RSS 2.0 — %s" rel="feed"><span>RSS</span></a></div>', $this->controller->generateUrl($route, $data), $title);
+		$link = sprintf('<div class="feed-standalone"><a href="%s" title="RSS 2.0 — %s" rel="feed"><i class="fa fa-rss"></i> <span>RSS</span></a></div>', $this->controller->generateUrl($route, $data), $title);
 
 		return $link;
 	}
@@ -362,7 +362,7 @@ EOS;
 	protected function makeUserLinkWithEmail($username, $email, $allowemail) {
 		$mlink = '';
 		if ( ! empty($email) && $allowemail) {
-			$mlink = sprintf('<a href="%s" class="email" title="Пращане на писмо на %s"><span>Е-поща</span></a>',
+			$mlink = sprintf('<a href="%s" title="Пращане на писмо на %s"><i class="fa fa-envelope-o"></i><span class="sr-only">Е-поща</span></a>',
 				$this->controller->generateUrl('user_email', array('username' => $username)),
 				String::myhtmlentities($username));
 		}
@@ -438,7 +438,7 @@ EOS;
 	}
 
 	protected function makeCaptchaQuestion() {
-		if ( !$this->showCaptchaToUser() ) {
+		if (!$this->showCaptchaToUser()) {
 			return '';
 		}
 		if ( empty($this->captchaQuestion) ) {
@@ -451,7 +451,7 @@ EOS;
 		$qt = $this->out->hiddenField(self::FF_CQUESTION_T, $question);
 		$tr = $this->out->hiddenField(self::FF_CTRIES, $this->captchaTries);
 		$q = $this->out->label($question, self::FF_CANSWER);
-		$answer = $this->out->textField(self::FF_CANSWER, '', $this->captchaAnswer, 30, 60, 20);
+		$answer = $this->out->textField(self::FF_CANSWER, '', $this->captchaAnswer, 30, 60, 20, '', array('class' => 'form-control'));
 
 		return $qid . $qt . $tr . $q .' '. $answer .'<br>';
 	}

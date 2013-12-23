@@ -151,7 +151,7 @@
 
 {% macro bookmark_form(text, class) %}
 <form class="bookmark-form action-form {{ class|default('image-form') }}" action="{{ path('text_bookmark', {'id': text.id}) }}" method="post" data-credentials="user">
-	<button type="submit" title="Добавяне в Избрани" class="action"><span>Избрани</span></button>
+	<button type="submit" title="Добавяне в Избрани" class="action btn btn-default"><span>Избрани</span></button>
 </form>
 {% endmacro %}
 

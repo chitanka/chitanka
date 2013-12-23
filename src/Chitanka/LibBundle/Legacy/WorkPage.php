@@ -38,7 +38,7 @@ class WorkPage extends Page {
 
 	private
 		$tabs = array('Самостоятелна подготовка', 'Работа в екип'),
-		$tabImgs = array('singleuser', 'multiuser'),
+		$tabImgs = array('fa fa-user singleuser', 'fa fa-users multiuser'),
 		$tabImgAlts = array('сам', 'екип'),
 		$statuses = array(
 			self::STATUS_0 => 'Планира се',
@@ -107,8 +107,8 @@ class WorkPage extends Page {
 		$this->viewList = $this->request->value(self::FF_VIEW_LIST,
 			$this->defViewList, null, $this->viewLists);
 
-		foreach (array(self::STATUS_4, self::STATUS_5, self::STATUS_6, self::STATUS_7) as $st) {
-			$this->viewTypes["st-$st"] = $this->statuses[$st];
+		foreach ($this->statuses as $st => $title) {
+			$this->viewTypes["st-$st"] = $title;
 		}
 
 		if ( !empty($this->subaction) && !empty($this->viewTypes[$this->subaction]) ) {
@@ -371,17 +371,12 @@ class WorkPage extends Page {
 
 
 	protected function makeUserGuideLink() {
-		return '<div class="float-right"><a class="act-info" href="http://wiki.chitanka.info/Workroom" title="Наръчник за работното ателие">Наръчник за работното ателие</a></div>';
+		return '<div class="float-right"><a href="http://wiki.chitanka.info/Workroom" title="Наръчник за работното ателие"><i class="fa fa-info-circle"></i> Наръчник за работното ателие</a></div>';
 	}
 
 	protected function makeLists() {
 		$o = $this->makePageHelp()
-			. '<div class="standalone buttonmenu">'
-				. $this->makeNewEntryLink()
-			. '</div>'
-			. '<dl class="menu"><dt>Преглед</dt><dd>'
-				. $this->makeViewWorksLinks()
-			. '</dd></dl>'
+			. '<div class="standalone">' . $this->makeNewEntryLink() . '</div>'
 			. $this->makeSearchForm();
 
 		if ($this->viewList == 'work') {
@@ -398,16 +393,21 @@ class WorkPage extends Page {
 
 	protected function makeSearchForm()
 	{
-		$label = $this->out->label('Търсене на: ', self::FF_LQUERY);
-		$search = $this->out->textField(self::FF_LQUERY, '', $this->searchQuery, 50, 100, 0, 'Търсене из подготвяните произведения', array('class' => 'search'));
+		$id = self::FF_LQUERY;
 		$action = $this->controller->generateUrl('workroom');
-
 		return <<<EOS
 
-<form action="$action" method="get"><div class="standalone">
-	$label$search
-	<input type="submit" value="Показване">
-</div></form>
+<form action="$action" method="get" class="form-inline standalone" role="form">
+	{$this->makeViewWorksLinks()}
+	<div class="form-group">
+		<label for="$id" class="sr-only">Търсене на: </label>
+		<div class="input-group">
+			<span class="input-group-addon"><i class="fa fa-search"></i></span>
+			<input type="text" class="form-control" title="Търсене из подготвяните произведения" maxlength="100" size="50" id="$id" name="$id">
+		</div>
+	</div>
+	<input type="submit" class="btn btn-default" value="Показване">
+</form>
 EOS;
 	}
 
@@ -444,7 +444,7 @@ EOS;
 		$adminStatus = $this->userIsAdmin() ? '<th title="Администраторски статус"></th>' : '';
 
 		return <<<EOS
-<table class="content sortable">
+<table class="table table-striped table-condensed table-bordered">
 <thead>
 	<tr>
 		<th>Дата</th>
@@ -535,7 +535,7 @@ EOS;
 			$file = $this->makeFileLink($uplfile);
 		}
 		$entryLink = $this->controller->generateUrl('workroom_entry_edit', array('id' => $id));
-		$commentsLink = $num_comments ? sprintf('<a href="%s#fos_comment_thread" title="Коментари" class="comments">%s</a>', $entryLink, $num_comments) : '';
+		$commentsLink = $num_comments ? sprintf('<a href="%s#fos_comment_thread" title="Коментари"><i class="fa fa-comments-o"></i>%s</a>', $entryLink, $num_comments) : '';
 		$title = sprintf('<a href="%s" title="Към страницата за редактиране">%s</a>', $entryLink, $title);
 		$this->rowclass = $this->out->nextRowClass($this->rowclass);
 		$st = $progress > 0
@@ -613,11 +613,14 @@ EOS;
 
 	private function makeAdminFieldsForTable($dbrow)
 	{
+		if (empty($dbrow['admin_comment'])) {
+			return '<td></td>';
+		}
 		$comment = htmlspecialchars(nl2br($dbrow['admin_comment']));
 		$class = htmlspecialchars(str_replace(' ', '-', $dbrow['admin_status']));
 		return <<<HTML
 <td>
-<span class="tooltip workroom-$class" title="$comment">
+<span class="popover-trigger workroom-$class" data-content="$comment">
 	<span>$dbrow[admin_status]</span>
 </span>
 </td>
@@ -626,7 +629,7 @@ HTML;
 
 	protected function _getUserTypeMarker($type)
 	{
-		return "<span class='{$this->tabImgs[$type]}'><span>{$this->tabImgAlts[$type]}</span></span>";
+		return "<i class=\"{$this->tabImgs[$type]}\"><span class=\"sr-only\">{$this->tabImgAlts[$type]}</span></i>";
 	}
 
 
@@ -636,7 +639,6 @@ HTML;
 
 
 	public function makeExtraInfo($info, $expand = false) {
-		$info = str_replace("\n\n", "\n——\n", $info);
 		$info = strtr($info, array(
 			"\n"   => '<br>',
 			"\r"   => '',
@@ -646,7 +648,7 @@ HTML;
 		}
 		$info = String::myhtmlspecialchars($info);
 
-		return "<span class='act-info tooltip' title='$info'><span>Инфо</span></span>";
+		return '<span class="popover-trigger" data-content="'.$info.'"><i class="fa fa-info-circle"></i><span class="sr-only">Инфо</span></span>';
 	}
 
 
@@ -671,7 +673,7 @@ HTML;
 			return '';
 		}
 
-		return sprintf('<a href="%s">Добавяне на нов запис</a>',
+		return sprintf('<a href="%s" class="btn btn-primary"><i class="fa fa-plus"></i> Добавяне на нов запис</a>',
 			$this->controller->generateUrl('workroom_entry_new'));
 
 	}
@@ -687,7 +689,10 @@ HTML;
 				$class, $title, $title);
 		}
 
-		return '<ul>'. implode("\n", $links) .'</ul>';
+		return '<div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Преглед <span class="caret"></span></button>
+			<ul class="dropdown-menu" role="menu">'. implode("\n", $links) .'</ul>
+			</div>';
 	}
 
 
@@ -696,7 +701,7 @@ HTML;
 		$helpTop = empty($this->entryId) ? $this->makeAddEntryHelp() : '';
 		$tabs = '';
 		foreach ($this->tabs as $type => $text) {
-			$text = "<span class='{$this->tabImgs[$type]}'>$text</span>";
+			$text = "<i class='{$this->tabImgs[$type]}'>$text</i>";
 			$class = '';
 			if ($this->workType == $type) {
 				$class = ' selected';
@@ -1206,7 +1211,7 @@ EOS;
 
 		return <<<EOS
 
-	<table class="content sortable">
+	<table class="content">
 	<caption>Следните потребители обработват текста:</caption>
 	<thead>
 	<tr>
@@ -1231,9 +1236,12 @@ EOS;
 		return <<<EOS
 
 <p>Тук може да разгледате списък на произведенията, които се подготвят за добавяне в библиотеката.</p>
-<p>За да започнете подготовката на нов текст, $ext последвайте връзката „Добавяне на нов запис“. В случай че нямате възможност сами да сканирате текстове, може да се присъедините към коригирането на заглавията, отбелязани ето така: $umarker (може и да няма такива). Те са достъпни и чрез връзката „{$this->viewTypes['waiting']}“.</p>
+<p>За да започнете подготовката на нов текст, $ext последвайте връзката „Добавяне на нов запис“. В случай че нямате възможност сами да сканирате текстове, може да се присъедините към коригирането на заглавията, отбелязани ето така: $umarker. Те са достъпни и чрез връзката „{$this->viewTypes['waiting']}“.</p>
 <p>Бързината на добавянето на нови текстове в библиотеката зависи както от броя на грешките, останали след сканирането и разпознаването, така и от форма&#768;та на текста. Най-бързо ще бъдат добавяни отлично коригирани текстове, правилно преобразувани във <a href="http://wiki.chitanka.info/SFB">формат SFB</a>.</p>
-<p class="error newbooks-notice" style="margin:1em 0">Разрешено е да се добавят само книги, издадени на български преди 2011 г. Изключение се прави за онези текстове, които са пратени от авторите си, както и за фен-преводи.</p>
+<div class="alert alert-danger error newbooks-notice" style="margin:1em 0">
+	<i class="fa fa-warning"></i>
+	Разрешено е да се добавят само книги, издадени на български преди 2011 г. Изключение се прави за онези текстове, които са пратени от авторите си, както и за фен-преводи.
+</div>
 EOS;
 	}
 
@@ -1265,7 +1273,7 @@ EOS;
 		$this->rownr = 0;
 		$this->rowclass = '';
 		$qa = array(
-			'SELECT' => 'u.username, COUNT(ut.user_id) count, SUM(ut.size) size',
+			'SELECT' => 'ut.user_id, u.username, COUNT(ut.user_id) count, SUM(ut.size) size',
 			'FROM' => DBT_USER_TEXT .' ut',
 			'LEFT JOIN' => array(DBT_USER .' u' => 'ut.user_id = u.id'),
 			'GROUP BY' => 'ut.user_id',
@@ -1279,7 +1287,7 @@ EOS;
 
 		return <<<EOS
 
-	<table class="content sortable">
+	<table class="table table-striped table-condensed table-bordered">
 	<caption>Следните потребители са сканирали или коригирали текстове за библиотеката:</caption>
 		<colgroup>
 			<col />
@@ -1303,11 +1311,11 @@ EOS;
 
 	public function makeContribListItem($dbrow) {
 		$this->rowclass = $this->out->nextRowClass($this->rowclass);
-		$ulink = $this->makeUserLink($dbrow['username']);
+		$ulink = $dbrow['user_id'] ? $this->makeUserLink($dbrow['username']) : $dbrow['username'];
 		$s = Number::formatNumber($dbrow['size'], 0);
 		$this->rownr += 1;
 
-		return "\n\t<tr class='$this->rowclass'><td>$this->rownr</td><td>$ulink</td><td>$s</td><td>$count</td></tr>";
+		return "\n\t<tr class='$this->rowclass'><td>$this->rownr</td><td>$ulink</td><td>$s</td><td>$dbrow[count]</td></tr>";
 	}
 
 
@@ -1518,9 +1526,8 @@ EOS;
 
 		return $this->out->link_raw(
 			$this->makeTmpFilePath($file),
-			'<span>Файл</span>',
-			$title,
-			array('class' => 'save'));
+			'<i class="fa fa-save"></i><span class="sr-only">Файл</span>',
+			$title);
 	}
 
 

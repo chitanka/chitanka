@@ -13,6 +13,9 @@
 {% for serie in series %}
 	<li>{{ _self.list_item(serie) }}</li>
 {% else %}
-	<li class="no-items">Няма намерени серии.</li>
+	<li class="no-items">
+		{% import 'LibBundle::helper.html.twig' as helper %}
+		{{ helper.not_found('Няма намерени серии.') }}
+	</li>
 {% endfor %}
 </ul>

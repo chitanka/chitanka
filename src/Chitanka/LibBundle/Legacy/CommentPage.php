@@ -296,18 +296,13 @@ EOS;
 		$chunkId = $this->out->hiddenField('chunkId', $this->chunkId);
 		$replyto = $this->out->hiddenField('replyto', $this->replyto);
 		$reader = $this->user->isAnonymous()
-			? $this->out->textField('reader', '', $this->reader, 40, 160)
+			? $this->out->textField('reader', '', $this->reader, 40, 160, null, '', array('class' => 'form-control'))
 			: $this->user->getUsername();
 		$formreader = $this->user->isAnonymous()
 			? 'this.form.reader.value'
 			: "'".$this->user->getUsername()."'";
 		$comment = $this->out->textarea('commenttext', '', $this->comment, 20, 77,
-			null, array('onkeypress' => 'postform_changed = true'));
-		$submit1 = $this->out->submitButton('Предварителен преглед', '', 0, 'preview',
-			array(
-				//'onclick' => "if ( ! postform_changed ) { return false; } postform_changed = false; return makePreview(this.form, this.form.commenttext.value, $formreader)"
-			) );
-		$submit2 = $this->out->submitButton('Пращане', '', 0, 'send');
+			null, array('onkeypress' => 'postform_changed = true', 'class' => 'form-control'));
 		$hideform = !empty($this->comment) || !empty($this->replyto) ? ''
 			: '$("#postform").hide();';
 
@@ -342,8 +337,8 @@ $allowHelp
 	<div><label for="reader">Име: </label>$reader</div>
 	<div>$question</div>
 	<div>
-	$submit1
-	$submit2
+		<input type="submit" name="preview" class="btn btn-default" value="Предварителен преглед">
+		<input type="submit" name="send" class="btn btn-success" value="Пращане">
 	</div>
 </fieldset>
 </form>

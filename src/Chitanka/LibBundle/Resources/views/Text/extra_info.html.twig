@@ -1,13 +1,7 @@
-<fieldset class="infobox">
-	<legend>Допълнителна информация<a href="#after-extrainfobox" class="assistive"> (Прескачане на допълнителната информация)</a></legend>
-
 	{% if text.book and text.book.has_cover %}
 		{% import 'LibBundle::book.html.twig' as booktools %}
 		{{ booktools.cover_div(text.book, 200) }}
 	{% endif %}
-
-	{% import 'LibBundle::text.html.twig' as texttools %}
-	{{ texttools.qrcode(text) }}
 
 	{% for contrib in text.userContribs %}
 		{% if contrib.comment %}
@@ -27,19 +21,5 @@
 	{% endif %}
 	{{ text.fullExtraInfoForHtml(asset('/'))|raw }}
 
-	{% if text.links|length %}
-		<div class="menu">
-			<hr>
-			<p>В други сайтове:</p>
-			<ul class="buttonmenu">
-				{% for link in text.links %}
-					<li><a href="{{ link.url }}">{{ link.sitename }}{% if link.description is not empty %} ({{ link.description }}){% endif %}</a></li>
-				{% endfor %}
-			</ul>
-		</div>
-	{% endif %}
-
 	<hr>
 	<p>Последна редакция: {{ text.currev.date|humandate }}</p>
-</fieldset>
-<div id="after-extrainfobox" class="assistive"><!-- FIXME redundant --></div>

@@ -26,11 +26,28 @@
 		{% include 'LibBundle:Text:annotation.html.twig' %}
 	{% endif %}
 
-	{% include 'LibBundle:Text:info.html.twig' %}
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#text-info" data-toggle="tab">Информация</a></li>
+		{% if part <= 1 %}
+		<li><a href="#text-extra-info" data-toggle="tab">Допълнителна информация</a></li>
+		{% endif %}
+		<li><a href="#text-links" data-toggle="tab">Сваляне / Връзки</a></li>
+	</ul>
 
-	{% if part <= 1 %}
-		{% include 'LibBundle:Text:extra_info.html.twig' %}
-	{% endif %}
+	<div class="tab-content clearfix">
+		<div class="tab-pane active" id="text-info">
+			{% include 'LibBundle:Text:info.html.twig' %}
+		</div>
+
+		{% if part <= 1 %}
+			<div class="tab-pane" id="text-extra-info">
+				{% include 'LibBundle:Text:extra_info.html.twig' %}
+			</div>
+		{% endif %}
+		<div class="tab-pane expanded-links" id="text-links">
+			{% include 'LibBundle:Text:extra_links.html.twig' %}
+		</div>
+	</div>
 
 	{% include 'LibBundle:Text:toc.html.twig' %}
 
@@ -43,15 +60,6 @@
 	{% include 'LibBundle:Text:end_message.html.twig' %}
 {% endblock %}
 
-{% if text.removed_notice is empty %}
-	{% set download_links %}
-		{% import 'LibBundle::text.html.twig' as texttools %}
-		<div class="text-entity" data-id="{{ text.id }}">
-			{{ texttools.download_links(text) }}
-		</div>
-	{% endset %}
-	{% set navextra = navextra|merge({'Сваляне': download_links}) %}
-{% endif %}
 {% block inline_js %}
 	/*mgSettings = $.extend(mgSettings, {
 		"textId": {{ text.id }},

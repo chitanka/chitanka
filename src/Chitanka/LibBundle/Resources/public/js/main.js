@@ -271,7 +271,11 @@ $(function(){
 	}
 
 	initCluetip();
-	$(".tooltip").tooltip({showURL: false, showBody: "<br>"});
+	$(".popover-trigger").popover({
+		html: true,
+		placement: 'auto',
+		trigger: 'hover'
+	});
 
 	if ($.cookie(togglerCookieName)) {
 		$("#toggle-nav-link").click();

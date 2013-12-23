@@ -20,8 +20,9 @@
 
 {% endblock %}
 
-{% if book.withAutohide() %}
-	{% set inline_js %}
+{% block inline_js %}
+	$(".book-tabs").find("a:first").tab('show');
+	{% if book.withAutohide() %}
 		$(":header.inline-text").parent().addClass("collapsed").boxcollapse(false);
-	{% endset %}
-{% endif %}
+	{% endif %}
+{% endblock %}

@@ -17,6 +17,9 @@
 		<dd class="orig-name">{{ author.orig_name ? author.orig_name|name_format(by)|raw : '—' }}</dd>
 	</dl></li>
 {% else %}
-	<li class="no-items">Няма намерени автори.</li>
+	<li class="no-items">
+		{% import 'LibBundle::helper.html.twig' as helper %}
+		{{ helper.not_found('Няма намерени автори.') }}
+	</li>
 {% endfor %}
 </ul>

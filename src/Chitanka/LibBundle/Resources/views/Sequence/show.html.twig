@@ -3,10 +3,10 @@
 {% set title = '<a class="selflink" data-edit="'~ path('admin_sequence_edit', {'id': sequence.id}) ~'">'~ sequence.name ~'</a>' %}
 {% set subtitle = 'издателска поредица' %}
 {% block content %}
-	<ul class="breadcrumbs" itemprop="breadcrumb">
+	<ul class="breadcrumb" itemprop="breadcrumb">
 		<li><a href="{{ path('sequences') }}">Издателски поредици</a></li>
 		<li><a href="{{ path('sequences_by_alpha', {'letter': sequence.name|first_char}) }}">{{ sequence.name|first_char }}</a></li>
-		<li>{{ sequence.name }}
+		<li class="active">{{ sequence.name }}
 			{% if sequence.publisher %}
 				({{ sequence.publisher }})
 			{% endif %}

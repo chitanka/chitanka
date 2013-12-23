@@ -1,12 +1,13 @@
 <div id="search" role="search" title="Претърсване на библиотеката">
-<h3 class="assistive">Търсене</h3>
-<form action="{{ path('search') }}" method="get">
-	<ul>
-		<li id="q-box">
-			<label for="q" class="assistive">Дума или израз</label>
-			<input id="q" name="q" class="search" tabindex="1" value="{{ app.request.query.get('q') }}" accesskey="т">
-		</li>
-		<li><button class="search" type="submit"><span class="assistive">Търсене </span>»</button></li>
-	</ul>
-</form>
+	<h3 class="sr-only">Търсене</h3>
+	<form action="{{ path('search') }}" method="get" class="form-inline" role="form">
+		<div class="form-group">
+			<label for="q" class="sr-only">Дума или израз</label>
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon"><i class="fa fa-search"></i></span>
+				<input id="q" name="q" class="form-control" tabindex="1" value="{{ app.request.query.get('q') }}" accesskey="т">
+			</div>
+		</div>
+		<button class="btn btn-default btn-sm" type="submit"><span class="sr-only">Търсене </span>»</button>
+	</form>
 </div>

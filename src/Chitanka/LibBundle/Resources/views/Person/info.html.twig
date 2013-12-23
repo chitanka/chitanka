@@ -1,18 +1,15 @@
 {% if person.person is empty %}
-	<fieldset class="infobox collapsed">
-		<legend>Информация</legend>
-		{% if info is defined %}
-			{% if info_intro %}
-				<p class="intro">{{ info_intro|replace({'$1': person.name})|raw }}</p>
-			{% endif %}
-			<div class="wikiinfo">{{ info|raw }}</div>
-		{% else %}
-			{% if person.orig_name is defined %}
-				<p>Оригинално изписване: {{ person.orig_name }}</p>
-			{% endif %}
-			<p><i>Няма биографична информация за {{ person.name }}.</i> <!--<a href="{{ path('person_suggest', {'slug': person.slug}) }}">Предложете такава!</a>--></p>
+	{% if info is defined %}
+		{% if info_intro %}
+			<p class="intro">{{ info_intro|raw }}</p>
 		{% endif %}
-	</fieldset>
+		<div class="wikiinfo">{{ info|raw }}</div>
+	{% else %}
+		{% if person.orig_name is defined %}
+			<p>Оригинално изписване: {{ person.orig_name }}</p>
+		{% endif %}
+		<p><i>Няма биографична информация за {{ person.name }}.</i> <!--<a href="{{ path('person_suggest', {'slug': person.slug}) }}">Предложете такава!</a>--></p>
+	{% endif %}
 {% else %}
 	{% import 'LibBundle::link.html.twig' as link %}
 	<p>{{ ('person.alt.'~person.type) | trans({'%current%': person.name, '%target%': link.person(person.person)})|raw }}</p>

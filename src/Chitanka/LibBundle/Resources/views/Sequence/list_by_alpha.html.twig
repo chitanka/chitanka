@@ -3,9 +3,8 @@
 {% set title = 'Издателски поредици: ' ~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
 
+	{% include 'LibBundle:Sequence:navigation.html.twig' with {'letter': letter} %}
 	{% include 'LibBundle:Sequence:list.html.twig' %}
 	{% include 'LibBundle::pager.html.twig' %}
-	<hr>
-	{% include 'LibBundle:Sequence:navigation.html.twig' with {'letter': letter} %}
 
 {% endblock %}

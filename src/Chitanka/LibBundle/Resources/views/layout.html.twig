@@ -21,6 +21,7 @@
 	{#% if stylesheet %#}
 		{{ render_esi(controller('LibBundle:User:stylesheet')) }}
 	{#% endif %#}
+	<link rel="stylesheet" href="{{ asset('bundles/lib/font-awesome/css/font-awesome.min.css') }}">
 	{% if css_extra is defined %}
 		{% for extra_stylesheet in css_extra %}
 			<link rel="stylesheet" href="{{ asset(extra_stylesheet) }}">
@@ -82,7 +83,7 @@
 
 		<div id="navigation" role="navigation">
 		{% block navigation %}
-			<h2 class="assistive">Навигация</h2>
+			<h2 class="sr-only">Навигация</h2>
 
 			<div id="logo" role="banner">
 				<a href="{{ path('homepage') }}" title="Към началната страница">Моята библиотека<span></span></a>
@@ -111,7 +112,7 @@
 
 	<div id="footer" role="contentinfo">
 	{% block footer %}
-		<h2 class="assistive">Завършваща част</h2>
+		<h2 class="sr-only">Завършваща част</h2>
 		<ul>
 			<li><a href="{{ path('about') }}">За Моята библиотека</a></li>
 			<li><a href="{{ path('rules') }}">Правила</a></li>
@@ -136,8 +137,9 @@
 	{% else %}
 		{% set scripts = ['jquery'] %}
 	{% endif %}
-	{% set scripts = scripts|merge(['jquery-hoverIntent', 'jquery-cluetip', 'jquery-tooltip', 'jquery-cookie', 'jquery-myplugins', 'main']) %}
+	{% set scripts = scripts|merge(['jquery-hoverIntent', 'jquery-cluetip', 'jquery-cookie', 'jquery-myplugins', 'main']) %}
 	<script src="{{ asset('bundles/lib/js/'~ scripts|join(',') ~'.js') }}"></script>
+	<script src="{{ asset('bundles/lib/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 	{% if js_extra is defined %}
 		<script src="{{ asset('bundles/lib/js/'~ js_extra|join(',') ~'.js') }}"></script>
 	{% endif %}

@@ -7,51 +7,57 @@
 {% if book.removed_notice is not empty %}
 	<div class="removed-notice">{{ book.removed_notice|raw }}</div>
 {% else %}
-	<div class="cover-and-links">
-		{{ booktools.cover_div(book, 200) }}
-		{{ booktools.download_links(book) }}
-	</div>
+
+	{{ booktools.cover_div(book, 200) }}
 	{% if book.hasAnno %}
-		<fieldset class="annotation">
-			<legend>Анотация</legend>
-			{{ book.annotationAsXhtml|replace({'IMG_DIR_PREFIX': asset('/')})|raw }}
-		</fieldset>
+		{{ book.annotationAsXhtml|replace({'IMG_DIR_PREFIX': asset('/')})|raw }}
 	{% endif %}
 
-	{% if template != "" %}
-	<fieldset class="book-content superlist">
-		<legend>Съдържание</legend>
-		{% import 'LibBundle::text.html.twig' as texttools %}
-		{# TODO refactor and improve this template expansion #}
-		{% set options = {'title': 'TEXT_TITLE'} %}
-		{% for text in book.texts %}
-			{% set template = template|put_text_in_template(text, (book.isFromSameAuthor(text) ? texttools.text(text, options) : texttools.text_with_author(text, options))) %}
-		{% endfor %}
+	<div style="clear:both"><br></div>
 
-		{{ template|join_lists|replace({'IMG_DIR_PREFIX': asset('/')})|raw }}
-	</fieldset>
-	{% endif %}
-{% endif %}
+	<ul class="nav nav-tabs book-tabs">
+		{% if template != "" %}
+			<li><a href="#book-content" data-toggle="tab">Съдържание</a></li>
+		{% endif %}
+		{% if info %}
+			<li><a href="#book-extra-info" data-toggle="tab">Допълнителна информация</a></li>
+		{% endif %}
+		<li><a href="#book-links" data-toggle="tab">Сваляне / Връзки</a></li>
+	</ul>
+	<div class="tab-content">
+		{% if template != "" %}
+			<div class="book-content superlist tab-pane" id="book-content">
+				{% import 'LibBundle::text.html.twig' as texttools %}
+				{# TODO refactor and improve this template expansion #}
+				{% set options = {'title': 'TEXT_TITLE'} %}
+				{% for text in book.texts %}
+					{% set template = template|put_text_in_template(text, (book.isFromSameAuthor(text) ? texttools.text(text, options) : texttools.text_with_author(text, options))) %}
+				{% endfor %}
 
-{% if book.links|length %}
-	<div class="menu">
-		<p>Тази книга в други сайтове:</p>
-		<ul class="buttonmenu">
-			{% for link in book.links %}
-				<li><a href="{{ link.url }}">{{ link.site.name }}</a></li>
-			{% endfor %}
-		</ul>
+				{{ template|join_lists|replace({'IMG_DIR_PREFIX': asset('/')})|raw }}
+			</div>
+		{% endif %}
+
+		{% if info %}
+			<div class="tab-pane" id="book-extra-info">
+				{{ info|raw }}
+			</div>
+		{% endif %}
+
+		<div class="tab-pane expanded-links" id="book-links">
+			{{ booktools.qrcode(book) }}
+			Сваляне на книгата във формат:
+			{{ booktools.download_links(book) }}
+			{% if book.links|length %}
+				<div class="menu">
+					<p>Тази книга в други сайтове:</p>
+					<ul class="buttonmenu">
+						{% for link in book.links %}
+							<li><a href="{{ link.url }}">{{ link.site.name }}</a></li>
+						{% endfor %}
+					</ul>
+				</div>
+			{% endif %}
+		</div>
 	</div>
 {% endif %}
-
-{% if info %}
-	<fieldset class="infobox">
-		<legend>Допълнителна информация</legend>
-		{{ booktools.qrcode(book) }}
-		{{ info|raw }}
-	</fieldset>
-{% endif %}
-
-{#
-{% include 'LibBundle::color_legend.html.twig' %}
-#}

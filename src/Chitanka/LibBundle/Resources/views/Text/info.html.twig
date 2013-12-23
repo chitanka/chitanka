@@ -1,7 +1,6 @@
 {% import 'LibBundle::text.html.twig' as textinfo %}
 {% import 'LibBundle::link.html.twig' as link %}
-<fieldset class="infobox text-entity" data-id="{{ text.id }}">
-	<legend>Информация<a href="#after-infobox" class="assistive"> (Прескачане на информацията)</a></legend>
+<div class="text-entity" data-id="{{ text.id }}">
 	<ul>
 		{% if text.series.slug is defined %}
 			<li>
@@ -72,5 +71,4 @@
 		<li>{{ render_esi(controller('LibBundle:Text:markReadForm', {'id': text.id})) }}
 		<li>{{ textinfo.bookmark_form(text, ' ') }}</li>
 	</ul>
-</fieldset>
-<div id="after-infobox" class="assistive"></div>
+</div>

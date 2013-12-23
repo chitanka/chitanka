@@ -120,8 +120,12 @@ class PersonController extends Controller
 			// TODO move this in the entity
 			list($prefix, $name) = explode(':', $person->getInfo(), 2);
 			$site = $this->getWikiSiteRepository()->findOneBy(array('code' => $prefix));
-			$this->view['info'] = Legacy::getMwContent($site->getUrl($name), $this->container->get('buzz'));
-			$this->view['info_intro'] = $site->getIntro();
+			$url = $site->getUrl($name);
+			$this->view['info'] = Legacy::getMwContent($url, $this->container->get('buzz'));
+			$this->view['info_intro'] = strtr($site->getIntro(), array(
+				'$1' => $person->getName(),
+				'$2' => $url,
+			));
 		}
 	}
 

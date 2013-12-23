@@ -5,24 +5,40 @@
 {% block content %}
 
 	<div class="person-{{ person.slug }}">
-	{% include 'LibBundle:Person:info.html.twig' %}
 
-	{% if books is defined %}
-		<h2 id="books">Книги</h2>
-		{% include 'LibBundle:Book:list.html.twig' %}
-	{% endif %}
+		<ul id="person-tabs" class="nav nav-tabs">
+			{% if books is not empty %}
+			<li><a href="#books" data-toggle="tab"><i class="fa fa-book"></i> Книги</a></li>
+			{% endif %}
+			{% if texts_as_author is not empty %}
+			<li><a href="#texts" data-toggle="tab"><i class="fa fa-folder-open"></i> Произведения</a></li>
+			{% endif %}
+			<li><a href="#article" data-toggle="tab"><i class="fa fa-film"></i> Биография</a></li>
+		</ul>
 
-	{% if books is defined and texts_as_author|length %}
-		<h2 id="author">Произведения</h2>
-	{% endif %}
-	{% for series in texts_as_author %}
-		{% include 'LibBundle:Author:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
-	{% endfor %}
-	</div>
+		<div class="tab-content">
+			{% if books is not empty %}
+			<div class="tab-pane" id="books">
+				{% include 'LibBundle:Book:list.html.twig' %}
+			</div>
+			{% endif %}
 
-	{% include 'LibBundle::color_legend.html.twig' %}
+			{% if texts_as_author is not empty %}
+			<div class="tab-pane superlist" id="texts">
+				{% for series in texts_as_author %}
+					{% include 'LibBundle:Author:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
+				{% endfor %}
+			</div>
+			{% endif %}
+
+			<div class="tab-pane" id="article">
+				{% include 'LibBundle:Person:info.html.twig' %}
+			</div>
+		</div>
+
+	</div><!-- end class=person -->
 {% endblock %}
 
 {% block inline_js %}
-	$("fieldset.infobox,fieldset.filters").boxcollapse();
+	$("#person-tabs").find("a:first").tab('show');
 {% endblock %}

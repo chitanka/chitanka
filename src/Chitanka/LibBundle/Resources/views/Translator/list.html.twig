@@ -5,6 +5,9 @@
 		<dd class="country" itemprop="nationality" itemscope itemtype="http://schema.org/Country"><span itemprop="name">{{ ('country.'~translator.country) | trans }}</span></dd>
 	</dl></li>
 {% else %}
-	<li class="no-items">Няма намерени преводачи.</li>
+	<li class="no-items">
+		{% import 'LibBundle::helper.html.twig' as helper %}
+		{{ helper.not_found('Няма намерени преводачи.') }}
+	</li>
 {% endfor %}
 </ul>

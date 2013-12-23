@@ -4,10 +4,10 @@
 {% set subtitle = 'серия' %}
 {% block content %}
 	{% import 'LibBundle::text.html.twig' as text_lister %}
-	<ul class="breadcrumbs" itemprop="breadcrumb">
+	<ul class="breadcrumb" itemprop="breadcrumb">
 		<li><a href="{{ path('series') }}">Серии</a></li>
 		<li><a href="{{ path('series_by_alpha', {'letter': series.name|first_char}) }}">{{ series.name|first_char }}</a></li>
-		<li><em>{{ series.name }}</em> {{ text_lister.author_list(series.authors) }}</li>
+		<li class="active"><em>{{ series.name }}</em> {{ text_lister.author_list(series.authors) }}</li>
 	</ul>
 	<div class="superlist">
 	{{ text_lister.text_list(texts) }}
