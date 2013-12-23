@@ -48,10 +48,12 @@ $positions = array(
 	'left',
 );
 
-$cacheDir = strpos(__DIR__, '/web/bundles/') === false
-	? __DIR__.'/../../../../../../app/cache/less'
-	: __DIR__.'/../../../cache/less';
-require __DIR__."/../bin/Less.php";
+$thisDir = dirname(__FILE__);
+$cacheDir = strpos($thisDir, '/web/bundles/') === false
+	? $thisDir.'/../../../../../../app/cache/less'
+	: $thisDir.'/../../../cache/less';
+require $thisDir."/../bin/Less.php";
+ini_set('memory_limit', '128M');
 $cssFile = compileStyleFiles($cacheDir, get('skin', $skins), get('menu', $positions));
 if ($cssFile) {
 	sendCssFile($cssFile);
