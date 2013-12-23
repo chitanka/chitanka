@@ -52,7 +52,7 @@ $positions = array(
 $rootDir = strpos(__DIR__, '/web/bundles/') === false
 	? __DIR__.'/../../../../../..'
 	: __DIR__.'/../../../..';
-require "$rootDir/vendor/less.php/Less.php";
+require __DIR__."/../bin/Less.php";
 $cssFile = compileStyleFiles($rootDir, get('skin', $skins), get('menu', $positions));
 if ($cssFile) {
 	sendCssFile($cssFile);
