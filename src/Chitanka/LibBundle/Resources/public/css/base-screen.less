@@ -584,7 +584,7 @@ li img {
 .cluetip-close a,
 .idea,
 .stop,
-.frozen .progress,
+.frozen .my-progress,
 span.frozen {
 	position: relative;
 	padding-left: 1.35em;
@@ -610,7 +610,7 @@ span.frozen {
 	background-position: 0 -330px;
 }
 .stop,
-.frozen .progress,
+.frozen .my-progress,
 span.frozen {
 	background-position: 0 -462px;
 }
@@ -686,18 +686,18 @@ li.title {
 
 
 // Иконки за прогрес
-.progress {
+.my-progress {
 	padding-left: 1.1em;
 	background: url('images/sprite-progress.png') no-repeat top left;
 }
-.progress-0{ background-position: 0 0;  }
-.progress-1{ background-position: 0 -65px;  }
-.progress-2{ background-position: 0 -130px;  }
-.progress-3{ background-position: 0 -195px;  }
-.progress-4{ background-position: 0 -260px;  }
-.progress-5{ background-position: 0 -325px;  }
-.progress-6{ background-position: 0 -390px;  }
-.progress-7{ background-position: 0 -455px;  }
+.my-progress-0{ background-position: 0 0;  }
+.my-progress-1{ background-position: 0 -65px;  }
+.my-progress-2{ background-position: 0 -130px;  }
+.my-progress-3{ background-position: 0 -195px;  }
+.my-progress-4{ background-position: 0 -260px;  }
+.my-progress-5{ background-position: 0 -325px;  }
+.my-progress-6{ background-position: 0 -390px;  }
+.my-progress-7{ background-position: 0 -455px;  }
 
 
 // Оценки по списъчните страници
@@ -1403,14 +1403,6 @@ ins {
 // текст, който е изтрит
 del {
 	text-decoration: none;
-}
-.progressbar {
-	border: thin solid @mainFgColor;
-	font-weight: bold;
-}
-.progressbar .done {
-	color: @navTitleFgColor;
-	background-color: @navTitleBgColor;
 }
 
 div.thumb {
@@ -2121,4 +2113,7 @@ a.btn {
 }
 .singleuser {
 	color: @brand-success;
+}
+td .progress {
+	margin-bottom: 0;
 }

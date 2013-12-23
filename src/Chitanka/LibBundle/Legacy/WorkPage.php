@@ -634,7 +634,7 @@ HTML;
 
 
 	public function makeStatus($code) {
-		return "<span class='progress progress-$code'>{$this->statuses[$code]}</span>";
+		return "<span class='my-progress my-progress-$code'>{$this->statuses[$code]}</span>";
 	}
 
 
@@ -657,14 +657,13 @@ HTML;
 		if ( !$this->showProgressbar ) {
 			return $perc;
 		}
-		$bar = str_repeat(' ', $this->progressBarWidth);
-		$bar = substr_replace($bar, $perc, $this->progressBarWidth/2-1, strlen($perc));
-		$curProgressWidth = ceil($this->progressBarWidth * $progressInPerc / 100);
-		// done bar end
-		$bar = substr_replace($bar, '</span>', $curProgressWidth, 0);
-		$bar = strtr($bar, array(' ' => '&#160;'));
-
-		return "<pre style='display:inline'><span class='progressbar'><span class='done'>$bar</span></pre>";
+		return <<<HTML
+<div class="progress">
+	<div class="progress-bar" role="progressbar" aria-valuenow="$progressInPerc" aria-valuemin="0" aria-valuemax="100" style="width: $progressInPerc%;">
+		<span>$progressInPerc%</span>
+	</div>
+</div>
+HTML;
 	}
 
 
@@ -998,7 +997,7 @@ FIELDS;
 		foreach ($statuses as $code => $text) {
 			if ( !is_null($max) && $code > $max) break;
 			$sel = $selected == $code ? ' selected="selected"' : '';
-			$field .= "\n\t<option value='$code'$sel class='progress progress-$code'>$text</option>";
+			$field .= "\n\t<option value='$code'$sel class='my-progress my-progress-$code'>$text</option>";
 		}
 
 		return $field;
