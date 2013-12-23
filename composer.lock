@@ -2039,12 +2039,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "6c5da368355a0012462cda3c3595dac4e34635c5"
+                "reference": "6f79ea4d9dc68c3e427447e38c969ca1a9394c29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/6c5da368355a0012462cda3c3595dac4e34635c5",
-                "reference": "6c5da368355a0012462cda3c3595dac4e34635c5",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/6f79ea4d9dc68c3e427447e38c969ca1a9394c29",
+                "reference": "6f79ea4d9dc68c3e427447e38c969ca1a9394c29",
                 "shasum": ""
             },
             "require": {
@@ -2088,7 +2088,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2013-12-19 14:04:45"
+            "time": "2013-12-22 17:40:54"
         },
         {
             "name": "sonata-project/doctrine-orm-admin-bundle",

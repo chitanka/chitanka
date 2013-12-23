@@ -639,7 +639,7 @@ class User /*extends BaseUser*/ implements UserInterface
 	{
 		return array(
 			'skin' => $this->option('skin', 'orange'),
-			'menu' => $this->option('nav', 'right'),
+			'menu' => 'left',#$this->option('nav', 'right'),
 		);
 	}
 }
