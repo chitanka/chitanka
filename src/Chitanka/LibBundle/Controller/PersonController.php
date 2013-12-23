@@ -105,9 +105,7 @@ class PersonController extends Controller
 	{
 		$groupBySeries = $format == 'html';
 		$this->view['texts_as_author'] = $this->getTextRepository()->findByAuthor($person, $groupBySeries);
-		if ( count($books = $this->getBookRepository()->getByAuthor($person)) ) {
-			$this->view['books'] = $books;
-		}
+		$this->view['books'] = $this->getBookRepository()->getByAuthor($person);
 	}
 	protected function prepareViewForShowTranslator(Person $person, $format)
 	{
