@@ -1188,19 +1188,19 @@ div.example {
 	padding: .5em;
 }
 
-// заглавията вътре в текста
-.text-content h2,
-.text-content h3,
-.text-content h4,
-.text-content h5,
-.text-content h6,
-.text-content .subheader {
-	clear: both;
-	font-variant: small-caps;
-	text-align: center;
-}
-.text-content h2 {
-	border-bottom: 1px solid @nav-tabs-border-color;
+.text-content {
+	h2, h3, h4, h5, h6, .subheader {
+		clear: both;
+		font-variant: small-caps;
+		text-align: center;
+	}
+	h2 {
+		border-bottom: 1px solid @nav-tabs-border-color;
+	}
+	p {
+		font-size: 115%;
+		line-height: 1.6em;
+	}
 }
 .section {
 	clear: both;

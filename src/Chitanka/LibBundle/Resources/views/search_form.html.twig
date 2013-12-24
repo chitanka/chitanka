@@ -4,10 +4,11 @@
 		<div class="form-group">
 			<label for="q" class="sr-only">Дума или израз</label>
 			<div class="input-group input-group-sm">
-				<span class="input-group-addon"><i class="fa fa-search"></i></span>
 				<input id="q" name="q" class="form-control" tabindex="1" value="{{ app.request.query.get('q') }}" accesskey="т">
+				<span class="input-group-btn">
+					<button class="btn btn-default btn-sm" type="submit"><i class="fa fa-search"></i><span class="sr-only">Търсене</span></button>
+				</span>
 			</div>
 		</div>
-		<button class="btn btn-default btn-sm" type="submit"><span class="sr-only">Търсене </span>»</button>
 	</form>
 </div>
