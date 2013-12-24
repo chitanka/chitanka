@@ -59,7 +59,7 @@ class MainController extends Controller
 	public function lastBooksAction($limit = 3)
 	{
 		$this->view = array(
-			'revisions' => $this->getBookRevisionRepository()->getLatest($limit, false),
+			'revisions' => $this->getBookRevisionRepository()->getLatest($limit, 1, false),
 		);
 
 		return $this->display('last_books');
@@ -68,7 +68,7 @@ class MainController extends Controller
 	public function lastTextsAction($limit = 20)
 	{
 		$this->view = array(
-			'revisions' => $this->getTextRevisionRepository()->getLatest($limit, false),
+			'revisions' => $this->getTextRevisionRepository()->getLatest($limit, 1, false),
 		);
 
 		return $this->display('last_texts');
