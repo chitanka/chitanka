@@ -10,11 +10,11 @@
 		<div class="tab-content">
 			<div class="tab-pane active" id="new-books">
 				{% include 'LibBundle:History:books_list.html.twig' %}
-				<div class="more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
+				<div class="more"><a href="{{ path('new_books', {page: 2}) }}">Още нови книги</a></div>
 			</div>
 			<div class="tab-pane" id="new-texts">
 				{% include 'LibBundle:History:texts_list.html.twig' %}
-				<div class="more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
+				<div class="more"><a href="{{ path('new_texts', {page: 2}) }}">Още нови произведения</a></div>
 			</div>
 		</div>
 	</div>

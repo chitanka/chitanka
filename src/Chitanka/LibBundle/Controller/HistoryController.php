@@ -8,25 +8,27 @@ use Chitanka\LibBundle\Util\Datetime;
 class HistoryController extends Controller
 {
 
+	public $booksPerPage = 30;
+	public $textsPerPage = 30;
+
 	public function indexAction()
 	{
 		$this->view = array(
-			'book_revisions_by_date' => $this->getBookRevisionRepository()->getLatest(10),
-			'text_revisions_by_date' => $this->getTextRevisionRepository()->getLatest(20),
+			'book_revisions_by_date' => $this->getBookRevisionRepository()->getLatest($this->booksPerPage),
+			'text_revisions_by_date' => $this->getTextRevisionRepository()->getLatest($this->textsPerPage),
 		);
-
 
 		return $this->display('index');
 	}
 
 	public function listBooksAction($page, $_format)
 	{
-		$maxPerPage = 20;
+		$maxPerPage = $this->booksPerPage;
 		$repo = $this->getBookRevisionRepository();
 		switch ($_format) {
 			case 'html':
 			case 'rss':
-				$revisions = $repo->getLatest($maxPerPage);
+				$revisions = $repo->getLatest($maxPerPage, $page);
 				$lastOnes = current($revisions);
 				$this->view = array(
 					'dates' => $this->getDateOptions($repo),
@@ -52,7 +54,7 @@ class HistoryController extends Controller
 	public function listBooksByMonthAction($year, $month, $page)
 	{
 		$dates = array("$year-$month-01", Datetime::endOfMonth("$year-$month"));
-		$limit = 30;
+		$limit = $this->booksPerPage;
 
 		$repo = $this->getBookRevisionRepository();
 		$this->view = array(
@@ -73,12 +75,12 @@ class HistoryController extends Controller
 
 	public function listTextsAction($page, $_format)
 	{
-		$maxPerPage = 40;
+		$maxPerPage = $this->textsPerPage;
 		$repo = $this->getTextRevisionRepository();
 		switch ($_format) {
 			case 'html':
 			case 'rss':
-				$revisions = $repo->getLatest($maxPerPage);
+				$revisions = $repo->getLatest($maxPerPage, $page);
 				$lastOnes = current($revisions);
 				$this->view = array(
 					'dates' => $this->getDateOptions($repo),
@@ -104,7 +106,7 @@ class HistoryController extends Controller
 	public function listTextsByMonthAction($year, $month, $page)
 	{
 		$dates = array("$year-$month-01", Datetime::endOfMonth("$year-$month"));
-		$limit = 60;
+		$limit = $this->textsPerPage;
 
 		$repo = $this->getTextRevisionRepository();
 		$revisions = $repo->getByDate($dates, $page, $limit);

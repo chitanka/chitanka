@@ -10,9 +10,9 @@ use Chitanka\LibBundle\Util\Datetime;
 class RevisionRepository extends EntityRepository
 {
 
-	public function getLatest($limit = null, $groupByDate = true)
+	public function getLatest($limit = null, $page = 1, $groupByDate = true)
 	{
-		return $this->getByDate(null, 1, $limit, $groupByDate);
+		return $this->getByDate(null, $page, $limit, $groupByDate);
 	}
 
 	public function getByMonth($month, $page = 1, $limit = null)
