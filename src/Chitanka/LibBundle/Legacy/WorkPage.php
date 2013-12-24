@@ -953,7 +953,7 @@ JS;
 		$tmpfiles = $this->out->textField('tmpfiles', '', rawurldecode($this->tmpfiles), 50, 255)
 			. ' &#160; '.$this->out->label('Размер: ', 'tfsize') .
 				$this->out->textField('tfsize', '', $this->tfsize, 2, 4) .
-				'<abbr title="Мегабайта">MiB</abbr>';
+				'<abbr title="Мебибайта">MiB</abbr>';
 
 		$flink = $this->tmpfiles == self::DEF_TMPFILE ? ''
 			: $this->out->link( $this->makeTmpFilePath($this->tmpfiles), String::limitLength($this->tmpfiles)) .
@@ -1055,7 +1055,7 @@ EOS;
 			$tmpfiles = $this->out->textField('tmpfiles', '', rawurldecode($this->tmpfiles), 50, 255);
 			$tmpfiles .= ' &#160; '.$this->out->label('Размер: ', 'tfsize') .
 				$this->out->textField('tfsize', '', $this->tfsize, 2, 4) .
-				'<abbr title="Мегабайта">MiB</abbr>';
+				'<abbr title="Мебибайта">MiB</abbr>';
 		} else {
 			$status = $this->statuses[$cstatus];
 			$is_frozen = $this->is_frozen ? "($is_frozenLabel)" : '';
@@ -1152,7 +1152,7 @@ EOS;
 		$remoteFile = $this->out->textField('uplfile', 'uplfile2', rawurldecode($uplfile), 50, 255)
 			. ' &#160; '.$this->out->label('Размер: ', 'filesize2') .
 				$this->out->textField('filesize', 'filesize2', $filesize, 2, 4) .
-				'<abbr title="Мегабайта">MiB</abbr>';
+				'<abbr title="Мебибайта">MiB</abbr>';
 
 		return <<<EOS
 
