@@ -5,10 +5,12 @@
 {% include 'LibBundle:Book:_breadcrumb_sequences.html.twig' %}
 
 {% if info %}
-	<fieldset class="infobox">
-		<legend>Допълнителна информация</legend>
+	<ul class="nav nav-tabs book-tabs">
+		<li><a href="#book-extra-info" data-toggle="tab">Допълнителна информация</a></li>
+	</ul>
+	<div class="tab-content">
 		{{ info|raw }}
-	</fieldset>
+	</div>
 {% endif %}
 
 <div id="help-instructions"></div>

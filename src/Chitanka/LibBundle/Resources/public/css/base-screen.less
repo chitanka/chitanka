@@ -250,9 +250,6 @@ h2 a:visited {
 	margin: 0 1em;
 	padding: 0;
 }
-.p_homepage #main-content {
-	margin: 0;
-}
 
 // съобщения, информиращи потребителя за нещо
 .messages {
@@ -779,23 +776,16 @@ li.title {
 // различни кутии — легенда, за авторските права, информационна
 #legend,
 #copyright,
-.infobox,
 .readercomment,
 .tabbedpanebody,
 #tooltip,
 article,
 div.fos_comment_comment_show {
 	clear: both;
-	color: @mainFgColor;
-	background-color: @tocBgColor;
 	.well;
-	.well-sm;
 }
 .annotation {
 	clear: none;
-}
-.infobox {
-	margin-bottom: 2em;
 }
 // читателските мнения
 #readercomments ul,
@@ -1649,12 +1639,14 @@ form.loading {
 .welcome {
 	padding: 1em;
 	font-size: 1.4em;
-	text-align: center;
 	text-shadow: none;
 	color: @mainFgColor;
 	background-color: @mainBgColor;
 }
-
+.p_homepage #main-content {
+	margin: 0 auto;
+	max-width: 75em;
+}
 .p_homepage #first-heading {
 	display: none;
 }
@@ -1665,6 +1657,7 @@ article h1 {
 	font-family: Georgia, "Times New Roman", Times, serif;
 	font-style: italic;
 	font-size: 1.7em;
+	text-align: center;
 	.boxShadow(none);
 }
 article h1 {
@@ -1674,7 +1667,11 @@ article h1 {
 	display: none;
 }
 .p_homepage article {
+	margin: 0 0 1.6em 0;
 	padding: 1.5em;
+	&.collapsed {
+		margin-bottom: 0;
+	}
 }
 .box {
 	float: left;
@@ -1704,7 +1701,7 @@ article h1 {
 	width: 66%;
 }
 .p_homepage .textbox .superlist {
-	margin: 2em 0 0 1.5em;
+	margin: 0;
 }
 .p_homepage .textbox dt,
 .p_homepage .textbox dd {
@@ -1717,10 +1714,10 @@ article h1 {
 }
 button.expander {
 	display: block;
-	margin: 0 auto;
-	width: 66%;
-	border: none;
-	cursor: pointer;
+	margin: 0 auto 1.6em auto;
+	width: 100%;
+	border-width: 5px 0 0 0;
+	line-height: 1em;
 }
 button.expander:hover span {
 	text-decoration: underline;
@@ -1748,14 +1745,11 @@ button.expander:hover span {
 	font-style: italic;
 	font-size: 0.9em;
 }
-table.infobox,
 table.toccolours {
 	float: right;
 	border: thin solid @tocBordColor;
 	border-collapse: collapse;
 }
-table.infobox th,
-table.infobox td,
 table.toccolours th,
 table.toccolours td {
 	padding: 0.2em 0.5em;
@@ -1935,6 +1929,7 @@ ul.two-columns {
 	margin: 0 0 1em 1em;
 }
 .more {
+	margin-top: 0.6em;
 	text-align: right;
 }
 .more a:after {
@@ -2089,6 +2084,12 @@ a.btn {
 }
 .popover {
 	max-width: 650px;
+}
+.well {
+	border-color: darken(@well-bg, 30%);
+}
+.fa {
+	text-indent: 0;
 }
 .multiuser {
 	color: @brand-primary;

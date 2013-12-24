@@ -38,13 +38,17 @@
 
 	<section id="mp-new-books" class="box box2">
 		<h2><a href="{{ path('new_books') }}">Нови книги</a></h2>
-		{{ render_esi(controller('LibBundle:Main:lastBooks')) }}
-		<div class="more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
+		<div class="well">
+			{{ render_esi(controller('LibBundle:Main:lastBooks')) }}
+			<div class="more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
+		</div>
 	</section>
 	<section id="mp-new-texts" class="box box2 textbox">
 		<h2><a href="{{ path('new_texts') }}">Нови произведения</a></h2>
-		{{ render_esi(controller('LibBundle:Main:lastTexts')) }}
-		<div class="more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
+		<div class="well">
+			{{ render_esi(controller('LibBundle:Main:lastTexts')) }}
+			<div class="more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
+		</div>
 	</section>
 	<div class="separator"></div>
 
@@ -60,7 +64,9 @@
 #}
 	<section id="mp-search" class="box box3">
 		<h2><a href="{{ path('search') }}">Потърсено</a></h2>
-		{{ render_esi(controller('LibBundle:Search:latest', {'limit': 50})) }}
+		<div class="well">
+			{{ render_esi(controller('LibBundle:Search:latest', {'limit': 50})) }}
+		</div>
 	</section>
 	<div class="separator"></div>
 
@@ -77,12 +83,12 @@
 {% block inline_js %}
 (function(){
 	var expander = '<button class="expander btn btn-default" role="button"><span>Показване на още</span> <i class="fa fa-angle-double-down"></i></button>';
-	var hideCss = {"overflow": "hidden", "margin-bottom": 0};
+	var hideCss = {"overflow": "hidden"};
 	var showCss = {"height": "auto", "overflow": "visible"};
 
 	var adjustHeight = function(elm, height){
 		if ($(elm).height() > height){
-			$(elm).height(height).css(hideCss).after(expander).click(function(){
+			$(elm).height(height).addClass("collapsed").css(hideCss).after(expander).click(function(){
 				$(this).css(showCss).next(".expander").remove();
 			});
 		}
@@ -95,7 +101,7 @@
 		adjustHeight(this, 450);
 	});
 	$("button.expander").live("click", function(){
-		$(this).prev().css(showCss).end().remove();
+		$(this).prev().removeClass("collapsed").css(showCss).end().remove();
 	});
 })();
 {% endblock %}
