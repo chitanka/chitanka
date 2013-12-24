@@ -1338,19 +1338,14 @@ EOS;
 
 		return <<<EOS
 
-	<table class="table table-striped table-condensed table-bordered">
+	<table class="table table-striped table-condensed table-bordered" style="margin: 0 auto; max-width: 30em">
 	<caption>Следните потребители са сканирали или коригирали текстове за библиотеката:</caption>
-		<colgroup>
-			<col />
-			<col align="right" />
-			<col align="right" />
-		</colgroup>
 	<thead>
 	<tr>
 		<th>№</th>
 		<th>Потребител</th>
-		<th title="Размер на обработените произведения в мебибайта">Размер (в <abbr title="Кибибайта">KiB</abbr>)</th>
-		<th title="Брой на обработените произведения">Брой</th>
+		<th class="text-right" title="Размер на обработените произведения в мебибайта">Размер (в <abbr title="Кибибайта">KiB</abbr>)</th>
+		<th class="text-right" title="Брой на обработените произведения">Брой</th>
 	</tr>
 	</thead>
 	<tbody>$list
@@ -1366,7 +1361,14 @@ EOS;
 		$s = Number::formatNumber($dbrow['size'], 0);
 		$this->rownr += 1;
 
-		return "\n\t<tr class='$this->rowclass'><td>$this->rownr</td><td>$ulink</td><td>$s</td><td>$dbrow[count]</td></tr>";
+		return <<<HTML
+<tr class="$this->rowclass">
+	<td>$this->rownr</td>
+	<td>$ulink</td>
+	<td class="text-right">$s</td>
+	<td class="text-right">$dbrow[count]</td>
+</tr>
+HTML;
 	}
 
 

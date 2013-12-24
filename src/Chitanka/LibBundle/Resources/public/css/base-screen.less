@@ -434,34 +434,32 @@ option[selected=selected],
 .superlist {
 	padding: 0;
 	font-size: 1em;
-}
-.superlist dl:hover {
-	background-image: linear-gradient(to bottom, @tocBgColor, @footerBgColor 35%, @footerBgColor 65%, @tocBgColor);
-}
-
-.superlist dl {
-	margin: 0;
-	padding: 0;
-	height: 1%;
-	overflow: hidden;
-}
-.superlist dt, .superlist dd {
-	margin: 0 0 0 .3em;
-	padding: 0;
-}
-
-.superlist dt {
-	float: left;
-	width: 25em;
-	max-width: 40%;
-	font-weight: normal;
-}
-.superlist dt.noauthor {
-	width: 50em;
-	max-width: 80%;
-}
-.superlist dd {
-	float: left;
+	dl {
+		margin: 0;
+		padding: 0;
+		height: 1%;
+		overflow: hidden;
+		&:hover {
+			background-image: linear-gradient(to bottom, @tocBgColor, @footerBgColor 35%, @footerBgColor 65%, @tocBgColor);
+		}
+	}
+	dt, dd {
+		margin: 0;
+		padding: 0;
+	}
+	dt {
+		float: left;
+		width: 25em;
+		max-width: 40%;
+		font-weight: normal;
+		&.noauthor {
+			width: 50em;
+			max-width: 80%;
+		}
+	}
+	dd {
+		float: left;
+	}
 }
 dd.tauthor {
 	width: 25em;
@@ -938,6 +936,7 @@ a.dl:hover {
 	margin-right: 0;
 }
 .expanded-links {
+	min-height: 150px; // for the QR code
 	.dl-list, .dl-list li {
 		display: block;
 	}

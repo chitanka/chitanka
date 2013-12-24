@@ -1,47 +1,47 @@
-<table class="table table-condensed table-striped">
+<table class="table table-condensed table-striped" style="max-width: 18em">
 	<caption>Основни данни</caption>
 	<tr>
 		<td><a href="{{ path('authors') }}">Автори</a></td>
-		<td>{{ count.authors }}</td>
+		<td class="text-right">{{ count.authors }}</td>
 	</tr>
 	<tr>
 		<td><a href="{{ path('translators') }}">Преводачи</a></td>
-		<td>{{ count.translators }}</td>
+		<td class="text-right">{{ count.translators }}</td>
 	</tr>
 	<tr>
 		<td><a href="{{ path('texts') }}">Произведения</a></td>
-		<td>{{ count.texts }}</td>
+		<td class="text-right">{{ count.texts }}</td>
 	</tr>
 	<tr>
 		<td><a href="{{ path('series') }}">Серии</a></td>
-		<td>{{ count.series }}</td>
+		<td class="text-right">{{ count.series }}</td>
 	</tr>
 	<tr>
 		<td><a href="{{ path('texts') }}">Етикети</a></td>
-		<td>{{ count.labels }}</td>
+		<td class="text-right">{{ count.labels }}</td>
 	</tr>
 	<tr>
 		<td><a href="{{ path('books') }}">Книги</a></td>
-		<td>{{ count.books }}</td>
+		<td class="text-right">{{ count.books }}</td>
 	</tr>
 	<tr>
 		<td><a href="{{ path('books_wo_cover') }}">Книги без корица</a></td>
-		<td>{{ count.books_wo_cover }}</td>
+		<td class="text-right">{{ count.books_wo_cover }}</td>
 	</tr>
 	<tr>
 		<td><a href="{{ path('sequences') }}">Издателски поредици</a></td>
-		<td>{{ count.sequences }}</td>
+		<td class="text-right">{{ count.sequences }}</td>
 	</tr>
 	<tr>
 		<td><a href="{{ path('books') }}">Категории книги</a></td>
-		<td>{{ count.categories }}</td>
+		<td class="text-right">{{ count.categories }}</td>
 	</tr>
 	<tr>
 		<td><a href="{{ path('texts_comments') }}">Читателски мнения</a></td>
-		<td>{{ count.text_comments }}</td>
+		<td class="text-right">{{ count.text_comments }}</td>
 	</tr>
 	<tr>
 		<td>Потребители</td>
-		<td>{{ count.users }}</td>
+		<td class="text-right">{{ count.users }}</td>
 	</tr>
 </table>

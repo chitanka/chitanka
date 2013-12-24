@@ -1,5 +1,6 @@
 {% if book is defined %}
-	<div id="wanted-book">
+	<div class="alert alert-info alert-dismissable" id="wanted-book">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 		<p><a href="{{ path('wanted') }}">Търсим</a>:
 		{% if put_link %}
 			<b><a href="{{ path('wanted') }}">{{ book.description }}</a></b>
