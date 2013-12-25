@@ -22,7 +22,6 @@ h1, hgroup h2 {
 	color: @headerFgColor;
 	background-color: @headerBgColor;
 	border-bottom: none;
-	border-radius: @border-radius-base;
 	text-shadow: .1em .05em .1em @headerShadowColor;
 	text-align: center;
 }
@@ -38,6 +37,7 @@ h6 p {
 h1 {
 	margin-top: 0;
 	font-size: 1.5em;
+	border-radius: @border-radius-base;
 }
 h2 {
 	font-size: 1.4em;
@@ -295,7 +295,6 @@ h2 a:visited {
 	padding-left: .6em;
 	border: none;
 	border-radius: @border-radius-base @border-radius-base 0 0;
-	.boxShadow(none);
 	font-size: 1em;
 }
 #navigation h3,
@@ -303,7 +302,7 @@ h2 a:visited {
 	color: @navTitleFgColor;
 	background-color: @navTitleBgColor;
 	font-weight: bold;
-	text-shadow: .1em .1em .1em @navTitleShadowColor;
+	text-shadow: 1px 0px 1px @navTitleShadowColor;
 }
 #navigation h4 {
 	margin: .1em 0 .3em;
@@ -539,7 +538,6 @@ dd.country {
 .book-content h6 {
 	margin: 0;
 	padding: .3em 0 0 2em;
-	.boxShadow(none);
 	font-size: 1.1em;
 	text-align: left;
 	background-color: inherit;
@@ -727,7 +725,6 @@ li.title {
 	font-size: 1.1em;
 	font-weight: bold;
 	text-shadow: none;
-	.boxShadow(none);
 }
 // неподредени списъци в кутията за съдържание
 #toc ul, #toc ol {
@@ -1623,8 +1620,12 @@ form.loading {
 		h1, h2 {
 			margin: 0;
 		}
+		h1 {
+			border-radius: @border-radius-base @border-radius-base 0 0;
+		}
 		h2 {
 			padding-top: 0;
+			border-radius: 0 0 @border-radius-base @border-radius-base;
 			span {
 				font-size: 85%;
 			}
@@ -1654,7 +1655,6 @@ article h1 {
 	font-style: italic;
 	font-size: 1.7em;
 	text-align: center;
-	.boxShadow(none);
 }
 article h1 {
 	font-size: 1.3em;
