@@ -87,25 +87,11 @@
 @btn-default-border: @input-border;
 
 @import "base-screen.less";
-
-@media screen and (max-width: 900px) {
-	@import "base-screen-900px.less";
-}
-@media screen and (max-width: 800px) {
-	@import "base-screen-800px.less";
-}
-@media screen and (max-width: 600px) {
-	@import "base-screen-600px.less";
-}
-@media screen and (max-width: 480px) {
-	@import "base-screen-480px.less";
-}
-@media screen and (max-width: 320px) {
-	@import "base-screen-320px.less";
-}
-@media screen and (max-width: 260px) {
-	@import "base-screen-260px.less";
-}
-@media print {
-	@import "base-print.less";
-}
+@import "menu-@{menu-position}.less";
+@import "base-screen-900px.less" screen and (max-width: 900px);
+@import "base-screen-800px.less" screen and (max-width: 800px);
+@import "base-screen-600px.less" screen and (max-width: 600px);
+@import "base-screen-480px.less" screen and (max-width: 480px);
+@import "base-screen-320px.less" screen and (max-width: 320px);
+@import "base-screen-260px.less" screen and (max-width: 260px);
+@import "base-print.less" print;
