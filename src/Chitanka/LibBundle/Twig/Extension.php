@@ -243,9 +243,9 @@ class Extension extends \Twig_Extension
 	}
 
 
-	public function getQrCode($url)
+	public function getQrCode($url, $width = 100)
 	{
-		return 'http://chart.apis.google.com/chart?cht=qr&chs=150x150&chld=H|0&chl='. urlencode($url);
+		return "http://chart.apis.google.com/chart?cht=qr&chs={$width}x{$width}&chld=H|0&chl=". urlencode($url);
 	}
 
 
