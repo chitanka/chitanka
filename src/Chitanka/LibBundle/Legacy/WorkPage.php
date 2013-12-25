@@ -386,8 +386,9 @@ class WorkPage extends Page {
 
 	protected function makeLists() {
 		$o = $this->makePageHelp()
+			. $this->makeSearchForm()
 			. '<div class="standalone">' . $this->makeNewEntryLink() . '</div>'
-			. $this->makeSearchForm();
+			;
 
 		if ($this->viewList == 'work') {
 			$o .= $this->makeWorkList($this->llimit, $this->loffset);
@@ -412,11 +413,12 @@ class WorkPage extends Page {
 	<div class="form-group">
 		<label for="$id" class="sr-only">Търсене на: </label>
 		<div class="input-group">
-			<span class="input-group-addon"><i class="fa fa-search"></i></span>
 			<input type="text" class="form-control" title="Търсене из подготвяните произведения" maxlength="100" size="50" id="$id" name="$id">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="submit"><i class="fa fa-search"></i><span class="sr-only">Търсене</span></button>
+			</span>
 		</div>
 	</div>
-	<input type="submit" class="btn btn-default" value="Показване">
 </form>
 EOS;
 	}
