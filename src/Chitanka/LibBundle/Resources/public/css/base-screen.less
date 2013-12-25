@@ -22,6 +22,7 @@ h1, hgroup h2 {
 	color: @headerFgColor;
 	background-color: @headerBgColor;
 	border-bottom: none;
+	border-radius: @border-radius-base;
 	text-shadow: .1em .05em .1em @headerShadowColor;
 	text-align: center;
 }
@@ -65,7 +66,7 @@ div.fos_comment_comment_show {
 	margin: 1em 0;
 	padding: 1em;
 	border: thin solid @fieldsetBordColor;
-	.borderRadius(0 1em);
+	border-radius: 0 @border-radius-base;
 }
 article footer {
 	margin-top: 0.5em;
@@ -276,7 +277,7 @@ h2 a:visited {
 #navigation .navbody {
 	margin-bottom: 1em;
 	border: thin solid @navTitleBgColor;
-	.borderRadius(.7em);
+	border-radius: @border-radius-base;
 	color: @navFgColor;
 	background-color: @navBgColor;
 	font-size: .9em;
@@ -294,7 +295,7 @@ h2 a:visited {
 	margin: 0;
 	padding-left: .6em;
 	border: none;
-	.borderRadius(.6em .6em 0 0);
+	border-radius: @border-radius-base @border-radius-base 0 0;
 	.boxShadow(none);
 	font-size: 1em;
 }
@@ -323,7 +324,7 @@ h2 a:visited {
 	background-color: @headerBgColor;
 }
 #navigation .navbody .textmenu li:last-child {
-	.borderRadius(0 0 .6em .6em);
+	border-radius: 0 0 @border-radius-base @border-radius-base;
 }
 #navigation .selected,
 option[selected=selected],
@@ -711,7 +712,7 @@ li.title {
 	margin: 1em 1em 1em 0;
 	padding: .8em;
 	border: thin solid @tocBordColor;
-	.borderRadius(1em);
+	border-radius: @border-radius-base;
 	color: @tocFgColor;
 	background-color: @tocBgColor;
 	font-size: .9em;
@@ -985,7 +986,7 @@ article footer .menu {
 .buttonmenu .selected {
 	padding: .2em .3em;
 	border: thin solid @buttonLinksFgColor;
-	.borderRadius(.3em);
+	border-radius: @border-radius-base;
 	.boxShadow(.15em .15em .3em #ccc);
 	font-weight: bold;
 }
@@ -1093,7 +1094,7 @@ p.error {
 .removed-notice {
 	clear: both;
 	padding: 1em;
-	border-radius: .5em;
+	border-radius: @border-radius-base;
 	color: white;
 	background-color: black;
 	font-weight: bold;
@@ -1511,7 +1512,7 @@ form.loading {
 	white-space: nowrap;
 	line-height: 2.2em;
 	border: thin solid @cloudBordColor;
-	.borderRadius(.5em 0);
+	border-radius: @border-radius-base 0;
 }
 .clouds li:hover, .clouds li:hover a {
 	color: @cloudFgHoverColor;
@@ -1587,7 +1588,7 @@ form.loading {
 		padding: .5em;
 
 		border: 2px solid #ccc;
-		.borderRadius(1.3em);
+		border-radius: 1.3em;
 
 		list-style-type: none;
 		font-variant: small-caps;
@@ -1611,7 +1612,7 @@ form.loading {
 		left: .4em;
 		width: 5.7em;
 		padding: .5em 0;
-		.borderRadius(1.2em 1.2em .6em .6em);
+		border-radius: 1.2em 1.2em .6em .6em;
 		background-color: rgba(255, 255, 255, 0.25);
 		background-image: linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 95%);
 	}
@@ -1619,7 +1620,6 @@ form.loading {
 
 #first-heading {
 	margin-bottom: 1.5em;
-	.boxShadow(4px 5px 7px #ddd);
 	hgroup {
 		h1, h2 {
 			margin: 0;
@@ -1946,7 +1946,7 @@ ul.two-columns {
 	min-height: 16em;
 	width: 13em;
 	border: thin solid @navTitleBgColor;
-	.borderRadius(.8em);
+	border-radius: @border-radius-base;
 	list-style-type: none;
 	color: @tocFgColor;
 	background-color: @tocBgColor;
@@ -1989,7 +1989,7 @@ ul.two-columns {
 	height: 16px;
 	width: 16px;
 	border: none;
-	.borderRadius(0);
+	border-radius: 0;
 	.boxShadow(none);
 	cursor: pointer;
 	padding-left: 12px;
