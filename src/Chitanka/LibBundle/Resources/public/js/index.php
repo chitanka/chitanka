@@ -9,7 +9,7 @@
 */
 
 $query = sanitizeInput($_SERVER['QUERY_STRING']);
-$curdir = __DIR__;
+$curdir = dirname(__FILE__);
 $path = strpos($curdir, '/web/') === false ? "$curdir/../../../../../../web/cache" : "$curdir/../../../cache";
 $combiFile = $path . sanitizeInput($_SERVER['REQUEST_URI']);
 
