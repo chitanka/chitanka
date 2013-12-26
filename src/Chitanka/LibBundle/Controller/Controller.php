@@ -54,8 +54,8 @@ abstract class Controller extends SymfonyController
 			'_user' => $this->getUser(),
 			'navextra' => array(),
 			'current_route' => $this->getCurrentRoute(),
-			//'stylesheet' => $this->getStylesheet(),
 			'script_library' => $this->container->getParameter('script_library'),
+			'analytics_snippet' => $this->container->getParameter('analytics_snippet'),
 		);
 		if ($page->inlineJs) {
 			$data['inline_js'] = $page->inlineJs;
@@ -83,9 +83,8 @@ abstract class Controller extends SymfonyController
 			'_user' => $this->getUser(),
 			'navextra' => array(),
 			'current_route' => $this->getCurrentRoute(),
-			// done in a separate request
-			//'stylesheet' => $this->getStylesheet(),
 			'script_library' => $this->container->getParameter('script_library'),
+			'analytics_snippet' => $this->container->getParameter('analytics_snippet'),
 			'ajax' => $request->isXmlHttpRequest(),
 		);
 
