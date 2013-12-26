@@ -228,13 +228,13 @@ h2 a:visited {
 #content-wrapper {
 	position: relative;
 	padding: 0 1.5em;
-	clear: both;
+	background-image: linear-gradient(to bottom, #FFF1AF, #F9F6E6 4em, #F9F6E6);
 }
 // елемент, обхващащ основното съдържание
 #main-content-wrapper {
 	float: left;
 	width: 100%;
-	margin: @contentMarginTop 0 1.5em 0;
+	margin: @mainContentMarginTop 0 1.5em 0;
 }
 
 // основното съдържание на страниците, без менюто и разните ленти
@@ -258,7 +258,7 @@ h2 a:visited {
 	padding: 0;
 	margin: 0 0 1em 0;
 }
-#navigation ul {
+#navigation ul.textmenu {
 	margin: 0;
 	padding: 0;
 }
@@ -305,7 +305,7 @@ h2 a:visited {
 }
 #navigation li {
 	margin-left: 0;
-	padding-left: .6em;
+	padding: .2em .2em .2em .6em;
 	list-style-type: none;
 }
 #navigation .navbody .textmenu li:hover,
@@ -340,9 +340,9 @@ option[selected=selected],
 	position: relative;
 	margin: @contentMarginTop 0 .2em 0;
 	text-align: center;
-	/*width: 12em;*/
+	//width: 12em;
 	overflow: hidden;
-	/*border: thin solid @navTitleBgColor;*/
+	//border: thin solid @navTitleBgColor;
 }
 #logo a {
 	display: block;
@@ -371,42 +371,36 @@ option[selected=selected],
 }
 
 // личните инструменти
-#personal {
+#user-tools {
 	z-index: 2;
 	display: inline;
 	position: absolute;
-	top: 1em;
-	margin: .2em 0 0 0;
-	padding: 0;
-	width: 30%; // liquid, should play well with the search form
+	top: @contentMarginTop;
+	width: 15em;
 	border: none;
 	text-align: left;
 }
-#personal ul {
-	display: inline;
-	margin: 0;
-	padding: 0;
-}
-#personal li {
-	display: inline;
-	margin: 0;
-	padding: 0 .4em;
-	font-size: .8em;
+.user-tools-menu {
+	padding-left: 0;
+	li {
+		font-size: .9em;
+	}
+	.level-0 {
+		display: inline;
+	}
+	a {
+		text-decoration: none;
+	}
 }
 
 // формуляра за търсене
 #search {
 	z-index: 1;
 	position: absolute;
-	top: 0;
-	left: 0;
-	margin: 0;
-	padding: 1.2em 0 0 0;
-	width: 100%;
+	top: @contentMarginTop;
+	width: 66%;
+	text-align: right;
 	border: none;
-	color: @toolbarFgColor;
-	background-color: @toolbarBgColor;
-	background-image: linear-gradient(to bottom, @toolbarBgColor, @mainBgColor);
 	.form-group {
 		width: 90%;
 	}
@@ -856,22 +850,6 @@ ul.superlist {
 	margin-bottom: 1em;
 	padding: 1em;
 	border: thin outset @codeBordColor;
-}
-
-// връзка за изчистване на склада за съответната страница
-#cache-link a {
-	display: none;
-}
-#toggle-nav-link {
-	z-index: 10;
-	position: absolute;
-	top: 1.2em;
-	padding: 0 .5em;
-	color: @mainFgColor;
-	background-color: transparent;
-	opacity: .3;
-	font-size: .8em;
-	text-decoration: none;
 }
 
 // връзките за прочетени текстове
@@ -1993,55 +1971,6 @@ ul.two-columns {
 }
 .user-actions li+li {
 	margin-left: 1em;
-}
-
-.project-links {
-	clear: both;
-}
-.project-links h3 {
-	display: none;
-}
-.project-links ul {
-	margin: 0;
-	padding: 0;
-	border-bottom: 1px solid #bbb;
-	background-color: #cbcbcb;
-	background-image: linear-gradient(to bottom, #e8e8e8, #cbcbcb);
-	color: black;
-	text-align: center;
-}
-.project-links li {
-	display: inline-block;
-	margin: 0;
-	padding: 0;
-	border-right: 1px #818181 solid;
-	.boxShadow(1px 1px 1px #bbb);
-	list-style-type: none;
-	text-align: center;
-	font-variant: small-caps;
-}
-.project-links li a {
-	display: block;
-	width: 7em;
-	padding: .2em .3em 0 .3em;
-	background-color: #dadada;
-	background-image: linear-gradient(to bottom, #ddd, #ddd 35%, #999);
-	color: #292929;
-	text-shadow: 1px 1px 0 #e8e8e8;
-	text-decoration: none;
-}
-.project-links li.current a {
-	background-color: #555;
-	background-image: linear-gradient(to bottom, #555, #888);
-	color: #e8e8e8;
-	text-shadow: black 1px 1px 0;
-}
-.project-links li:hover a {
-	background-color: #333;
-	background-image: linear-gradient(to bottom, #333, #4c4c4c);
-	color: #e8e8e8;
-	text-shadow: black 1px 1px 0;
-	text-decoration: none;
 }
 
 // not needed wiki stuff

@@ -248,20 +248,28 @@ var togglerCookieName = "nomenu";
 			this.margin = {o: ov, n: nv};
 		}
 	};
-	var hide = "Без меню";
-	var show = "С меню";
-	$('<a id="toggle-nav-link" href="#"></a>')
-		.text(hide)
-		.toggle(function(){
-			menuToggler.hide();
-			$(this).text(show);
-			return false;
-		}, function(){
-			menuToggler.show();
-			$(this).text(hide);
-			return false;
-		})
-		.appendTo("#content-wrapper");
+	var hide = '\
+		<span class="fa-stack">\
+			<i class="fa fa-bars fa-stack-1x"></i>\
+			<i class="fa fa-ban fa-stack-2x text-warning"></i>\
+		</span> Без меню';
+	var show = '<i class="fa fa-bars"></i> С меню';
+	$tools = $('.user-tools-menu:first').find('.dropdown-menu').append('<li class="divider"></li>');
+	$('<li><a id="toggle-nav-link" href="#"></a></li>')
+		.find('a')
+			.html(hide)
+			.toggle(function(){
+				menuToggler.hide();
+				$(this).html(show);
+				return false;
+			}, function(){
+				menuToggler.show();
+				$(this).html(hide);
+				return false;
+			})
+		.end()
+		.appendTo($tools);
+	$('#user-tools,#search').appendTo('#main-content-wrapper');
 })();
 
 

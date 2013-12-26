@@ -1,16 +1,43 @@
-<div id="personal" title="Лични инструменти">
+{% set project_links %}
+	<li id="project-main" class="current"><a href="http://chitanka.info">Библиотека</a></li>
+	<li id="project-forum"><a href="http://forum.chitanka.info">Форум</a></li>
+	<li id="project-blog"><a href="http://blog.chitanka.info">Блог</a></li>
+	<li id="project-wiki"><a href="http://wiki.chitanka.info">Уики</a></li>
+	<li id="project-wiki-workroom"><a href="http://wiki.workroom.chitanka.info">Читалие</a></li>
+	<li id="project-rechnik"><a href="http://rechnik.chitanka.info">Речник</a></li>
+	<li id="project-tools"><a href="http://tools.chitanka.info">Инструменти</a></li>
+{% endset %}
+<div id="user-tools" title="Лични инструменти">
 	<h3 class="sr-only">Лични инструменти</h3>
-	<ul>
+	<ul class="user-tools-menu" role="menu">
 	{% if _user.isAuthenticated() %}
-		<li class="user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" class="user" title="Лична страница"><i class="fa fa-user"> {{ _user.username }}</i></a></li>
-		<li class="user-settings"><a href="{{ path('user_edit', {'username': _user.username}) }}" title="Потребителски настройки"><i class="fa fa-gear"> Настройки</i></a></li>
-		{% if _user.inGroup('admin') %}
-			<li class="user-dashboard"><a href="{{ path('sonata_admin_dashboard') }}" title="Администрация"><i class="fa fa-gears"> Админ</i></a></li>
-		{% endif %}
-		<li class="user-signout" title="Изход от библиотеката"><a href="{{ path('logout') }}"><i class="fa fa-sign-out"> Изход</i></a></li>
+		<li class="level-0 user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" class="user" title="Лична страница"><i class="fa fa-user"> {{ _user.username }}</i></a></li>
+		<li class="level-0 dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<li class="user-settings"><a href="{{ path('user_edit', {'username': _user.username}) }}" title="Потребителски настройки"><i class="fa fa-gear"> Настройки</i></a></li>
+				{% if _user.inGroup('admin') %}
+					<li class="user-dashboard"><a href="{{ path('sonata_admin_dashboard') }}" title="Администрация"><i class="fa fa-gears"> Админ</i></a></li>
+				{% endif %}
+				<li class="user-signout" title="Изход от библиотеката"><a href="{{ path('logout') }}"><i class="fa fa-sign-out"> Изход</i></a></li>
+				<li role="presentation" class="divider"></li>
+				{{ project_links }}
+			</ul>
+		</li>
 	{% else %}
-		<li class="user-signin"><a href="{{ path('login') }}">Вход</a></li>
-		<li class="user-register"><a href="{{ path('register') }}">Регистрация</a></li>
+		<li class="level-0 user-signin"><a href="{{ path('login') }}"><i class="fa fa-sign-in"></i> Вход</a></li>
+		<li class="level-0 dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<li class="user-register"><a href="{{ path('register') }}"><i class="fa fa-user"></i> Регистрация</a></li>
+				<li role="presentation" class="divider"></li>
+				{{ project_links }}
+			</ul>
+		</li>
 	{% endif %}
 	</ul>
 	<script>
