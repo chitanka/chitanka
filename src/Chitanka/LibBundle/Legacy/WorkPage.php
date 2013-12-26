@@ -392,8 +392,6 @@ class WorkPage extends Page {
 
 		if ($this->viewList == 'work') {
 			$o .= $this->makeWorkList($this->llimit, $this->loffset);
-			$o .= sprintf('<div class="standalone"><hr><a href="%s">Списък на помощниците</a></div>',
-				$this->controller->generateUrl('workroom_contrib'));
 		} else {
 			$o .= $this->makeContribList();
 		}
@@ -605,7 +603,7 @@ EOS;
 		<td>$file</td>
 		<td>$title</td>
 		<td>$author</td>
-		<td>$st $sis_frozen</td>
+		<td style="min-width: 10em">$st $sis_frozen</td>
 		<td>$userlink</td>
 	</tr>
 EOS;
@@ -709,6 +707,9 @@ HTML;
 				)),
 				$class, $statusTitle, "<i class='{$this->statusClasses[$code]}'></i>", $statusTitle);
 		}
+
+		$links[] = '<li role="presentation" class="divider"></li>';
+		$links[] = sprintf('<li><a href="%s">Списък на помощниците</a></li>', $this->controller->generateUrl('workroom_contrib'));
 
 		return '<div class="btn-group">
 			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Преглед <span class="caret"></span></button>

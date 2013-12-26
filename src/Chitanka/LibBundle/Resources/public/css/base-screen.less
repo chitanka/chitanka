@@ -8,12 +8,7 @@ body {
 	line-height: 1.5em;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
 	padding: .4em 0 .2em;
 	line-height: 1.3em;
 	font-weight: normal;
@@ -25,14 +20,11 @@ h1, hgroup h2 {
 	text-shadow: .1em .05em .1em @headerShadowColor;
 	text-align: center;
 }
-h1 p,
-h2 p,
-h3 p,
-h4 p,
-h5 p,
-h6 p {
-	text-align: center;
-	text-indent: 0;
+h1, h2, h3, h4, h5, h6 {
+	p {
+		text-align: center;
+		text-indent: 0;
+	}
 }
 h1 {
 	margin-top: 0;
@@ -1726,41 +1718,40 @@ button.expander:hover span {
 }
 .wikiinfo {
 	position: relative;
-}
-.wikiinfo h2 {
-	clear: both;
-}
-// edit section links
-.mw-editsection {
-	display: none;
-}
-.intro {
-	opacity: .6;
-	margin-bottom: 1em;
-	border-bottom: thin solid @fieldsetBordColor;
-	font-style: italic;
-	font-size: 0.9em;
-}
-table.toccolours {
-	float: right;
-	border: thin solid @tocBordColor;
-	border-collapse: collapse;
-}
-table.toccolours th,
-table.toccolours td {
-	padding: 0.2em 0.5em;
+	.intro {
+		opacity: .6;
+		margin-bottom: 1em;
+		border-bottom: thin solid @fieldsetBordColor;
+		font-style: italic;
+		font-size: 0.9em;
+	}
+	h2 {
+		clear: both;
+	}
+	.editsection {
+		float: right;
+	}
+	.new {
+		padding-left: 0;
+		background: inherit;
+	}
+	.othermeaning-box {
+		display: none;
+	}
+	table.toccolours {
+		float: right;
+		border: thin solid @tocBordColor;
+		border-collapse: collapse;
+		th, td {
+			padding: 0.2em 0.5em;
+		}
+	}
 }
 .wikidata h2 {
 	clear: both;
 }
-.wikiinfo .editsection {
-	float: right;
-}
-.wikiinfo .new {
-	padding-left: 0;
-	background: inherit;
-}
-.wikiinfo .othermeaning-box {
+// edit section links in wiki articles
+.mw-editsection {
 	display: none;
 }
 // връзки към епизоди в книга-игра
@@ -2086,6 +2077,7 @@ a.btn {
 }
 .fa {
 	text-indent: 0;
+	font-variant: normal; // for Chrome
 }
 .multiuser {
 	color: @brand-primary;

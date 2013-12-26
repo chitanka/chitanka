@@ -17,10 +17,13 @@ function compileStyleFiles($cacheDir, $skin, $menuPos) {
 	}
 	Less_Cache::$cache_dir = $cacheDir;
 	$lessFiles = array(
+		// \n needed for Less.php to recognize this as LESS code
 		'menu' => "@menu-position: '$menuPos';\n",
 		"$skin.less" => '',
 	);
-	$parserOptions = array(/*'compress' => true*/);
+	$parserOptions = array(
+		//'compress' => true,
+	);
 	$cssFile = Less_Cache::Get($lessFiles, $parserOptions);
 	return $cssFile ? $cacheDir .'/'. $cssFile : null;
 }

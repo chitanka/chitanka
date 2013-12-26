@@ -10,7 +10,7 @@
 		{% set prev_page = 0 %}
 		{% for page, is_active in pager.pages %}
 			{% if prev_page < page - 1 %}
-				<li class="elipsis"><a>…</a></li>
+				<li class="elipsis disabled"><span>…</span></li>
 			{% endif %}
 
 			<li {% if is_active %}class="active"{% endif %}><a href="{{ path(route, route_params|merge({'page': page})) }}">{{ page }}</a></li>
