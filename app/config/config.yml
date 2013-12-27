@@ -318,7 +318,5 @@ parameters:
     user_css:
         css/onecolumn_frontpage.css: Едноколонна начална страница
         css/show_filesize.css: Видим размер на произведенията
-        css/projectlinks_ontop.css: Преместване на връзките към отделните проекти отгоре
 
-    user_js:
-        js/move_projects_links.js: Преместване на връзките към отделните проекти в страничното меню
+    user_js: []
