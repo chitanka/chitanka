@@ -5,8 +5,13 @@
 	margin: 0 0 1em -100%;
 }
 #user-tools {
-	left: @contentMarginSide + @contentSpacingSide;
+	right: @contentSpacingSide;
+	text-align: right;
+	.dropdown {
+		text-align: left;
+	}
 }
 #search {
-	right: @contentSpacingSide;
+	left: @contentMarginSide + @contentSpacingSide;
+	text-align: left;
 }

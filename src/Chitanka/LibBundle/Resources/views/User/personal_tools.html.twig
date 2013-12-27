@@ -12,7 +12,7 @@
 	<ul class="user-tools-menu" role="menu">
 	{% if _user.isAuthenticated() %}
 		<li class="level-0 user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" class="user" title="Лична страница"><i class="fa fa-user"></i> {{ _user.username }}</a></li>
-		<li class="level-0 dropdown">
+		<li class="level-0 dropdown navbar-right">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 				<i class="fa fa-bars"></i>
 			</a>

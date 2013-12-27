@@ -376,10 +376,8 @@ option[selected=selected],
 	display: inline;
 	position: absolute;
 	top: @contentMarginTop;
-	padding-left: 3px;
 	width: 15em;
 	border: none;
-	text-align: left;
 }
 .user-tools-menu {
 	padding-left: 0;
@@ -389,6 +387,9 @@ option[selected=selected],
 	.level-0 {
 		display: inline;
 		margin-right: 1em;
+	}
+	.level-0:last-child {
+		margin-right: 0;
 	}
 	a {
 		text-decoration: none;
@@ -401,7 +402,6 @@ option[selected=selected],
 	position: absolute;
 	top: @contentMarginTop;
 	width: 66%;
-	text-align: right;
 	border: none;
 	.form-group {
 		width: 90%;
