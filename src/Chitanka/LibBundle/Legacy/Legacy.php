@@ -445,14 +445,12 @@ class Legacy
 			$response = $browser->get("$url?action=render", array('User-Agent: Mylib (http://chitanka.info)'));
 			if ($response->isOk()) {
 				$content = self::processMwContent($response->getContent(), $url);
-			} else {
-				$content = '';
+				return CacheManager::setCache($action, $id, $content);
 			}
 		} catch (\RuntimeException $e) {
-			$content = '';
 		}
 
-		return CacheManager::setCache($action, $id, $content);
+		return '';
 	}
 
 
