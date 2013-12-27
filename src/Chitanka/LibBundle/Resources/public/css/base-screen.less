@@ -227,14 +227,14 @@ h2 a:visited {
 
 #content-wrapper {
 	position: relative;
-	padding: 0 1.5em;
+	padding: 0 @contentSpacingSide;
 	background-image: linear-gradient(to bottom, @toolbarBgColor, @mainBgColor 4em, @mainBgColor);
 }
 // елемент, обхващащ основното съдържание
 #main-content-wrapper {
 	float: left;
 	width: 100%;
-	margin: @mainContentMarginTop 0 1.5em 0;
+	margin: @mainContentMarginTop 0 @contentSpacingSide 0;
 }
 
 // основното съдържание на страниците, без менюто и разните ленти
@@ -376,6 +376,7 @@ option[selected=selected],
 	display: inline;
 	position: absolute;
 	top: @contentMarginTop;
+	padding-left: 3px;
 	width: 15em;
 	border: none;
 	text-align: left;
@@ -387,6 +388,7 @@ option[selected=selected],
 	}
 	.level-0 {
 		display: inline;
+		margin-right: 1em;
 	}
 	a {
 		text-decoration: none;
