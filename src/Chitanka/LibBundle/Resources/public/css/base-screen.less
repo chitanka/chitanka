@@ -1861,12 +1861,13 @@ ul.two-columns {
 	text-align: center;
 }
 
-.history-wrapper h3 {
-	text-align: left;
-}
-.history-wrapper .toc {
-	float: right;
-	margin: 0 0 1em 1em;
+.history-wrapper {
+	position: relative;
+	.feed-standalone {
+		position: absolute;
+		top: -2.2em;
+		right: .2em;
+	}
 }
 .more {
 	margin-top: 0.6em;

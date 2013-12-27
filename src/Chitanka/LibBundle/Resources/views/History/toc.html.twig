@@ -1,10 +1,11 @@
-<div class="toc collapsed" role="navigation">
-	<h3>По месец</h3>
-	<p class="sr-only"><a href="#after-toc">(Прескачане на месечното меню)</a></p>
-	<ul>
+<div class="dropdown navbar-right" role="navigation">
+	<a data-toggle="dropdown" href="#">
+		<i class="fa fa-calendar"></i>
+		По месец <span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu" role="menu">
 	{% for date in dates %}
 		<li><a href="{{ path(route, {'year': date.year, 'month': date.month}) }}">{{ ('month.'~date.month) | trans }} {{ date.year }} ({{ date.count }})</a></li>
 	{% endfor %}
 	</ul>
-	<div id="after-toc" class="sr-only"></div>
 </div>
