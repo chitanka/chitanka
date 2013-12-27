@@ -54,6 +54,7 @@ class PersonRepository extends EntityRepository
 		'cu',
 		'lb',
 		'lt',
+		'lv',
 		'lu',
 		'mq',
 		'mx',
