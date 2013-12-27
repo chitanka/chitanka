@@ -56,6 +56,7 @@ abstract class Controller extends SymfonyController
 			'current_route' => $this->getCurrentRoute(),
 			'script_library' => $this->container->getParameter('script_library'),
 			'analytics_snippet' => $this->container->getParameter('analytics_snippet'),
+			'environment' => $this->container->get('kernel')->getEnvironment(),
 		);
 		if ($page->inlineJs) {
 			$data['inline_js'] = $page->inlineJs;
@@ -85,6 +86,7 @@ abstract class Controller extends SymfonyController
 			'current_route' => $this->getCurrentRoute(),
 			'script_library' => $this->container->getParameter('script_library'),
 			'analytics_snippet' => $this->container->getParameter('analytics_snippet'),
+			'environment' => $this->container->get('kernel')->getEnvironment(),
 			'ajax' => $request->isXmlHttpRequest(),
 		);
 

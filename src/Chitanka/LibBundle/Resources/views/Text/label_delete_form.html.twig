@@ -1,4 +1,4 @@
 <form class="delete-form image-form" action="{{ path('text_label_delete', {'id': text.id, 'labelId': label.id}) }}" method="post" data-credentials="user">
 	<input type="hidden" name="_method" value="delete">
-	<button type="submit" title="Изтриване на етикета „{{ label.name }}“"><span>Изтриване</span></button>
+	<button type="submit" title="Изтриване на етикета „{{ label.name }}“"><i class="fa fa-trash-o"></i><span class="sr-only">Изтриване</span></button>
 </form>

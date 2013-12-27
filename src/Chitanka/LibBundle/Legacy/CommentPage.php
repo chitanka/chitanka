@@ -248,7 +248,7 @@ class CommentPage extends Page {
 				}
 				if ($this->user->inGroup('admin')) {
 					$links .= sprintf('<li><a href="%s" title="Редактиране на коментара">Редактиране</a></li>', $this->controller->generateUrl('admin_text_comment_edit', array('id' => $id)));
-					$links .= sprintf('<li><form action="%s" method="post" class="image-form delete-form"><button type="submit" title="Изтриване на коментара"><span>Изтриване</span></button></form></li>', $this->controller->generateUrl('admin_text_comment_delete', array('id' => $id)));
+					$links .= sprintf('<li><form action="%s" method="post" class="image-form delete-form"><button type="submit" title="Изтриване на коментара"><i class="fa fa-trash-o"></i><span class="sr-only">Изтриване</span></button></form></li>', $this->controller->generateUrl('admin_text_comment_delete', array('id' => $id)));
 				}
 				$acts = "<ul class='menu' style='float:right'>$links</ul>";
 			}

@@ -390,6 +390,9 @@ option[selected=selected],
 		text-decoration: none;
 	}
 }
+.user-tools-toggle {
+	font-size: @font-size-base;
+}
 
 // формуляра за търсене
 #search {
@@ -1902,10 +1905,10 @@ ul.two-columns {
 	margin-left: 2em;
 }
 
-.with-actions li:hover .delete-form button,
-.delete-form button:focus,
-.delete-form button:hover {
-	background: data-uri('images/002-delete.png') no-repeat 0 0;
+.with-actions li:hover .delete-form button .fa,
+.delete-form button:focus .fa,
+.delete-form button:hover .fa {
+	display: inline;
 }
 .bookmark-form button {
 	background-image: data-uri('images/bookmark.png');
@@ -1924,19 +1927,16 @@ ul.two-columns {
 .image-form {
 	display: inline;
 }
-.image-form button span {
+.image-form button span,
+.image-form button .fa {
 	display: none;
 }
 .image-form button {
-	margin-top: 2px;
-	vertical-align: top;
 	height: 16px;
 	width: 16px;
+	vertical-align: top;
 	border: none;
 	border-radius: 0;
-	.boxShadow(none);
-	cursor: pointer;
-	padding-left: 12px;
 	background-color: transparent;
 }
 .user-actions {
@@ -2016,4 +2016,13 @@ td .progress {
 }
 .status-done {
 	color: #00CC00;
+}
+// for visual aid during development
+#env-dev {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0.2;
+	font-size: 60%;
+	line-height: 1em;
 }
