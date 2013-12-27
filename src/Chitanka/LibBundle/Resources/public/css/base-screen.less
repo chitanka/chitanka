@@ -85,11 +85,6 @@ noscript div {
 	list-style-type: none;
 }
 
-// заглавията в кутиите за групиране
-legend {
-	font-style: italic;
-}
-
 dt {
 	font-weight: bold;
 }
@@ -410,13 +405,6 @@ option[selected=selected],
 		color: inherit;
 		background-color: inherit;
 	}
-}
-// заглавие за група от текстове в списъчните страници
-.superlist legend,
-.superlist legend a {
-	color: @legendFgColor;
-	background-color: transparent;
-	font-weight: bold;
 }
 .superlist {
 	padding: 0;
@@ -761,7 +749,6 @@ li.title {
 #copyright,
 .readercomment,
 .tabbedpanebody,
-#tooltip,
 article,
 div.fos_comment_comment_show {
 	clear: both;
@@ -810,20 +797,6 @@ div.fos_comment_comment_metas {
 }
 div.fos_comment_comment_reply {
 	text-align: right;
-}
-
-#tooltip {
-	position: absolute;
-	z-index: 3000;
-	border: thin solid @mainFgColor;
-	font-size: .9em;
-	padding: .4em .6em;
-	min-width: 450px;
-	max-width: 600px;
-}
-#tooltip h3,
-#tooltip div {
-	margin: 0;
 }
 
 #legend {
