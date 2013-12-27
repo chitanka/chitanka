@@ -11,17 +11,17 @@
 	<h3 class="sr-only">Лични инструменти</h3>
 	<ul class="user-tools-menu" role="menu">
 	{% if _user.isAuthenticated() %}
-		<li class="level-0 user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" class="user" title="Лична страница"><i class="fa fa-user"> {{ _user.username }}</i></a></li>
+		<li class="level-0 user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" class="user" title="Лична страница"><i class="fa fa-user"></i> {{ _user.username }}</a></li>
 		<li class="level-0 dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 				<i class="fa fa-bars"></i>
 			</a>
 			<ul class="dropdown-menu">
-				<li class="user-settings"><a href="{{ path('user_edit', {'username': _user.username}) }}" title="Потребителски настройки"><i class="fa fa-gear"> Настройки</i></a></li>
+				<li class="user-settings"><a href="{{ path('user_edit', {'username': _user.username}) }}" title="Потребителски настройки"><i class="fa fa-gear"></i> Настройки</a></li>
 				{% if _user.inGroup('admin') %}
-					<li class="user-dashboard"><a href="{{ path('sonata_admin_dashboard') }}" title="Администрация"><i class="fa fa-gears"> Админ</i></a></li>
+					<li class="user-dashboard"><a href="{{ path('sonata_admin_dashboard') }}" title="Администрация"><i class="fa fa-gears"></i> Админ</a></li>
 				{% endif %}
-				<li class="user-signout" title="Изход от библиотеката"><a href="{{ path('logout') }}"><i class="fa fa-sign-out"> Изход</i></a></li>
+				<li class="user-signout" title="Изход от библиотеката"><a href="{{ path('logout') }}"><i class="fa fa-sign-out"></i> Изход</a></li>
 				<li role="presentation" class="divider"></li>
 				{{ project_links }}
 			</ul>
