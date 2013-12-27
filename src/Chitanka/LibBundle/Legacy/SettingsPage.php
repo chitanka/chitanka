@@ -89,97 +89,98 @@ class SettingsPage extends RegisterPage {
 
 
 	protected function makeRegUserForm() {
-		$formBegin = $this->makeFormBegin();
-		$attempt = $this->out->hiddenField('attempt', $this->attempt);
 		$username = $this->canChangeUsername
-			? $this->out->textField('username', '', $this->username, 25, 60, $this->tabindex++)
-			: "<span id='username'>".$this->user->getUsername()."</span>";
-		$password = $this->out->passField('password', '', '', 25, 40, $this->tabindex++);
-		$passwordRe = $this->out->passField('passwordRe', '', '', 25, 40, $this->tabindex++);
-		$realname = $this->out->textField('realname', '', $this->realname, 25, 60, $this->tabindex++);
-		$email = $this->out->textField('email', '', $this->email, 25, 60, $this->tabindex++);
-		$allowemail = $this->out->checkbox('allowemail', '', $this->allowemail,
-			'Разрешаване на писма от другите потребители', null, $this->tabindex++);
+			? $this->out->textField('username', '', $this->username, 25, 60, $this->tabindex++, '', array('class' => 'form-control'))
+			: '<span id="username" class="form-control">'.$this->user->getUsername()."</span>";
+		$password = $this->out->passField('password', '', '', 25, 40, $this->tabindex++, array('class' => 'form-control'));
+		$passwordRe = $this->out->passField('passwordRe', '', '', 25, 40, $this->tabindex++, array('class' => 'form-control'));
+		$realname = $this->out->textField('realname', '', $this->realname, 25, 60, $this->tabindex++, '', array('class' => 'form-control'));
+		$email = $this->out->textField('email', '', $this->email, 25, 60, $this->tabindex++, '', array('class' => 'form-control'));
+		$allowemail = $this->out->checkbox('allowemail', '', $this->allowemail, '', null, $this->tabindex++);
 		$common = $this->makeCommonInput();
 		$customInput = $this->makeCustomInput();
-		$news = $this->out->checkbox('news', '', $this->news,
-			'Получаване на месечен бюлетин', null, $this->tabindex++);
-		$formEnd = $this->makeFormEnd();
+		$news = $this->out->checkbox('news', '', $this->news, '', null, $this->tabindex++);
 		$historyLink = $this->controller->generateUrl('new');
 
 		return <<<EOS
 
-$formBegin
-	$attempt
-	<legend>Данни и настройки</legend>
-	<table>
-	<tr>
-		<td class="fieldname-left"><label for="username">Потребителско име:</label></td>
-		<td>$username</td>
-	</tr><tr>
-		<td class="fieldname-left"><label for="password">Нова парола<a id="nb1" href="#n1">*</a>:</label></td>
-		<td>$password</td>
-	</tr><tr>
-		<td class="fieldname-left"><label for="passwordRe">Новата парола още веднъж:</label></td>
-		<td>$passwordRe</td>
-	</tr><tr>
-		<td colspan="2"><a id="n1" href="#nb1">*↑</a> <em>Нова парола</em> — въведете нова парола само ако искате да смените сегашната си.</td>
-	</tr><tr>
-		<td class="fieldname-left"><label for="realname">Истинско име:</label></td>
-		<td>$realname</td>
-	</tr><tr>
-		<td class="fieldname-left"><label for="email">Е-поща:</label></td>
-		<td>$email</td>
-	</tr><tr>
-		<td colspan="2">
-			$allowemail
-		</td>
-	</tr>$common
-	<tr><td colspan="2">$customInput</td></tr>
-	<tr>
-		<td colspan="2">
-			$news
-			<div class="extra">(Алтернативен начин да следите новото в библиотеката предлага страницата <a href="$historyLink">Новодобавено</a>)</div>
-		</td>
-	</tr>
-$formEnd
-EOS;
-	}
+<form action="" method="post" class="form-horizontal" role="form">
+	<input type="hidden" name="attempt" value="$this->attempt">
+	<div class="form-group">
+		<label for="username" class="col-sm-4 control-label">Потребителско име:</label>
+		<div class="col-sm-8">
+			$username
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="password" class="col-sm-4 control-label">Нова парола<a id="nb1" href="#n1">*</a>:</label>
+		<div class="col-sm-8">
+			$password
+			<span class="help-block">Въведете нова парола само ако искате да смените сегашната си.</span>
+		</div>
+		<label for="passwordRe" class="col-sm-4 control-label">Новата парола още веднъж:</label>
+		<div class="col-sm-8">
+			$passwordRe
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="realname" class="col-sm-4 control-label">Истинско име:</label>
+		<div class="col-sm-8">
+			$realname
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="email" class="col-sm-4 control-label">Е-поща:</label>
+		<div class="col-sm-8">
+			$email
+		</div>
+		<div class="col-sm-offset-4 col-sm-8">
+			<div class="checkbox">
+				<label>
+					$allowemail Разрешаване на писма от другите потребители
+				</label>
+			</div>
+		</div>
+	</div>
+	$common
+	<div class="form-group">
+		<div class="col-sm-offset-4 col-sm-8">
+			<div class="checkbox">
+				<label>
+					$news Получаване на месечен бюлетин
+				</label>
+			</div>
+			<span class="help-block">Алтернативен начин да следите новото в библиотеката предлага страницата <a href="$historyLink">Новодобавено</a>.</span>
+		</div>
+	</div>
+	$customInput
 
-
-	protected function makeFormBegin() {
-		return <<<EOS
-<form action="" method="post">
-<fieldset style="width: 35em; margin:1em auto" align="center">
-EOS;
-	}
-
-	protected function makeFormEnd() {
-		$submit = $this->out->submitButton('Запис', '', $this->tabindex++);
-		return <<<EOS
-	<tr>
-		<td colspan="2" align="center">$submit</td>
-	</tr>
-	</table>
-</fieldset>
+	<div class="form-group">
+		<div class="col-sm-offset-4 col-sm-8">
+			{$this->out->submitButton('Запис', '', $this->tabindex++, false, array('class' => 'btn btn-primary'))}
+		</div>
+	</div>
 </form>
 EOS;
 	}
-
 
 	protected function makeCommonInput() {
 		$skin = $this->makeSkinInput($this->tabindex++);
 		$nav = $this->makeNavPosInput($this->tabindex++);
 
 		return <<<EOS
-
-	<tr>
-		<td class="fieldname-left"><label for="skin">Облик:</label></td>
-		<td>$skin</td>
-	</tr><tr>
-		<td class="fieldname-left"><label for="nav">Навигация:</label></td>
-		<td>$nav</td>
-	</tr>
+	<div class="form-group">
+		<label for="skin" class="col-sm-4 control-label">Облик:</label>
+		<div class="col-sm-8">
+			$skin
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="nav" class="col-sm-4 control-label">Навигация:</label>
+		<div class="col-sm-8">
+			$nav
+		</div>
+	</div>
 EOS;
 	}
 
@@ -187,22 +188,32 @@ EOS;
 	protected function makeSkinInput($tabindex) {
 		return $this->out->selectBox('skin', '', Setup::setting('skins'),
 			$this->opts['skin'], $tabindex,
-			array('onchange'=>'skin=this.value; changeStyleSheet()'));
+			array('class' => 'form-control', 'onchange' => 'skin=this.value; changeStyleSheet()'));
 	}
 
 
 	protected function makeNavPosInput($tabindex) {
 		return $this->out->selectBox('nav', '', Setup::setting('navpos'),
 			$this->opts['nav'], $tabindex,
-			array('onchange'=>'nav=this.value; changeStyleSheet()'));
+			array('class' => 'form-control', 'onchange' => 'nav=this.value; changeStyleSheet()'));
 	}
 
 
 	protected function makeCustomInput() {
-		$inputs = array();
+		$inputs = '';
+		$inputs .= '<div class="form-group">';
 		$files = $this->container->getParameter('user_css');
 		foreach ($files as $file => $title) {
-			$inputs[] = sprintf('<li><label><input type="checkbox" name="css[%s]" value="%s" %s> %s</label></li>',
+			$inputs .= sprintf(<<<HTML
+		<div class="col-sm-offset-4 col-sm-8">
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="css[%s]" value="%s" %s> %s
+				</label>
+			</div>
+		</div>
+HTML
+				,
 				$file,
 				$file,
 				(isset($this->opts['css'][$file]) ? 'checked="checked"' : ''),
@@ -210,28 +221,41 @@ EOS;
 		}
 		$files = $this->container->getParameter('user_js');
 		foreach ($files as $file => $title) {
-			$inputs[] = sprintf('<li><label><input type="checkbox" name="js[%s]" value="%s" %s> %s</label></li>',
+			$inputs .= sprintf(<<<HTML
+		<div class="col-sm-offset-4 col-sm-8">
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="js[%s]" value="%s" %s> %s
+				</label>
+			</div>
+		</div>
+HTML
+				,
 				$file,
 				$file,
 				(isset($this->opts['js'][$file]) ? 'checked="checked"' : ''),
 				$title);
 		}
-		$inputs[] = sprintf('<li><label>Собствени стилове: <input type="text" name="css[custom]" size="50" value="%s"></label></li>',
-			(isset($this->opts['css']['custom']) ? $this->opts['css']['custom'] : '')
-		);
-		$inputs[] = sprintf('<li><label>Собствени скриптове: <input type="text" name="js[custom]" size="50" value="%s"></label></li>',
-			(isset($this->opts['js']['custom']) ? $this->opts['js']['custom'] : '')
-		);
-		$inputs = implode("\n", $inputs);
+		$inputs .= '</div>';
 
-		return <<<EOS
-<fieldset>
-	<legend>Допълнителни стилове и скриптове</legend>
-	<ul>
-		$inputs
-	</ul>
-</fieldset>
-EOS;
+		$inputs .= '<div class="form-group">';
+		$cssCustomValue = isset($this->opts['css']['custom']) ? htmlspecialchars($this->opts['css']['custom']) : '';
+		$inputs .= <<<HTML
+		<label for="css_custom" class="col-sm-4 control-label">Собствени стилове:</label>
+		<div class="col-sm-8">
+			<input type="text" id="css_custom" class="form-control" name="css[custom]" value="$cssCustomValue" placeholder="http://mydomain.info/chitanka.css">
+		</div>
+HTML;
+		$jsCustomValue = isset($this->opts['js']['custom']) ? htmlspecialchars($this->opts['js']['custom']) : '';
+		$inputs .= <<<HTML
+		<label for="js_custom" class="col-sm-4 control-label">Собствени скриптове:</label>
+		<div class="col-sm-8">
+			<input type="text" id="js_custom" class="form-control" name="js[custom]" value="$jsCustomValue" placeholder="http://mydomain.info/chitanka.js">
+		</div>
+HTML;
+		$inputs .= '</div>';
+
+		return $inputs;
 	}
 
 
