@@ -29,7 +29,10 @@ jQuery.fn.boxcollapse = function(putLink) {
 		if ( ! $heading.length ) return;
 		var $box = $(this);
 		// all content which shall be toggled
-		var $boxContents = $heading.siblings().not(".assistive");
+		var $boxContents = $heading.siblings().not(".sr-only");
+		if ($boxContents.length === 0) {
+			$boxContents = $heading.parent().siblings().not(".sr-only");
+		}
 		var contentIsShown = true;
 		var toggleContents = function(){
 			$boxContents.toggle();
