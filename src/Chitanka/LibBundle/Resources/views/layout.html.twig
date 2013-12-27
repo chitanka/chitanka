@@ -18,9 +18,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-	{#% if stylesheet %#}
-		{{ render_esi(controller('LibBundle:User:stylesheet')) }}
-	{#% endif %#}
+	{{ render_esi(controller('LibBundle:User:stylesheet')) }}
 	<link rel="stylesheet" href="{{ asset('bundles/lib/font-awesome/css/font-awesome.min.css') }}">
 	{% if css_extra is defined %}
 		{% for extra_stylesheet in css_extra %}
