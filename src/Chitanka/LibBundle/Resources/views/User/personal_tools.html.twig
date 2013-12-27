@@ -14,7 +14,7 @@
 		<li class="level-0 user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" class="user" title="Лична страница"><i class="fa fa-user"> {{ _user.username }}</i></a></li>
 		<li class="level-0 dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				<span class="caret"></span>
+				<i class="fa fa-bars"></i>
 			</a>
 			<ul class="dropdown-menu">
 				<li class="user-settings"><a href="{{ path('user_edit', {'username': _user.username}) }}" title="Потребителски настройки"><i class="fa fa-gear"> Настройки</i></a></li>
@@ -30,7 +30,7 @@
 		<li class="level-0 user-signin"><a href="{{ path('login') }}"><i class="fa fa-sign-in"></i> Вход</a></li>
 		<li class="level-0 dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				<span class="caret"></span>
+				<i class="fa fa-bars"></i>
 			</a>
 			<ul class="dropdown-menu">
 				<li class="user-register"><a href="{{ path('register') }}"><i class="fa fa-user"></i> Регистрация</a></li>
