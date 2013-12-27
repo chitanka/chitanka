@@ -680,7 +680,7 @@ li.title {
 }
 
 // кутия за съдържание — появява се на доста страници
-#toc {
+.toc {
 	float: left;
 	margin: 1em 1em 1em 0;
 	padding: .8em;
@@ -691,7 +691,7 @@ li.title {
 	font-size: .9em;
 }
 // заглавие в кутията за съдържание
-#toc h3 {
+.toc h3 {
 	display: inline;
 	margin: 0;
 	padding: .5em;
@@ -703,15 +703,15 @@ li.title {
 	text-shadow: none;
 }
 // неподредени списъци в кутията за съдържание
-#toc ul, #toc ol {
+.toc ul, .toc ol {
 	margin: .2em;
 	padding-left: 1.5em;
 }
-#toc ul a, #toc ol a {
+.toc ul a, .toc ol a {
 	display: block;
 	text-decoration: none;
 }
-#toc ul a:hover, #toc ol a:hover {
+.toc ul a:hover, .toc ol a:hover {
 	color: @headerFgColor;
 	background-color: @headerBgColor;
 }
@@ -1864,7 +1864,7 @@ ul.two-columns {
 .history-wrapper h3 {
 	text-align: left;
 }
-.history-wrapper #toc {
+.history-wrapper .toc {
 	float: right;
 	margin: 0 0 1em 1em;
 }

@@ -1,6 +1,6 @@
 {% import 'LibBundle::text.html.twig' as textinfo %}
 {% if text.headers|length %}
-	<div id="toc" class="collapsed" role="navigation">
+	<div id="text-toc" class="toc collapsed" role="navigation">
 		<p class="sr-only"><a href="#after-toc">(Прескачане на съдържанието)</a></p>
 		<h3>Съдържание</h3>
 		{{ textinfo.toc(text, part, part == 0) }}

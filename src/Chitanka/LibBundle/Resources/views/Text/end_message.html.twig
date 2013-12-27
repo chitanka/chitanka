@@ -1,5 +1,5 @@
 {% if next_part %}
-	<div id="text-end-msg">Към <a href="{{ path('text_show_part', {'id': text.id, 'part': next_part}) }}#textstart" rel="next">следващата част</a> или към <a class="goto-toc" href="#toc">съдържанието</a></div>
+	<div id="text-end-msg">Към <a href="{{ path('text_show_part', {'id': text.id, 'part': next_part}) }}#textstart" rel="next">следващата част</a> или към <a class="goto-toc" href="#text-toc">съдържанието</a></div>
 {% else %}
 	<div id="text-end-msg">
 		Край

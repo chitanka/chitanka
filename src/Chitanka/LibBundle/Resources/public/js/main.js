@@ -291,7 +291,7 @@ $(function(){
 
 	enhanceModifying();
 
-	$("#toc").boxcollapse();
+	$(".toc").boxcollapse();
 });
 
 
