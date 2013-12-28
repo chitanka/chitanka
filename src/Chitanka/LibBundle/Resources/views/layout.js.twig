@@ -1,1 +1,6 @@
 {% block content '' %}
+{% if inline_js is defined %}
+	<script>
+		{{ inline_js|raw }}
+	</script>
+{% endif %}

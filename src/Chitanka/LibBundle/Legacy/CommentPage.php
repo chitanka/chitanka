@@ -71,8 +71,12 @@ class CommentPage extends Page {
 
 		$this->comment = String::my_replace($this->comment);
 		if ( $this->request->value('preview') != NULL ) {
-			$this->addMessage('Това е само предварителен преглед. Мнението ви все още не е съхранено.');
-			return $this->makeComment() . $this->makeForm();
+			$response = $this->makeComment();
+			if (!$this->controller->getRequest()->isXmlHttpRequest()) {
+				$this->addMessage('Това е само предварителен преглед. Мнението ви все още не е съхранено.');
+				$response .= $this->makeForm();
+			}
+			return $response;
 		}
 		$showComment = 1;
 		if ( !$this->verifyCaptchaAnswer(true) ) {
@@ -106,9 +110,11 @@ class CommentPage extends Page {
 			$chatMsg = sprintf('Нов [url=http://chitanka.info/text/%d/comments#e%d]читателски коментар[/url] от [b]%s[/b] за „%s“', $this->textId, $comment->getId(), $this->reader, $this->work->getTitle());
 			Legacy::getFromUrl('http://forum.chitanka.info/chat/post.php', array('m' => $chatMsg));
 		}
-		$this->addMessage('Мнението ви беше получено.');
-		if ( ! $showComment ) {
-			$this->addMessage('Ще бъде показано след преглед от модератор.');
+		if (!$this->controller->getRequest()->isXmlHttpRequest()) {
+			$this->addMessage('Мнението ви беше получено.');
+			if ( ! $showComment ) {
+				$this->addMessage('Ще бъде показано след преглед от модератор.');
+			}
 		}
 		$this->replyto = $this->comment = '';
 		$this->clearCaptchaQuestion();
@@ -133,8 +139,10 @@ class CommentPage extends Page {
 		$this->initData();
 		$this->addTextFeedLinks();
 
-		return $this->makeComments()
-			. ($this->includeCommentForm ? $this->makeForm() : '');
+		return '<div id="comments-wrapper">'
+			. $this->makeComments()
+			. ($this->includeCommentForm ? $this->makeForm() : '')
+			. '</div>';
 	}
 
 
@@ -241,13 +249,13 @@ class CommentPage extends Page {
 			if ( !empty($textId) ) {
 				$links = '';
 				if ($this->includeCommentForm) {
-					$links .= sprintf('<li><a href="%s#e%s" class="class" title="Отговор на коментара" onclick="return initReply(%d)">Отговор</a></li>', $this->controller->generateUrl('text_comments', array('id' => $textId, 'replyto' => $id)), $id, $id);
+					$links .= sprintf('<li><a href="%s#e%s" title="Отговор на коментара" onclick="return initReply(%d)"><i class="fa fa-reply"></i><span class="sr-only">Отговор</span></a></li>', $this->controller->generateUrl('text_comments', array('id' => $textId, 'replyto' => $id)), $id, $id);
 				}
 				if ( empty($this->textId) ) {
-					$links .= sprintf('<li><a href="%s" title="Всички коментари за произведението">Всички коментари</a></li>', $this->controller->generateUrl('text_comments', array('id' => $textId)));
+					$links .= sprintf('<li><a href="%s" title="Всички коментари за произведението"><i class="fa fa-comments"></i><span class="sr-only">Всички коментари</span></a></li>', $this->controller->generateUrl('text_comments', array('id' => $textId)));
 				}
 				if ($this->user->inGroup('admin')) {
-					$links .= sprintf('<li><a href="%s" title="Редактиране на коментара">Редактиране</a></li>', $this->controller->generateUrl('admin_text_comment_edit', array('id' => $id)));
+					$links .= sprintf('<li><a href="%s" title="Редактиране на коментара"><i class="fa fa-edit"></i><span class="sr-only">Редактиране</span></a></li>', $this->controller->generateUrl('admin_text_comment_edit', array('id' => $id)));
 					$links .= sprintf('<li><form action="%s" method="post" class="image-form delete-form"><button type="submit" title="Изтриване на коментара"><i class="fa fa-trash-o"></i><span class="sr-only">Изтриване</span></button></form></li>', $this->controller->generateUrl('admin_text_comment_delete', array('id' => $id)));
 				}
 				$acts = "<ul class='menu' style='float:right'>$links</ul>";
@@ -296,27 +304,47 @@ EOS;
 		$chunkId = $this->out->hiddenField('chunkId', $this->chunkId);
 		$replyto = $this->out->hiddenField('replyto', $this->replyto);
 		$reader = $this->user->isAnonymous()
-			? $this->out->textField('reader', '', $this->reader, 40, 160, null, '', array('class' => 'form-control'))
-			: $this->user->getUsername();
+			? '<div class="form-group"><label for="reader">Име: </label>' . $this->out->textField('reader', '', $this->reader, 40, 160, null, '', array('class' => 'form-control')) . '</div>'
+			: '';
 		$formreader = $this->user->isAnonymous()
 			? 'this.form.reader.value'
 			: "'".$this->user->getUsername()."'";
-		$comment = $this->out->textarea('commenttext', '', $this->comment, 20, 77,
+		$comment = $this->out->textarea('commenttext', '', $this->comment, 10, 77,
 			null, array('onkeypress' => 'postform_changed = true', 'class' => 'form-control'));
 		$hideform = !empty($this->comment) || !empty($this->replyto) ? ''
 			: '$("#postform").hide();';
 
-		$this->addJs("var postform_changed = false; $hideform");
+		$js = <<<JS
+	var postform_changed = false;
+	$hideform
+	$('#postform :submit').on('click', function(e) {
+		var form = jQuery(this.form);
+		var button = this.name;
+		jQuery.post(this.form.action, form.serialize() +'&'+button+'=1', function(response) {
+			if (button == 'preview') {
+				jQuery('#postform-preview').html(response);
+			} else {
+				jQuery('#comments-wrapper').replaceWith(response);
+			}
+		});
+		return false;
+	});
+JS;
+		$this->addJs($js);
 
 		$question = $this->makeCaptchaQuestion();
+		if ($question) {
+			$question = '<div class="form-group">' . $question . '</div>';
+		}
 		$allowHelp = empty(String::$allowableTags) ? ''
 			: '<dl class="instruct"><dt>Разрешени са следните етикети</dt><dd><ul><li>&lt;'.implode('&gt;</li><li>&lt;', String::$allowableTags).'&gt;</li></ul></dd></dl>';
 
+		$postUrl = $this->controller->generateUrl('text_comments', array('id' => $this->textId));
 		return <<<EOS
 
-<form action="" method="post" id="postform">
+<form action="$postUrl" method="post" id="postform" class="form-horizontal">
 <fieldset style="margin-top:2em">
-<div id="commentrules" class="writingrules">
+<div class="writingrules">
 <p>Уважаеми посетители на сайта, всеки е добре дошъл да изкаже мнението си относно дадено произведение. Имайте предвид, че модераторите ще изтрият коментара или част от него, ако той съдържа обидни и груби нападки към другите, както и ако рекламира собствени възгледи, които не са в контекста на произведението. Ако сте съгласни с това условие, моля, продължете към изпращането на коментара си.</p>
 
 <p>Задължително е попълването на всички полета, както и писането с кирилица. Коментарите с латиница най-вероятно ще бъдат изтрити.</p>
@@ -331,16 +359,18 @@ $allowHelp
 	$textId
 	$chunkId
 	$replyto
-	<br>
-	<label for="commenttext">Коментар:</label><br>
-	$comment
-	<div><label for="reader">Име: </label>$reader</div>
-	<div>$question</div>
-	<div>
+	<div class="form-group">
+		<label for="commenttext">Коментар:</label>
+		$comment
+	</div>
+	$reader
+	$question
+	<div class="form-submit">
 		<input type="submit" name="preview" class="btn btn-default" value="Предварителен преглед">
 		<input type="submit" name="send" class="btn btn-success" value="Пращане">
 	</div>
 </fieldset>
+<div id="postform-preview"></div>
 </form>
 EOS;
 	}

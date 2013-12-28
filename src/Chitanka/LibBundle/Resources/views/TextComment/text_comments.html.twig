@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends ajax ? 'LibBundle::layout.js.twig' : 'LibBundle::layout.html.twig' %}
 
 {% set title = 'Читателски коментари' %}
 {% set subtitle %}

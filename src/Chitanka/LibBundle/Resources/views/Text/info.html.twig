@@ -51,17 +51,6 @@
 			</ul>
 			<a href="{{ path('text_label_new', {'id': text.id}) }}" class="action-new" title="Добавяне на етикет"><i class="fa fa-plus"></i></a>
 		</li>
-		<li>
-			<a href="{{ path('text_comments', {'id': text.id}) }}" itemprop="discussionUrl">
-			{% if text.commentcount > 1 %}
-				Има <b>{{ text.commentcount }}</b> читателски мнения за произведението
-			{% elseif text.commentcount == 1 %}
-				Има <b>едно</b> читателско мнение за произведението
-			{% else %}
-				Все още не са дадени читателски мнения за произведението
-			{% endif %}
-			</a>
-		</li>
 		<li>Оценка: {{ textinfo.rating_expanded(text) }}</li>
 	</ul>
 	<ul class="user-actions">

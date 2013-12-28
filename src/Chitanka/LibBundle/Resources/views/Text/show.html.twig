@@ -27,11 +27,12 @@
 	{% endif %}
 
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="#text-info" data-toggle="tab">Информация</a></li>
+		<li class="active"><a href="#text-info" data-toggle="tab"><i class="fa fa-folder-o"></i> Данни</a></li>
 		{% if part <= 1 %}
-		<li><a href="#text-extra-info" data-toggle="tab">Допълнителна информация</a></li>
+		<li><a href="#text-extra-info" data-toggle="tab"><i class="fa fa-book"></i> Информация</a></li>
 		{% endif %}
-		<li><a href="#text-links" data-toggle="tab">Сваляне / Връзки</a></li>
+		<li><a href="#text-links" data-toggle="tab"><i class="fa fa-download"></i> Сваляне / Връзки</a></li>
+		<li><a href="{{ path('text_comments', {'id': text.id}) }}" data-target="#text-comments" data-toggle="tab" itemprop="discussionUrl"><i class="fa fa-comments-o"></i> Коментари ({{ text.commentcount }})</a></li>
 	</ul>
 
 	<div class="tab-content clearfix">
@@ -46,6 +47,9 @@
 		{% endif %}
 		<div class="tab-pane expanded-links" id="text-links">
 			{% include 'LibBundle:Text:extra_links.html.twig' %}
+		</div>
+		<div class="tab-pane" id="text-comments">
+			<br>
 		</div>
 	</div>
 
@@ -66,4 +70,18 @@
 		"chunkId": {{ part }},
 		"nextChunkId": {{ next_part }}
 	});*/
+	$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+		var href = $(e.target).attr('href');
+		if (href.charAt(0) == '#') {
+			return;
+		}
+		var contentTarget = $(e.target).data('target');
+		if (!contentTarget) {
+			return;
+		}
+		$(contentTarget).addClass('loading').load(href, function() {
+			$(this).removeClass('loading');
+			$(e.target).attr('href', contentTarget);
+		});
+	});
 {% endblock %}

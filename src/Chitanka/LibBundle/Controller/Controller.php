@@ -48,16 +48,7 @@ abstract class Controller extends SymfonyController
 			return $this->urlRedirect($page->redirect);
 		}
 
-		$data = array(
-			'page' => $page,
-			'menu' => $this->container->getParameter('menu'),
-			'_user' => $this->getUser(),
-			'navextra' => array(),
-			'current_route' => $this->getCurrentRoute(),
-			'script_library' => $this->container->getParameter('script_library'),
-			'analytics_snippet' => $this->container->getParameter('analytics_snippet'),
-			'environment' => $this->container->get('kernel')->getEnvironment(),
-		);
+		$data = $this->getDisplayVariables() + array('page' => $page);
 		if ($page->inlineJs) {
 			$data['inline_js'] = $page->inlineJs;
 		}
@@ -76,19 +67,8 @@ abstract class Controller extends SymfonyController
 		} else {
 			list($action, $format) = explode('.', $action);
 		}
-		/* @var $request Request */
-		$request = $this->get('request');
-		$request->setFormat('osd', 'application/opensearchdescription+xml');
-		$globals = array(
-			'menu' => $this->container->getParameter('menu'),
-			'_user' => $this->getUser(),
-			'navextra' => array(),
-			'current_route' => $this->getCurrentRoute(),
-			'script_library' => $this->container->getParameter('script_library'),
-			'analytics_snippet' => $this->container->getParameter('analytics_snippet'),
-			'environment' => $this->container->get('kernel')->getEnvironment(),
-			'ajax' => $request->isXmlHttpRequest(),
-		);
+		$this->getRequest()->setFormat('osd', 'application/opensearchdescription+xml');
+		$globals = $this->getDisplayVariables();
 
 		if ($format == 'opds') {
 			$textsUpdatedAt = $this->getTextRevisionRepository()->getMaxDate();
@@ -125,6 +105,20 @@ abstract class Controller extends SymfonyController
 		}
 
 		return $response;
+	}
+
+	protected function getDisplayVariables()
+	{
+		return array(
+			'menu' => $this->container->getParameter('menu'),
+			'_user' => $this->getUser(),
+			'navextra' => array(),
+			'current_route' => $this->getCurrentRoute(),
+			'script_library' => $this->container->getParameter('script_library'),
+			'analytics_snippet' => $this->container->getParameter('analytics_snippet'),
+			'environment' => $this->container->get('kernel')->getEnvironment(),
+			'ajax' => $this->getRequest()->isXmlHttpRequest(),
+		);
 	}
 
 	protected function getStylesheet()
