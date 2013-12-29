@@ -167,7 +167,6 @@ class CommentPage extends Page {
 		$this->curRowNr = 0;
 		$this->db->iterateOverResult($q, 'processCommentDbRow', $this);
 		if ( empty($this->acomments) ) {
-			$this->addMessage('Няма читателски мнения за произведението.');
 			return $this->includeCommentForm ? $this->makeNewCommentLink() : '';
 		}
 		// TODO правилна инициализация на дървото, ако се почва някъде от средата
@@ -381,7 +380,6 @@ EOS;
 		$sql = $this->makeSqlQuery($limit, $offset, $order);
 		$res = $this->db->query($sql);
 		if ($this->db->numRows($res) == 0) {
-			$this->addMessage('Няма читателски мнения.');
 			return '';
 		}
 
