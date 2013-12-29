@@ -179,33 +179,6 @@ function showBookmarks()
 	}
 }
 
-
-function initCluetip()
-{
-	$("a.booklink")
-		.live("click", function(){
-			// do not spam users if they wish to follow a link
-			_GLOBALS.showCluetip = false;
-		})
-		.cluetip({
-			width: ($(document).width() / 1.25),
-			positionBy: 'mouse',
-			//splitTitle: ';',
-			sticky: true,
-			dropShadow: false,
-			closePosition: 'title',
-			closeText: '<span>Затваряне</span>',
-			mouseOutClose: true,
-			hoverIntent: {
-				sensitivity: 10,
-				interval:    500 // in milliseconds
-			},
-			onActivate: function(e) {
-				return _GLOBALS.showCluetip;
-			}
-		});
-}
-
 var togglerCookieName = "nomenu";
 // create a menu toggle link
 (function(){
@@ -273,17 +246,42 @@ var togglerCookieName = "nomenu";
 })();
 
 
+function registerBookClueLinks() {
+	$(document).on('click', '.book-clue', function() {
+		var elm = $(this);
+		if (elm.is('loading')) {
+			return;
+		}
+		var href = elm.data('href');
+		if (!href) {
+			elm.popover('toggle');
+			return;
+		}
+		elm.addClass('loading');
+		$.get(href, function(clueContent) {
+			elm.removeClass('loading').data('href', '');
+			elm.popover({
+				html: true,
+				placement: 'auto',
+				trigger: 'manual',
+				content: clueContent
+			}).popover('show');
+		});
+	});
+}
+
 $(function(){
 	if (user.isAuthenticated()) {
 		showBookmarks();
 	}
 
-	initCluetip();
 	$(".popover-trigger").popover({
 		html: true,
 		placement: 'auto',
 		trigger: 'hover'
 	});
+
+	registerBookClueLinks();
 
 	if ($.cookie(togglerCookieName)) {
 		$("#toggle-nav-link").click();

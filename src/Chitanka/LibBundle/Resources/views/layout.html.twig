@@ -124,8 +124,7 @@
 {% block javascripts %}
 	<script>
 		var _GLOBALS = {
-			scriptname: "{{ path('homepage') }}",
-			showCluetip: true
+			scriptname: "{{ path('homepage') }}"
 		};
 	</script>
 	{% set scripts = [] %}
@@ -134,7 +133,7 @@
 	{% else %}
 		{% set scripts = ['jquery'] %}
 	{% endif %}
-	{% set scripts = scripts|merge(['jquery-hoverIntent', 'jquery-cluetip', 'jquery-cookie', 'jquery-myplugins', 'main']) %}
+	{% set scripts = scripts|merge(['jquery-cookie', 'jquery-myplugins', 'main']) %}
 	<script src="{{ asset('bundles/lib/js/'~ scripts|join(',') ~'.js') }}"></script>
 	<script src="{{ asset('bundles/lib/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 	{% if js_extra is defined %}

@@ -29,7 +29,7 @@
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#text-info" data-toggle="tab"><i class="fa fa-folder-o"></i> Данни</a></li>
 		{% if part <= 1 %}
-		<li><a href="#text-extra-info" data-toggle="tab"><i class="fa fa-book"></i> Информация</a></li>
+		<li><a href="#text-extra-info" data-toggle="tab"><i class="fa fa-tag"></i> Информация</a></li>
 		{% endif %}
 		<li><a href="#text-links" data-toggle="tab"><i class="fa fa-download"></i> Сваляне / Връзки</a></li>
 		<li><a href="{{ path('text_comments', {'id': text.id}) }}" data-target="#text-comments" data-toggle="tab" itemprop="discussionUrl"><i class="fa fa-comments-o"></i> Коментари ({{ text.commentcount }})</a></li>

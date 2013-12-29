@@ -487,7 +487,6 @@ dd.country {
 
 .booklist {
 	dt {
-		font-weight: bold;
 		float: none;
 		width: 50em;
 		max-width: 80%;
@@ -501,8 +500,14 @@ dd.country {
 	.cover {
 		min-height: 90px;
 	}
+	.booklink {
+		font-weight: bold;
+	}
 }
-
+.book-clue {
+	margin-left: .3em;
+	font-size: 110%;
+}
 .bookcat, .bookseq {
 	font-size: 90%;
 }
@@ -1980,7 +1985,7 @@ a.btn {
 	background-color: inherit;
 }
 .popover {
-	max-width: 650px;
+	max-width: 50em;
 }
 .well {
 	border-color: darken(@well-bg, 30%);

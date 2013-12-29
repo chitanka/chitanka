@@ -17,12 +17,12 @@
 
 	<ul class="nav nav-tabs book-tabs">
 		{% if template != "" %}
-			<li><a href="#book-content" data-toggle="tab">Съдържание</a></li>
+			<li><a href="#book-content" data-toggle="tab"><i class="fa fa-book"></i> Съдържание</a></li>
 		{% endif %}
 		{% if info %}
-			<li><a href="#book-extra-info" data-toggle="tab">Допълнителна информация</a></li>
+			<li><a href="#book-extra-info" data-toggle="tab"><i class="fa fa-tag"></i> Информация</a></li>
 		{% endif %}
-		<li><a href="#book-links" data-toggle="tab">Сваляне / Връзки</a></li>
+		<li><a href="#book-links" data-toggle="tab"><i class="fa fa-download"></i> Сваляне / Връзки</a></li>
 	</ul>
 	<div class="tab-content">
 		{% if template != "" %}
