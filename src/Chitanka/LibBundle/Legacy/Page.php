@@ -146,7 +146,11 @@ abstract class Page
 	public function addMessage($message, $isError = false) {
 		$class = $isError ? 'error' : 'notice';
 
-		$this->controller->get('request')->getSession()->getFlashBag()->set($class, $message);
+		if ($this->controller->getRequest()->isXmlHttpRequest()) {
+			header("X-Message-$class: ".rawurlencode($message));
+		} else {
+			$this->controller->get('request')->getSession()->getFlashBag()->set($class, $message);
+		}
 	}
 
 

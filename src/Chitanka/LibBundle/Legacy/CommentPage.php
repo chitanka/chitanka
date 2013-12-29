@@ -63,6 +63,9 @@ class CommentPage extends Page {
 	protected function processSubmission() {
 		if ( empty($this->reader) || empty($this->comment) ) {
 			$this->addMessage('Попълнете всички полета!', true);
+			if ($this->controller->getRequest()->isXmlHttpRequest()) {
+				return '';
+			}
 			return $this->buildContent();
 		}
 		if ( !empty($this->textId) ) {
@@ -71,9 +74,9 @@ class CommentPage extends Page {
 
 		$this->comment = String::my_replace($this->comment);
 		if ( $this->request->value('preview') != NULL ) {
+			$this->addMessage('Това е само предварителен преглед. Мнението ви все още не е съхранено.');
 			$response = $this->makeComment();
 			if (!$this->controller->getRequest()->isXmlHttpRequest()) {
-				$this->addMessage('Това е само предварителен преглед. Мнението ви все още не е съхранено.');
 				$response .= $this->makeForm();
 			}
 			return $response;
@@ -107,8 +110,10 @@ class CommentPage extends Page {
 			$this->db->query(sprintf('UPDATE %s SET comment_count = comment_count + 1 WHERE id = %d', DBT_TEXT, $this->textId));
 
 			// TODO rewrite
-			$chatMsg = sprintf('Нов [url=http://chitanka.info/text/%d/comments#e%d]читателски коментар[/url] от [b]%s[/b] за „%s“', $this->textId, $comment->getId(), $this->reader, $this->work->getTitle());
-			Legacy::getFromUrl('http://forum.chitanka.info/chat/post.php', array('m' => $chatMsg));
+			if (!preg_match('/^(127|192)/', $comment->getIp())) {
+				$chatMsg = sprintf('Нов [url=http://chitanka.info/text/%d/comments#e%d]читателски коментар[/url] от [b]%s[/b] за „%s“', $this->textId, $comment->getId(), $this->reader, $this->work->getTitle());
+				Legacy::getFromUrl('http://forum.chitanka.info/chat/post.php', array('m' => $chatMsg));
+			}
 		}
 		if (!$this->controller->getRequest()->isXmlHttpRequest()) {
 			$this->addMessage('Мнението ви беше получено.');
@@ -319,9 +324,18 @@ EOS;
 	$('#postform :submit').on('click', function(e) {
 		var form = jQuery(this.form);
 		var button = this.name;
-		jQuery.post(this.form.action, form.serialize() +'&'+button+'=1', function(response) {
+		jQuery.post(this.form.action, form.serialize() +'&'+button+'=1', function(response, textStatus, request) {
 			if (button == 'preview') {
-				jQuery('#postform-preview').html(response);
+				var notice = request.getResponseHeader('X-Message-notice');
+				var error = request.getResponseHeader('X-Message-error');
+				var preview = jQuery('#postform-preview').show();
+				preview.html(response);
+				if (notice) {
+					preview.prepend('<div class="alert alert-info">'+decodeURIComponent(notice)+'</div>');
+				}
+				if (error) {
+					preview.prepend('<div class="alert alert-danger">'+decodeURIComponent(error)+'</div>');
+				}
 			} else {
 				jQuery('#comments-wrapper').replaceWith(response);
 			}
@@ -369,7 +383,7 @@ $allowHelp
 		<input type="submit" name="send" class="btn btn-success" value="Пращане">
 	</div>
 </fieldset>
-<div id="postform-preview"></div>
+<div id="postform-preview" class="well" style="display:none"></div>
 </form>
 EOS;
 	}
