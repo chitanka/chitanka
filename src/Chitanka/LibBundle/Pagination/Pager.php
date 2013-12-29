@@ -34,6 +34,11 @@ class Pager
 		return $this->count;
 	}
 
+	public function total()
+	{
+		return $this->total;
+	}
+
 	public function show()
 	{
 		return $this->count > 1;
