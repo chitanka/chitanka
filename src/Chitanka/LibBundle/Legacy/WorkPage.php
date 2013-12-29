@@ -838,6 +838,9 @@ CORRECTIONS;
 		}
 
 		$adminFields = $this->userIsAdmin() ? $this->makeAdminOnlyFields() : '';
+		$user = $this->controller->getRepository('User')->find($this->scanuser);
+		$ulink = $this->makeUserLinkWithEmail($user->getUsername(),
+			$user->getEmail(), $user->getAllowemail());
 
 		return <<<EOS
 
@@ -853,6 +856,14 @@ $helpTop
 			$entry
 			$workType
 			$bypass
+			<div class="form-group">
+				<label for="title" class="col-sm-2 control-label">Отговорник:</label>
+				<div class="col-sm-10">
+					<div class="form-control">
+						$ulink
+					</div>
+				</div>
+			</div>
 			<div class="form-group">
 				<label for="title" class="col-sm-2 control-label">Заглавие:</label>
 				<div class="col-sm-10">
@@ -871,10 +882,8 @@ $helpTop
 					$comment
 				</div>
 			</div>
-			<table>
 			$editFields
 			$adminFields
-			</table>
 			$delete
 			<div class="form-submit">$button</div>
 		</form>
@@ -1044,15 +1053,7 @@ FIELDS;
 
 
 	protected function makeMultiUserEditFields() {
-		$scanInput = $this->makeMultiScanInput();
-
-		return <<<EOS
-	<tr>
-	<td colspan="2">
-	$scanInput
-	</td>
-	</tr>
-EOS;
+		return $this->makeMultiScanInput();
 	}
 
 
@@ -1083,9 +1084,6 @@ EOS;
 			$tmpfiles = '';
 		}
 
-		$user = $this->controller->getRepository('User')->find($this->scanuser);
-		$ulink = $this->makeUserLinkWithEmail($user->getUsername(),
-			$user->getEmail(), $user->getAllowemail());
 		$flink = $this->tmpfiles == self::DEF_TMPFILE ? ''
 			: $this->out->link( $this->makeTmpFilePath($this->tmpfiles), String::limitLength($this->tmpfiles)) .
 			($this->tfsize > 0 ? " ($this->tfsize&#160;MiB)" : '');
@@ -1094,25 +1092,27 @@ EOS;
 		$maxUploadSizeInMiB = Legacy::getMaxUploadSizeInMiB();
 
 		return <<<EOS
-	<fieldset>
-		<legend>Сканиране и разпознаване ($ulink)</legend>
-		<div>
-		<label for="entry_status">Етап:</label>
-  		$status
-		$is_frozen
+	<div class="form-group">
+		<label for="entry_status" class="col-sm-2 control-label">Етап:</label>
+		<div class="col-sm-10">
+			$status
+			$is_frozen
 		</div>
-		<div>
-		<label for="file">Файл:</label>
-		$maxFileSize
-		$file (макс. $maxUploadSizeInMiB MiB)
+	</div>
+	<div class="form-group">
+		<label for="file" class="col-sm-2 control-label">Файл:</label>
+		<div class="col-sm-10">
+			<div>
+				$maxFileSize
+				$file (макс. $maxUploadSizeInMiB MiB)
+			</div>
+			<p>или</p>
+			<div>
+			$tmpfiles
+			<div>$flink</div>
+			</div>
 		</div>
-		<p>или</p>
-		<div>
-		<label for="tmpfiles">Външен файл:</label>
-		$tmpfiles
-		<div>$flink</div>
-		</div>
-	</fieldset>
+	</div>
 EOS;
 	}
 
@@ -1122,11 +1122,9 @@ EOS;
 		$myContrib = $this->isMyContribAllowed() ? $this->makeMultiEditMyInput() : '';
 
 		return <<<EOS
-	<fieldset>
-		<legend>Коригиране</legend>
+		<h3>Коригиране</h3>
 		$editorList
 		$myContrib
-	</fieldset>
 EOS;
 	}
 
