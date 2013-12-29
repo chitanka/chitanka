@@ -857,7 +857,7 @@ $helpTop
 			$workType
 			$bypass
 			<div class="form-group">
-				<label for="title" class="col-sm-2 control-label">Отговорник:</label>
+				<label class="col-sm-2 control-label">Отговорник:</label>
 				<div class="col-sm-10">
 					<div class="form-control">
 						$ulink
