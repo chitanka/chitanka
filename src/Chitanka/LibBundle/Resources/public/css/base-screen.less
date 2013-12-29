@@ -562,7 +562,6 @@ li img {
 .feed,
 .zoom,
 .close,
-.cluetip-close a,
 .idea,
 .stop,
 span.frozen {
@@ -595,8 +594,7 @@ span.frozen {
 .is_frozen {
 	opacity: .6;
 }
-.close,
-.cluetip-close a {
+.close {
 	background-position: 0 -396px;
 }
 .idea {
@@ -1074,24 +1072,6 @@ th {
 	background-color: @evenBgColor;
 }
 
-// сортуруеми таблици
-th.header {
-	padding-left: 1.1em;
-	background-image: url('images/sprite-sort.png');
-	background-repeat: no-repeat;
-	background-position: 4px -112px;
-	cursor: pointer;
-}
-th.headerSortUp {
-	background-position: 5px -24px;
-	text-decoration: underline;
-}
-th.headerSortDown {
-	background-position: 5px -68px;
-	text-decoration: underline;
-}
-
-
 // невидими знаци (табулации, интервали), които трябва да бъдат видими
 .visible-ws {
 	color: @mainBgColor;
@@ -1105,7 +1085,6 @@ th.headerSortDown {
 // do this as a foreground image to support css on/img off
 .edit span,
 .rating span,
-.cluetip-close a span,
 .texttype span,
 .dl-list span {
 	display: none;
@@ -1420,21 +1399,6 @@ form.loading {
 	line-height: 3em;
 	text-align: center;
 	font-size: 1.5em;
-}
-// cluetip
-
-#cluetip {
-	padding: .2em .5em;
-	border: medium outset @fieldsetBordColor;
-	color: @mainFgColor;
-	background-color: @mainBgColor;
-}
-#cluetip h3 {
-	margin: .2em 0 .1em 0;
-	padding: .1em;
-}
-.cluetip-title .cluetip-close {
-	float: left;
 }
 
 .clouds {
