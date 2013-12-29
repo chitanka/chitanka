@@ -485,17 +485,22 @@ dd.country {
 	max-width: 30%;
 }
 
-.booklist dt {
-	font-weight: bold;
-	float: none;
-	width: 50em;
-	max-width: 80%;
-}
-.booklist a {
-	text-decoration: none;
-}
-.booklist a:hover {
-	text-decoration: underline;
+.booklist {
+	dt {
+		font-weight: bold;
+		float: none;
+		width: 50em;
+		max-width: 80%;
+	}
+	a {
+		text-decoration: none;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+	.cover {
+		min-height: 90px;
+	}
 }
 
 .bookcat, .bookseq {
