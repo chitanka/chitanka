@@ -411,7 +411,7 @@ option[selected=selected],
 }
 .superlist {
 	padding: 0;
-	font-size: 1em;
+	//font-size: 1em;
 	dl {
 		margin: 0;
 		padding: 0;
@@ -606,62 +606,41 @@ span.frozen {
 }
 
 // Типове текстове
-.title,
-.texttype {
-	padding-left: 1.3em;
-	background-position: 0 .2em;
-	background-repeat: no-repeat;
+.title {
+	.fa-li {
+		left: -1.5em;
+		width: 1.5em;
+		color: #B8B8B8;
+		font-size: 110%;
+	}
 }
-li.title {
-	margin-left: 0;
-	list-style-type: none;
+.t-shortstory, .t-novelette {
+	.fa-li {
+		color: #29D229;
+	}
 }
-.t-othergenre,
-.t-essay,
-.t-article,
-.t-play,
-.t-screenplay,
-.t-anecdote,
-.t-pritcha,
-.t-gamebook,
-.t-science,
-.t-biography,
-.t-intro,
-.t-outro,
-.t-travelnotes,
-.t-other,
-.t-textbook,
-.t-feuilleton,
-.t-letter,
-.t-ocherk,
-.t-review,
-.t-interview,
-.t-memo,
-.t-docu,
-.t-dialogue,
-.t-speech,
-.t-jure {
-	background-image: data-uri('images/texttypes/othergenre.png');
-}
-.t-shortstory,
-.t-novelette {
-	background-image: data-uri('images/texttypes/shortstory.png');
-}
-.t-poetry,
-.t-poem,
-.t-prosepoetry,
-.t-haiku {
-	background-image: data-uri('images/texttypes/poetry.png');
+.t-poetry, .t-poem, .t-prosepoetry, .t-haiku {
+	.fa-li {
+		color: #3987FD;
+	}
 }
 .t-novel {
-	background-image: data-uri('images/texttypes/novel.png');
+	.fa-li {
+		color: #DD3E37;
+	}
 }
 .t-novella {
-	background-image: data-uri('images/texttypes/novella.png');
+	.fa-li {
+		color: #FAC000;
+	}
 }
-.t-tale,
-.t-fable {
-	background-image: data-uri('images/texttypes/tale.png');
+.t-tale, .t-fable {
+	.fa-li {
+		color: #817BFE;
+	}
+}
+.fa-ul {
+	margin-left: 1.4em;
 }
 
 // Оценки по списъчните страници
@@ -819,7 +798,6 @@ div.fos_comment_comment_reply {
 #copyright ul,// неподредени списъци в кутията за авторските права
 .superlist ul,// списъци със заглавия
 ul.superlist {
-	margin: 0;
 	list-style-type: none;
 }
 // съобщението в края на всеки текст — „Край“ или „Към…“
