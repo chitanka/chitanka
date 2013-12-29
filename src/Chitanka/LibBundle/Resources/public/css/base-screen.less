@@ -559,7 +559,6 @@ li img {
 .delete,
 .new,
 .ok,
-.read,
 .feed,
 .zoom,
 .close,
@@ -574,8 +573,7 @@ span.frozen {
 .delete {
 	background-position: 0 -66px;
 }
-.ok,
-.read {
+.ok {
 	background-position: 1px -262px;
 }
 .edit {
@@ -828,6 +826,11 @@ ul.superlist {
 // с мишка отгоре им
 .read:hover {
 	text-decoration: underline;
+}
+.read:before {
+    color: #00CC00;
+    content: "\F00C";
+    font-family: FontAwesome;
 }
 
 // връзки за сваляне
