@@ -184,9 +184,8 @@ input[type=image] {
 	vertical-align: middle;
 }
 
-// span-ове, имащи атрибут „title“
-span[title] {
-	border-bottom: thin dotted @mainFgColor;
+span[title]:hover {
+	cursor: help;
 }
 span.popover-trigger {
 	border-bottom: none;
@@ -1426,7 +1425,7 @@ form.loading {
 			text-shadow: 1px 1px 10px #c0c0c0;
 		}
 	}
-	i {
+	.fa {
 		margin: 0.2em 0;
 		font-size: 2.2em;
 	}
@@ -1458,7 +1457,7 @@ form.loading {
 		background-image: linear-gradient(@dashboardBg1Color 0%, @dashboardBg2Color 90%);
 		.boxShadow(@dashboardBoxShadowColor 0px 10px 16px);
 	}
-	span {
+	.light-flash {
 		position: absolute;
 		top: 0;
 		left: .4em;
@@ -1551,9 +1550,6 @@ article h1 {
 }
 .liternewsbox {
 	width: 66%;
-}
-.p_homepage .textbox .superlist {
-	margin: 0;
 }
 .p_homepage .textbox dt,
 .p_homepage .textbox dd {
