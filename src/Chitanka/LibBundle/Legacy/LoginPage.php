@@ -137,7 +137,7 @@ class LoginPage extends RegisterPage {
 		<span class="fa fa-2x fa-frown-o"></span>
 	</div>
 	<div class="media-body">
-		Забравихте си входните данни ли? Няма страшно. Ако в настройките си сте посочили правилен адрес за електронна поща, просто подайте заявка за <a href="$sendname" title="Забравено име">забравено име</a> или <a href="$sendpass" title="Забравена парола">парола</a>.
+		Забравихте си входните данни ли? Няма страшно. Подайте заявка за <a href="$sendname" title="Забравено име">забравено име</a> или <a href="$sendpass" title="Забравена парола">парола</a>.
 	</div>
 </div>
 <div class="alert alert-info media">
