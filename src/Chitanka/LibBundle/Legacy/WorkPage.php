@@ -767,7 +767,7 @@ HTML;
 			$button = $delete = '';
 		}
 
-		$alertIfDeleted = $this->entry->isDeleted() ? '<div class="alert alert-danger">Този запис е изтрит.</div>' : '';
+		$alertIfDeleted = isset($this->entry) && $this->entry->isDeleted() ? '<div class="alert alert-danger">Този запис е изтрит.</div>' : '';
 		$helpBot = $this->isSingleUser($this->workType) ? $this->makeSingleUserHelp() : '';
 		$scanuser = $this->out->hiddenField('user', $this->scanuser);
 		$entry = $this->out->hiddenField('id', $this->entryId);
