@@ -150,11 +150,9 @@ class RegisterPage extends Page {
 <p>Като парола се опитайте да изберете нещо, което за вас да е лесно запомнящо се, а за останалите — невъзможно за разгадаване.</p>
 <p>Попълването на полетата, обозначени със звездички, не е задължително.</p>
 
-<form action="" method="post" id="registerform">
-	<fieldset style="width:33em; margin:1em auto" align="center">
+<form action="" method="post" id="registerform" style="width:33em; margin:1em auto" align="center">
 		$returnto
 		$attempt
-	<legend>Регистриране</legend>
 	<table>
 	<tr>
 		<td class="fieldname-left"><label for="username">Потребителско име:</label></td>
@@ -182,7 +180,6 @@ class RegisterPage extends Page {
 		<td colspan="2" align="center">$submit</td>
 	</tr>
 	</table>
-	</fieldset>
 </form>
 
 <p><a id="nb1" name="nb1" href="#n1">*</a>, <a id="nb2" name="nb2" href="#n2">**</a>

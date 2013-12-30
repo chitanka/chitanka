@@ -87,6 +87,7 @@ class LoginPage extends RegisterPage {
 
 
 	protected function makeLoginForm() {
+		$loginlink = $this->controller->generateUrl('login');
 		$reglink = $this->controller->generateUrl('register');
 		$sendname = $this->controller->generateUrl('request_username');
 		$sendpass = $this->controller->generateUrl('request_password');
@@ -96,34 +97,58 @@ class LoginPage extends RegisterPage {
 		}
 		$f_returnto = $this->out->hiddenField('returnto', $this->returnto);
 
-		$username = $this->out->textField('username', '', $this->username, 25, 255, 2);
-		$password = $this->out->passField('password', '', '', 25, 40, 3);
-		$remember = $this->out->checkbox('remember', '', false, '', null, 3);
-		$submit = $this->out->submitButton('Вход', '', 4);
-
 		return <<<EOS
 
-<p>Ако все още не сте се регистрирали, можете да го <a href="$reglink">направите</a> за секунди.</p>
-<form action="" method="post" name="login_form">
-	<fieldset style="width:38em; margin:1em auto" align="center">
-		$f_returnto
-	<legend>Влизане</legend>
-	<table>
-	<tr>
-		<td class="fieldname-left"><label for="username">Потребителско име:</label></td>
-		<td>$username <a href="$sendname">Забравено име</a></td>
-	</tr><tr>
-		<td class="fieldname-left"><label for="password">Парола:</label></td>
-		<td>$password <a href="$sendpass">Забравена парола</a></td>
-	</tr><tr>
-		<td class="fieldname-left">$remember</td>
-		<td><label for="remember">Запомняне на паролата</label></td>
-	</tr><tr>
-		<td colspan="2" style="text-align:center">$submit</td>
-	</tr>
-	</table>
-	</fieldset>
+<style>
+.form-signin {
+	margin: 1em auto 3em;
+	max-width: 22em;
+}
+.form-signin .form-control {
+	height: auto;
+	padding: 10px;
+}
+.form-signin .input-group-addon .fa {
+	width: .8em;
+}
+</style>
+<form action="$loginlink" method="post" class="form-signin" role="form">
+	$f_returnto
+	<div class="input-group">
+		<span class="input-group-addon"><span class="fa fa-user"></span></span>
+		<label for="username" class="sr-only">Потребителско име</label>
+		<input type="text" class="form-control" id="username" name="username" placeholder="Потребителско име" value="{$this->username}" required autofocus>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon"><span class="fa fa-key"></span></span>
+		<label for="username" class="sr-only">Парола</label>
+		<input type="password" class="form-control" id="password" name="password" placeholder="Парола" required>
+	</div>
+	<div class="checkbox">
+		<label>
+			<input type="checkbox" name="remember"> Запомняне на паролата
+		</label>
+	</div>
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Вход</button>
 </form>
+
+<div class="alert alert-warning media">
+	<div class="pull-left">
+		<span class="fa fa-2x fa-frown-o"></span>
+	</div>
+	<div class="media-body">
+		Забравихте си входните данни ли? Няма страшно. Ако в настройките си сте посочили правилен адрес за електронна поща, просто подайте заявка за <a href="$sendname" title="Забравено име">забравено име</a> или <a href="$sendpass" title="Забравена парола">парола</a>.
+	</div>
+</div>
+<div class="alert alert-info media">
+	<div class="pull-left">
+		<span class="fa fa-2x fa-user"></span>
+	</div>
+	<div class="media-body">
+		Ако все още не сте се регистрирали, можете да го <a href="$reglink">направите</a> за секунди.
+	</div>
+</div>
+
 EOS;
 	}
 
