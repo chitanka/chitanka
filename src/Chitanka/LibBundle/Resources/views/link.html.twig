@@ -67,5 +67,5 @@
 {% endmacro %}
 
 {% macro user_with_email(user) %}
-<a href="{{ path('user_show', {'username': user.username}) }}" class="user">{{ user.username }}</a>&#160;{% if user.allowemail %}<a href="{{ path('user_email', {'username': user.username}) }}" title="Пращане на писмо на {{ user.username }}"><i class="fa fa-envelope-o"></i><span class="sr-only">Е-поща</span></a>{% endif %}
+<a href="{{ path('user_show', {'username': user.username}) }}" class="user">{{ user.username }}</a>&#160;{% if user.allowemail %}<a href="{{ path('user_email', {'username': user.username}) }}" title="Пращане на писмо на {{ user.username }}"><span class="fa fa-envelope-o"></span><span class="sr-only">Е-поща</span></a>{% endif %}
 {% endmacro %}

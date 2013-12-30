@@ -10,13 +10,13 @@
 
 	<div class="dashboard">
 		<ul>
-			<li class="dashboard-author"><span></span><a href="{{ path('authors') }}"><i class="fa fa-users"></i><br>Автори</a></li>
-			<li class="dashboard-translator"><span></span><a href="{{ path('translators') }}"><i class="fa fa-edit"></i><br>Преводачи</a></li>
-			<li class="dashboard-book"><span></span><a href="{{ path('books') }}"><i class="fa fa-book"></i><br>Книги</a></li>
-			<li class="dashboard-title"><span></span><a href="{{ path('texts') }}"><i class="fa fa-folder-open"></i><br>Творби</a></li>
-			<li class="dashboard-series"><span></span><a href="{{ path('series') }}"><i class="fa fa-sitemap"></i><br>Серии</a></li>
-			<li class="dashboard-history"><span></span><a href="{{ path('new') }}"><i class="fa fa-calendar"></i><br>Ново</a></li>
-			<li class="dashboard-workroom"><span></span><a href="{{ path('workroom') }}"><i class="fa fa-table"></i><br>Ателие</a></li>
+			<li class="dashboard-author"><span></span><a href="{{ path('authors') }}"><span class="fa fa-users"></span><br>Автори</a></li>
+			<li class="dashboard-translator"><span></span><a href="{{ path('translators') }}"><span class="fa fa-edit"></span><br>Преводачи</a></li>
+			<li class="dashboard-book"><span></span><a href="{{ path('books') }}"><span class="fa fa-book"></span><br>Книги</a></li>
+			<li class="dashboard-title"><span></span><a href="{{ path('texts') }}"><span class="fa fa-folder-open"></span><br>Творби</a></li>
+			<li class="dashboard-series"><span></span><a href="{{ path('series') }}"><span class="fa fa-sitemap"></span><br>Серии</a></li>
+			<li class="dashboard-history"><span></span><a href="{{ path('new') }}"><span class="fa fa-calendar"></span><br>Ново</a></li>
+			<li class="dashboard-workroom"><span></span><a href="{{ path('workroom') }}"><span class="fa fa-table"></span><br>Ателие</a></li>
 		</ul>
 	</div>
 
@@ -82,7 +82,7 @@
 {% endblock %}
 {% block inline_js %}
 (function(){
-	var expander = '<button class="expander btn btn-default" role="button"><span>Показване на още</span> <i class="fa fa-angle-double-down"></i></button>';
+	var expander = '<button class="expander btn btn-default" role="button"><span>Показване на още</span> <span class="fa fa-angle-double-down"></span></button>';
 	var hideCss = {"overflow": "hidden"};
 	var showCss = {"height": "auto", "overflow": "visible"};
 

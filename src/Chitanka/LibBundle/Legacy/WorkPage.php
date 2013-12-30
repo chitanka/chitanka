@@ -381,7 +381,7 @@ class WorkPage extends Page {
 
 
 	protected function makeUserGuideLink() {
-		return '<div class="float-right"><a href="http://wiki.chitanka.info/Workroom" title="Наръчник за работното ателие"><i class="fa fa-info-circle"></i> Наръчник за работното ателие</a></div>';
+		return '<div class="float-right"><a href="http://wiki.chitanka.info/Workroom" title="Наръчник за работното ателие"><span class="fa fa-info-circle"></span> Наръчник за работното ателие</a></div>';
 	}
 
 	protected function makeLists() {
@@ -413,7 +413,7 @@ class WorkPage extends Page {
 		<div class="input-group">
 			<input type="text" class="form-control" title="Търсене из подготвяните произведения" maxlength="100" size="50" id="$id" name="$id">
 			<span class="input-group-btn">
-				<button class="btn btn-default" type="submit"><i class="fa fa-search"></i><span class="sr-only">Търсене</span></button>
+				<button class="btn btn-default" type="submit"><span class="fa fa-search"></span><span class="sr-only">Търсене</span></button>
 			</span>
 		</div>
 	</div>
@@ -545,7 +545,7 @@ EOS;
 			$file = $this->makeFileLink($uplfile);
 		}
 		$entryLink = $this->controller->generateUrl('workroom_entry_edit', array('id' => $id));
-		$commentsLink = $num_comments ? sprintf('<a href="%s#fos_comment_thread" title="Коментари"><i class="fa fa-comments-o"></i>%s</a>', $entryLink, $num_comments) : '';
+		$commentsLink = $num_comments ? sprintf('<a href="%s#fos_comment_thread" title="Коментари"><span class="fa fa-comments-o"></span>%s</a>', $entryLink, $num_comments) : '';
 		$title = sprintf('<a href="%s" title="Към страницата за редактиране">%s</a>', $entryLink, $title);
 		$this->rowclass = $this->out->nextRowClass($this->rowclass);
 		$st = $progress > 0
@@ -639,12 +639,12 @@ HTML;
 
 	protected function _getUserTypeMarker($type)
 	{
-		return "<i class=\"{$this->tabImgs[$type]}\"><span class=\"sr-only\">{$this->tabImgAlts[$type]}</span></i>";
+		return "<span class=\"{$this->tabImgs[$type]}\"><span class=\"sr-only\">{$this->tabImgAlts[$type]}</span></span>";
 	}
 
 
 	public function makeStatus($code) {
-		return "<i class='{$this->statusClasses[$code]}'></i> {$this->statuses[$code]}";
+		return "<span class='{$this->statusClasses[$code]}'></span> {$this->statuses[$code]}";
 	}
 
 
@@ -658,7 +658,7 @@ HTML;
 		}
 		$info = String::myhtmlspecialchars($info);
 
-		return '<span class="popover-trigger" data-content="'.$info.'"><i class="fa fa-info-circle"></i><span class="sr-only">Инфо</span></span>';
+		return '<span class="popover-trigger" data-content="'.$info.'"><span class="fa fa-info-circle"></span><span class="sr-only">Инфо</span></span>';
 	}
 
 
@@ -682,7 +682,7 @@ HTML;
 			return '';
 		}
 
-		return sprintf('<a href="%s" class="btn btn-primary"><i class="fa fa-plus"></i> Добавяне на нов запис</a>',
+		return sprintf('<a href="%s" class="btn btn-primary"><span class="fa fa-plus"></span> Добавяне на нов запис</a>',
 			$this->controller->generateUrl('workroom_entry_new'));
 
 	}
@@ -695,7 +695,7 @@ HTML;
 				$this->controller->generateUrl('workroom', array(
 					$this->FF_SUBACTION => $type
 				)),
-				$class, $title, "<i class='{$this->statusClasses[$type]}'></i>", $title);
+				$class, $title, "<span class='{$this->statusClasses[$type]}'></span>", $title);
 		}
 		$links[] = '<li role="presentation" class="divider"></li>';
 		foreach ($this->statuses as $code => $statusTitle) {
@@ -705,7 +705,7 @@ HTML;
 				$this->controller->generateUrl('workroom', array(
 					$this->FF_SUBACTION => $type
 				)),
-				$class, $statusTitle, "<i class='{$this->statusClasses[$code]}'></i>", $statusTitle);
+				$class, $statusTitle, "<span class='{$this->statusClasses[$code]}'></span>", $statusTitle);
 		}
 
 		$links[] = '<li role="presentation" class="divider"></li>';
@@ -723,7 +723,7 @@ HTML;
 		$helpTop = empty($this->entryId) ? $this->makeAddEntryHelp() : '';
 		$tabs = '';
 		foreach ($this->tabs as $type => $text) {
-			$text = "<i class='{$this->tabImgs[$type]}'></i> $text";
+			$text = "<span class='{$this->tabImgs[$type]}'></span> $text";
 			$class = '';
 			if ($this->workType == $type) {
 				$class = 'active';
@@ -1288,7 +1288,7 @@ EOS;
 <p>Бързината на добавянето на нови текстове в библиотеката зависи както от броя на грешките, останали след сканирането и разпознаването, така и от форма&#768;та на текста. Най-бързо ще бъдат добавяни отлично коригирани текстове, правилно преобразувани във <a href="http://wiki.chitanka.info/SFB">формат SFB</a>.</p>
 <div class="alert alert-danger error newbooks-notice media" style="margin:1em 0">
 	<div class="pull-left">
-		<i class="fa fa-warning"></i>
+		<span class="fa fa-warning"></span>
 	</div>
 	<div class="media-body">
 		Разрешено е да се добавят само книги, издадени на български преди 2011 г. Изключение се прави за онези текстове, които са пратени от авторите си, както и за фен-преводи.
@@ -1580,7 +1580,7 @@ EOS;
 
 		return $this->out->link_raw(
 			$this->makeTmpFilePath($file),
-			'<i class="fa fa-save"></i><span class="sr-only">Файл</span>',
+			'<span class="fa fa-save"></span><span class="sr-only">Файл</span>',
 			$title);
 	}
 

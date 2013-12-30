@@ -253,14 +253,14 @@ class CommentPage extends Page {
 			if ( !empty($textId) ) {
 				$links = '';
 				if ($this->includeCommentForm) {
-					$links .= sprintf('<li><a href="%s#e%s" title="Отговор на коментара" onclick="return initReply(%d)"><i class="fa fa-reply"></i><span class="sr-only">Отговор</span></a></li>', $this->controller->generateUrl('text_comments', array('id' => $textId, 'replyto' => $id)), $id, $id);
+					$links .= sprintf('<li><a href="%s#e%s" title="Отговор на коментара" onclick="return initReply(%d)"><span class="fa fa-reply"></span><span class="sr-only">Отговор</span></a></li>', $this->controller->generateUrl('text_comments', array('id' => $textId, 'replyto' => $id)), $id, $id);
 				}
 				if ( empty($this->textId) ) {
-					$links .= sprintf('<li><a href="%s" title="Всички коментари за произведението"><i class="fa fa-comments"></i><span class="sr-only">Всички коментари</span></a></li>', $this->controller->generateUrl('text_comments', array('id' => $textId)));
+					$links .= sprintf('<li><a href="%s" title="Всички коментари за произведението"><span class="fa fa-comments"></span><span class="sr-only">Всички коментари</span></a></li>', $this->controller->generateUrl('text_comments', array('id' => $textId)));
 				}
 				if ($this->user->inGroup('admin')) {
-					$links .= sprintf('<li><a href="%s" title="Редактиране на коментара"><i class="fa fa-edit"></i><span class="sr-only">Редактиране</span></a></li>', $this->controller->generateUrl('admin_text_comment_edit', array('id' => $id)));
-					$links .= sprintf('<li><form action="%s" method="post" class="image-form delete-form"><button type="submit" title="Изтриване на коментара"><i class="fa fa-trash-o"></i><span class="sr-only">Изтриване</span></button></form></li>', $this->controller->generateUrl('admin_text_comment_delete', array('id' => $id)));
+					$links .= sprintf('<li><a href="%s" title="Редактиране на коментара"><span class="fa fa-edit"></span><span class="sr-only">Редактиране</span></a></li>', $this->controller->generateUrl('admin_text_comment_edit', array('id' => $id)));
+					$links .= sprintf('<li><form action="%s" method="post" class="image-form delete-form"><button type="submit" title="Изтриване на коментара"><span class="fa fa-trash-o"></span><span class="sr-only">Изтриване</span></button></form></li>', $this->controller->generateUrl('admin_text_comment_delete', array('id' => $id)));
 				}
 				$acts = "<ul class='menu' style='float:right'>$links</ul>";
 			}

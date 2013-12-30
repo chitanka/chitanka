@@ -187,7 +187,7 @@ EOS;
 	public function getInlineRssLink($route, $data = array(), $title = null) {
 		Legacy::fillOnEmpty($title, $this->title());
 
-		$link = sprintf('<div class="feed-standalone"><a href="%s" title="RSS 2.0 — %s" rel="feed"><i class="fa fa-rss"></i> <span>RSS</span></a></div>', $this->controller->generateUrl($route, $data), $title);
+		$link = sprintf('<div class="feed-standalone"><a href="%s" title="RSS 2.0 — %s" rel="feed"><span class="fa fa-rss"></span> <span>RSS</span></a></div>', $this->controller->generateUrl($route, $data), $title);
 
 		return $link;
 	}
@@ -366,7 +366,7 @@ EOS;
 	protected function makeUserLinkWithEmail($username, $email, $allowemail) {
 		$mlink = '';
 		if ( ! empty($email) && $allowemail) {
-			$mlink = sprintf('<a href="%s" title="Пращане на писмо на %s"><i class="fa fa-envelope-o"></i><span class="sr-only">Е-поща</span></a>',
+			$mlink = sprintf('<a href="%s" title="Пращане на писмо на %s"><span class="fa fa-envelope-o"></span><span class="sr-only">Е-поща</span></a>',
 				$this->controller->generateUrl('user_email', array('username' => $username)),
 				String::myhtmlentities($username));
 		}

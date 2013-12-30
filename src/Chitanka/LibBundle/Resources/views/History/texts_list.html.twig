@@ -1,5 +1,5 @@
 <div class="feed-standalone">
-	<a href="{{ path('new_texts', {'_format': 'rss'}) }}" title="RSS 2.0 — нови произведения" rel="feed"><i class="fa fa-rss"> RSS</i></a>
+	<a href="{{ path('new_texts', {'_format': 'rss'}) }}" title="RSS 2.0 — нови произведения" rel="feed"><span class="fa fa-rss"></span> RSS</a>
 </div>
 {% import 'LibBundle::text.html.twig' as texttools %}
 {% for day, revisions in text_revisions_by_date %}

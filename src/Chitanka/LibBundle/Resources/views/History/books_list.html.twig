@@ -1,5 +1,5 @@
 <div class="feed-standalone">
-	<a href="{{ path('new_books', {'_format': 'rss'}) }}" title="RSS 2.0 — нови книги" rel="feed"><i class="fa fa-rss"> RSS</i></a>
+	<a href="{{ path('new_books', {'_format': 'rss'}) }}" title="RSS 2.0 — нови книги" rel="feed"><span class="fa fa-rss"></span> RSS</a>
 </div>
 {% import 'LibBundle::book.html.twig' as booktools %}
 {% for day, revisions in book_revisions_by_date %}
