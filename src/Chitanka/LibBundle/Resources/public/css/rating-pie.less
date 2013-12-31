@@ -1,0 +1,68 @@
+// Idea and implementation from http://atomicnoggin.ca/blog/2013/01/26/css3-pie-charts-revisited/
+
+@ratingPieDiameter: @font-size-base;
+@ratingPieRadius: @ratingPieDiameter / 2;
+.rating {
+	position: relative;
+	display: inline-block;
+	top: 1px;
+	height: @ratingPieDiameter;
+	width: @ratingPieDiameter;
+	margin-right: .2em;
+	border: 1px solid @ratingPieBorder;
+	border-radius: @ratingPieRadius;
+	background-color: @ratingPieDefaultBg;
+	.pie {
+		position: absolute;
+		display: block;
+		width: @ratingPieRadius;
+		height: @ratingPieDiameter;
+		overflow: hidden;
+		left: @ratingPieRadius;
+		.transformOrigin(left center);
+	}
+	.pie.gt-half {
+		width: @ratingPieDiameter;
+		height: @ratingPieDiameter;
+		left: 0px;
+		.transformOrigin(center center);
+	}
+	.pie:before {
+		content: "";
+		position: absolute;
+		width: @ratingPieRadius;
+		height: @ratingPieDiameter;
+		left: -@ratingPieRadius;
+		border-radius: @ratingPieRadius 0 0 @ratingPieRadius;
+		.transformOrigin(right center);
+
+	}
+	.pie.gt-half:before {
+		left: 0px;
+	}
+	.pie.gt-half:after {
+		content: "";
+		position: absolute;
+		width: @ratingPieRadius;
+		height: @ratingPieDiameter;
+		left: @ratingPieRadius;
+		border-radius: 0 @ratingPieRadius @ratingPieRadius 0;
+	}
+	.pie {
+		&:before, &:after {
+			background-color: @ratingPieBg;
+		}
+	}
+	.degree-30:before { .transform(rotate(30deg)); }
+	.degree-60:before { .transform(rotate(90deg)); }
+	.degree-90:before { .transform(rotate(90deg)); }
+	.degree-120:before { .transform(rotate(120deg)); }
+	.degree-150:before { .transform(rotate(150deg)); }
+	.degree-180:before { .transform(rotate(180deg)); }
+	.degree-210:before { .transform(rotate(210deg)); }
+	.degree-240:before { .transform(rotate(240deg)); }
+	.degree-270:before { .transform(rotate(270deg)); }
+	.degree-300:before { .transform(rotate(300deg)); }
+	.degree-330:before { .transform(rotate(330deg)); }
+	.degree-360:before { .transform(rotate(360deg)); }
+}

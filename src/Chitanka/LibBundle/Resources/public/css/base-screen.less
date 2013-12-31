@@ -634,28 +634,6 @@ span.frozen {
 	margin-left: 1.4em;
 }
 
-// Оценки по списъчните страници
-.rating {
-	position: relative;
-	padding-left: 1.25em;
-	font-weight: bold;
-	background-position: 0 50%;
-	background-repeat: no-repeat;
-}
-.rating-0 { background-image: data-uri('images/rating/0.png') }
-.rating-1 { background-image: data-uri('images/rating/1.png') }
-.rating-2 { background-image: data-uri('images/rating/2.png') }
-.rating-3 { background-image: data-uri('images/rating/3.png') }
-.rating-4 { background-image: data-uri('images/rating/4.png') }
-.rating-5 { background-image: data-uri('images/rating/5.png') }
-.rating-6 { background-image: data-uri('images/rating/6.png') }
-.rating-7 { background-image: data-uri('images/rating/7.png') }
-.rating-8 { background-image: data-uri('images/rating/8.png') }
-.rating-9 { background-image: data-uri('images/rating/9.png') }
-.rating-10 { background-image: data-uri('images/rating/10.png') }
-.rating-11 { background-image: data-uri('images/rating/11.png') }
-.rating-12 { background-image: data-uri('images/rating/12.png') }
-
 .feed-standalone {
 	float: right;
 	margin: 0 0 .5em .5em;
@@ -1060,7 +1038,6 @@ th {
 .buttonmenu a span,
 .buttonmenu .selected span,
 // do this as a foreground image to support css on/img off
-.rating span,
 .dl-list span {
 	display: none;
 }
@@ -1859,6 +1836,9 @@ ul.two-columns {
 div.person-aleks_boldin .dl-epub {
 	display: none;
 }
+
+@import "rating-pie.less";
+
 .tab-content {
 	margin: 0 0 1.6em 0;
 	padding: 1.6em;

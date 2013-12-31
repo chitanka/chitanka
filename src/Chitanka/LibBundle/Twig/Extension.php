@@ -64,18 +64,18 @@ class Extension extends \Twig_Extension
 
 	public function getRatingClass($rating)
 	{
-		if ( $rating >= 5.6 ) return 12;
-		if ( $rating >= 5.2 ) return 11;
-		if ( $rating >= 4.8 ) return 10;
-		if ( $rating >= 4.4 ) return 9;
-		if ( $rating >= 4.0 ) return 8;
-		if ( $rating >= 3.6 ) return 7;
-		if ( $rating >= 3.2 ) return 6;
-		if ( $rating >= 2.8 ) return 5;
-		if ( $rating >= 2.4 ) return 4;
-		if ( $rating >= 2.0 ) return 3;
-		if ( $rating >= 1.5 ) return 2;
-		if ( $rating >= 1.0 ) return 1;
+		if ( $rating >= 5.6 ) return 'degree-360 gt-half';
+		if ( $rating >= 5.2 ) return 'degree-330 gt-half';
+		if ( $rating >= 4.8 ) return 'degree-300 gt-half';
+		if ( $rating >= 4.4 ) return 'degree-270 gt-half';
+		if ( $rating >= 4.0 ) return 'degree-240 gt-half';
+		if ( $rating >= 3.6 ) return 'degree-210 gt-half';
+		if ( $rating >= 3.2 ) return 'degree-180';
+		if ( $rating >= 2.8 ) return 'degree-150';
+		if ( $rating >= 2.4 ) return 'degree-120';
+		if ( $rating >= 2.0 ) return 'degree-90';
+		if ( $rating >= 1.5 ) return 'degree-60';
+		if ( $rating >= 1.0 ) return 'degree-30';
 		return 0;
 	}
 

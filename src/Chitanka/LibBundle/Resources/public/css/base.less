@@ -56,12 +56,30 @@
 	column-count: @value;
 	-moz-column-count: @value;
 }
+.transform(@value) {
+	// Opera uses -webkit prefix
+	// Firefox supports non-prefixed declaration
+	-ms-transform: @value;
+	-webkit-transform: @value;
+	transform: @value;
+}
+.transformOrigin(@value) {
+	-moz-transform-origin: @value;
+	-ms-transform-origin: @value;
+	-o-transform-origin: @value;
+	-webkit-transform-origin: @value;
+	transform-origin: @value;
+}
 
 @navWidth: 12em;
 @contentSpacingSide: 1.5em;
 @contentMarginSide: @navWidth + @contentSpacingSide;
 @contentMarginTop: 1em;
 @mainContentMarginTop: 4em;
+
+@ratingPieBorder: #e0e0e0;
+@ratingPieDefaultBg: white;
+@ratingPieBg: #D58095;
 
 // bootstrap overwrites
 @brand-primary: @buttonLinksFgColor;

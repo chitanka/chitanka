@@ -58,7 +58,7 @@
 		<meta itemprop="bestRating" content="6">
 		<meta itemprop="ratingValue" content="{{ text.rating }}">
 		<meta itemprop="ratingCount" content="{{ text.votes }}">
-		<a href="{{ path('text_ratings', {'id': text.id}) }}" title="Оценка: {{ text.rating|rating_format }} (× {{ text.votes }} {{ text.votes == 1 ? 'глас' : 'гласа' }})" class="rating rating-{{ text.rating|rating_class }}"><span>{{ text.rating|rating_format }}</span></a>
+		<a href="{{ path('text_ratings', {'id': text.id}) }}" title="Оценка: {{ text.rating|rating_format }} (× {{ text.votes }} {{ text.votes == 1 ? 'глас' : 'гласа' }})" class="rating"><span class="pie {{ text.rating|rating_class }}"></span><span class="sr-only">{{ text.rating|rating_format }}</span></a>
 	</span>
 {% endmacro %}
 
