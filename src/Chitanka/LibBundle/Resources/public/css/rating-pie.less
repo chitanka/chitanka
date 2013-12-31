@@ -1,39 +1,37 @@
 // Idea and implementation from http://atomicnoggin.ca/blog/2013/01/26/css3-pie-charts-revisited/
 
-@ratingPieDiameter: @font-size-base;
-@ratingPieRadius: @ratingPieDiameter / 2;
 .rating {
 	position: relative;
 	display: inline-block;
 	top: 1px;
-	height: @ratingPieDiameter;
-	width: @ratingPieDiameter;
+	height: 1em;
+	width: 1em;
 	margin-right: .2em;
 	border: 1px solid @ratingPieBorder;
-	border-radius: @ratingPieRadius;
+	border-radius: 0.5em;
 	background-color: @ratingPieDefaultBg;
 	.pie {
 		position: absolute;
 		display: block;
-		width: @ratingPieRadius;
-		height: @ratingPieDiameter;
+		width: 0.5em;
+		height: 1em;
 		overflow: hidden;
-		left: @ratingPieRadius;
+		left: 0.5em;
 		.transformOrigin(left center);
 	}
 	.pie.gt-half {
-		width: @ratingPieDiameter;
-		height: @ratingPieDiameter;
+		width: 1em;
+		height: 1em;
 		left: 0px;
 		.transformOrigin(center center);
 	}
 	.pie:before {
 		content: "";
 		position: absolute;
-		width: @ratingPieRadius;
-		height: @ratingPieDiameter;
-		left: -@ratingPieRadius;
-		border-radius: @ratingPieRadius 0 0 @ratingPieRadius;
+		width: 0.5em;
+		height: 1em;
+		left: -0.5em;
+		border-radius: 0.5em 0 0 0.5em;
 		.transformOrigin(right center);
 
 	}
@@ -43,10 +41,10 @@
 	.pie.gt-half:after {
 		content: "";
 		position: absolute;
-		width: @ratingPieRadius;
-		height: @ratingPieDiameter;
-		left: @ratingPieRadius;
-		border-radius: 0 @ratingPieRadius @ratingPieRadius 0;
+		width: 0.5em;
+		height: 1em;
+		left: 0.5em;
+		border-radius: 0 0.5em 0.5em 0;
 	}
 	.pie {
 		&:before, &:after {
