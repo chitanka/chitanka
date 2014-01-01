@@ -6,9 +6,9 @@
 
 {% if info %}
 	<ul class="nav nav-tabs book-tabs">
-		<li><a href="#book-extra-info" data-toggle="tab">Допълнителна информация</a></li>
+		<li><a href="#book-extra-info" data-toggle="tab">Информация</a></li>
 	</ul>
-	<div class="tab-content">
+	<div class="tab-content text-content">
 		{{ info|raw }}
 	</div>
 {% endif %}
@@ -37,7 +37,7 @@
 <p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p><p>&#160;</p>
 {% endblock %}
 
-{% set css_extra = ['css/pic.css'] %}
+{% set css_extra = ['bundles/lib/css/pic.css'] %}
 {% set js_extra = ['jquery-galleriffic', 'jquery-hotkeys', 'pic'] %}
 {% set inline_js %}
 	$("#help-instructions").html("\
