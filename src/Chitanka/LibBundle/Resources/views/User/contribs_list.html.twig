@@ -1,4 +1,4 @@
-<ul class="superlist">
+<ul class="superlist fa-ul">
 {% import 'LibBundle::text.html.twig' as texttools %}
 {% for contrib in contribs %}
 	<li class="title t-{{ contrib.text.type }}" title="{{ contrib.comment }} ({{ contrib.date|humandate }})">{{ texttools.text_with_author(contrib.text, {'download_links': true}) }}</li>
