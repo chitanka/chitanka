@@ -3,9 +3,10 @@
 		{{ booktools.cover_div(text.book, 200) }}
 	{% endif %}
 
+	<ul class="list-unstyled">
 	{% for contrib in text.userContribs %}
 		{% if contrib.comment %}
-		<p>
+		<li>
 			{{ contrib.comment }}:
 			{% if contrib.user %}
 				<a href="{{ path('user_show', {'username': contrib.username}) }}" class="user">{{ contrib.username }}</a>
@@ -13,13 +14,16 @@
 				{{ contrib.username }}
 			{% endif %}
 			{% if contrib.humandate is not empty %}({{ contrib.humandate }}){% endif %}
-		</p>
+		</li>
 		{% endif %}
 	{% endfor %}
 	{% if text.source is not empty %}
-		<p>Източник: {{ text.source|link|raw }}</p>
+		<li>Източник: {{ text.source|link|raw }}</li>
 	{% endif %}
-	{{ text.fullExtraInfoForHtml(asset('/'))|raw }}
+	</ul>
+	<div class="text-content">
+		{{ text.fullExtraInfoForHtml(asset('/'))|raw }}
+	</div>
 
 	<hr>
 	<p>Последна редакция: {{ text.currev.date|humandate }}</p>

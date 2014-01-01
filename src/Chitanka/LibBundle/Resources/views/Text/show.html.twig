@@ -36,19 +36,19 @@
 	</ul>
 
 	<div class="tab-content clearfix">
-		<div class="tab-pane active" id="text-info">
+		<div class="tab-pane active text-info" id="text-info">
 			{% include 'LibBundle:Text:info.html.twig' %}
 		</div>
 
 		{% if part <= 1 %}
-			<div class="tab-pane" id="text-extra-info">
+			<div class="tab-pane text-extra-info" id="text-extra-info">
 				{% include 'LibBundle:Text:extra_info.html.twig' %}
 			</div>
 		{% endif %}
-		<div class="tab-pane expanded-links" id="text-links">
+		<div class="tab-pane expanded-links text-links" id="text-links">
 			{% include 'LibBundle:Text:extra_links.html.twig' %}
 		</div>
-		<div class="tab-pane" id="text-comments">
+		<div class="tab-pane text-comments" id="text-comments">
 			<br>
 		</div>
 	</div>

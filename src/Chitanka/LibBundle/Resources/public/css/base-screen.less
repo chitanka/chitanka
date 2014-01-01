@@ -94,10 +94,6 @@ dt {
 dd {
 	margin-left: 1.5em;
 }
-p {
-	margin: 0;
-	text-indent: 2.5em;
-}
 em em {
 	font-weight: bold;
 }
@@ -105,9 +101,6 @@ pre {
 	margin: 0;
 	line-height: 1.3em;
 	overflow: auto;
-}
-.text-content pre {
-	margin-left: 25px;
 }
 pre p {
 	display: inline;
@@ -497,6 +490,8 @@ dd.country {
 		}
 	}
 	.cover {
+		float: left;
+		margin-right: 1em;
 		min-height: 90px;
 	}
 	.booklink {
@@ -697,7 +692,6 @@ span.frozen {
 .propaganda,
 .propaganda p {
 	overflow: hidden;
-	text-indent: 0;
 	text-align: center;
 }
 .propaganda li {
@@ -1054,7 +1048,17 @@ div.example {
 	padding: .5em;
 }
 
+// Текст, идващ от SFB
 .text-content {
+	p {
+		margin: 0;
+		line-height: 1.6em;
+		text-indent: 2.5em;
+	}
+}
+// Обхваща текста на произведение
+.text-content-main {
+	clear: both;
 	h2, h3, h4, h5, h6, .subheader {
 		clear: both;
 		font-variant: small-caps;
@@ -1065,7 +1069,9 @@ div.example {
 	}
 	p {
 		font-size: 115%;
-		line-height: 1.6em;
+	}
+	pre {
+		margin-left: 25px;
 	}
 }
 .section {
@@ -1155,10 +1161,6 @@ div.poem-middle .subheader {
 .epigraph .subheader {
 	text-align: left;
 }
-// Обхваща текста на произведение
-.text-content {
-	clear: both;
-}
 .poetry h2,
 .poetry h3,
 .poetry h4,
@@ -1205,6 +1207,10 @@ div.poem-middle .subheader {
 .cover {
 	float: left;
 	margin-right: 1em;
+}
+.text-extra-info .cover {
+	float: right;
+	margin: 0 0 1em 1em;
 }
 .post {
 	clear: both;
