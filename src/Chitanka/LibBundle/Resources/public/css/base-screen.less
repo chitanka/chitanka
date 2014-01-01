@@ -858,27 +858,6 @@ ul.superlist {
 article footer .menu {
 	margin: 0;
 }
-// връзки, направени да приличат на бутони
-.buttonmenu a {
-	color: @buttonLinksFgColor;
-	background-color: @buttonLinksBgColor;
-	text-decoration: none;
-}
-.buttonmenu a,
-.buttonmenu .selected {
-	padding: .2em .3em;
-	border: thin solid @buttonLinksFgColor;
-	border-radius: @border-radius-base;
-	.boxShadow(.15em .15em .3em #ccc);
-	font-weight: bold;
-}
-// същите бутонни връзки — активни или с мишка отгоре им
-.buttonmenu a:hover,
-.buttonmenu a:active,
-.buttonmenu .selected {
-	color: @buttonLinksBgColor;
-	background-color: @buttonLinksFgColor;
-}
 .menu ul,
 .menu li,
 .menu dt,
@@ -913,7 +892,6 @@ article footer .menu {
 	vertical-align: middle;
 }
 
-.buttonmenu li:after { content: ""; }
 a[rel=prev]:before { content: "\2190\00A0"; /* left arrow */ }
 a[rel=next]:after { content: "\00A0\2192"; /* right arrow */ }
 .simplelist li:after,
@@ -1029,9 +1007,6 @@ th {
 }
 
 // неща, предвидени за текстови браузъри и разни семантични части
-.buttonmenu a span,
-.buttonmenu .selected span,
-// do this as a foreground image to support css on/img off
 .dl-list span {
 	display: none;
 }
@@ -1856,9 +1831,11 @@ div.person-aleks_boldin .dl-epub {
 .nav-tabs a {
 	text-decoration: none;
 }
-a.btn {
-	color: @buttonLinksBgColor;
+a.btn, .pager a {
 	text-decoration: none;
+}
+a.btn-primary {
+	color: @buttonLinksBgColor;
 }
 .btn-default:hover {
 	background-color: inherit;
@@ -1873,7 +1850,7 @@ a.btn {
 	text-indent: 0;
 	font-variant: normal; // for Chrome
 }
-.dropdown a {
+.dropdown a, .dropdown-menu a {
 	text-decoration: none;
 }
 // workroom

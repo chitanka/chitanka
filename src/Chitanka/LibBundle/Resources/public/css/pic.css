@@ -8,24 +8,6 @@ div.gal-content {
  	max-width: 70%;
 }
 
-div.controls {
-	margin-top: 0.4em;
-	clear: both;
-}
-div.controls a {
-	padding: 0.4em;
-}
-ul.nav-controls li, ul.pagination li {
-	list-style-type: none;
-}
-ul.nav-controls li.prev {
-	float: left;
-}
-ul.nav-controls li.next {
-	float: right;
-}
-
-
 div.loader {
 	background-image: url(images/loader.gif);
 	background-repeat: no-repeat;
@@ -59,16 +41,10 @@ ul.thumbs li {
 	list-style: none;
 }
 ul.thumbs li.selected a.thumb {
-	background-color: #FF4200;
+	border-bottom: thick solid #FF4200;
 }
 ul.thumbs a.thumb:visited {
-	background-color: #FFD100;
-}
-
-ul.pagination {
-	clear: both;
-	margin: 0;
-	padding: 0;
+	border-bottom: thick solid #FFD100;
 }
 
 a.thumb {

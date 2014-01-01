@@ -539,7 +539,7 @@ Slightly modified by Borislav
 				// Rebuild top pager
 				var $topPager = this.$thumbsContainer.find('ul.top');
 				if ($topPager.length == 0)
-					$topPager = this.$thumbsContainer.prepend('<ul class="top menu pagination"></ul>').find('ul.top');
+					$topPager = this.$thumbsContainer.prepend('<ul class="top pagination"></ul>').find('ul.top');
 
 				if (needsPagination && this.settings.enableTopPager) {
 					$topPager.empty();
@@ -550,7 +550,7 @@ Slightly modified by Borislav
 				if (needsPagination && this.settings.enableBottomPager) {
 					var $bottomPager = this.$thumbsContainer.find('ul.bottom');
 					if ($bottomPager.length == 0)
-						$bottomPager = this.$thumbsContainer.append('<ul class="bottom menu pagination"></ul>').find('ul.bottom');
+						$bottomPager = this.$thumbsContainer.append('<ul class="bottom pagination"></ul>').find('ul.bottom');
 					else
 						$bottomPager.empty();
 
@@ -597,7 +597,7 @@ Slightly modified by Borislav
 					var pageNum = i+1;
 
 					if (i == this.currentPage)
-						pager.append('<li class="selected">'+pageNum+'</li>');
+						pager.append('<li class="selected active"><span>'+pageNum+'</span></li>');
 					else if (i>=0 && i<this.numPages) {
 						var imageIndex = i*this.settings.numThumbs;
 						pager.append('<li><a rel="history" href="#'+this.data[imageIndex].hash+'" title="'+pageNum+'">'+pageNum+'</a></li>');
@@ -743,7 +743,7 @@ Slightly modified by Borislav
 			if (this.settings.renderNavControls) {
 				// Borislav: div -> ul
 				var $navControls = this.$controlsContainer
-					.append('<ul class="nav-controls"><li class="prev"><a class="prev" rel="history" title="'+this.settings.prevLinkText+'">'+this.settings.prevLinkText+'</a></li><li class="next"><a class="next" rel="history" title="'+this.settings.nextLinkText+'">'+this.settings.nextLinkText+'</a></li></ul>')
+					.append('<ul class="nav-controls pager"><li class="prev"><a class="prev previous" rel="history" title="'+this.settings.prevLinkText+'">'+this.settings.prevLinkText+'</a></li><li class="next"><a class="next" rel="history" title="'+this.settings.nextLinkText+'">'+this.settings.nextLinkText+'</a></li></ul>')
 					.find('ul.nav-controls a')
 					.click(function(e) {
 						clickHandler(e, gallery, this);
