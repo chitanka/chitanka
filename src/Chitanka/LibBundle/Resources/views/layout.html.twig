@@ -48,6 +48,13 @@
 
 	{% include 'LibBundle::jumpto_links.html.twig' %}
 
+	{% if global_info_message is not empty %}
+		<div id="global-info-message">
+			<span class="fa fa-warning"></span>
+			{{ global_info_message|raw }}
+		</div>
+	{% endif %}
+
 	<div id="content-wrapper" class="clearfix p_{{ current_route }}">
 
 		<div id="main-content-wrapper">

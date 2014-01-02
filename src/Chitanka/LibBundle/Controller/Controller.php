@@ -115,6 +115,7 @@ abstract class Controller extends SymfonyController
 			'navextra' => array(),
 			'current_route' => $this->getCurrentRoute(),
 			'script_library' => $this->container->getParameter('script_library'),
+			'global_info_message' => $this->container->getParameter('global_info_message'),
 			'analytics_snippet' => $this->container->getParameter('analytics_snippet'),
 			'environment' => $this->container->get('kernel')->getEnvironment(),
 			'ajax' => $this->getRequest()->isXmlHttpRequest(),

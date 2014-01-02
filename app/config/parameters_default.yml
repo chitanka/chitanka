@@ -1,2 +1,3 @@
 parameters:
+    global_info_message: Това е огледало на <a href="http://chitanka.info">Моята библиотека</a>.
     analytics_snippet: ~
