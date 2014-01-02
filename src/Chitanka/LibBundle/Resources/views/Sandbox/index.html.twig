@@ -28,7 +28,9 @@
 {% block content %}
 
 {% if html_content is defined %}
-	{{ html_content|raw }}
+	<div class="text-content">
+		{{ html_content|raw }}
+	</div>
 	<hr style="clear:both">
 {% endif %}
 
