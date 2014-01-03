@@ -725,9 +725,9 @@ HTML;
 		foreach ($this->tabs as $type => $text) {
 			$text = "<span class='{$this->tabImgs[$type]}'></span> $text";
 			$class = '';
+			$url = '#';
 			if ($this->workType == $type) {
 				$class = 'active';
-				$url = '#';
 			} else if ($this->thisUserCanDeleteEntry()) {
 				$route = 'workroom_entry_new';
 				$params = array('workType' => $type);
