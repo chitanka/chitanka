@@ -9,7 +9,7 @@
 				<i itemprop="name">{{ book.title }}</i>
 			</a>
 				{% if book.has_anno %}
-					<a class="book-clue" data-href="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"><span class="fa fa-info-circle"></span></a>
+					<a class="book-clue" data-href="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"><i class="fa fa-info-circle" title="Анотация"></i></a>
 				{% endif %}
 				{% if book.subtitle is not empty %}
 					<br>

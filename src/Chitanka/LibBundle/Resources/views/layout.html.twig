@@ -55,6 +55,8 @@
 		</div>
 	{% endif %}
 
+	{% include 'LibBundle::projects_toolbar.html.twig' %}
+
 	<div id="content-wrapper" class="clearfix p_{{ current_route }}">
 
 		<div id="main-content-wrapper">
@@ -115,7 +117,7 @@
 
 	<div id="footer" role="contentinfo">
 	{% block footer %}
-		<h2 class="sr-only">Завършваща част</h2>
+		<h2 class="sr-only">Допълнителна информация</h2>
 		<ul>
 			<li><a href="{{ path('about') }}">За Моята библиотека</a></li>
 			<li><a href="{{ path('rules') }}">Правила</a></li>
@@ -124,6 +126,8 @@
 		</ul>
 	{% endblock %}
 	</div>
+
+	<a href="#main-content" id="goto-top-link" title="Към началото на страницата"><span class="fa fa-chevron-circle-up"></span><span class="sr-only">Към началото на страницата</span></a>
 
 	<div id="env-{{ environment }}"></div>
 {% endblock body %}

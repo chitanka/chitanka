@@ -29,7 +29,7 @@ function compileStyleFiles($cacheDir, $skin, $menuPos) {
 }
 
 function sendCssFile($cssFile) {
-	header('Content-Type: text/css');
+	header('Content-Type: text/css; charset=UTF-8');
 	header('Expires: Sun, 17-Jan-2038 19:14:07 GMT');
 	header('Cache-Control: max-age=31536000'); // 1 year
 	header('Last-Modified: Sun, 01 Jan 2001 00:00:01 GMT');

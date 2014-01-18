@@ -19,7 +19,7 @@ if ( ! file_exists($combiFile) ) {
 	createCombiFile($query, $combiFile);
 }
 
-header('Content-Type: application/x-javascript');
+header('Content-Type: application/x-javascript; charset=UTF-8');
 header('Expires: Sun, 17-Jan-2038 19:14:07 GMT');
 header('Cache-Control: max-age=315360000'); // 10 years
 header('Last-Modified: Sun, 01 Jan 2001 00:00:01 GMT');

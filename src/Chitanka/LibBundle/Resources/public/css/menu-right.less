@@ -1,5 +1,8 @@
 #main-content {
 	margin: 0 @contentMarginSide 0 0;
+	&.no-sidebar {
+		margin-right: 0;
+	}
 }
 #navigation {
 	margin: 0 0 1em -@navWidth;
@@ -14,4 +17,19 @@
 #search {
 	left: @contentSpacingSide;
 	text-align: left;
+}
+.sidebar-toggle {
+	right: @contentSpacingSide;
+}
+@media screen and (max-width: 50em) {
+	@contentSpacingSide: 0.5em;
+	.sidebar-toggle {
+		right: @contentSpacingSide;
+	}
+	#search {
+		left: @contentSpacingSide;
+	}
+	#user-tools {
+		right: @contentSpacingSide + 3em;
+	}
 }

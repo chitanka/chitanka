@@ -1,13 +1,15 @@
+@contentSpacingSide: 0.5em;
+
 #env-dev:before {
 	content: "C";
 }
 #main-content-wrapper {
 	float: none;
 	margin-top: 0;
-	padding-top: 4em;
+	padding-top: @mainContentMarginTop;
 }
 #content-wrapper {
-	padding: 0 .5em;
+	padding: 0 @contentSpacingSide;
 }
 #main-content {
 	margin: 0;
@@ -15,58 +17,30 @@
 #navigation {
 	float: none;
 	width: auto;
-	max-width: 14em;
 	margin: 0 auto 1em auto;
-}
-#navigation .navbody {
-	font-size: 1em;
-}
-#navigation li {
-	padding: .5em;
-	font-size: 1em;
-}
-#user-tools {
-	width: auto;
-	position: static;
-	display: block;
-	h3 {
-		display: block;
+	.navbody {
+		font-size: 1em;
 	}
 	li {
-		display: block;
+		padding: .5em;
+		font-size: 1em;
 	}
 }
-#search form {
-	display: block;
-	margin: 0;
-	width: 100%;
-}
-#search li {
-	padding: 0;
-}
-#q {
-	width: 70%;
+#user-tools {
+	max-width: 45%;
+	.navbar-right .dropdown-menu {
+		right: 0;
+		left: auto;
+	}
 }
 #logo {
-	margin: 0 auto;
-	width: 66%;
-	max-width: 12em;
+	.hide();
 }
-#logo a {
-	height: 155px;
+.hide-toggle {
+	.hide();
 }
-#logo span {
-	background-size: 100%;
-}
-#jump-to {
-	display: block;
-}
-#jump-to p, #jump-to ul, #jump-to li {
-	float: left;
-}
-#jump-to-content,
-#jump-to-search {
-	display: none;
+.show-toggle {
+	.show();
 }
 .cover {
 	float: none;

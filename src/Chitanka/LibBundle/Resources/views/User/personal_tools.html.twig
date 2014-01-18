@@ -1,20 +1,11 @@
-{% set project_links %}
-	<li id="project-main" class="current"><a href="http://chitanka.info">Библиотека</a></li>
-	<li id="project-forum"><a href="http://forum.chitanka.info">Форум</a></li>
-	<li id="project-blog"><a href="http://blog.chitanka.info">Блог</a></li>
-	<li id="project-wiki"><a href="http://wiki.chitanka.info">Уики</a></li>
-	<li id="project-wiki-workroom"><a href="http://wiki.workroom.chitanka.info">Читалие</a></li>
-	<li id="project-rechnik"><a href="http://rechnik.chitanka.info">Речник</a></li>
-	<li id="project-tools"><a href="http://tools.chitanka.info">Инструменти</a></li>
-{% endset %}
 <div id="user-tools">
 	<h3 class="sr-only">Лични инструменти</h3>
 	<ul class="user-tools-menu" role="menu">
 	{% if _user.isAuthenticated() %}
-		<li class="level-0 user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" class="user" title="Лична страница"><span class="fa fa-user"></span> {{ _user.username }}</a></li>
+		<li class="level-0 user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" class="user" title="Лична страница — {{ _user.username }}"><span class="fa fa-user"></span> <span class="user-name">{{ _user.username }}</span></a></li>
 		<li class="level-0 dropdown navbar-right">
 			<a class="dropdown-toggle user-tools-toggle" data-toggle="dropdown" href="#">
-				<span class="fa fa-bars"></span>
+				<span class="fa fa-caret-down"></span>
 			</a>
 			<ul class="dropdown-menu">
 				<li class="user-settings"><a href="{{ path('user_edit', {'username': _user.username}) }}" title="Потребителски настройки"><span class="fa fa-gear"></span> Настройки</a></li>
@@ -22,8 +13,6 @@
 					<li class="user-dashboard"><a href="{{ path('sonata_admin_dashboard') }}" title="Администрация"><span class="fa fa-gears"></span> Админ</a></li>
 				{% endif %}
 				<li class="user-signout" title="Изход от библиотеката"><a href="{{ path('logout') }}"><span class="fa fa-sign-out"></span> Изход</a></li>
-				<li role="presentation" class="divider"></li>
-				{{ project_links }}
 			</ul>
 		</li>
 	{% else %}
@@ -34,8 +23,6 @@
 			</a>
 			<ul class="dropdown-menu">
 				<li class="user-register"><a href="{{ path('register') }}"><span class="fa fa-user"></span> Регистрация</a></li>
-				<li role="presentation" class="divider"></li>
-				{{ project_links }}
 			</ul>
 		</li>
 	{% endif %}

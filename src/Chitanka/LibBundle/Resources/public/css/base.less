@@ -75,7 +75,7 @@
 @contentSpacingSide: 1.5em;
 @contentMarginSide: @navWidth + @contentSpacingSide;
 @contentMarginTop: 1em;
-@mainContentMarginTop: 4em;
+@mainContentMarginTop: 4.5em;
 
 @ratingPieBorder: #e0e0e0;
 @ratingPieDefaultBg: white;
@@ -95,6 +95,11 @@
 @nav-tabs-active-link-hover-bg: @tocBgColor;
 @pagination-bg: @tocBgColor;
 @pagination-hover-bg: @headerBgColor;
+@pagination-active-color: @headerFgColor;
+@pagination-active-bg: @headerBgColor;
+@popover-bg: @tocBgColor;
+@popover-arrow-color: @popover-bg;
+
 @breadcrumb-bg: @tocBgColor;
 @well-bg: @tocBgColor;
 @table-bg-accent: @tocBgColor;
@@ -111,6 +116,8 @@
 @input-border-focus: @logoFgColor;
 @input-group-addon-bg: lighten(@headerBgColor, 5%);
 @btn-default-border: @input-border;
+
+@navbar-default-bg: @mainBgColor;
 
 @import "base-screen.less";
 @import "menu-@{menu-position}.less";

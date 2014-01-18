@@ -179,70 +179,37 @@ function showBookmarks()
 	}
 }
 
-var togglerCookieName = "nomenu";
 // create a menu toggle link
 (function(){
-	if ($("#nav-main").length == 0) {
+	var togglerCookieName = "nomenu";
+	var $sidebar = $("#navigation");
+	if ($sidebar.find("#nav-main").length === 0) {
 		return;
 	}
-	var menuToggler = {
-		hide: function() {
-			this.init();
-			$(this.navEl).hide();
-			$(this.contEl).css(this.navPos, this.margin.n);
-			$.cookie(togglerCookieName, 1, {path: '/'});
-		},
-		show: function() {
-			$(this.navEl).show();
-			$(this.contEl).css(this.navPos, this.margin.o);
-			$.cookie(togglerCookieName, null, {path: '/'});
-		},
-		navEl: "#navigation",
-		contEl: "#main-content",
-		navPos: "",
-		margin: {},
-		init: function() {
-			if ( this.navPos != "" ) {
-				return;
-			}
-			var c = $(this.contEl);
-			var l = c.css("margin-left");
-			var r = c.css("margin-right");
-			if ( r > l ) {
-				// expand to the right
-				this.save("right", r, l);
-			} else {
-				// expand to the left
-				this.save("left", l, r);
-			}
-		},
-		save: function(pos, ov, nv) {
-			this.navPos = "margin-" + pos;
-			this.margin = {o: ov, n: nv};
+	var togglerHtml = '<div>\
+		<a href="#hide-sidebar" class="sidebar-toggle hide-toggle fa-stack" title="Скриване на менюто">\
+			<span class="fa fa-bars fa-stack-1x"></span>\
+			<span class="fa fa-ban fa-stack-2x text-warning"></span>\
+		</a>\
+		<a href="#'+$sidebar.attr('id')+'" class="sidebar-toggle show-toggle hide fa fa-bars" title="Показване на менюто"></a>\
+		</div>';
+	$(togglerHtml).on("click", "a", function() {
+		if ($sidebar.css("float") == "none") { // sidebar is at the bottom of the page
+			$.scrollTo($sidebar, 500);
+			return false;
 		}
-	};
-	var hide = '\
-		<span class="fa-stack">\
-			<i class="fa fa-bars fa-stack-1x"></i>\
-			<i class="fa fa-ban fa-stack-2x text-warning"></i>\
-		</span> Без меню';
-	var show = '<i class="fa fa-bars"></i> С меню';
-	$tools = $('.user-tools-menu:first').find('.dropdown-menu').append('<li class="divider"></li>');
-	$('<li><a id="toggle-nav-link" href="#"></a></li>')
-		.find('a')
-			.html(hide)
-			.toggle(function(){
-				menuToggler.hide();
-				$(this).html(show);
-				return false;
-			}, function(){
-				menuToggler.show();
-				$(this).html(hide);
-				return false;
-			})
-		.end()
-		.appendTo($tools);
-	$('#user-tools,#search').appendTo('#main-content-wrapper');
+		$sidebar.toggle();
+		$("#main-content").toggleClass("no-sidebar");
+		$(this).siblings().addBack().toggleClass("hide");
+		$(this).blur();
+		$.cookie(togglerCookieName, $sidebar.is(":visible") ? null : 1, {path: '/'});
+		return false;
+	})
+	.appendTo("#content-wrapper");
+
+	if ($.cookie(togglerCookieName) && $sidebar.css("float") != "none") {
+		$(".hide-toggle").click();
+	}
 })();
 
 
@@ -270,7 +237,26 @@ function registerBookClueLinks() {
 	});
 }
 
+function registerGotoTopLink() {
+	var $gotoTopLink = $("#goto-top-link");
+	$gotoTopLink.click(function() {
+		$.scrollTo(0, 500);
+		$(this).blur();
+		return false;
+	});
+	var $window = $(window);
+	$window.scroll(function() {
+		if ($window.scrollTop() > $window.height()) {
+			$gotoTopLink.is(':hidden') && $gotoTopLink.fadeIn();
+		} else {
+			$gotoTopLink.is(':visible') && $gotoTopLink.fadeOut();
+		}
+	});
+}
+
 $(function(){
+	$('#user-tools,#search').appendTo('#main-content-wrapper');
+
 	if (user.isAuthenticated()) {
 		showBookmarks();
 	}
@@ -283,13 +269,11 @@ $(function(){
 
 	registerBookClueLinks();
 
-	if ($.cookie(togglerCookieName)) {
-		$("#toggle-nav-link").click();
-	}
-
 	enhanceModifying();
 
 	$(".toc").boxcollapse();
+
+	registerGotoTopLink();
 });
 
 
