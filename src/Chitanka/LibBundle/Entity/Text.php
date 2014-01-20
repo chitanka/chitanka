@@ -1266,9 +1266,7 @@ EOS;
 	public function getFullTitleAsSfb()
 	{
 		$sfb = '';
-		if ( ($authorNames = $this->getAuthorNames()) ) {
-			$sfb .= "|\t" . $authorNames . "\n";
-		}
+		$sfb .= "|\t" . ($this->getAuthorNames() ?: '(неизвестен автор)') . "\n";
 		$sfb .= $this->getTitleAsSfb();
 
 		return $sfb;
