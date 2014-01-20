@@ -695,8 +695,10 @@ class Text extends BaseWork
 	public function getTitleAsSfb() {
 		$title = "|\t" . $this->escapeForSfb($this->title);
 		if ( !empty($this->subtitle) ) {
-			$title .= "\n|\t" . strtr($this->escapeForSfb($this->subtitle),
-				array(self::TITLE_NEW_LINE => "\n|\t"));
+			$title .= "\n|\t" . strtr($this->escapeForSfb($this->subtitle), array(
+				self::TITLE_NEW_LINE => "\n|\t",
+				'\n' => "\n|\t",
+			));
 		}
 		if ( $this->hasTitleNote() ) {
 			$title .= '*';
@@ -1287,7 +1289,7 @@ EOS;
 		$conv = new SfbToFb2Converter($this->getContentAsSfb(), Legacy::getInternalContentFilePath('img', $this->id));
 
 		$conv->setObjectCount(1);
-		$conv->setSubtitle($this->subtitle);
+		$conv->setSubtitle(strtr($this->subtitle, array('\n' => ' — ')));
 		$conv->setGenre($this->getGenresForFb2());
 		$conv->setKeywords($this->getKeywordsForFb2());
 		$conv->setTextDate($this->year);
