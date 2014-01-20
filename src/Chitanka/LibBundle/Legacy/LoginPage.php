@@ -126,13 +126,13 @@ class LoginPage extends RegisterPage {
 	</div>
 	<div class="checkbox">
 		<label>
-			<input type="checkbox" name="remember"> Запомняне на паролата
+			<input type="checkbox" name="remember"> Запомняне за един месец
 		</label>
 	</div>
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Вход</button>
 </form>
 
-<div class="alert alert-warning media">
+<div class="alert alert-info media">
 	<div class="pull-left">
 		<span class="fa fa-2x fa-frown-o"></span>
 	</div>
