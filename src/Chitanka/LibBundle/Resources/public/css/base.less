@@ -72,7 +72,7 @@
 }
 
 @navWidth: 12em;
-@contentSpacingSide: 1.5em;
+@contentSpacingSide: 2.5em;
 @contentMarginSide: @navWidth + @contentSpacingSide;
 @contentMarginTop: 1em;
 @mainContentMarginTop: 4.5em;
@@ -84,9 +84,9 @@
 // bootstrap overwrites
 @brand-primary: @buttonLinksFgColor;
 @brand-success: @logoFgColor;
-@brand-warning: #f0ad4e;
+@brand-warning: @toolbarBgColor; // #f0ad4e
 @brand-danger:  #d9534f;
-@brand-info:    @toolbarBgColor;
+@brand-info:    @tocBgColor;
 
 @link-color: @linkFgColor;
 
@@ -105,8 +105,17 @@
 @table-bg-accent: @tocBgColor;
 @table-border-color: #E0E0E0;
 @blockquote-border-color: @fieldsetBordColor;
-@state-info-text: @mainFgColor;
-@state-info-bg: @toolbarBgColor;
+
+// TODO define custom colors for all skins
+@state-success-text: @toolbarFgColor;
+@state-success-bg: @toolbarBgColor;
+@state-info-text: @tocFgColor;
+@state-info-bg: @tocBgColor;
+@state-warning-text: #DB0300;
+@state-warning-bg: @tocBgColor;
+@state-danger-text: #BC0300;
+@state-danger-bg: #f2dede;
+
 @dropdown-bg: @tocBgColor;
 @dropdown-link-color: @navLinkFgColor;
 @dropdown-link-hover-color: @headerFgColor;
