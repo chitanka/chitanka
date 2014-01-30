@@ -2,6 +2,7 @@
 
 namespace Chitanka\LibBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Chitanka\LibBundle\Pagination\Pager;
@@ -145,10 +146,10 @@ class UserController extends Controller
 
 
 	/**
-	* Tell if any of the requested texts are special for the current user
-	* i.e. the user has bookmarked it or read it
-	*/
-	public function specialTextsAction()
+	 * Tell if any of the requested texts are special for the current user
+	 * i.e. the user has bookmarked it or read it
+	 */
+	public function specialTextsAction(Request $request)
 	{
 		$this->responseAge = 0;
 
@@ -156,7 +157,7 @@ class UserController extends Controller
 			throw new HttpException(401);
 		}
 
-		$texts = $this->get('request')->get('texts');
+		$texts = $request->get('texts');
 
 		return $this->displayJson(array(
 			'read' => array_flip($this->getUserTextReadRepository()->getValidTextIds($this->getUser(), $texts)),
