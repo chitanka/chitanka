@@ -294,6 +294,10 @@ abstract class Controller extends SymfonyController
 		return false; // main site
 	}
 
+	protected function getWebRoot() {
+		return dirname($_SERVER['SCRIPT_NAME']);
+	}
+
 	/** @return \Chitanka\LibBundle\Entity\BookRepository */
 	protected function getBookRepository() { return $this->getRepository('Book'); }
 	/** @return \Chitanka\LibBundle\Entity\BookmarkRepository */

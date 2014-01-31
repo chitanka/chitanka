@@ -532,7 +532,7 @@ class TextController extends Controller
 
 		$dlFile = $this->createTxtDlFile();
 
-		return '/'.  $dlFile;
+		return $this->getWebRoot() .  $dlFile;
 	}
 
 
@@ -544,7 +544,7 @@ class TextController extends Controller
 
 		$dlFile = $this->createSfbDlFile();
 
-		return '/' .  $dlFile;
+		return $this->getWebRoot() .  $dlFile;
 	}
 
 
@@ -556,7 +556,7 @@ class TextController extends Controller
 
 		$dlFile = $this->createFb2DlFile();
 
-		return '/' .  $dlFile;
+		return $this->getWebRoot() .  $dlFile;
 	}
 
 
@@ -575,10 +575,9 @@ class TextController extends Controller
 		}
 
 		if ($file) {
-			return "/$file";
-		} else {
-			$this->addMessage('Няма такъв текст.', true);
+			return $this->getWebRoot() . $file;
 		}
+		$this->addMessage('Няма такъв текст.', true);
 	}
 
 
