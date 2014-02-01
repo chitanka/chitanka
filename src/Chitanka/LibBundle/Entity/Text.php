@@ -338,6 +338,11 @@ class Text extends BaseWork
 	 */
 	private $links;
 
+	/**
+	 * @ORM\Column(type="array", nullable=true)
+	 */
+	private $alikes;
+
 	public function __construct($id = null)
 	{
 		$this->id = $id;
@@ -570,6 +575,9 @@ class Text extends BaseWork
 	{
 		$this->links->removeElement($link);
 	}
+
+	public function setAlikes($alikes) { $this->alikes = $alikes; }
+	public function getAlikes() { return $this->alikes; }
 
 	/**
 	 * Return the main book for the text
@@ -1569,121 +1577,6 @@ EOS;
 
 		return $text;
 	}
-
-
-	/**
-		Get similar texts based ot readers count.
-		@param $limit   Return up to this limit number of texts
-		@param $reader  Do not return texts marked as read by this reader
-	 */
-	public function getSimilar($limit = 10, $reader = null)
-	{
-		$db = Setup::db();
-		$qa = array(
-			'SELECT'   => 'text_id, count(*) readers',
-			'FROM'     => DBT_READER_OF .' r',
-			'WHERE'    => array(
-				'r.text_id' => array('<>', $this->id),
-				'r.user_id IN ('
-					. $db->selectQ(DBT_READER_OF, array('text_id' => $this->id), 'user_id')
-					. ')',
-			),
-			'GROUP BY' => 'r.text_id',
-			'ORDER BY' => 'readers DESC',
-		);
-		if ( is_object($reader) ) {
-			$qa['WHERE'][] = 'text_id NOT IN ('
-				. $db->selectQ(DBT_READER_OF, array('user_id' => $reader->getId()), 'text_id')
-				. ')';
-		}
-		$res = $db->extselect($qa);
-		$texts = $textsInQueue = array();
-		$lastReaders = 0;
-		$count = 0;
-		while ( $row = $db->fetchAssoc($res) ) {
-			$count++;
-			if ( $lastReaders > $row['readers'] ) {
-				if ( $count > $limit ) {
-					break;
-				}
-				$texts = array_merge($texts, $textsInQueue);
-				$textsInQueue = array();
-			}
-			$textsInQueue[] = $row['text_id'];
-			$lastReaders = $row['readers'];
-		}
-
-		if ( $count > $limit ) {
-			$texts = array_merge($texts, $this->filterSimilarByLabel($textsInQueue, $limit - count($texts)));
-		}
-
-// 		if ( empty($texts) ) {
-// 			$texts = $this->getSimilarByLabel($limit, $reader);
-// 		}
-
-		return $texts;
-	}
-
-
-	/**
-		Get similar texts based ot readers count.
-		@param $limit   Return up to this limit number of texts
-		@param $reader  Do not return texts marked as read by this reader
-	 */
-	public function getSimilarByLabel($limit = 10, $reader = null)
-	{
-		$db = Setup::db();
-		$qa = array(
-			'SELECT'   => 'text_id',
-			'FROM'     => DBT_TEXT_LABEL,
-			'WHERE'    => array(
-				'text_id' => array('<>', $this->id),
-				'label_id IN ('
-					. $db->selectQ(DBT_TEXT_LABEL, array('text_id' => $this->id), 'label_id')
-					. ')',
-			),
-			'GROUP BY' => 'text_id',
-			'ORDER BY' => 'COUNT(text_id) DESC',
-			'LIMIT'    => $limit,
-		);
-		if ( $reader ) {
-			$qa['WHERE'][] = 'text_id NOT IN ('
-				. $db->selectQ(DBT_READER_OF, array('user_id' => $reader), 'text_id')
-				. ')';
-		}
-		$res = $db->extselect($qa);
-		$texts = array();
-		while ($row = $db->fetchRow($res)) {
-			$texts[] = $row[0];
-		}
-		return $texts;
-	}
-
-
-	public function filterSimilarByLabel($texts, $limit)
-	{
-		$db = Setup::db();
-		$qa = array(
-			'SELECT'   => 'text_id',
-			'FROM'     => DBT_TEXT_LABEL,
-			'WHERE'    => array(
-				'text_id' => array('IN', $texts),
-				'label_id IN ('
-					. $db->selectQ(DBT_TEXT_LABEL, array('text_id' => $this->id), 'label_id')
-					. ')',
-			),
-			'GROUP BY' => 'text_id',
-			'ORDER BY' => 'COUNT(text_id) DESC',
-			'LIMIT'    => $limit,
-		);
-		$res = $db->extselect($qa);
-		$texts = array();
-		while ($row = $db->fetchRow($res)) {
-			$texts[] = $row[0];
-		}
-		return $texts;
-	}
-
 
 	public function getHeaders()
 	{
