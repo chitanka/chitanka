@@ -43,6 +43,18 @@ class WorkEntry extends Entity
 	private $author;
 
 	/**
+	 * Year of publication on paper or in e-format
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
+	private $pubYear;
+
+	/**
+	 * Publisher of the book
+	 * @ORM\Column(type="string", length=100, nullable=true)
+	 */
+	private $publisher;
+
+	/**
 	 * @var integer $user
 	 * @ORM\ManyToOne(targetEntity="User")
 	 */
@@ -147,6 +159,12 @@ class WorkEntry extends Entity
 
 	public function setAuthor($author) { $this->author = $author; }
 	public function getAuthor() { return $this->author; }
+
+	public function setPublisher($publisher) { $this->publisher = $publisher; }
+	public function getPublisher() { return $this->publisher; }
+
+	public function setPubYear($pubYear) { $this->pubYear = $pubYear; }
+	public function getPubYear() { return $this->pubYear; }
 
 	public function setUser($user) { $this->user = $user; }
 	/** @return User */

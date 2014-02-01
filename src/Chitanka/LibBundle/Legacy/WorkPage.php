@@ -8,6 +8,7 @@ use Chitanka\LibBundle\Util\Char;
 use Chitanka\LibBundle\Util\File;
 use Chitanka\LibBundle\Entity\User;
 use Chitanka\LibBundle\Entity\WorkEntry;
+use Chitanka\LibBundle\Entity\WorkEntryRepository;
 use Chitanka\LibBundle\Pagination\Pager;
 
 class WorkPage extends Page {
@@ -97,6 +98,8 @@ class WorkPage extends Page {
 		$this->workType = (int) $this->request->value('workType', 0, 3);
 		$this->btitle = $this->request->value('title');
 		$this->author = $this->request->value('author');
+		$this->publisher = $this->request->value('publisher');
+		$this->pubYear = $this->request->value('pubYear');
 		$this->status = (int) $this->request->value('entry_status');
 		$this->progress = Number::normInt($this->request->value('progress'), 100, 0);
 		$this->is_frozen = $this->request->checkbox('is_frozen');
@@ -213,6 +216,8 @@ class WorkPage extends Page {
 			'type' => in_array($this->status, array(self::STATUS_4)) ? 1 : $this->workType,
 			'title'=>$this->btitle,
 			'author'=> strtr($this->author, array(';'=>',')),
+			'publisher' => $this->publisher,
+			'pub_year' => $this->pubYear,
 			'user_id'=>$this->scanuser,
 			'comment' => $this->pretifyComment($this->comment),
 			'date'=>$this->date,
@@ -535,8 +540,7 @@ EOS;
 		$author = strtr($author, array(', '=>','));
 		$author = $this->makeAuthorLink($author);
 		$userlink = $this->makeUserLinkWithEmail($username, $email, $allowemail);
-		$info = empty($comment) ? ''
-			: $this->makeExtraInfo($comment, isset($expandinfo) && $expandinfo);
+		$info = $this->makeWorkEntryInfo($dbrow, isset($expandinfo) && $expandinfo);
 		$title = "<i>$title</i>";
 		$file = '';
 		if ( ! empty($tmpfiles) ) {
@@ -647,13 +651,24 @@ HTML;
 		return "<span class='{$this->statusClasses[$code]}'></span> {$this->statuses[$code]}";
 	}
 
+	private function makeWorkEntryInfo($dbrow, $expand = false) {
+		$lines = array();
+		if ($dbrow['publisher']) {
+			$lines[] = '<b>Издател:</b> ' . $dbrow['publisher'];
+		}
+		if ($dbrow['pub_year']) {
+			$lines[] = '<b>Година:</b> ' . $dbrow['pub_year'];
+		}
+		$lines[] = $dbrow['comment'];
+		return $this->makeExtraInfo(implode("\n", $lines), $expand);
+	}
 
 	public function makeExtraInfo($info, $expand = false) {
-		$info = strtr($info, array(
+		$info = strtr(trim($info), array(
 			"\n"   => '<br>',
 			"\r"   => '',
 		));
-		if ($expand) {
+		if (empty($info) || $expand) {
 			return $info;
 		}
 		$info = String::myhtmlspecialchars($info);
@@ -751,6 +766,8 @@ HTML;
 			$title = $this->out->textField('title', '', $this->btitle, 50, 255, null, '', array('class' => 'form-control'));
 			$author = $this->out->textField('author', '', $this->author, 50, 255,
 				0, 'Ако авторите са няколко, ги разделете със запетаи', array('class' => 'form-control'));
+			$publisher = $this->out->textField('publisher', '', $this->publisher, 50, 255, 0, null, array('class' => 'form-control'));
+			$pubYear = $this->out->textField('pubYear', '', $this->pubYear, 50, 255, 0, null, array('class' => 'form-control'));
 			$comment = $this->out->textarea($this->FF_COMMENT, '', $this->comment, 10, 80, null, array('class' => 'form-control'));
 			$delete = empty($this->entryId) || !$this->userIsAdmin() ? ''
 				: '<div class="error" style="margin-bottom:1em">'.
@@ -763,6 +780,8 @@ HTML;
 		} else {
 			$title = $this->btitle;
 			$author = $this->author;
+			$publisher = $this->publisher;
+			$pubYear = $this->pubYear;
 			$comment = $this->comment;
 			$button = $delete = '';
 		}
@@ -816,6 +835,18 @@ $helpTop
 				<label for="author" class="col-sm-2 control-label">Автор:</label>
 				<div class="col-sm-10">
 					$author
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="publisher" class="col-sm-2 control-label">Издател:</label>
+				<div class="col-sm-10">
+					$publisher
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="pubYear" class="col-sm-2 control-label">Година на издаване:</label>
+				<div class="col-sm-10">
+					$pubYear
 				</div>
 			</div>
 			<div class="form-group">
@@ -1389,6 +1420,8 @@ HTML;
 		}
 		$this->btitle = $entry->getTitle();
 		$this->author = $entry->getAuthor();
+		$this->publisher = $entry->getPublisher();
+		$this->pubYear = $entry->getPubYear();
 		$this->scanuser = $entry->getUser()->getId();
 		$this->comment = $entry->getComment();
 		$this->date = $entry->getDate()->format('Y-m-d');
@@ -1611,8 +1644,8 @@ EOS;
 		return String::my_replace($text);
 	}
 
-	private function repo()
-	{
+	/** @return WorkEntryRepository */
+	private function repo() {
 		return $this->controller->getRepository('WorkEntry');
 	}
 }
