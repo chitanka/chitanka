@@ -3,5 +3,5 @@
 	<legend>
 		Читателите на „{{ text.title }}“ са прочели и:
 	</legend>
-	{{ text_lister.text_list_with_author(texts) }}
+	{{ text_lister.text_list_with_author(texts, {'download_links': 1}) }}
 </fieldset>
