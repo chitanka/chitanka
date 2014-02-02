@@ -31,7 +31,8 @@ EOT
 
 		$description = $input->getArgument('desc');
 		$lastMinutes = $input->getOption('from');
-		$this->commitChanges($this->webDir('content'), $this->createMessageFile($description, $lastMinutes));
+		$fromTime = date('Y-m-d H:i:s', strtotime("-$lastMinutes minutes"));
+		$this->commitChanges($this->webDir('content'), $this->createMessageFile($description, $fromTime));
 
 		$output->writeln('Done.');
 	}
@@ -102,7 +103,7 @@ MSG;
 		$sql = "SELECT CONCAT(b.id, ' / ', br.comment, ' / ', IFNULL(b.title_author, ''), ' — ', b.title, ' / ', b.type)
 FROM `book_revision` br
 LEFT JOIN book b on br.book_id = b.id
-WHERE br.date > DATE_SUB(NOW(), INTERVAL '$fromTime' MINUTE)
+WHERE br.date >= '$fromTime'
 LIMIT 1000";
 		return $this->em->getConnection()->executeQuery($sql)->fetchAll(\PDO::FETCH_COLUMN);
 	}
@@ -117,7 +118,7 @@ FROM `text_revision` tr
 LEFT JOIN `text` t ON tr.text_id = t.id
 LEFT JOIN text_author ta ON ta.text_id = t.id
 LEFT JOIN person p ON p.id = ta.person_id
-WHERE tr.date > DATE_SUB(NOW(), INTERVAL '$fromTime' MINUTE)
+WHERE tr.date >= '$fromTime'
 GROUP BY tr.id
 LIMIT 1000";
 		return $this->em->getConnection()->executeQuery($sql)->fetchAll(\PDO::FETCH_COLUMN);
