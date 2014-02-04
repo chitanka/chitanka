@@ -385,30 +385,10 @@ EOS;
 
 	public function initPaginationFields() {
 		$this->lpage = (int) $this->request->value( self::FF_OFFSET, 1 );
-		$this->llimit = (int) $this->read_save_request_value(
-			self::FF_LIMIT, 'llimit', $this->defListLimit );
+		$this->llimit = (int) $this->request->value(self::FF_LIMIT, $this->defListLimit );
 		$this->llimit = Number::normInt( $this->llimit, $this->maxListLimit );
 
 		$this->loffset = ($this->lpage - 1) * $this->llimit;
-	}
-
-
-	/**
-		See Request::value()
-	*/
-	protected function read_save_request_value( $param, $page_field,
-				$default = null, $paramno = null, $allowed = null ) {
-
-		if ( ! empty( $this->$page_field ) ) {
-			$default = $this->$page_field;
-		}
-		$value = $this->request->value( $param, $default, $paramno, $allowed );
-
-		if ( $value != $default && $this->save_settings ) {
-			$fields = array( $page_field => $value );
-			$this->user->setPageFields( $this->action, $fields );
-		}
-		return $value;
 	}
 
 
