@@ -74,14 +74,16 @@
 					{% endif %}
 				</div>
 
-				{% for flashMessage in app.session.flashbag.get('error') %}
-					<div class="messages error alert alert-error">{{ flashMessage|raw }}</div>
-				{% endfor %}
-				{% for flashMessage in app.session.flashbag.get('notice') %}
-					<div class="messages alert alert-info">{{ flashMessage|raw }}</div>
-				{% endfor %}
+				<div class="page-content">
+					{% for flashMessage in app.session.flashbag.get('error') %}
+						<div class="messages error alert alert-error">{{ flashMessage|raw }}</div>
+					{% endfor %}
+					{% for flashMessage in app.session.flashbag.get('notice') %}
+						<div class="messages alert alert-info">{{ flashMessage|raw }}</div>
+					{% endfor %}
 
-				{% block content '' %}
+					{% block content '' %}
+				</div>
 			</div>
 		</div>
 

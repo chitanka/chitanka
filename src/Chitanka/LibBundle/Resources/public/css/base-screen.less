@@ -225,6 +225,10 @@ h2 a:visited {
 	padding: 0;
 }
 
+.page-content {
+	position: relative;
+}
+
 // съобщения, информиращи потребителя за нещо
 .messages {
 	margin-bottom: 1em;
@@ -673,7 +677,9 @@ span.frozen {
 }
 
 .feed-standalone {
-	float: right;
+	position: absolute;
+	top: -2.2em;
+	right: .2em;
 	margin: 0 0 .5em .5em;
 	font-size: 1.5em;
 }
@@ -1762,14 +1768,6 @@ ul.two-columns {
 	text-align: center;
 }
 
-.history-wrapper {
-	position: relative;
-	.feed-standalone {
-		position: absolute;
-		top: -2.2em;
-		right: .2em;
-	}
-}
 .more {
 	margin-top: 0.6em;
 	text-align: right;

@@ -2,9 +2,7 @@
 
 {% set title = 'Нови книги за ' ~ ('month.'~month)|trans ~' '~ year %}
 {% block content %}
-	<div class="history-wrapper">
-		{% include 'LibBundle:History:toc.html.twig' with {'route': 'new_books_by_month'} %}
-		{% include 'LibBundle:History:books_list.html.twig' %}
-		{% include 'LibBundle::pager.html.twig' %}
-	</div>
+	{% include 'LibBundle:History:toc.html.twig' with {'route': 'new_books_by_month'} %}
+	{% include 'LibBundle:History:books_list.html.twig' %}
+	{% include 'LibBundle::pager.html.twig' %}
 {% endblock %}

@@ -3,8 +3,6 @@
 {% set title = 'Нови книги' %}
 {% set page_feed = {'url': path('new_books', {'_format': 'rss'})} %}
 {% block content %}
-	<div class="history-wrapper">
-		{% include 'LibBundle:History:toc.html.twig' with {'route': 'new_books_by_month'} %}
-		{% include 'LibBundle:History:books_list.html.twig' %}
-	</div>
+	{% include 'LibBundle:History:toc.html.twig' with {'route': 'new_books_by_month'} %}
+	{% include 'LibBundle:History:books_list.html.twig' %}
 {% endblock %}
