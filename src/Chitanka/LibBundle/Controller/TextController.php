@@ -243,6 +243,15 @@ class TextController extends Controller
 		return $this->legacyPage('Comment');
 	}
 
+	public function similarAction($id) {
+		$text = $this->getTextRepository()->find($id);
+		$alikes = $text->getAlikes();
+		$this->view = array(
+			'text' => $text,
+			'similar_texts' => $alikes ? $this->getTextRepository()->getByIds(array_slice($alikes, 0, 30)) : array(),
+		);
+		return $this->display('similar');
+	}
 
 	public function ratingAction(Request $request, $id)
 	{
