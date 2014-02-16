@@ -50,6 +50,7 @@ EOT
 
 	private function gitCommitAndPush($directory, $messageFile)
 	{
+		$this->output->writeln('===> Entering ' . basename($directory));
 		chdir($directory);
 		$this->output->writeln('Pulling eventual changes');
 		shell_exec('git pull');
