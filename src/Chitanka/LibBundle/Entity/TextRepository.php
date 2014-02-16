@@ -17,6 +17,7 @@ class TextRepository extends EntityRepository
 		'gamebook',
 		'memo',
 		'science',
+		'popscience',
 		'novelette',
 		'ocherk',
 		'shortstory',
@@ -41,6 +42,10 @@ class TextRepository extends EntityRepository
 		'feuilleton',
 		'haiku',
 		'jure',
+		'critique',
+		'philosophy',
+		'religion',
+		'historiography',
 		'other',
 	);
 
