@@ -45,24 +45,26 @@ abstract class EntityRepository extends DoctrineEntityRepository
 
 	public function getRandom()
 	{
-		$dql = sprintf('SELECT e FROM %s e WHERE e.id <= %d ORDER BY e.id DESC', $this->getEntityName(), rand(1, $this->getCount()));
+		$dql = sprintf('SELECT e FROM %s e', $this->getEntityName());
 		$query = $this->getEntityManager()->createQuery($dql);
-		$query->setMaxResults(1);
 
-		return $query->getSingleResult();
+		return $query->setMaxResults(1)
+			->setFirstResult(rand(1, $this->getCount()) - 1)
+			->getSingleResult();
 	}
 
 
 	public function getRandomId($where = '')
 	{
 		if ($where) {
-			$where = 'AND '.$where;
+			$where = 'WHERE '.$where;
 		}
-		$dql = sprintf('SELECT e.id FROM %s e WHERE e.id <= %d %s ORDER BY e.id DESC', $this->getEntityName(), rand(1, $this->getCount()), $where);
+		$dql = sprintf('SELECT e.id FROM %s e %s ORDER BY e.id DESC', $this->getEntityName(), $where);
 		$query = $this->getEntityManager()->createQuery($dql);
-		$query->setMaxResults(1);
 
-		return $query->getSingleScalarResult();
+		return $query->setMaxResults(1)
+			->setFirstResult(rand(1, $this->getCount()) - 1)
+			->getSingleScalarResult();
 	}
 
 	public function findByIds(array $ids)
