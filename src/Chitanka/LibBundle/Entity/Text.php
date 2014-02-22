@@ -122,7 +122,7 @@ class Text extends BaseWork
 
 	/**
 	 * @var string $type
-	 * @ORM\Column(type="string", length=12)
+	 * @ORM\Column(type="string", length=14)
 	 */
 	private $type;
 
