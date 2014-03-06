@@ -79,7 +79,7 @@
 	{% import 'LibBundle::link.html.twig' as link %}
 <dl class="text-entity" itemscope itemtype="http://schema.org/CreativeWork" data-id="{{ text.id }}">
 	<dt>
-		<span class="fa-li fa fa-folder" title="{{ ('text.type.singular.'~text.type)|trans }}"></span>
+		<span title="{{ ('text.type.singular.'~text.type)|trans }}"></span>
 		{{ _self.rating(text) }}
 		{{ options.prefix is defined ? options.prefix : '' }}
 		{% if text.series is defined and text.series is not empty %}
@@ -100,7 +100,7 @@
 	{% import 'LibBundle::link.html.twig' as link %}
 <dl class="text-entity" itemscope itemtype="http://schema.org/CreativeWork" data-id="{{ text.id }}">
 	<dt>
-		<span class="fa-li fa fa-folder" title="{{ ('text.type.singular.'~text.type)|trans }}"></span>
+		<span title="{{ ('text.type.singular.'~text.type)|trans }}"></span>
 		{{ _self.rating(text) }}
 		{{ options.prefix is defined ? options.prefix : '' }}
 		{% if options.sernr is defined and text.sernr %}{{ text.sernr }}.{% endif %}
