@@ -50,8 +50,13 @@ EOT
 
 	private function gitCommitAndPush($directory, $messageFile)
 	{
+		$this->output->writeln('');
 		$this->output->writeln('===> Entering ' . basename($directory));
 		chdir($directory);
+		if (strpos(shell_exec('git status'), 'nothing to commit') !== false) {
+			$this->output->writeln('Nothing to commit');
+			return;
+		}
 		$this->output->writeln('Pulling eventual changes');
 		shell_exec('git pull');
 		$this->output->writeln('Staging current changes');
