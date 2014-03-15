@@ -185,16 +185,6 @@ EOS;
 		return $this->legacyPage('Settings');
 	}
 
-	public function emailAction($username)
-	{
-		$this->responseAge = 0;
-
-		$_REQUEST['username'] = $username;
-
-		return $this->legacyPage('EmailUser');
-	}
-
-
 	public function stylesheetAction()
 	{
 		$this->responseAge = 0;

@@ -418,9 +418,9 @@ new_texts_by_month:
         _format: html|opds
 
 
-user_email:
-    pattern:   /user/{username}/email
-    defaults: { _controller: LibBundle:User:email }
+email_user:
+    pattern:   /email/{username}
+    defaults: { _controller: LibBundle:Email:new }
     options:
         segment_separators: [/]
 # settings
