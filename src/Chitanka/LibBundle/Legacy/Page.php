@@ -367,7 +367,7 @@ EOS;
 		$mlink = '';
 		if ( ! empty($email) && $allowemail) {
 			$mlink = sprintf('<a href="%s" title="Пращане на писмо на %s"><span class="fa fa-envelope-o"></span><span class="sr-only">Е-поща</span></a>',
-				$this->controller->generateUrl('user_email', array('username' => $username)),
+				$this->controller->generateUrl('email_user', array('username' => $username)),
 				String::myhtmlentities($username));
 		}
 		return $this->makeUserLink($username) .' '. $mlink;
@@ -434,10 +434,10 @@ EOS;
 		$qid = $this->out->hiddenField(self::FF_CQUESTION, $id);
 		$qt = $this->out->hiddenField(self::FF_CQUESTION_T, $question);
 		$tr = $this->out->hiddenField(self::FF_CTRIES, $this->captchaTries);
-		$q = $this->out->label($question, self::FF_CANSWER);
-		$answer = $this->out->textField(self::FF_CANSWER, '', $this->captchaAnswer, 30, 60, 20, '', array('class' => 'form-control'));
+		$q = '<label for="'.self::FF_CANSWER.'" class="control-label">'.$question.'</label>';
+		$answer = $this->out->textField(self::FF_CANSWER, '', $this->captchaAnswer, 30, 60, 0, '', array('class' => 'form-control'));
 
-		return $qid . $qt . $tr . $q .' '. $answer .'<br>';
+		return '<div>' . $qid . $qt . $tr . $q .' '. $answer . '</div>';
 	}
 
 	protected function initCaptchaFields() {

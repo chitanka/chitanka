@@ -14,7 +14,7 @@ class LoginPage extends RegisterPage {
 
 	public function __construct($fields) {
 		parent::__construct($fields);
-		$this->title = 'Вход';
+		$this->title = "Вход в $this->sitename";
 		$this->remember = (int) $this->request->checkbox('remember');
 		$this->message = '';
 	}
@@ -102,7 +102,7 @@ class LoginPage extends RegisterPage {
 <style>
 .form-signin {
 	margin: 1em auto 3em;
-	max-width: 22em;
+	max-width: 25em;
 }
 .form-signin .form-control {
 	height: auto;
@@ -118,11 +118,13 @@ class LoginPage extends RegisterPage {
 		<span class="input-group-addon"><span class="fa fa-user"></span></span>
 		<label for="username" class="sr-only">Потребителско име</label>
 		<input type="text" class="form-control" id="username" name="username" placeholder="Потребителско име" value="{$this->username}" required autofocus>
+		<span class="input-group-addon"><a href="$sendname" title="Заявка за забравено име"><span class="fa fa-question"></span></a></span>
 	</div>
 	<div class="input-group">
 		<span class="input-group-addon"><span class="fa fa-key"></span></span>
 		<label for="username" class="sr-only">Парола</label>
 		<input type="password" class="form-control" id="password" name="password" placeholder="Парола" required>
+		<span class="input-group-addon"><a href="$sendpass" title="Заявка за забравена парола"><span class="fa fa-question"></span></a></span>
 	</div>
 	<div class="checkbox">
 		<label>
@@ -137,7 +139,7 @@ class LoginPage extends RegisterPage {
 		<span class="fa fa-2x fa-frown-o"></span>
 	</div>
 	<div class="media-body">
-		Забравихте си входните данни ли? Няма страшно. Подайте заявка за <a href="$sendname" title="Забравено име">забравено име</a> или <a href="$sendpass" title="Забравена парола">парола</a>.
+		Забравихте си входните данни ли? Няма страшно. Подайте <a href="$sendname" title="Заявка за забравено име" class="btn btn-default">заявка за забравено име</a> или <a href="$sendpass" title="Заявка за забравена парола" class="btn btn-default">парола</a>.
 	</div>
 </div>
 <div class="alert alert-info media">
@@ -145,7 +147,7 @@ class LoginPage extends RegisterPage {
 		<span class="fa fa-2x fa-user"></span>
 	</div>
 	<div class="media-body">
-		Ако все още не сте се регистрирали, можете да го <a href="$reglink">направите</a> за секунди.
+		Можете да се <a href="$reglink" class="btn btn-default">регистрирате</a> за секунди, ако все още не сте го направили.
 	</div>
 </div>
 

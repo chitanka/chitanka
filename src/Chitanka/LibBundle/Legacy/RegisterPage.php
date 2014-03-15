@@ -16,7 +16,7 @@ class RegisterPage extends Page {
 
 	public function __construct($fields) {
 		parent::__construct($fields);
-		$this->title = 'Регистрация';
+		$this->title = "Регистрация в $this->sitename";
 		$this->attempt = (int) $this->request->value('attempt', 1);
 		$this->mainFields = $this->nonEmptyFields + $this->mainFields;
 		foreach ($this->mainFields as $field) {
@@ -130,60 +130,76 @@ class RegisterPage extends Page {
 
 	protected function buildContent() {
 		$login = $this->controller->generateUrl('login');
+		$reglink = $this->controller->generateUrl('register');
 		$attempt = $this->out->hiddenField('attempt', $this->attempt);
 		$returnto = $this->out->hiddenField('returnto', $this->returnto);
-		$username = $this->out->textField('username', '', $this->username, 25, 50, 2);
-		$password = $this->out->passField('password', '', $this->password, 25, 40, 3);
-		$passwordRe = $this->out->passField('passwordRe', '', $this->passwordRe, 25, 40, 4);
-		$realname = $this->out->textField('realname', '', $this->realname, 25, 50, 5);
-		$email = $this->out->textField('email', '', $this->email, 25, 60, 6);
-		$news = $this->out->checkbox('news', '', false, 'Получаване на месечен бюлетин', null, 7);
 		$historyLink = $this->controller->generateUrl('new');
-		$submit = $this->out->submitButton('Регистриране', '', 50);
-
-		$question = $this->makeCaptchaQuestion();
+		$captcha = $this->makeCaptchaQuestion();
 
 		return <<<EOS
-<p>Чрез <a href="#registerform" title="Към регистрационния формуляр">долния формуляр</a> можете да се регистрирате в <em>$this->sitename</em>.
-<p>Ако вече сте се регистрирали, няма нужда да го правите още веднъж. Можете направо да <a href="$login">влезете</a>.</p>
-<p>Можете да ползвате кирилица, когато въвеждате потребителското си име.</p>
-<p>Като парола се опитайте да изберете нещо, което за вас да е лесно запомнящо се, а за останалите — невъзможно за разгадаване.</p>
-<p>Попълването на полетата, обозначени със звездички, не е задължително.</p>
-
-<form action="" method="post" id="registerform" style="width:33em; margin:1em auto" align="center">
+<p>Ако вече сте се регистрирали, няма нужда да го правите още веднъж. Можете направо да <a href="$login" class="btn btn-default">влезете</a>.</p>
+<ul class="fa-ul">
+<li><span class="fa-li fa fa-user"></span> Позволено е използването на кирилица, когато въвеждате потребителското си име.</li>
+<li><span class="fa-li fa fa-key"></span> Като парола се опитайте да изберете нещо, което за вас да е лесно запомнящо се, а за останалите — невъзможно за разгадаване.</li>
+<li><span class="fa-li fa fa-envelope"></span> Посочването на истинско име и валидна електронна поща не е задължително, но наличието им ще позволи по-доброто общуване между вас и библиотеката. Можете например да поискате нова парола, ако забравите сегашната си, или пък да се абонирате за месечния бюлетин. Адресът на пощата ви няма да се вижда от останалите потребители.</li>
+</ul>
+<style>
+.form-register {
+	margin: 1em auto 3em;
+	max-width: 35em;
+}
+.form-register .form-control {
+	height: auto;
+	padding: 10px;
+}
+.form-register .input-group-addon .fa {
+	width: 1em;
+}
+.form-register .input-group-addon label {
+	width: 15em;
+	text-align: left;
+}
+.form-register .checkbox {
+	padding-top: 0;
+}
+</style>
+<form action="$reglink" method="post" class="form-horizontal form-register" role="form">
 		$returnto
 		$attempt
-	<table>
-	<tr>
-		<td class="fieldname-left"><label for="username">Потребителско име:</label></td>
-		<td>$username</td>
-	</tr><tr>
-		<td class="fieldname-left"><label for="password">Парола:</label></td>
-		<td>$password</td>
-	</tr><tr>
-		<td class="fieldname-left"><label for="passwordRe">Паролата още веднъж:</label></td>
-		<td>$passwordRe</td>
-	</tr><tr>
-		<td class="fieldname-left"><label for="realname">Истинско име<a id="n1" name="n1" href="#nb1">*</a>:</label></td>
-		<td>$realname</td>
-	</tr><tr>
-		<td class="fieldname-left"><label for="email">Е-поща<a id="n2" name="n2" href="#nb2">**</a>:</label></td>
-		<td>$email</td>
-	</tr><tr>
-		<td colspan="2">
-			$news
-			<div class="extra">(Алтернативен начин да следите новото в библиотеката предлага страницата <a href="$historyLink">Новодобавено</a>)</div>
-		</td>
-	</tr><tr>
-		<td colspan="2" align="center">$question</td>
-	</tr><tr>
-		<td colspan="2" align="center">$submit</td>
-	</tr>
-	</table>
+	<div class="input-group">
+		<span class="input-group-addon"><label for="username"><span class="fa fa-user"></span> Потребителско име</label></span>
+		<input type="text" class="form-control" id="username" name="username" value="{$this->username}" required autofocus>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon"><label for="password"><span class="fa fa-key"></span> Парола</label></span>
+		<input type="password" class="form-control" id="password" name="password" value="{$this->password}" required>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon"><label for="passwordRe"><span class="fa fa-key"></span> Паролата още веднъж</label></span>
+		<input type="password" class="form-control" id="passwordRe" name="passwordRe" value="{$this->passwordRe}" required>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon"><label for="realname"><span class="fa fa-envelope"></span> Истинско име</label></span>
+		<input type="text" class="form-control" id="realname" name="realname" value="{$this->realname}">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon"><label for="email"><span class="fa fa-envelope"></span> Е-поща</label></span>
+		<input type="text" class="form-control" id="email" name="email" value="{$this->email}">
+	</div>
+	<div class="form-control">
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="news"> Получаване на месечен бюлетин
+			</label>
+		</div>
+		<div class="help-block">Алтернативен начин да следите новото в библиотеката предлага страницата <a href="$historyLink">Новодобавено</a>.</div>
+	</div>
+	<div class="form-group">
+		$captcha
+	</div>
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Регистриране</button>
 </form>
-
-<p><a id="nb1" name="nb1" href="#n1">*</a>, <a id="nb2" name="nb2" href="#n2">**</a>
-Посочването на истинско име и валидна е-поща ще позволи по-доброто общуване между вас и библиотеката. Можете например да поискате нова парола, ако забравите сегашната си, или пък да се абонирате за месечен бюлетин. Адресът ви няма да се публикува на страниците.</p>
+</p>
 EOS;
 	}
 }
