@@ -10,7 +10,7 @@
 
 	{{ booktools.cover_div(book, 200) }}
 	{% if book.hasAnno %}
-		<div class="text-content">
+		<div class="text-content book-anno">
 			{{ book.annotationAsXhtml|replace({'IMG_DIR_PREFIX': asset('/')})|raw }}
 		</div>
 	{% endif %}

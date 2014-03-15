@@ -79,7 +79,6 @@
 	{% import 'LibBundle::link.html.twig' as link %}
 <dl class="text-entity" itemscope itemtype="http://schema.org/CreativeWork" data-id="{{ text.id }}">
 	<dt>
-		<span title="{{ ('text.type.singular.'~text.type)|trans }}"></span>
 		{{ _self.rating(text) }}
 		{{ options.prefix is defined ? options.prefix : '' }}
 		{% if text.series is defined and text.series is not empty %}
@@ -100,7 +99,6 @@
 	{% import 'LibBundle::link.html.twig' as link %}
 <dl class="text-entity" itemscope itemtype="http://schema.org/CreativeWork" data-id="{{ text.id }}">
 	<dt>
-		<span title="{{ ('text.type.singular.'~text.type)|trans }}"></span>
 		{{ _self.rating(text) }}
 		{{ options.prefix is defined ? options.prefix : '' }}
 		{% if options.sernr is defined and text.sernr %}{{ text.sernr }}.{% endif %}
@@ -171,7 +169,10 @@
 {% macro text_list_with_author(texts, options) %}
 	<ul class="superlist fa-ul">
 	{% for text in texts %}
-		<li class="title t-{{ text.type }}">{{ _self.text_with_author(text, options) }}</li>
+		<li class="title t-{{ text.type }}">
+			<span class="fa fa-li fa-folder" title="{{ ('text.type.singular.'~text.type)|trans }}"></span>
+			{{ _self.text_with_author(text, options) }}
+		</li>
 	{% endfor %}
 	</ul>
 {% endmacro %}
@@ -180,7 +181,10 @@
 {% macro text_list(texts) %}
 	<ul class="superlist fa-ul">
 	{% for text in texts %}
-		<li class="title t-{{ text.type }}">{{ _self.text(text, {'sernr': 1, 'download_links': 1}) }}</li>
+		<li class="title t-{{ text.type }}">
+			<span class="fa fa-li fa-folder" title="{{ ('text.type.singular.'~text.type)|trans }}"></span>
+			{{ _self.text(text, {'sernr': 1, 'download_links': 1}) }}
+		</li>
 	{% endfor %}
 	</ul>
 {% endmacro %}

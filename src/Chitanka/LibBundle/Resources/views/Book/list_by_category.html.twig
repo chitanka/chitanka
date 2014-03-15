@@ -1,7 +1,6 @@
 {% extends 'LibBundle::layout.html.twig' %}
 
-{% set title = 'Книги по категория' %}
-{% set subtitle = category.name %}
+{% set title = 'Книги в категория „' ~ category.name ~ '“' %}
 {% block content %}
 
 	<ul class="breadcrumb" itemprop="breadcrumb">
@@ -9,7 +8,7 @@
 		{% for parent in parents %}
 			<li><a href="{{ path('books_by_category', {'slug': parent.slug}) }}">{{ parent.name }}</a></li>
 		{% endfor %}
-		<li class="active">{{ subtitle }}</li>
+		<li class="active">{{ category.name }}</li>
 	</ul>
 
 	{% include 'LibBundle:Book:list.html.twig' %}
