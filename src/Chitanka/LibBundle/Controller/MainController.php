@@ -9,6 +9,10 @@ class MainController extends Controller
 	{
 		$this->responseAge = 600;
 
+		$this->view = array(
+			'siteNotices' => $this->getSiteNoticeRepository()->findForFrontPage(),
+		);
+
 		return $this->display('index');
 	}
 

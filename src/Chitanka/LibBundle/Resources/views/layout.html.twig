@@ -61,7 +61,9 @@
 
 		<div id="main-content-wrapper">
 			<div id="main-content" role="main" itemscope itemtype="http://schema.org/{{ itemtype|default('WebPage') }}">
-				{{ render(controller('LibBundle:Wanted:stripe')) }}
+				{% block site_notice %}
+					{{ render(controller('LibBundle:SiteNotice:stripe')) }}
+				{% endblock %}
 
 				<div id="first-heading">
 					{% if subtitle is defined %}

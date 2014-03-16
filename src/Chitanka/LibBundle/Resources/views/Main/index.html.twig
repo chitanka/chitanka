@@ -5,8 +5,16 @@
 	{% include 'LibBundle::search_form.html.twig' %}
 {% endblock %}
 
+{% block site_notice %}{% endblock %}
+
 {% block content %}
 	<h1 class="welcome">Добре дошли в <em>Моята библиотека</em>!</h1>
+
+	{% for siteNotice in siteNotices %}
+		<div class="alert alert-info site-notice" style="{{ siteNotice.style }}">
+			{{ siteNotice.content|raw }}
+		</div>
+	{% endfor %}
 
 	<div class="dashboard">
 		<ul>

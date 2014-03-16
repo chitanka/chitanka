@@ -80,15 +80,6 @@
 			</call>
 		</service>
 
-		<service id="chitanka.admin.wanted_book" class="Chitanka\LibBundle\Admin\WantedBookAdmin">
-			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.wanted_book"/>
-			<argument />
-			<argument>Chitanka\LibBundle\Entity\WantedBook</argument>
-			<argument>LibBundle:WantedBookAdmin</argument>
-			<call method="setMaxPerPage">
-				<argument>%admin_max_per_page%</argument>
-			</call>
-		</service>
 		<service id="chitanka.admin.featured_book" class="Chitanka\LibBundle\Admin\FeaturedBookAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.featured_book"/>
 			<argument />
@@ -231,6 +222,15 @@
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\UserTextContrib</argument>
 			<argument>LibBundle:UserTextContribAdmin</argument>
+			<call method="setMaxPerPage">
+				<argument>%admin_max_per_page%</argument>
+			</call>
+		</service>
+		<service id="chitanka.admin.site_notice" class="Chitanka\LibBundle\Admin\SiteNoticeAdmin">
+			<tag name="sonata.admin" manager_type="orm" audit="false" group="library_secondary" label="admin.site_notice"/>
+			<argument />
+			<argument>Chitanka\LibBundle\Entity\SiteNotice</argument>
+			<argument>LibBundle:SiteNoticeAdmin</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>

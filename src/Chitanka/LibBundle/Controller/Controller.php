@@ -324,6 +324,8 @@ abstract class Controller extends SymfonyController
 	protected function getSeriesRepository() { return $this->getRepository('Series'); }
 	/** @return \Chitanka\LibBundle\Entity\SiteRepository */
 	protected function getSiteRepository() { return $this->getRepository('Site'); }
+	/** @return \Chitanka\LibBundle\Entity\SiteNoticeRepository */
+	protected function getSiteNoticeRepository() { return $this->getRepository('SiteNotice'); }
 	/** @return \Chitanka\LibBundle\Entity\TextRepository */
 	protected function getTextRepository() { return $this->getRepository('Text'); }
 	/** @return \Chitanka\LibBundle\Entity\TextCommentRepository */
@@ -338,8 +340,6 @@ abstract class Controller extends SymfonyController
 	protected function getUserTextContribRepository() { return $this->getRepository('UserTextContrib'); }
 	/** @return \Chitanka\LibBundle\Entity\UserTextReadRepository */
 	protected function getUserTextReadRepository() { return $this->getRepository('UserTextRead'); }
-	/** @return \Chitanka\LibBundle\Entity\WantedBookRepository */
-	protected function getWantedBookRepository() { return $this->getRepository('WantedBook'); }
 	/** @return \Chitanka\LibBundle\Entity\WikiSiteRepository */
 	protected function getWikiSiteRepository() { return $this->getRepository('WikiSite'); }
 	/** @return \Chitanka\LibBundle\Entity\WorkEntryRepository */

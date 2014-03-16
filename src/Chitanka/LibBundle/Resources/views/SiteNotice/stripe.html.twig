@@ -1,0 +1,6 @@
+{% if siteNotice is defined %}
+	<div class="alert alert-info alert-dismissable global-site-notice {{ siteNotice.style }}">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		{{ siteNotice.content|raw }}
+	</div>
+{% endif %}
