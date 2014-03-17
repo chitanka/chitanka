@@ -5,6 +5,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\SiteNoticeRepository")
+ * @ORM\Table(indexes={
+ *   @ORM\Index(columns={"is_active"}),
+ *   @ORM\Index(columns={"is_for_front_page"})}
+ * )
  */
 class SiteNotice extends Entity {
 
