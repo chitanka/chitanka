@@ -172,6 +172,7 @@ return array(
 		'philosophy' => 'Философски текст',
 		'religion' => 'Религиозен текст',
 		'historiography' => 'Историография',
+		'collection' => 'Сборник',
 		'other' => 'Разни',
 	),
 
@@ -215,6 +216,7 @@ return array(
 		'philosophy' => 'Философски текст',
 		'religion' => 'Религиозен текст',
 		'historiography' => 'Историография',
+		'collection' => 'Сборник',
 		'other' => 'Разни',
 	),
 
@@ -258,6 +260,7 @@ return array(
 		'philosophy' => 'текстът',
 		'religion' => 'текстът',
 		'historiography' => 'текстът',
+		'collection' => 'творбата',
 		'other' => 'творбата',
 	),
 
@@ -301,6 +304,7 @@ return array(
 		'philosophy' => 'текстовете',
 		'religion' => 'текстовете',
 		'historiography' => 'текстовете',
+		'collection' => 'творбите',
 		'other' => 'творбите',
 	),
 
