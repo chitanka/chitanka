@@ -1,6 +1,9 @@
 <ul class="superlist fa-ul">
 {% import 'LibBundle::text.html.twig' as texttools %}
 {% for contrib in contribs %}
-	<li class="title t-{{ contrib.text.type }}" title="{{ contrib.comment }} ({{ contrib.date|humandate }})">{{ texttools.text_with_author(contrib.text, {'download_links': true}) }}</li>
+	<li class="title t-{{ contrib.text.type }}" title="{{ contrib.comment }} ({{ contrib.date|humandate }})">
+		<span class="fa-li fa fa-folder" title="{{ ('text.type.singular.'~contrib.text.type)|trans }}"></span>
+		{{ texttools.text_with_author(contrib.text, {'download_links': true}) }}
+	</li>
 {% endfor %}
 </ul>
