@@ -489,9 +489,11 @@ class Text extends BaseWork
 
 	public function getUserContribs() { return $this->userContribs; }
 	public function setUserContribs($userContribs) { $this->userContribs = $userContribs; }
-	public function addUserContribs(UserTextContrib $userContrib)
-	{
+	public function addUserContrib(UserTextContrib $userContrib) {
 		$this->userContribs[] = $userContrib;
+	}
+	public function removeUserContrib(UserTextContrib $userContrib) {
+		$this->userContribs->removeElement($userContrib);
 	}
 
 	public function addAuthor(Person $author) { $this->authors[] = $author; }

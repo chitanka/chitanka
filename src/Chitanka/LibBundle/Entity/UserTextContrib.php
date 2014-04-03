@@ -5,14 +5,14 @@ namespace Chitanka\LibBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\UserTextContribRepository")
-* @ORM\Table(name="user_text_contrib",
-*	indexes={
-*		@ORM\Index(name="date_idx", columns={"date"})}
-* )
-*/
-class UserTextContrib extends Entity
-{
+ * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\UserTextContribRepository")
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="user_text_contrib",
+ *	indexes={
+ *		@ORM\Index(name="date_idx", columns={"date"})}
+ * )
+ */
+class UserTextContrib extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -34,7 +34,7 @@ class UserTextContrib extends Entity
 	private $username;
 
 	/**
-	 * @var integer $text
+	 * @var Text
 	 * @ORM\ManyToOne(targetEntity="Text", inversedBy="userContribs")
 	 */
 	private $text;
@@ -99,8 +99,16 @@ class UserTextContrib extends Entity
 	public function setHumandate($humandate) { $this->humandate = $humandate; }
 	public function getHumandate() { return $this->humandate; }
 
-	public function __toString()
-	{
+	public function __toString() {
 		return sprintf('%s: %s (%s, %s%%)', $this->getComment(), $this->getUser(), $this->getHumandate(), $this->getPercent());
+	}
+
+	/** @ORM\PrePersist */
+	public function preInsert() {
+		$this->updateSize();
+	}
+
+	protected function updateSize() {
+		$this->setSize($this->getText()->getSize() * $this->getPercent() / 100);
 	}
 }
