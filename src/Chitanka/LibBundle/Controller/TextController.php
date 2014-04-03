@@ -299,11 +299,10 @@ class TextController extends Controller
 		}
 	}
 
-	public function newLabelAction(Request $request, $id)
-	{
+	public function newLabelAction(Request $request, $id) {
 		$this->responseAge = 0;
 
-		if ( ! $this->getUser()->isAuthenticated()) {
+		if (!$this->getUser()->canPutTextLabel()) {
 			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
 		}
 
@@ -343,11 +342,10 @@ class TextController extends Controller
 		return $this->display('new_label');
 	}
 
-	public function deleteLabelAction($id, $labelId)
-	{
+	public function deleteLabelAction($id, $labelId) {
 		$this->responseAge = 0;
 
-		if ( ! $this->getUser()->isAuthenticated()) {
+		if (!$this->getUser()->canPutTextLabel()) {
 			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
 		}
 

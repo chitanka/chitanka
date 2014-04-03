@@ -77,6 +77,7 @@ class User /*extends BaseUser*/ implements UserInterface
 	private $groups = array();
 	static private $groupList = array(
 		'user',
+		'text-label',
 		'workroom-supervisor',
 		'workroom-admin',
 		'admin',
@@ -189,10 +190,13 @@ class User /*extends BaseUser*/ implements UserInterface
 			}
 		}
 	}
-	public function inGroup($group)
-	{
-		foreach ((array) $group as $g) {
-			if (in_array($g, $this->groups)) {
+	public function inGroup($groups, $orGod = true) {
+		$groups = (array) $groups;
+		if ($orGod) {
+			$groups[] = 'god';
+		}
+		foreach ($groups as $group) {
+			if (in_array($group, $this->groups)) {
 				return true;
 			}
 		}
@@ -246,6 +250,10 @@ class User /*extends BaseUser*/ implements UserInterface
 		return array_map(function($group){
 			return 'ROLE_' . strtoupper($group);
 		}, $this->getGroups());
+	}
+
+	public function canPutTextLabel() {
+		return $this->inGroup('text-label');
 	}
 
 	public function eraseCredentials()

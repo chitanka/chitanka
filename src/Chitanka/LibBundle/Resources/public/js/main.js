@@ -1,9 +1,23 @@
-function showNewForm(link)
-{
-	$(link).addClass("loading");
+function showErrorToUser(response) {
+	var message = "Възникнала е грешка: " + response.statusText + " (" + response.status + ")";
+	switch (response.status) {
+		case 401: message = "Нямате необходимите права за това действие."; break;
+	}
+	alert(message);
+}
 
-	$.get(link.href, function(data){
-		$(link).before(data).removeClass("loading").prev("form").find(":input:visible:eq(0)").focus();
+function showNewForm(link) {
+	var $link = $(link).addClass("loading");
+
+	$.get(link.href)
+	.done(function(data) {
+		$link.before(data).prev("form").find(":input:visible:eq(0)").focus();
+	})
+	.fail(function(response) {
+		showErrorToUser(response);
+	})
+	.always(function() {
+		$link.removeClass("loading");
 	});
 }
 
@@ -65,20 +79,26 @@ function submitEditForm(form)
 	});
 }
 
-function submitDeleteForm(form)
-{
+function submitDeleteForm(form) {
 	var $form = $(form);
-	$form.find(":submit").addClass("loading");
+	var $button = $form.find(":submit").addClass("loading");
 	$.ajax({
 		url: form.action,
 		type: "DELETE",
 		data: $form.serialize(),
-	}).done(function(data) {
+	})
+	.done(function(data) {
 		var $parent = $form.closest(".deletable");
 		if ( ! $parent.length) {
 			$parent = $form.parent();
 		}
 		$parent.remove();
+	})
+	.fail(function(response) {
+		showErrorToUser(response);
+	})
+	.always(function() {
+		$button.removeClass("loading");
 	});
 }
 
