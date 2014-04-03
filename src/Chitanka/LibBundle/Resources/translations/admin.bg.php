@@ -12,6 +12,7 @@ return array(
 	'Comment Count' => 'Брой коментари',
 	'Content' => 'Съдържание',
 	'Content File' => 'Основен файл',
+	'Contributions' => 'Приноси',
 	'Copyright' => 'Копирайт?',
 	'Country' => 'Държава',
 	'Cover' => 'Корица',
