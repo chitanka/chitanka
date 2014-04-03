@@ -182,14 +182,6 @@ class User /*extends BaseUser*/ implements UserInterface
 	public function setGroups($groups) { $this->groups = $groups; }
 	public function getGroups() { return $this->groups; }
 	public function addGroup($group) { $this->groups[] = $group; }
-	// TODO remove
-	public function removeGroup($groupToRemove) {
-		foreach ($this->groups as $i => $group) {
-			if ($group->getId() == $groupToRemove->getId()) {
-				unset($this->groups[$i]);
-			}
-		}
-	}
 
 	public function addGroups($groupsToAdd) {
 		$this->groups = array_merge($this->groups, $groupsToAdd);
