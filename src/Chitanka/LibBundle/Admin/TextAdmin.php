@@ -160,7 +160,7 @@ class TextAdmin extends Admin
 					'required' => false,
 				), array(
 					'edit' => 'inline',
-					'inline' => 'list',
+					//'inline' => 'table',
 					'sortable' => 'date',
 				))
 			->end()
