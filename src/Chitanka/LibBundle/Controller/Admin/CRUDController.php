@@ -1,16 +1,13 @@
 <?php
 
-namespace Chitanka\LibBundle\Controller;
+namespace Chitanka\LibBundle\Controller\Admin;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Sonata\AdminBundle\Controller\CRUDController as BaseController;
 use Chitanka\LibBundle\Entity\User;
 
-
-class CRUDController extends BaseController
-{
-	public function configure()
-	{
+class CRUDController extends BaseController {
+	public function configure() {
 		if ( ! $this->getUser()->inGroup('admin')) {
 			throw new HttpException(401);
 		}
@@ -18,9 +15,7 @@ class CRUDController extends BaseController
 		parent::configure();
 	}
 
-
-	public function getUser()
-	{
+	public function getUser() {
 		if ( ! isset($this->_user)) {
 			$this->_user = User::initUser($this->getRepository('User'));
 		}
@@ -28,8 +23,7 @@ class CRUDController extends BaseController
 		return $this->_user;
 	}
 
-	public function getRepository($entityName)
-	{
+	public function getRepository($entityName) {
 		return $this->get('doctrine.orm.entity_manager')->getRepository('LibBundle:'.$entityName);
 	}
 
