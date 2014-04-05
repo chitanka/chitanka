@@ -20,6 +20,7 @@ use Chitanka\LibBundle\Legacy\ZipFile;
 use Chitanka\LibBundle\Legacy\CacheManager;
 use Chitanka\LibBundle\Legacy\DownloadFile;
 use Chitanka\LibBundle\Legacy\Legacy;
+use Chitanka\LibBundle\Service\TextBookmarkService;
 use Chitanka\LibBundle\Service\TextLabelService;
 
 
@@ -398,36 +399,13 @@ class TextController extends Controller {
 		}
 
 		$text = $this->findText($id);
-		$em = $this->getEntityManager();
-		$user = $this->getSavableUser();
-
-		$folder = $this->getBookmarkFolderRepository()->getOrCreateForUser($user, 'favorities');
-		$bookmark = $this->getBookmarkRepository()->findOneBy(array(
-			'folder' => $folder->getId(),
-			'text' => $text->getId(),
-			'user' => $user->getId(),
-		));
-		if ($bookmark) { // an existing bookmark, remove it
-			$em->remove($bookmark);
-			$response = array(
-				'removeClass' => 'active',
-				'setTitle' => 'Добавяне в Избрани',
-			);
-		} else {
-			$bookmark = new Bookmark(compact('folder', 'text', 'user'));
-			$user->addBookmark($bookmark);
-
-			$em->persist($folder);
-			$em->persist($bookmark);
-			$em->persist($user);
-			$response = array(
-				'addClass' => 'active',
-				'setTitle' => 'Премахване от Избрани',
-			);
-		}
-		$em->flush();
+		$service = new TextBookmarkService($this->getEntityManager(), $this->getSavableUser());
+		$bookmark = $service->addBookmark($text);
 
 		if ($request->isXmlHttpRequest()) {
+			$response = $bookmark
+				? array('addClass' => 'active', 'setTitle' => 'Премахване от Избрани')
+				: array('removeClass' => 'active', 'setTitle' => 'Добавяне в Избрани');
 			return $this->displayJson($response);
 		}
 		return $this->redirectToText($text);
