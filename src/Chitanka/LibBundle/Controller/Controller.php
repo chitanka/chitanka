@@ -218,7 +218,7 @@ abstract class Controller extends SymfonyController {
 		return $this->getEntityManager()->merge($this->getUser());
 	}
 
-	protected function setUser($user) {
+	public function setUser($user) {
 		$this->user = $user;
 	}
 
