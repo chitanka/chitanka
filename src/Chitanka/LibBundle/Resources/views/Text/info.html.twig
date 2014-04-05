@@ -38,7 +38,7 @@
 		<li>
 		Форма: <a href="{{ path('texts_by_type', {'type': text.type}) }}">{{ ('text.type.singular.'~text.type) | trans }}</a></li>
 		<li>
-			Етикети:
+			<a href="{{ path('text_label_log', {id: text.id}) }}">Етикети</a>:
 			<ul class="simplelist with-actions">
 			{% for label in text.labels %}
 				<li>

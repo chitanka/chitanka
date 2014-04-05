@@ -326,17 +326,24 @@ class TextController extends Controller {
 
 	public function labelLogAction($id) {
 		$text = $this->findText($id);
-		$log = $this->getRepository('TextLabelLog')->findBy(array('text' => $text));
+		$log = $this->getRepository('TextLabelLog')->getForText($text);
 		return $this->display('label_log', array(
 			'text' => $text,
 			'log' => $log,
 		));
 	}
 
-	public function fullLabelLogAction() {
-		$log = $this->getRepository('TextLabelLog')->findAll();
+	public function fullLabelLogAction(Request $request) {
+		$page = $request->get('page', 1);
+		$limit = 30;
+		$repo = $this->getRepository('TextLabelLog');
 		return $this->display('label_log', array(
-			'log' => $log,
+			'log' => $repo->getAll($page, $limit),
+			'pager' => new Pager(array(
+				'page'  => $page,
+				'limit' => $limit,
+				'total' => $repo->count()
+			)),
 		));
 	}
 

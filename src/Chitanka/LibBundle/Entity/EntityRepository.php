@@ -21,15 +21,15 @@ abstract class EntityRepository extends DoctrineEntityRepository
 		$this->getEntityManager()->flush();
 	}
 
-	public function getCount($where = null)
-	{
-		$qb = $this->getEntityManager()->createQueryBuilder()
-			->select('COUNT(e.id)')
-			->from($this->getEntityName(), 'e');
+	public function count($where = null) {
+		return $this->getCount($where);
+	}
+
+	public function getCount($where = null) {
+		$qb = $this->createQueryBuilder('e')->select('COUNT(e.id)');
 		if ($where) {
 			$qb->andWhere($where);
 		}
-
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 

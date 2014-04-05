@@ -5,7 +5,7 @@ namespace Chitanka\LibBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\TextLabelLogRepository")
  * @ORM\Table(
  *  indexes={
  *    @ORM\Index(name="text_idx", columns={"text_id"}),
