@@ -32,7 +32,7 @@
 					<td>{{ link.text(log_item.text) }}</td>
 				{% endif %}
 				<td>
-					<span class="fa {{ log_item.action == "+" ? "fa-plus-square" : "fa-minus-square" }}"></span>
+					<span class="fa {{ log_item.action == "+" ? "fa-plus-square action-add" : "fa-minus-square action-remove" }}"></span>
 					{{ link.label(log_item.label) }}
 				</td>
 				<td>{{ link.user_with_email(log_item.user) }}</td>
@@ -40,5 +40,7 @@
 		{% endfor %}
 		</tbody>
 	</table>
-	{% include 'LibBundle::pager.html.twig' %}
+	{% if pager is defined %}
+		{% include 'LibBundle::pager.html.twig' %}
+	{% endif %}
 {% endblock %}
