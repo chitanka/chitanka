@@ -76,7 +76,7 @@ class FeedController extends Controller
 
 		$this->view['book'] = $reviews[0];
 
-		return $this->display('book', 'FeaturedBook');
+		return $this->display('FeaturedBook:book');
 	}
 
 
@@ -89,7 +89,7 @@ class FeedController extends Controller
 
 		$this->view = compact('reviews');
 
-		return $this->display('index', 'Review');
+		return $this->display('Review:index');
 	}
 
 

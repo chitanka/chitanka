@@ -6,13 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Chitanka\LibBundle\Legacy\Setup;
 use Chitanka\LibBundle\Entity\User;
 
-abstract class Controller extends SymfonyController
-{
-	/** Main repository for the controller */
-	protected $repository = null;
+abstract class Controller extends SymfonyController {
 
 	/** The unqualified name of the controller: Main for MainController */
 	protected $name = null;
@@ -60,12 +59,17 @@ abstract class Controller extends SymfonyController
 	}
 
 
-	protected function display($action, $controller = null)
+	protected function display($action, array $params = array())
 	{
 		if (strpos($action, '.') === false) {
 			$format = $this->responseFormat;
 		} else {
 			list($action, $format) = explode('.', $action);
+		}
+		if (strpos($action, ':') !== false) {
+			list($controller, $action) = explode(':', $action);
+		} else {
+			$controller = $this->getName();
 		}
 		$this->getRequest()->setFormat('osd', 'application/opensearchdescription+xml');
 		$globals = $this->getDisplayVariables();
@@ -81,10 +85,7 @@ abstract class Controller extends SymfonyController
 		} else if ($format == 'osd') {
 			$this->responseAge = 31536000; // an year
 		}
-		if ($controller === null) {
-			$controller = $this->getName();
-		}
-		$response = $this->render(sprintf('LibBundle:%s:%s.%s.twig', $controller, $action, $format), $this->view + $globals);
+		$response = $this->render("LibBundle:$controller:$action.$format.twig", $this->view + $params + $globals);
 		if ($format == 'opds') {
 			$normalizedContent = $response->getContent();
 			$normalizedContent = strtr($normalizedContent, array(
@@ -200,8 +201,7 @@ abstract class Controller extends SymfonyController
 
 	private $user;
 	/** @return User */
-	public function getUser()
-	{
+	public function getUser() {
 		// TODO remove
 		if ( ! isset($this->user)) {
 			$this->user = User::initUser($this->getUserRepository());
@@ -214,68 +214,76 @@ abstract class Controller extends SymfonyController
 		//return $this->get('security.context')->getToken()->getUser();
 	}
 
-	public function setUser($user)
-	{
-		$this->_user = $user;
+	protected function getSavableUser() {
+		return $this->getEntityManager()->merge($this->getUser());
+	}
+
+	protected function setUser($user) {
+		$this->user = $user;
 	}
 
 
 
-    /**
-     * Redirects to another route.
-     *
-     * It expects a route path parameter.
-     * By default, the response status code is 301.
-     *
-     * If the route empty, the status code will be 410.
-     * If the permanent path parameter is set, the status code will be 302.
-     * (copied from Symfony\Bundle\FrameworkBundle\Controller\RedirectController)
-     *
-     * @param string  $route     The route pattern to redirect to
-     * @param Boolean $permanent Whether the redirect is permanent or not
-     *
-     * @return Response A Response instance
-     */
-    public function redirect($route, $permanent = false)
-    {
-        if (!$route) {
-            return new Response(null, 410);
-        }
+	/**
+	 * Redirects to another route.
+	 *
+	 * It expects a route path parameter.
+	 * By default, the response status code is 301.
+	 *
+	 * If the route empty, the status code will be 410.
+	 * If the permanent path parameter is set, the status code will be 302.
+	 * (copied from Symfony\Bundle\FrameworkBundle\Controller\RedirectController)
+	 *
+	 * @param string  $route     The route pattern to redirect to
+	 * @param Boolean $permanent Whether the redirect is permanent or not
+	 *
+	 * @return Response A Response instance
+	 */
+	public function redirect($route, $permanent = false) {
+		if (!$route) {
+			return new Response(null, 410);
+		}
 
-        $attributes = $this->container->get('request')->attributes->all();
-        unset($attributes['_route'], $attributes['route'], $attributes['permanent'] );
+		$attributes = $this->container->get('request')->attributes->all();
+		unset($attributes['_route'], $attributes['route'], $attributes['permanent'] );
 
-        return new RedirectResponse($this->container->get('router')->generate($route, $attributes), $permanent ? 301 : 302);
-    }
+		return new RedirectResponse($this->container->get('router')->generate($route, $attributes), $permanent ? 301 : 302);
+	}
 
 
-    /**
-     * Redirects to a URL.
-     *
-     * It expects a url path parameter.
-     * By default, the response status code is 301.
-     *
-     * If the url is empty, the status code will be 410.
-     * If the permanent path parameter is set, the status code will be 302.
-     *
-     * @param string  $url       The url to redirect to
-     * @param Boolean $permanent Whether the redirect is permanent or not
-     *
-     * @return Response A Response instance
-     */
-    public function urlRedirect($url, $permanent = false)
-    {
-        if (!$url) {
-            return new Response(null, 410);
-        }
+	/**
+	 * Redirects to a URL.
+	 *
+	 * It expects a url path parameter.
+	 * By default, the response status code is 301.
+	 *
+	 * If the url is empty, the status code will be 410.
+	 * If the permanent path parameter is set, the status code will be 302.
+	 *
+	 * @param string  $url       The url to redirect to
+	 * @param Boolean $permanent Whether the redirect is permanent or not
+	 *
+	 * @return Response A Response instance
+	 */
+	public function urlRedirect($url, $permanent = false) {
+		if (!$url) {
+			return new Response(null, 410);
+		}
 
-        return new RedirectResponse($url, $permanent ? 301 : 302);
-    }
+		return new RedirectResponse($url, $permanent ? 301 : 302);
+	}
+
+	protected function notAllowed($message = null) {
+		throw new HttpException(401, $message);
+	}
+
+	protected function notFound($message = null) {
+		throw new NotFoundHttpException($message);
+	}
 
 
 	// TODO refactor: move to separate class
-	protected function getMirrorServer()
-	{
+	protected function getMirrorServer() {
 		$mirrorSites = $this->container->getParameter('mirror_sites');
 
 		if ( empty($mirrorSites) ) {
@@ -292,6 +300,17 @@ abstract class Controller extends SymfonyController
 		}
 
 		return false; // main site
+	}
+
+	protected function enableCache($responseLifetime) {
+		if (is_string($responseLifetime)) {
+			$responseLifetime = strtotime($responseLifetime) - strtotime('now');
+		}
+		$this->responseAge = $responseLifetime;
+	}
+
+	protected function disableCache() {
+		$this->responseAge = 0;
 	}
 
 	protected function getWebRoot() {

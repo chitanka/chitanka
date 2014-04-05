@@ -54,7 +54,7 @@ class SearchController extends Controller
 	public function personsAction(Request $request, $_format)
 	{
 		if ($_format == 'osd') {
-			return $this->display("search.$_format", 'Person');
+			return $this->display("Person:search.$_format");
 		}
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = array();
@@ -90,7 +90,7 @@ class SearchController extends Controller
 			'found'   => $found,
 		);
 
-		return $this->display("search.$_format", 'Person');
+		return $this->display("Person:search.$_format");
 	}
 
 	public function authorsAction(Request $request, $_format)
@@ -112,7 +112,7 @@ class SearchController extends Controller
 
 			return $this->displayJson(array($query, $items, $descs, $urls));
 		}
-		return $this->display("search.$_format", 'Author');
+		return $this->display("Author:search.$_format");
 	}
 
 	public function translatorsAction(Request $request, $_format)
@@ -134,13 +134,13 @@ class SearchController extends Controller
 
 			return $this->displayJson(array($query, $items, $descs, $urls));
 		}
-		return $this->display("search.$_format", 'Translator');
+		return $this->display("Translator:search.$_format");
 	}
 
 	public function textsAction(Request $request, $_format)
 	{
 		if ($_format == 'osd') {
-			return $this->display("search.$_format", 'Text');
+			return $this->display("Text:search.$_format");
 		}
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = array();
@@ -176,14 +176,14 @@ class SearchController extends Controller
 			'found' => $found,
 		);
 
-		return $this->display("search.$_format", 'Text');
+		return $this->display("Text:search.$_format");
 	}
 
 
 	public function booksAction(Request $request, $_format)
 	{
 		if ($_format == 'osd') {
-			return $this->display("search.$_format", 'Book');
+			return $this->display("Book:search.$_format");
 		}
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = array();
@@ -219,14 +219,14 @@ class SearchController extends Controller
 			'found' => $found,
 		);
 
-		return $this->display("search.$_format", 'Book');
+		return $this->display("Book:search.$_format");
 	}
 
 
 	public function seriesAction(Request $request, $_format)
 	{
 		if ($_format == 'osd') {
-			return $this->display("search.$_format", 'Series');
+			return $this->display("Series:search.$_format");
 		}
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = array();
@@ -262,14 +262,14 @@ class SearchController extends Controller
 			'found'  => $found,
 		);
 
-		return $this->display("search.$_format", 'Series');
+		return $this->display("Series:search.$_format");
 	}
 
 
 	public function sequencesAction(Request $request, $_format)
 	{
 		if ($_format == 'osd') {
-			return $this->display("search.$_format", 'Sequence');
+			return $this->display("Sequence:search.$_format");
 		}
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = array();
@@ -305,7 +305,7 @@ class SearchController extends Controller
 			'found'     => $found,
 		);
 
-		return $this->display("search.$_format", 'Sequence');
+		return $this->display("Sequence:search.$_format");
 	}
 
 

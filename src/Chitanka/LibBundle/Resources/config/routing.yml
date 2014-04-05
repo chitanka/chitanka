@@ -278,6 +278,11 @@ texts_by_label_index:
     defaults:       { _controller: LibBundle:Text:listByLabelIndex, _format: html }
     requirements:   { _method: get, _format: html|opds }
 
+texts_label_log:
+    pattern:        /texts/label-log
+    defaults:       { _controller: LibBundle:Text:fullLabelLog }
+    requirements:   { _method: get }
+
 text_label_new:
     pattern:        /text/{id}/label/new
     defaults:       { _controller: LibBundle:Text:newLabel }
@@ -285,6 +290,11 @@ text_label_delete:
     pattern:        /text/{id}/label/{labelId}
     defaults:       { _controller: LibBundle:Text:deleteLabel }
     requirements:   { _method: delete }
+
+text_label_log:
+    pattern:        /text/{id}/label-log
+    defaults:       { _controller: LibBundle:Text:labelLog }
+    requirements:   { _method: get }
 
 text_random:
     pattern:        /text/random

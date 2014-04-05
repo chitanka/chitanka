@@ -1,0 +1,43 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% import 'LibBundle::link.html.twig' as link %}
+{% set title = "Дневник на етикетите" %}
+{% if text is defined %}
+	{% set subtitle %}
+	{% spaceless %}
+		{% import 'LibBundle::text.html.twig' as texttools %}
+		за „{{ link.text(text) }}“
+		{{ texttools.author_list(text.authors) }}
+	{% endspaceless %}
+	{% endset %}
+{% endif %}
+
+{% block content %}
+	<table class="table table-condensed table-hover">
+		<thead>
+			<tr>
+				<th>Дата</th>
+				{% if text is not defined %}
+					<th>Произведение</th>
+				{% endif %}
+				<th>Етикет</th>
+				<th>Потребител</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for log_item in log %}
+			<tr>
+				<td>{{ log_item.date|humandate }}</td>
+				{% if text is not defined %}
+					<td>{{ link.text(log_item.text) }}</td>
+				{% endif %}
+				<td>
+					<span class="fa {{ log_item.action == "+" ? "fa-plus-square" : "fa-minus-square" }}"></span>
+					{{ link.label(log_item.label) }}
+				</td>
+				<td>{{ link.user_with_email(log_item.user) }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

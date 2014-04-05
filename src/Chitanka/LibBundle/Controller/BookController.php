@@ -132,7 +132,6 @@ class BookController extends Controller
 			case 'djvu':
 			case 'pdf':
 				return $this->urlRedirect($this->processDownload($book, $_format));
-				break;
 			case 'txt':
 				Setup::doSetup($this->container);
 				return $this->displayText($book->getContentAsTxt(), array('Content-Type' => 'text/plain'));
@@ -170,36 +169,27 @@ class BookController extends Controller
 		return $this->urlRedirect($this->generateUrl('book_show', array('id' => $id)));
 	}
 
-	protected function processDownload(Book $book, $format)
-	{
+	protected function processDownload(Book $book, $format) {
 		$dlSite = $this->getMirrorServer();
 		if ( $dlSite !== false ) {
-			return sprintf('%s/book/%d.%s', $dlSite, $book->getId(), $format);
+			return "$dlSite/book/{$book->getId()}.$format";
 		}
 
-		$file = null;
 		$dlFile = new DownloadFile;
 		switch ($format) {
 			case 'sfb.zip':
 			default:
-				$file = $dlFile->getSfbForBook($book);
-				break;
+				return $this->getWebRoot() . $dlFile->getSfbForBook($book);
 			case 'txt.zip':
-				$file = $dlFile->getTxtForBook($book);
-				break;
+				return $this->getWebRoot() . $dlFile->getTxtForBook($book);
 			case 'fb2.zip':
-				$file = $dlFile->getFb2ForBook($book);
-				break;
+				return $this->getWebRoot() . $dlFile->getFb2ForBook($book);
 			case 'epub':
-				$file = $dlFile->getEpubForBook($book);
-				break;
+				return $this->getWebRoot() . $dlFile->getEpubForBook($book);
 			case 'djvu':
 			case 'pdf':
-				$file = $dlFile->getStaticFileForBook($book, $format);
-				break;
+				return $this->getWebRoot() . $dlFile->getStaticFileForBook($book, $format);
 		}
-
-		return "/$file";
 	}
 
 }

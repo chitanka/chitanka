@@ -21,8 +21,7 @@ function showNewForm(link) {
 	});
 }
 
-function showEditForm(link)
-{
+function showEditForm(link) {
 	$(link).addClass("loading");
 
 	var match = link.href.match(/edit\/(.+)/);
@@ -40,12 +39,10 @@ function showEditForm(link)
 }
 
 
-function submitForm(form)
-{
+function submitForm(form) {
 	var $form = $(form);
-	var $button = $(":submit", $form).addClass("loading");
-	$.post(form.action, $form.serialize(), function(response){
-		$button.removeClass("loading").blur();
+	var $button = $form.find(":submit").addClass("loading");
+	$.post(form.action, $form.serialize(), function(response) {
 		if (typeof response == "string") {
 			$form.replaceWith(response);
 		} else {
@@ -58,24 +55,40 @@ function submitForm(form)
 				$button.attr("title", response.setTitle);
 			}
 		}
-	}, "json");
-}
-
-function submitNewForm(form)
-{
-	var $form = $(form);
-	$(":submit", $form).addClass("loading");
-	$.post(form.action, $form.serialize(), function(data){
-		$form.prev().append(data).end().remove();
+	}, "json")
+	.fail(function(response) {
+		showErrorToUser(response);
+	})
+	.always(function() {
+		$button.removeClass("loading").blur();
 	});
 }
 
-function submitEditForm(form)
-{
+function submitNewForm(form) {
 	var $form = $(form);
-	$(":submit", $form).addClass("loading");
-	$.post(form.action, $form.serialize(), function(data){
+	var $button = $form.find(":submit").addClass("loading");
+	$.post(form.action, $form.serialize(), function(data) {
+		$form.prev().append(data).end().remove();
+	})
+	.fail(function(response) {
+		showErrorToUser(response);
+	})
+	.always(function() {
+		$button.removeClass("loading");
+	});
+}
+
+function submitEditForm(form) {
+	var $form = $(form);
+	var $button = $form.find(":submit").addClass("loading");
+	$.post(form.action, $form.serialize(), function(data) {
 		$form.prev().html(data).show().end().remove();
+	})
+	.fail(function(response) {
+		showErrorToUser(response);
+	})
+	.always(function() {
+		$button.removeClass("loading");
 	});
 }
 

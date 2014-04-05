@@ -2,8 +2,6 @@
 
 namespace Chitanka\LibBundle\Controller;
 
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\NoResultException;
@@ -14,7 +12,6 @@ use Chitanka\LibBundle\Util\String;
 use Chitanka\LibBundle\Entity\Text;
 use Chitanka\LibBundle\Entity\TextRating;
 use Chitanka\LibBundle\Entity\UserTextRead;
-use Chitanka\LibBundle\Entity\TextLabel;
 use Chitanka\LibBundle\Entity\Bookmark;
 use Chitanka\LibBundle\Form\Type\TextRatingType;
 use Chitanka\LibBundle\Form\Type\TextLabelType;
@@ -23,15 +20,14 @@ use Chitanka\LibBundle\Legacy\ZipFile;
 use Chitanka\LibBundle\Legacy\CacheManager;
 use Chitanka\LibBundle\Legacy\DownloadFile;
 use Chitanka\LibBundle\Legacy\Legacy;
+use Chitanka\LibBundle\Service\TextLabelService;
 
 
-class TextController extends Controller
-{
-	protected $repository = 'Text';
+class TextController extends Controller {
+
 	protected $responseAge = 86400; // 24 hours
 
-	public function indexAction($_format)
-	{
+	public function indexAction($_format) {
 		if ($_format == 'html') {
 			$this->view = array(
 				'labels' => $this->getLabelRepository()->getAllAsTree(),
@@ -42,27 +38,23 @@ class TextController extends Controller
 		return $this->display("index.$_format");
 	}
 
-	public function listByTypeIndexAction($_format)
-	{
+	public function listByTypeIndexAction($_format) {
 		$this->view['types'] = $this->getTextRepository()->getTypes();
 
 		return $this->display("list_by_type_index.$_format");
 	}
 
-	public function listByLabelIndexAction($_format)
-	{
+	public function listByLabelIndexAction($_format) {
 		$this->view['labels'] = $this->getLabelRepository()->getAll();
 
 		return $this->display("list_by_label_index.$_format");
 	}
 
-	public function listByAlphaIndexAction($_format)
-	{
+	public function listByAlphaIndexAction($_format) {
 		return $this->display("list_by_alpha_index.$_format");
 	}
 
-	public function listByTypeAction($type, $page, $_format)
-	{
+	public function listByTypeAction($type, $page, $_format) {
 		$textRepo = $this->getTextRepository();
 		$limit = 30;
 
@@ -81,15 +73,14 @@ class TextController extends Controller
 	}
 
 
-	public function listByLabelAction($slug, $page, $_format)
-	{
+	public function listByLabelAction($slug, $page, $_format) {
 		$textRepo = $this->getTextRepository();
 		$limit = 30;
 
 		$slug = String::slugify($slug);
 		$label = $this->getLabelRepository()->findBySlug($slug);
 		if ($label === null) {
-			throw new NotFoundHttpException("Няма етикет с код $slug.");
+			return $this->notFound("Няма етикет с код $slug.");
 		}
 		$labels = $label->getDescendantIdsAndSelf();
 
@@ -110,8 +101,7 @@ class TextController extends Controller
 	}
 
 
-	public function listByAlphaAction($letter, $page, $_format)
-	{
+	public function listByAlphaAction($letter, $page, $_format) {
 		$textRepo = $this->getTextRepository();
 		$limit = 30;
 
@@ -131,13 +121,12 @@ class TextController extends Controller
 	}
 
 
-	public function showAction($id, $_format)
-	{
+	public function showAction($id, $_format) {
 		list($id) = explode('-', $id); // remove optional slug
 		try {
 			$text = $this->getTextRepository()->get($id);
 		} catch (NoResultException $e) {
-			throw new NotFoundHttpException("Няма текст с номер $id.");
+			return $this->notFound("Няма текст с номер $id.");
 		}
 
 		switch ($_format) {
@@ -153,8 +142,6 @@ class TextController extends Controller
 				return $this->displayText($text->getFbi(), array('Content-Type' => 'text/plain'));
 			case 'data':
 				return $this->displayText($text->getDataAsPlain(), array('Content-Type' => 'text/plain'));
-// 			case 'clue':
-// 				return $this->displayText($text->getClue());
 			case 'txt.zip':
 				return $this->urlRedirect($this->getTxtZipFile(explode(',', $id), $_format));
 			case 'fb2.zip':
@@ -170,13 +157,11 @@ class TextController extends Controller
 		}
 	}
 
-	public function showPartAction($id, $part)
-	{
+	public function showPartAction($id, $part) {
 		return $this->showHtml($this->getTextRepository()->get($id), $part);
 	}
 
-	public function showHtml(Text $text, $part)
-	{
+	public function showHtml(Text $text, $part) {
 		$nextHeader = $text->getNextHeaderByNr($part);
 		$nextPart = $nextHeader ? $nextHeader->getNr() : 0;
 		$this->view = array(
@@ -201,8 +186,7 @@ class TextController extends Controller
 	/**
 	* TODO
 	*/
-	public function showMultiAction(Request $request, $id, $_format)
-	{
+	public function showMultiAction(Request $request, $id, $_format) {
 		$mirror = $this->tryMirrorRedirect(explode(',', $id), $_format);
 		if ($mirror) {
 			$filename = $request->get('filename');
@@ -226,17 +210,15 @@ class TextController extends Controller
 		throw new \Exception("Неизвестен формат: $_format");
 	}
 
-	public function randomAction()
-	{
+	public function randomAction() {
 		$id = $this->getTextRepository()->getRandomId();
 
 		return $this->urlRedirect($this->generateUrl('text_show', array('id' => $id)));
 	}
 
 
-	public function commentsAction($id, $_format)
-	{
-		$this->responseAge = 0;
+	public function commentsAction($id, $_format) {
+		$this->disableCache();
 
 		$_REQUEST['id'] = $id;
 
@@ -244,7 +226,7 @@ class TextController extends Controller
 	}
 
 	public function similarAction($id) {
-		$text = $this->getTextRepository()->find($id);
+		$text = $this->findText($id);
 		$alikes = $text->getAlikes();
 		$this->view = array(
 			'text' => $text,
@@ -253,9 +235,8 @@ class TextController extends Controller
 		return $this->display('similar');
 	}
 
-	public function ratingAction(Request $request, $id)
-	{
-		$text = $this->getTextRepository()->find($id);
+	public function ratingAction(Request $request, $id) {
+		$text = $this->findText($id);
 
 		$em = $this->getEntityManager();
 		$user = $em->merge($this->getUser());
@@ -290,29 +271,22 @@ class TextController extends Controller
 			'rating' => $rating,
 		);
 
-		if ($request->isXmlHttpRequest() || $request->getMethod() == 'GET') {
-			$this->responseAge = 0;
-
+		if ($request->isXmlHttpRequest() || $request->isMethod('GET')) {
+			$this->disableCache();
 			return $this->display('rating');
-		} else {
-			return $this->redirectToText($text);
 		}
+		return $this->redirectToText($text);
 	}
 
 	public function newLabelAction(Request $request, $id) {
-		$this->responseAge = 0;
+		$this->disableCache();
 
 		if (!$this->getUser()->canPutTextLabel()) {
-			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
+			return $this->notAllowed();
 		}
-
-		$text = $this->getTextRepository()->find($id);
-		if ($text === null) {
-			throw new NotFoundHttpException("Няма текст с номер $id.");
-		}
-
-		$textLabel = new TextLabel;
-		$textLabel->setText($text);
+		$text = $this->findText($id);
+		$service = new TextLabelService($this->getEntityManager(), $this->getSavableUser());
+		$textLabel = $service->newTextLabel($text);
 		$form = $this->createForm(new TextLabelType, $textLabel);
 
 		$this->view = array(
@@ -321,54 +295,60 @@ class TextController extends Controller
 			'form' => $form->createView(),
 		);
 
-		if ($request->getMethod() == 'POST') {
-			$form->bind($request);
-			if ($form->isValid()) {
-				// TODO bind overwrites the Text object with an id
-				$textLabel->setText($text);
-				$text->addLabel($textLabel->getLabel());
-				$em = $this->getEntityManager();
-				$em->persist($text);
-				$em->flush();
-				if ($request->isXmlHttpRequest()) {
-					$this->view['label'] = $textLabel->getLabel();
-					return $this->display('label_view');
-				} else {
-					return $this->redirectToText($text);
-				}
+		if ($request->isMethod('POST') && $form->submit($request)->isValid()) {
+			$service->addTextLabel($textLabel, $text);
+			if ($request->isXmlHttpRequest()) {
+				$this->view['label'] = $textLabel->getLabel();
+				return $this->display('label_view');
 			}
+			return $this->redirectToText($text);
 		}
 
 		return $this->display('new_label');
 	}
 
-	public function deleteLabelAction($id, $labelId) {
-		$this->responseAge = 0;
+	public function deleteLabelAction(Request $request, $id, $labelId) {
+		$this->disableCache();
 
 		if (!$this->getUser()->canPutTextLabel()) {
-			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
+			return $this->notAllowed();
 		}
+		$text = $this->findText($id);
+		$label = $this->findLabel($labelId);
+		$service = new TextLabelService($this->getEntityManager(), $this->getSavableUser());
+		$service->removeTextLabel($text, $label);
 
-		$this->getTextRepository()->deleteTextLabel($id, $labelId)->flush();
-
-		if ($this->get('request')->isXmlHttpRequest()) {
+		if ($request->isXmlHttpRequest()) {
 			return $this->displayText(1);
-		} else {
-			return $this->urlRedirect($this->generateUrl('text_show', array('id' => $id)));
 		}
+		return $this->redirectToText($text);
 	}
 
-	public function ratingsAction($id)
-	{
+	public function labelLogAction($id) {
+		$text = $this->findText($id);
+		$log = $this->getRepository('TextLabelLog')->findBy(array('text' => $text));
+		return $this->display('label_log', array(
+			'text' => $text,
+			'log' => $log,
+		));
+	}
+
+	public function fullLabelLogAction() {
+		$log = $this->getRepository('TextLabelLog')->findAll();
+		return $this->display('label_log', array(
+			'log' => $log,
+		));
+	}
+
+	public function ratingsAction($id) {
 		$_REQUEST['id'] = $id;
 
 		return $this->legacyPage('Textrating');
 	}
 
 
-	public function markReadFormAction($id)
-	{
-		$this->responseAge = 0;
+	public function markReadFormAction($id) {
+		$this->disableCache();
 
 		if ($this->getUser()->isAuthenticated()) {
 			$tr = $this->getUserTextReadRepository()->findOneBy(array('text' => $id, 'user' => $this->getUser()->getId()));
@@ -380,50 +360,39 @@ class TextController extends Controller
 		return $this->render('LibBundle:Text:mark_read_form.html.twig', array('id' => $id));
 	}
 
-	public function markReadAction($id)
-	{
-		$this->responseAge = 0;
+	public function markReadAction(Request $request, $id) {
+		$this->disableCache();
 
 		if ( ! $this->getUser()->isAuthenticated()) {
-			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
+			return $this->notAllowed();
 		}
 
-		$text = $this->getTextRepository()->find($id);
-		if ($text === null) {
-			throw new NotFoundHttpException("Няма текст с номер $id.");
-		}
-
-		$em = $this->getEntityManager();
+		$text = $this->findText($id);
 		$textReader = new UserTextRead;
-		$textReader->setUser($em->merge($this->getUser()));
+		$textReader->setUser($this->getSavableUser());
 		$textReader->setText($text);
 		//$textReader->setCurrentDate();
+		$em = $this->getEntityManager();
 		$em->persist($textReader);
 		$em->flush();
 
-		if ($this->get('request')->isXmlHttpRequest()) {
+		if ($request->isXmlHttpRequest()) {
 			return $this->displayJson('Произведението е отбелязано като прочетено.');
-		} else {
-			return $this->redirectToText($text);
 		}
+		return $this->redirectToText($text);
 	}
 
 
-	public function addBookmarkAction($id)
-	{
-		$this->responseAge = 0;
+	public function addBookmarkAction(Request $request, $id) {
+		$this->disableCache();
 
 		if ( ! $this->getUser()->isAuthenticated()) {
-			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
+			return $this->notAllowed();
 		}
 
-		$text = $this->getTextRepository()->find($id);
-		if ($text === null) {
-			throw new NotFoundHttpException("Няма текст с номер $id.");
-		}
-
+		$text = $this->findText($id);
 		$em = $this->getEntityManager();
-		$user = $em->merge($this->getUser());
+		$user = $this->getSavableUser();
 
 		$folder = $this->getBookmarkFolderRepository()->getOrCreateForUser($user, 'favorities');
 		$bookmark = $this->getBookmarkRepository()->findOneBy(array(
@@ -451,17 +420,15 @@ class TextController extends Controller
 		}
 		$em->flush();
 
-		if ($this->get('request')->isXmlHttpRequest()) {
+		if ($request->isXmlHttpRequest()) {
 			return $this->displayJson($response);
-		} else {
-			return $this->redirectToText($text);
 		}
+		return $this->redirectToText($text);
 	}
 
 
 
-	public function suggestAction($id, $object)
-	{
+	public function suggestAction($id, $object) {
 		$_REQUEST['id'] = $id;
 		$_REQUEST['object'] = $object;
 
@@ -471,18 +438,30 @@ class TextController extends Controller
 
 
 
-	public function redirectToText($text)
-	{
-		return $this->urlRedirect($this->generateUrl('text_show', array('id' => $text->getId())));
+	protected function redirectToText($text) {
+		$id = $text instanceof Text ? $text->getId() : $text;
+		return $this->urlRedirect($this->generateUrl('text_show', array('id' => $id)));
+	}
+
+	protected function findText($textId, $bailIfNotFound = true) {
+		$text = $this->getTextRepository()->find($textId);
+		if ($bailIfNotFound && $text === null) {
+			return $this->notFound("Няма текст с номер $textId.");
+		}
+		return $text;
+	}
+
+	protected function findLabel($labelId, $bailIfNotFound = true) {
+		$label = $this->getLabelRepository()->find($labelId);
+		if ($bailIfNotFound && $label === null) {
+			return $this->notFound("Няма етикет с номер $labelId.");
+		}
+		return $label;
 	}
 
 
 
-
-
-
-	protected function _initZipData($textId, $format)
-	{
+	protected function _initZipData($textId, $format) {
 		if ($redirect = $this->tryMirrorRedirect($textId, $format)) {
 			return $redirect;
 		}
@@ -501,8 +480,7 @@ class TextController extends Controller
 	}
 
 
-	protected function tryMirrorRedirect($ids, $format = null)
-	{
+	protected function tryMirrorRedirect($ids, $format = null) {
 		$dlSite = $this->getMirrorServer();
 
 		if ($dlSite !== false) {
@@ -530,8 +508,7 @@ class TextController extends Controller
 	}
 
 
-	protected function getTxtZipFile($id, $format)
-	{
+	protected function getTxtZipFile($id, $format) {
 		if ($redirect = $this->_initZipData($id, $format)) {
 			return $redirect;
 		}
@@ -542,8 +519,7 @@ class TextController extends Controller
 	}
 
 
-	protected function getSfbZipFile($id, $format)
-	{
+	protected function getSfbZipFile($id, $format) {
 		if ($redirect = $this->_initZipData($id, $format)) {
 			return $redirect;
 		}
@@ -554,8 +530,7 @@ class TextController extends Controller
 	}
 
 
-	protected function getFb2ZipFile($id, $format)
-	{
+	protected function getFb2ZipFile($id, $format) {
 		if ($redirect = $this->_initZipData($id, $format)) {
 			return $redirect;
 		}
@@ -566,8 +541,7 @@ class TextController extends Controller
 	}
 
 
-	protected function getEpubFile($textId, $format)
-	{
+	protected function getEpubFile($textId, $format) {
 		if ($redirect = $this->tryMirrorRedirect($textId, $format)) {
 			return $redirect;
 		}
@@ -587,26 +561,14 @@ class TextController extends Controller
 	}
 
 
-	protected function sendCluePlainContent() {
-		$this->sendCommonHeaders();
-		$clue = $this->makeAnnotation();
-		$this->addTemplates();
-		$clue = Legacy::expandTemplates($clue);
-		$this->encprint( $clue );
-		$this->outputDone = true;
-	}
-
-
 	/** Sfb */
-	protected function createSfbDlFile()
-	{
+	protected function createSfbDlFile() {
 		$key = '';
 		$key .= '-sfb';
 		return $this->createDlFile($this->textIds, 'sfb', $key);
 	}
 
-	protected function addSfbToDlFileFromCache($textId)
-	{
+	protected function addSfbToDlFileFromCache($textId) {
 		$fEntry = unserialize( CacheManager::getDlCache($textId), '.sfb' );
 		$this->zf->addFileEntry($fEntry);
 		if ( $this->withFbi ) {
@@ -617,8 +579,7 @@ class TextController extends Controller
 		return true;
 	}
 
-	protected function addSfbToDlFileFromNew($textId)
-	{
+	protected function addSfbToDlFileFromNew($textId) {
 		$mainFileData = $this->getMainFileData($textId);
 		if ( ! $mainFileData ) {
 			return false;
@@ -631,29 +592,25 @@ class TextController extends Controller
 		return true;
 	}
 
-	protected function addSfbToDlFileEnd($textId)
-	{
+	protected function addSfbToDlFileEnd($textId) {
 		$this->addBinaryFileEntries($textId, $this->filename);
 		return true;
 	}
 
 
 	/** Fb2 */
-	protected function createFb2DlFile()
-	{
+	protected function createFb2DlFile() {
 		return $this->createDlFile($this->textIds, 'fb2');
 	}
 
-	protected function addFb2ToDlFileFromCache($textId)
-	{
+	protected function addFb2ToDlFileFromCache($textId) {
 		$fEntry = unserialize( CacheManager::getDlCache($textId, '.fb2') );
 		$this->zf->addFileEntry($fEntry);
 		$this->filename = $this->rmFEntrySuffix($fEntry['name']);
 		return true;
 	}
 
-	protected function addFb2ToDlFileFromNew($textId)
-	{
+	protected function addFb2ToDlFileFromNew($textId) {
 		$work = $this->getTextRepository()->find($textId);
 		if ( ! $work ) {
 			return false;
@@ -665,21 +622,18 @@ class TextController extends Controller
 
 
 	/** Txt */
-	protected function createTxtDlFile()
-	{
+	protected function createTxtDlFile() {
 		return $this->createDlFile($this->textIds, 'txt');
 	}
 
-	protected function addTxtToDlFileFromCache($textId)
-	{
+	protected function addTxtToDlFileFromCache($textId) {
 		$fEntry = unserialize( CacheManager::getDlCache($textId, '.txt') );
 		$this->zf->addFileEntry($fEntry);
 		$this->filename = $this->rmFEntrySuffix($fEntry['name']);
 		return true;
 	}
 
-	protected function addTxtToDlFileFromNew($textId)
-	{
+	protected function addTxtToDlFileFromNew($textId) {
 		$work = $this->getTextRepository()->find($textId);
 		if ( ! $work ) {
 			return false;
@@ -691,8 +645,7 @@ class TextController extends Controller
 
 
 	/** Common */
-	protected function createDlFile($textIds, $format, $dlkey = null)
-	{
+	protected function createDlFile($textIds, $format, $dlkey = null) {
 		$textIds = $this->normalizeTextIds($textIds);
 		if ($dlkey === null) {
 			$dlkey = ".$format";
@@ -743,8 +696,7 @@ class TextController extends Controller
 	}
 
 
-	protected function normalizeTextIds($textIds)
-	{
+	protected function normalizeTextIds($textIds) {
 		foreach ($textIds as $key => $textId) {
 			if ( ! $textId || ! is_numeric($textId) ) {
 				unset($textIds[$key]);
@@ -798,8 +750,7 @@ class TextController extends Controller
 	}
 
 
-	protected function getMainFileData($textId)
-	{
+	protected function getMainFileData($textId) {
 		$work = $this->getTextRepository()->find($textId);
 		return array(
 			$this->getFileName($work),
@@ -810,16 +761,14 @@ class TextController extends Controller
 	}
 
 
-	public function getFileName($work = null)
-	{
+	public function getFileName($work = null) {
 		if ( is_null($work) ) $work = $this->work;
 
 		return $this->_getUniqueFileName($work->getNameForFile());
 	}
 
 
-	private function _getUniqueFileName($filename)
-	{
+	private function _getUniqueFileName($filename) {
 		if ( isset( $this->_fnameCount[$filename] ) ) {
 			$this->_fnameCount[$filename]++;
 			$filename .= $this->_fnameCount[$filename];
@@ -830,8 +779,7 @@ class TextController extends Controller
 	}
 
 
-	public function getFileDataPrefix($work, $textId)
-	{
+	public function getFileDataPrefix($work, $textId) {
 		$prefix = $this->getTextFileStart()
 			. "|\t" . $work->getAuthorNames() . "\n"
 			. $work->getTitleAsSfb() . "\n\n\n";
@@ -843,8 +791,7 @@ class TextController extends Controller
 	}
 
 
-	public function getFileDataSuffix($work, $textId)
-	{
+	public function getFileDataSuffix($work, $textId) {
 		$suffix = "\n"
 			. 'I>'
 			. $work->getFullExtraInfo()
@@ -854,8 +801,7 @@ class TextController extends Controller
 	}
 
 
-	static public function getTextFileStart()
-	{
+	static public function getTextFileStart() {
 		return "\xEF\xBB\xBF" . // Byte order mark for some windows software
 			"\t[Kodirane UTF-8]\n\n";
 	}
