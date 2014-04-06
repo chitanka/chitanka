@@ -64,3 +64,7 @@ parameters:
     wiki_url: http://wiki.chitanka.info/$1
 
     mirror_sites: ~
+
+    global_info_message: ~
+    analytics_snippet: ~
+    dev.web_profiler_toolbar: false

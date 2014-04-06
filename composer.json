@@ -8,23 +8,21 @@
 	},
 	"require": {
 		"php": ">=5.3.3",
-		"symfony/symfony": "2.3.*",
-		"doctrine/orm": ">=2.2.3,<2.4-dev",
-		"doctrine/doctrine-bundle": "1.2.*",
-		"twig/extensions": "1.0.*",
-		"symfony/assetic-bundle": "2.3.*",
-		"symfony/swiftmailer-bundle": "2.3.*",
-		"symfony/monolog-bundle": "2.3.*",
-		"sensio/distribution-bundle": "2.3.*",
-		"sensio/framework-extra-bundle": "2.3.*",
-		"sensio/generator-bundle": "2.3.*",
-		"sensio/buzz-bundle": "dev-master",
+		"symfony/symfony": "2.5.x-dev",
+		"doctrine/orm": "~2.2,>=2.2.3",
+		"doctrine/doctrine-bundle": "~1.2",
+		"twig/extensions": "~1.0",
+		"symfony/assetic-bundle": "~2.3",
+		"symfony/swiftmailer-bundle": "~2.3",
+		"symfony/monolog-bundle": "~2.4",
+		"sensio/distribution-bundle": "3.0.*@dev",
+		"sensio/framework-extra-bundle": "~3.0",
+		"sensio/buzz-bundle": "1.0.*@dev",
 		"incenteev/composer-parameter-handler": "~2.0",
-		"sonata-project/core-bundle": "~2.2@dev",
-		"sonata-project/admin-bundle": "2.2.*@dev",
+		"sonata-project/admin-bundle": "dev-master",
 		"sonata-project/doctrine-orm-admin-bundle": "dev-master",
-		"sonata-project/easy-extends-bundle" : "dev-master",
-		"sonata-project/intl-bundle" : "dev-master",
+		"sonata-project/easy-extends-bundle": "dev-master",
+		"sonata-project/intl-bundle": "dev-master",
 		"simplethings/entity-audit-bundle": "dev-master",
 		"friendsofsymfony/comment-bundle": "dev-master",
 		"sfblib": "dev-master",
@@ -32,6 +30,9 @@
 		"twbs/bootstrap": "3.0.*",
 		"oyejorge/less.php": "v1.4.2.2",
 		"fortawesome/font-awesome": "v4.0.3"
+	},
+	"require-dev": {
+		"sensio/generator-bundle": "~2.3"
 	},
 	"repositories": [
 		{
@@ -90,9 +91,6 @@
 		"symfony-assets-install": "relative",
 		"incenteev-parameters": {
 			"file": "app/config/parameters.yml"
-		},
-		"branch-alias": {
-			"dev-master": "2.3-dev"
 		}
 	}
 }
