@@ -5,23 +5,17 @@ namespace Chitanka\LibBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\NoResultException;
-use Chitanka\LibBundle\Pagination\Pager;
-use Chitanka\LibBundle\Util\File;
-use Chitanka\LibBundle\Util\Char;
-use Chitanka\LibBundle\Util\String;
 use Chitanka\LibBundle\Entity\Text;
 use Chitanka\LibBundle\Entity\TextRating;
 use Chitanka\LibBundle\Entity\UserTextRead;
-use Chitanka\LibBundle\Entity\Bookmark;
 use Chitanka\LibBundle\Form\Type\TextRatingType;
 use Chitanka\LibBundle\Form\Type\TextLabelType;
 use Chitanka\LibBundle\Legacy\Setup;
-use Chitanka\LibBundle\Legacy\ZipFile;
-use Chitanka\LibBundle\Legacy\CacheManager;
-use Chitanka\LibBundle\Legacy\DownloadFile;
-use Chitanka\LibBundle\Legacy\Legacy;
+use Chitanka\LibBundle\Pagination\Pager;
 use Chitanka\LibBundle\Service\TextBookmarkService;
+use Chitanka\LibBundle\Service\TextDownloadService;
 use Chitanka\LibBundle\Service\TextLabelService;
+use Chitanka\LibBundle\Util\String;
 
 
 class TextController extends Controller {
@@ -122,7 +116,7 @@ class TextController extends Controller {
 	}
 
 
-	public function showAction($id, $_format) {
+	public function showAction(Request $request, $id, $_format) {
 		list($id) = explode('-', $id); // remove optional slug
 		try {
 			$text = $this->getTextRepository()->get($id);
@@ -143,19 +137,25 @@ class TextController extends Controller {
 				return $this->displayText($text->getFbi(), array('Content-Type' => 'text/plain'));
 			case 'data':
 				return $this->displayText($text->getDataAsPlain(), array('Content-Type' => 'text/plain'));
-			case 'txt.zip':
-				return $this->urlRedirect($this->getTxtZipFile(explode(',', $id), $_format));
-			case 'fb2.zip':
-				return $this->urlRedirect($this->getFb2ZipFile(explode(',', $id), $_format));
-			case 'sfb.zip':
-				return $this->urlRedirect($this->getSfbZipFile(explode(',', $id), $_format));
-			case 'epub':
-				Setup::doSetup($this->container);
-				return $this->urlRedirect($this->getEpubFile(explode(',', $id), $_format));
 			case 'html':
-			default:
 				return $this->showHtml($text, 1);
 		}
+		if ($redirect = $this->tryMirrorRedirect($id, $_format)) {
+			return $redirect;
+		}
+		Setup::doSetup($this->container);
+		$service = new TextDownloadService($this->getTextRepository());
+		switch ($_format) {
+			case 'txt.zip':
+				return $this->urlRedirect($this->getWebRoot() . $service->getTxtZipFile(explode(',', $id), $_format, $request->get('filename')));
+			case 'fb2.zip':
+				return $this->urlRedirect($this->getWebRoot() . $service->getFb2ZipFile(explode(',', $id), $_format, $request->get('filename')));
+			case 'sfb.zip':
+				return $this->urlRedirect($this->getWebRoot() . $service->getSfbZipFile(explode(',', $id), $_format, $request->get('filename')));
+			case 'epub':
+				return $this->urlRedirect($this->getWebRoot() . $service->getEpubFile(explode(',', $id), $_format, $request->get('filename')));
+		}
+		throw new \Exception("Неизвестен формат: $_format");
 	}
 
 	public function showPartAction($id, $part) {
@@ -184,29 +184,27 @@ class TextController extends Controller {
 	}
 
 
-	/**
-	* TODO
-	*/
 	public function showMultiAction(Request $request, $id, $_format) {
 		$mirror = $this->tryMirrorRedirect(explode(',', $id), $_format);
+		$requestedFilename = $request->get('filename');
 		if ($mirror) {
-			$filename = $request->get('filename');
-			if ( ! empty($filename)) {
-				$mirror .= '?filename=' . urlencode($filename);
+			if ($requestedFilename) {
+				$mirror .= '?filename=' . urlencode($requestedFilename);
 			}
 			return $this->urlRedirect($mirror);
 		}
 
+		Setup::doSetup($this->container);
+		$service = new TextDownloadService($this->getTextRepository());
 		switch ($_format) {
 			case 'txt.zip':
-				return $this->urlRedirect($this->getTxtZipFile(explode(',', $id), $_format));
+				return $this->urlRedirect($this->getWebRoot() . $service->getTxtZipFile(explode(',', $id), $_format, $requestedFilename));
 			case 'fb2.zip':
-				return $this->urlRedirect($this->getFb2ZipFile(explode(',', $id), $_format));
+				return $this->urlRedirect($this->getWebRoot() . $service->getFb2ZipFile(explode(',', $id), $_format, $requestedFilename));
 			case 'sfb.zip':
-				return $this->urlRedirect($this->getSfbZipFile(explode(',', $id), $_format));
+				return $this->urlRedirect($this->getWebRoot() . $service->getSfbZipFile(explode(',', $id), $_format, $requestedFilename));
 			case 'epub':
-				Setup::doSetup($this->container);
-				return $this->urlRedirect($this->getEpubFile(explode(',', $id), $_format));
+				return $this->urlRedirect($this->getWebRoot() . $service->getEpubFile(explode(',', $id), $_format, $requestedFilename));
 		}
 		throw new \Exception("Неизвестен формат: $_format");
 	}
@@ -444,356 +442,17 @@ class TextController extends Controller {
 		return $label;
 	}
 
-
-
-	protected function _initZipData($textId, $format) {
-		if ($redirect = $this->tryMirrorRedirect($textId, $format)) {
-			return $redirect;
-		}
-
-		Setup::doSetup($this->container);
-
-		$this->textIds = $textId;
-		$this->zf = new ZipFile;
-		if ( ($requestedFilename = $this->get('request')->get('filename')) ) {
-			$this->zipFileName = "chitanka-$requestedFilename";
-		}
-		// track here how many times a filename occurs
-		$this->_fnameCount = array();
-
-		return '';
-	}
-
-
-	protected function tryMirrorRedirect($ids, $format = null) {
+	private function tryMirrorRedirect($ids, $format = null) {
 		$dlSite = $this->getMirrorServer();
-
-		if ($dlSite !== false) {
-			$ids = (array) $ids;
-			$url = (count($ids) > 1 ? '/text-multi/' : '/text/') . implode(',', $ids);
-			if ($format) {
-				$url .= '.' . $format;
-			}
-
-			return $dlSite . $url;
-		}
-
-		return false;
-	}
-
-	public function createDlFiles($from = 1, $to = 3) {
-		$this->user->setOption('dlcover', true);
-		for ($i = $from; $i <= $to; $i++) {
-			$this->textIds = array($i);
-			$this->zf = new ZipFile;
-			$this->createSfbDlFile();
-			$this->zipFileName = '';
-		}
-		return 'Готово.';
-	}
-
-
-	protected function getTxtZipFile($id, $format) {
-		if ($redirect = $this->_initZipData($id, $format)) {
-			return $redirect;
-		}
-
-		$dlFile = $this->createTxtDlFile();
-
-		return $this->getWebRoot() .  $dlFile;
-	}
-
-
-	protected function getSfbZipFile($id, $format) {
-		if ($redirect = $this->_initZipData($id, $format)) {
-			return $redirect;
-		}
-
-		$dlFile = $this->createSfbDlFile();
-
-		return $this->getWebRoot() .  $dlFile;
-	}
-
-
-	protected function getFb2ZipFile($id, $format) {
-		if ($redirect = $this->_initZipData($id, $format)) {
-			return $redirect;
-		}
-
-		$dlFile = $this->createFb2DlFile();
-
-		return $this->getWebRoot() .  $dlFile;
-	}
-
-
-	protected function getEpubFile($textId, $format) {
-		if ($redirect = $this->tryMirrorRedirect($textId, $format)) {
-			return $redirect;
-		}
-
-		$file = null;
-		$dlFile = new DownloadFile;
-		if ( count($textId) > 1 ) {
-			$file = $dlFile->getEpubForTexts($this->getTextRepository()->findBy(array('id' => $textId)));
-		} else if ( $text = $this->getTextRepository()->find($textId[0]) ) {
-			$file = $dlFile->getEpubForText($text);
-		}
-
-		if ($file) {
-			return $this->getWebRoot() . $file;
-		}
-		$this->addMessage('Няма такъв текст.', true);
-	}
-
-
-	/** Sfb */
-	protected function createSfbDlFile() {
-		$key = '';
-		$key .= '-sfb';
-		return $this->createDlFile($this->textIds, 'sfb', $key);
-	}
-
-	protected function addSfbToDlFileFromCache($textId) {
-		$fEntry = unserialize( CacheManager::getDlCache($textId), '.sfb' );
-		$this->zf->addFileEntry($fEntry);
-		if ( $this->withFbi ) {
-			$this->zf->addFileEntry(
-				unserialize( CacheManager::getDlCache($textId, '.fbi') ) );
-		}
-		$this->filename = $this->rmFEntrySuffix($fEntry['name']);
-		return true;
-	}
-
-	protected function addSfbToDlFileFromNew($textId) {
-		$mainFileData = $this->getMainFileData($textId);
-		if ( ! $mainFileData ) {
+		if (!$dlSite) {
 			return false;
 		}
-		list($this->filename, $this->fPrefix, $this->fSuffix, $fbi) = $mainFileData;
-		$this->addTextFileEntry($textId, '.sfb');
-//		if ( $this->withFbi ) {
-//			$this->addMiscFileEntry($fbi, $textId, '.fbi');
-//		}
-		return true;
-	}
-
-	protected function addSfbToDlFileEnd($textId) {
-		$this->addBinaryFileEntries($textId, $this->filename);
-		return true;
-	}
-
-
-	/** Fb2 */
-	protected function createFb2DlFile() {
-		return $this->createDlFile($this->textIds, 'fb2');
-	}
-
-	protected function addFb2ToDlFileFromCache($textId) {
-		$fEntry = unserialize( CacheManager::getDlCache($textId, '.fb2') );
-		$this->zf->addFileEntry($fEntry);
-		$this->filename = $this->rmFEntrySuffix($fEntry['name']);
-		return true;
-	}
-
-	protected function addFb2ToDlFileFromNew($textId) {
-		$work = $this->getTextRepository()->find($textId);
-		if ( ! $work ) {
-			return false;
+		$ids = (array) $ids;
+		$url = (count($ids) > 1 ? '/text-multi/' : '/text/') . implode(',', $ids);
+		if ($format) {
+			$url .= '.' . $format;
 		}
-		$this->filename = $this->getFileName($work);
-		$this->addMiscFileEntry($work->getContentAsFb2(), $textId, '.fb2');
-		return true;
-	}
-
-
-	/** Txt */
-	protected function createTxtDlFile() {
-		return $this->createDlFile($this->textIds, 'txt');
-	}
-
-	protected function addTxtToDlFileFromCache($textId) {
-		$fEntry = unserialize( CacheManager::getDlCache($textId, '.txt') );
-		$this->zf->addFileEntry($fEntry);
-		$this->filename = $this->rmFEntrySuffix($fEntry['name']);
-		return true;
-	}
-
-	protected function addTxtToDlFileFromNew($textId) {
-		$work = $this->getTextRepository()->find($textId);
-		if ( ! $work ) {
-			return false;
-		}
-		$this->filename = $this->getFileName($work);
-		$this->addMiscFileEntry($work->getContentAsTxt(), $textId, '.txt');
-		return true;
-	}
-
-
-	/** Common */
-	protected function createDlFile($textIds, $format, $dlkey = null) {
-		$textIds = $this->normalizeTextIds($textIds);
-		if ($dlkey === null) {
-			$dlkey = ".$format";
-		}
-
-		$dlCache = CacheManager::getDl($textIds, $dlkey);
-		if ( $dlCache ) {
-			$dlFile = CacheManager::getDlFile($dlCache);
-			if ( file_exists($dlFile) && filesize($dlFile) ) {
-				return $dlFile;
-			}
-		}
-
-		$fileCount = count($textIds);
-		$setZipFileName = $fileCount == 1 && empty($this->zipFileName);
-
-		foreach ($textIds as $textId) {
-			$method = 'add' . ucfirst($format) . 'ToDlFileFrom';
-			$method .= CacheManager::dlCacheExists($textId, ".$format") ? 'Cache' : 'New';
-			if ( ! $this->$method($textId) ) {
-				$fileCount--; // no file was added
-				continue;
-			}
-			$sharedMethod = 'add' . ucfirst($format) . 'ToDlFileEnd';
-			if ( method_exists($this, $sharedMethod) ) {
-				$this->$sharedMethod($textId);
-			}
-			if ($setZipFileName) {
-				$this->zipFileName = $this->filename;
-			}
-		}
-		if ( $fileCount < 1 ) {
-			$this->addMessage('Не е посочен валиден номер на текст за сваляне!', true);
-			return null;
-		}
-
-		if ( ! $setZipFileName && empty($this->zipFileName) ) {
-			$this->zipFileName = "Архив от Моята библиотека - $fileCount файла-".time();
-		}
-
-		$this->zipFileName .= $fileCount > 1 ? "-$format" : $dlkey;
-		$this->zipFileName = File::cleanFileName( Char::cyr2lat($this->zipFileName) );
-		$fullZipFileName = $this->zipFileName . '.zip';
-
-		CacheManager::setDlFile($fullZipFileName, $this->zf->file());
-		CacheManager::setDl($textIds, $fullZipFileName, $dlkey);
-		return CacheManager::getDlFile($fullZipFileName);
-	}
-
-
-	protected function normalizeTextIds($textIds) {
-		foreach ($textIds as $key => $textId) {
-			if ( ! $textId || ! is_numeric($textId) ) {
-				unset($textIds[$key]);
-			}
-		}
-		sort($textIds);
-		$textIds = array_unique($textIds);
-		return $textIds;
-	}
-
-
-	protected function addTextFileEntry($textId, $suffix = '.txt') {
-		$fEntry = $this->zf->newFileEntry($this->fPrefix .
-			$this->getContentData($textId) .
-			$this->fSuffix, $this->filename . $suffix);
-		CacheManager::setDlCache($textId, serialize($fEntry));
-		$this->zf->addFileEntry($fEntry);
-	}
-
-
-	protected function addMiscFileEntry($content, $textId, $suffix = '.txt') {
-		$fEntry = $this->zf->newFileEntry($content, $this->filename . $suffix);
-		CacheManager::setDlCache($textId, serialize($fEntry), $suffix);
-		$this->zf->addFileEntry($fEntry);
-	}
-
-
-	protected function addBinaryFileEntries($textId, $filename) {
-		// add images
-		$dir = Legacy::getContentFilePath('img', $textId);
-		if ( !is_dir($dir) ) { return; }
-		if ($dh = opendir($dir)) {
-			while (($file = readdir($dh)) !== false) {
-				$fullname = "$dir/$file";
-				if ( $file[0] == '.' || $file[0] == '_' ||
-					File::isArchive($file) || is_dir($fullname) ) { continue; }
-				$fEntry = $this->zf->newFileEntry(file_get_contents($fullname), $file);
-				$this->zf->addFileEntry($fEntry);
-			}
-			closedir($dh);
-		}
-	}
-
-
-	protected function getContentData($textId) {
-		$fname = Legacy::getContentFilePath('text', $textId);
-		if ( file_exists($fname) ) {
-			return file_get_contents($fname);
-		}
-		return '';
-	}
-
-
-	protected function getMainFileData($textId) {
-		$work = $this->getTextRepository()->find($textId);
-		return array(
-			$this->getFileName($work),
-			$this->getFileDataPrefix($work, $textId),
-			$this->getFileDataSuffix($work, $textId),
-			$this->getTextFileStart() . $work->getFbi()
-		);
-	}
-
-
-	public function getFileName($work = null) {
-		if ( is_null($work) ) $work = $this->work;
-
-		return $this->_getUniqueFileName($work->getNameForFile());
-	}
-
-
-	private function _getUniqueFileName($filename) {
-		if ( isset( $this->_fnameCount[$filename] ) ) {
-			$this->_fnameCount[$filename]++;
-			$filename .= $this->_fnameCount[$filename];
-		} else {
-			$this->_fnameCount[$filename] = 1;
-		}
-		return $filename;
-	}
-
-
-	public function getFileDataPrefix($work, $textId) {
-		$prefix = $this->getTextFileStart()
-			. "|\t" . $work->getAuthorNames() . "\n"
-			. $work->getTitleAsSfb() . "\n\n\n";
-		$anno = $work->getAnnotation();
-		if ( !empty($anno) ) {
-			$prefix .= "A>\n$anno\nA$\n\n\n";
-		}
-		return $prefix;
-	}
-
-
-	public function getFileDataSuffix($work, $textId) {
-		$suffix = "\n"
-			. 'I>'
-			. $work->getFullExtraInfo()
-			. "I$\n";
-		$suffix = preg_replace('/\n\n+/', "\n\n", $suffix);
-		return $suffix;
-	}
-
-
-	static public function getTextFileStart() {
-		return "\xEF\xBB\xBF" . // Byte order mark for some windows software
-			"\t[Kodirane UTF-8]\n\n";
-	}
-
-
-	private function rmFEntrySuffix($fEntryName) {
-		return preg_replace('/\.[^.]+$/', '', $fEntryName);
+		return $dlSite . $url;
 	}
 
 }
