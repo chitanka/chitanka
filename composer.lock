@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "d1e21aa8cf8e8dd29f249b2cf8f9f070",
+    "hash": "2f2dd4c78029d394c7d95cf5001f5e5b",
     "packages": [
         {
             "name": "apibot",
@@ -1916,43 +1916,43 @@
         },
         {
             "name": "sonata-project/admin-bundle",
-            "version": "dev-master",
+            "version": "2.2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "80038affa2ced026d3d5dafe3c095c3bc7652df6"
+                "reference": "9273791bdbffbe8bf75e92babddec393dc06e37f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/80038affa2ced026d3d5dafe3c095c3bc7652df6",
-                "reference": "80038affa2ced026d3d5dafe3c095c3bc7652df6",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/9273791bdbffbe8bf75e92babddec393dc06e37f",
+                "reference": "9273791bdbffbe8bf75e92babddec393dc06e37f",
                 "shasum": ""
             },
             "require": {
                 "doctrine/common": "~2.2",
                 "knplabs/knp-menu": ">=1.1.0,<3.0.0",
                 "knplabs/knp-menu-bundle": ">=1.1.0,<3.0.0",
-                "sensio/generator-bundle": "~2.3",
+                "sensio/generator-bundle": "~2.2",
                 "sonata-project/block-bundle": "~2.2,>=2.2.7",
                 "sonata-project/core-bundle": "~2.2",
                 "sonata-project/exporter": "~1.0",
-                "sonata-project/jquery-bundle": "1.10.2",
-                "symfony/class-loader": "~2.3",
-                "symfony/config": "~2.3",
-                "symfony/console": "~2.3",
-                "symfony/form": "~2.3",
-                "symfony/http-foundation": "~2.3",
-                "symfony/routing": "~2.3",
-                "symfony/security-bundle": "~2.3",
-                "symfony/twig-bridge": "~2.3",
-                "symfony/validator": "~2.3",
+                "sonata-project/jquery-bundle": "1.8.*",
+                "symfony/class-loader": "~2.2",
+                "symfony/config": "~2.2",
+                "symfony/console": "~2.2",
+                "symfony/form": "~2.2",
+                "symfony/http-foundation": "~2.2",
+                "symfony/routing": "~2.2",
+                "symfony/security-bundle": "~2.2",
+                "symfony/twig-bridge": "~2.2",
+                "symfony/validator": "~2.2",
                 "twig/extensions": "~1.0",
                 "twig/twig": "~1.12"
             },
             "require-dev": {
                 "jms/translation-bundle": "~1.1",
                 "sonata-project/intl-bundle": "~2.1",
-                "symfony/yaml": "~2.3"
+                "symfony/yaml": "~2.2"
             },
             "suggest": {
                 "jms/translation-bundle": "Extract message keys from Admins",
@@ -1961,7 +1961,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.3.x-dev"
+                    "dev-master": "2.2.x-dev"
                 }
             },
             "autoload": {
@@ -1992,7 +1992,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-04-05 12:38:15"
+            "time": "2014-03-31 10:42:40"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -2179,31 +2179,31 @@
         },
         {
             "name": "sonata-project/doctrine-orm-admin-bundle",
-            "version": "dev-master",
+            "version": "2.2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle.git",
-                "reference": "dc6ededfd6547dfc70d3e6022e7a2543eabd682e"
+                "reference": "9f04e09e180fee6325a9a36c61d0414ed37e0917"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/dc6ededfd6547dfc70d3e6022e7a2543eabd682e",
-                "reference": "dc6ededfd6547dfc70d3e6022e7a2543eabd682e",
+                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/9f04e09e180fee6325a9a36c61d0414ed37e0917",
+                "reference": "9f04e09e180fee6325a9a36c61d0414ed37e0917",
                 "shasum": ""
             },
             "require": {
-                "doctrine/orm": "~2.4",
-                "sonata-project/admin-bundle": "~2.3@dev",
+                "doctrine/orm": "~2.3",
+                "sonata-project/admin-bundle": "~2.2,>=2.2.2",
                 "sonata-project/exporter": "~1.3,>=1.3.1",
-                "symfony/console": "~2.3",
+                "symfony/console": "~2.2",
                 "symfony/doctrine-bridge": "~2.2",
-                "symfony/form": "~2.3",
+                "symfony/form": "~2.2",
                 "symfony/framework-bundle": "~2.2",
-                "symfony/security": "~2.3"
+                "symfony/security": "~2.2"
             },
             "require-dev": {
                 "simplethings/entity-audit-bundle": "~0.1",
-                "sonata-project/admin-bundle": "~2.3@dev"
+                "sonata-project/admin-bundle": "~2.2@dev"
             },
             "suggest": {
                 "simplethings/entity-audit-bundle": "If you want to support for versioning of entities and their associations."
@@ -2211,7 +2211,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.3.x-dev"
+                    "dev-master": "2.2.x-dev"
                 }
             },
             "autoload": {
@@ -2243,7 +2243,7 @@
                 "generator",
                 "sonata"
             ],
-            "time": "2014-04-02 16:01:59"
+            "time": "2014-03-19 11:44:11"
         },
         {
             "name": "sonata-project/easy-extends-bundle",
@@ -2422,30 +2422,27 @@
         },
         {
             "name": "sonata-project/jquery-bundle",
-            "version": "1.10.2",
+            "version": "1.8.3",
+            "target-dir": "Sonata/jQueryBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonatajQueryBundle.git",
-                "reference": "a53282159f54bc44379d63727a042254841302d7"
+                "reference": "1b6dde1becb93b801e64b20e96bc76a110ead712"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonatajQueryBundle/zipball/a53282159f54bc44379d63727a042254841302d7",
-                "reference": "a53282159f54bc44379d63727a042254841302d7",
+                "url": "https://api.github.com/repos/sonata-project/SonatajQueryBundle/zipball/1b6dde1becb93b801e64b20e96bc76a110ead712",
+                "reference": "1b6dde1becb93b801e64b20e96bc76a110ead712",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2"
+                "php": ">=5.3.2",
+                "symfony/framework-bundle": "2.*"
             },
             "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.9.x-dev"
-                }
-            },
             "autoload": {
-                "psr-4": {
-                    "Sonata\\jQueryBundle\\": ""
+                "psr-0": {
+                    "Sonata\\jQueryBundle": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2469,7 +2466,7 @@
                 "jquery",
                 "sonata"
             ],
-            "time": "2014-04-01 12:48:59"
+            "time": "2013-03-01 17:24:02"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2754,16 +2751,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "dev-master",
+            "version": "v2.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "2a61b5fe776ec798de0cfca14fea8de2c4967018"
+                "reference": "3199b2e0d194f71fe2e13c95768b2ef22206682b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/2a61b5fe776ec798de0cfca14fea8de2c4967018",
-                "reference": "2a61b5fe776ec798de0cfca14fea8de2c4967018",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/3199b2e0d194f71fe2e13c95768b2ef22206682b",
+                "reference": "3199b2e0d194f71fe2e13c95768b2ef22206682b",
                 "shasum": ""
             },
             "require": {
@@ -2821,7 +2818,6 @@
                 "doctrine/data-fixtures": "1.0.*",
                 "doctrine/dbal": "~2.2",
                 "doctrine/orm": "~2.2,>=2.2.3",
-                "egulias/email-validator": "1.1.0",
                 "ircmaxell/password-compat": "1.0.*",
                 "monolog/monolog": "~1.3",
                 "ocramius/proxy-manager": ">=0.3.1,<0.6-dev",
@@ -2830,7 +2826,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "2.4-dev"
                 }
             },
             "autoload": {
@@ -2866,7 +2862,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-04-04 09:27:51"
+            "time": "2014-04-04 10:27:02"
         },
         {
             "name": "twbs/bootstrap",
@@ -3113,7 +3109,6 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "symfony/symfony": 20,
         "sensio/distribution-bundle": 20,
         "sensio/buzz-bundle": 20,
         "sonata-project/admin-bundle": 20,

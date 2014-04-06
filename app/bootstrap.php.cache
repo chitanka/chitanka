@@ -2234,12 +2234,12 @@ protected $booted = false;
 protected $name;
 protected $startTime;
 protected $loadClassCache;
-const VERSION ='2.5.0-DEV';
-const VERSION_ID ='20500';
+const VERSION ='2.4.3';
+const VERSION_ID ='20403';
 const MAJOR_VERSION ='2';
-const MINOR_VERSION ='5';
-const RELEASE_VERSION ='0';
-const EXTRA_VERSION ='DEV';
+const MINOR_VERSION ='4';
+const RELEASE_VERSION ='3';
+const EXTRA_VERSION ='';
 public function __construct($environment, $debug)
 {
 $this->environment = $environment;
@@ -2816,7 +2816,6 @@ $application->add($r->newInstance());
 namespace Symfony\Component\Config
 {
 use Symfony\Component\Config\Resource\ResourceInterface;
-use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 class ConfigCache
 {
@@ -2854,20 +2853,13 @@ return true;
 }
 public function write($content, array $metadata = null)
 {
-$mode = 0666;
-$umask = umask();
+$mode = 0666 & ~umask();
 $filesystem = new Filesystem();
 $filesystem->dumpFile($this->file, $content, null);
-try {
-$filesystem->chmod($this->file, $mode, $umask);
-} catch (IOException $e) {
-}
+@chmod($this->file, $mode);
 if (null !== $metadata && true === $this->debug) {
 $filesystem->dumpFile($this->getMetaFile(), serialize($metadata), null);
-try {
-$filesystem->chmod($this->getMetaFile(), $mode, $umask);
-} catch (IOException $e) {
-}
+@chmod($this->getMetaFile(), $mode);
 }
 }
 private function getMetaFile()
