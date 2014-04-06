@@ -33,7 +33,7 @@ abstract class Controller extends SymfonyController {
 	*/
 	protected $responseHeaders = array();
 
-	private $_em = null;
+	private $em;
 
 	protected function legacyPage($page, $controller = ':legacy')
 	{
@@ -176,14 +176,14 @@ abstract class Controller extends SymfonyController {
 	/** @return \Doctrine\ORM\EntityManager */
 	public function getEntityManager()
 	{
-		if (is_null($this->_em)) {
+		if (!isset($this->em)) {
 			// TODO do this in the configuration
-			$this->_em = $this->get('doctrine.orm.entity_manager');
-			$this->_em->getConfiguration()->addCustomHydrationMode('id', 'Chitanka\LibBundle\Hydration\IdHydrator');
-			$this->_em->getConfiguration()->addCustomHydrationMode('key_value', 'Chitanka\LibBundle\Hydration\KeyValueHydrator');
+			$this->em = $this->get('doctrine.orm.entity_manager');
+			$this->em->getConfiguration()->addCustomHydrationMode('id', 'Chitanka\LibBundle\Hydration\IdHydrator');
+			$this->em->getConfiguration()->addCustomHydrationMode('key_value', 'Chitanka\LibBundle\Hydration\KeyValueHydrator');
 		}
 
-		return $this->_em;
+		return $this->em;
 	}
 
 

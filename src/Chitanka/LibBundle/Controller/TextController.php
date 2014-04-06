@@ -34,15 +34,15 @@ class TextController extends Controller {
 	}
 
 	public function listByTypeIndexAction($_format) {
-		$this->view['types'] = $this->getTextRepository()->getTypes();
-
-		return $this->display("list_by_type_index.$_format");
+		return $this->display("list_by_type_index.$_format", array(
+			'types' => $this->getTextRepository()->getTypes()
+		));
 	}
 
 	public function listByLabelIndexAction($_format) {
-		$this->view['labels'] = $this->getLabelRepository()->getAll();
-
-		return $this->display("list_by_label_index.$_format");
+		return $this->display("list_by_label_index.$_format", array(
+			'labels' => $this->getLabelRepository()->getAll()
+		));
 	}
 
 	public function listByAlphaIndexAction($_format) {
@@ -79,7 +79,7 @@ class TextController extends Controller {
 		}
 		$labels = $label->getDescendantIdsAndSelf();
 
-		$this->view = array_merge($this->view, array(
+		return $this->display("list_by_label.$_format", array(
 			'label' => $label,
 			'parents' => array_reverse($label->getAncestors()),
 			'texts'   => $textRepo->getByLabel($labels, $page, $limit),
@@ -91,17 +91,15 @@ class TextController extends Controller {
 			'route' => $this->getCurrentRoute(),
 			'route_params' => array('slug' => $slug),
 		));
-
-		return $this->display("list_by_label.$_format");
 	}
 
 
 	public function listByAlphaAction($letter, $page, $_format) {
 		$textRepo = $this->getTextRepository();
 		$limit = 30;
-
 		$prefix = $letter == '-' ? null : $letter;
-		$this->view = array(
+
+		return $this->display("list_by_alpha.$_format", array(
 			'letter' => $letter,
 			'texts' => $textRepo->getByPrefix($prefix, $page, $limit),
 			'pager'    => new Pager(array(
@@ -110,9 +108,7 @@ class TextController extends Controller {
 				'total' => $textRepo->countByPrefix($prefix)
 			)),
 			'route_params' => array('letter' => $letter),
-		);
-
-		return $this->display("list_by_alpha.$_format");
+		));
 	}
 
 
@@ -374,12 +370,8 @@ class TextController extends Controller {
 		}
 
 		$text = $this->findText($id);
-		$textReader = new UserTextRead;
-		$textReader->setUser($this->getSavableUser());
-		$textReader->setText($text);
-		//$textReader->setCurrentDate();
 		$em = $this->getEntityManager();
-		$em->persist($textReader);
+		$em->persist(new UserTextRead($this->getSavableUser(), $text));
 		$em->flush();
 
 		if ($request->isXmlHttpRequest()) {

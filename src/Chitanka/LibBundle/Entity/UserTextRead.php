@@ -5,18 +5,17 @@ namespace Chitanka\LibBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\UserTextReadRepository")
-* @ORM\HasLifecycleCallbacks
-* @ORM\Table(name="user_text_read",
-*	uniqueConstraints={@ORM\UniqueConstraint(name="user_text_uniq", columns={"user_id", "text_id"})},
-*	indexes={
-*		@ORM\Index(name="text_idx", columns={"text_id"}),
-*		@ORM\Index(name="created_at_idx", columns={"created_at"})}
-* )
-* TODO replace this entity with a new "read" bookmark folder
-*/
-class UserTextRead extends Entity
-{
+ * @ORM\Entity(repositoryClass="Chitanka\LibBundle\Entity\UserTextReadRepository")
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="user_text_read",
+ *	uniqueConstraints={@ORM\UniqueConstraint(name="user_text_uniq", columns={"user_id", "text_id"})},
+ *	indexes={
+ *		@ORM\Index(name="text_idx", columns={"text_id"}),
+ *		@ORM\Index(name="created_at_idx", columns={"created_at"})}
+ * )
+ * TODO replace this entity with a new "read" bookmark folder
+ */
+class UserTextRead extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -26,23 +25,27 @@ class UserTextRead extends Entity
 	private $id;
 
 	/**
-	 * @var integer $user
+	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User")
 	 */
 	private $user;
 
 	/**
-	 * @var integer $text
+	 * @var Text
 	 * @ORM\ManyToOne(targetEntity="Text")
 	 */
 	private $text;
 
 	/**
-	 * @var datetime
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 */
 	private $created_at;
 
+	public function __construct(User $user, Text $text) {
+		$this->setUser($user);
+		$this->setText($text);
+	}
 
 	public function getId() { return $this->id; }
 
@@ -56,8 +59,7 @@ class UserTextRead extends Entity
 	public function getCreatedAt() { return $this->created_at; }
 
 	/** @ORM\PrePersist */
-	public function preInsert()
-	{
+	public function preInsert() {
 		$this->setCreatedAt(new \DateTime);
 	}
 }
