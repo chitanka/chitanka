@@ -22,7 +22,7 @@ function compileStyleFiles($cacheDir, $skin, $menuPos) {
 		"$skin.less" => '',
 	);
 	$parserOptions = array(
-		//'compress' => true,
+		'compress' => true,
 	);
 	$cssFile = Less_Cache::Get($lessFiles, $parserOptions);
 	return $cssFile ? $cacheDir .'/'. $cssFile : null;

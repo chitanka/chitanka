@@ -350,7 +350,7 @@ option[selected=selected],
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: url('@{logoImg}') no-repeat center;
+	background: data-uri("@{logoImg}") no-repeat center;
 }
 #nav-main a,
 .tab a {
@@ -603,7 +603,7 @@ li img {
 .zoom {
 	position: relative;
 	padding-left: 1.35em;
-	background: url('images/actions/006-viewmag.png') no-repeat top left;
+	background: url("../images/actions/006-viewmag.png") no-repeat top left;
 }
 .is_frozen {
 	opacity: .6;
@@ -1297,13 +1297,13 @@ span.image-title {
 .collapsible-ctrl:before { content: "["; }
 .collapsible-ctrl:after { content: "]"; }
 
-.loading {
-	background: url('images/loading.gif') right center no-repeat !important;
+.loading,
+.indicator.loading {
+	background: data-uri("./images/loading.gif") right center no-repeat !important;
 }
 .indicator.loading {
 	margin-right: .3em;
 	padding-right: 18px;
-	background: url('images/loading.gif') right center no-repeat;
 }
 form.loading {
 	background-position: center center !important;
