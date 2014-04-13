@@ -1,15 +1,13 @@
-<?php
+<?php namespace Chitanka\LibBundle\Controller;
 
-namespace Chitanka\LibBundle\Controller;
-
+use Symfony\Component\HttpFoundation\Request;
 use Chitanka\LibBundle\Legacy\CacheManager;
 use Chitanka\LibBundle\Legacy\Legacy;
+use Chitanka\LibBundle\Service\WikiEngine;
 
-class WikiController extends Controller
-{
+class WikiController extends Controller {
 
-	public function indexAction($page)
-	{
+	public function indexAction($page) {
 		$url = str_replace('$1', ucfirst($page), $this->container->getParameter('wiki_url'));
 		$this->view = array(
 			'page' => $page,
@@ -20,9 +18,43 @@ class WikiController extends Controller
 		return $this->display('index');
 	}
 
+	public function showAction($page) {
+		$wiki = $this->wikiEngine();
+		$wikiPage = $wiki->getPage($page);
+		if (!$wikiPage->exists()) {
+			$this->responseStatusCode = 404;
+		}
+		return $this->display('show', array(
+			'page' => $wikiPage,
+		));
+	}
 
-	private function getFromWiki($url, $ttl = 1)
-	{
+	public function saveAction(Request $request) {
+		$input = $request->request;
+		$wiki = $this->wikiEngine();
+		$user = $this->getUser();
+		$wiki->savePage($input->get('summary'), $input->get('page'), $input->get('content'), $input->get('title'), "{$user->getUsername()} <{$user->getUsername()}@chitanka>");
+		return $this->displayJson(1);
+	}
+
+	public function previewAction(Request $request) {
+		return $this->displayText(WikiEngine::markdownToHtml($request->request->get('content')));
+	}
+
+	public function historyAction($page) {
+		$wiki = $this->wikiEngine();
+		$commits = $wiki->getHistory($page);
+		return $this->display('history', array(
+			'page' => $wiki->getPage($page),
+			'commits' => $commits,
+		));
+	}
+
+	protected function wikiEngine() {
+		return new WikiEngine($this->getParameter('content_dir').'/wiki');
+	}
+
+	private function getFromWiki($url, $ttl = 1) {
 		$id = md5($url);
 		$action = 'wiki';
 

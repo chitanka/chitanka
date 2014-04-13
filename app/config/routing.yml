@@ -1,6 +1,3 @@
-chitanka:
-    resource: "@LibBundle/Resources/config/routing.yml"
-
 admin:
     resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
     prefix: /admin
@@ -15,3 +12,6 @@ fos_comment_api:
     resource: "@FOSCommentBundle/Resources/config/routing.yml"
     prefix: /api
     defaults: { _format: html }
+
+chitanka:
+    resource: "@LibBundle/Resources/config/routing.yml"

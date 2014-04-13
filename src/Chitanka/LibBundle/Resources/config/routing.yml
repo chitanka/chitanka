@@ -348,24 +348,6 @@ text_show_multi:
     requirements:   { _format: html|sfb\.zip|fb2\.zip|txt\.zip|epub }
 
 
-
-about:
-    pattern:   /about
-    defaults: { _controller: LibBundle:Wiki:index, page: about }
-rules:
-    pattern:   /rules
-    defaults: { _controller: LibBundle:Wiki:index, page: rules }
-blacklist:
-    pattern:   /blacklist
-    defaults: { _controller: LibBundle:Wiki:index, page: blacklist }
-links:
-    pattern:   /links
-    defaults: { _controller: LibBundle:Wiki:index, page: links }
-torrents:
-    pattern:   /torrents
-    defaults: { _controller: LibBundle:Wiki:index, page: torrents }
-
-
 search:
     pattern:      /search.{_format}
     defaults:     { _controller: LibBundle:Search:index, _format: html }
@@ -374,10 +356,6 @@ search:
 sandbox:
     pattern:   /sandbox
     defaults: { _controller: LibBundle:Sandbox:index }
-
-# sitemap:
-#     pattern:   /sitemap
-#     defaults: { _controller: LibBundle:Sitemap:index }
 
 feedback:
     pattern:   /feedback
@@ -570,9 +548,22 @@ reviews:
     pattern:   /reviews
     defaults: { _controller: LibBundle:Feed:reviews }
 
-# fos_user_security:
-    # resource: @FOSUserBundle/Resources/config/routing/security.xml
+wiki_save:
+    pattern:  /wiki/save
+    defaults: { _controller: LibBundle:Wiki:save }
+    requirements: { _method: post }
 
-# default:
-#     pattern:   /{action}
-#     defaults: { _controller: LibBundle:Main:default }
+wiki_preview:
+    pattern:  /wiki/preview
+    defaults: { _controller: LibBundle:Wiki:preview }
+    requirements: { _method: post }
+
+wiki_history:
+    pattern:  /wiki/history/{page}
+    defaults: { _controller: LibBundle:Wiki:history }
+    requirements: { page: .+ }
+
+wiki:
+    pattern:  /{page}
+    defaults: { _controller: LibBundle:Wiki:show }
+    requirements: { page: .+ }

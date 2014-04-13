@@ -216,7 +216,7 @@ function showBookmarks()
 (function(){
 	var togglerCookieName = "nomenu";
 	var $sidebar = $("#navigation");
-	if ($sidebar.find("#nav-main").length === 0) {
+	if ($sidebar.find(".sidebar-menu").length === 0) {
 		return;
 	}
 	var togglerHtml = '<div>\
@@ -454,6 +454,6 @@ var user = {
 			return this.isAuthenticated();
 		}
 
-		return $.inArray(credentials, userGroups) != -1;
+		return $.inArray(credentials, userGroups) != -1 || $.inArray("god", userGroups) != -1;
 	}
 };

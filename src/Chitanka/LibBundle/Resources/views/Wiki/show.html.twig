@@ -1,0 +1,76 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = page.title %}
+{% block content %}
+	<div class="page-action dropdown navbar-right">
+		<a data-toggle="dropdown" href="#">
+			<span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu" role="menu">
+			<li>
+				<a href="#" class="edit-wiki" data-credentials="edit-wiki"><span class="fa fa-pencil"></span> Редактиране</a>
+			</li>
+			<li>
+				<a href="{{ path('wiki_history', { page: page.name }) }}"><span class="fa fa-list-alt"></span> История</a>
+			</li>
+		</ul>
+	</div>
+
+	{% if page.hasAncestors %}
+		<ol class="breadcrumb" itemprop="breadcrumb">
+			{% for ancestor in page.ancestors %}
+				<li><a href="{{ path('wiki', { page: ancestor.name }) }}"><span class="fa fa-folder-o"></span> {{ ancestor.title }}</a></li>
+			{% endfor %}
+		</ol>
+	{% endif %}
+
+	{% if not page.exists %}
+		<p class="alert alert-warning">Страницата все още не съществува.</p>
+	{% endif %}
+	<div class="wikidata editable">
+		{{ page.contentHtml|raw }}
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% set scripts = ['jquery-ui-1.10.0.custom', 'reMarked', 'rangy-core-1.2.3', 'hallo', 'wiki_editor'] %}
+	<script>
+jQuery(function($) {
+	var $wikidata = $('.wikidata.editable:eq(0)');
+	$wikidata.find("table").addClass("table table-striped");
+
+	$(".edit-wiki").click(function() {
+		if (!user.canTakeAction(this)) {
+			alert("Не ви е разрешено да редактирате страници в уикито на библиотеката.");
+			return false;
+		}
+		var scripts = "{{ asset('bundles/lib/js/'~ scripts|join(',') ~'.js') }}";
+		var editorOptions = {
+			page: "{{ page.name }}",
+			format: "{{ page.format }}",
+			wiki_save_path: "{{ path('wiki_save') }}",
+			wiki_preview_path: "{{ path('wiki_preview') }}"
+		};
+		var $heading = $("#first-heading h1");
+		if (window.loadWikiEditor) {
+			loadWikiEditor($wikidata, $heading, editorOptions);
+		} else {
+			$.ajax({
+				url: scripts,
+				dataType: 'script',
+				cache: true,
+				complete: function() {
+					if ( !window.rangy.initialized ) {
+						window.rangy.init();
+					}
+					loadWikiEditor($wikidata, $heading, editorOptions);
+				}
+			});
+		}
+		$(this).closest(".open").removeClass("open");
+		return false;
+	});
+});
+	</script>
+{% endblock %}

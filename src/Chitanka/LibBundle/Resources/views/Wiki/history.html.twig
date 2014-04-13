@@ -1,0 +1,14 @@
+{% extends 'LibBundle::layout.html.twig' %}
+
+{% set title = 'История на „<a href="' ~ path('wiki', {page: page.name}) ~ '">'~page.title~'</a>“' %}
+{% block content %}
+	<ul>
+		{% for commit in commits %}
+			<li>
+				<small>{{ commit.datetimeAuthor|date('d.m.Y, H:i') }}</small> &middot;
+				<a href="{{ path('user_show', {username: commit.author.name}) }}" class="user">{{ commit.author.name }}</a> &middot;
+				{{ commit.message }}
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

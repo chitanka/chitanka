@@ -352,7 +352,7 @@ option[selected=selected],
 	height: 100%;
 	background: data-uri("@{logoImg}") no-repeat center;
 }
-#nav-main a,
+.navbody a,
 .tab a {
 	display: block;
 	color: @navLinkFgColor;
@@ -647,7 +647,8 @@ li img {
 	margin-left: 1.4em;
 }
 
-.feed-standalone {
+.feed-standalone,
+.page-action {
 	position: absolute;
 	top: -2.2em;
 	right: .2em;
@@ -1771,6 +1772,8 @@ div.person-aleks_boldin .dl-epub {
 }
 
 @import "rating-pie.less";
+
+@import "wiki-editor.less";
 
 .tab-content {
 	margin: 0 0 1.6em 0;

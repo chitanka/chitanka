@@ -1,0 +1,45 @@
+.hallotoolbar {
+	//border: 1px solid #babdb6;
+	padding: 5px;
+	//border-radius: 6px;
+	background-color: @navbar-default-bg;
+	width: 260px;
+	z-index: 500;
+	.dropdown-menu {
+		width: 200px;
+		margin-top: -1px;
+		border-left: 1px solid #babdb6;
+		border-bottom: 1px solid #babdb6;
+		border-right: 1px solid #babdb6;
+		border-bottom-left-radius: 6px;
+		border-bottom-right-radius: 6px;
+		.selected {
+			background-color: #729fcf;
+		}
+	}
+}
+.editable {
+	min-height: 30em;
+	&[contenteditable="true"] {
+		margin-top: 3em;
+		table {
+			border-collapse: collapse;
+		}
+		th, td {
+			border: 1px dotted silver;
+		}
+	}
+}
+.inEditMode {
+	outline: 2px dotted #babdb6;
+	outline-offset: 3px;
+}
+.markdown-source {
+	width: 100%;
+	min-height: 500px;
+	margin-top: 3em;
+	border: 2px dotted #babdb6;
+	border-radius: @border-radius-base;
+	padding: .4em 0 .3em .5em;
+	font-family: monospace;
+}

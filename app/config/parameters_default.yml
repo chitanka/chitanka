@@ -2,3 +2,5 @@ parameters:
     global_info_message: Това е огледало на <a href="http://chitanka.info">Моята библиотека</a>.
     analytics_snippet: ~
     dev.web_profiler_toolbar: false
+    content_dir: %kernel.root_dir%/../web/content
+    web_content_dir: content

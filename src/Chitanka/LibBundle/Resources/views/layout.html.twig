@@ -103,7 +103,9 @@
 			{% endblock %}
 
 			{% block navlinks %}
-				{% include 'LibBundle::navlinks.html.twig' %}
+				<div class="sidebar-menu">
+				{{ navlinks|raw }}
+				</div>
 			{% endblock %}
 
 			{% block search_form %}
@@ -122,12 +124,7 @@
 	<div id="footer" role="contentinfo">
 	{% block footer %}
 		<h2 class="sr-only">Допълнителна информация</h2>
-		<ul>
-			<li><a href="{{ path('about') }}">За Моята библиотека</a></li>
-			<li><a href="{{ path('rules') }}">Правила</a></li>
-			<li><a href="http://wiki.chitanka.info/FAQ">Въпроси и отговори</a></li>
-			<li><a href="{{ path('feedback') }}" title="Връзка с администраторите на библиотеката">Връзка с екипа</a></li>
-		</ul>
+		{{ footer_links|raw }}
 	{% endblock %}
 	</div>
 

@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "87d49fec7bf89f27a686d4868b72c454",
+    "hash": "4e2441d8e065103e5c1cb8c9d8230210",
     "packages": [
         {
             "name": "apibot",
@@ -15,6 +15,57 @@
             },
             "type": "library",
             "time": "2012-03-04 10:23:52"
+        },
+        {
+            "name": "cypresslab/gitelephant",
+            "version": "v1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matteosister/GitElephant.git",
+                "reference": "560d3d70fe7d967edf3bbec7449ed826a8458dfe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matteosister/GitElephant/zipball/560d3d70fe7d967edf3bbec7449ed826a8458dfe",
+                "reference": "560d3d70fe7d967edf3bbec7449ed826a8458dfe",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "phpcollection/phpcollection": ">=0.1,<0.3-dev",
+                "symfony/filesystem": "~2.0",
+                "symfony/finder": "~2.0",
+                "symfony/process": "~2.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.8.*",
+                "phpunit/phpunit": "3.7.*",
+                "sami/sami": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "GitElephant": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Matteo Giachino",
+                    "email": "matteog@gmail.com",
+                    "homepage": "https://github.com/matteosister/CypressTreeBundle/tree/develop",
+                    "role": "Developer"
+                }
+            ],
+            "description": "An abstraction layer for git written in PHP 5.3",
+            "homepage": "http://matteosister.github.com/GitElephant",
+            "keywords": [
+                "git"
+            ],
+            "time": "2014-04-06 08:55:41"
         },
         {
             "name": "doctrine/annotations",
@@ -1576,16 +1627,16 @@
         },
         {
             "name": "phpcollection/phpcollection",
-            "version": "0.4.0",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/php-collection.git",
-                "reference": "b8bf55a0a929ca43b01232b36719f176f86c7e83"
+                "reference": "acb02a921bb364f360ce786b13455345063c4a07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/php-collection/zipball/b8bf55a0a929ca43b01232b36719f176f86c7e83",
-                "reference": "b8bf55a0a929ca43b01232b36719f176f86c7e83",
+                "url": "https://api.github.com/repos/schmittjoh/php-collection/zipball/acb02a921bb364f360ce786b13455345063c4a07",
+                "reference": "acb02a921bb364f360ce786b13455345063c4a07",
                 "shasum": ""
             },
             "require": {
@@ -1594,7 +1645,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.3-dev"
+                    "dev-master": "0.2-dev"
                 }
             },
             "autoload": {
@@ -1622,7 +1673,7 @@
                 "sequence",
                 "set"
             ],
-            "time": "2014-03-11 13:46:42"
+            "time": "2013-01-23 15:16:14"
         },
         {
             "name": "phpoption/phpoption",
