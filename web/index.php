@@ -96,10 +96,6 @@ class CacheFile {
 	}
 }
 
-// uncomment to enter maintenance mode
-// DO NOT remove next line - it is used by the auto-update command
-//exitWithMessage('maintenance');
-
 $cache = new Cache($_SERVER['REQUEST_URI'], __DIR__.'/../app/cache/simple_http_cache');
 
 if (isCacheable() && null !== ($cachedContent = $cache->get())) {
@@ -107,6 +103,10 @@ if (isCacheable() && null !== ($cachedContent = $cache->get())) {
 	echo $cachedContent['data'];
 	return;
 }
+
+// uncomment to enter maintenance mode
+// DO NOT remove next line - it is used by the auto-update command
+//exitWithMessage('maintenance');
 
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
