@@ -137,7 +137,7 @@ class TextController extends Controller {
 				return $this->showHtml($text, 1);
 		}
 		if ($redirect = $this->tryMirrorRedirect($id, $_format)) {
-			return $redirect;
+			return $this->urlRedirect($redirect);
 		}
 		Setup::doSetup($this->container);
 		$service = new TextDownloadService($this->getTextRepository());
