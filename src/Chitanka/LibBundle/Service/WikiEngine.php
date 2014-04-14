@@ -51,6 +51,7 @@ class WikiEngine {
 			mkdir($dir, 0755, true);
 		}
 		file_put_contents($fullpath, $fullContent);
+		$editSummary = '['.$this->sanitizeFileName($filename).'] '.$editSummary;
 		$this->repo()->stage($fullpath)->commitWithAuthor($editSummary, $author);
 	}
 
