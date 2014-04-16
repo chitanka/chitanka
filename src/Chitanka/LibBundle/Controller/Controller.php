@@ -111,7 +111,6 @@ abstract class Controller extends SymfonyController {
 	protected function getDisplayVariables()
 	{
 		return array(
-			'_user' => $this->getUser(),
 			'navlinks' => $this->renderNavLinks(),
 			'navextra' => array(),
 			'footer_links' => $this->renderFooterLinks(),
@@ -171,7 +170,6 @@ abstract class Controller extends SymfonyController {
 	protected function setCacheStatusByResponse(Response $response)
 	{
 		if ($this->responseAge && $this->container->getParameter('use_http_cache')) {
-			$response->setPublic();
 			$response->setSharedMaxAge($this->responseAge);
 		}
 		return $response;

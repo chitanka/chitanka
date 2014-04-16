@@ -15,13 +15,12 @@ class FeaturedBookController extends Controller
 	}
 
 
-	public function bookAction()
-	{
+	public function bookAction() {
 		$this->view = array(
 			'book' => $this->getFeaturedBookRepository()->getRandom()
 		);
 
-		return $this->display('book');
+		return $this->render('LibBundle:FeaturedBook:book.html.twig', $this->view);
 	}
 
 }

@@ -9,11 +9,12 @@ use Chitanka\LibBundle\Pagination\Pager;
 
 class UserController extends Controller
 {
-	public function personalToolsAction()
-	{
+	public function personalToolsAction() {
 		$this->responseAge = 0;
 
-		return $this->display('personal_tools');
+		return $this->render('LibBundle:User:personal_tools.html.twig', array(
+			'_user' => $this->getUser()
+		));
 	}
 
 
