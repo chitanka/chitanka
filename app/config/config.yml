@@ -217,6 +217,8 @@ sonata_block:
         sonata.block.service.text:
         sonata.block.service.action:
         sonata.block.service.rss:
+    http_cache:
+        listener: false
 
 fos_rest:
     body_listener: false
