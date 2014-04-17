@@ -96,12 +96,18 @@ class CacheFile {
 	}
 }
 
-$cache = new Cache($_SERVER['REQUEST_URI'], __DIR__.'/../app/cache/simple_http_cache');
-
-if (isCacheable() && null !== ($cachedContent = $cache->get())) {
-	header("Cache-Control: public, max-age=".$cachedContent['ttl']);
-	echo $cachedContent['data'];
-	return;
+$isCacheable = isCacheable();
+if ($isCacheable) {
+	$requestUri = $_SERVER['REQUEST_URI'];
+	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+		$requestUri .= '.ajax';
+	}
+	$cache = new Cache($requestUri, __DIR__.'/../app/cache/simple_http_cache');
+	if (null !== ($cachedContent = $cache->get())) {
+		header("Cache-Control: public, max-age=".$cachedContent['ttl']);
+		echo $cachedContent['data'];
+		return;
+	}
 }
 
 // uncomment to enter maintenance mode
@@ -145,7 +151,7 @@ $kernel->loadClassCache();
 //$kernel = new AppCache($kernel);
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
-if (isCacheable() && $response->isOk()) {
+if ($isCacheable && $response->isOk()) {
 	try {
 		$cache->set($response->getContent(), $response->getTtl());
 	} catch (\RuntimeException $e) {
