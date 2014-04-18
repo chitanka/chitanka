@@ -68,7 +68,7 @@ class CacheFile {
 		if ( ! file_exists($dir)) {
 			mkdir($dir, 0777, true);
 		}
-		file_put_contents($this->name, gzdeflate($content));
+		file_put_contents($this->name, gzdeflate(ltrim($content)));
 	}
 	public function read() {
 		$content = file_get_contents($this->name);
@@ -121,18 +121,19 @@ use Symfony\Component\HttpFoundation\Request;
 umask(0000);
 
 $rootDir = __DIR__.'/..';
-require_once $rootDir.'/app/bootstrap.php.cache';
+$loader = require $rootDir.'/app/bootstrap.php.cache';
 
 try {
 	// Use APC for autoloading to improve performance
-	$loader = new ApcClassLoader('chitanka', $loader);
-	$loader->register(true);
+	$apcLoader = new ApcClassLoader('chitanka', $loader);
+	$loader->unregister();
+	$apcLoader->register(true);
 } catch (\RuntimeException $e) {
 	// APC not enabled
 }
 
-require_once $rootDir.'/app/AppKernel.php';
-//require_once $rootDir.'/app/AppCache.php';
+require $rootDir.'/app/AppKernel.php';
+//require $rootDir.'/app/AppCache.php';
 
 register_shutdown_function(function(){
 	$error = error_get_last();
@@ -149,6 +150,9 @@ register_shutdown_function(function(){
 $kernel = new AppKernel('prod', false);
 $kernel->loadClassCache();
 //$kernel = new AppCache($kernel);
+
+// When using the HttpCache, we need to call the method explicitly instead of relying on the configuration parameter
+//Request::enableHttpMethodParameterOverride();
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 if ($isCacheable && $response->isOk()) {

@@ -16,10 +16,10 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
 }
 
 $rootDir = __DIR__.'/..';
-require_once $rootDir.'/app/bootstrap.php.cache';
+require $rootDir.'/app/bootstrap.php.cache';
 Debug::enable();
 
-require_once $rootDir.'/app/AppKernel.php';
+require $rootDir.'/app/AppKernel.php';
 
 $kernel = new AppKernel('dev', true);
 $kernel->loadClassCache();
