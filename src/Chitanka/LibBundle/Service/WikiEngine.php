@@ -5,7 +5,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class WikiEngine {
 
 	public static function markdownToHtml($markdownContent) {
-		return Markdown::defaultTransform($markdownContent);
+		$html = Markdown::defaultTransform($markdownContent);
+		$html = preg_replace_callback('#<p>(<img [^>]+>)</p>#', function($match) {
+			if (preg_match('#title="([^"]+)"#', $match[1], $submatch)) {
+				return '<p class="image">'
+					. $match[1] . '<span class="image-title">'.$submatch[1].'</span>'
+					. '</p>';
+			}
+			return '<p class="image">'.$match[1].'</p>';
+		}, $html);
+		return $html;
 	}
 
 	private $wikiPath;
