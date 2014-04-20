@@ -1,7 +1,10 @@
 (function(window, $) {
 
 window.loadWikiEditor = function($editable, $heading, options) {
-	var $sourcebox = $('<textarea class="markdown-source"></textarea>').hide().insertAfter($editable);
+	var $sourcebox = $editable.next(".markdown-source");
+	if ($sourcebox.length == 0) {
+		$sourcebox = $('<textarea class="markdown-source"></textarea>').hide().insertAfter($editable);
+	}
 
 	var getSource = function($editable) {
 		if (options.format != "md") {
@@ -19,7 +22,7 @@ window.loadWikiEditor = function($editable, $heading, options) {
 		var params = {
 			page: options.page +"."+ options.format,
 			title: $heading.text(),
-			content: $sourcebox.is(":visible") ? $sourcebox.val() : getSource($editable),
+			content: $sourcebox.val(),
 			summary: summary
 		};
 		var $button = $(button).addClass("loading");
@@ -32,7 +35,7 @@ window.loadWikiEditor = function($editable, $heading, options) {
 		return false;
 	};
 
-	var toggleSourceView = function() {
+	var toggleSourceView = function(button) {
 		if ($sourcebox.is(":visible")) {
 			if (options.format == "md") {
 				$editable.css({ opacity: 0.3 });
@@ -43,9 +46,11 @@ window.loadWikiEditor = function($editable, $heading, options) {
 				$editable.html($sourcebox.val());
 			}
 		} else {
-			var source = getSource($editable);
-			$sourcebox.val(source);
-			if (source.match(/[| -]{120}/)) {
+			if ($.trim($sourcebox.val()) == "") {
+				var source = getSource($editable);
+				$sourcebox.val(source);
+			}
+			if (source.match(/[| -]{120}/)) { // wide tables
 				$sourcebox.attr("wrap", "off");
 			} else {
 				$sourcebox.removeAttr("wrap");
@@ -53,18 +58,16 @@ window.loadWikiEditor = function($editable, $heading, options) {
 		}
 		$editable.toggle();
 		$sourcebox.toggle();
+		$(button).find(".fa").toggleClass("fa-code fa-eye");
 	};
 
 	$editable.hallo({
 		plugins: {
-			halloformat: {},
-			//halloblock: {},
-			halloheadings: { formatBlocks: ["p", "h1", "h2", "h3", "h4"] },
-			hallolists: {},
-			hallolink: {},
-			//halloimage: {},
-			//hallojustify: {},
-			halloreundo: {},
+			//halloformat: {},
+			//halloheadings: { formatBlocks: ["p", "h1", "h2", "h3", "h4"] },
+			//hallolists: {},
+			//hallolink: {},
+			//halloreundo: {},
 			halloextrabuttons: {
 				position: 'right',
 				id: 'wikiButton',
@@ -77,14 +80,15 @@ window.loadWikiEditor = function($editable, $heading, options) {
 					},
 					icon: 'save',
 					label: 'Запис',
-					disabled: false
+					disabled: false,
+					id: 'wikiSave'
 				}, {
 					action: function(event, button) {
-						toggleSourceView();
-						$(button).toggleClass("active");
+						toggleSourceView(button);
 					},
 					icon: 'code',
-					label: 'Изходен код'
+					label: 'Изходен код / Преглед',
+					id: 'wikiSourceToggle'
 				}, {
 					action: function(event, button, toolbar, widget) {
 						widget.element.hallo({editable: false}).blur();
@@ -103,9 +107,10 @@ window.loadWikiEditor = function($editable, $heading, options) {
 	$heading.attr("contenteditable", true);
 
 	$editable.on('hallomodified', function(event, data) {
-		$("#wikiButton-Запис").prop("disabled", false);
+		$("#wikiSave").prop("disabled", false);
 	});
 
+	$("#wikiSourceToggle").click();
 };
 
 })(window, jQuery);

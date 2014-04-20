@@ -2864,7 +2864,7 @@
         if ((_base = this.options).icon == null) {
           _base.icon = "fa fa-" + (this.options.label.toLowerCase());
         }
-        id = "" + this.options.uuid + "-" + this.options.label;
+        id = this.options.id || ("" + this.options.uuid + "-" + this.options.label.replace(/[ \/]/g, '-'));
         opts = this.options;
         this.button = this._createButton(id, opts.command, opts.label, opts.icon);
         this.element.append(this.button);
@@ -3082,7 +3082,8 @@
 				var buttonset = jQuery('<span class="' + classes.join(' ') + '"></span>');
 				jQuery.each(buttonsOptions, function(i, buttonOptions) {
 					var $button = jQuery('<span>').hallobutton({
-						uuid: buttonOptions.id || options.id || options.uuid,
+						id: buttonOptions.id,
+						uuid: options.id,
 						editable: buttonOptions.editable || options.editable,
 						label: buttonOptions.label || options.label,
 						icon: "fa fa-" + (buttonOptions.icon || options.icon),
