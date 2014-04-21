@@ -32,7 +32,7 @@ class Cache {
 			$this->purge();
 			return null;
 		}
-		$this->log("=== CACHE HIT");
+		$this->log("=== HIT");
 		return array(
 			'data' => $this->file->read(),
 			'ttl' => $ttl,
@@ -45,15 +45,15 @@ class Cache {
 	 */
 	public function set($content, $ttl) {
 		if (!$ttl) {
-			$this->log("/// CACHE SKIP");
+			$this->log("/// SKIP");
 			return;
 		}
 		$this->file->write($content, $ttl);
-		$this->log("+++ CACHE MISS ($ttl)");
+		$this->log("+++ MISS ($ttl)");
 	}
 	private function purge() {
 		$this->file->delete();
-		$this->log('--- CACHE PURGE');
+		$this->log('--- PURGE');
 	}
 	private function log($msg) {
 		if ($this->debug) {
