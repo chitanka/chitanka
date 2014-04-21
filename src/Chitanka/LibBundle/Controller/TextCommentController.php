@@ -4,11 +4,9 @@ namespace Chitanka\LibBundle\Controller;
 
 use Chitanka\LibBundle\Form\TextCommentForm;
 
-class TextCommentController extends Controller
-{
-	public function indexAction($page, $_format)
-	{
-		$this->responseAge = 0;
+class TextCommentController extends Controller {
+
+	public function indexAction($page, $_format) {
 		if ($_format == 'rss') {
 			$limit = 10;
 			$this->view = array(
@@ -23,9 +21,7 @@ class TextCommentController extends Controller
 		return $this->legacyPage('Comment');
 	}
 
-
-	public function listForTextAction($id)
-	{
+	public function listForTextAction($id) {
 		$this->responseAge = 0;
 		$text = $this->getTextRepository()->find($id);
 
@@ -57,9 +53,7 @@ class TextCommentController extends Controller
 // 		return $this->display('text_comments');
 	}
 
-
-	public function latestAction($limit = 5)
-	{
+	public function latestAction($limit = 5) {
 		$this->view = array(
 			'comments' => $this->getTextCommentRepository()->getLatest($limit),
 		);

@@ -212,14 +212,6 @@ class TextController extends Controller {
 	}
 
 
-	public function commentsAction($id, $_format) {
-		$this->disableCache();
-
-		$_REQUEST['id'] = $id;
-
-		return $this->legacyPage('Comment');
-	}
-
 	public function similarAction($id) {
 		$text = $this->findText($id);
 		$alikes = $text->getAlikes();
