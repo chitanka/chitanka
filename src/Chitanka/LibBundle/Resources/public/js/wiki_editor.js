@@ -50,7 +50,7 @@ window.loadWikiEditor = function($editable, $heading, options) {
 				var source = getSource($editable);
 				$sourcebox.val(source);
 			}
-			if (source.match(/[| -]{120}/)) { // wide tables
+			if ($sourcebox.val().match(/[| -]{120}/)) { // wide tables
 				$sourcebox.attr("wrap", "off");
 			} else {
 				$sourcebox.removeAttr("wrap");
