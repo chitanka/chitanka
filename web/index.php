@@ -14,11 +14,13 @@ class Cache {
 	private $file;
 	private $request;
 	private $debug = false;
+	private $logFile;
 
-	public function __construct($requestUri, $cacheDir) {
+	public function __construct($requestUri, $cacheDir, $logDir = '') {
 		$hash = md5($requestUri);
 		$this->file = new CacheFile("$cacheDir/$hash[0]/$hash[1]/$hash[2]/$hash");
 		$this->request = $requestUri;
+		$this->logFile = "$logDir/cache.log";
 	}
 
 	public function get() {
@@ -50,7 +52,7 @@ class Cache {
 	}
 	private function log($msg) {
 		if ($this->debug) {
-			error_log("$msg - $this->request");
+			file_put_contents($this->logFile, "$msg - $this->request\n", FILE_APPEND);
 		}
 	}
 }
@@ -102,7 +104,7 @@ if ($isCacheable) {
 	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
 		$requestUri .= '.ajax';
 	}
-	$cache = new Cache($requestUri, __DIR__.'/../app/cache/simple_http_cache');
+	$cache = new Cache($requestUri, __DIR__.'/../app/cache/simple_http_cache', __DIR__.'/../app/logs');
 	if (null !== ($cachedContent = $cache->get())) {
 		header("Cache-Control: public, max-age=".$cachedContent['ttl']);
 		echo $cachedContent['data'];
