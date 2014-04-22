@@ -4,7 +4,7 @@
 		<a href="{{ path('texts_by_label', {'slug': label.slug}) }}">{{ label.name }}</a>
 		({{ label.nr_of_texts }})
 	{% if label.children is defined %}
-		{% include 'LibBundle:Text:label_tree.html.twig' with {'labels': label.children} %}
+		{% include 'App:Text:label_tree.html.twig' with {'labels': label.children} %}
 	{% endif %}
 	</li>
 {% endfor %}

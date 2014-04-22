@@ -1,9 +1,9 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set itemtype = "Book" %}
 {% set title %}
 	{% if authors|length %}
-		{% import 'LibBundle::link.html.twig' as link %}
+		{% import 'App::link.html.twig' as link %}
 		{{ link.persons_comma(authors) }}<br>
 	{% endif %}
 	<a class="selflink" itemprop="name" data-edit="{{ path('admin_book_edit', {'id': book.id}) }}">{{ book.title|dot2br|raw }}</a>
@@ -14,9 +14,9 @@
 
 {% block content %}
 
-	{% include 'LibBundle:Book:_breadcrumb_sequences.html.twig' %}
+	{% include 'App:Book:_breadcrumb_sequences.html.twig' %}
 
-	{% include 'LibBundle:Book:show_text.html.twig' %}
+	{% include 'App:Book:show_text.html.twig' %}
 
 {% endblock %}
 

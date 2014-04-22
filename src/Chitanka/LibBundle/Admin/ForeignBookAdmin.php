@@ -27,10 +27,10 @@ class ForeignBookAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-			->add('cover', 'string', array('template' => 'LibBundle:FeaturedBookAdmin:list_cover.html.twig'))
+			->add('cover', 'string', array('template' => 'App:FeaturedBookAdmin:list_cover.html.twig'))
 			->addIdentifier('title')
 			->add('author')
-			->add('url', 'string', array('template' => 'LibBundle:FeaturedBookAdmin:list_url.html.twig'))
+			->add('url', 'string', array('template' => 'App:FeaturedBookAdmin:list_url.html.twig'))
 			->add('isFree')
 			->add('_action', 'actions', array(
 				'actions' => array(

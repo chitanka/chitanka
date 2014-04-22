@@ -9,4 +9,4 @@
 <file size="{{ entry.tfsize }}">{{ entry.tmpfiles }}</file>
 <is-frozen>{{ entry.is_frozen }}</is-frozen>
 <user>{{ entry.user.username }}</user>
-{% include 'LibBundle:WorkContrib:list.xml.twig' with {'contribs': entry.contribs} %}
+{% include 'App:WorkContrib:list.xml.twig' with {'contribs': entry.contribs} %}

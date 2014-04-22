@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Книги в категория „' ~ category.name ~ '“' %}
 {% block content %}
@@ -11,7 +11,7 @@
 		<li class="active">{{ category.name }}</li>
 	</ul>
 
-	{% include 'LibBundle:Book:list.html.twig' %}
-	{% include 'LibBundle::pager.html.twig' %}
+	{% include 'App:Book:list.html.twig' %}
+	{% include 'App::pager.html.twig' %}
 
 {% endblock %}

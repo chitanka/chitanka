@@ -1,16 +1,16 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Търсене' %}
 {% block content %}
 
 	<div style="width: 49%; float: left">
 		<p>Най-търсено:</p>
-		{% include 'LibBundle:Search:top_strings.html.twig' with {'strings': top_strings} %}
+		{% include 'App:Search:top_strings.html.twig' with {'strings': top_strings} %}
 	</div>
 
 	<div style="width: 49%; float: left">
 		<p>Последно потърсено:</p>
-		{% include 'LibBundle:Search:top_strings.html.twig' with {'strings': latest_strings} %}
+		{% include 'App:Search:top_strings.html.twig' with {'strings': latest_strings} %}
 	</div>
 
 {% endblock %}

@@ -48,7 +48,7 @@ EOT
 			return;
 		}
 		$output->writeln('Updating site links...');
-		$repo = $em->getRepository('LibBundle:Site');
+		$repo = $em->getRepository('App:Site');
 		foreach ($linksData as $linkData) {
 			$site = $repo->findOneByUrlOrCreate($linkData[1]);
 			$site->setName($linkData[2]);

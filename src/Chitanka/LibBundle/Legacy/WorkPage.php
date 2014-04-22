@@ -205,7 +205,7 @@ class WorkPage extends Page {
 		}
 
 		if ( $this->entryId == 0 ) {
-			$id = $this->controller->getRepository('NextId')->findNextId('LibBundle:WorkEntry')->getValue();
+			$id = $this->controller->getRepository('NextId')->findNextId('App:WorkEntry')->getValue();
 			$this->uplfile = preg_replace('/^0-/', "$id-", $this->uplfile);
 		} else {
 			$id = $this->entryId;
@@ -303,7 +303,7 @@ class WorkPage extends Page {
 			$this->db->update(self::DB_TABLE2, $set, $key);
 			$msg = 'Данните бяха обновени.';
 		} else {
-			$set['id'] = $this->controller->getRepository('NextId')->findNextId('LibBundle:WorkContrib')->getValue();
+			$set['id'] = $this->controller->getRepository('NextId')->findNextId('App:WorkContrib')->getValue();
 			$this->db->insert(self::DB_TABLE2, $set);
 			$msg = 'Току-що се включихте в подготовката на произведението.';
 			$this->informScanUser($this->entryId);
@@ -443,7 +443,7 @@ EOS;
 			);
 			if ($this->searchQuery) $params[$this->FF_LQUERY] = $this->searchQuery;
 			if ($this->scanuser_view) $params['user'] = $this->scanuser_view;
-			$pagelinks = $showPageLinks ? $this->controller->renderView('LibBundle::pager.html.twig', array(
+			$pagelinks = $showPageLinks ? $this->controller->renderView('App::pager.html.twig', array(
 				'pager'    => new Pager(array(
 					'page'  => $this->lpage,
 					'limit' => $this->llimit,
@@ -1280,7 +1280,7 @@ EOS;
 				$class .= ' is_frozen';
 				$progressbar .= ' (замразена)';
 			}
-			$deleteForm = $this->controller->renderView('LibBundle:Workroom:contrib_delete_form.html.twig', array('contrib' => array('id' => $edata['id'])));
+			$deleteForm = $this->controller->renderView('App:Workroom:contrib_delete_form.html.twig', array('contrib' => array('id' => $edata['id'])));
 
 			$l .= <<<EOS
 

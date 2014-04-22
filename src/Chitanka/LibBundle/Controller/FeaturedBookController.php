@@ -20,7 +20,7 @@ class FeaturedBookController extends Controller
 			'book' => $this->getFeaturedBookRepository()->getRandom()
 		);
 
-		return $this->render('LibBundle:FeaturedBook:book.html.twig', $this->view);
+		return $this->render('App:FeaturedBook:book.html.twig', $this->view);
 	}
 
 }

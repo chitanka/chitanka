@@ -30,7 +30,7 @@
 {% endmacro %}
 
 {% macro translator(text) %}
-	{% import 'LibBundle::link.html.twig' as link %}
+	{% import 'App::link.html.twig' as link %}
 	{% spaceless %}
 	{% if text.translators|length %}
 		<span itemprop="author">
@@ -76,7 +76,7 @@
 
 
 {% macro text_with_author(text, options) %}
-	{% import 'LibBundle::link.html.twig' as link %}
+	{% import 'App::link.html.twig' as link %}
 <dl class="text-entity" itemscope itemtype="http://schema.org/CreativeWork" data-id="{{ text.id }}">
 	<dt>
 		{{ _self.rating(text) }}
@@ -96,7 +96,7 @@
 
 
 {% macro text(text, options) %}
-	{% import 'LibBundle::link.html.twig' as link %}
+	{% import 'App::link.html.twig' as link %}
 <dl class="text-entity" itemscope itemtype="http://schema.org/CreativeWork" data-id="{{ text.id }}">
 	<dt>
 		{{ _self.rating(text) }}

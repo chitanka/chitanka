@@ -1,9 +1,9 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = ('authors.by.country.'~by)|trans ~ ': ' ~ ('country.'~country)|trans %}
 {% block content %}
 
-	{% include 'LibBundle:Author:list.html.twig' %}
-	{% include 'LibBundle::pager.html.twig' %}
+	{% include 'App:Author:list.html.twig' %}
+	{% include 'App::pager.html.twig' %}
 
 {% endblock %}

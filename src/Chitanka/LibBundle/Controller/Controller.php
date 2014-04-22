@@ -52,7 +52,7 @@ abstract class Controller extends SymfonyController {
 			$data['inline_js'] = $page->inlineJs;
 		}
 
-		$response = $this->render("LibBundle:$controller.$format.twig", $this->view + $data);
+		$response = $this->render("App:$controller.$format.twig", $this->view + $data);
 		$this->setCacheStatusByResponse($response);
 
 		return $response;
@@ -85,7 +85,7 @@ abstract class Controller extends SymfonyController {
 		} else if ($format == 'osd') {
 			$this->responseAge = 31536000; // an year
 		}
-		$response = $this->render("LibBundle:$controller:$action.$format.twig", $this->view + $params + $globals);
+		$response = $this->render("App:$controller:$action.$format.twig", $this->view + $params + $globals);
 		if ($format == 'opds') {
 			$normalizedContent = $response->getContent();
 			$normalizedContent = strtr($normalizedContent, array(
@@ -124,11 +124,11 @@ abstract class Controller extends SymfonyController {
 	}
 
 	protected function renderNavLinks() {
-		return $this->renderLayoutComponent('sidebar-menu', 'LibBundle::navlinks.html.twig');
+		return $this->renderLayoutComponent('sidebar-menu', 'App::navlinks.html.twig');
 	}
 
 	protected function renderFooterLinks() {
-		return $this->renderLayoutComponent('footer-menu', 'LibBundle::footer_links.html.twig');
+		return $this->renderLayoutComponent('footer-menu', 'App::footer_links.html.twig');
 	}
 
 	protected function renderLayoutComponent($wikiPage, $fallbackTemplate) {
@@ -211,7 +211,7 @@ abstract class Controller extends SymfonyController {
 
 	protected function getEntityName($entityName)
 	{
-		return 'LibBundle:'.$entityName;
+		return 'App:'.$entityName;
 	}
 
 

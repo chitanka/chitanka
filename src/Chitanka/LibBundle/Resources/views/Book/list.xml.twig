@@ -13,7 +13,7 @@
 		<type>{{ book.type }}</type>
 		{% for person in book.authors %}
 			<author>
-				{% include 'LibBundle:Person:person.xml.twig' %}
+				{% include 'App:Person:person.xml.twig' %}
 			</author>
 		{% endfor %}
 		{% if book.sequence is not empty %}

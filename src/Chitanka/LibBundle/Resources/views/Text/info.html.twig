@@ -1,5 +1,5 @@
-{% import 'LibBundle::text.html.twig' as textinfo %}
-{% import 'LibBundle::link.html.twig' as link %}
+{% import 'App::text.html.twig' as textinfo %}
+{% import 'App::link.html.twig' as link %}
 <div class="text-entity" data-id="{{ text.id }}">
 	<ul>
 		{% if text.series.slug is defined %}
@@ -17,7 +17,7 @@
 			{% elseif text.books|length > 1 %}
 				Включено в книгите:
 			{% endif %}
-			{% include 'LibBundle:Book:list.html.twig' with {'books': text.books} %}
+			{% include 'App:Book:list.html.twig' with {'books': text.books} %}
 			</li>
 		{% endif %}
 		<li>
@@ -43,7 +43,7 @@
 			{% for label in text.labels %}
 				<li>
 					{{ link.label(label) }}
-					{% include 'LibBundle:Text:label_delete_form.html.twig' with {'label': label} %}
+					{% include 'App:Text:label_delete_form.html.twig' with {'label': label} %}
 				</li>
 			{% else %}
 				<li class="no-items">Няма</li>
@@ -55,9 +55,9 @@
 	</ul>
 	<ul class="user-actions">
 		<li>Вашата оценка:
-			{{ render_esi(controller('LibBundle:Text:rating', {'id': text.id})) }}
+			{{ render_esi(controller('App:Text:rating', {'id': text.id})) }}
 		</li>
-		<li>{{ render_esi(controller('LibBundle:Text:markReadForm', {'id': text.id})) }}
+		<li>{{ render_esi(controller('App:Text:markReadForm', {'id': text.id})) }}
 		<li>{{ textinfo.bookmark_form(text, ' ') }}</li>
 	</ul>
 </div>

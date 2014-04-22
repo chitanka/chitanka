@@ -1,5 +1,5 @@
 {% extends '::base.opds.twig' %}
-{% import 'LibBundle::helper.opds.twig' as helper %}
+{% import 'App::helper.opds.twig' as helper %}
 
 {% if title is defined and pager is defined and pager.count > 1 %}
 {% set suffix = 'страница ' ~ pager.page ~ ' от ' ~ pager.count %}

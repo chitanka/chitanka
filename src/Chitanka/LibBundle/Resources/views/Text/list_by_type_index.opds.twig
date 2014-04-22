@@ -1,9 +1,9 @@
-{% extends 'LibBundle::layout.opds.twig' %}
+{% extends 'App::layout.opds.twig' %}
 
-{% import 'LibBundle::helper.opds.twig' as helper %}
+{% import 'App::helper.opds.twig' as helper %}
 {% set id = helper.urn('texts_by_type_index') %}
 {% set link_self = helper.url('texts_by_type_index') %}
 {% set title = 'Произведения по форма' %}
 {% block content %}
-	{% include 'LibBundle:Text:type_list.opds.twig' %}
+	{% include 'App:Text:type_list.opds.twig' %}
 {% endblock %}

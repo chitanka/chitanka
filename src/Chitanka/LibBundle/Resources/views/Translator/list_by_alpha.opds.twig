@@ -1,5 +1,5 @@
-{% extends 'LibBundle::layout.opds.twig' %}
-{% import 'LibBundle::helper.opds.twig' as helper %}
+{% extends 'App::layout.opds.twig' %}
+{% import 'App::helper.opds.twig' as helper %}
 
 {% set link_self = helper.url('translators_by_alpha', {'by': by, 'letter': letter}) %}
 {% set title = ('translators.by.'~by)|trans ~': '~ (letter == '-' ? 'Всички' : letter) %}
@@ -21,6 +21,6 @@
 		_self.description(translator, by)) }}
 {% endfor %}
 
-	{% include 'LibBundle::pager.opds.twig' %}
+	{% include 'App::pager.opds.twig' %}
 
 {% endblock %}

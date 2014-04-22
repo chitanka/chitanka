@@ -46,11 +46,11 @@ class TextBookmarkService {
 
 	/** @return BookmarkFolderRepository */
 	protected function getBookmarkFolderRepository() {
-		return $this->em->getRepository('LibBundle:BookmarkFolder');
+		return $this->em->getRepository('App:BookmarkFolder');
 	}
 
 	/** @return BookmarkRepository */
 	protected function getBookmarkRepository() {
-		return $this->em->getRepository('LibBundle:Bookmark');
+		return $this->em->getRepository('App:Bookmark');
 	}
 }

@@ -18,7 +18,7 @@ class TextLabelType extends AbstractType
 				'mapped' => false,
 			))
 			->add('label', 'entity', array(
-				'class' => 'LibBundle:Label',
+				'class' => 'App:Label',
 				'query_builder' => function (EntityRepository $repo) {
 					return $repo->createQueryBuilder('l')->orderBy('l.name');
 				}

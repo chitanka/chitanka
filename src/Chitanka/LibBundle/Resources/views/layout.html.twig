@@ -19,7 +19,7 @@
 
 {% block stylesheets %}
 	<link rel="stylesheet" href="{{ asset('bundles/lib/font-awesome/css/font-awesome.min.css') }}">
-	{{ render_esi(controller('LibBundle:User:stylesheet')) }}
+	{{ render_esi(controller('App:User:stylesheet')) }}
 	{% if css_extra is defined %}
 		{% for extra_stylesheet in css_extra %}
 			<link rel="stylesheet" href="{{ asset(extra_stylesheet) }}">
@@ -46,7 +46,7 @@
 
 {% block body %}
 
-	{% include 'LibBundle::jumpto_links.html.twig' %}
+	{% include 'App::jumpto_links.html.twig' %}
 
 	{% if global_info_message is not empty %}
 		<div id="global-info-message">
@@ -55,14 +55,14 @@
 		</div>
 	{% endif %}
 
-	{% include 'LibBundle::projects_toolbar.html.twig' %}
+	{% include 'App::projects_toolbar.html.twig' %}
 
 	<div id="content-wrapper" class="clearfix p_{{ current_route }}">
 
 		<div id="main-content-wrapper">
 			<div id="main-content" role="main" itemscope itemtype="http://schema.org/{{ itemtype|default('WebPage') }}">
 				{% block site_notice %}
-					{{ render(controller('LibBundle:SiteNotice:stripe')) }}
+					{{ render(controller('App:SiteNotice:stripe')) }}
 				{% endblock %}
 
 				<div id="first-heading">
@@ -99,7 +99,7 @@
 			</div>
 
 			{% block personal_tools %}
-				{{ render_esi(controller('LibBundle:User:personalTools')) }}
+				{{ render_esi(controller('App:User:personalTools')) }}
 			{% endblock %}
 
 			{% block navlinks %}
@@ -109,11 +109,11 @@
 			{% endblock %}
 
 			{% block search_form %}
-				{% include 'LibBundle::search_form.html.twig' %}
+				{% include 'App::search_form.html.twig' %}
 			{% endblock %}
 
 			{% block navextra %}
-				{% include 'LibBundle::navextra.html.twig' %}
+				{% include 'App::navextra.html.twig' %}
 			{% endblock %}
 
 		{% endblock %}

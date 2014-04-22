@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Серии' %}
 {% block head %}
@@ -6,5 +6,5 @@
 	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('series_search', {'_format': 'osd'}) }}" title="Търсене по серии в Моята библиотека" />
 {% endblock %}
 {% block content %}
-	{% include 'LibBundle:Series:navigation.html.twig' with {'letter': ''} %}
+	{% include 'App:Series:navigation.html.twig' with {'letter': ''} %}
 {% endblock %}

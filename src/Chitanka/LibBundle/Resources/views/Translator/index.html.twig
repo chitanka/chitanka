@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'translators'|trans %}
 {% block head %}
@@ -7,5 +7,5 @@
 	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('persons_search', {'_format': 'osd'}) }}" title="Търсене по личности в Моята библиотека" />
 {% endblock %}
 {% block content %}
-	{% include 'LibBundle:Translator:navigation.html.twig' with {'by': '', 'letter': ''} %}
+	{% include 'App:Translator:navigation.html.twig' with {'by': '', 'letter': ''} %}
 {% endblock %}

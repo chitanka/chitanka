@@ -49,7 +49,7 @@ EOT
 	protected function updateBookTitleAuthor($dumpSql)
 	{
 		$queries = array();
-		$iterableResult = $this->em->createQuery('SELECT b FROM LibBundle:Book b WHERE b.title_author IS NULL')->iterate();
+		$iterableResult = $this->em->createQuery('SELECT b FROM App:Book b WHERE b.title_author IS NULL')->iterate();
 		foreach ($iterableResult AS $row) {
 			$book = $row[0];
 			if (count($book->getAuthors()) == 0) {

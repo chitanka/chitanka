@@ -1,10 +1,10 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Търсене' ~ (query ? ' на „'~query.text|e~'“' : '') ~ ' в книгите' %}
 {% block content %}
 
 	{% if books|length %}
-		{% include 'LibBundle:Book:list.html.twig' %}
+		{% include 'App:Book:list.html.twig' %}
 	{% endif %}
 
 	{% if not found %}

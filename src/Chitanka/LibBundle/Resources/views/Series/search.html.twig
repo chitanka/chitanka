@@ -1,10 +1,10 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Търсене' ~ (query ? ' на „'~query.text|e~'“' : '') ~ ' в авторските серии' %}
 {% block content %}
 
 	{% if series|length %}
-		{% include 'LibBundle:Series:list.html.twig' %}
+		{% include 'App:Series:list.html.twig' %}
 	{% endif %}
 
 	{% if not found %}

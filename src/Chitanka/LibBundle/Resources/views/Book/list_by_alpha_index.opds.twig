@@ -1,6 +1,6 @@
-{% extends 'LibBundle::layout.opds.twig' %}
+{% extends 'App::layout.opds.twig' %}
 
-{% import 'LibBundle::helper.opds.twig' as helper %}
+{% import 'App::helper.opds.twig' as helper %}
 {% set id = helper.urn('books_by_alpha_index') %}
 {% set link_self = helper.url('books_by_alpha_index') %}
 {% set title = 'Книги по азбучен ред' %}

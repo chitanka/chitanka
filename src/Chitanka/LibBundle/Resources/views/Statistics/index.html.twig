@@ -1,16 +1,16 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Статистика' %}
 {% block content %}
 	<div class="row">
 		<div class="col-md-4">
-			{% include 'LibBundle:Statistics:base.html.twig' %}
+			{% include 'App:Statistics:base.html.twig' %}
 		</div>
 		<div class="col-md-4">
-			{% include 'LibBundle:Statistics:authors.html.twig' %}
+			{% include 'App:Statistics:authors.html.twig' %}
 		</div>
 		<div class="col-md-4">
-			{% include 'LibBundle:Statistics:texts.html.twig' %}
+			{% include 'App:Statistics:texts.html.twig' %}
 		</div>
 	</div>
 {% endblock %}

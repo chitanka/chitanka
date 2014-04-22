@@ -14,4 +14,4 @@ fos_comment_api:
     defaults: { _format: html }
 
 chitanka:
-    resource: "@LibBundle/Resources/config/routing.yml"
+    resource: "@App/Resources/config/routing.yml"

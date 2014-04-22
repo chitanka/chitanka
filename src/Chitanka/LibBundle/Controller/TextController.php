@@ -351,7 +351,7 @@ class TextController extends Controller {
 			}
 		}
 
-		return $this->render('LibBundle:Text:mark_read_form.html.twig', array('id' => $id));
+		return $this->render('App:Text:mark_read_form.html.twig', array('id' => $id));
 	}
 
 	public function markReadAction(Request $request, $id) {

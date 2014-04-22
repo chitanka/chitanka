@@ -1,6 +1,6 @@
-{% extends 'LibBundle::layout.xml.twig' %}
+{% extends 'App::layout.xml.twig' %}
 {% block body %}
 <results query="{{ query.text }}">
-	{% include 'LibBundle:Sequence:list.xml.twig' %}
+	{% include 'App:Sequence:list.xml.twig' %}
 </results>
 {% endblock %}

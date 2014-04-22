@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Книги' %}
 {% if letter != '-' %}
@@ -11,8 +11,8 @@
 		<li class="active">{{ letter == '-' ? 'Всички' : letter }}</li>
 	</ul>
 
-	{% include 'LibBundle:Book:navigation.html.twig' with {'letter': letter} %}
-	{% include 'LibBundle:Book:list.html.twig' %}
-	{% include 'LibBundle::pager.html.twig' %}
+	{% include 'App:Book:navigation.html.twig' with {'letter': letter} %}
+	{% include 'App:Book:list.html.twig' %}
+	{% include 'App::pager.html.twig' %}
 
 {% endblock %}

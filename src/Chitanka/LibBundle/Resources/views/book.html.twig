@@ -1,5 +1,5 @@
 {% macro book(book) %}
-	{% import 'LibBundle::link.html.twig' as link %}
+	{% import 'App::link.html.twig' as link %}
 	<dl itemscope itemtype="http://schema.org/Book">
 		<dt>
 			<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}"

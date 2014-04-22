@@ -1,10 +1,10 @@
-{% extends ajax ? 'LibBundle::layout.js.twig' : 'LibBundle::layout.html.twig' %}
+{% extends ajax ? 'App::layout.js.twig' : 'App::layout.html.twig' %}
 
 {% set title = 'Читателски коментари' %}
 {% set subtitle %}
 {% spaceless %}
-	{% import 'LibBundle::link.html.twig' as link %}
-	{% import 'LibBundle::text.html.twig' as texttools %}
+	{% import 'App::link.html.twig' as link %}
+	{% import 'App::text.html.twig' as texttools %}
 	за „{{ link.text(text) }}“
 	{{ texttools.author_list(text.authors) }}
 {% endspaceless %}
@@ -14,8 +14,8 @@
 	{{ page.getFullContent()|raw }}
 	{#
 	{% for comment in comments %}
-		{% include 'LibBundle:TextComment:comment.html.twig' with {'standalone': false} %}
+		{% include 'App:TextComment:comment.html.twig' with {'standalone': false} %}
 	{% endfor %}
-	{% include 'LibBundle:TextComment:comment_form.html.twig' %}
+	{% include 'App:TextComment:comment_form.html.twig' %}
 	#}
 {% endblock %}

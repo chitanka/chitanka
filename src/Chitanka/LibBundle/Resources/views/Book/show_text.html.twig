@@ -1,4 +1,4 @@
-{% import 'LibBundle::book.html.twig' as booktools %}
+{% import 'App::book.html.twig' as booktools %}
 
 {% if book.titleextra %}
 	<div class="subheader">{{ book.titleextra|nl2br|raw }}</div>
@@ -29,7 +29,7 @@
 	<div class="tab-content">
 		{% if template != "" %}
 			<div class="book-content superlist tab-pane" id="book-content">
-				{% import 'LibBundle::text.html.twig' as texttools %}
+				{% import 'App::text.html.twig' as texttools %}
 				{# TODO refactor and improve this template expansion #}
 				{% set options = {'title': 'TEXT_TITLE'} %}
 				{% for text in book.texts %}

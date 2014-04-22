@@ -1,11 +1,11 @@
-{% extends 'LibBundle::layout.opds.twig' %}
-{% import 'LibBundle::helper.opds.twig' as helper %}
+{% extends 'App::layout.opds.twig' %}
+{% import 'App::helper.opds.twig' as helper %}
 
 {% set link_self = helper.url(current_route, {'page': pager.page}) %}
 {% set title = 'Нови произведения' %}
 {% block content %}
 	{% for text_revision in text_revisions %}
-		{% include 'LibBundle:Text:item.opds.twig' with {'text': text_revision.text} %}
+		{% include 'App:Text:item.opds.twig' with {'text': text_revision.text} %}
 	{% endfor %}
-	{% include 'LibBundle::pager.opds.twig' %}
+	{% include 'App::pager.opds.twig' %}
 {% endblock %}

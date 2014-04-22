@@ -69,7 +69,7 @@ EOT
 
 	private function _getBooks($month)
 	{
-		$repo = $this->em->getRepository('LibBundle:BookRevision');
+		$repo = $this->em->getRepository('App:BookRevision');
 		$booksByCat = array();
 		#foreach ($repo->getByDate(array('2011-07-01', '2011-08-31 23:59'), 1, null, false) as $revision) {
 		foreach ($repo->getByMonth($month) as $revision) {
@@ -91,7 +91,7 @@ EOT
 	// TODO fetch only texts w/o books
 	private function _getTexts($month)
 	{
-		$repo = $this->em->getRepository('LibBundle:TextRevision');
+		$repo = $this->em->getRepository('App:TextRevision');
 		$texts = array();
 		#foreach ($repo->getByDate(array('2011-07-01', '2011-08-31 23:59'), 1, null, false) as $revision) {
 		foreach ($repo->getByMonth($month) as $revision) {

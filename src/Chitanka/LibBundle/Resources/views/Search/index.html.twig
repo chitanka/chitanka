@@ -1,46 +1,46 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Търсене' ~ (query ? ' на „'~query.text|e~'“' : '') %}
 {% block content %}
 
 	{% if persons|length %}
 		<h2>Личности</h2>
-		{% include 'LibBundle:Author:list_with_country.html.twig' with {'authors': persons} %}
+		{% include 'App:Author:list_with_country.html.twig' with {'authors': persons} %}
 	{% endif %}
 
 	{% if texts|length %}
 		<h2>Произведения</h2>
-		{% include 'LibBundle:Text:list.html.twig' %}
+		{% include 'App:Text:list.html.twig' %}
 	{% endif %}
 
 	{% if books|length %}
 		<h2>Книги</h2>
-		{% include 'LibBundle:Book:list.html.twig' %}
+		{% include 'App:Book:list.html.twig' %}
 	{% endif %}
 
 	{% if series|length %}
 		<h2>Авторски серии</h2>
-		{% include 'LibBundle:Series:list.html.twig' %}
+		{% include 'App:Series:list.html.twig' %}
 	{% endif %}
 
 	{% if sequences|length %}
 		<h2>Издателски поредици</h2>
-		{% include 'LibBundle:Sequence:list.html.twig' %}
+		{% include 'App:Sequence:list.html.twig' %}
 	{% endif %}
 
 	{% if labels|length %}
 		<h2>Етикети</h2>
-		{% include 'LibBundle:Text:label_list.html.twig' %}
+		{% include 'App:Text:label_list.html.twig' %}
 	{% endif %}
 
 	{% if categories|length %}
 		<h2>Категории</h2>
-		{% include 'LibBundle:Book:category_list.html.twig' %}
+		{% include 'App:Book:category_list.html.twig' %}
 	{% endif %}
 {#
 	{% if work_entries|length %}
 		<h2>Работно ателие</h2>
-		{% include 'LibBundle:WorkEntry:list.html.twig' with {'entries': work_entries} %}
+		{% include 'App:WorkEntry:list.html.twig' with {'entries': work_entries} %}
 	{% endif %}
 #}
 	{% if not found %}

@@ -1,15 +1,15 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = "Подобни произведения" %}
 {% set subtitle %}
 {% spaceless %}
-	{% import 'LibBundle::link.html.twig' as link %}
-	{% import 'LibBundle::text.html.twig' as texttools %}
+	{% import 'App::link.html.twig' as link %}
+	{% import 'App::text.html.twig' as texttools %}
 	за „{{ link.text(text) }}“
 	{{ texttools.author_list(text.authors) }}
 {% endspaceless %}
 {% endset %}
 
 {% block content %}
-	{% include 'LibBundle:Text:similar_texts.html.twig' with {'texts': similar_texts} %}
+	{% include 'App:Text:similar_texts.html.twig' with {'texts': similar_texts} %}
 {% endblock %}

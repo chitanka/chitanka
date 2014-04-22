@@ -1,10 +1,10 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Серии: ' ~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
 
-	{% include 'LibBundle:Series:navigation.html.twig' with {'letter': letter} %}
-	{% include 'LibBundle:Series:list.html.twig' %}
-	{% include 'LibBundle::pager.html.twig' %}
+	{% include 'App:Series:navigation.html.twig' with {'letter': letter} %}
+	{% include 'App:Series:list.html.twig' %}
+	{% include 'App::pager.html.twig' %}
 
 {% endblock %}

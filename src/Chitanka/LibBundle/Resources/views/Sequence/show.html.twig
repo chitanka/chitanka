@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = '<a class="selflink" data-edit="'~ path('admin_sequence_edit', {'id': sequence.id}) ~'">'~ sequence.name ~'</a>' %}
 {% set subtitle = 'издателска поредица' %}
@@ -12,5 +12,5 @@
 			{% endif %}
 		</li>
 	</ul>
-	{% include 'LibBundle:Book:list.html.twig' %}
+	{% include 'App:Book:list.html.twig' %}
 {% endblock %}

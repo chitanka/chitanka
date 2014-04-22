@@ -36,13 +36,13 @@ class CommonDbCommand extends ContainerAwareCommand
 	protected function updateTextCountByLabelsParents(OutputInterface $output, EntityManager $em)
 	{
 		$output->writeln('Updating texts count by labels parents');
-		$this->_updateCountByParents($em, 'LibBundle:Label', 'NrOfTexts');
+		$this->_updateCountByParents($em, 'App:Label', 'NrOfTexts');
 	}
 
 	protected function updateBookCountByCategoriesParents(OutputInterface $output, EntityManager $em)
 	{
 		$output->writeln('Updating books count by categories parents');
-		$this->_updateCountByParents($em, 'LibBundle:Category', 'NrOfBooks');
+		$this->_updateCountByParents($em, 'App:Category', 'NrOfBooks');
 	}
 
 	protected function _updateCountByParents(EntityManager $em, $entity, $field)
@@ -155,7 +155,7 @@ class CommonDbCommand extends ContainerAwareCommand
 	protected function getRepository($entityName)
 	{
 		if (strpos($entityName, ':') === false) {
-			$entityName = "LibBundle:$entityName";
+			$entityName = "App:$entityName";
 		}
 		return $this->getEntityManager()->getRepository($entityName);
 	}

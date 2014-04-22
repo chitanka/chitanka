@@ -14,7 +14,7 @@ class LabelType extends AbstractType
 			->add('slug')
 			->add('name')
 			->add('parent', 'entity', array(
-				'class' => 'LibBundle:Label',
+				'class' => 'App:Label',
 				'query_builder' => function ($repo) {
 					return $repo->createQueryBuilder('l')->orderBy('l.name');
 				}

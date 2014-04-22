@@ -1,11 +1,11 @@
-{% extends 'LibBundle::layout.opds.twig' %}
-{% import 'LibBundle::helper.opds.twig' as helper %}
+{% extends 'App::layout.opds.twig' %}
+{% import 'App::helper.opds.twig' as helper %}
 
 {% set link_self = helper.url(current_route, {'slug': sequence.slug}) %}
 {% set title = sequence.name %}
 {% set subtitle = 'издателска поредица' %}
 {% block content %}
 	{% for book in books %}
-		{% include 'LibBundle:Book:item.opds.twig' %}
+		{% include 'App:Book:item.opds.twig' %}
 	{% endfor %}
 {% endblock %}

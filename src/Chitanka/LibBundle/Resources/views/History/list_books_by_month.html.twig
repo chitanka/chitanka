@@ -1,8 +1,8 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Нови книги за ' ~ ('month.'~month)|trans ~' '~ year %}
 {% block content %}
-	{% include 'LibBundle:History:toc.html.twig' with {'route': 'new_books_by_month'} %}
-	{% include 'LibBundle:History:books_list.html.twig' %}
-	{% include 'LibBundle::pager.html.twig' %}
+	{% include 'App:History:toc.html.twig' with {'route': 'new_books_by_month'} %}
+	{% include 'App:History:books_list.html.twig' %}
+	{% include 'App::pager.html.twig' %}
 {% endblock %}

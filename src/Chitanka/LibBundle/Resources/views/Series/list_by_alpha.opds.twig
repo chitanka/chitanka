@@ -1,12 +1,12 @@
-{% extends 'LibBundle::layout.opds.twig' %}
+{% extends 'App::layout.opds.twig' %}
 
-{% import 'LibBundle::helper.opds.twig' as helper %}
+{% import 'App::helper.opds.twig' as helper %}
 {% set self_route_params = pager.has_prev ? route_params|merge({'page': pager.page}) : route_params %}
 {% set id = helper.urn(current_route, self_route_params) %}
 {% set link_self = helper.url(current_route, self_route_params) %}
 {% set link_up = helper.url('series') %}
 {% set title = 'Серии: ' ~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
-	{% include 'LibBundle::pager.opds.twig' %}
-	{% include 'LibBundle:Series:list.opds.twig' %}
+	{% include 'App::pager.opds.twig' %}
+	{% include 'App:Series:list.opds.twig' %}
 {% endblock %}

@@ -12,7 +12,7 @@ class UserController extends Controller
 	public function personalToolsAction() {
 		$this->responseAge = 0;
 
-		return $this->render('LibBundle:User:personal_tools.html.twig', array(
+		return $this->render('App:User:personal_tools.html.twig', array(
 			'_user' => $this->getUser()
 		));
 	}
@@ -190,7 +190,7 @@ EOS;
 	{
 		$this->responseAge = 0;
 
-		return $this->render('LibBundle:User:stylesheet.html.twig', array(
+		return $this->render('App:User:stylesheet.html.twig', array(
 			'stylesheet' => $this->getStylesheet(),
 			'extra_stylesheets' => $this->getUser()->getExtraStylesheets(),
 			'extra_javascripts' => $this->getUser()->getExtraJavascripts(),

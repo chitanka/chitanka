@@ -25,7 +25,7 @@
 	{% endif %}
 </td>
 <td>
-	{% import 'LibBundle::link.html.twig' as link %}
+	{% import 'App::link.html.twig' as link %}
 	<ul class="simplelist">
 		<li>{{ link.user_with_email(entry.user) }}</li>
 		{% for contrib in entry.contribs %}

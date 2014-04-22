@@ -1,11 +1,11 @@
-{% import 'LibBundle::book.html.twig' as booktools %}
+{% import 'App::book.html.twig' as booktools %}
 
 <ul class="superlist booklist">
 {% for book in books %}
 	<li>{{ booktools.book(book) }}</li>
 {% else %}
 	<li class="no-items">
-		{% import 'LibBundle::helper.html.twig' as helper %}
+		{% import 'App::helper.html.twig' as helper %}
 		{{ helper.not_found('Няма намерени книги.') }}
 	</li>
 {% endfor %}

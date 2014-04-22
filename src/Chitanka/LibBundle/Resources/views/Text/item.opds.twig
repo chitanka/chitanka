@@ -1,4 +1,4 @@
-{% import 'LibBundle::helper.opds.twig' as helper %}
+{% import 'App::helper.opds.twig' as helper %}
 
 {% macro download_link(text, format, mimetype) %}
 	<link rel="http://opds-spec.org/acquisition" href="{{ url('text_show', {'id': text.id, '_format': format}) }}" type="{{ mimetype }}"/>

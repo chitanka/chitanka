@@ -1,4 +1,4 @@
-{% import 'LibBundle::book.html.twig' as booktools %}
+{% import 'App::book.html.twig' as booktools %}
 <ul class="superlist booklist">
 {% for revision in revisions %}
 	<li>{{ booktools.book(revision.book) }}</li>

@@ -56,7 +56,7 @@ class MainController extends Controller
 			'site' => $this->getSiteRepository()->getRandom()
 		);
 
-		return $this->render('LibBundle:Main:sitebox.html.twig', $data);
+		return $this->render('App:Main:sitebox.html.twig', $data);
 	}
 
 

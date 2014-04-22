@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = '<a class="selflink" data-edit="'~ path('admin_person_edit', {'id': person.id}) ~'">'~ person.name ~'</a>' %}
 {% set subtitle = ('person.role.'~person.role)|trans %}
@@ -8,7 +8,7 @@
 		<h2 id="author">Произведения</h2>
 	{% endif %}
 	{% for series in texts %}
-		{% include 'LibBundle:Author:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
+		{% include 'App:Author:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
 	{% endfor %}
 	</div>
 {% endblock %}

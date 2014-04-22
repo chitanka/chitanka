@@ -1,8 +1,8 @@
-{% extends 'LibBundle:Book:show.html.twig' %}
+{% extends 'App:Book:show.html.twig' %}
 
 {% block content %}
 
-{% include 'LibBundle:Book:_breadcrumb_sequences.html.twig' %}
+{% include 'App:Book:_breadcrumb_sequences.html.twig' %}
 
 {% if info %}
 	<ul class="nav nav-tabs book-tabs">
@@ -23,7 +23,7 @@
 	</div>
 
 	<div id="comics" class="gal-navigation">
-		{% include 'LibBundle:Book:pic_list.html.twig' %}
+		{% include 'App:Book:pic_list.html.twig' %}
 	</div>
 </div>
 

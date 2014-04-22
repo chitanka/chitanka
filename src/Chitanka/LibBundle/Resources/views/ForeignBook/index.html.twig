@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Нови книги в други сайтове' %}
 {% set page_feed = {'url': path('foreign_books', {'_format': 'rss'})} %}
@@ -6,7 +6,7 @@
 	<p><small>Това е безплатна реклама на книги в други сайтове.</small></p>
 	<ul class="bookshelf">
 	{% for book in books %}
-		<li>{% include 'LibBundle:ForeignBook:book.html.twig' %}</li>
+		<li>{% include 'App:ForeignBook:book.html.twig' %}</li>
 	{% endfor %}
 	</ul>
 {% endblock %}

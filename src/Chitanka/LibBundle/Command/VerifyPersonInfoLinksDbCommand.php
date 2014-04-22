@@ -55,8 +55,8 @@ EOT
 
 	private function getIdsForPersonsWithInvalidInfoLinks()
 	{
-		$iterableResult = $this->em->createQuery('SELECT p FROM LibBundle:Person p WHERE p.info LIKE \'%:%\'')->iterate();
-		$siteRepo = $this->em->getRepository('LibBundle:WikiSite');
+		$iterableResult = $this->em->createQuery('SELECT p FROM App:Person p WHERE p.info LIKE \'%:%\'')->iterate();
+		$siteRepo = $this->em->getRepository('App:WikiSite');
 		$httpAgent = new HttpAgent;
 
 		$ids = array();

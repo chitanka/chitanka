@@ -1,5 +1,5 @@
 <li>
-	{% import 'LibBundle::link.html.twig' as link %}
+	{% import 'App::link.html.twig' as link %}
 	{{ link.label(label) }}
-	{% include 'LibBundle:Text:label_delete_form.html.twig' with {'label': label} %}
+	{% include 'App:Text:label_delete_form.html.twig' with {'label': label} %}
 </li>

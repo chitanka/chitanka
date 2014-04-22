@@ -10,7 +10,7 @@ class SiteNoticeController extends Controller {
 			);
 		}
 
-		return $this->render('LibBundle:SiteNotice:stripe.html.twig', $this->view);
+		return $this->render('App:SiteNotice:stripe.html.twig', $this->view);
 	}
 
 }

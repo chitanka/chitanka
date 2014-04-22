@@ -8,6 +8,6 @@
 {% if person.info is not empty %}<info>{{ person.info }}</info>{% endif %}
 {% if person.person is defined and person.person is not empty %}
 	<person>
-		{% include 'LibBundle:Person:person.xml.twig' with {'person': person.person} %}
+		{% include 'App:Person:person.xml.twig' with {'person': person.person} %}
 	</person>
 {% endif %}

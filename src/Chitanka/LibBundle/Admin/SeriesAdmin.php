@@ -12,7 +12,7 @@ class SeriesAdmin extends Admin
 	protected $baseRouteName = 'admin_series';
 	protected $translationDomain = 'admin';
 
-	public $extraActions = 'LibBundle:SeriesAdmin:extra_actions.html.twig';
+	public $extraActions = 'App:SeriesAdmin:extra_actions.html.twig';
 
 	protected function configureShowField(ShowMapper $showMapper)
 	{

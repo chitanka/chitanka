@@ -49,7 +49,7 @@ EOT
 	protected function updateHeaders($texts, $dumpSql)
 	{
 		$queries = array();
-		$dql = 'SELECT t FROM LibBundle:Text t WHERE t.headlevel > 0';
+		$dql = 'SELECT t FROM App:Text t WHERE t.headlevel > 0';
 		if ($texts) {
 			$dql .= " AND t.id IN ($texts)";
 		}

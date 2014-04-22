@@ -2,7 +2,7 @@
 	<p>Само вие може да виждате този списък. Ако желаете да дадете достъп до списъка и на други лица, ползвайте следния адрес: <a href="{{ url('user_read_list', {'username': user.token}) }}">{{ url('user_read_list', {'username': user.token}) }}</a></p>
 {% endif %}
 <ul class="superlist fa-ul">
-{% import 'LibBundle::text.html.twig' as texttools %}
+{% import 'App::text.html.twig' as texttools %}
 {% for read_text in read_texts %}
 	<li class="title t-{{ read_text.text.type }}" title="{{ read_text.created_at|humandate }}">{{ texttools.text_with_author(read_text.text, {'download_links': true}) }}</li>
 {% endfor %}

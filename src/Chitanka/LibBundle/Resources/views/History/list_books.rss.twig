@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.rss.twig' %}
+{% extends 'App::layout.rss.twig' %}
 
 {% block title 'Нови книги' %}
 {% block content %}
@@ -16,9 +16,9 @@
 		</ul>
 	{% endmacro %}
 
-	{% import 'LibBundle::book.html.twig' as booktools %}
-	{% import 'LibBundle::person.html.twig' as persontools %}
-	{% import 'LibBundle::abslink.html.twig' as link %}
+	{% import 'App::book.html.twig' as booktools %}
+	{% import 'App::person.html.twig' as persontools %}
+	{% import 'App::abslink.html.twig' as link %}
 	{% for revisions in book_revisions_by_date %}
 		{% for revision in revisions %}
 			{% set book = revision.book %}

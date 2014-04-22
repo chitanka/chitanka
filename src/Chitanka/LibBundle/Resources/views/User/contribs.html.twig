@@ -1,7 +1,7 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Обработени текстове от ' ~ user.username %}
 {% block content %}
-	{% include 'LibBundle:User:contribs_list.html.twig' %}
-	{% include 'LibBundle::pager.html.twig' %}
+	{% include 'App:User:contribs_list.html.twig' %}
+	{% include 'App::pager.html.twig' %}
 {% endblock %}

@@ -36,7 +36,7 @@ class Thread extends BaseThread
 	public function getTarget(EntityManager $em)
 	{
 		list($entity, $id) = explode(':', $this->id);
-		$repo = $em->getRepository("LibBundle:$entity");
+		$repo = $em->getRepository("App:$entity");
 		return $repo ? $repo->find($id) : null;
 	}
 

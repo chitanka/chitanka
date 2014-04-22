@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = '<a class="selflink" data-edit="'~ path('admin_person_edit', {'id': person.id}) ~'">'~ person.name ~'</a>' %}
 {% set subtitle = ('person.role.'~person.role)|trans %}
@@ -6,7 +6,7 @@
 	<div class="person-{{ person.slug }}">
 	{% if books is defined %}
 		<h2 id="books">Книги</h2>
-		{% include 'LibBundle:Book:list.html.twig' %}
+		{% include 'App:Book:list.html.twig' %}
 	{% endif %}
 	</div>
 {% endblock %}

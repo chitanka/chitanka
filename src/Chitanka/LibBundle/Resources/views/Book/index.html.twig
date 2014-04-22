@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Книги' %}
 {% block head %}
@@ -7,8 +7,8 @@
 {% endblock %}
 {% block content %}
 	<h2>По азбучен ред</h2>
-	{% include 'LibBundle:Book:navigation.html.twig' with {'letter': ''} %}
+	{% include 'App:Book:navigation.html.twig' with {'letter': ''} %}
 
 	<h2>По категория</h2>
-	{% include 'LibBundle:Book:category_tree.html.twig' with {'level': 0} %}
+	{% include 'App:Book:category_tree.html.twig' with {'level': 0} %}
 {% endblock %}

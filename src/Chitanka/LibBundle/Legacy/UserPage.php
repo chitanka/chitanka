@@ -140,7 +140,7 @@ EOS;
 		}
 		$h = '<h2>Сканирани или обработени текстове</h2>';
 
-		return $h . $this->controller->renderView('LibBundle:User:contribs_list.html.twig', array(
+		return $h . $this->controller->renderView('App:User:contribs_list.html.twig', array(
 			'user' => $this->shown_user,
 			'contribs' => $repo->getLatestByUser($this->shown_user, 20),
 			'count' => $count
@@ -157,7 +157,7 @@ EOS;
 		}
 		$h = '<h2>Последни прочетени произведения</h2>';
 
-		return $h . $this->controller->renderView('LibBundle:User:read_texts_list.html.twig', array(
+		return $h . $this->controller->renderView('App:User:read_texts_list.html.twig', array(
 			'user' => $this->shown_user,
 			'is_owner' => true,
 			'read_texts' => $repo->getLatestByUser($this->shown_user, 20),
@@ -174,7 +174,7 @@ EOS;
 		}
 		$h = '<h2>Последни избрани произведения</h2>';
 
-		return $h . $this->controller->renderView('LibBundle:User:bookmarks_list.html.twig', array(
+		return $h . $this->controller->renderView('App:User:bookmarks_list.html.twig', array(
 			'user' => $this->shown_user,
 			'is_owner' => true,
 			'bookmarks' => $repo->getLatestByUser($this->shown_user, 20),

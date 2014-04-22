@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Ново в библиотеката' %}
 {% block content %}
@@ -8,11 +8,11 @@
 	</ul>
 	<div class="tab-content">
 		<div class="tab-pane active" id="new-books">
-			{% include 'LibBundle:History:books_list.html.twig' %}
+			{% include 'App:History:books_list.html.twig' %}
 			<div class="more"><a href="{{ path('new_books', {page: 2}) }}">Още нови книги</a></div>
 		</div>
 		<div class="tab-pane" id="new-texts">
-			{% include 'LibBundle:History:texts_list.html.twig' %}
+			{% include 'App:History:texts_list.html.twig' %}
 			<div class="more"><a href="{{ path('new_texts', {page: 2}) }}">Още нови произведения</a></div>
 		</div>
 	</div>

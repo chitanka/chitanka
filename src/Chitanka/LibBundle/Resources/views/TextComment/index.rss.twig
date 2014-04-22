@@ -1,8 +1,8 @@
-{% extends 'LibBundle::layout.rss.twig' %}
+{% extends 'App::layout.rss.twig' %}
 
 {% block title 'Нови читателски коментари' %}
 {% block content %}
-	{% import 'LibBundle::person.html.twig' as persontools %}
+	{% import 'App::person.html.twig' as persontools %}
 	{% for comment in comments %}
 		<item>
 			<title>

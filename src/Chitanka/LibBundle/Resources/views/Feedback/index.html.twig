@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Връзка с екипа' %}
 {% block content %}
@@ -8,6 +8,6 @@
 	<p>Ползвайте кирилица, ако пишете на български!</p>
 	<p class="error">Тук не е мястото за търсене или поръчка на книги!</p>
 	{% if message is defined %}<p class="messages">{{ message }}</p>{% endif %}
-	{% include 'LibBundle:Feedback:form.html.twig' %}
+	{% include 'App:Feedback:form.html.twig' %}
 
 {% endblock %}

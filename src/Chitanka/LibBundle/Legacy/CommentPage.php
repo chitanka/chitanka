@@ -91,7 +91,7 @@ class CommentPage extends Page {
 		}
 		$em = $this->controller->getEntityManager();
 		$comment = new TextComment;
-		$comment->setText($em->find('LibBundle:Text', $this->textId));
+		$comment->setText($em->find('App:Text', $this->textId));
 		$comment->setRname($this->reader);
 		$comment->setContent($this->comment);
 		$comment->setContenthash(md5($this->comment));
@@ -102,7 +102,7 @@ class CommentPage extends Page {
 			$comment->setUser($em->merge($this->user));
 		}
 		if ($this->replyto) {
-			$comment->setReplyto($em->find('LibBundle:TextComment', $this->replyto));
+			$comment->setReplyto($em->find('App:TextComment', $this->replyto));
 		}
 		$em->persist($comment);
 		$em->flush();
@@ -411,7 +411,7 @@ EOS;
 			$params['route'] = 'user_comments';
 			$params['route_params'] = array('username' => $this->username);
 		}
-		$pagelinks = $showPageLinks ? $this->controller->renderView('LibBundle::pager.html.twig', $params) : '';
+		$pagelinks = $showPageLinks ? $this->controller->renderView('App::pager.html.twig', $params) : '';
 
 		$c = '';
 		while ($row = $this->db->fetchAssoc($res)) {

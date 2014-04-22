@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Произведения' %}
 {% set subtitle = label.name %}
@@ -7,7 +7,7 @@
 	{% if texts is empty %}
 
 		<p class="no-items">
-			{% import 'LibBundle::helper.html.twig' as helper %}
+			{% import 'App::helper.html.twig' as helper %}
 			{{ helper.not_found('Няма намерени произведения.') }}
 		</p>
 
@@ -22,13 +22,13 @@
 		</ul>
 
 		<div class="superlist">
-			{% include 'LibBundle:Text:list.html.twig' %}
-			{% include 'LibBundle:Text:multi_download_form.html.twig' with { filename: 'label-'~label.name~'_'~pager.page } %}
+			{% include 'App:Text:list.html.twig' %}
+			{% include 'App:Text:multi_download_form.html.twig' with { filename: 'label-'~label.name~'_'~pager.page } %}
 		</div>
-		{% include 'LibBundle::pager.html.twig' %}
+		{% include 'App::pager.html.twig' %}
 
 	{% endif %}
 
-	{#% include 'LibBundle::color_legend.html.twig' %#}
+	{#% include 'App::color_legend.html.twig' %#}
 
 {% endblock %}

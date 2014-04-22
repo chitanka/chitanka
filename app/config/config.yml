@@ -126,7 +126,7 @@ doctrine:
 #             default:
 #                 mappings:
 #                     #FOSUserBundle: ~
-#                     LibBundle: ~
+#                     App: ~
 #                     FOSCommentBundle: ~
 
 # Swiftmailer Configuration
@@ -149,14 +149,14 @@ sonata_admin:
     #title_logo:
     templates:
         # default global templates
-        #layout:  LibBundle:Admin:layout.html.twig
+        #layout:  App:Admin:layout.html.twig
         ajax:    SonataAdminBundle::ajax_layout.html.twig
 
         # default actions templates, should extend a global templates
         list:    SonataAdminBundle:CRUD:list.html.twig
         show:    SonataAdminBundle:CRUD:show.html.twig
         #edit:    SonataAdminBundle:CRUD:edit.html.twig
-        edit:    LibBundle:Admin:edit.html.twig
+        edit:    App:Admin:edit.html.twig
         history: SonataAdminBundle:CRUD:history.html.twig
         preview: SonataAdminBundle:CRUD:preview.html.twig
         delete:  SonataAdminBundle:CRUD:delete.html.twig

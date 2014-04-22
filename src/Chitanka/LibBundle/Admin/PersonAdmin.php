@@ -12,7 +12,7 @@ class PersonAdmin extends Admin
 	protected $baseRouteName = 'admin_person';
 	protected $translationDomain = 'admin';
 
-	public $extraActions = 'LibBundle:PersonAdmin:extra_actions.html.twig';
+	public $extraActions = 'App:PersonAdmin:extra_actions.html.twig';
 
 	protected function configureShowField(ShowMapper $showMapper)
 	{

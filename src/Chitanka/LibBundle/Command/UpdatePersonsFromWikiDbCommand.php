@@ -80,7 +80,7 @@ EOT
 	protected function createPerson($data)
 	{
 		if ($data['slug']) {
-			$person = $this->em->getRepository('LibBundle:Person')->getBySlug($data['slug']);
+			$person = $this->em->getRepository('App:Person')->getBySlug($data['slug']);
 			if ( ! $person) {
 				$person = new Person;
 				$person->setSlug($data['slug']);
@@ -100,7 +100,7 @@ EOT
 
 	protected function isNewPersonWithTakenSlug($person)
 	{
-		return !$person->getId() && $this->em->getRepository('LibBundle:Person')->getBySlug($person->getSlug());
+		return !$person->getId() && $this->em->getRepository('App:Person')->getBySlug($person->getSlug());
 	}
 
 	private $_wikiBot;

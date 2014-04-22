@@ -1,12 +1,12 @@
-{% extends 'LibBundle::layout.opds.twig' %}
-{% import 'LibBundle::helper.opds.twig' as helper %}
+{% extends 'App::layout.opds.twig' %}
+{% import 'App::helper.opds.twig' as helper %}
 
 {% set link_self = helper.url('person_show', {'slug': person.slug}) %}
 {% block content %}
 	{#% if person.person is empty %}
-		{% include 'LibBundle:Person:info.html.twig' %}
+		{% include 'App:Person:info.html.twig' %}
 	{% else %}
-		{% import 'LibBundle::link.html.twig' as link %}
+		{% import 'App::link.html.twig' as link %}
 		<p>{{ ('person.alt.'~person.type) | trans({'%current%': person.name, '%target%': link.person(person.person)})|raw }}</p>
 	{% endif %#}
 
@@ -21,7 +21,7 @@
 			<h2 id="author">Произведения</h2>
 		{% endif %}
 		{% for series in texts_as_author %}
-			{% include 'LibBundle:Author:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
+			{% include 'App:Author:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
 		{% endfor %}
 	{% endif %}
 
@@ -30,7 +30,7 @@
 			<h2 id="translator">Преводни произведения</h2>
 		{% endif %}
 		{% for series in texts_as_translator %}
-			{% include 'LibBundle:Translator:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
+			{% include 'App:Translator:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
 		{% endfor %}
 	{% endif %}
 #}

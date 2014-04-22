@@ -12,7 +12,7 @@ class SequenceAdmin extends Admin
 	protected $baseRouteName = 'admin_sequence';
 	protected $translationDomain = 'admin';
 
-	public $extraActions = 'LibBundle:SequenceAdmin:extra_actions.html.twig';
+	public $extraActions = 'App:SequenceAdmin:extra_actions.html.twig';
 
 	protected function configureShowField(ShowMapper $showMapper)
 	{

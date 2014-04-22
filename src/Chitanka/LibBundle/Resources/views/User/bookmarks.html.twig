@@ -1,7 +1,7 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Избрани произведения от ' ~ user.username %}
 {% block content %}
-	{% include 'LibBundle:User:bookmarks_list.html.twig' %}
-	{% include 'LibBundle::pager.html.twig' %}
+	{% include 'App:User:bookmarks_list.html.twig' %}
+	{% include 'App::pager.html.twig' %}
 {% endblock %}

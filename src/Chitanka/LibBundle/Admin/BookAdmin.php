@@ -18,7 +18,7 @@ class BookAdmin extends Admin
 	protected $baseRouteName = 'admin_book';
 	protected $translationDomain = 'admin';
 
-	public $extraActions = 'LibBundle:BookAdmin:extra_actions.html.twig';
+	public $extraActions = 'App:BookAdmin:extra_actions.html.twig';
 
 	private $em;
 
@@ -59,13 +59,13 @@ class BookAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-			->add('url', 'string', array('template' => 'LibBundle:BookAdmin:list_url.html.twig'))
+			->add('url', 'string', array('template' => 'App:BookAdmin:list_url.html.twig'))
 			->add('slug')
 			->addIdentifier('title')
 			->add('id')
 			->add('type')
-			->add('sfbg', 'string', array('template' => 'LibBundle:BookAdmin:list_sfbg.html.twig'))
-			->add('puk', 'string', array('template' => 'LibBundle:BookAdmin:list_puk.html.twig'))
+			->add('sfbg', 'string', array('template' => 'App:BookAdmin:list_sfbg.html.twig'))
+			->add('puk', 'string', array('template' => 'App:BookAdmin:list_puk.html.twig'))
 			->add('_action', 'actions', array(
 				'actions' => array(
 					'view' => array(),
@@ -76,13 +76,13 @@ class BookAdmin extends Admin
 		;
 	}
 
-	//public $preFormContent = 'LibBundle:BookAdmin:form_datafiles.html.twig';
+	//public $preFormContent = 'App:BookAdmin:form_datafiles.html.twig';
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			//->add('sfbg', 'string', array('template' => 'LibBundle:BookAdmin:form_sfbg.html.twig'))
-			//->add('datafiles', 'string', array('template' => 'LibBundle:BookAdmin:form_datafiles.html.twig'))
+			//->add('sfbg', 'string', array('template' => 'App:BookAdmin:form_sfbg.html.twig'))
+			//->add('datafiles', 'string', array('template' => 'App:BookAdmin:form_datafiles.html.twig'))
 			->with('General attributes')
 				->add('slug')
 				->add('title')
@@ -172,7 +172,7 @@ class BookAdmin extends Admin
 			}
 		}
 		if ($book->textsNeedUpdate()) {
-			$textRepo = $this->em->getRepository('LibBundle:Text');
+			$textRepo = $this->em->getRepository('App:Text');
 			$texts = $textRepo->findByIds($book->getTextIdsFromTemplate());
 			$book->setTexts($texts);
 		}

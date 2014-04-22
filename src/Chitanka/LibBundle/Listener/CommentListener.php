@@ -32,7 +32,7 @@ class CommentListener
 	{
 		$recipients = array();
 		$usernames = array_map('trim', explode(',', $comment->getCc()));
-		$users = $this->em->getRepository('LibBundle:User')->findByUsernames($usernames);
+		$users = $this->em->getRepository('App:User')->findByUsernames($usernames);
 		foreach ($users as $user) {
 			$recipients[$user->getEmail()] = $user->getName();
 		}

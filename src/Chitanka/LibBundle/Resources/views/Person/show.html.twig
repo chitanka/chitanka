@@ -1,4 +1,4 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set itemtype = "Person" %}
 {% set title = '<a class="selflink" itemprop="name" data-edit="'~ path('admin_person_edit', {'id': person.id}) ~'">'~ person.name ~'</a>' %}
@@ -23,14 +23,14 @@
 		<div class="tab-content">
 			{% if books is not empty %}
 			<div class="tab-pane" id="books">
-				{% include 'LibBundle:Book:list.html.twig' %}
+				{% include 'App:Book:list.html.twig' %}
 			</div>
 			{% endif %}
 
 			{% if texts_as_author is not empty %}
 			<div class="tab-pane superlist" id="texts">
 				{% for series in texts_as_author %}
-					{% include 'LibBundle:Author:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
+					{% include 'App:Author:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
 				{% endfor %}
 			</div>
 			{% endif %}
@@ -38,12 +38,12 @@
 			{% if texts_as_translator is not empty %}
 			<div class="tab-pane" id="translations">
 				{% for series in texts_as_translator %}
-					{% include 'LibBundle:Translator:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
+					{% include 'App:Translator:texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
 				{% endfor %}
 			</div>
 			{% endif %}
 			<div class="tab-pane wikiinfo" id="article">
-				{% include 'LibBundle:Person:info.html.twig' %}
+				{% include 'App:Person:info.html.twig' %}
 			</div>
 		</div>
 

@@ -1,6 +1,6 @@
-{% extends 'LibBundle::layout.opds.twig' %}
+{% extends 'App::layout.opds.twig' %}
 
-{% import 'LibBundle::helper.opds.twig' as helper %}
+{% import 'App::helper.opds.twig' as helper %}
 {% set title = 'Серии' %}
 {% set id = helper.urn('series') %}
 {% set link_self = helper.url('series') %}

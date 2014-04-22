@@ -651,7 +651,7 @@ EOT
 		}
 
 		if ( ! empty($book['works'])) {
-			$bookTextRepo = $this->em->getRepository('LibBundle:BookText');
+			$bookTextRepo = $this->em->getRepository('App:BookText');
 			foreach ($book['works'] as $work) {
 				$key = 'book_text'.$book['id'].'_'.$work['id'];
 				if ($book['is_new'] || $work['is_new']) {

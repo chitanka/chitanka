@@ -14,7 +14,7 @@
 <tbody>
 {% for entry in entries %}
 	<tr class="{{ cycle(['even', 'odd'], loop.index) }} {{ entry.is_frozen ? 'frozen' : '' }}" id="e{{ entry.id }}">
-		{% include 'LibBundle:WorkEntry:item.html.twig' %}
+		{% include 'App:WorkEntry:item.html.twig' %}
 	</tr>
 {% endfor %}
 </tbody>

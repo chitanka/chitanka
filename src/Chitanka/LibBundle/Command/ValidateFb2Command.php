@@ -109,7 +109,7 @@ EOT
 	private function validateWorks($workIds, $entity)
 	{
 		foreach ($workIds as $workId) {
-			$work = $this->em->getRepository("LibBundle:$entity")->find($workId);
+			$work = $this->em->getRepository("App:$entity")->find($workId);
 			if (!$work) {
 				continue;
 			}

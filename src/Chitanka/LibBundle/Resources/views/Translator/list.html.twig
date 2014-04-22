@@ -6,7 +6,7 @@
 	</dl></li>
 {% else %}
 	<li class="no-items">
-		{% import 'LibBundle::helper.html.twig' as helper %}
+		{% import 'App::helper.html.twig' as helper %}
 		{{ helper.not_found('Няма намерени преводачи.') }}
 	</li>
 {% endfor %}

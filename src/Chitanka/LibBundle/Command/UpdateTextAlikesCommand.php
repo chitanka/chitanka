@@ -18,7 +18,7 @@ class UpdateTextAlikesCommand extends CommonDbCommand {
 		$textService = new TextService($this->olddb());
 		$maxAlikesCount = 50;
 		$em = $this->getEntityManager();
-		$dql = 'SELECT t FROM LibBundle:Text t WHERE t.id < 10';
+		$dql = 'SELECT t FROM App:Text t WHERE t.id < 10';
 		$iterableResult = $em->createQuery($dql)->iterate();
 		$flushGuard = 0;
 		foreach ($iterableResult AS $row) {

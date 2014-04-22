@@ -1,11 +1,11 @@
-{% extends 'LibBundle::layout.html.twig' %}
+{% extends 'App::layout.html.twig' %}
 
 {% set title = 'Препоръчани книги' %}
 {% set page_feed = {'url': path('featured_books', {'_format': 'rss'})} %}
 {% block content %}
 	<ul class="bookshelf">
 	{% for book in books %}
-		<li>{% include 'LibBundle:FeaturedBook:book.html.twig' %}</li>
+		<li>{% include 'App:FeaturedBook:book.html.twig' %}</li>
 	{% endfor %}
 	</ul>
 {% endblock %}

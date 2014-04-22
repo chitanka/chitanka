@@ -8,7 +8,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.person"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\Person</argument>
-			<argument>LibBundle:Admin\Person</argument>
+			<argument>App:Admin\Person</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -17,7 +17,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.book"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\Book</argument>
-			<argument>LibBundle:Admin\Book</argument>
+			<argument>App:Admin\Book</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -29,7 +29,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.text"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\Text</argument>
-			<argument>LibBundle:Admin\Text</argument>
+			<argument>App:Admin\Text</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -38,7 +38,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.series"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\Series</argument>
-			<argument>LibBundle:Admin\Series</argument>
+			<argument>App:Admin\Series</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -47,7 +47,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.label"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\Label</argument>
-			<argument>LibBundle:Admin\Label</argument>
+			<argument>App:Admin\Label</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -56,7 +56,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.category"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\Category</argument>
-			<argument>LibBundle:Admin\Category</argument>
+			<argument>App:Admin\Category</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -65,7 +65,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.sequence"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\Sequence</argument>
-			<argument>LibBundle:Admin\Sequence</argument>
+			<argument>App:Admin\Sequence</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -74,7 +74,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.text_comment"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\TextComment</argument>
-			<argument>LibBundle:Admin\TextComment</argument>
+			<argument>App:Admin\TextComment</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -84,7 +84,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.featured_book"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\FeaturedBook</argument>
-			<argument>LibBundle:Admin\FeaturedBook</argument>
+			<argument>App:Admin\FeaturedBook</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -93,7 +93,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.foreign_book"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\ForeignBook</argument>
-			<argument>LibBundle:Admin\ForeignBook</argument>
+			<argument>App:Admin\ForeignBook</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -102,7 +102,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.site"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\Site</argument>
-			<argument>LibBundle:Admin\Site</argument>
+			<argument>App:Admin\Site</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -111,7 +111,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.book_site"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\BookSite</argument>
-			<argument>LibBundle:Admin\BookSite</argument>
+			<argument>App:Admin\BookSite</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -120,7 +120,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.wiki_site"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\WikiSite</argument>
-			<argument>LibBundle:Admin\WikiSite</argument>
+			<argument>App:Admin\WikiSite</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -129,7 +129,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.question"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\Question</argument>
-			<argument>LibBundle:Admin\Question</argument>
+			<argument>App:Admin\Question</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -138,7 +138,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.license"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\License</argument>
-			<argument>LibBundle:Admin\License</argument>
+			<argument>App:Admin\License</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -148,7 +148,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_links" label="admin.book_link"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\BookLink</argument>
-			<argument>LibBundle:Admin\BookLink</argument>
+			<argument>App:Admin\BookLink</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -157,7 +157,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_links" label="admin.text_link"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\TextLink</argument>
-			<argument>LibBundle:Admin\TextLink</argument>
+			<argument>App:Admin\TextLink</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -166,7 +166,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_links" label="admin.book_author"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\BookAuthor</argument>
-			<argument>LibBundle:Admin\BookAuthor</argument>
+			<argument>App:Admin\BookAuthor</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -175,7 +175,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_links" label="admin.text_author"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\TextAuthor</argument>
-			<argument>LibBundle:Admin\TextAuthor</argument>
+			<argument>App:Admin\TextAuthor</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -184,7 +184,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_links" label="admin.text_translator"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\TextTranslator</argument>
-			<argument>LibBundle:Admin\TextTranslator</argument>
+			<argument>App:Admin\TextTranslator</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -193,7 +193,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_links" label="admin.series_author"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\SeriesAuthor</argument>
-			<argument>LibBundle:Admin\SeriesAuthor</argument>
+			<argument>App:Admin\SeriesAuthor</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -203,7 +203,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_intern" label="admin.work_entry"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\WorkEntry</argument>
-			<argument>LibBundle:Admin\WorkEntry</argument>
+			<argument>App:Admin\WorkEntry</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -212,7 +212,7 @@
 			<tag name="sonata.admin" manager_type="orm" audit="false" group="library_intern" label="admin.user"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\User</argument>
-			<argument>LibBundle:Admin\User</argument>
+			<argument>App:Admin\User</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -221,7 +221,7 @@
 			<tag name="sonata.admin" manager_type="orm" group="library_intern" label="admin.user_text_contrib"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\UserTextContrib</argument>
-			<argument>LibBundle:Admin\UserTextContrib</argument>
+			<argument>App:Admin\UserTextContrib</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
@@ -230,7 +230,7 @@
 			<tag name="sonata.admin" manager_type="orm" audit="false" group="library_secondary" label="admin.site_notice"/>
 			<argument />
 			<argument>Chitanka\LibBundle\Entity\SiteNotice</argument>
-			<argument>LibBundle:Admin\SiteNotice</argument>
+			<argument>App:Admin\SiteNotice</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>

@@ -19,7 +19,7 @@ class TextAdmin extends Admin
 	protected $baseRouteName = 'admin_text';
 	protected $translationDomain = 'admin';
 
-	public $extraActions = 'LibBundle:TextAdmin:extra_actions.html.twig';
+	public $extraActions = 'App:TextAdmin:extra_actions.html.twig';
 
 	protected function configureRoutes(RouteCollection $collection) {
 		$collection->remove('create');
