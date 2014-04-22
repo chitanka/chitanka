@@ -30,7 +30,7 @@ framework:
 
 services:
     twig.extension.chitanka:
-        class: Chitanka\LibBundle\Twig\Extension
+        class: App\Twig\Extension
         tags:
             - { name: twig.extension }
     twig.extension.text:
@@ -43,45 +43,45 @@ services:
             - { name: twig.extension }
 
     request.listener:
-        class: Chitanka\LibBundle\Listener\RequestListener
+        class: App\Listener\RequestListener
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
     comment.listener:
-        class: Chitanka\LibBundle\Listener\CommentListener
+        class: App\Listener\CommentListener
         arguments: ['@mailer', '@doctrine.orm.entity_manager']
         tags:
             - { name: kernel.event_listener, event: fos_comment.comment.post_persist, method: onCommentPostPersist }
             - { name: kernel.event_listener, event: fos_comment.thread.post_persist, method: onThreadPostPersist }
 
     doctrine.listener:
-        class: Chitanka\LibBundle\Listener\DoctrineListener
+        class: App\Listener\DoctrineListener
         tags:
             - { name: doctrine.dbal.default_event_listener }
             #- { name: doctrine.common.event_listener }
 
     feedback_form:
-        class: Chitanka\LibBundle\Form\Type\FeedbackType
+        class: App\Form\Type\FeedbackType
         tags:
            -  { name: form.type }
 
     text_rating_form:
-        class: Chitanka\LibBundle\Form\Type\TextRatingType
+        class: App\Form\Type\TextRatingType
         tags:
            -  { name: form.type }
 
     text_label_form:
-        class: Chitanka\LibBundle\Form\Type\TextLabelType
+        class: App\Form\Type\TextLabelType
         tags:
            -  { name: form.type }
 
     label_form:
-        class: Chitanka\LibBundle\Form\Type\LabelType
+        class: App\Form\Type\LabelType
         tags:
            -  { name: form.type }
 
     comment_form:
-        class: Chitanka\LibBundle\Form\Type\CommentType
+        class: App\Form\Type\CommentType
         arguments: [%fos_comment.model.comment.class%]
         tags:
            -  { name: form.type }
@@ -230,8 +230,8 @@ fos_comment:
     db_driver: orm
     class:
         model:
-            comment: Chitanka\LibBundle\Entity\Comment
-            thread: Chitanka\LibBundle\Entity\Thread
+            comment: App\Entity\Comment
+            thread: App\Entity\Thread
     form:
         comment:
             type: comment_form

@@ -12,7 +12,7 @@ security:
 
     providers:
         main:
-            entity: { class: Chitanka\LibBundle\Entity\User, property: username }
+            entity: { class: App\Entity\User, property: username }
         test:
             memory:
                 users:
@@ -62,4 +62,4 @@ security:
 #     provider_key: main
 #     class:
 #         model:
-#             user: Chitanka\LibBundle\Entity\User
+#             user: App\Entity\User

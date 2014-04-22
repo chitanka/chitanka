@@ -34,7 +34,7 @@ class AppKernel extends Kernel
 			new FOS\CommentBundle\FOSCommentBundle(),
 			new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
 
-			new Chitanka\LibBundle\App(),
+			new App\App(),
 		);
 
 		if ($this->getEnvironment() != 'prod') {

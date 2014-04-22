@@ -4,19 +4,19 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
 	<services>
-		<service id="chitanka.admin.person" class="Chitanka\LibBundle\Admin\PersonAdmin">
+		<service id="chitanka.admin.person" class="App\Admin\PersonAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.person"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\Person</argument>
+			<argument>App\Entity\Person</argument>
 			<argument>App:Admin\Person</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.book" class="Chitanka\LibBundle\Admin\BookAdmin">
+		<service id="chitanka.admin.book" class="App\Admin\BookAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.book"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\Book</argument>
+			<argument>App\Entity\Book</argument>
 			<argument>App:Admin\Book</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
@@ -25,211 +25,211 @@
 				<argument type="service" id="doctrine.orm.default_entity_manager" />
 			</call>
 		</service>
-		<service id="chitanka.admin.text" class="Chitanka\LibBundle\Admin\TextAdmin">
+		<service id="chitanka.admin.text" class="App\Admin\TextAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.text"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\Text</argument>
+			<argument>App\Entity\Text</argument>
 			<argument>App:Admin\Text</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.series" class="Chitanka\LibBundle\Admin\SeriesAdmin">
+		<service id="chitanka.admin.series" class="App\Admin\SeriesAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.series"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\Series</argument>
+			<argument>App\Entity\Series</argument>
 			<argument>App:Admin\Series</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.label" class="Chitanka\LibBundle\Admin\LabelAdmin">
+		<service id="chitanka.admin.label" class="App\Admin\LabelAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.label"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\Label</argument>
+			<argument>App\Entity\Label</argument>
 			<argument>App:Admin\Label</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.category" class="Chitanka\LibBundle\Admin\CategoryAdmin">
+		<service id="chitanka.admin.category" class="App\Admin\CategoryAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.category"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\Category</argument>
+			<argument>App\Entity\Category</argument>
 			<argument>App:Admin\Category</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.sequence" class="Chitanka\LibBundle\Admin\SequenceAdmin">
+		<service id="chitanka.admin.sequence" class="App\Admin\SequenceAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.sequence"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\Sequence</argument>
+			<argument>App\Entity\Sequence</argument>
 			<argument>App:Admin\Sequence</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.text_comment" class="Chitanka\LibBundle\Admin\TextCommentAdmin">
+		<service id="chitanka.admin.text_comment" class="App\Admin\TextCommentAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.text_comment"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\TextComment</argument>
+			<argument>App\Entity\TextComment</argument>
 			<argument>App:Admin\TextComment</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
 
-		<service id="chitanka.admin.featured_book" class="Chitanka\LibBundle\Admin\FeaturedBookAdmin">
+		<service id="chitanka.admin.featured_book" class="App\Admin\FeaturedBookAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.featured_book"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\FeaturedBook</argument>
+			<argument>App\Entity\FeaturedBook</argument>
 			<argument>App:Admin\FeaturedBook</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.foreign_book" class="Chitanka\LibBundle\Admin\ForeignBookAdmin">
+		<service id="chitanka.admin.foreign_book" class="App\Admin\ForeignBookAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.foreign_book"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\ForeignBook</argument>
+			<argument>App\Entity\ForeignBook</argument>
 			<argument>App:Admin\ForeignBook</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.site" class="Chitanka\LibBundle\Admin\SiteAdmin">
+		<service id="chitanka.admin.site" class="App\Admin\SiteAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.site"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\Site</argument>
+			<argument>App\Entity\Site</argument>
 			<argument>App:Admin\Site</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.book_site" class="Chitanka\LibBundle\Admin\BookSiteAdmin">
+		<service id="chitanka.admin.book_site" class="App\Admin\BookSiteAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.book_site"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\BookSite</argument>
+			<argument>App\Entity\BookSite</argument>
 			<argument>App:Admin\BookSite</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.wiki_site" class="Chitanka\LibBundle\Admin\WikiSiteAdmin">
+		<service id="chitanka.admin.wiki_site" class="App\Admin\WikiSiteAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.wiki_site"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\WikiSite</argument>
+			<argument>App\Entity\WikiSite</argument>
 			<argument>App:Admin\WikiSite</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.question" class="Chitanka\LibBundle\Admin\QuestionAdmin">
+		<service id="chitanka.admin.question" class="App\Admin\QuestionAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.question"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\Question</argument>
+			<argument>App\Entity\Question</argument>
 			<argument>App:Admin\Question</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.license" class="Chitanka\LibBundle\Admin\LicenseAdmin">
+		<service id="chitanka.admin.license" class="App\Admin\LicenseAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_secondary" label="admin.license"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\License</argument>
+			<argument>App\Entity\License</argument>
 			<argument>App:Admin\License</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
 
-		<service id="chitanka.admin.book_link" class="Chitanka\LibBundle\Admin\BookLinkAdmin">
+		<service id="chitanka.admin.book_link" class="App\Admin\BookLinkAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_links" label="admin.book_link"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\BookLink</argument>
+			<argument>App\Entity\BookLink</argument>
 			<argument>App:Admin\BookLink</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.text_link" class="Chitanka\LibBundle\Admin\TextLinkAdmin">
+		<service id="chitanka.admin.text_link" class="App\Admin\TextLinkAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_links" label="admin.text_link"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\TextLink</argument>
+			<argument>App\Entity\TextLink</argument>
 			<argument>App:Admin\TextLink</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.book_author" class="Chitanka\LibBundle\Admin\BookAuthorAdmin">
+		<service id="chitanka.admin.book_author" class="App\Admin\BookAuthorAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_links" label="admin.book_author"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\BookAuthor</argument>
+			<argument>App\Entity\BookAuthor</argument>
 			<argument>App:Admin\BookAuthor</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.text_author" class="Chitanka\LibBundle\Admin\TextAuthorAdmin">
+		<service id="chitanka.admin.text_author" class="App\Admin\TextAuthorAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_links" label="admin.text_author"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\TextAuthor</argument>
+			<argument>App\Entity\TextAuthor</argument>
 			<argument>App:Admin\TextAuthor</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.text_translator" class="Chitanka\LibBundle\Admin\TextTranslatorAdmin">
+		<service id="chitanka.admin.text_translator" class="App\Admin\TextTranslatorAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_links" label="admin.text_translator"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\TextTranslator</argument>
+			<argument>App\Entity\TextTranslator</argument>
 			<argument>App:Admin\TextTranslator</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.series_author" class="Chitanka\LibBundle\Admin\SeriesAuthorAdmin">
+		<service id="chitanka.admin.series_author" class="App\Admin\SeriesAuthorAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_links" label="admin.series_author"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\SeriesAuthor</argument>
+			<argument>App\Entity\SeriesAuthor</argument>
 			<argument>App:Admin\SeriesAuthor</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
 
-		<service id="chitanka.admin.work_entry" class="Chitanka\LibBundle\Admin\WorkEntryAdmin">
+		<service id="chitanka.admin.work_entry" class="App\Admin\WorkEntryAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_intern" label="admin.work_entry"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\WorkEntry</argument>
+			<argument>App\Entity\WorkEntry</argument>
 			<argument>App:Admin\WorkEntry</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.user" class="Chitanka\LibBundle\Admin\UserAdmin">
+		<service id="chitanka.admin.user" class="App\Admin\UserAdmin">
 			<tag name="sonata.admin" manager_type="orm" audit="false" group="library_intern" label="admin.user"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\User</argument>
+			<argument>App\Entity\User</argument>
 			<argument>App:Admin\User</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.user_text_contrib" class="Chitanka\LibBundle\Admin\UserTextContribAdmin">
+		<service id="chitanka.admin.user_text_contrib" class="App\Admin\UserTextContribAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_intern" label="admin.user_text_contrib"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\UserTextContrib</argument>
+			<argument>App\Entity\UserTextContrib</argument>
 			<argument>App:Admin\UserTextContrib</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
 		</service>
-		<service id="chitanka.admin.site_notice" class="Chitanka\LibBundle\Admin\SiteNoticeAdmin">
+		<service id="chitanka.admin.site_notice" class="App\Admin\SiteNoticeAdmin">
 			<tag name="sonata.admin" manager_type="orm" audit="false" group="library_secondary" label="admin.site_notice"/>
 			<argument />
-			<argument>Chitanka\LibBundle\Entity\SiteNotice</argument>
+			<argument>App\Entity\SiteNotice</argument>
 			<argument>App:Admin\SiteNotice</argument>
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
