@@ -1,86 +1,34 @@
-<?php
+<?php namespace App\Controller;
 
-namespace App\Controller;
+use App\Service\ReviewService;
 
-class MainController extends Controller
-{
+class MainController extends Controller {
 
-	public function indexAction()
-	{
+	const LAST_BOOKS_LIMIT = 3;
+	const LAST_TEXTS_LIMIT = 20;
+
+	public function indexAction() {
 		$this->responseAge = 600;
 
-		$this->view = array(
+		return $this->display('index', array(
 			'siteNotices' => $this->getSiteNoticeRepository()->findForFrontPage(),
-		);
-
-		return $this->display('index');
+			'review' => ReviewService::getReview(true),
+			'last_books' => $this->getBookRevisionRepository()->getLatest(self::LAST_BOOKS_LIMIT, 1, false),
+			'last_texts' => $this->getTextRevisionRepository()->getLatest(self::LAST_TEXTS_LIMIT, 1, false),
+		));
 	}
 
-
-	public function aboutAction()
-	{
-		return $this->legacyPage('About');
-	}
-
-	public function rulesAction()
-	{
-		return $this->legacyPage('Rules');
-	}
-
-	public function blacklistAction()
-	{
-		return $this->legacyPage('Blacklist');
-	}
-
-	public function defaultAction()
-	{
-		return $this->notFoundAction();
-	}
-
-	public function notFoundAction()
-	{
-		$response = $this->display('not_found');
-		$response->setStatusCode(404);
-
-		return $response;
-	}
-
-	public function redirectAction($route)
-	{
+	public function redirectAction($route) {
 		return $this->redirect($route, true);
 	}
 
-	public function siteboxAction()
-	{
-		$data = array(
+	public function siteboxAction() {
+		return $this->render('App:Main:sitebox.html.twig', array(
 			'site' => $this->getSiteRepository()->getRandom()
-		);
-
-		return $this->render('App:Main:sitebox.html.twig', $data);
+		));
 	}
 
-
-	public function lastBooksAction($limit = 3)
-	{
-		$this->view = array(
-			'revisions' => $this->getBookRevisionRepository()->getLatest($limit, 1, false),
-		);
-
-		return $this->display('last_books');
-	}
-
-	public function lastTextsAction($limit = 20)
-	{
-		$this->view = array(
-			'revisions' => $this->getTextRevisionRepository()->getLatest($limit, 1, false),
-		);
-
-		return $this->display('last_texts');
-	}
-
-
-	public function catalogAction($_format)
-	{
+	public function catalogAction($_format) {
 		return $this->display("catalog.$_format");
 	}
 

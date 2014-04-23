@@ -29,10 +29,12 @@
 	</div>
 
 	<div class="special-books">
-		<section id="mp-review" class="box box3 bookbox">
-			<h2><a href="{{ path('reviews') }}">Открийте</a></h2>
-			{{ render_esi(controller('App:Feed:randomReview')) }}
-		</section>
+		{% if review is not empty %}
+			<section id="mp-review" class="box box3 bookbox">
+				<h2><a href="{{ path('reviews') }}">Открийте</a></h2>
+				{% include 'App:FeaturedBook:book.html.twig' with {'book': review} %}
+			</section>
+		{% endif %}
 		<section id="mp-foreign-book" class="box box3 bookbox">
 			<h2><a href="{{ path('foreign_books') }}">Купете си</a></h2>
 			{{ render_esi(controller('App:ForeignBook:book')) }}
@@ -47,14 +49,14 @@
 	<section id="mp-new-books" class="box box2">
 		<h2><a href="{{ path('new_books') }}">Нови книги</a></h2>
 		<div class="well">
-			{{ render_esi(controller('App:Main:lastBooks')) }}
+			{% include 'App:Main:last_books.html.twig' with {last_books: last_books} %}
 			<div class="more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
 		</div>
 	</section>
 	<section id="mp-new-texts" class="box box2 textbox">
 		<h2><a href="{{ path('new_texts') }}">Нови произведения</a></h2>
 		<div class="well">
-			{{ render_esi(controller('App:Main:lastTexts')) }}
+			{% include 'App:Main:last_texts.html.twig' with {last_texts: last_texts} %}
 			<div class="more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
 		</div>
 	</section>
