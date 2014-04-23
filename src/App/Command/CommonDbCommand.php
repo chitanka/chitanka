@@ -128,12 +128,12 @@ class CommonDbCommand extends ContainerAwareCommand
 
 	public function webDir($file = null)
 	{
-		return __DIR__ . '/../../../../web' . ($file ? "/$file" : '');
+		return __DIR__ . '/../../../web' . ($file ? "/$file" : '');
 	}
 
 	public function contentDir($file = null)
 	{
-		return __DIR__ . '/../../../../web/content' . ($file ? "/$file" : '');
+		return __DIR__ . '/../../../web/content' . ($file ? "/$file" : '');
 	}
 
 	private $_olddb;
