@@ -8,7 +8,7 @@ function exitWithMessage($template = 'error', $retryAfter = 300) {
 }
 
 function isCacheable() {
-	return $_SERVER['REQUEST_METHOD'] == 'GET' && !array_key_exists('mlt', $_COOKIE);
+	return $_SERVER['REQUEST_METHOD'] == 'GET' && !isset($_COOKIE['mlt']);
 }
 class Cache {
 	private $file;
