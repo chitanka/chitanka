@@ -32,16 +32,16 @@
 		{% if review is not empty %}
 			<section id="mp-review" class="box box3 bookbox">
 				<h2><a href="{{ path('reviews') }}">Открийте</a></h2>
-				{% include 'App:FeaturedBook:book.html.twig' with {'book': review} %}
+				{% include 'App:FeaturedBook:book.html.twig' with {book: review} %}
 			</section>
 		{% endif %}
 		<section id="mp-foreign-book" class="box box3 bookbox">
 			<h2><a href="{{ path('foreign_books') }}">Купете си</a></h2>
-			{{ render_esi(controller('App:ForeignBook:book')) }}
+			{% include 'App:ForeignBook:book.html.twig' with {book: foreign_book} %}
 		</section>
 		<section id="mp-featured-book" class="box box3 bookbox">
 			<h2><a href="{{ path('featured_books') }}">Прочетете</a></h2>
-			{{ render_esi(controller('App:FeaturedBook:book')) }}
+			{% include 'App:FeaturedBook:book.html.twig' with {book: featured_book} %}
 		</section>
 	</div>
 	<div class="separator"></div>
@@ -49,14 +49,14 @@
 	<section id="mp-new-books" class="box box2">
 		<h2><a href="{{ path('new_books') }}">Нови книги</a></h2>
 		<div class="well">
-			{% include 'App:Main:last_books.html.twig' with {last_books: last_books} %}
+			{% include 'App:Main:last_books.html.twig' with {book_revisions: latest_books} %}
 			<div class="more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
 		</div>
 	</section>
 	<section id="mp-new-texts" class="box box2 textbox">
 		<h2><a href="{{ path('new_texts') }}">Нови произведения</a></h2>
 		<div class="well">
-			{% include 'App:Main:last_texts.html.twig' with {last_texts: last_texts} %}
+			{% include 'App:Main:last_texts.html.twig' with {text_revisions: latest_texts} %}
 			<div class="more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
 		</div>
 	</section>
@@ -64,29 +64,32 @@
 
 	<section id="mp-liternews" class="box liternewsbox">
 		<h2><a href="http://planet.chitanka.info/">От литературните блогове</a></h2>
-		{{ render_esi(controller('App:Feed:lastLiternews')) }}
+		{% if latest_liternews is not empty %}
+			{{ latest_liternews|raw }}
+		{% else %}
+			<p class="error">Неуспех при вземането на последните литературни новини.</p>
+		{% endif %}
 	</section>
-{#
-	<section id="mp-insidenews" class="box box3 insidenews">
-		<h2><a href="http://identi.ca/chitanka">Кратки съобщения</a></h2>
-		{{ render_esi(controller('App:Feed:lastInsideNews')) }}
-	</section>
-#}
+
 	<section id="mp-search" class="box box3">
 		<h2><a href="{{ path('search') }}">Потърсено</a></h2>
 		<div class="well">
-			{{ render_esi(controller('App:Search:latest', {'limit': 50})) }}
+			{% include 'App:Search:top_strings.html.twig' with {strings: latest_searches} %}
 		</div>
 	</section>
 	<div class="separator"></div>
 
 	<section id="mp-reader-comments" class="box box2 commentbox">
 		<h2><a href="{{ path('texts_comments') }}">Читателите казват</a></h2>
-		{{ render_esi(controller('App:TextComment:latest')) }}
+		{% include 'App:TextComment:latest_comments.html.twig' with {comments: latest_comments} %}
 	</section>
 	<section id="mp-forum-posts" class="box box2 forumbox">
 		<h2><a href="http://forum.chitanka.info">От форума</a></h2>
-		{{ render_esi(controller('App:Feed:lastForumPosts')) }}
+		{% if latest_forum_posts is not empty %}
+			{{ latest_forum_posts|raw }}
+		{% else %}
+			<p class="error">Неуспех при вземането на последните форумни съобщения.</p>
+		{% endif %}
 	</section>
 	<div class="separator"></div>
 {% endblock %}

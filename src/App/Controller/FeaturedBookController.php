@@ -1,26 +1,16 @@
-<?php
+<?php namespace App\Controller;
 
-namespace App\Controller;
+class FeaturedBookController extends Controller {
 
-class FeaturedBookController extends Controller
-{
-
-	public function indexAction($_format)
-	{
-		$this->view = array(
+	public function indexAction($_format) {
+		return $this->display("index.$_format", array(
 			'books' => $this->getFeaturedBookRepository()->getLatest(100),
-		);
-
-		return $this->display("index.$_format");
+		));
 	}
-
 
 	public function bookAction() {
-		$this->view = array(
+		return $this->render('App:FeaturedBook:book.html.twig', array(
 			'book' => $this->getFeaturedBookRepository()->getRandom()
-		);
-
-		return $this->render('App:FeaturedBook:book.html.twig', $this->view);
+		));
 	}
-
 }

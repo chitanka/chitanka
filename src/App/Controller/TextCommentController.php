@@ -53,12 +53,4 @@ class TextCommentController extends Controller {
 // 		return $this->display('text_comments');
 	}
 
-	public function latestAction($limit = 5) {
-		$this->view = array(
-			'comments' => $this->getTextCommentRepository()->getLatest($limit),
-		);
-
-		return $this->display('latest_comments');
-	}
-
 }

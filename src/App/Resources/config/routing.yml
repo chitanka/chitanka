@@ -546,7 +546,7 @@ foreign_books:
 
 reviews:
     pattern:   /reviews
-    defaults: { _controller: App:Feed:reviews }
+    defaults: { _controller: App:Review:index }
 
 wiki_save:
     pattern:  /wiki/save

@@ -1,21 +1,16 @@
-<?php
-
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Pagination\Pager;
 use App\Entity\SearchString;
 use App\Util\String;
 
-class SearchController extends Controller
-{
+class SearchController extends Controller {
 	protected $responseAge = 86400; // 24 hours
 	private $minQueryLength = 3;
 	private $maxQueryLength = 60;
 
-	public function indexAction($_format)
-	{
+	public function indexAction($_format) {
 		if ($_format == 'osd') {
 			return $this->display("index.$_format");
 		}
@@ -50,9 +45,7 @@ class SearchController extends Controller
 		return $this->display("index.$_format");
 	}
 
-
-	public function personsAction(Request $request, $_format)
-	{
+	public function personsAction(Request $request, $_format) {
 		if ($_format == 'osd') {
 			return $this->display("Person:search.$_format");
 		}
@@ -93,8 +86,7 @@ class SearchController extends Controller
 		return $this->display("Person:search.$_format");
 	}
 
-	public function authorsAction(Request $request, $_format)
-	{
+	public function authorsAction(Request $request, $_format) {
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = array();
 			$query = $request->query->get('q');
@@ -115,8 +107,7 @@ class SearchController extends Controller
 		return $this->display("Author:search.$_format");
 	}
 
-	public function translatorsAction(Request $request, $_format)
-	{
+	public function translatorsAction(Request $request, $_format) {
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = array();
 			$query = $request->query->get('q');
@@ -137,8 +128,7 @@ class SearchController extends Controller
 		return $this->display("Translator:search.$_format");
 	}
 
-	public function textsAction(Request $request, $_format)
-	{
+	public function textsAction(Request $request, $_format) {
 		if ($_format == 'osd') {
 			return $this->display("Text:search.$_format");
 		}
@@ -179,9 +169,7 @@ class SearchController extends Controller
 		return $this->display("Text:search.$_format");
 	}
 
-
-	public function booksAction(Request $request, $_format)
-	{
+	public function booksAction(Request $request, $_format) {
 		if ($_format == 'osd') {
 			return $this->display("Book:search.$_format");
 		}
@@ -222,9 +210,7 @@ class SearchController extends Controller
 		return $this->display("Book:search.$_format");
 	}
 
-
-	public function seriesAction(Request $request, $_format)
-	{
+	public function seriesAction(Request $request, $_format) {
 		if ($_format == 'osd') {
 			return $this->display("Series:search.$_format");
 		}
@@ -265,9 +251,7 @@ class SearchController extends Controller
 		return $this->display("Series:search.$_format");
 	}
 
-
-	public function sequencesAction(Request $request, $_format)
-	{
+	public function sequencesAction(Request $request, $_format) {
 		if ($_format == 'osd') {
 			return $this->display("Sequence:search.$_format");
 		}
@@ -308,9 +292,7 @@ class SearchController extends Controller
 		return $this->display("Sequence:search.$_format");
 	}
 
-
-	private function getQuery($_format = 'html')
-	{
+	private function getQuery($_format = 'html') {
 		$request = $this->get('request')->query;
 		$query = trim($request->get('q'));
 
@@ -354,8 +336,7 @@ class SearchController extends Controller
 		}
 	}
 
-	private function logSearch($query)
-	{
+	private function logSearch($query) {
 		$searchString = $this->getSearchStringRepository()->findOneBy(array('name' => $query));
 		if ( ! $searchString) {
 			$searchString = new SearchString($query);
@@ -365,14 +346,4 @@ class SearchController extends Controller
 		$this->getEntityManager()->flush();
 	}
 
-
-	public function latestAction($limit = 10)
-	{
-		$this->responseAge = 600; // 10 minutes
-		$this->view = array(
-			'strings' => $this->getSearchStringRepository()->getLatest($limit),
-		);
-
-		return $this->display('top_strings');
-	}
 }
