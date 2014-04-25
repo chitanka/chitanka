@@ -7,11 +7,18 @@ filter:
         - web/config.php
 
 tools:
-    # Similar Code Detector
+    # Similar code detector
     php_sim: true
 
     # Metrics
     php_pdepend: true
 
-    # Some Metrics + Bug Detection/Auto-Fixes
+    # Some metrics + bug detection/auto-fixes
     php_analyzer: true
+
+    # Test coverage
+    php_code_coverage: true
+
+    php_mess_detector: true
+
+    sensiolabs_security_checker: true
