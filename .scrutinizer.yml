@@ -16,6 +16,8 @@ tools:
     # Some metrics + bug detection/auto-fixes
     php_analyzer: true
 
+    php_changetracking: true
+
     # Test coverage
     php_code_coverage: true
 
