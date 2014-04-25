@@ -15,8 +15,7 @@
 
     <testsuites>
         <testsuite name="Chitanka Test Suite">
-            <directory>src/*/*Bundle/Tests</directory>
-            <directory>src/*/Bundle/*Bundle/Tests</directory>
+            <directory>src/App/Tests</directory>
         </testsuite>
     </testsuites>
 
@@ -30,10 +29,8 @@
         <whitelist>
             <directory>src</directory>
             <exclude>
-                <directory>src/*/*Bundle/Resources</directory>
-                <directory>src/*/*Bundle/Tests</directory>
-                <directory>src/*/Bundle/*Bundle/Resources</directory>
-                <directory>src/*/Bundle/*Bundle/Tests</directory>
+                <directory>src/App/Resources</directory>
+                <directory>src/App/Tests</directory>
             </exclude>
         </whitelist>
     </filter>
