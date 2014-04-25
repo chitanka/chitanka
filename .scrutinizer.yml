@@ -1,0 +1,16 @@
+filter:
+    excluded_paths:
+        - vendor/*
+        - app/*
+        - bin/*
+        - src/App/Resources/public/bin/*
+
+tools:
+    # Similar Code Detector
+    php_sim: true
+
+    # Metrics
+    php_pdepend: true
+
+    # Some Metrics + Bug Detection/Auto-Fixes
+    php_analyzer: true
