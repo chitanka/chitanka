@@ -4,6 +4,7 @@ filter:
         - app/*
         - bin/*
         - src/App/Resources/public/bin/*
+        - web/config.php
 
 tools:
     # Similar Code Detector
