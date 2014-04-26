@@ -48,11 +48,4 @@ class TextPage extends Page {
 		return $sep . $o;
 	}
 
-	protected function makeLicenseView($name, $uri = '') {
-		if ( empty($uri) ) {
-			return "($name)";
-		}
-		return "(<a href='$uri' rel='license'>$name</a>)";
-	}
-
 }

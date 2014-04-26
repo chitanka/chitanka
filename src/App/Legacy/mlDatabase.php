@@ -185,10 +185,6 @@ class mlDatabase {
 			$this->makeWhereClause($keys);
 	}
 
-	public function replace($table, $data) {
-		return $this->query( $this->replaceQ($table, $data) );
-	}
-
 	public function replaceQ($table, $data) {
 		if ( empty($data) ) { return ''; }
 		return 'REPLACE '.$table.$this->makeSetClause($data);
