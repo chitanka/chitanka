@@ -105,37 +105,32 @@ class Setup {
 		return self::$outputMaker;
 	}
 
-	static private function defineDbTableConsts($prefix = '') {
-		$tables = array(
-			'AUTHOR_OF'     => 'text_author',
-			'BOOK'          => 'book',
-			'BOOK_AUTHOR'   => 'book_author',
-			'BOOK_TEXT'     => 'book_text',
-			'COMMENT'       => 'text_comment',
-			'DL_CACHE'      => 'download_cache',
-			'DL_CACHE_TEXT' => 'download_cache_text',
-			'EDIT_HISTORY'  => 'text_revision',
-			'HEADER'        => 'header',
-			'LABEL'         => 'label',
-			'LABEL_LOG'     => 'label_log',
-			'LICENSE'       => 'license',
-			'PERSON'        => 'person',
-			'QUESTION'      => 'question',
-			'READER_OF'     => 'user_text_read',
-			'SER_AUTHOR_OF' => 'series_author',
-			'SERIES'        => 'series',
-			'TEXT'          => 'text',
-			'TEXT_LABEL'    => 'text_label',
-			'TEXT_RATING'   => 'text_rating',
-			'TRANSLATOR_OF' => 'text_translator',
-			'USER'          => 'user',
-			'USER_TEXT'     => 'user_text_contrib',
-			'WORK'          => 'work_entry',
-			'WORK_MULTI'    => 'work_contrib',
-		);
-		foreach ($tables as $constant => $table) {
-			define('DBT_' . $constant, $prefix . $table);
-		}
+	static private function defineDbTableConsts() {
+		define('DBT_AUTHOR_OF', 'text_author');
+		define('DBT_BOOK', 'book');
+		define('DBT_BOOK_AUTHOR', 'book_author');
+		define('DBT_BOOK_TEXT', 'book_text');
+		define('DBT_COMMENT', 'text_comment');
+		define('DBT_DL_CACHE', 'download_cache');
+		define('DBT_DL_CACHE_TEXT', 'download_cache_text');
+		define('DBT_EDIT_HISTORY', 'text_revision');
+		define('DBT_HEADER', 'header');
+		define('DBT_LABEL', 'label');
+		define('DBT_LABEL_LOG', 'label_log');
+		define('DBT_LICENSE', 'license');
+		define('DBT_PERSON', 'person');
+		define('DBT_QUESTION', 'question');
+		define('DBT_READER_OF', 'user_text_read');
+		define('DBT_SER_AUTHOR_OF', 'series_author');
+		define('DBT_SERIES', 'series');
+		define('DBT_TEXT', 'text');
+		define('DBT_TEXT_LABEL', 'text_label');
+		define('DBT_TEXT_RATING', 'text_rating');
+		define('DBT_TRANSLATOR_OF', 'text_translator');
+		define('DBT_USER', 'user');
+		define('DBT_USER_TEXT', 'user_text_contrib');
+		define('DBT_WORK', 'work_entry');
+		define('DBT_WORK_MULTI', 'work_contrib');
 	}
 
 }
