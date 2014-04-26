@@ -146,6 +146,14 @@ class BookRepository extends EntityRepository {
 	}
 
 	/**
+	 * @param array $params
+	 * @return array
+	 */
+	public function getByQuery($params) {
+		return WorkSteward::joinPersonKeysForBooks(parent::getByQuery($params));
+	}
+
+	/**
 	 * @param string $orderBys
 	 */
 	public function getQueryBuilder($orderBys = null) {

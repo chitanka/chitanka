@@ -38,7 +38,7 @@ abstract class WebTestCase extends BaseTestCase
 	}
 
 	public function assertOsdSearchPage(Crawler $page) {
-		$this->assertCount(1, $page->filter('OpenSearchDescription'));
+		$this->assertEquals('OpenSearchDescription', $page->getNode(0)->nodeName);
 	}
 
 	public function assertSuggestSearchPageIsFor($page, $query) {

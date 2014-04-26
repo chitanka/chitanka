@@ -224,7 +224,8 @@ class TextRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $limit
+	 * @param string $title
+	 * @param int $limit
 	 */
 	public function getByTitles($title, $limit = null) {
 		$q = $this->getQueryBuilder()
@@ -237,6 +238,10 @@ class TextRepository extends EntityRepository {
 		return WorkSteward::joinPersonKeysForTexts($q->getArrayResult());
 	}
 
+	/**
+	 * @param string $orderBys
+	 * @return \Doctrine\ORM\QueryBuilder
+	 */
 	public function getQueryBuilder($orderBys = null) {
 		return $this->_em->createQueryBuilder()
 			->select('e', 'a', 'ap', 't', 'tp', 's')
@@ -249,6 +254,10 @@ class TextRepository extends EntityRepository {
 			->orderBy('e.title');
 	}
 
+	/**
+	 * @param Series $series
+	 * @return array
+	 */
 	public function getBySeries($series) {
 		$texts = $this->_em->createQueryBuilder()
 			->select('e', 'a', 'ap', 'ol', 'tl')
@@ -260,8 +269,18 @@ class TextRepository extends EntityRepository {
 			->where('e.series = ?1')->setParameter(1, $series->getId())
 			->addOrderBy('e.sernr, e.title')
 			->getQuery()->getArrayResult();
+		$texts = $this->putIdAsKey($texts);
+		$texts = WorkSteward::joinPersonKeysForTexts($texts);
 
-		return $this->putIdAsKey($texts);
+		return $texts;
+	}
+
+	/**
+	 * @param array $params
+	 * @return array
+	 */
+	public function getByQuery($params) {
+		return WorkSteward::joinPersonKeysForTexts(parent::getByQuery($params));
 	}
 
 	public function getCountsByType() {

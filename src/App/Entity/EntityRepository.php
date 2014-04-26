@@ -86,6 +86,10 @@ abstract class EntityRepository extends DoctrineEntityRepository
 			->getQuery()->getArrayResult();
 	}
 
+	/**
+	 * @param array $params
+	 * @return array
+	 */
 	public function getByQuery($params) {
 		if (empty($params['text']) || empty($params['by'])) {
 			return array();
