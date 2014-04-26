@@ -4,8 +4,7 @@ use App\Util\Number;
 use App\Util\String;
 use App\Util\Char;
 
-abstract class Page
-{
+abstract class Page {
 
 	const
 		FF_ACTION = 'action',

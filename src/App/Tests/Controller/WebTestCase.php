@@ -3,8 +3,8 @@
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
-abstract class WebTestCase extends BaseTestCase
-{
+abstract class WebTestCase extends BaseTestCase {
+
 	/**
 	 * Make a browser request and return the crawler
 	 * @param string $route

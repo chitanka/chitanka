@@ -2,8 +2,8 @@
 
 use Doctrine\ORM\EntityRepository as DoctrineEntityRepository;
 
-abstract class EntityRepository extends DoctrineEntityRepository
-{
+abstract class EntityRepository extends DoctrineEntityRepository {
+
 	protected $queryableFields = array();
 
 	public function persist($object) {

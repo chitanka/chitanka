@@ -5,8 +5,6 @@ use Symfony\Component\Form\FormEvent;
 
 abstract class Admin extends BaseAdmin {
 
-	#protected $baseRoutePattern;
-
 	public function getEntityManager() {
 		return $this->modelManager->getEntityManager($this->getClass());
 	}

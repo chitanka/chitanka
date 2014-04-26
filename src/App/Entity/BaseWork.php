@@ -5,8 +5,7 @@ use App\Util\String;
 use App\Legacy\Legacy;
 use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
 
-abstract class BaseWork extends Entity
-{
+abstract class BaseWork extends Entity {
 
 	const TITLE_NEW_LINE = "<br>\n";
 

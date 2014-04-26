@@ -111,7 +111,7 @@ class SearchControllerTest extends WebTestCase {
 	 */
 	public function testIndexInOsd() {
 		$page = $this->request('search.osd');
-#print_r($page);
+
 		$this->assertOsdSearchPage($page);
 	}
 
