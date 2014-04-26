@@ -1,5 +1,4 @@
-<?php
-namespace App\Admin;
+<?php namespace App\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -7,8 +6,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 
-class TextCommentAdmin extends Admin
-{
+class TextCommentAdmin extends Admin {
 	protected $baseRoutePattern = 'text-comment';
 	protected $baseRouteName = 'admin_text_comment';
 	protected $translationDomain = 'admin';
@@ -17,8 +15,7 @@ class TextCommentAdmin extends Admin
 		$collection->remove('create');
 	}
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
+	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper
 			->add('text')
 			->add('user')
@@ -29,8 +26,7 @@ class TextCommentAdmin extends Admin
 		;
 	}
 
-	protected function configureListFields(ListMapper $listMapper)
-	{
+	protected function configureListFields(ListMapper $listMapper) {
 		$listMapper
 			->add('text')
 			->add('rname')
@@ -46,8 +42,7 @@ class TextCommentAdmin extends Admin
 		;
 	}
 
-	protected function configureFormFields(FormMapper $formMapper)
-	{
+	protected function configureFormFields(FormMapper $formMapper) {
 		$formMapper
 			->with('General attributes')
 				->add('rname')
@@ -58,8 +53,7 @@ class TextCommentAdmin extends Admin
 
 	}
 
-	protected function configureDatagridFilters(DatagridMapper $datagrid)
-	{
+	protected function configureDatagridFilters(DatagridMapper $datagrid) {
 		$datagrid
 			->add('rname')
 			->add('is_shown')

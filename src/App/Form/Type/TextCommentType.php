@@ -1,14 +1,10 @@
-<?php
-
-namespace App\Form\Type;
+<?php namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class TextCommentType extends AbstractType
-{
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
+class TextCommentType extends AbstractType {
+	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('text_id', 'hidden')
 			->add('replyto_id', 'hidden')
@@ -16,15 +12,13 @@ class TextCommentType extends AbstractType
 			->add('reader');
 	}
 
-	public function getDefaultOptions(array $options)
-	{
+	public function getDefaultOptions(array $options) {
 		return array(
 			'data_class' => 'App\Entity\TextComment',
 		);
 	}
 
-	public function getName()
-	{
+	public function getName() {
 		return 'text_comment';
 	}
 }

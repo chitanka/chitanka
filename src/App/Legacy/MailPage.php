@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 class MailPage extends Page {
 
@@ -12,7 +11,6 @@ class MailPage extends Page {
 		$mailSubject = '',
 		$extraMailHeaders = array()
 	;
-
 
 	public function __construct($fields) {
 		parent::__construct($fields);
@@ -35,7 +33,6 @@ class MailPage extends Page {
 			изпращането. Ако желаете, пробвайте още веднъж.';
 		$this->mailMessage = '';
 	}
-
 
 	protected function processSubmission() {
 		$mailer = $this->controller->get('mailer');
@@ -82,11 +79,9 @@ class MailPage extends Page {
 		return $this->makeSubmissionReturn();
 	}
 
-
 	protected function buildContent() {
 		return $this->makeForm();
 	}
-
 
 	protected function setMailHeaders($mail) {
 		$mail->setFrom($this->mailFromEmail, $this->mailFromName);

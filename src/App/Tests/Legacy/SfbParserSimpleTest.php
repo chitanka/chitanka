@@ -1,13 +1,11 @@
-<?php
-namespace App\Tests\Legacy;
+<?php namespace App\Tests\Legacy;
 
 use App\Tests\TestCase;
 use App\Legacy\SfbParserSimple;
 
 class SfbParserSimpleTest extends TestCase {
 
-	public function testOneLevelHeaders()
-	{
+	public function testOneLevelHeaders() {
 		$headlevel = 1;
 		$parser = new SfbParserSimple($this->createTestFile(), $headlevel);
 		$parser->convert();
@@ -30,8 +28,7 @@ class SfbParserSimpleTest extends TestCase {
 		$this->assertEquals($expectedHeaders, $parser->headersFlat());
 	}
 
-	public function testTwoLevelHeaders()
-	{
+	public function testTwoLevelHeaders() {
 		$headlevel = 2;
 		$parser = new SfbParserSimple($this->createTestFile(), $headlevel);
 		$parser->convert();
@@ -68,8 +65,7 @@ class SfbParserSimpleTest extends TestCase {
 		$this->assertEquals($expectedHeaders, $parser->headersFlat());
 	}
 
-	private function createTestFile()
-	{
+	private function createTestFile() {
 		$c = <<<SFB
 >	Глава 1
 >	Началото

@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\EntityRepository as DoctrineEntityRepository;
 
@@ -8,16 +6,13 @@ abstract class EntityRepository extends DoctrineEntityRepository
 {
 	protected $queryableFields = array();
 
-
-	public function persist($object)
-	{
+	public function persist($object) {
 		$em = $this->getEntityManager();
 		$em->persist($object);
 		$em->flush();
 	}
 
-	public function flush()
-	{
+	public function flush() {
 		$this->getEntityManager()->flush();
 	}
 
@@ -33,8 +28,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
-	protected function setPagination($query, $page, $limit)
-	{
+	protected function setPagination($query, $page, $limit) {
 		if ($limit) {
 			$query->setMaxResults($limit)->setFirstResult(($page - 1) * $limit);
 		}
@@ -42,14 +36,23 @@ abstract class EntityRepository extends DoctrineEntityRepository
 		return $query;
 	}
 
+	/**
+	 * @param string $where
+	 */
 	public function getRandom($where = null) {
 		return $this->getRandomQuery($where)->getSingleResult();
 	}
 
+	/**
+	 * @param string $where
+	 */
 	public function getRandomId($where = null) {
 		return $this->getRandomQuery($where, 'e.id')->getSingleScalarResult();
 	}
 
+	/**
+	 * @param string $select
+	 */
 	protected function getRandomQuery($where = null, $select = null) {
 		$qb = $this->getEntityManager()->createQueryBuilder()
 			->select($select ?: 'e')
@@ -64,8 +67,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
 		return $query;
 	}
 
-	public function findByIds(array $ids)
-	{
+	public function findByIds(array $ids) {
 		if (empty($ids)) {
 			return array();
 		}
@@ -74,8 +76,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
 			->getQuery()->getResult();
 	}
 
-	public function getByIds($ids, $orderBy = null)
-	{
+	public function getByIds($ids, $orderBy = null) {
 		if (empty($ids)) {
 			return array();
 		}
@@ -85,9 +86,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
 			->getQuery()->getArrayResult();
 	}
 
-
-	public function getByQuery($params)
-	{
+	public function getByQuery($params) {
 		if (empty($params['text']) || empty($params['by'])) {
 			return array();
 		}
@@ -130,15 +129,11 @@ abstract class EntityRepository extends DoctrineEntityRepository
 		return $query->getArrayResult();
 	}
 
-
-	public function getQueryableFields()
-	{
+	public function getQueryableFields() {
 		return $this->queryableFields;
 	}
 
-
-	public function getQueryBuilder($orderBys = null)
-	{
+	public function getQueryBuilder($orderBys = null) {
 		$qb = $this->createQueryBuilder('e');
 
 		if ($orderBys) {
@@ -157,8 +152,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
 		return $qb;
 	}
 
-	protected function stringForLikeClause($s)
-	{
+	protected function stringForLikeClause($s) {
 		return "%".str_replace(' ', '% ', $s)."%";
 	}
 }

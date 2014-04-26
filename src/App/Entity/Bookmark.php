@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,8 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 *	uniqueConstraints={@ORM\UniqueConstraint(name="uniq_key", columns={"folder_id", "text_id", "user_id"})}
 * )
 */
-class Bookmark extends Entity
-{
+class Bookmark extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -45,9 +42,7 @@ class Bookmark extends Entity
 	 */
 	private $created_at;
 
-
-	public function __construct($fields)
-	{
+	public function __construct($fields) {
 		foreach (array('folder', 'text', 'user') as $field) {
 			if (isset($fields[$field])) {
 				$setter = 'set' . ucfirst($field);
@@ -67,12 +62,14 @@ class Bookmark extends Entity
 	public function setUser($user) { $this->user = $user; }
 	public function getUser() { return $this->user; }
 
+	/**
+	 * @param \DateTime $created_at
+	 */
 	public function setCreatedAt($created_at) { $this->created_at = $created_at; }
 	public function getCreatedAt() { return $this->created_at; }
 
 	/** @ORM\PrePersist */
-	public function preInsert()
-	{
+	public function preInsert() {
 		$this->setCreatedAt(new \DateTime);
 	}
 

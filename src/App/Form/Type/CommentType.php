@@ -1,17 +1,14 @@
-<?php
-namespace App\Form\Type;
+<?php namespace App\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use FOS\CommentBundle\Form\CommentType as BaseCommentType;
 
-class CommentType extends BaseCommentType
-{
+class CommentType extends BaseCommentType {
 
 	/**
      * {@inheritDoc}
 	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
+	public function buildForm(FormBuilderInterface $builder, array $options) {
 		parent::buildForm($builder, $options);
 		$builder->add('cc', 'text', array(
 			'required' => false,
@@ -22,8 +19,7 @@ class CommentType extends BaseCommentType
 		));
 	}
 
-	public function getName()
-	{
+	public function getName() {
 		return 'comment_form';
 	}
 }

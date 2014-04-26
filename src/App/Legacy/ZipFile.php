@@ -47,7 +47,6 @@ class ZipFile {
 	private $old_offset   = 0;
 	private $old_offset_ph = '__OLD_OFFSET__';
 
-
 	/**
 	 * Converts an Unix timestamp to a four byte DOS date and time format (date
 	 * in high two bytes, time in low two bytes allowing magnitude comparison).
@@ -143,7 +142,6 @@ class ZipFile {
 
 		return compact('name', 'fr', 'cdrec');
 	} // end of the 'newFileEntry()' method
-
 
 	/**
 	 * @see newFileEntry

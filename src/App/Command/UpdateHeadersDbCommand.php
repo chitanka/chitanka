@@ -1,17 +1,13 @@
-<?php
-
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateHeadersDbCommand extends CommonDbCommand
-{
+class UpdateHeadersDbCommand extends CommonDbCommand {
 
-	protected function configure()
-	{
+	protected function configure() {
 		parent::configure();
 
 		$this
@@ -35,8 +31,7 @@ EOT
 	 *
 	 * @throws \LogicException When this abstract class is not implemented
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->output = $output;
 		$texts = trim($input->getArgument('texts'));
@@ -45,13 +40,11 @@ EOT
 		$output->writeln('/*Done.*/');
 	}
 
-
 	/**
 	 * @param string $texts
 	 * @param boolean $dumpSql
 	 */
-	protected function updateHeaders($texts, $dumpSql)
-	{
+	protected function updateHeaders($texts, $dumpSql) {
 		$queries = array();
 		$dql = 'SELECT t FROM App:Text t WHERE t.headlevel > 0';
 		if ($texts) {

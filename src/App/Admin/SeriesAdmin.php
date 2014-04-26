@@ -1,21 +1,18 @@
-<?php
-namespace App\Admin;
+<?php namespace App\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class SeriesAdmin extends Admin
-{
+class SeriesAdmin extends Admin {
 	protected $baseRoutePattern = 'series';
 	protected $baseRouteName = 'admin_series';
 	protected $translationDomain = 'admin';
 
 	public $extraActions = 'App:SeriesAdmin:extra_actions.html.twig';
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
+	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper
 			->add('slug')
 			->add('name')
@@ -25,8 +22,7 @@ class SeriesAdmin extends Admin
 		;
 	}
 
-	protected function configureListFields(ListMapper $listMapper)
-	{
+	protected function configureListFields(ListMapper $listMapper) {
 		$listMapper
 			->addIdentifier('name')
 			->add('slug')
@@ -40,8 +36,7 @@ class SeriesAdmin extends Admin
 		;
 	}
 
-	protected function configureFormFields(FormMapper $formMapper)
-	{
+	protected function configureFormFields(FormMapper $formMapper) {
 		$formMapper
 			->with('General attributes')
 				->add('slug')
@@ -59,8 +54,7 @@ class SeriesAdmin extends Admin
 
 	}
 
-	protected function configureDatagridFilters(DatagridMapper $datagrid)
-	{
+	protected function configureDatagridFilters(DatagridMapper $datagrid) {
 		$datagrid
 			->add('slug')
 			->add('name')

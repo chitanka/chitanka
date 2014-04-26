@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,8 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 *	indexes={
 *		@ORM\Index(name="label_idx", columns={"label_id"})})
 */
-class TextLabel extends Entity
-{
+class TextLabel extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -39,6 +36,10 @@ class TextLabel extends Entity
 	public function getId() { return $this->id; }
 
 	public function getText() { return $this->text; }
+
+	/**
+	 * @param Text $text
+	 */
 	public function setText($text) { $this->text = $text; }
 
 	public function getLabel() { return $this->label; }

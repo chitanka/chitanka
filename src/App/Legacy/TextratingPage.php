@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Entity\Text;
 
@@ -9,7 +8,6 @@ class TextratingPage extends TextPage {
 		$action = 'textrating',
 		$includeUserLinks = true;
 
-
 	public function __construct($fields) {
 		parent::__construct($fields);
 		$this->title = 'Оценки';
@@ -17,14 +15,12 @@ class TextratingPage extends TextPage {
 		$this->username = $this->request->value('username');
 	}
 
-
 	protected function buildContent() {
 		if ( ! empty( $this->username ) ) {
 			return $this->makeListByUser();
 		}
 		return $this->makeListByText();
 	}
-
 
 	protected function makeListByText($limit = 0, $offset = 0) {
 		$this->initData();
@@ -62,7 +58,6 @@ class TextratingPage extends TextPage {
 		return $this->out->simpleTable($this->title, $this->data);
 	}
 
-
 	public function makeListByTextItem($dbrow) {
 		$this->data[] = array(
 			Legacy::humanDate($dbrow['date']),
@@ -70,8 +65,6 @@ class TextratingPage extends TextPage {
 			$dbrow['rating']
 		);
 	}
-
-
 
 	protected function makeListByUser($limit = 0, $offset = 0) {
 		$qa = array(
@@ -105,7 +98,6 @@ class TextratingPage extends TextPage {
 		return $this->out->simpleTable($this->title, $this->data);
 	}
 
-
 	public function makeListByUserItem($dbrow) {
 		$this->data[] = array(
 			Legacy::humanDate($dbrow['date']),
@@ -114,7 +106,6 @@ class TextratingPage extends TextPage {
 			$dbrow['rating']
 		);
 	}
-
 
 	protected function initData() {
 		$this->work = $this->controller->getRepository('Text')->find($this->textId);

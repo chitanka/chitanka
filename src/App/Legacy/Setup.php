@@ -1,7 +1,4 @@
-<?php
-
-namespace App\Legacy;
-
+<?php namespace App\Legacy;
 
 class Setup {
 
@@ -14,11 +11,7 @@ class Setup {
 		/** @var mlDatabase */   $db,
 		/** @var OutputMaker */  $outputMaker;
 
-
-
-
-	static public function getPage($name, $controller, $container, $execute = true)
-	{
+	static public function getPage($name, $controller, $container, $execute = true) {
 		self::doSetup($container);
 
 		$class = 'App\Legacy\\'.$name.'Page';
@@ -40,10 +33,7 @@ class Setup {
 		return $page;
 	}
 
-
-
-	static public function doSetup($container)
-	{
+	static public function doSetup($container) {
 		if ( self::$setupDone ) {
 			return;
 		}
@@ -57,9 +47,7 @@ class Setup {
 		self::$setupDone = true;
 	}
 
-
-	static public function defineConstants()
-	{
+	static public function defineConstants() {
 		define('BASEDIR', __DIR__ . '/../../../../web'); // TODO remove
 
 		define('SESSION_NAME', 'mls');
@@ -73,34 +61,26 @@ class Setup {
 		define('SITE_EMAIL', self::setting('site_email'));
 	}
 
-
 	/**
 	 * @param string $settingName
 	 */
-	static public function setting($settingName)
-	{
+	static public function setting($settingName) {
 		return self::$config->getParameter($settingName);
 	}
 
-	static public function request()
-	{
+	static public function request() {
 		return self::setupRequest();
 	}
 
-
-	static public function db()
-	{
+	static public function db() {
 		return self::setupDb();
 	}
 
-	static public function outputMaker($forceNew = false)
-	{
+	static public function outputMaker($forceNew = false) {
 		return self::setupOutputMaker($forceNew);
 	}
 
-
-	static private function setupDb()
-	{
+	static private function setupDb() {
 		if ( ! isset(self::$db) ) {
 			$conn = self::$config->get('doctrine.dbal.default_connection');
 			self::$db = new mlDatabase($conn->getHost(), $conn->getUsername(), $conn->getPassword(), $conn->getDatabase());
@@ -108,30 +88,24 @@ class Setup {
 		return self::$db;
 	}
 
-
-	static private function setupRequest()
-	{
+	static private function setupRequest() {
 		if ( ! isset(self::$request) ) {
 			self::$request = new Request();
 		}
 		return self::$request;
 	}
 
-
 	/**
 	 * @param boolean $forceNew
 	 */
-	static private function setupOutputMaker($forceNew)
-	{
+	static private function setupOutputMaker($forceNew) {
 		if ( $forceNew || ! isset(self::$outputMaker) ) {
 			self::$outputMaker = new OutputMaker();
 		}
 		return self::$outputMaker;
 	}
 
-
-	static private function defineDbTableConsts($prefix = '')
-	{
+	static private function defineDbTableConsts($prefix = '') {
 		$tables = array(
 			'AUTHOR_OF'     => 'text_author',
 			'BOOK'          => 'book',

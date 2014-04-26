@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,8 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity(repositoryClass="App\Entity\ForeignBookRepository")
 * @ORM\Table(name="foreign_book")
 */
-class ForeignBook extends Entity
-{
+class ForeignBook extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -74,8 +71,7 @@ class ForeignBook extends Entity
 	public function setIsFree($isFree) { $this->isFree = $isFree; }
 	public function getIsFree() { return $this->isFree; }
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->title;
 	}
 }

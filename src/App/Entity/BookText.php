@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,8 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="book_text")
  */
-class BookText extends Entity
-{
+class BookText extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -44,6 +41,9 @@ class BookText extends Entity
 
 	public function getId() { return $this->id; }
 
+	/**
+	 * @param Book $book
+	 */
 	public function setBook($book) { $this->book = $book; }
 	public function getBook() { return $this->book; }
 
@@ -53,6 +53,9 @@ class BookText extends Entity
 	public function setPos($pos) { $this->pos = $pos; }
 	public function getPos() { return $this->pos; }
 
+	/**
+	 * @param boolean $shareInfo
+	 */
 	public function setShareInfo($shareInfo) { $this->share_info = $shareInfo; }
 	public function getShareInfo() { return $this->share_info; }
 

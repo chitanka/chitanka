@@ -1,20 +1,16 @@
-<?php
-namespace App\Util;
+<?php namespace App\Util;
 
-class Fb2Validator
-{
+class Fb2Validator {
 	private $schema;
 
-	public function __construct($schema = null)
-	{
+	public function __construct($schema = null) {
 		$this->schema = $schema ?: __DIR__.'/FictionBook2.21.xsd';
 
 		// Enable user error handling
 		libxml_use_internal_errors(true);
 	}
 
-	public function isValid($xml)
-	{
+	public function isValid($xml) {
 		$doc = new \DOMDocument;
 		if (strpos($xml, '<') === false && file_exists($xml)) { // a filename
 			$doc->load($xml);
@@ -25,8 +21,7 @@ class Fb2Validator
 		return $doc->schemaValidate($this->schema);
 	}
 
-	public function getErrors()
-	{
+	public function getErrors() {
 		$errors = array();
 		foreach (libxml_get_errors() as $error) {
 			$errors[] = $this->formatError($error);
@@ -36,8 +31,7 @@ class Fb2Validator
 		return implode("\n", $errors);
 	}
 
-	private function formatError($error)
-	{
+	private function formatError($error) {
 		$titles = array(
 			LIBXML_ERR_WARNING	=> "Warning",
 			LIBXML_ERR_ERROR	=> "Error",

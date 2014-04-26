@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -9,11 +7,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * TODO Usage of book.title_author is deprecated
  */
-class UpdateBookTitleAuthorDbCommand extends CommonDbCommand
-{
+class UpdateBookTitleAuthorDbCommand extends CommonDbCommand {
 
-	protected function configure()
-	{
+	protected function configure() {
 		parent::configure();
 
 		$this
@@ -36,8 +32,7 @@ EOT
 	 *
 	 * @throws \LogicException When this abstract class is not implemented
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->output = $output;
 		$this->dumpSql = $input->getOption('dump-sql') === true;
@@ -45,12 +40,10 @@ EOT
 		$output->writeln('/*Done.*/');
 	}
 
-
 	/**
 	 * @param boolean $dumpSql
 	 */
-	protected function updateBookTitleAuthor($dumpSql)
-	{
+	protected function updateBookTitleAuthor($dumpSql) {
 		$queries = array();
 		$iterableResult = $this->em->createQuery('SELECT b FROM App:Book b WHERE b.title_author IS NULL')->iterate();
 		foreach ($iterableResult AS $row) {

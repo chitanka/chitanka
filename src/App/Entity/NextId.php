@@ -1,5 +1,4 @@
-<?php
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -9,8 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Entity\NextIdRepository")
  * @ORM\Table(name="next_id")
  */
-class NextId
-{
+class NextId {
 	/**
 	 * @ORM\Id
 	 * @ORM\Column(type="string", length=255)
@@ -22,17 +20,19 @@ class NextId
 	 */
 	private $value;
 
-	public function __construct($id)
-	{
+	public function __construct($id) {
 		$this->id = $id;
 	}
+
+	/**
+	 * @return string
+	 */
 	public function getId() { return $this->id; }
 
 	public function setValue($value) { $this->value = $value; }
 	public function getValue() { return $this->value; }
 
-	public function increment()
-	{
+	public function increment() {
 		$this->value++;
 	}
 }

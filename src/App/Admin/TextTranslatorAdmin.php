@@ -1,18 +1,15 @@
-<?php
-namespace App\Admin;
+<?php namespace App\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class TextTranslatorAdmin extends Admin
-{
+class TextTranslatorAdmin extends Admin {
 	protected $baseRoutePattern = 'text-translator';
 	protected $baseRouteName = 'admin_text_translator';
 	protected $translationDomain = 'admin';
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
+	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper
 			->add('person')
 			->add('pos')
@@ -20,8 +17,7 @@ class TextTranslatorAdmin extends Admin
 		;
 	}
 
-	protected function configureListFields(ListMapper $listMapper)
-	{
+	protected function configureListFields(ListMapper $listMapper) {
 		$listMapper
 			->add('text')
 			->add('person')
@@ -36,8 +32,7 @@ class TextTranslatorAdmin extends Admin
 		;
 	}
 
-	protected function configureFormFields(FormMapper $formMapper)
-	{
+	protected function configureFormFields(FormMapper $formMapper) {
 		$formMapper
 			->with('General attributes')
 				//->add('text')

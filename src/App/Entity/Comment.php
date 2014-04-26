@@ -1,8 +1,6 @@
-<?php
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\EntityManager;
 use FOS\CommentBundle\Entity\Comment as BaseComment;
 use FOS\CommentBundle\Model\SignedCommentInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -12,8 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="comment")
  * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
  */
-class Comment extends BaseComment implements SignedCommentInterface
-{
+class Comment extends BaseComment implements SignedCommentInterface {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -40,18 +37,15 @@ class Comment extends BaseComment implements SignedCommentInterface
 
 	protected $cc;
 
-	public function setAuthor(UserInterface $author)
-	{
+	public function setAuthor(UserInterface $author) {
 		$this->author = $author;
 	}
 
-	public function getAuthor()
-	{
+	public function getAuthor() {
 		return $this->author;
 	}
 
-	public function getAuthorName()
-	{
+	public function getAuthorName() {
 		if (null === $this->getAuthor()) {
 			return 'Anonymous';
 		}
@@ -59,33 +53,30 @@ class Comment extends BaseComment implements SignedCommentInterface
 		return $this->getAuthor()->getUsername();
 	}
 
-	public function isForWorkEntry()
-	{
+	public function isForWorkEntry() {
 		return $this->getThread()->isForWorkEntry();
 	}
 
-	public function getWorkEntry()
-	{
+	public function getWorkEntry() {
 		return $this->getThread()->getWorkEntry();
 	}
 
-	public function setCc($cc)
-	{
+	public function setCc($cc) {
 		$this->cc = $cc;
 	}
 
-	public function getCc()
-	{
+	/**
+	 * @return string
+	 */
+	public function getCc() {
 		return $this->cc;
 	}
 
-	public function hasParent()
-	{
+	public function hasParent() {
 		return $this->getDepth() > 0;
 	}
 
-	public function isDeleted()
-	{
+	public function isDeleted() {
 		return $this->getState() === self::STATE_DELETED;
 	}
 }

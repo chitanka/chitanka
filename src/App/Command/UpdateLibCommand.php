@@ -72,7 +72,6 @@ EOT
 		return $queries;
 	}
 
-
 	private function processPacket($dir) {
 		$workFiles = self::sortDataFiles(glob("$dir/work.*.data"));
 		$bookFiles = self::sortDataFiles(glob("$dir/book.*.data"));
@@ -727,8 +726,7 @@ QUERY
 		touch($dest);
 	}
 
-	static private function copyDir($sourceDir, $destDir)
-	{
+	static private function copyDir($sourceDir, $destDir) {
 		if ( ! file_exists($destDir)) {
 			mkdir($destDir, 0755, true);
 		}

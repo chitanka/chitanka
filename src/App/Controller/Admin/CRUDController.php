@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Controller\Admin;
+<?php namespace App\Controller\Admin;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Sonata\AdminBundle\Controller\CRUDController as BaseController;

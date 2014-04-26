@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -13,8 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @UniqueEntity(fields="url")
  */
-class Site extends Entity
-{
+class Site extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -41,7 +38,6 @@ class Site extends Entity
 	 */
 	private $description;
 
-
 	public function getId() { return $this->id; }
 
 	public function setName($name) { $this->name = $name; }
@@ -51,13 +47,11 @@ class Site extends Entity
 	public function getUrl() { return $this->url; }
 
 	public function getDescription() { return $this->description; }
-	public function setDescription($description)
-	{
+	public function setDescription($description) {
 		$this->description = ltrim($description, ' ,—');
 	}
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->name;
 	}
 }

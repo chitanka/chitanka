@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -25,7 +23,6 @@ class SecurityController extends Controller {
 
 		return $this->display('login');
 	}
-
 
 	public function registerAction() {
 		return $this->legacyPage('Register');

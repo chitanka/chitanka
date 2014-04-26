@@ -71,8 +71,7 @@ $sprites = array(
 
 if ( ! function_exists('valueAfterNav') ) {
 	/** return the approriate value according to the navigation position */
-	function valueAfterNav($leftVal, $rightVal, $noNavVal = '0')
-	{
+	function valueAfterNav($leftVal, $rightVal, $noNavVal = '0') {
 		switch( $GLOBALS['navPos'] ) {
 			case 'right': return $rightVal;
 			case 'left':  return $leftVal;

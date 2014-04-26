@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,8 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="date_idx", columns={"date"})}
 * )
 */
-class WorkEntry extends Entity
-{
+class WorkEntry extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -143,9 +140,7 @@ class WorkEntry extends Entity
 	 */
 	private $comment_thread;
 
-
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->getTitle();
 	}
 
@@ -167,7 +162,7 @@ class WorkEntry extends Entity
 	public function getPubYear() { return $this->pubYear; }
 
 	public function setUser($user) { $this->user = $user; }
-	/** @return User */
+	/** @return integer */
 	public function getUser() { return $this->user; }
 
 	public function setComment($comment) { $this->comment = $comment; }
@@ -194,6 +189,9 @@ class WorkEntry extends Entity
 	public function setUplfile($uplfile) { $this->uplfile = $uplfile; }
 	public function getUplfile() { return $this->uplfile; }
 
+	/**
+	 * @param \DateTime $date
+	 */
 	public function setLastNotificationDate($date) { $this->last_notification_date = $date; }
 	public function getLastNotificationDate() { return $this->last_notification_date; }
 
@@ -203,36 +201,35 @@ class WorkEntry extends Entity
 	public function setAdminComment($admin_comment) { $this->admin_comment = $admin_comment; }
 	public function getAdminComment() { return $this->admin_comment; }
 
-	public function isNotifiedWithin($interval)
-	{
+	public function isNotifiedWithin($interval) {
 		if ($this->getLastNotificationDate() === null) {
 			return false;
 		}
 		return $this->getLastNotificationDate() > new \DateTime("-$interval");
 	}
 
-	public function setCommentThread(Thread $thread)
-	{
+	public function setCommentThread(Thread $thread) {
 		$this->comment_thread = $thread;
 		return $this;
 	}
 	public function getCommentThread() { return $this->comment_thread; }
 
 	public function getDeletedAt() { return $this->deleted_at; }
+
+	/**
+	 * @param \DateTime $deleted_at
+	 */
 	public function setDeletedAt($deleted_at) { $this->deleted_at = $deleted_at; }
-	public function delete()
-	{
+	public function delete() {
 		$this->setDeletedAt(new \DateTime);
 	}
-	public function isDeleted()
-	{
+	public function isDeleted() {
 		return $this->deleted_at !== null;
 	}
 
 	public function getContribs() { return $this->contribs; }
 
-	public function getOpenContribs()
-	{
+	public function getOpenContribs() {
 		$openContribs = array();
 		foreach ($this->getContribs() as $contrib/*@var $contrib WorkContrib*/) {
 			if ( ! $contrib->isFinished() && ! $contrib->isDeleted()) {

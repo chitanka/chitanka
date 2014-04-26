@@ -1,21 +1,18 @@
-<?php
-namespace App\Admin;
+<?php namespace App\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class PersonAdmin extends Admin
-{
+class PersonAdmin extends Admin {
 	protected $baseRoutePattern = 'person';
 	protected $baseRouteName = 'admin_person';
 	protected $translationDomain = 'admin';
 
 	public $extraActions = 'App:PersonAdmin:extra_actions.html.twig';
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
+	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper
 			->add('slug')
 			->add('name')
@@ -34,8 +31,7 @@ class PersonAdmin extends Admin
 		;
 	}
 
-	protected function configureListFields(ListMapper $listMapper)
-	{
+	protected function configureListFields(ListMapper $listMapper) {
 		$listMapper
 			->addIdentifier('name')
 			->add('slug')
@@ -51,8 +47,7 @@ class PersonAdmin extends Admin
 		;
 	}
 
-	protected function configureFormFields(FormMapper $formMapper)
-	{
+	protected function configureFormFields(FormMapper $formMapper) {
 		$countryList = array();
 		foreach ($this->getRepository()->getCountryList() as $countryCode) {
 			$countryList[$countryCode] = "country.$countryCode";
@@ -87,8 +82,7 @@ class PersonAdmin extends Admin
 
 	}
 
-	protected function configureDatagridFilters(DatagridMapper $datagrid)
-	{
+	protected function configureDatagridFilters(DatagridMapper $datagrid) {
 		$datagrid
 			->add('slug')
 			->add('name')

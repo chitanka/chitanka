@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Util\String;
 use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
@@ -25,7 +24,6 @@ class UserPage extends Page {
 		$this->shown_user = $this->controller->getRepository('User')->findOneBy(array('username' => $this->username));
 	}
 
-
 	protected function buildContent() {
 		if ( !$this->userExists() ) {
 			$this->title = 'Няма такъв потребител';
@@ -50,7 +48,6 @@ class UserPage extends Page {
 		return $o;
 	}
 
-
 	protected function userExists() {
 		$key = array('username' => $this->username);
 		$sel = array('id userId', 'username', 'realname', 'email', 'registration', 'touched');
@@ -69,7 +66,6 @@ class UserPage extends Page {
 		return true;
 	}
 
-
 	protected function makeHTML() {
 		if ( !file_exists($this->filename) ) {
 			return '';
@@ -79,7 +75,6 @@ class UserPage extends Page {
 
 		return $this->userpage = $converter->convert()->getContent();
 	}
-
 
 	protected function makePublicUserDataView() {
 		$rcount = sprintf('<a href="%s">%s</a>',
@@ -103,7 +98,6 @@ class UserPage extends Page {
 	</tr>
 EOS;
 	}
-
 
 	protected function makePrivateUserDataView() {
 		return <<<EOS
@@ -131,7 +125,6 @@ EOS;
 EOS;
 	}
 
-
 	protected function makeContribList() {
 		$repo = $this->controller->getRepository('UserTextContrib');
 		$count = $repo->countByUser($this->shown_user);
@@ -147,7 +140,6 @@ EOS;
 		))
 		. sprintf('<p>Общо: <a href="%s">%d</a></p>', $this->controller->generateUrl('user_contribs', array('username' => $this->shown_user->getUsername())), $count);
 	}
-
 
 	protected function makeReadList() {
 		$repo = $this->controller->getRepository('UserTextRead');
@@ -165,7 +157,6 @@ EOS;
 		. sprintf('<p class="more"><a href="%s">Всички</a></p>', $this->controller->generateUrl('user_read_list', array('username' => $this->shown_user->getUsername())));
 	}
 
-
 	protected function makeBookmarksList() {
 		$repo = $this->controller->getRepository('Bookmark');
 		$count = $repo->countByUser($this->shown_user);
@@ -182,7 +173,6 @@ EOS;
 		. sprintf('<p class="more"><a href="%s">Всички</a></p>', $this->controller->generateUrl('user_bookmarks', array('username' => $this->shown_user->getUsername())));
 	}
 
-
 	protected function makeCurrentContribList() {
 		$listUrl = sprintf('%s/workroom/list.htmlx?user=%s', $this->container->getParameter('workroom_url'), $this->username);
 		$response = $this->container->get('buzz')->get($listUrl);
@@ -193,26 +183,21 @@ EOS;
 		return '<h2>Подготвяни текстове</h2>'. $response->getContent();
 	}
 
-
 	protected function getContribCount() {
 		return $this->db->getCount(DBT_USER_TEXT, $this->getDbKey());
 	}
-
 
 	protected function getRatingCount() {
 		return $this->db->getCount(DBT_TEXT_RATING, $this->getDbKey());
 	}
 
-
 	protected function getCommentCount() {
 		return $this->db->getCount(DBT_COMMENT, $this->getDbKey());
 	}
 
-
 	protected function getDbKey($field = 'user_id') {
 		return array($field => $this->userId);
 	}
-
 
 	protected function makeEditOwnPageLink() {
 		if ($this->username != $this->user->getUsername()) {
@@ -224,11 +209,9 @@ EOS;
 		return "<p style='font-size:small; text-align:right'>[<a href=\"$link\" title=\"Редактиране на личната страница\">редактиране</a>]</p>";
 	}
 
-
 	protected function setDefaultTitle() {
 		$this->title = 'Лична страница на '. $this->username;
 	}
-
 
 	protected function getListDbKey() {
 		if ( !empty($this->q) ) {

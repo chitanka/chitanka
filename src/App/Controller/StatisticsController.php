@@ -1,10 +1,7 @@
-<?php
-namespace App\Controller;
+<?php namespace App\Controller;
 
-class StatisticsController extends Controller
-{
-	public function indexAction()
-	{
+class StatisticsController extends Controller {
+	public function indexAction() {
 		$this->view = array(
 			'count' => array(
 				'authors'       => $this->getPersonRepository()->asAuthor()->getCount(),
@@ -26,15 +23,13 @@ class StatisticsController extends Controller
 		return $this->display('index');
 	}
 
-	private function getAuthorCountries()
-	{
+	private function getAuthorCountries() {
 		$authors = $this->getPersonRepository()->asAuthor()->getCountsByCountry();
 		arsort($authors);
 		return $authors;
 	}
 
-	private function getTextTypes()
-	{
+	private function getTextTypes() {
 		$texts = $this->getTextRepository()->getCountsByType();
 		arsort($texts);
 		return $texts;

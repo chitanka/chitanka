@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,8 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="text_idx", columns={"text_id"})}
 * )
 */
-class TextAuthor extends Entity
-{
+class TextAuthor extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -46,7 +43,6 @@ class TextAuthor extends Entity
 	 */
 	private $year;
 
-
 	public function getId() { return $this->id; }
 
 	public function setPerson($person) { $this->person = $person; }
@@ -64,30 +60,27 @@ class TextAuthor extends Entity
 	/**
 	 * Add Text
 	 *
-	 * @param App\Entity\Text $text
+	 * @param Text $text
 	 */
-	public function addText(\App\Entity\Text $text)
-	{
+	public function addText(\App\Entity\Text $text) {
 		$this->texts[] = $text;
 	}
 
 	/**
 	 * Get Text
 	 *
-	 * @return Doctrine\Common\Collections\Collection $text
+	 * @return Text[] $text
 	 */
-	public function getTexts()
-	{
+	public function getTexts() {
 		return $this->texts;
 	}
 
 	/**
 	 * Add Person
 	 *
-	 * @param App\Entity\Person $person
+	 * @param Person $person
 	 */
-	public function addPerson(\App\Entity\Person $person)
-	{
+	public function addPerson(\App\Entity\Person $person) {
 		$this->persons[] = $person;
 	}
 
@@ -96,8 +89,7 @@ class TextAuthor extends Entity
 	 *
 	 * @return Doctrine\Common\Collections\Collection $person
 	 */
-	public function getPersons()
-	{
+	public function getPersons() {
 		return $this->persons;
 	}
 }

@@ -1,5 +1,4 @@
-<?php
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Pagination\Pager;
@@ -7,17 +6,14 @@ use App\Legacy\Legacy;
 use App\Util\String;
 use App\Entity\Person;
 
-class PersonController extends Controller
-{
+class PersonController extends Controller {
 	protected $responseAge = 86400; // 24 hours
 
-	public function indexAction($_format)
-	{
+	public function indexAction($_format) {
 		return $this->display("index.$_format");
 	}
 
-	public function listByAlphaIndexAction($by, $_format)
-	{
+	public function listByAlphaIndexAction($by, $_format) {
 		$this->view = array(
 			'by' => $by,
 		);
@@ -25,8 +21,7 @@ class PersonController extends Controller
 		return $this->display("list_by_alpha_index.$_format");
 	}
 
-	public function listByAlphaAction($by, $letter, $page, $_format)
-	{
+	public function listByAlphaAction($by, $letter, $page, $_format) {
 		$request = $this->get('request')->query;
 		$country = $request->get('country', '');
 		$limit = 100;
@@ -54,8 +49,7 @@ class PersonController extends Controller
 		return $this->display("list_by_alpha.$_format");
 	}
 
-	public function showAction($slug, $_format)
-	{
+	public function showAction($slug, $_format) {
 		$person = $this->tryToFindPerson($slug);
 		if ( ! $person instanceof Person) {
 			return $person;
@@ -68,8 +62,7 @@ class PersonController extends Controller
 		return $this->display("show.$_format");
 	}
 
-	public function showInfoAction($slug, $_format)
-	{
+	public function showInfoAction($slug, $_format) {
 		$person = $this->tryToFindPerson($slug);
 		if ( ! $person instanceof Person) {
 			return $person;
@@ -82,8 +75,7 @@ class PersonController extends Controller
 		return $this->display("show_info.$_format");
 	}
 
-	protected function tryToFindPerson($slug)
-	{
+	protected function tryToFindPerson($slug) {
 		$person = $this->getPersonRepository()->findBySlug(String::slugify($slug));
 		if ($person) {
 			return $person;
@@ -96,24 +88,20 @@ class PersonController extends Controller
 		throw new NotFoundHttpException("Няма личност с код $slug.");
 	}
 
-	protected function prepareViewForShow(Person $person, $format)
-	{
+	protected function prepareViewForShow(Person $person, $format) {
 		$this->prepareViewForShowAuthor($person, $format);
 		$this->prepareViewForShowTranslator($person, $format);
 	}
-	protected function prepareViewForShowAuthor(Person $person, $format)
-	{
+	protected function prepareViewForShowAuthor(Person $person, $format) {
 		$groupBySeries = $format == 'html';
 		$this->view['texts_as_author'] = $this->getTextRepository()->findByAuthor($person, $groupBySeries);
 		$this->view['books'] = $this->getBookRepository()->getByAuthor($person);
 	}
-	protected function prepareViewForShowTranslator(Person $person, $format)
-	{
+	protected function prepareViewForShowTranslator(Person $person, $format) {
 		$this->view['texts_as_translator'] = $this->getTextRepository()->findByTranslator($person);
 	}
 
-	protected function putPersonInfoInView(Person $person)
-	{
+	protected function putPersonInfoInView(Person $person) {
 		if ($person->getInfo() != '') {
 			// TODO move this in the entity
 			list($prefix, $name) = explode(':', $person->getInfo(), 2);
@@ -127,8 +115,7 @@ class PersonController extends Controller
 		}
 	}
 
-	public function suggest($slug)
-	{
+	public function suggest($slug) {
 		return $this->lecacyPage('Info');
 	}
 

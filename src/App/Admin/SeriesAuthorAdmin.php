@@ -1,26 +1,22 @@
-<?php
-namespace App\Admin;
+<?php namespace App\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class SeriesAuthorAdmin extends Admin
-{
+class SeriesAuthorAdmin extends Admin {
 	protected $baseRoutePattern = 'series-author';
 	protected $baseRouteName = 'admin_series_author';
 	protected $translationDomain = 'admin';
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
+	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper
 			->add('series')
 			->add('person')
 		;
 	}
 
-	protected function configureListFields(ListMapper $listMapper)
-	{
+	protected function configureListFields(ListMapper $listMapper) {
 		$listMapper
 			->add('series')
 			->add('person')
@@ -34,8 +30,7 @@ class SeriesAuthorAdmin extends Admin
 		;
 	}
 
-	protected function configureFormFields(FormMapper $formMapper)
-	{
+	protected function configureFormFields(FormMapper $formMapper) {
 		$formMapper
 			->with('General attributes')
 				//->add('series')

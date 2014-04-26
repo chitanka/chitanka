@@ -1,13 +1,10 @@
-<?php
-namespace App\Tests\Controller;
+<?php namespace App\Tests\Controller;
 
-class BookControllerTest extends WebTestCase
-{
+class BookControllerTest extends WebTestCase {
 	/**
 	 * @group html
 	 */
-	public function testIndex()
-	{
+	public function testIndex() {
 		$page = $this->request('books');
 
 		$this->assertHtmlPageIs($page, 'books');
@@ -17,8 +14,7 @@ class BookControllerTest extends WebTestCase
 	/**
 	 * @group html
 	 */
-	public function testListByAlphaByLetterA()
-	{
+	public function testListByAlphaByLetterA() {
 		$page = $this->request("books/alpha/".urlencode('А'));
 
 		$this->assertHtmlPageIs($page, 'books_by_alpha');
@@ -27,8 +23,7 @@ class BookControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testIndexOpds()
-	{
+	public function testIndexOpds() {
 		$route = "books.opds";
 		$page = $this->request($route);
 
@@ -39,8 +34,7 @@ class BookControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testIndexByAlphaOpds()
-	{
+	public function testIndexByAlphaOpds() {
 		$route = "books/alpha.opds";
 		$page = $this->request($route);
 
@@ -51,8 +45,7 @@ class BookControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testIndexByCategoryOpds()
-	{
+	public function testIndexByCategoryOpds() {
 		$route = "books/category.opds";
 		$page = $this->request($route);
 
@@ -63,8 +56,7 @@ class BookControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testListByAlphaLetterAOpds()
-	{
+	public function testListByAlphaLetterAOpds() {
 		$route = "books/alpha/".urlencode('А').".opds";
 		$page = $this->request($route);
 
@@ -75,8 +67,7 @@ class BookControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testListByCategoryFantastikaOpds()
-	{
+	public function testListByCategoryFantastikaOpds() {
 		$route = "books/category/fantastika.opds";
 		$page = $this->request($route);
 

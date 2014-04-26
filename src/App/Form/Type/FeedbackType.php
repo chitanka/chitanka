@@ -1,14 +1,11 @@
-<?php
-namespace App\Form\Type;
+<?php namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class FeedbackType extends AbstractType
-{
+class FeedbackType extends AbstractType {
 
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
+	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
 			->add('referer', 'hidden')
 			->add('comment', 'textarea')
@@ -21,15 +18,13 @@ class FeedbackType extends AbstractType
 			));
 	}
 
-	public function getDefaultOptions(array $options)
-	{
+	public function getDefaultOptions(array $options) {
 		return array(
 			'data_class' => 'App\Entity\Feedback',
 		);
 	}
 
-	public function getName()
-	{
+	public function getName() {
 		return 'feedback';
 	}
 

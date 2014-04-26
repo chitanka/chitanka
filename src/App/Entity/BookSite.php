@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -10,8 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="book_site")
  * @UniqueEntity(fields="name")
  */
-class BookSite extends Entity
-{
+class BookSite extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -32,8 +29,7 @@ class BookSite extends Entity
 	 */
 	private $url;
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->name;
 	}
 

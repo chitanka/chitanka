@@ -1,12 +1,9 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 /**
  *
  */
-class PersonRepository extends EntityRepository
-{
+class PersonRepository extends EntityRepository {
 	protected $asAuthor = false;
 	protected $asTranslator = false;
 	protected $queryableFields = array('id', 'slug', 'name', 'orig_name', 'real_name', 'oreal_name');
@@ -101,58 +98,53 @@ class PersonRepository extends EntityRepository
 		'a' => 'Алтернативно изписване',
 	);
 
-	public function getCountryList()
-	{
+	public function getCountryList() {
 		return $this->countryList;
 	}
 
-	public function getTypeList()
-	{
+	public function getTypeList() {
 		return $this->typeList;
 	}
 
-	public function findBySlug($slug)
-	{
+	/**
+	 * @param string $slug
+	 */
+	public function findBySlug($slug) {
 		return $this->findOneBy(array('slug' => $slug));
 	}
 
-	public function getBy($filters, $page = 1, $limit = null)
-	{
+	/**
+	 * @param integer $limit
+	 */
+	public function getBy($filters, $page = 1, $limit = null) {
 		$query = $this->setPagination($this->getQueryBy($filters), $page, $limit);
 
 		return $query->getArrayResult();
 	}
 
-	public function countBy($filters)
-	{
+	public function countBy($filters) {
 		return $this->getCountQueryBy($filters)->getSingleScalarResult();
 	}
 
-	public function getBySlug($slug)
-	{
+	public function getBySlug($slug) {
 		return $this->findOneBy(array('slug' => $slug));
 	}
 
-
-	public function getQueryBy($filters)
-	{
+	public function getQueryBy($filters) {
 		$qb = $this->getQueryBuilder();
 		$qb = $this->addFilters($qb, $filters);
 
 		return $qb->getQuery();
 	}
 
-	public function getCountQueryBy($filters)
-	{
+	public function getCountQueryBy($filters) {
 		$qb = $this->getCountQueryBuilder();
 		$qb = $this->addFilters($qb, $filters);
 
 		return $qb->getQuery();
 	}
 
-
-	public function getQueryBuilder($orderBys = null)
-	{
+	public function getQueryBuilder($orderBys = null) {
 		$qb = $this->getBaseQueryBuilder('e')
 			->select('e', 'p')
 			->leftJoin('e.person', 'p');
@@ -160,15 +152,13 @@ class PersonRepository extends EntityRepository
 		return $qb;
 	}
 
-	public function getCountQueryBuilder($alias = 'e')
-	{
+	public function getCountQueryBuilder($alias = 'e') {
 		$qb = $this->getBaseQueryBuilder($alias)->select('COUNT(e.id)');
 
 		return $qb;
 	}
 
-	public function getBaseQueryBuilder($alias = 'e')
-	{
+	public function getBaseQueryBuilder($alias = 'e') {
 		$qb = $this->createQueryBuilder($alias);
 		if ($this->asAuthor) {
 			$qb->andWhere("e.is_author = 1");
@@ -180,25 +170,24 @@ class PersonRepository extends EntityRepository
 		return $qb;
 	}
 
-	public function getCount($where = null)
-	{
+	public function getCount($where = null) {
 		$qb = $this->getCountQueryBuilder();
 		if ($where) $qb->andWhere($where);
 
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
-	public function getCountsByCountry()
-	{
+	public function getCountsByCountry() {
 		return $this->getCountQueryBuilder()
 			->select('e.country', 'COUNT(e.id)')
 			->groupBy('e.country')
 			->getQuery()->getResult('key_value');
 	}
 
-
-	public function getByNames($name, $limit = null)
-	{
+	/**
+	 * @param integer $limit
+	 */
+	public function getByNames($name, $limit = null) {
 		$q = $this->getQueryBuilder()
 			->where('e.name LIKE ?1 OR e.orig_name LIKE ?1 OR e.real_name LIKE ?1 OR e.oreal_name LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($name))
@@ -209,26 +198,24 @@ class PersonRepository extends EntityRepository
 		return $q->getArrayResult();
 	}
 
-
-	public function asAuthor()
-	{
+	public function asAuthor() {
 		$this->asAuthor = true;
 		$this->asTranslator = false;
 
 		return $this;
 	}
 
-	public function asTranslator()
-	{
+	public function asTranslator() {
 		$this->asTranslator = true;
 		$this->asAuthor = false;
 
 		return $this;
 	}
 
-
-	public function addFilters($qb, $filters)
-	{
+	/**
+	 * @param \Doctrine\ORM\QueryBuilder $qb
+	 */
+	public function addFilters($qb, $filters) {
 		$nameField = empty($filters['by']) || $filters['by'] == 'first-name' ? 'e.name' : 'e.last_name';
 		$qb->addOrderBy($nameField);
 		if ( ! empty($filters['prefix']) && $filters['prefix'] != '-' ) {

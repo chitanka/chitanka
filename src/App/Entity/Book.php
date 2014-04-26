@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,9 +7,7 @@ use App\Legacy\Legacy;
 use App\Legacy\Setup;
 use App\Util\Ary;
 use Sfblib_SfbConverter as SfbConverter;
-use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
 use Sfblib_SfbToFb2Converter as SfbToFb2Converter;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
 * @ORM\Entity(repositoryClass="App\Entity\BookRepository")
@@ -24,8 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 *		@ORM\Index(name="orig_title_idx", columns={"orig_title"})}
 * )
 */
-class Book extends BaseWork
-{
+class Book extends BaseWork {
+
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -35,13 +31,13 @@ class Book extends BaseWork
 	protected $id;
 
 	/**
-	 * @var string $slug
+	 * @var string
 	 * @ORM\Column(type="string", length=50)
 	 */
 	private $slug;
 
 	/**
-	 * @var string $title_author
+	 * @var string
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $title_author;
@@ -53,7 +49,7 @@ class Book extends BaseWork
 	private $title = '';
 
 	/**
-	 * @var string $subtitle
+	 * @var string
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $subtitle;
@@ -65,37 +61,37 @@ class Book extends BaseWork
 	private $title_extra;
 
 	/**
-	 * @var string $orig_title
+	 * @var string
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $orig_title;
 
 	/**
-	 * @var string $lang
+	 * @var string
 	 * @ORM\Column(type="string", length=2)
 	 */
 	private $lang;
 
 	/**
-	 * @var string $orig_lang
+	 * @var string
 	 * @ORM\Column(type="string", length=3, nullable=true)
 	 */
 	private $orig_lang;
 
 	/**
-	 * @var integer $year
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $year;
 
 	/**
-	 * @var integer $trans_year
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $trans_year;
 
 	/**
-	 * @var string $type
+	 * @var string
 	 * @ORM\Column(type="string", length=10)
 	 */
 	private $type;
@@ -107,21 +103,20 @@ class Book extends BaseWork
 		'magazine' => 'Списание',
 	);
 
-
 	/**
-	 * @var integer
+	 * @var Sequence
 	 * @ORM\ManyToOne(targetEntity="Sequence", inversedBy="books")
 	 */
 	private $sequence;
 
 	/**
-	 * @var integer
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $seqnr;
 
 	/**
-	 * @var integer
+	 * @var Category
 	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="books")
 	 */
 	private $category;
@@ -196,16 +191,13 @@ class Book extends BaseWork
 
 	private $fb2CoverWidth = 400;
 
-
-	public function __construct()
-	{
+	public function __construct() {
 		$this->bookAuthors = new ArrayCollection;
 		$this->bookTexts = new ArrayCollection;
 		$this->links = new ArrayCollection;
 	}
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->title;
 	}
 
@@ -246,22 +238,19 @@ class Book extends BaseWork
 
 	public function setFormats($formats) { $this->formats = $formats; }
 	public function getFormats() { return $this->formats; }
-	public function isInSfbFormat()
-	{
+	public function isInSfbFormat() {
 		return in_array('sfb', $this->formats);
 	}
 
 	public function getRevisions() { return $this->revisions; }
-	public function addRevision(BookRevision $revision)
-	{
+	public function addRevision(BookRevision $revision) {
 		$this->revisions[] = $revision;
 	}
 
 	public function setRemovedNotice($removed_notice) { $this->removed_notice = $removed_notice; }
 	public function getRemovedNotice() { return $this->removed_notice; }
 
-	public function getAuthors()
-	{
+	public function getAuthors() {
 		if (!isset($this->authors)) {
 			$this->authors = array();
 			foreach ($this->getBookAuthors() as $author) {
@@ -273,8 +262,7 @@ class Book extends BaseWork
 		return $this->authors;
 	}
 
-	public function getAuthorsPlain($separator = ', ')
-	{
+	public function getAuthorsPlain($separator = ', ') {
 		$authors = array();
 		foreach ($this->getAuthors() as $author) {
 			$authors[] = $author->getName();
@@ -283,17 +271,14 @@ class Book extends BaseWork
 		return implode($separator, $authors);
 	}
 
-	public function addAuthor($author)
-	{
+	public function addAuthor($author) {
 		$this->authors[] = $author;
 	}
 
-	public function addBookAuthor(BookAuthor $bookAuthor)
-	{
+	public function addBookAuthor(BookAuthor $bookAuthor) {
 		$this->bookAuthors[] = $bookAuthor;
 	}
-	public function removeBookAuthor(BookAuthor $bookAuthor)
-	{
+	public function removeBookAuthor(BookAuthor $bookAuthor) {
 		$this->bookAuthors->removeElement($bookAuthor);
 	}
 	// TODO needed by admin; why?
@@ -304,14 +289,12 @@ class Book extends BaseWork
 
 	public function getBookTexts() { return $this->bookTexts; }
 	public function setBookTexts($bookTexts) { $this->bookTexts = $bookTexts; }
-	public function addBookText(BookText $bookText)
-	{
+	public function addBookText(BookText $bookText) {
 		$this->bookTexts[] = $bookText;
 	}
 
 	public function getTexts() { return $this->texts; }
-	public function setTexts($texts)
-	{
+	public function setTexts($texts) {
 		$bookTexts = $this->getBookTexts();
 		foreach ($texts as $key => $text) {
 			$bookText = $bookTexts->get($key);
@@ -332,19 +315,16 @@ class Book extends BaseWork
 	}
 
 	private $textsNeedUpdate = false;
-	public function textsNeedUpdate()
-	{
+	public function textsNeedUpdate() {
 		return $this->textsNeedUpdate;
 	}
 
 	public function setLinks($links) { $this->links = $links; }
 	public function getLinks() { return $this->links; }
-	public function addLink(BookLink $link)
-	{
+	public function addLink(BookLink $link) {
 		$this->links[] = $link;
 	}
-	public function removeLink(BookLink $link)
-	{
+	public function removeLink(BookLink $link) {
 		$this->links->removeElement($link);
 	}
 	// TODO needed by admin; why?
@@ -360,8 +340,7 @@ class Book extends BaseWork
 
 	public function setSequence($sequence) { $this->sequence = $sequence; }
 	public function getSequence() { return $this->sequence; }
-	public function getSequenceSlug()
-	{
+	public function getSequenceSlug() {
 		return $this->sequence ? $this->sequence->getSlug() : null;
 	}
 
@@ -370,26 +349,22 @@ class Book extends BaseWork
 
 	public function setCategory($category) { $this->category = $category; }
 	public function getCategory() { return $this->category; }
-	public function getCategorySlug()
-	{
+	public function getCategorySlug() {
 		return $this->category ? $this->category->getSlug() : null;
 	}
 
 	public function setCreatedAt($created_at) { $this->created_at = $created_at; }
 	public function getCreatedAt() { return $this->created_at; }
 
-	public function getSfbg()
-	{
+	public function getSfbg() {
 		return $this->getLink('SFBG');
 	}
 
-	public function getPuk()
-	{
+	public function getPuk() {
 		return $this->getLink('ПУК!');
 	}
 
-	public function getLink($name)
-	{
+	public function getLink($name) {
 		$links = $this->getLinks();
 		foreach ($links as $link) {
 			if ($link->getSiteName() == $name) {
@@ -407,23 +382,17 @@ class Book extends BaseWork
 	static protected $infoDir = 'book-info';
 	protected $covers = array();
 
-
-
-	public function getDocId()
-	{
+	public function getDocId() {
 		return 'http://chitanka.info/book/' . $this->id;
 	}
 
 	//public function getType() { return 'book'; }
 
-	public function getAuthor()
-	{
+	public function getAuthor() {
 		return $this->title_author;
 	}
 
-
-	public function getMainAuthors()
-	{
+	public function getMainAuthors() {
 		if ( ! isset($this->mainAuthors) ) {
 			$this->mainAuthors = array();
 			foreach ($this->getTextsById() as $text) {
@@ -438,8 +407,7 @@ class Book extends BaseWork
 		return $this->mainAuthors;
 	}
 
-	public function getAuthorSlugs()
-	{
+	public function getAuthorSlugs() {
 		$slugs = array();
 		foreach ($this->getAuthors() as $author/*@var $author Person*/) {
 			$slugs[] = $author->getSlug();
@@ -447,14 +415,11 @@ class Book extends BaseWork
 		return $slugs;
 	}
 
-	static public function isMainWorkType($type)
-	{
+	static public function isMainWorkType($type) {
 		return ! in_array($type, array('intro', 'outro'/*, 'interview', 'article'*/));
 	}
 
-
-	public function getAuthorsBy($type)
-	{
+	public function getAuthorsBy($type) {
 		if ( ! isset($this->authorsBy[$type]) ) {
 			$this->authorsBy[$type] = array();
 			foreach ($this->getTextsById() as $text) {
@@ -469,9 +434,7 @@ class Book extends BaseWork
 		return $this->authorsBy[$type];
 	}
 
-
-	public function getTranslators()
-	{
+	public function getTranslators() {
 		if ( ! isset($this->translators) ) {
 			$this->translators = array();
 			$seen = array();
@@ -488,8 +451,7 @@ class Book extends BaseWork
 		return $this->translators;
 	}
 
-	public function getLangOld()
-	{
+	public function getLangOld() {
 		if ( ! isset($this->lang) ) {
 			$langs = array();
 			foreach ($this->getTextsById() as $text) {
@@ -506,8 +468,7 @@ class Book extends BaseWork
 		return $this->lang;
 	}
 
-	public function getOrigLangOld()
-	{
+	public function getOrigLangOld() {
 		if ( ! isset($this->orig_lang) ) {
 			$langs = array();
 			foreach ($this->getTextsById() as $text) {
@@ -524,8 +485,7 @@ class Book extends BaseWork
 		return $this->orig_lang;
 	}
 
-	public function getYearOld()
-	{
+	public function getYearOld() {
 		if ( ! isset($this->year) ) {
 			$texts = $this->getTextsById();
 			$text = array_shift($texts);
@@ -535,8 +495,7 @@ class Book extends BaseWork
 		return $this->year;
 	}
 
-	public function getTransYearOld()
-	{
+	public function getTransYearOld() {
 		if ( ! isset($this->trans_year) ) {
 			$texts = $this->getTextsById();
 			$text = array_shift($texts);
@@ -546,9 +505,7 @@ class Book extends BaseWork
 		return $this->trans_year;
 	}
 
-
-	static public function newFromId($id)
-	{
+	static public function newFromId($id) {
 		$db = Setup::db();
 		$res = $db->select(DBT_BOOK, array('id' => $id));
 		$data = $db->fetchAssoc($res);
@@ -560,9 +517,7 @@ class Book extends BaseWork
 		return $book;
 	}
 
-
-	static public function newFromArray($fields)
-	{
+	static public function newFromArray($fields) {
 		$book = new Book;
 		foreach ($fields as $field => $value) {
 			$book->$field = $value;
@@ -571,59 +526,48 @@ class Book extends BaseWork
 		return $book;
 	}
 
-
-	public function withAutohide()
-	{
+	public function withAutohide() {
 		return $this->getTemplate()->hasAutohide();
 	}
 
-	public function getTemplateAsXhtml()
-	{
+	public function getTemplateAsXhtml() {
 		return $this->getTemplate()->getAsXhtml();
 	}
 
 	private $template;
 	/** @return Content\BookTemplate */
-	public function getTemplate()
-	{
+	public function getTemplate() {
 		return $this->template ?: $this->template = new Content\BookTemplate($this);
 	}
 
-	public function getRawTemplate()
-	{
+	public function getRawTemplate() {
 		return $this->getTemplate()->getContent();
 	}
 
-	public function setRawTemplate($template)
-	{
+	public function setRawTemplate($template) {
 		$this->getTemplate()->setContent($template);
 		$this->textsNeedUpdate = true;
 	}
 
-	public function getTextIdsFromTemplate()
-	{
+	public function getTextIdsFromTemplate() {
 		return $this->getTemplate()->getTextIds();
 	}
 
-	public function getCover($width = null)
-	{
+	public function getCover($width = null) {
 		$this->initCovers();
 
 		return is_null($width) ? $this->covers['front'] : Legacy::genThumbnail($this->covers['front'], $width);
 	}
 
-	public function getBackCover($width = null)
-	{
+	public function getBackCover($width = null) {
 		$this->initCovers();
 
 		return is_null($width) ? $this->covers['back'] : Legacy::genThumbnail($this->covers['back'], $width);
 	}
 
-
 	static protected $exts = array('.jpg');
 
-	public function initCovers()
-	{
+	public function initCovers() {
 		if (empty($this->covers)) {
 			$this->covers['front'] = $this->covers['back'] = null;
 
@@ -654,8 +598,7 @@ class Book extends BaseWork
 	 * @param $id Text or book ID
 	 * @param $defCover Default covers if there aren’t any for $id
 	 */
-	static public function getCovers($id, $defCover = null)
-	{
+	static public function getCovers($id, $defCover = null) {
 		$key = 'book-cover-content';
 		$bases = array(Legacy::getContentFilePath($key, $id));
 		if ( ! empty($defCover)) {
@@ -686,19 +629,15 @@ class Book extends BaseWork
 		return preg_replace("/\d+(-\d+)?($rexts)/", "$newname$1$2", $cover);
 	}
 
-
-	public function getImages()
-	{
+	public function getImages() {
 		return array_merge($this->getLocalImages(), $this->getTextImages());
 	}
 
-	public function getThumbImages()
-	{
+	public function getThumbImages() {
 		return $this->getTextThumbImages();
 	}
 
-	public function getLocalImages()
-	{
+	public function getLocalImages() {
 		$images = array();
 
 		$dir = Legacy::getInternalContentFilePath('book-img', $this->id);
@@ -709,8 +648,7 @@ class Book extends BaseWork
 		return $images;
 	}
 
-	public function getTextImages()
-	{
+	public function getTextImages() {
 		$images = array();
 
 		foreach ($this->getTexts() as $text) {
@@ -720,8 +658,7 @@ class Book extends BaseWork
 		return $images;
 	}
 
-	public function getTextThumbImages()
-	{
+	public function getTextThumbImages() {
 		$images = array();
 
 		foreach ($this->getTexts() as $text) {
@@ -731,8 +668,7 @@ class Book extends BaseWork
 		return $images;
 	}
 
-	public function getLabels()
-	{
+	public function getLabels() {
 		$labels = array();
 
 		foreach ($this->getTexts() as $text) {
@@ -746,9 +682,7 @@ class Book extends BaseWork
 		return $labels;
 	}
 
-
-	public function getContentAsSfb()
-	{
+	public function getContentAsSfb() {
 		if (!$this->isInSfbFormat()) {
 			return null;
 		}
@@ -758,15 +692,11 @@ class Book extends BaseWork
 			. $this->getInfoAsSfb();
 	}
 
-
-	public function getMainBodyAsSfb()
-	{
+	public function getMainBodyAsSfb() {
 		return $this->getTemplate()->generateSfb();
 	}
 
-
-	public function getMainBodyAsSfbFile()
-	{
+	public function getMainBodyAsSfbFile() {
 		if ( isset($this->_mainBodyAsSfbFile) ) {
 			return $this->_mainBodyAsSfbFile;
 		}
@@ -777,12 +707,10 @@ class Book extends BaseWork
 		return $this->_mainBodyAsSfbFile;
 	}
 
-
 	/**
 	 * Return the author of a text if he/she is not on the book title
 	 */
-	public function getBookAuthorIfNotInTitle($text)
-	{
+	public function getBookAuthorIfNotInTitle($text) {
 		$bookAuthorsIds = $this->getAuthorIds();
 		$authors = array();
 		foreach ($text->getAuthors() as $author) {
@@ -794,9 +722,7 @@ class Book extends BaseWork
 		return $authors;
 	}
 
-
-	public function getTitleAsSfb()
-	{
+	public function getTitleAsSfb() {
 		$sfb = '';
 		$prefix = SfbConverter::HEADER . SfbConverter::CMD_DELIM;
 
@@ -813,9 +739,7 @@ class Book extends BaseWork
 		return $sfb;
 	}
 
-
-	public function getAllAnnotationsAsSfb()
-	{
+	public function getAllAnnotationsAsSfb() {
 		if ( ($text = $this->getAnnotationAsSfb()) ) {
 			return $text;
 		}
@@ -823,18 +747,15 @@ class Book extends BaseWork
 		return $this->getTextAnnotations();
 	}
 
-	public function getAnnotationAsXhtml($imgDir = null)
-	{
+	public function getAnnotationAsXhtml($imgDir = null) {
 		if ($imgDir === null) {
 			$imgDir = 'IMG_DIR_PREFIX' . Legacy::getContentFilePath('book-img', $this->id);
 		}
 		return parent::getAnnotationAsXhtml($imgDir);
 	}
 
-
 	/* TODO remove: there should not be any annotations by texts */
-	public function getTextAnnotations()
-	{
+	public function getTextAnnotations() {
 		return '';
 
 		$annotations = array();
@@ -865,22 +786,18 @@ class Book extends BaseWork
 			. SfbConverter::ANNO_E . SfbConverter::EOL;
 	}
 
-	public function getInfoAsSfb()
-	{
+	public function getInfoAsSfb() {
 		return SfbConverter::INFO_S . SfbConverter::EOL
 			. SfbConverter::CMD_DELIM . $this->getOriginMarker() . SfbConverter::EOL
 			. rtrim($this->getExtraInfo()) . SfbConverter::EOL
 			. SfbConverter::INFO_E . SfbConverter::EOL;
 	}
 
-
-	public function getOriginMarker()
-	{
+	public function getOriginMarker() {
 		return sprintf('Свалено от „Моята библиотека“: %s', $this->getDocId());
 	}
 
-	public function getContentAsFb2()
-	{
+	public function getContentAsFb2() {
 		if (!$this->isInSfbFormat()) {
 			return null;
 		}
@@ -916,8 +833,7 @@ class Book extends BaseWork
 		return $content;
 	}
 
-	private function getGenresForFb2()
-	{
+	private function getGenresForFb2() {
 		$genres = array();
 		foreach ($this->getTexts() as $text) {
 			$genres = array_merge($genres, $text->getGenresForFb2());
@@ -926,8 +842,7 @@ class Book extends BaseWork
 		return $genres;
 	}
 
-	public function getHeaders()
-	{
+	public function getHeaders() {
 		if ( isset($this->_headers) ) {
 			return $this->_headers;
 		}
@@ -947,14 +862,11 @@ class Book extends BaseWork
 		return $this->_headers;
 	}
 
-	public function getEpubChunks($imgDir)
-	{
+	public function getEpubChunks($imgDir) {
 		return $this->getEpubChunksFrom($this->getMainBodyAsSfbFile(), $imgDir);
 	}
 
-
-	public function initTmpImagesDir()
-	{
+	public function initTmpImagesDir() {
 		$dir = sys_get_temp_dir() . '/' . uniqid();
 		mkdir($dir);
 		foreach ($this->getImages() as $image) {
@@ -964,15 +876,11 @@ class Book extends BaseWork
 		return $dir;
 	}
 
-
-	public function getNameForFile()
-	{
+	public function getNameForFile() {
 		return trim("$this->title_author - $this->title - $this->subtitle-$this->id-b", '- ');
 	}
 
-
-	public function getTextIds()
-	{
+	public function getTextIds() {
 		if ( empty($this->textIds) ) {
 			preg_match_all('/\{(text|file):(\d+)/', $this->getTemplate()->getContent(), $matches);
 			$this->textIds = $matches[2];
@@ -981,15 +889,12 @@ class Book extends BaseWork
 		return $this->textIds;
 	}
 
-
-	public function getTextById($textId)
-	{
+	public function getTextById($textId) {
 		$texts = $this->getTextsById();
 		return isset($texts[$textId]) ? $texts[$textId] : null;
 	}
 
-	public function getTextsById()
-	{
+	public function getTextsById() {
 		if ( empty($this->textsById) ) {
 			foreach ($this->getTextIds() as $id) {
 				$this->textsById[$id] = null;
@@ -1008,27 +913,20 @@ class Book extends BaseWork
 		return $this->textsById;
 	}
 
-
-	public function isGamebook()
-	{
+	public function isGamebook() {
 		return false;
 	}
 
-
-	public function isFromSameAuthor($text)
-	{
+	public function isFromSameAuthor($text) {
 		return $this->getAuthorIds() == $text->getAuthorIds();
 	}
 
-
 	/** TODO set for a books with only one novel */
-	public function getPlainSeriesInfo()
-	{
+	public function getPlainSeriesInfo() {
 		return '';
 	}
 
-	public function getPlainTranslationInfo()
-	{
+	public function getPlainTranslationInfo() {
 		$info = array();
 		foreach ($this->getTranslators() as $translator) {
 			$info[] = $translator->getName();
@@ -1037,9 +935,7 @@ class Book extends BaseWork
 		return sprintf('Превод: %s', implode(', ', $info));
 	}
 
-
-	public function getDataAsPlain()
-	{
+	public function getDataAsPlain() {
 		$authors = implode($this->getAuthorSlugs());
 
 		return <<<EOS
@@ -1060,9 +956,7 @@ id          = {$this->getId()}
 EOS;
 	}
 
-
-	public function getDatafiles()
-	{
+	public function getDatafiles() {
 		$files = array();
 		$files['book'] = Legacy::getContentFilePath('book', $this->id);
 		if ($this->hasCover()) {
@@ -1077,8 +971,7 @@ EOS;
 	}
 	public function setDatafiles($f) {} // dummy for sonata admin
 
-	public function getStaticFile($format)
-	{
+	public function getStaticFile($format) {
 		if (!in_array($format, array('djvu', 'pdf'))) {
 			throw new \Exception("Format $format is not a valid static format for a book.");
 		}
@@ -1112,7 +1005,6 @@ EOS;
 		return $name;
 	}
 
-
 	public function getIssueName($pic = null) {
 		if ( is_null($pic) ) {
 			$pic = $this;
@@ -1120,8 +1012,7 @@ EOS;
 		return $pic->__toString();
 	}
 
-	public function getFiles()
-	{
+	public function getFiles() {
 		if ( isset($this->_files) ) {
 			return $this->_files;
 		}
@@ -1143,15 +1034,12 @@ EOS;
 		return $this->_files = $files;
 	}
 
-
 	// deprecated
-	private function getMirrors()
-	{
+	private function getMirrors() {
 		return array();
 	}
 
-	public function getDocRoot($cache = true)
-	{
+	public function getDocRoot($cache = true) {
 		if ( isset($this->_docRoot) && $cache ) {
 			return $this->_docRoot;
 		}
@@ -1167,9 +1055,7 @@ EOS;
 		return $this->_docRoot;
 	}
 
-
-	public function getImageDir()
-	{
+	public function getImageDir() {
 		if ( ! isset($this->_imageDir) ) {
 			$this->_imageDir = Legacy::getContentFilePath('book-pic', $this->id);
 		}
@@ -1177,9 +1063,7 @@ EOS;
 		return $this->_imageDir;
 	}
 
-
-	public function getThumbDir()
-	{
+	public function getThumbDir() {
 		if ( ! isset($this->_thumbDir) ) {
 			$this->_thumbDir = $this->getImageDir() .'/'. self::THUMB_DIR;
 		}
@@ -1187,9 +1071,7 @@ EOS;
 		return $this->_thumbDir;
 	}
 
-
-	public function getWebImageDir()
-	{
+	public function getWebImageDir() {
 		if ( ! isset($this->_webImageDir) ) {
 			$this->_webImageDir = $this->getDocRoot() . $this->getImageDir();
 		}
@@ -1197,9 +1079,7 @@ EOS;
 		return $this->_webImageDir;
 	}
 
-
-	public function getWebThumbDir()
-	{
+	public function getWebThumbDir() {
 		if ( ! isset($this->_webThumbDir) ) {
 			$this->_webThumbDir = $this->getDocRoot() . $this->getThumbDir();
 		}
@@ -1207,22 +1087,17 @@ EOS;
 		return $this->_webThumbDir;
 	}
 
-
-	public function getThumbFile($currentPage)
-	{
+	public function getThumbFile($currentPage) {
 		$currentJoinedFile = floor($currentPage / self::MAX_JOINED_THUMBS);
 
 		return sprintf(self::THUMBS_FILE_TPL, $currentJoinedFile);
 	}
 
-	public function getThumbClass($currentPage)
-	{
+	public function getThumbClass($currentPage) {
 		return 'th' . ($currentPage % self::MAX_JOINED_THUMBS);
 	}
 
-
-	public function getSiblings()
-	{
+	public function getSiblings() {
 		if ( isset($this->_siblings) ) {
 			return $this->_siblings;
 		}
@@ -1249,7 +1124,6 @@ EOS;
 		return $this->_siblings = $siblings;
 	}
 
-
 	public function getNextSibling() {
 		if ( empty($this->series) ) {
 			return false;
@@ -1264,25 +1138,20 @@ EOS;
 		return self::newFromDB($dbkey);
 	}
 
-
-	public function sameAs($otherPic)
-	{
+	public function sameAs($otherPic) {
 		return $this->id == $otherPic->id;
 	}
 
-	static public function getTypeList()
-	{
+	static public function getTypeList() {
 		return self::$typeList;
 	}
 
 	private $revisionComment;
-	public function getRevisionComment()
-	{
+	public function getRevisionComment() {
 		return $this->revisionComment;
 	}
 
-	public function setRevisionComment($comment)
-	{
+	public function setRevisionComment($comment) {
 		$this->revisionComment = $comment;
 	}
 

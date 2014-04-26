@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Controller\Admin;
+<?php namespace App\Controller\Admin;
 
 class TextCommentController extends CRUDController {
 	public function validateCsrfToken($intention) {

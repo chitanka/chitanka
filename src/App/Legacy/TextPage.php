@@ -1,10 +1,8 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 class TextPage extends Page {
 
-	public function getTextPartContent()
-	{
+	public function getTextPartContent() {
 		if ( ! $this->initData() ) {
 			return '';
 		}
@@ -30,7 +28,6 @@ class TextPage extends Page {
 		return $o;
 	}
 
-
 	protected function makeNextBookWorkLink($separate = false) {
 		$o = '';
 		foreach ($this->work->getNextFromBooks() as $book => $nextWork) {
@@ -50,7 +47,6 @@ class TextPage extends Page {
 		$sep = !empty($o) && $separate ? '<hr />' : '';
 		return $sep . $o;
 	}
-
 
 	protected function makeLicenseView($name, $uri = '') {
 		if ( empty($uri) ) {

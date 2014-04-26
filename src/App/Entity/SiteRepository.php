@@ -1,15 +1,11 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 /**
  *
  */
-class SiteRepository extends EntityRepository
-{
+class SiteRepository extends EntityRepository {
 	/** @return Site */
-	public function findOneByUrlOrCreate($url)
-	{
+	public function findOneByUrlOrCreate($url) {
 		$site = $this->findOneBy(array('url' => $url));
 		if (!$site) {
 			$site = new Site;

@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,8 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity
 * @ORM\Table(name="download_cache")
 */
-class DownloadCache extends Entity
-{
+class DownloadCache extends Entity {
 	/**
 	 * @var integer $id
 	 * @ORM\Id @ORM\Column(type="bigint")
@@ -27,8 +24,7 @@ class DownloadCache extends Entity
 	 *
 	 * @return integer $id
 	 */
-	public function getId()
-	{
+	public function getId() {
 		return $this->id;
 	}
 
@@ -37,8 +33,7 @@ class DownloadCache extends Entity
 	 *
 	 * @param string $file
 	 */
-	public function setFile($file)
-	{
+	public function setFile($file) {
 		$this->file = $file;
 	}
 
@@ -47,8 +42,7 @@ class DownloadCache extends Entity
 	 *
 	 * @return string $file
 	 */
-	public function getFile()
-	{
+	public function getFile() {
 		return $this->file;
 	}
 }

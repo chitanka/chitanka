@@ -1,5 +1,4 @@
-<?php
-namespace App\Entity\Content;
+<?php namespace App\Entity\Content;
 
 use App\Entity\Book;
 use App\Entity\Text;
@@ -7,19 +6,16 @@ use App\Legacy\Legacy;
 use Sfblib_SfbConverter as SfbConverter;
 use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
 
-class BookTemplate
-{
+class BookTemplate {
 
 	private $book;
 
-	public function __construct(Book $book)
-	{
+	public function __construct(Book $book) {
 		$this->book = $book;
 	}
 
 	private $sfb;
-	public function generateSfb()
-	{
+	public function generateSfb() {
 		if (isset($this->sfb)) {
 			return $this->sfb;
 		}
@@ -31,8 +27,7 @@ class BookTemplate
 		return $this->sfb;
 	}
 
-	private function generateSfbForLine($line)
-	{
+	private function generateSfbForLine($line) {
 		$line = rtrim($line, "\t");
 		if (empty($line)) {
 			return SfbConverter::EOL;
@@ -56,8 +51,7 @@ class BookTemplate
 		}
 	}
 
-	private function generateSfbForTitleLine(Text $text, $command)
-	{
+	private function generateSfbForTitleLine(Text $text, $command) {
 		$authors = implode(', ', $this->book->getBookAuthorIfNotInTitle($text));
 		if ( ! empty($authors) ) {
 			$authors = $command . SfbConverter::CMD_DELIM . $authors . SfbConverter::EOL;
@@ -65,8 +59,10 @@ class BookTemplate
 		return $authors . strtr($text->getTitleAsSfb(), array(SfbConverter::HEADER => $command));
 	}
 
-	private function generateSfbForTextLine(Text $text, $command, $matches)
-	{
+	/**
+	 * @param string[] $matches
+	 */
+	private function generateSfbForTextLine(Text $text, $command, $matches) {
 		if (isset($matches[5])) {
 			$title = $command . SfbConverter::CMD_DELIM . $matches[5];
 		} else {
@@ -79,8 +75,10 @@ class BookTemplate
 		return $title . str_repeat(SfbConverter::EOL, 2) . $this->replaceSfbHeadings($textContent, $command);
 	}
 
-	private function generateSfbForFileLine(Text $text, $command, $matches)
-	{
+	/**
+	 * @param string[] $matches
+	 */
+	private function generateSfbForFileLine(Text $text, $command, $matches) {
 		if (empty($matches[3])) {
 			$textContent = $text->getRawContent();
 		} else {
@@ -129,13 +127,15 @@ class BookTemplate
 			"\n>>>>>" => "\n#",
 		),
 	);
-	private function replaceSfbHeadings($content, $startHeading)
-	{
+
+	/**
+	 * @param string|null $content
+	 */
+	private function replaceSfbHeadings($content, $startHeading) {
 		return ltrim(strtr("\n".$content, $this->headingRepl[$startHeading]), "\n");
 	}
 
-	public function getAsXhtml()
-	{
+	public function getAsXhtml() {
 		$template = $this->getContent();
 		if (empty($template)) {
 			return '';
@@ -165,44 +165,37 @@ class BookTemplate
 		return $content;
 	}
 
-	public function hasAutohide()
-	{
+	public function hasAutohide() {
 		return strpos($this->getContent(), '<!--AUTOHIDE-->') !== false;
 	}
 
-	private function getContentAsArray()
-	{
+	private function getContentAsArray() {
 		return explode("\n", $this->clearSpecialBookSyntax($this->getContent()));
 	}
 
 	private $content;
-	public function getContent()
-	{
+	public function getContent() {
 		return $this->content ?: $this->content = Legacy::getContentFile('book', $this->book->getId());
 	}
-	public function setContent($content)
-	{
+	public function setContent($content) {
 		file_put_contents(Legacy::getContentFilePath('book', $this->book->getId()), $content);
 		$this->content = $content;
 		$this->textIds = null;
 	}
 
 	private $textIds;
-	public function getTextIds()
-	{
+	public function getTextIds() {
 		return isset($this->textIds) ? $this->textIds : $this->textIds = $this->extractTextIds($this->getContent()) ;
 	}
 
-	static public function extractTextIds($template)
-	{
+	static public function extractTextIds($template) {
 		if (preg_match_all('/\{(file|text):(\d+)/', $template, $matches)) {
 			return $matches[2];
 		}
 		return array();
 	}
 
-	private function clearSpecialBookSyntax($template)
-	{
+	private function clearSpecialBookSyntax($template) {
 		return strtr($template, array(
 			"\t<!--AUTOHIDE-->\n" => '',
 		));

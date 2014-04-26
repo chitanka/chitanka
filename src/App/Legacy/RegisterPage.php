@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Entity\User;
 
@@ -12,7 +11,6 @@ class RegisterPage extends Page {
 
 	private
 		$invalidReferers = array('login', 'logout', 'register', 'sendNewPassword');
-
 
 	public function __construct($fields) {
 		parent::__construct($fields);
@@ -32,7 +30,6 @@ class RegisterPage extends Page {
 
 		$this->initCaptchaFields();
 	}
-
 
 	protected function processSubmission() {
 		$err = $this->validateInput();
@@ -62,9 +59,7 @@ class RegisterPage extends Page {
 		return '';
 	}
 
-
-	protected function validateInput()
-	{
+	protected function validateInput() {
 		if ( ! $this->verifyCaptchaAnswer() ) {
 			return 'Не сте отговорили правилно на въпроса уловка.';
 		}
@@ -91,11 +86,9 @@ class RegisterPage extends Page {
 		return '';
 	}
 
-
 	protected function isValidPassword() {
 		return strcmp($this->password, $this->passwordRe) === 0;
 	}
-
 
 	protected function userExists() {
 		$key = array('username' => $this->username);
@@ -105,7 +98,6 @@ class RegisterPage extends Page {
 		}
 		return false;
 	}
-
 
 	protected function emailExists($notUsername = null) {
 		if ( empty($this->email) ) {
@@ -126,7 +118,6 @@ class RegisterPage extends Page {
 
 		return false;
 	}
-
 
 	protected function buildContent() {
 		$login = $this->controller->generateUrl('login');

@@ -1,13 +1,10 @@
-<?php
-namespace App\Validator\Constraints;
+<?php namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class NotSpamValidator extends ConstraintValidator
-{
-	public function validate($value, Constraint $constraint)
-	{
+class NotSpamValidator extends ConstraintValidator {
+	public function validate($value, Constraint $constraint) {
 		$isSpam = false;
 		$isSpam = $isSpam || $this->containsUrl($value);
 		$isSpam = $isSpam || $this->containsTooManyUrls($value, $constraint->urlLimit);
@@ -20,18 +17,15 @@ class NotSpamValidator extends ConstraintValidator
 		return ! $isSpam;
 	}
 
-	private function containsUrl($value)
-	{
+	private function containsUrl($value) {
 		return strpos($value, 'href=') !== false || strpos($value, 'url=') !== false;
 	}
 
-	private function containsTooManyUrls($value, $allowedCount)
-	{
+	private function containsTooManyUrls($value, $allowedCount) {
 		return substr_count($value, 'http://') > $allowedCount;
 	}
 
-	private function containsStopWords($value, array $stopWords)
-	{
+	private function containsStopWords($value, array $stopWords) {
 		foreach ($stopWords as $stopWord) {
 			if (strpos($value, $stopWord) !== false) {
 				return true;

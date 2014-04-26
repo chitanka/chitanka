@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Util\String;
@@ -14,8 +12,7 @@ use App\Util\String;
 *		@ORM\Index(name="slug_idx", columns={"slug"})}
 * )
 */
-class BookmarkFolder extends Entity
-{
+class BookmarkFolder extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -48,7 +45,6 @@ class BookmarkFolder extends Entity
 	 */
 	private $created_at;
 
-
 	public function getId() { return $this->id; }
 
 	public function setSlug($slug) { $this->slug = String::slugify($slug); }
@@ -60,12 +56,14 @@ class BookmarkFolder extends Entity
 	public function setUser($user) { $this->user = $user; }
 	public function getUser() { return $this->user; }
 
+	/**
+	 * @param \DateTime $created_at
+	 */
 	public function setCreatedAt($created_at) { $this->created_at = $created_at; }
 	public function getCreatedAt() { return $this->created_at; }
 
 	/** @ORM\PrePersist */
-	public function preInsert()
-	{
+	public function preInsert() {
 		$this->setCreatedAt(new \DateTime);
 	}
 

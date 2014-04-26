@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,8 +11,7 @@ use App\Util\String;
  * @UniqueEntity(fields="slug", message="This slug is already in use.")
  * @UniqueEntity(fields="name")
  */
-class Label extends Entity
-{
+class Label extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -64,7 +61,6 @@ class Label extends Entity
 	 */
 	private $texts;
 
-
 	public function getId() { return $this->id; }
 
 	public function setSlug($slug) { $this->slug = String::slugify($slug); }
@@ -78,8 +74,7 @@ class Label extends Entity
 
 	public function setNrOfTexts($nr_of_texts) { $this->nr_of_texts = $nr_of_texts; }
 	public function getNrOfTexts() { return $this->nr_of_texts; }
-	public function incNrOfTexts($value = 1)
-	{
+	public function incNrOfTexts($value = 1) {
 		$this->nr_of_texts += $value;
 	}
 
@@ -89,16 +84,14 @@ class Label extends Entity
 	public function setTexts($texts) { $this->texts = $texts; }
 	public function getTexts() { return $this->texts; }
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->name;
 	}
 
 	/**
 	 * Add child label
 	 */
-	public function addChild($label)
-	{
+	public function addChild($label) {
 		$this->children[] = $label;
 	}
 
@@ -107,8 +100,7 @@ class Label extends Entity
 	 *
 	 * @return array
 	 */
-	public function getAncestors()
-	{
+	public function getAncestors() {
 		$ancestors = array();
 		$label = $this;
 		while (null !== ($parent = $label->getParent())) {
@@ -119,8 +111,7 @@ class Label extends Entity
 		return $ancestors;
 	}
 
-	public function getDescendantIdsAndSelf()
-	{
+	public function getDescendantIdsAndSelf() {
 		return array_merge(array($this->getId()), $this->getDescendantIds());
 	}
 
@@ -129,8 +120,7 @@ class Label extends Entity
 	 *
 	 * @return array
 	 */
-	public function getDescendantIds()
-	{
+	public function getDescendantIds() {
 		$ids = array();
 		foreach ($this->getChildren() as $label) {
 			$ids[] = $label->getId();

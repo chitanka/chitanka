@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -72,18 +70,23 @@ class UserTextContrib extends Entity {
 	public function getId() { return $this->id; }
 
 	public function getUser() { return $this->user; }
-	public function setUser(User $user)
-	{
+	public function setUser(User $user) {
 		$this->user = $user;
 		$this->setUsername($user->getUsername());
 	}
 
+	/**
+	 * @param string $username
+	 */
 	public function setUsername($username) { $this->username = $username; }
 	public function getUsername() { return $this->username; }
 
 	public function setText($text) { $this->text = $text; }
 	public function getText() { return $this->text; }
 
+	/**
+	 * @param integer $size
+	 */
 	public function setSize($size) { $this->size = $size; }
 	public function getSize() { return $this->size; }
 

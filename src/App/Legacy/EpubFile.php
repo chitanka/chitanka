@@ -131,7 +131,6 @@ class EpubFile {
 		return implode("\n", $tags);
 	}
 
-
 	public function getContentFile() {
 		return array(
 			'name'    => "$this->mainDir/$this->contentFileName",

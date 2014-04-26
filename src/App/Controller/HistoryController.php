@@ -1,18 +1,14 @@
-<?php
-
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use App\Pagination\Pager;
 use App\Util\Datetime;
 
-class HistoryController extends Controller
-{
+class HistoryController extends Controller {
 
 	public $booksPerPage = 30;
 	public $textsPerPage = 30;
 
-	public function indexAction()
-	{
+	public function indexAction() {
 		$this->view = array(
 			'book_revisions_by_date' => $this->getBookRevisionRepository()->getLatest($this->booksPerPage),
 			'text_revisions_by_date' => $this->getTextRevisionRepository()->getLatest($this->textsPerPage),
@@ -21,8 +17,7 @@ class HistoryController extends Controller
 		return $this->display('index');
 	}
 
-	public function listBooksAction($page, $_format)
-	{
+	public function listBooksAction($page, $_format) {
 		$maxPerPage = $this->booksPerPage;
 		$repo = $this->getBookRevisionRepository();
 		switch ($_format) {
@@ -51,8 +46,7 @@ class HistoryController extends Controller
 		return $this->display("list_books.$_format");
 	}
 
-	public function listBooksByMonthAction($year, $month, $page)
-	{
+	public function listBooksByMonthAction($year, $month, $page) {
 		$dates = array("$year-$month-01", Datetime::endOfMonth("$year-$month"));
 		$limit = $this->booksPerPage;
 
@@ -73,8 +67,7 @@ class HistoryController extends Controller
 		return $this->display("list_books_by_month");
 	}
 
-	public function listTextsAction($page, $_format)
-	{
+	public function listTextsAction($page, $_format) {
 		$maxPerPage = $this->textsPerPage;
 		$repo = $this->getTextRevisionRepository();
 		switch ($_format) {
@@ -103,8 +96,7 @@ class HistoryController extends Controller
 		return $this->display("list_texts.$_format");
 	}
 
-	public function listTextsByMonthAction($year, $month, $page)
-	{
+	public function listTextsByMonthAction($year, $month, $page) {
 		$dates = array("$year-$month-01", Datetime::endOfMonth("$year-$month"));
 		$limit = $this->textsPerPage;
 
@@ -128,9 +120,7 @@ class HistoryController extends Controller
 		return $this->display('list_texts_by_month');
 	}
 
-
-	private function getDateOptions($repository)
-	{
+	private function getDateOptions($repository) {
 		$dates = array();
 		foreach ($repository->getMonths() as $data) {
 			$ym = $data['month'];
@@ -144,9 +134,7 @@ class HistoryController extends Controller
 		return $dates;
 	}
 
-
-	private function extractTextsFromRevisionsByDate($revisionsByDate)
-	{
+	private function extractTextsFromRevisionsByDate($revisionsByDate) {
 		$texts = array();
 		foreach ($revisionsByDate as $revisions) {
 			foreach ($revisions as $revision) {

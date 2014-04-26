@@ -1,20 +1,16 @@
-<?php
-namespace App\Service;
+<?php namespace App\Service;
 
-class Mutex
-{
+class Mutex {
 	const EXPIRATION_TIME = 86400; // 24 hours
 	private $directory;
 	private $id;
 
-	public function __construct($directory, $id = null)
-	{
+	public function __construct($directory, $id = null) {
 		$this->directory = $directory;
 		$this->id = $id;
 	}
 
-	public function acquireLock($expirationTime = self::EXPIRATION_TIME)
-	{
+	public function acquireLock($expirationTime = self::EXPIRATION_TIME) {
 		if ($this->hasValidLockFile($expirationTime)) {
 			return false;
 		}
@@ -24,8 +20,7 @@ class Mutex
 		return true;
 	}
 
-	public function releaseLock()
-	{
+	public function releaseLock() {
 		if (file_exists($this->getLockFile())) {
 			return unlink($this->getLockFile());
 		}
@@ -35,16 +30,14 @@ class Mutex
 	/**
 	 * @param integer $expirationTime
 	 */
-	private function hasValidLockFile($expirationTime)
-	{
+	private function hasValidLockFile($expirationTime) {
 		return file_exists($this->getLockFile()) && (time() - filemtime($this->getLockFile()) < $expirationTime);
 	}
 
 	/**
 	 * @return string
 	 */
-	private function getLockFile()
-	{
+	private function getLockFile() {
 		return "$this->directory/$this->id.lock";
 	}
 }

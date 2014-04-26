@@ -1,10 +1,8 @@
-<?php
-namespace App\Util;
+<?php namespace App\Util;
 
 use App\Legacy\Legacy;
 
-class String
-{
+class String {
 	static public function limitLength($str, $len = 80) {
 		if ( strlen($str) > $len ) {
 			return substr($str, 0, $len - 1) . '…';
@@ -15,8 +13,7 @@ class String
 	/**
 		Escape meta-characters used in regular expressions
 	*/
-	static public function prepareStringForPreg($string)
-	{
+	static public function prepareStringForPreg($string) {
 		return strtr($string, array(
 			// in a regexp a backslash can be escaped with four backslashes - \\\\
 			'\\' => '\\\\\\\\',
@@ -37,7 +34,6 @@ class String
 		));
 	}
 
-
 	static private $allowableTags = array('em', 'strong');
 
 	static public function escapeInput($text) {
@@ -51,7 +47,6 @@ class String
 		return $text;
 	}
 
-
 	static public function myhtmlentities( $text ) {
 		return htmlentities( $text, ENT_QUOTES, 'UTF-8');
 	}
@@ -63,8 +58,7 @@ class String
 	/**
 	 * @param string $string
 	 */
-	static public function fixEncoding($string)
-	{
+	static public function fixEncoding($string) {
 		if ('UTF-8' != ($enc = mb_detect_encoding($string, 'UTF-8, Windows-1251'))) {
 			$string = iconv($enc, 'UTF-8', $string);
 		}
@@ -87,9 +81,7 @@ class String
 		return $text;
 	}
 
-
-	static public function splitPersonName($name)
-	{
+	static public function splitPersonName($name) {
 		preg_match('/([^,]+) ([^,]+)(, .+)?/', $name, $m);
 
 		if ( ! isset($m[2]) ) {
@@ -102,8 +94,7 @@ class String
 		);
 	}
 
-	static public function getMachinePersonName($name)
-	{
+	static public function getMachinePersonName($name) {
 		$parts = self::splitPersonName($name);
 		$machineName = isset($parts['lastname'])
 			? $parts['lastname'] . ', ' . $parts['firstname']
@@ -112,9 +103,7 @@ class String
 		return $machineName;
 	}
 
-
-	static public function slugify($name, $maxlength = 60)
-	{
+	static public function slugify($name, $maxlength = 60) {
 		$name = strtr($name, array(
 			'²' => '2', '°' => 'deg',
 		));
@@ -128,7 +117,6 @@ class String
 
 		return $name;
 	}
-
 
 	static public function cb_quotes($matches) {
 		return '„'. strtr($matches[1], array('„'=>'«', '“'=>'»', '«'=>'„', '»'=>'“')) .'“';
@@ -173,7 +161,6 @@ class String
 
 		return ltrim($cont, "\n");
 	}
-
 
 	static private function log_error($s, $loud = false) {
 		#file_put_contents('./log/error', date('d-m-Y H:i:s'). "  $s\n", FILE_APPEND);

@@ -1,18 +1,15 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 class SendUsernamePage extends MailPage {
 
 	protected
 		$action = 'sendUsername';
 
-
 	public function __construct($fields) {
 		parent::__construct($fields);
 		$this->title = 'Изпращане на потребителско име';
 		$this->email = $this->request->value('email');
 	}
-
 
 	protected function processSubmission() {
 		$key = array('email' => $this->email);
@@ -41,7 +38,6 @@ class SendUsernamePage extends MailPage {
 		return parent::processSubmission();
 	}
 
-
 	protected function makeForm() {
 		$email = $this->out->textField('email', '', $this->email, 25, 255, 2);
 		$submit = $this->out->submitButton('Изпращане на потребителското име', '', 3);
@@ -63,7 +59,6 @@ class SendUsernamePage extends MailPage {
 </form>
 EOS;
 	}
-
 
 	protected function makeMailMessage() {
 		$passlink = $this->controller->generateUrl('request_password', array(), true);

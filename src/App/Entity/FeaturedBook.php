@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,8 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity(repositoryClass="App\Entity\FeaturedBookRepository")
 * @ORM\Table(name="featured_book")
 */
-class FeaturedBook extends Entity
-{
+class FeaturedBook extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -65,8 +62,7 @@ class FeaturedBook extends Entity
 	public function setDescription($description) { $this->description = $description; }
 	public function getDescription() { return $this->description; }
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->title;
 	}
 }

@@ -1,13 +1,10 @@
-<?php
-
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use App\Pagination\Pager;
 
-class UserController extends Controller
-{
+class UserController extends Controller {
 	public function personalToolsAction() {
 		$this->responseAge = 0;
 
@@ -16,9 +13,7 @@ class UserController extends Controller
 		));
 	}
 
-
-	public function showAction($username)
-	{
+	public function showAction($username) {
 		$this->responseAge = 0;
 
 		$_REQUEST['username'] = $username;
@@ -26,8 +21,7 @@ class UserController extends Controller
 		return $this->legacyPage('User');
 	}
 
-	public function pageAction($username)
-	{
+	public function pageAction($username) {
 		$this->responseAge = 0;
 
 		$_REQUEST['username'] = $username;
@@ -35,26 +29,20 @@ class UserController extends Controller
 		return $this->legacyPage('EditUserPage');
 	}
 
-
-	public function ratingsAction($username)
-	{
+	public function ratingsAction($username) {
 		$_REQUEST['username'] = $username;
 
 		return $this->legacyPage('Textrating');
 	}
 
-
-	public function commentsAction($username, $page)
-	{
+	public function commentsAction($username, $page) {
 		$_REQUEST['username'] = $username;
 		$_REQUEST['page'] = $page;
 
 		return $this->legacyPage('Comment');
 	}
 
-
-	public function contribsAction($username, $page)
-	{
+	public function contribsAction($username, $page) {
 		$limit = 50;
 		$user = $this->getUserRepository()->findOneby(array('username' => $username));
 		$repo = $this->getUserTextContribRepository();
@@ -74,9 +62,7 @@ class UserController extends Controller
 		return $this->display('contribs');
 	}
 
-
-	public function readListAction($username, $page)
-	{
+	public function readListAction($username, $page) {
 		$this->responseAge = 0;
 
 		if ($this->getUser()->getUsername() != $username) {
@@ -109,9 +95,7 @@ class UserController extends Controller
 		return $this->display('read_list');
 	}
 
-
-	public function bookmarksAction($username, $page)
-	{
+	public function bookmarksAction($username, $page) {
 		$this->responseAge = 0;
 
 		if ($this->getUser()->getUsername() != $username) {
@@ -144,13 +128,11 @@ class UserController extends Controller
 		return $this->display('bookmarks');
 	}
 
-
 	/**
 	 * Tell if any of the requested texts are special for the current user
 	 * i.e. the user has bookmarked it or read it
 	 */
-	public function specialTextsAction(Request $request)
-	{
+	public function specialTextsAction(Request $request) {
 		$this->responseAge = 0;
 
 		if ($this->getUser()->isAnonymous()) {
@@ -165,9 +147,7 @@ class UserController extends Controller
 		));
 	}
 
-
-	public function editAction($username)
-	{
+	public function editAction($username) {
 		$this->responseAge = 0;
 
 		if ($this->getUser()->getUsername() != $username) {
@@ -185,8 +165,7 @@ EOS;
 		return $this->legacyPage('Settings');
 	}
 
-	public function stylesheetAction()
-	{
+	public function stylesheetAction() {
 		$this->responseAge = 0;
 
 		return $this->render('App:User:stylesheet.html.twig', array(

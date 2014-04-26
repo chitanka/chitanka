@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Util\Ary;
 
@@ -17,18 +16,15 @@ class Request {
 		// hash of the request
 		$hash;
 
-
 	public function __construct() {
 		/** Timelife for cookies */
 		$this->cookieExp = time() + self::ONEDAYSECS * 30; // 30 days
 		$this->ua = strtolower(@$_SERVER['HTTP_USER_AGENT']);
 	}
 
-
 	public function action() {
 		return $this->action;
 	}
-
 
 	/**
 		Fetch a field value from the request.
@@ -56,7 +52,6 @@ class Request {
 		$_REQUEST[$name] = $_GET[$name] = $value;
 	}
 
-
 	public function checkbox($name, $dims = null) {
 		if ( !isset($_REQUEST[$name]) ) {
 			return false;
@@ -68,12 +63,10 @@ class Request {
 		return $val == 'on';
 	}
 
-
 	/** @return bool */
 	public function wasPosted() {
 		return @$_SERVER['REQUEST_METHOD'] == 'POST';
 	}
-
 
 	public function isBotRequest() {
 		foreach ($this->bots as $bot) {
@@ -108,7 +101,6 @@ class Request {
 		return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 	}
 
-
 	public function serverPlain() {
 		return $_SERVER['SERVER_NAME'];
 	}
@@ -122,13 +114,11 @@ class Request {
 		return $s;
 	}
 
-
 	public function requestUri( $absolute = false ) {
 		$uri = $absolute ? $this->server() : '';
 		$uri .= $_SERVER['REQUEST_URI'];
 		return $uri;
 	}
-
 
 	/**
 	*/
@@ -145,9 +135,7 @@ class Request {
 		return $_FILES[$name]['tmp_name'];
 	}
 
-
-	public function getParams()
-	{
+	public function getParams() {
 		return $this->params;
 	}
 
@@ -159,7 +147,6 @@ class Request {
 		return $this->hash;
 	}
 
-
 	public function setCookie($name, $value, $expire = null, $multiDomain = true) {
 		if (is_null($expire)) $expire = $this->cookieExp;
 
@@ -169,14 +156,12 @@ class Request {
 		}
 	}
 
-
 	public function deleteCookie($name, $multiDomain = true) {
 		setcookie($name, '', time() - 86400, $this->cookiePath);
 		if ($multiDomain) {
 			setcookie($name, '', time() - 86400, $this->cookiePath, '.'.$this->serverPlain());
 		}
 	}
-
 
 	public function makeInputFieldsForGetVars($exclude = array()) {
 		$c = '';
@@ -189,23 +174,18 @@ class Request {
 		return $c;
 	}
 
-
-	static public function isXhr()
-	{
+	static public function isXhr() {
 		return isset($_SERVER['HTTP_X_REQUESTED_WITH'])
 			&& $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
 	}
 
-	static public function isAjax()
-	{
+	static public function isAjax() {
 		return self::isXhr();
 	}
-
 
 	public function isMSIE() {
 		return strpos($this->ua, 'msie') !== false;
 	}
-
 
 	public function isCompleteSubmission() {
 		return $this->value('submitButton') !== null;

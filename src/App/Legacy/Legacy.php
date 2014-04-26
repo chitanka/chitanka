@@ -323,7 +323,6 @@ class Legacy {
 		return $number;
 	}
 
-
 	static public function getMaxUploadSizeInMiB() {
 		return self::int_b2m( self::ini_bytes( ini_get('upload_max_filesize') ) );
 	}
@@ -354,7 +353,6 @@ class Legacy {
 		return strpos($string, 'http://') === 0;
 	}
 
-
 	/**
 	 * @param string $words
 	 */
@@ -366,7 +364,6 @@ class Legacy {
 		}
 		return strtoupper($acronym);
 	}
-
 
 	/**
 	 * @param array $assocArray
@@ -521,8 +518,7 @@ class Legacy {
 	 * @param int $cacheTime
 	 * @return string
 	 */
-	static public function getFromUrlOrCache($url, $cacheTime = 0)
-	{
+	static public function getFromUrlOrCache($url, $cacheTime = 0) {
 		$id = md5($url);
 		$action = 'url';
 

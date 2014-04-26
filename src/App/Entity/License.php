@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -10,8 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="license")
  * @UniqueEntity(fields="code")
  */
-class License extends Entity
-{
+class License extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -61,8 +58,7 @@ class License extends Entity
 	 *
 	 * @return integer $id
 	 */
-	public function getId()
-	{
+	public function getId() {
 		return $this->id;
 	}
 
@@ -71,8 +67,7 @@ class License extends Entity
 	 *
 	 * @param string $code
 	 */
-	public function setCode($code)
-	{
+	public function setCode($code) {
 		$this->code = $code;
 	}
 
@@ -81,8 +76,7 @@ class License extends Entity
 	 *
 	 * @return string $code
 	 */
-	public function getCode()
-	{
+	public function getCode() {
 		return $this->code;
 	}
 
@@ -91,8 +85,7 @@ class License extends Entity
 	 *
 	 * @param string $name
 	 */
-	public function setName($name)
-	{
+	public function setName($name) {
 		$this->name = $name;
 	}
 
@@ -101,8 +94,7 @@ class License extends Entity
 	 *
 	 * @return string $name
 	 */
-	public function getName()
-	{
+	public function getName() {
 		return $this->name;
 	}
 
@@ -111,8 +103,7 @@ class License extends Entity
 	 *
 	 * @param string $fullname
 	 */
-	public function setFullname($fullname)
-	{
+	public function setFullname($fullname) {
 		$this->fullname = $fullname;
 	}
 
@@ -121,8 +112,7 @@ class License extends Entity
 	 *
 	 * @return string $fullname
 	 */
-	public function getFullname()
-	{
+	public function getFullname() {
 		return $this->fullname;
 	}
 
@@ -131,8 +121,7 @@ class License extends Entity
 	 *
 	 * @param boolean $free
 	 */
-	public function setFree($free)
-	{
+	public function setFree($free) {
 		$this->free = $free;
 	}
 
@@ -141,8 +130,7 @@ class License extends Entity
 	 *
 	 * @return boolean $free
 	 */
-	public function getFree()
-	{
+	public function getFree() {
 		return $this->free;
 	}
 
@@ -151,8 +139,7 @@ class License extends Entity
 	 *
 	 * @param boolean $copyright
 	 */
-	public function setCopyright($copyright)
-	{
+	public function setCopyright($copyright) {
 		$this->copyright = $copyright;
 	}
 
@@ -161,8 +148,7 @@ class License extends Entity
 	 *
 	 * @return boolean $copyright
 	 */
-	public function getCopyright()
-	{
+	public function getCopyright() {
 		return $this->copyright;
 	}
 
@@ -171,8 +157,7 @@ class License extends Entity
 	 *
 	 * @param string $uri
 	 */
-	public function setUri($uri)
-	{
+	public function setUri($uri) {
 		$this->uri = $uri;
 	}
 
@@ -181,14 +166,11 @@ class License extends Entity
 	 *
 	 * @return string $uri
 	 */
-	public function getUri()
-	{
+	public function getUri() {
 		return $this->uri;
 	}
 
-
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->name;
 	}
 }

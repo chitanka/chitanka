@@ -1,14 +1,10 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 /**
  *
  */
-class BookRevisionRepository extends RevisionRepository
-{
-	public function getQueryBuilder($orderBys = null)
-	{
+class BookRevisionRepository extends RevisionRepository {
+	public function getQueryBuilder($orderBys = null) {
 		$qb = parent::getQueryBuilder($orderBys)
 			->select('r', 'b', 'a', 'ap', 's', 'c')
 			->from($this->getEntityName(), 'r')

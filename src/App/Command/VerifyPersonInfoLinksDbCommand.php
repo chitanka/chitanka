@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -8,13 +6,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity\Person;
 use App\Util\HttpAgent;
 
-class VerifyPersonInfoLinksDbCommand extends CommonDbCommand
-{
+class VerifyPersonInfoLinksDbCommand extends CommonDbCommand {
 	private $secsBetweenRequests = 5;
 
-
-	protected function configure()
-	{
+	protected function configure() {
 		parent::configure();
 
 		$this
@@ -37,8 +32,7 @@ EOT
 	 *
 	 * @throws \LogicException When this abstract class is not implemented
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->output = $output;
 		$dumpSql = $input->getOption('dump-sql') === true;
@@ -46,18 +40,15 @@ EOT
 		$output->writeln('/*Done.*/');
 	}
 
-
 	/**
 	 * @param boolean $dumpSql
 	 */
-	private function verifyWikiInfoLinks($dumpSql)
-	{
+	private function verifyWikiInfoLinks($dumpSql) {
 		$personIds = $this->getIdsForPersonsWithInvalidInfoLinks();
 		$this->removeInvalidInfoLinksByPersons($personIds, $dumpSql);
 	}
 
-	private function getIdsForPersonsWithInvalidInfoLinks()
-	{
+	private function getIdsForPersonsWithInvalidInfoLinks() {
 		$iterableResult = $this->em->createQuery('SELECT p FROM App:Person p WHERE p.info LIKE \'%:%\'')->iterate();
 		$siteRepo = $this->em->getRepository('App:WikiSite');
 		$httpAgent = new HttpAgent;
@@ -79,8 +70,7 @@ EOT
 		return $ids;
 	}
 
-	private function removeInvalidInfoLinksByPersons($personIds, $dumpSql)
-	{
+	private function removeInvalidInfoLinksByPersons($personIds, $dumpSql) {
 		$queries = array();
 		if (count($personIds)) {
 			$queries[] = sprintf('UPDATE person SET info = NULL WHERE id IN ('.implode(',', $personIds).')');

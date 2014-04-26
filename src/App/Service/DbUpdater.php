@@ -1,7 +1,5 @@
-<?php
-namespace App\Service;
+<?php namespace App\Service;
 
-class DbUpdater
-{
+class DbUpdater {
 
 }

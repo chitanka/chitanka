@@ -21,7 +21,6 @@ class CommentPage extends Page {
 		$includeCommentForm   = true,
 		$includeViewTypeLinks = true;
 
-
 	public function __construct($fields) {
 		parent::__construct($fields);
 		$this->title = 'Читателски коментари';

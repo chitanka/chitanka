@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,8 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="user_idx", columns={"user_id"})}
 * )
 */
-class LabelLog extends Entity
-{
+class LabelLog extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -72,48 +69,38 @@ class LabelLog extends Entity
 	public function setUser($user) { $this->user = $user; }
 	public function getUser() { return $this->user; }
 
-	public function setTitle($title)
-	{
+	public function setTitle($title) {
 		$this->title = $title;
 	}
-	public function getTitle()
-	{
+	public function getTitle() {
 		return $this->title;
 	}
 
-	public function setAuthor($author)
-	{
+	public function setAuthor($author) {
 		$this->author = $author;
 	}
-	public function getAuthor()
-	{
+	public function getAuthor() {
 		return $this->author;
 	}
 
-	public function setAction($action)
-	{
+	public function setAction($action) {
 		$this->action = $action;
 	}
-	public function getAction()
-	{
+	public function getAction() {
 		return $this->action;
 	}
 
-	public function setLabels($labels)
-	{
+	public function setLabels($labels) {
 		$this->labels = $labels;
 	}
-	public function getLabels()
-	{
+	public function getLabels() {
 		return $this->labels;
 	}
 
-	public function setTime($time)
-	{
+	public function setTime($time) {
 		$this->time = $time;
 	}
-	public function getTime()
-	{
+	public function getTime() {
 		return $this->time;
 	}
 

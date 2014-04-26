@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -8,11 +6,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity\WorkEntry;
 use App\Service\Notifier;
 
-class NotifyUsersForOldWorkEntriesCommand extends CommonDbCommand
-{
+class NotifyUsersForOldWorkEntriesCommand extends CommonDbCommand {
 
-	protected function configure()
-	{
+	protected function configure() {
 		parent::configure();
 
 		$this
@@ -27,8 +23,7 @@ EOT
 		);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$oldEntries = $this->getRepository('WorkEntry')->findOlderThan($this->getThresholdDate($input));
 		$skippedUsers = $this->getSkippedUsers($input);
 		$notifer = new Notifier($this->getContainer()->get('mailer'));
@@ -43,8 +38,7 @@ EOT
 		$output->writeln('/*Done.*/');
 	}
 
-	private function sendNotification(Notifier $notifier, WorkEntry $entry, $stalkInterval)
-	{
+	private function sendNotification(Notifier $notifier, WorkEntry $entry, $stalkInterval) {
 		if ($entry->isNotifiedWithin("$stalkInterval days")) {
 			return;
 		}
@@ -52,19 +46,16 @@ EOT
 		$entry->setLastNotificationDate(new \DateTime);
 	}
 
-	private function getThresholdDate(InputInterface $input)
-	{
+	private function getThresholdDate(InputInterface $input) {
 		$age = $input->getArgument('age');
 		return date('Y-m-d', strtotime("-$age months"));
 	}
 
-	private function getSkippedUsers(InputInterface $input)
-	{
+	private function getSkippedUsers(InputInterface $input) {
 		return explode(',', $input->getArgument('skip-users'));
 	}
 
-	private function shouldSkipEntry(WorkEntry $entry, array $skippedUsers)
-	{
+	private function shouldSkipEntry(WorkEntry $entry, array $skippedUsers) {
 		return in_array($entry->getUser()->getUsername(), $skippedUsers);
 	}
 }

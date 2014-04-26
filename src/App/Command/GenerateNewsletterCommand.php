@@ -1,16 +1,12 @@
-<?php
-
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateNewsletterCommand extends CommonDbCommand
-{
+class GenerateNewsletterCommand extends CommonDbCommand {
 
-	protected function configure()
-	{
+	protected function configure() {
 		parent::configure();
 
 		$this
@@ -33,8 +29,7 @@ EOT
 	 *
 	 * @throws \LogicException When this abstract class is not implemented
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->em->getConfiguration()->addCustomHydrationMode('id', 'App\Hydration\IdHydrator');
 		$this->em->getConfiguration()->addCustomHydrationMode('key_value', 'App\Hydration\KeyValueHydrator');
@@ -43,11 +38,9 @@ EOT
 		$this->generateNewsletter($input->getArgument('month'));
 	}
 
-
 	/**
 	*/
-	protected function generateNewsletter($month)
-	{
+	protected function generateNewsletter($month) {
 		$this->output->writeln("\n= Книги =\n");
 		$booksByCat = $this->_getBooks($month);
 		ksort($booksByCat);
@@ -67,8 +60,7 @@ EOT
 		}
 	}
 
-	private function _getBooks($month)
-	{
+	private function _getBooks($month) {
 		$repo = $this->em->getRepository('App:BookRevision');
 		$booksByCat = array();
 		#foreach ($repo->getByDate(array('2011-07-01', '2011-08-31 23:59'), 1, null, false) as $revision) {
@@ -89,8 +81,7 @@ EOT
 	}
 
 	// TODO fetch only texts w/o books
-	private function _getTexts($month)
-	{
+	private function _getTexts($month) {
 		$repo = $this->em->getRepository('App:TextRevision');
 		$texts = array();
 		#foreach ($repo->getByDate(array('2011-07-01', '2011-08-31 23:59'), 1, null, false) as $revision) {

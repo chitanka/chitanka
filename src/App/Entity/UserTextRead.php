@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -49,12 +47,21 @@ class UserTextRead extends Entity {
 
 	public function getId() { return $this->id; }
 
+	/**
+	 * @param User $user
+	 */
 	public function setUser($user) { $this->user = $user; }
 	public function getUser() { return $this->user; }
 
+	/**
+	 * @param Text $text
+	 */
 	public function setText($text) { $this->text = $text; }
 	public function getText() { return $this->text; }
 
+	/**
+	 * @param \DateTime $created_at
+	 */
 	public function setCreatedAt($created_at) { $this->created_at = $created_at; }
 	public function getCreatedAt() { return $this->created_at; }
 

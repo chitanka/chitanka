@@ -1,5 +1,4 @@
-<?php
-namespace App\Service;
+<?php namespace App\Service;
 
 use \Swift_Mailer;
 use \Swift_Message;
@@ -16,8 +15,7 @@ class Notifier {
         $this->mailer = $mailer;
     }
 
-	public function sendMailByNewWorkroomComment(Comment $comment, WorkEntry $workEntry, array $recipients)
-	{
+	public function sendMailByNewWorkroomComment(Comment $comment, WorkEntry $workEntry, array $recipients) {
 		if (empty($recipients)) {
 			return;
 		}
@@ -38,8 +36,7 @@ class Notifier {
 		}
 	}
 
-	private function createMailBodyByNewWorkroomComment(Comment $comment, WorkEntry $workEntry)
-	{
+	private function createMailBodyByNewWorkroomComment(Comment $comment, WorkEntry $workEntry) {
 		return <<<BODY
 {$comment->getBody()}
 _______________________________________________________________________________
@@ -52,8 +49,7 @@ _______________________________________________________________________________
 BODY;
 	}
 
-	public function sendMailByOldWorkEntry(WorkEntry $workEntry)
-	{
+	public function sendMailByOldWorkEntry(WorkEntry $workEntry) {
 		$sender = array('no-reply@chitanka.info' => 'Ателие (Моята библиотека)');
 		$message = Swift_Message::newInstance('Стар запис — '.$workEntry->getTitle())
 			->setFrom($sender)
@@ -74,8 +70,7 @@ BODY;
 		}
 	}
 
-	public function sendMailByOldWorkContrib(WorkContrib $contrib)
-	{
+	public function sendMailByOldWorkContrib(WorkContrib $contrib) {
 		$workEntry = $contrib->getEntry();
 		$sender = array('no-reply@chitanka.info' => 'Ателие (Моята библиотека)');
 		$message = Swift_Message::newInstance('Стар запис — '.$workEntry->getTitle())
@@ -93,8 +88,7 @@ BODY;
 		$this->sendMessage($message);
 	}
 
-	private function createMailBodyByOldWorkEntry(WorkEntry $workEntry)
-	{
+	private function createMailBodyByOldWorkEntry(WorkEntry $workEntry) {
 		return <<<BODY
 Здравейте!
 
@@ -109,8 +103,7 @@ _______________________________________________________________________________
 BODY;
 	}
 
-	private function createMailBodyByOldWorkContrib(WorkContrib $workContrib)
-	{
+	private function createMailBodyByOldWorkContrib(WorkContrib $workContrib) {
 		$workEntry = $workContrib->getEntry();
 		return <<<BODY
 Здравейте!
@@ -126,16 +119,14 @@ _______________________________________________________________________________
 BODY;
 	}
 
-	private function sendMessage(Swift_Message $message)
-	{
+	private function sendMessage(Swift_Message $message) {
 		$this->mailer->send($message);
 	}
 
 	/**
 	 * @param string $message
 	 */
-	private function logError($message)
-	{
+	private function logError($message) {
 		error_log($message);
 	}
 }

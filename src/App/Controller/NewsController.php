@@ -1,11 +1,7 @@
-<?php
+<?php namespace App\Controller;
 
-namespace App\Controller;
-
-class NewsController extends Controller
-{
-	public function indexAction($page)
-	{
+class NewsController extends Controller {
+	public function indexAction($page) {
 		$_REQUEST['page'] = $page;
 
 		return $this->legacyPage('News');

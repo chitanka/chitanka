@@ -1,11 +1,8 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 /**
  *
  */
-class UserTextReadRepository extends BookmarkRepository
-{
+class UserTextReadRepository extends BookmarkRepository {
 
 }

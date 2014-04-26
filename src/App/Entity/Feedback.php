@@ -1,12 +1,9 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as MyAssert;
 
-class Feedback
-{
+class Feedback {
 	public $referer;
 
 	/**
@@ -32,15 +29,12 @@ class Feedback
 	private $mailer;
 	private $recipient;
 
-
-	public function __construct(\Swift_Mailer $mailer, $recipient)
-	{
+	public function __construct(\Swift_Mailer $mailer, $recipient) {
 		$this->mailer = $mailer;
 		$this->recipient = $recipient;
 	}
 
-	public function process()
-	{
+	public function process() {
 		$fromEmail = empty($this->email) ? 'anonymous@anonymous.net' : $this->email;
 		$fromName = empty($this->name) ? 'Анонимен' : $this->name;
 		$sender = array($fromEmail => $fromName);

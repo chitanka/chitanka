@@ -1,5 +1,4 @@
-<?php
-namespace App\Controller;
+<?php namespace App\Controller;
 
 class SiteNoticeController extends Controller {
 

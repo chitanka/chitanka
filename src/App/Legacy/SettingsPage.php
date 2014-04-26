@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Entity\User;
 
@@ -11,7 +10,6 @@ class SettingsPage extends RegisterPage {
 		$optKeys = array('skin', 'nav', 'css', 'js'),
 		$defEcnt = 10,
 		$nonEmptyFields = array();
-
 
 	public function __construct($fields) {
 		parent::__construct($fields);
@@ -26,11 +24,9 @@ class SettingsPage extends RegisterPage {
 		$this->tabindex = 2;
 	}
 
-
 	protected function processSubmission() {
 		return $this->processRegUserRequest();
 	}
-
 
 	protected function isValidPassword() {
 		// sometimes browsers automaticaly fill the first password field
@@ -42,9 +38,7 @@ class SettingsPage extends RegisterPage {
 		return parent::isValidPassword();
 	}
 
-
-	protected function processRegUserRequest()
-	{
+	protected function processRegUserRequest() {
 		$err = $this->validateInput();
 		$this->attempt++;
 		if ( !empty($err) ) {
@@ -80,13 +74,11 @@ class SettingsPage extends RegisterPage {
 		return $this->makeRegUserForm();
 	}
 
-
 	protected function buildContent() {
 		$this->initRegUserData();
 
 		return $this->makeRegUserForm();
 	}
-
 
 	protected function makeRegUserForm() {
 		$username = $this->canChangeUsername
@@ -184,20 +176,17 @@ EOS;
 EOS;
 	}
 
-
 	protected function makeSkinInput($tabindex) {
 		return $this->out->selectBox('skin', '', Setup::setting('skins'),
 			$this->opts['skin'], $tabindex,
 			array('class' => 'form-control', 'onchange' => 'skin=this.value; changeStyleSheet()'));
 	}
 
-
 	protected function makeNavPosInput($tabindex) {
 		return $this->out->selectBox('nav', '', Setup::setting('navpos'),
 			$this->opts['nav'], $tabindex,
 			array('class' => 'form-control', 'onchange' => 'nav=this.value; changeStyleSheet()'));
 	}
-
 
 	protected function makeCustomInput() {
 		$inputs = '';
@@ -258,7 +247,6 @@ HTML;
 		return $inputs;
 	}
 
-
 	protected function makeOptionsOutput( $with_page_fields = true ) {
 		//$opts = array_merge( $this->user->options(), $this->opts );
 		$opts = $this->opts;
@@ -272,7 +260,6 @@ HTML;
 
 		return $opts;
 	}
-
 
 	protected function initRegUserData() {
 		$this->username = $this->user->getUsername();

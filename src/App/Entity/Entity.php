@@ -1,5 +1,4 @@
-<?php
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\Common\Collections\Collection;
 
@@ -9,16 +8,14 @@ use Doctrine\Common\Collections\Collection;
 abstract class Entity
 {
 
-	public function clearCollection(Collection $collection)
-	{
+	public function clearCollection(Collection $collection) {
 		$collection->forAll(function($key) use ($collection) {
 			$collection->remove($key);
 			return true;
 		});
 	}
 
-	public function __call($method, $arguments)
-	{
+	public function __call($method, $arguments) {
 		$getter = 'get' . str_replace(' ', '', ucwords(str_replace('_', ' ', $method)));
 		if (method_exists($this, $getter)) {
 			return $this->$getter();

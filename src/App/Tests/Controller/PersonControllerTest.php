@@ -1,15 +1,12 @@
-<?php
-namespace App\Tests\Controller;
+<?php namespace App\Tests\Controller;
 
-class PersonControllerTest extends WebTestCase
-{
+class PersonControllerTest extends WebTestCase {
 	protected $routeBase = '';
 
 	/**
 	 * @group html
 	 */
-	public function testIndex()
-	{
+	public function testIndex() {
 		$page = $this->request($this->routeBase);
 
 		$this->assertHtmlPageIs($page, $this->routeBase);
@@ -22,8 +19,7 @@ class PersonControllerTest extends WebTestCase
 	/**
 	 * @group html
 	 */
-	public function testListByFirstNameByLetterA()
-	{
+	public function testListByFirstNameByLetterA() {
 		$page = $this->request("$this->routeBase/first-name/".urlencode('А'));
 
 		$this->assertHtmlPageIs($page, $this->routeBase.'_by_alpha');
@@ -32,8 +28,7 @@ class PersonControllerTest extends WebTestCase
 	/**
 	 * @group html
 	 */
-	public function testListByLastNameByLetterA()
-	{
+	public function testListByLastNameByLetterA() {
 		$page = $this->request("$this->routeBase/last-name/".urlencode('А'));
 
 		$this->assertHtmlPageIs($page, $this->routeBase.'_by_alpha');
@@ -42,8 +37,7 @@ class PersonControllerTest extends WebTestCase
 	/**
 	 * @group html
 	 */
-	public function testShow()
-	{
+	public function testShow() {
 		$page = $this->request("person/nikolaj-tellalov");
 
 		$this->assertHtmlPageIs($page, 'person_show');
@@ -52,8 +46,7 @@ class PersonControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testIndexOpds()
-	{
+	public function testIndexOpds() {
 		$page = $this->request("$this->routeBase.opds");
 
 		$this->assertOpdsPageIs($page, $this->routeBase);
@@ -63,19 +56,16 @@ class PersonControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testIndexByFirstNameOpds()
-	{
+	public function testIndexByFirstNameOpds() {
 		$this->doTestIndexByAlphaOpds('first-name');
 	}
 	/**
 	 * @group opds
 	 */
-	public function testIndexByLastNameOpds()
-	{
+	public function testIndexByLastNameOpds() {
 		$this->doTestIndexByAlphaOpds('last-name');
 	}
-	private function doTestIndexByAlphaOpds($by)
-	{
+	private function doTestIndexByAlphaOpds($by) {
 		$route = "$this->routeBase/$by.opds";
 		$page = $this->request($route);
 
@@ -86,19 +76,16 @@ class PersonControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testListByAlphaByFirstNameByLetterAOpds()
-	{
+	public function testListByAlphaByFirstNameByLetterAOpds() {
 		$this->doTestListByAlphaByLetterOpds('first-name', urlencode('А'));
 	}
 	/**
 	 * @group opds
 	 */
-	public function testListByAlphaByLastNameByLetterAOpds()
-	{
+	public function testListByAlphaByLastNameByLetterAOpds() {
 		$this->doTestListByAlphaByLetterOpds('last-name', urlencode('А'));
 	}
-	private function doTestListByAlphaByLetterOpds($by, $letter)
-	{
+	private function doTestListByAlphaByLetterOpds($by, $letter) {
 		$route = "$this->routeBase/$by/$letter.opds";
 		$page = $this->request($route);
 
@@ -108,8 +95,7 @@ class PersonControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testShowOpds()
-	{
+	public function testShowOpds() {
 		$route = "person/nikolaj-tellalov.opds";
 		$page = $this->request($route);
 

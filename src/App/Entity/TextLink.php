@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,8 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  *	uniqueConstraints={@ORM\UniqueConstraint(name="text_site_uniq", columns={"text_id", "site_id"})}
  * )
  */
-class TextLink extends Entity
-{
+class TextLink extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -60,13 +57,11 @@ class TextLink extends Entity
 	public function setDescription($description) { $this->description = $description; }
 	public function getDescription() { return $this->description; }
 
-	public function getUrl()
-	{
+	public function getUrl() {
 		return str_replace('BOOKID', $this->code, $this->site->getUrl());
 	}
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->getSite() .' ('.$this->code.')';
 	}
 

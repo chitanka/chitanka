@@ -1,13 +1,10 @@
-<?php
-namespace App\Tests\Service;
+<?php namespace App\Tests\Service;
 
 use App\Tests\TestCase;
 use App\Service\FeedService;
 
-class FeedServiceTest extends TestCase
-{
-	public function testRemoveScriptContent()
-	{
+class FeedServiceTest extends TestCase {
+	public function testRemoveScriptContent() {
 		$service = new FeedService;
 		$html = <<<HTML
 Some text
@@ -27,16 +24,14 @@ HTML;
 		$this->assertContains('Some more text', $cleanedHtml, 'Text inbetween shoud stay');
 	}
 
-	public function testRemoveImageBeacons()
-	{
+	public function testRemoveImageBeacons() {
 		$service = new FeedService;
 		$html = 'Some text <img alt="" border="0" height="1" src="http://beacon" width="1">';
 		$cleanedHtml = $service->removeImageBeacons($html);
 		$this->assertNotContains('<img', $cleanedHtml);
 	}
 
-	public function testRemoveImageBeaconsButLeaveNormalImages()
-	{
+	public function testRemoveImageBeaconsButLeaveNormalImages() {
 		$service = new FeedService;
 		$html = <<<HTML
 <img src="http://example/normalimage" width="100">

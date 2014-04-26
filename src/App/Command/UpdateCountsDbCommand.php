@@ -1,15 +1,11 @@
-<?php
-
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateCountsDbCommand extends CommonDbCommand
-{
+class UpdateCountsDbCommand extends CommonDbCommand {
 
-	protected function configure()
-	{
+	protected function configure() {
 		parent::configure();
 
 		$this
@@ -31,15 +27,12 @@ EOT
 	 *
 	 * @throws \LogicException When this abstract class is not implemented
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->updateCounts($output, $this->getContainer()->get('doctrine.orm.default_entity_manager'));
 		$output->writeln('Done.');
 	}
 
-
-	protected function updateCounts(OutputInterface $output, $em)
-	{
+	protected function updateCounts(OutputInterface $output, $em) {
 		$this->updateTextCountByLabels($output, $em);
 		$this->updateTextCountByLabelsParents($output, $em);
 		$this->updateCommentCountByTexts($output, $em);

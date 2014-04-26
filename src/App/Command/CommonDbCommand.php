@@ -26,7 +26,6 @@ class CommonDbCommand extends ContainerAwareCommand {
 		$em->getConnection()->executeUpdate($update);
 	}
 
-
 	protected function updateTextCountByLabelsParents(OutputInterface $output, EntityManager $em) {
 		$output->writeln('Updating texts count by labels parents');
 		$this->_updateCountByParents($em, 'App:Label', 'NrOfTexts');

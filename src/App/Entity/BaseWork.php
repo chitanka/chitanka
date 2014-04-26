@@ -1,5 +1,4 @@
-<?php
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use App\Util\File;
 use App\Util\String;
@@ -28,24 +27,22 @@ abstract class BaseWork extends Entity
 
 	protected $_hasTitleNote = null;
 
-
-	public function getDocId()
-	{
+	public function getDocId() {
 		return 'http://chitanka.info';
 	}
 
-	public function getType()
-	{
+	public function getType() {
 		return 'work';
 	}
 
-	public function getTitle()
-	{
+	public function getTitle() {
 		return $this->title;
 	}
 
-	public function getSubtitle()
-	{
+	/**
+	 * @return string
+	 */
+	public function getSubtitle() {
 		return $this->subtitle;
 	}
 
@@ -53,8 +50,7 @@ abstract class BaseWork extends Entity
 	 * Return title and subtitle if any
 	 * @param string $format   Output format: %t1 — title, %t2 — subtitle
 	 */
-	public function getTitles($format = '%t1 — %t2')
-	{
+	public function getTitles($format = '%t1 — %t2') {
 		if ( ($subtitle = $this->getSubtitle()) ) {
 			return strtr($format, array(
 				'%t1' => $this->getTitle(),
@@ -67,8 +63,7 @@ abstract class BaseWork extends Entity
 
 	private $authorIds;
 
-	public function getAuthorIds()
-	{
+	public function getAuthorIds() {
 		if ( ! isset($this->authorIds)) {
 			$this->authorIds = array();
 			foreach ($this->getAuthors() as $author) {
@@ -80,34 +75,30 @@ abstract class BaseWork extends Entity
 		return $this->authorIds;
 	}
 
-	public function getLang()
-	{
+	public function getLang() {
 		return '';
 	}
 
-	public function getOrigLang()
-	{
+	public function getOrigLang() {
 		return '';
 	}
 
-	public function getCover($width = null)
-	{
+	public function getCover($width = null) {
 		return null;
 	}
 
-	public function getBackCover($width = null)
-	{
+	public function getBackCover($width = null) {
 		return null;
 	}
 
-	public function isTranslation()
-	{
+	public function isTranslation() {
 		return $this->getLang() != $this->getOrigLang();
 	}
 
-
-	public function normalizeFileName($filename)
-	{
+	/**
+	 * @param string $filename
+	 */
+	public function normalizeFileName($filename) {
 		$filename = substr($filename, 0, 200);
 		$filename = File::cleanFileName($filename);
 
@@ -116,16 +107,14 @@ abstract class BaseWork extends Entity
 
 	abstract public function getNameForFile();
 
-	public function getContentAsTxt($withBom = true)
-	{
+	public function getContentAsTxt($withBom = true) {
 		return ($withBom ? self::getBom() : '')
 			. self::clearSfbMarkers( $this->getContentAsSfb() );
 	}
 
 	abstract public function getContentAsFb2();
 
-	static public function clearSfbMarkers($sfbContent)
-	{
+	static public function clearSfbMarkers($sfbContent) {
 		$sfbContent = strtr($sfbContent, array(
 			">\t" => "\t",
 			">>\t" => "\t",
@@ -164,9 +153,7 @@ abstract class BaseWork extends Entity
 		return $sfbContent;
 	}
 
-
-	public function getMaxHeadersDepth()
-	{
+	public function getMaxHeadersDepth() {
 		$depth = 1;
 		foreach ($this->getHeaders() as $header) {
 			if ($depth < $header->getLevel()) {
@@ -177,14 +164,11 @@ abstract class BaseWork extends Entity
 		return $depth;
 	}
 
-	public function getHeaders()
-	{
+	public function getHeaders() {
 		return array();
 	}
 
-
-	public function getHeadersAsNestedXml($allowEmpty = true)
-	{
+	public function getHeadersAsNestedXml($allowEmpty = true) {
 		$xml = '';
 		$prevlev = 0;
 		$lastpos = -1;
@@ -215,20 +199,17 @@ abstract class BaseWork extends Entity
 		return $xml;
 	}
 
-	static public function loadAnnotation($id)
-	{
+	static public function loadAnnotation($id) {
 		$file = Legacy::getContentFilePath(static::$annotationDir, $id);
 		return file_exists($file) ? file_get_contents($file) : null;
 	}
 
 	private $annotation;
-	public function getAnnotation()
-	{
+	public function getAnnotation() {
 		return isset($this->annotation) ? $this->annotation : $this->annotation = static::loadAnnotation($this->id);
 	}
 
-	public function setAnnotation($annotation)
-	{
+	public function setAnnotation($annotation) {
 		$file = Legacy::getContentFilePath(static::$annotationDir, $this->id);
 		if ($annotation) {
 			file_put_contents($file, String::my_replace($annotation));
@@ -241,8 +222,7 @@ abstract class BaseWork extends Entity
 		return $this;
 	}
 
-	public function getAnnotationAsSfb()
-	{
+	public function getAnnotationAsSfb() {
 		$text = $this->getAnnotation();
 		if ($text) {
 			$text = \Sfblib_SfbConverter::ANNO_S . \Sfblib_SfbConverter::EOL
@@ -254,9 +234,7 @@ abstract class BaseWork extends Entity
 		return $text;
 	}
 
-
-	public function getAnnotationAsXhtml($imgDir = null)
-	{
+	public function getAnnotationAsXhtml($imgDir = null) {
 		$text = $this->getAnnotation();
 		if ($text) {
 			$converter = $this->_getSfbConverter($text, $imgDir);
@@ -288,8 +266,7 @@ abstract class BaseWork extends Entity
 		return $this;
 	}
 
-	public function getExtraInfoAsXhtml($imgDir = null)
-	{
+	public function getExtraInfoAsXhtml($imgDir = null) {
 		$text = $this->getExtraInfo();
 		if ($text) {
 			$converter = $this->_getSfbConverter($text, $imgDir);
@@ -300,17 +277,13 @@ abstract class BaseWork extends Entity
 		return $text;
 	}
 
-
-	public function getHistoryInfo()
-	{
+	public function getHistoryInfo() {
 		return array();
 	}
 
-
 	abstract public function getEpubChunks($imgDir);
 
-	protected function getEpubChunksFrom($input, $imgDir)
-	{
+	protected function getEpubChunksFrom($input, $imgDir) {
 		$chapters = array();
 
 		$headers = $this->getHeaders();
@@ -338,9 +311,7 @@ abstract class BaseWork extends Entity
 		return $chapters;
 	}
 
-
-	protected function _getSfbConverter($file, $imgDir)
-	{
+	protected function _getSfbConverter($file, $imgDir) {
 		$conv = new SfbToHtmlConverter($file, $imgDir);
 		if ($this->isGamebook()) {
 			// recognize section links
@@ -350,15 +321,11 @@ abstract class BaseWork extends Entity
 		return $conv;
 	}
 
-
-	public function hasTitleNote()
-	{
+	public function hasTitleNote() {
 		return false;
 	}
 
-
-	static public function getBom($withEncoding = true)
-	{
+	static public function getBom($withEncoding = true) {
 		$bom = "\xEF\xBB\xBF"; // Byte order mark for some windows software
 
 		if ($withEncoding) {

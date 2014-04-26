@@ -1,8 +1,6 @@
-<?php
-namespace App\Util;
+<?php namespace App\Util;
 
-class Language
-{
+class Language {
 	static private $langs = array(
 		'' => '(Неизвестен)',
 		'sq' => 'Албански',
@@ -48,14 +46,12 @@ class Language
 		'mul' => '(Многоезично)',
 	);
 
-	static public function getLangs()
-	{
+	static public function getLangs() {
 		return self::$langs;
 	}
 
 	/** TODO remove */
-	static public function langName($code, $asUpper = true)
-	{
+	static public function langName($code, $asUpper = true) {
 		if ( !array_key_exists($code, self::$langs) ) return '';
 		$name = self::$langs[$code];
 		return $asUpper ? $name : Char::mystrtolower($name);

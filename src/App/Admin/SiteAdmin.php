@@ -1,19 +1,16 @@
-<?php
-namespace App\Admin;
+<?php namespace App\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class SiteAdmin extends Admin
-{
+class SiteAdmin extends Admin {
 	protected $baseRoutePattern = 'site';
 	protected $baseRouteName = 'admin_site';
 	protected $translationDomain = 'admin';
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
+	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper
 			->add('name')
 			->add('url')
@@ -21,8 +18,7 @@ class SiteAdmin extends Admin
 		;
 	}
 
-	protected function configureListFields(ListMapper $listMapper)
-	{
+	protected function configureListFields(ListMapper $listMapper) {
 		$listMapper
 			->addIdentifier('name')
 			->add('url')
@@ -36,8 +32,7 @@ class SiteAdmin extends Admin
 		;
 	}
 
-	protected function configureFormFields(FormMapper $formMapper)
-	{
+	protected function configureFormFields(FormMapper $formMapper) {
 		$formMapper
 			->with('General attributes')
 				->add('name')
@@ -48,8 +43,7 @@ class SiteAdmin extends Admin
 
 	}
 
-	protected function configureDatagridFilters(DatagridMapper $datagrid)
-	{
+	protected function configureDatagridFilters(DatagridMapper $datagrid) {
 		$datagrid
 			->add('name')
 			->add('url')

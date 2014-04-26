@@ -64,7 +64,6 @@ class CacheManager {
 		return file_exists($file) ? unlink($file) : true;
 	}
 
-
 	/**
 	 * @param string $id
 	 * @param string $ext

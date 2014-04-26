@@ -45,7 +45,6 @@ EOT
 		$output->writeln('/*Done.*/');
 	}
 
-
 	private function defineVars() {
 		Setup::doSetup($this->getContainer());
 		$this->db = Setup::db();
@@ -189,7 +188,6 @@ EOT
 
 		return $queries;
 	}
-
 
 	/**
 	 * The big, messy processing unit. Has side effects.

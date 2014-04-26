@@ -1,27 +1,23 @@
-<?php
-namespace App\Admin;
+<?php namespace App\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class QuestionAdmin extends Admin
-{
+class QuestionAdmin extends Admin {
 	protected $baseRoutePattern = 'question';
 	protected $baseRouteName = 'admin_question';
 	protected $translationDomain = 'admin';
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
+	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper
 			->add('question')
 			->add('answers')
 		;
 	}
 
-	protected function configureListFields(ListMapper $listMapper)
-	{
+	protected function configureListFields(ListMapper $listMapper) {
 		$listMapper
 			->addIdentifier('question')
 			->add('answers')
@@ -35,8 +31,7 @@ class QuestionAdmin extends Admin
 		;
 	}
 
-	protected function configureFormFields(FormMapper $formMapper)
-	{
+	protected function configureFormFields(FormMapper $formMapper) {
 		$formMapper
 			->with('General attributes')
 				->add('question')
@@ -49,8 +44,7 @@ class QuestionAdmin extends Admin
 
 	}
 
-	protected function configureDatagridFilters(DatagridMapper $datagrid)
-	{
+	protected function configureDatagridFilters(DatagridMapper $datagrid) {
 		$datagrid
 			->add('question')
 			->add('answers')

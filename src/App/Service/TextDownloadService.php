@@ -1,5 +1,4 @@
-<?php
-namespace App\Service;
+<?php namespace App\Service;
 
 use App\Legacy\CacheManager;
 use App\Legacy\DownloadFile;
@@ -83,7 +82,6 @@ class TextDownloadService {
 		return true;
 	}
 
-
 	/** Fb2 */
 	private function createFb2DlFile() {
 		return $this->createDlFile($this->textIds, 'fb2');
@@ -106,7 +104,6 @@ class TextDownloadService {
 		return true;
 	}
 
-
 	/** Txt */
 	private function createTxtDlFile() {
 		return $this->createDlFile($this->textIds, 'txt');
@@ -128,7 +125,6 @@ class TextDownloadService {
 		$this->addMiscFileEntry($work->getContentAsTxt(), $textId, '.txt');
 		return true;
 	}
-
 
 	/** Common */
 	private function createDlFile($textIds, $format, $dlkey = null) {
@@ -223,7 +219,6 @@ class TextDownloadService {
 		}
 	}
 
-
 	private function getContentData($textId) {
 		$fname = Legacy::getContentFilePath('text', $textId);
 		if ( file_exists($fname) ) {
@@ -231,7 +226,6 @@ class TextDownloadService {
 		}
 		return '';
 	}
-
 
 	private function getMainFileData($textId) {
 		$work = $this->textRepo->find($textId);

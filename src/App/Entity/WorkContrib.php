@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,8 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="user_idx", columns={"user_id"})}
 * )
 */
-class WorkContrib extends Entity
-{
+class WorkContrib extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -75,14 +72,13 @@ class WorkContrib extends Entity
 	 */
 	private $deleted_at;
 
-
 	public function getId() { return $this->id; }
 
 	public function setEntry($entry) { $this->entry = $entry; }
 	public function getEntry() { return $this->entry; }
 
 	public function setUser($user) { $this->user = $user; }
-	/** @return User */
+	/** @return integer */
 	public function getUser() { return $this->user; }
 
 	public function setComment($comment) { $this->comment = $comment; }
@@ -103,15 +99,16 @@ class WorkContrib extends Entity
 	public function setFilesize($filesize) { $this->filesize = $filesize; }
 	public function getFilesize() { return $this->filesize; }
 
-	public function isFinished()
-	{
+	public function isFinished() {
 		return $this->getProgress() == 100;
 	}
 
+	/**
+	 * @param \DateTime $deleted_at
+	 */
 	public function setDeletedAt($deleted_at) { $this->deleted_at = $deleted_at; }
 	public function isDeleted() { return $this->deleted_at !== null; }
-	public function delete()
-	{
+	public function delete() {
 		$this->setDeletedAt(new \DateTime);
 	}
 }

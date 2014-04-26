@@ -1,13 +1,9 @@
-<?php
-
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
 
-class SandboxController extends Controller
-{
-	public function indexAction()
-	{
+class SandboxController extends Controller {
+	public function indexAction() {
 		$request = $this->get('request')->request;
 		$image_dir = $request->get('image_dir');
 		$content = $request->get('content');

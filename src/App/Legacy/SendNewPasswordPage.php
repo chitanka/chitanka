@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Entity\User;
 
@@ -8,13 +7,11 @@ class SendNewPasswordPage extends MailPage {
 	protected
 		$action = 'sendNewPassword';
 
-
 	public function __construct($fields) {
 		parent::__construct($fields);
 		$this->title = 'Изпращане на нова парола';
 		$this->username = $this->request->value('username');
 	}
-
 
 	protected function processSubmission() {
 		$key = array('username' => $this->username);
@@ -70,7 +67,6 @@ class SendNewPasswordPage extends MailPage {
 </form>
 EOS;
 	}
-
 
 	protected function makeMailMessage() {
 		return <<<EOS

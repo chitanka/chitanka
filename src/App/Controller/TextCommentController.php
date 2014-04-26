@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Controller;
+<?php namespace App\Controller;
 
 class TextCommentController extends Controller {
 
@@ -39,12 +37,10 @@ class TextCommentController extends Controller {
 // 			'form' => $form,
 		);
 
-
 // RSS
 // 	$_REQUEST['obj'] = 'comment';
 // 	$_REQUEST['limit'] = 10;
 // 	$_REQUEST[self::FF_TEXT_ID] = $this->textId;
-
 
 		return $this->legacyPage('Comment', 'TextComment:text_comments');
 

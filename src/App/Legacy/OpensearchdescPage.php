@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 class OpensearchdescPage extends Page {
 
@@ -14,7 +13,6 @@ class OpensearchdescPage extends Page {
 		$this->searchKeyTitle = $this->searchOptions[$this->searchKey];
 		$this->title = 'Описание за OpenSearch — ' . $this->searchKeyTitle;
 	}
-
 
 	protected function buildContent() {
 		$pi = '<?xml version="1.0"?>';

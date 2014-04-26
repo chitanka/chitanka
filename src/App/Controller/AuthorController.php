@@ -1,13 +1,10 @@
-<?php
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use App\Pagination\Pager;
 use App\Entity\Person;
 
-class AuthorController extends PersonController
-{
-	public function listByCountryIndexAction($by, $_format)
-	{
+class AuthorController extends PersonController {
+	public function listByCountryIndexAction($by, $_format) {
 		$this->view = array(
 			'by' => $by,
 			'countries' => $this->getPersonRepository()->getCountryList()
@@ -16,8 +13,7 @@ class AuthorController extends PersonController
 		return $this->display("list_by_country_index.$_format");
 	}
 
-	public function listByCountryAction($country, $by, $page, $_format)
-	{
+	public function listByCountryAction($country, $by, $page, $_format) {
 		$limit = 100;
 
 		$repo = $this->getPersonRepository();
@@ -41,8 +37,7 @@ class AuthorController extends PersonController
 		return $this->display("list_by_country.$_format");
 	}
 
-	public function showBooksAction($slug, $_format)
-	{
+	public function showBooksAction($slug, $_format) {
 		$person = $this->tryToFindPerson($slug);
 		if ( ! $person instanceof Person) {
 			return $person;
@@ -56,8 +51,7 @@ class AuthorController extends PersonController
 		return $this->display("show_books.$_format");
 	}
 
-	public function showTextsAction($slug, $_format)
-	{
+	public function showTextsAction($slug, $_format) {
 		$person = $this->tryToFindPerson($slug);
 		if ( ! $person instanceof Person) {
 			return $person;
@@ -72,13 +66,11 @@ class AuthorController extends PersonController
 		return $this->display("show_texts.$_format");
 	}
 
-	protected function prepareViewForShow(Person $person, $format)
-	{
+	protected function prepareViewForShow(Person $person, $format) {
 		$this->prepareViewForShowAuthor($person, $format);
 	}
 
-	protected function getPersonRepository()
-	{
+	protected function getPersonRepository() {
 		return parent::getPersonRepository()->asAuthor();
 	}
 }

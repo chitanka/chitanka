@@ -1,12 +1,9 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 use App\Util\Char;
 use App\Util\File;
 use App\Util\Language;
@@ -32,8 +29,7 @@ use Sfblib_SfbToFb2Converter as SfbToFb2Converter;
 *		@ORM\Index(name="orig_lang_idx", columns={"orig_lang"})}
 * )
 */
-class Text extends BaseWork
-{
+class Text extends BaseWork {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -246,7 +242,6 @@ class Text extends BaseWork
 	 */
 	private $removed_notice;
 
-
 	/**
 	 * @var ArrayCollection
 	 * @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -343,8 +338,7 @@ class Text extends BaseWork
 	 */
 	private $alikes;
 
-	public function __construct($id = null)
-	{
+	public function __construct($id = null) {
 		$this->id = $id;
 		$this->textAuthors = new ArrayCollection;
 		$this->textTranslators = new ArrayCollection;
@@ -366,8 +360,7 @@ class Text extends BaseWork
 // 		$this->subtitle = strtr($this->subtitle, array('\n' => self::TITLE_NEW_LINE));
 	}
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->getTitle();
 		//return "$this->id";
 	}
@@ -415,16 +408,14 @@ class Text extends BaseWork
 	public function setOrigLicense($origLicense) { $this->orig_license = $origLicense; }
 	public function getOrigLicense() { return $this->orig_license; }
 	public function orig_license() { return $this->orig_license; }
-	public function getOrigLicenseCode()
-	{
+	public function getOrigLicenseCode() {
 		return $this->orig_license ? $this->orig_license->getCode() : null;
 	}
 
 	public function setTransLicense($transLicense) { $this->trans_license = $transLicense; }
 	public function getTransLicense() { return $this->trans_license; }
 	public function trans_license() { return $this->trans_license; }
-	public function getTransLicenseCode()
-	{
+	public function getTransLicenseCode() {
 		return $this->trans_license ? $this->trans_license->getCode() : null;
 	}
 
@@ -439,8 +430,7 @@ class Text extends BaseWork
 
 	public function setSeries($series) { $this->series = $series; }
 	public function getSeries() { return $this->series; }
-	public function getSeriesSlug()
-	{
+	public function getSeriesSlug() {
 		return $this->series ? $this->series->getSlug() : null;
 	}
 
@@ -498,8 +488,7 @@ class Text extends BaseWork
 
 	public function addAuthor(Person $author) { $this->authors[] = $author; }
 
-	public function getAuthors()
-	{
+	public function getAuthors() {
 		if (!isset($this->authors)) {
 			$this->authors = array();
 			foreach ($this->getTextAuthors() as $author) {
@@ -512,8 +501,7 @@ class Text extends BaseWork
 	}
 
 	public function addTranslator(Person $translator) { $this->translators[] = $translator; }
-	public function getTranslators()
-	{
+	public function getTranslators() {
 		if (!isset($this->translators)) {
 			$this->translators = array();
 			foreach ($this->getTextTranslators() as $translator) {
@@ -525,12 +513,10 @@ class Text extends BaseWork
 		return $this->translators;
 	}
 
-	public function addTextAuthor(TextAuthor $textAuthor)
-	{
+	public function addTextAuthor(TextAuthor $textAuthor) {
 		$this->textAuthors[] = $textAuthor;
 	}
-	public function removeTextAuthor(TextAuthor $textAuthor)
-	{
+	public function removeTextAuthor(TextAuthor $textAuthor) {
 		$this->textAuthors->removeElement($textAuthor);
 	}
 	// TODO needed by admin; why?
@@ -539,12 +525,10 @@ class Text extends BaseWork
 	public function setTextAuthors($textAuthors) { $this->textAuthors = $textAuthors; }
 	public function getTextAuthors() { return $this->textAuthors; }
 
-	public function addTextTranslator(TextTranslator $textTranslator)
-	{
+	public function addTextTranslator(TextTranslator $textTranslator) {
 		$this->textTranslators[] = $textTranslator;
 	}
-	public function removeTextTranslator(TextTranslator $textTranslator)
-	{
+	public function removeTextTranslator(TextTranslator $textTranslator) {
 		$this->textTranslators->removeElement($textTranslator);
 	}
 	// TODO needed by admin; why?
@@ -557,24 +541,20 @@ class Text extends BaseWork
 	public function getBooks() { return $this->books; }
 
 	public function getRevisions() { return $this->revisions; }
-	public function addRevision(TextRevision $revision)
-	{
+	public function addRevision(TextRevision $revision) {
 		$this->revisions[] = $revision;
 	}
 
 	public function setLinks($links) { $this->links = $links; }
 	public function getLinks() { return $this->links; }
-	public function addLink(TextLink $link)
-	{
+	public function addLink(TextLink $link) {
 		$this->links[] = $link;
 	}
 	// needed by SonataAdmin
-	public function addLinks(TextLink $link)
-	{
+	public function addLinks(TextLink $link) {
 		$this->addLink($link);
 	}
-	public function removeLink(TextLink $link)
-	{
+	public function removeLink(TextLink $link) {
 		$this->links->removeElement($link);
 	}
 
@@ -584,8 +564,7 @@ class Text extends BaseWork
 	/**
 	 * Return the main book for the text
 	 */
-	public function getBook()
-	{
+	public function getBook() {
 		if ( ! isset($this->_book)) {
 			$this->_book = false;
 			foreach ($this->bookTexts as $bookText) {
@@ -605,16 +584,12 @@ class Text extends BaseWork
 	public function addReader(User $reader) { $this->readers[] = $reader; }
 	public function getReaders() { return $this->readers; }
 
-
 	static protected $annotationDir = 'text-anno';
 	static protected $infoDir = 'text-info';
 
-
-	public function getDocId()
-	{
+	public function getDocId() {
 		return 'http://chitanka.info/text/' . $this->id;
 	}
-
 
 	public function getYearHuman() {
 		$year2 = empty($this->year2) ? '' : '–'. abs($this->year2);
@@ -627,9 +602,7 @@ class Text extends BaseWork
 		return $this->trans_year . (empty($this->trans_year2) ? '' : '–'.$this->trans_year2);
 	}
 
-
-	public function getAuthorNameEscaped()
-	{
+	public function getAuthorNameEscaped() {
 		if ( preg_match('/[a-z]/', $this->getAuthorOrigNames()) ) {
 			return Legacy::removeDiacritics( Char::cyr2lat($this->getAuthorOrigNames()) );
 		}
@@ -637,20 +610,15 @@ class Text extends BaseWork
 		return Char::cyr2lat($this->getAuthorNames());
 	}
 
-
-	public function isGamebook()
-	{
+	public function isGamebook() {
 		return $this->type == 'gamebook';
 	}
 
-	public function isTranslation()
-	{
+	public function isTranslation() {
 		return $this->lang != $this->orig_lang;
 	}
 
-
-	public function getAuthorNames()
-	{
+	public function getAuthorNames() {
 		if ( ! isset($this->authorNames)) {
 			$this->authorNames = '';
 			foreach ($this->getAuthors() as $author) {
@@ -661,14 +629,11 @@ class Text extends BaseWork
 
 		return $this->authorNames;
 	}
-	public function getAuthorsPlain()
-	{
+	public function getAuthorsPlain() {
 		return $this->getAuthorNames();
 	}
 
-
-	public function getAuthorOrigNames()
-	{
+	public function getAuthorOrigNames() {
 		if ( ! isset($this->authorOrigNames)) {
 			$this->authorOrigNames = '';
 			foreach ($this->getAuthors() as $author) {
@@ -680,8 +645,7 @@ class Text extends BaseWork
 		return $this->authorOrigNames;
 	}
 
-	public function getAuthorSlugs()
-	{
+	public function getAuthorSlugs() {
 		if ( ! isset($this->authorSlugs)) {
 			$this->authorSlugs = array();
 			foreach ($this->getAuthors() as $author) {
@@ -691,8 +655,7 @@ class Text extends BaseWork
 		return $this->authorSlugs;
 	}
 
-	public function getTranslatorSlugs()
-	{
+	public function getTranslatorSlugs() {
 		if ( ! isset($this->translatorSlugs)) {
 			$this->translatorSlugs = array();
 			foreach ($this->getTranslators() as $translator) {
@@ -716,9 +679,7 @@ class Text extends BaseWork
 		return $title;
 	}
 
-
-	public function getTitleAsHtml($cnt = 0)
-	{
+	public function getTitleAsHtml($cnt = 0) {
 		$title = $this->getTitle();
 
 		if ( $this->hasTitleNote() ) {
@@ -729,16 +690,16 @@ class Text extends BaseWork
 		return "<h1>$title</h1>";
 	}
 
-	public function escapeForSfb($string)
-	{
+	/**
+	 * @param string $string
+	 */
+	public function escapeForSfb($string) {
 		return strtr($string, array(
 			'*' => '\*',
 		));
 	}
 
-
-	public function hasTitleNote()
-	{
+	public function hasTitleNote() {
 		if ( ! is_null( $this->_hasTitleNote ) ) {
 			return $this->_hasTitleNote;
 		}
@@ -746,7 +707,6 @@ class Text extends BaseWork
 		$conv = new SfbToHtmlConverter( Legacy::getInternalContentFilePath( 'text', $this->id ) );
 		return $this->_hasTitleNote = $conv->hasTitleNote();
 	}
-
 
 	public function getOrigTitleAsSfb() {
 		if ( $this->orig_lang == $this->lang ) {
@@ -767,26 +727,23 @@ class Text extends BaseWork
 		return rtrim("\t$authors\n\t$orig_title");
 	}
 
-
 	// TODO remove
-	public function getCover($width = null)
-	{
+	public function getCover($width = null) {
 		return null;
 	}
 
-
-	public function getImages()
-	{
+	public function getImages() {
 		return $this->getImagesFromDir(Legacy::getInternalContentFilePath('img', $this->id));
 	}
 
-	public function getThumbImages()
-	{
+	public function getThumbImages() {
 		return $this->getImagesFromDir(Legacy::getInternalContentFilePath('img', $this->id) . '/thumb');
 	}
 
-	public function getImagesFromDir($dir)
-	{
+	/**
+	 * @param string $dir
+	 */
+	public function getImagesFromDir($dir) {
 		$images = array();
 
 		if (is_dir($dir) && ($dh = opendir($dir)) ) {
@@ -804,30 +761,27 @@ class Text extends BaseWork
 		return $images;
 	}
 
-	public function getFullExtraInfo()
-	{
+	public function getFullExtraInfo() {
 		return $this->getExtraInfo() . $this->getBookExtraInfo();
 	}
 
-	public function getFullExtraInfoForHtml($imgDirPrefix = '')
-	{
+	public function getFullExtraInfoForHtml($imgDirPrefix = '') {
 		return $this->_getContentHtml($this->getFullExtraInfo(), $imgDirPrefix);
 	}
 
-	public function getAnnotationHtml($imgDirPrefix = '')
-	{
+	public function getAnnotationHtml($imgDirPrefix = '') {
 		return $this->_getContentHtml($this->getAnnotation(), $imgDirPrefix);
 	}
 
-
-	protected function _getContentHtml($content, $imgDirPrefix)
-	{
+	/**
+	 * @param string $imgDirPrefix
+	 */
+	protected function _getContentHtml($content, $imgDirPrefix) {
 		$imgDir = $imgDirPrefix . Legacy::getContentFilePath('img', $this->id);
 		$conv = new SfbToHtmlConverter($content, $imgDir);
 
 		return $conv->convert()->getContent();
 	}
-
 
 	public function getBookExtraInfo() {
 		$info = '';
@@ -843,9 +797,7 @@ class Text extends BaseWork
 		return $info;
 	}
 
-
-	public function getPlainTranslationInfo()
-	{
+	public function getPlainTranslationInfo() {
 		if ($this->lang == $this->orig_lang) {
 			return '';
 		}
@@ -860,16 +812,13 @@ class Text extends BaseWork
 		return sprintf('Превод%s: %s, %s', $lang, $translator, $year);
 	}
 
-
-	public function getPlainSeriesInfo()
-	{
+	public function getPlainSeriesInfo() {
 		if (empty($this->series)) {
 			return null;
 		}
 
 		return sprintf('Част %d от „%s“', $this->sernr, $this->series->getName());
 	}
-
 
 	public function getNextFromSeries() {
 		if ( empty($this->series) ) {
@@ -884,7 +833,6 @@ class Text extends BaseWork
 		}
 		return self::newFromDB($dbkey);
 	}
-
 
 	public function getNextFromBooks() {
 		$nextWorks = array();
@@ -905,7 +853,6 @@ class Text extends BaseWork
 		return false;
 	}
 
-
 	public function getPrefaceOfBook($book) {
 		if ( empty($this->books[$book]) || $this->type == 'intro' ) {
 			return false;
@@ -916,12 +863,10 @@ class Text extends BaseWork
 		return self::newFromDB($dbkey);
 	}
 
-
 	/**
 		Return fiction book info for this work
 	 */
-	public function getFbi()
-	{
+	public function getFbi() {
 		return $this->getFbiMain()
 			. "\n" . $this->getFbiOriginal()
 			. "\n" . $this->getFbiDocument()
@@ -929,9 +874,7 @@ class Text extends BaseWork
 			;
 	}
 
-
-	protected function getFbiMain()
-	{
+	protected function getFbiMain() {
 		$authors = '';
 		foreach ($this->getAuthors() as $author) {
 			$authors .= "\n|Автор        = " . $author->getName();
@@ -971,9 +914,7 @@ $anno
 EOS;
 	}
 
-
-	protected function getFbiOriginal()
-	{
+	protected function getFbiOriginal() {
 		if ( $this->lang == $this->orig_lang ) {
 			return '';
 		}
@@ -1006,9 +947,7 @@ EOS;
 EOS;
 	}
 
-
-	protected function getFbiDocument()
-	{
+	protected function getFbiDocument() {
 		$date = date('Y-m-d H:i:s');
 		list($history, $version) = $this->getHistoryAndVersion();
 		$history = "\n\t" . implode("\n\t", $history);
@@ -1030,9 +969,7 @@ EOS;
 EOS;
 	}
 
-
-	public function getHistoryAndVersion()
-	{
+	public function getHistoryAndVersion() {
 		$history = array();
 		$historyRows = $this->getHistoryInfo();
 		$verNo = 1;
@@ -1050,9 +987,7 @@ EOS;
 		return array($history, $ver);
 	}
 
-
-	protected function getFbiEdition()
-	{
+	protected function getFbiEdition() {
 		return <<<EOS
 {Издание:
 |Заглавие     =
@@ -1065,8 +1000,7 @@ EOS;
 EOS;
 	}
 
-	public function getDataAsPlain()
-	{
+	public function getDataAsPlain() {
 		$authors = implode($this->getAuthorSlugs());
 		$translators = implode($this->getTranslatorSlugs());
 		$labels = implode($this->getLabelSlugs());
@@ -1106,8 +1040,7 @@ id            = {$this->getId()}
 EOS;
 	}
 
-	public function getNameForFile()
-	{
+	public function getNameForFile() {
 		$filename = strtr(Setup::setting('download_file'), array(
 			'AUTHOR' => $this->getAuthorNameEscaped(),
 			'SERIES' => empty($this->series) ? '' : Legacy::getAcronym(Char::cyr2lat($this->series->getName())),
@@ -1120,14 +1053,12 @@ EOS;
 		return $filename;
 	}
 
-
 	static public function getMinRating() {
 		if ( is_null( self::$_minRating ) ) {
 			self::$_minRating = min( array_keys( self::$ratings ) );
 		}
 		return self::$_minRating;
 	}
-
 
 	static public function getMaxRating() {
 		if ( is_null( self::$_maxRating ) ) {
@@ -1136,16 +1067,13 @@ EOS;
 		return self::$_maxRating;
 	}
 
-
 	static public function getRatings($id) {
 		return Setup::db()->getFields(DBT_TEXT,
 			array('id' => $id),
 			array('rating', 'votes'));
 	}
 
-
-	public function getHistoryInfo()
-	{
+	public function getHistoryInfo() {
 		$db = Setup::db();
 		$res = $db->select(DBT_EDIT_HISTORY, array('text_id' => $this->id), '*', 'date ASC');
 		$rows = array();
@@ -1170,14 +1098,12 @@ EOS;
 	 * @var UploadedFile
 	 */
 	private $content_file;
-	public function getContentFile()
-	{
+	public function getContentFile() {
 		return $this->content_file;
 	}
 
 	/** @param UploadedFile $file */
-	public function setContentFile(UploadedFile $file = null)
-	{
+	public function setContentFile(UploadedFile $file = null) {
 		$this->content_file = $file;
 		if ($file) {
 			$this->setSize($file->getSize() / 1000);
@@ -1185,13 +1111,11 @@ EOS;
 		}
 	}
 
-	public function isContentFileUpdated()
-	{
+	public function isContentFileUpdated() {
 		return $this->getContentFile() !== null;
 	}
 
-	public function setHeadlevel($headlevel)
-	{
+	public function setHeadlevel($headlevel) {
 		$this->headlevel = $headlevel;
 		if ( !$this->isContentFileUpdated()) {
 			$this->rebuildHeaders();
@@ -1199,13 +1123,18 @@ EOS;
 	}
 	public function getHeadlevel() { return $this->headlevel; }
 
-	public function setSize($size)
-	{
+	/**
+	 * @param integer $size
+	 */
+	public function setSize($size) {
 		$this->size = $size;
 		$this->setZsize($size / 3.5);
 	}
 	public function getSize() { return $this->size; }
 
+	/**
+	 * @param double $zsize
+	 */
 	public function setZsize($zsize) { $this->zsize = $zsize; }
 	public function getZsize() { return $this->zsize; }
 
@@ -1213,8 +1142,7 @@ EOS;
 	 * @ORM\PostPersist()
 	 * @ORM\PostUpdate()
 	 */
-	public function postUpload()
-	{
+	public function postUpload() {
 		$this->moveUploadedContentFile($this->getContentFile());
 	}
 
@@ -1226,18 +1154,15 @@ EOS;
 	}
 
 	private $revisionComment;
-	public function getRevisionComment()
-	{
+	public function getRevisionComment() {
 		return $this->revisionComment;
 	}
 
-	public function setRevisionComment($comment)
-	{
+	public function setRevisionComment($comment) {
 		$this->revisionComment = $comment;
 	}
 
-	public function getContentAsSfb()
-	{
+	public function getContentAsSfb() {
 		$sfb = $this->getFullTitleAsSfb() . "\n\n\n";
 
 		$anno = $this->getAnnotation();
@@ -1252,9 +1177,7 @@ EOS;
 		return $sfb;
 	}
 
-
-	public function getRawContent($asFileName = false)
-	{
+	public function getRawContent($asFileName = false) {
 		if ( ! $this->is_compilation) {
 			if ($asFileName) {
 				return Legacy::getContentFilePath('text', $this->id);
@@ -1275,8 +1198,7 @@ EOS;
 		return $template;
 	}
 
-	public function getFullTitleAsSfb()
-	{
+	public function getFullTitleAsSfb() {
 		$sfb = '';
 		$sfb .= "|\t" . ($this->getAuthorNames() ?: '(неизвестен автор)') . "\n";
 		$sfb .= $this->getTitleAsSfb();
@@ -1284,18 +1206,14 @@ EOS;
 		return $sfb;
 	}
 
-
-	public function getExtraInfoForDownload()
-	{
+	public function getExtraInfoForDownload() {
 		return $this->getOrigTitleAsSfb() . "\n\n"
 			. $this->getFullExtraInfo()      . "\n\n"
 			. "\tСвалено от „Моята библиотека“: ".$this->getDocId()."\n"
 			. "\tПоследна корекция: ".Legacy::humanDate($this->cur_rev->getDate())."\n";
 	}
 
-
-	public function getContentAsFb2()
-	{
+	public function getContentAsFb2() {
 		$conv = new SfbToFb2Converter($this->getContentAsSfb(), Legacy::getInternalContentFilePath('img', $this->id));
 
 		$conv->setObjectCount(1);
@@ -1445,8 +1363,7 @@ EOS;
 //		'type poetry+Детска литература' => 'child_verse',
 //		'type tale+Детска литература' => 'child_tale',
 	);
-	public function getGenresForFb2()
-	{
+	public function getGenresForFb2() {
 		$genres = array();
 		$labels = $this->getLabelsNames();
 		foreach ($labels as $label) {
@@ -1464,13 +1381,11 @@ EOS;
 		return $genres;
 	}
 
-	private function getKeywordsForFb2()
-	{
+	private function getKeywordsForFb2() {
 		return implode(', ', $this->getLabelsNames());
 	}
 
-	public function getLabelsNames()
-	{
+	public function getLabelsNames() {
 		$names = array();
 		foreach ($this->getLabels() as $label) {
 			$names[] = $label->getName();
@@ -1478,8 +1393,7 @@ EOS;
 		return $names;
 	}
 
-	public function getLabelSlugs()
-	{
+	public function getLabelSlugs() {
 		$slugs = array();
 		foreach ($this->getLabels() as $label) {
 			$slugs[] = $label->getSlug();
@@ -1487,6 +1401,9 @@ EOS;
 		return $slugs;
 	}
 
+	/**
+	 * @param string $id
+	 */
 	static public function newFromId($id, $reader = 0) {
 		return self::newFromDB( array('t.id' => $id), $reader );
 	}
@@ -1494,7 +1411,6 @@ EOS;
 	static public function newFromTitle($title, $reader = 0) {
 		return self::newFromDB( array('t.title' => $title), $reader );
 	}
-
 
 	static public function incReadCounter($id) {
 		return; // disable
@@ -1580,26 +1496,24 @@ EOS;
 		return $text;
 	}
 
-	public function getHeaders()
-	{
+	public function getHeaders() {
 		return $this->headers;
 	}
-	public function setHeaders(ArrayCollection $headers)
-	{
+	public function setHeaders(ArrayCollection $headers) {
 		$this->headers = $headers;
 	}
-	public function addHeader(TextHeader $header)
-	{
+	public function addHeader(TextHeader $header) {
 		$this->headers[] = $header;
 	}
 
-	public function clearHeaders()
-	{
+	public function clearHeaders() {
 		$this->clearCollection($this->getHeaders());
 	}
 
-	public function rebuildHeaders($file = null)
-	{
+	/**
+	 * @param string $file
+	 */
+	public function rebuildHeaders($file = null) {
 		if ($file === null) $file = Legacy::getContentFilePath('text', $this->id);
 		$headlevel = $this->getHeadlevel();
 
@@ -1619,14 +1533,11 @@ EOS;
 		}
 	}
 
-	public function getEpubChunks($imgDir)
-	{
+	public function getEpubChunks($imgDir) {
 		return $this->getEpubChunksFrom($this->getRawContent(true), $imgDir);
 	}
 
-
-	public function getContentHtml($imgDirPrefix = '', $part = 1, $objCount = 0)
-	{
+	public function getContentHtml($imgDirPrefix = '', $part = 1, $objCount = 0) {
 		$imgDir = $imgDirPrefix . Legacy::getContentFilePath('img', $this->id);
 		$conv = new SfbToHtmlConverter($this->getRawContent(true), $imgDir);
 
@@ -1652,9 +1563,10 @@ EOS;
 		return $conv->convert()->getContent();
 	}
 
-
-	public function getHeaderByNr($nr)
-	{
+	/**
+	 * @param integer $nr
+	 */
+	public function getHeaderByNr($nr) {
 		foreach ($this->getHeaders() as $header) {
 			if ($header->getNr() == $nr) {
 				return $header;
@@ -1664,8 +1576,7 @@ EOS;
 		return null;
 	}
 
-	public function getNextHeaderByNr($nr)
-	{
+	public function getNextHeaderByNr($nr) {
 		if ($nr > 0) {
 			foreach ($this->getHeaders() as $header) {
 				if ($header->getNr() == $nr + 1) {
@@ -1677,9 +1588,7 @@ EOS;
 		return null;
 	}
 
-
-	public function getTotalRating()
-	{
+	public function getTotalRating() {
 		return $this->rating * $this->votes;
 	}
 
@@ -1688,10 +1597,9 @@ EOS;
 	 *
 	 * @param int Newly given rating
 	 * @param int (optional) An old rating which should be overwritten by the new one
-	 * @return this
+	 * @return Text
 	 */
-	public function updateAvgRating($newRating, $oldRating = null)
-	{
+	public function updateAvgRating($newRating, $oldRating = null) {
 		if ( is_null($oldRating) ) {
 			$this->rating = ($this->getTotalRating() + $newRating) / ($this->votes + 1);
 			$this->votes += 1;
@@ -1702,8 +1610,7 @@ EOS;
 		return $this;
 	}
 
-	public function getMainContentFile()
-	{
+	public function getMainContentFile() {
 		return Legacy::getContentFilePath('text', $this->id);
 	}
 

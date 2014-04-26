@@ -1,31 +1,25 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 class CacheHolder {
 
 	private
 		$_bin = array();
 
-
-	public function exists($key)
-	{
+	public function exists($key) {
 		return array_key_exists($key, $this->_bin);
 	}
 
-	public function get($key)
-	{
+	public function get($key) {
 		return array_key_exists($key, $this->_bin)
 			? $this->_bin[$key]
 			: false;
 	}
 
-	public function set($key, $value)
-	{
+	public function set($key, $value) {
 		return $this->_bin[$key] = $value;
 	}
 
-	public function clear()
-	{
+	public function clear() {
 		$this->_bin = array();
 	}
 }

@@ -1,13 +1,11 @@
-<?php
-namespace App\Tests\Entity\Content;
+<?php namespace App\Tests\Entity\Content;
 
 use App\Tests\TestCase;
 use App\Entity\Content\BookTemplate;
 
 class BookTemplateTest extends TestCase {
 
-	public function testExtractTextIds()
-	{
+	public function testExtractTextIds() {
 		$template = <<<TPL
 >	{text:123}
 

@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,8 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 *	uniqueConstraints={@ORM\UniqueConstraint(name="person_series_uniq", columns={"person_id", "series_id"})}
 * )
 */
-class SeriesAuthor extends Entity
-{
+class SeriesAuthor extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id

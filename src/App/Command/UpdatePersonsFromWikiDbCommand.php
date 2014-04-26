@@ -1,16 +1,12 @@
-<?php
-
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity\Person;
 
-class UpdatePersonsFromWikiDbCommand extends CommonDbCommand
-{
+class UpdatePersonsFromWikiDbCommand extends CommonDbCommand {
 
-	protected function configure()
-	{
+	protected function configure() {
 		parent::configure();
 
 		$this
@@ -32,8 +28,7 @@ EOT
 	 *
 	 * @throws \LogicException When this abstract class is not implemented
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->output = $output;
 		$this->errors = array();
@@ -44,8 +39,7 @@ EOT
 	/**
 	 * @param string $pageName
 	 */
-	protected function processWikiPage($pageName)
-	{
+	protected function processWikiPage($pageName) {
 		$this->output->writeln('Fetching and processing wiki content...');
 		$wikiPage = $this->_wikiBot()->fetch_page($pageName);
 		if (preg_match('/== Готови автори ==(.+)== За попълване ==/ms', $wikiPage->text, $m)) {
@@ -61,8 +55,7 @@ EOT
 	/**
 	 * @param string $wikiContent
 	 */
-	protected function updatePersons($wikiContent)
-	{
+	protected function updatePersons($wikiContent) {
 		$persons = $this->_getPersonsDataFromWikiContent($wikiContent);
 		$this->output->writeln('Updating persons...');
 		foreach ($persons as $personData) {
@@ -83,8 +76,7 @@ EOT
 		return count($persons);
 	}
 
-	protected function createPerson($data)
-	{
+	protected function createPerson($data) {
 		if ($data['slug']) {
 			$person = $this->em->getRepository('App:Person')->getBySlug($data['slug']);
 			if ( ! $person) {
@@ -104,14 +96,12 @@ EOT
 		return $person;
 	}
 
-	protected function isNewPersonWithTakenSlug($person)
-	{
+	protected function isNewPersonWithTakenSlug($person) {
 		return !$person->getId() && $this->em->getRepository('App:Person')->getBySlug($person->getSlug());
 	}
 
 	private $_wikiBot;
-	private function _wikiBot()
-	{
+	private function _wikiBot() {
 		if ($this->_wikiBot == null) {
 			error_reporting(E_WARNING);
 			require_once $this->getContainer()->getParameter('kernel.root_dir') . '/../vendor/apibot/apibot.php';
@@ -120,8 +110,7 @@ EOT
 		return $this->_wikiBot;
 	}
 
-	private function _getPersonsDataFromWikiContent($wikiContent)
-	{
+	private function _getPersonsDataFromWikiContent($wikiContent) {
 		$templates = $this->_getPersonTemplatesFromWikiContent($wikiContent);
 		$persons = array();
 		foreach ($templates as $template) {
@@ -130,8 +119,7 @@ EOT
 		return $persons;
 	}
 
-	private function _getPersonDataFromWikiContent($template)
-	{
+	private function _getPersonDataFromWikiContent($template) {
 		$wikiVars = $this->_getPersonVarsFromWikiContent($template);
 		return array(
 			'slug'       => @$wikiVars['идентификатор'],
@@ -144,8 +132,7 @@ EOT
 		);
 	}
 
-	private function _getPersonVarsFromWikiContent($template)
-	{
+	private function _getPersonVarsFromWikiContent($template) {
 		$wikiVars = array();
 		foreach (explode("\n", trim($template)) as $row) {
 			list($wikiVar, $value) = explode('=', ltrim($row, '| '));
@@ -154,8 +141,7 @@ EOT
 		return $wikiVars;
 	}
 
-	private function _getPersonTemplatesFromWikiContent($wikiContent)
-	{
+	private function _getPersonTemplatesFromWikiContent($wikiContent) {
 		if (preg_match_all('|\{\{Нов автор(.+)\}\}|Ums', $wikiContent, $matches)) {
 			return $matches[1];
 		}

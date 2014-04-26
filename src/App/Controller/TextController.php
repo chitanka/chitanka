@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +14,6 @@ use App\Service\TextBookmarkService;
 use App\Service\TextDownloadService;
 use App\Service\TextLabelService;
 use App\Util\String;
-
 
 class TextController extends Controller {
 
@@ -67,7 +64,6 @@ class TextController extends Controller {
 		return $this->display("list_by_type.$_format");
 	}
 
-
 	public function listByLabelAction($slug, $page, $_format) {
 		$textRepo = $this->getTextRepository();
 		$limit = 30;
@@ -93,7 +89,6 @@ class TextController extends Controller {
 		));
 	}
 
-
 	public function listByAlphaAction($letter, $page, $_format) {
 		$textRepo = $this->getTextRepository();
 		$limit = 30;
@@ -110,7 +105,6 @@ class TextController extends Controller {
 			'route_params' => array('letter' => $letter),
 		));
 	}
-
 
 	public function showAction(Request $request, $id, $_format) {
 		list($id) = explode('-', $id); // remove optional slug
@@ -179,7 +173,6 @@ class TextController extends Controller {
 		return $this->display('show');
 	}
 
-
 	public function showMultiAction(Request $request, $id, $_format) {
 		$mirror = $this->tryMirrorRedirect(explode(',', $id), $_format);
 		$requestedFilename = $request->get('filename');
@@ -210,7 +203,6 @@ class TextController extends Controller {
 
 		return $this->urlRedirect($this->generateUrl('text_show', array('id' => $id)));
 	}
-
 
 	public function similarAction($id) {
 		$text = $this->findText($id);
@@ -340,7 +332,6 @@ class TextController extends Controller {
 		return $this->legacyPage('Textrating');
 	}
 
-
 	public function markReadFormAction($id) {
 		$this->disableCache();
 
@@ -372,7 +363,6 @@ class TextController extends Controller {
 		return $this->redirectToText($text);
 	}
 
-
 	public function addBookmarkAction(Request $request, $id) {
 		$this->disableCache();
 
@@ -393,17 +383,12 @@ class TextController extends Controller {
 		return $this->redirectToText($text);
 	}
 
-
-
 	public function suggestAction($id, $object) {
 		$_REQUEST['id'] = $id;
 		$_REQUEST['object'] = $object;
 
 		return $this->legacyPage('SuggestData');
 	}
-
-
-
 
 	protected function redirectToText($text) {
 		$id = $text instanceof Text ? $text->getId() : $text;

@@ -1,19 +1,16 @@
-<?php
-namespace App\Admin;
+<?php namespace App\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class ForeignBookAdmin extends Admin
-{
+class ForeignBookAdmin extends Admin {
 	protected $baseRoutePattern = 'foreign-book';
 	protected $baseRouteName = 'admin_foreign_book';
 	protected $translationDomain = 'admin';
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
+	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper
 			->add('title')
 			->add('author')
@@ -24,8 +21,7 @@ class ForeignBookAdmin extends Admin
 		;
 	}
 
-	protected function configureListFields(ListMapper $listMapper)
-	{
+	protected function configureListFields(ListMapper $listMapper) {
 		$listMapper
 			->add('cover', 'string', array('template' => 'App:FeaturedBookAdmin:list_cover.html.twig'))
 			->addIdentifier('title')
@@ -42,8 +38,7 @@ class ForeignBookAdmin extends Admin
 		;
 	}
 
-	protected function configureFormFields(FormMapper $formMapper)
-	{
+	protected function configureFormFields(FormMapper $formMapper) {
 		$formMapper
 			->with('General attributes')
 				->add('title')
@@ -57,8 +52,7 @@ class ForeignBookAdmin extends Admin
 
 	}
 
-	protected function configureDatagridFilters(DatagridMapper $datagrid)
-	{
+	protected function configureDatagridFilters(DatagridMapper $datagrid) {
 		$datagrid
 			->add('title')
 			->add('author')

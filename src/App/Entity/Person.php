@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -21,8 +19,7 @@ use App\Util\String;
  * )
  * @UniqueEntity(fields="slug", message="This slug is already in use.")
  */
-class Person extends Entity
-{
+class Person extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -118,14 +115,12 @@ class Person extends Entity
 	 */
 	private $series;
 
-
 	public function getId() { return $this->id; }
 
 	public function setSlug($slug) { $this->slug = String::slugify($slug); }
 	public function getSlug() { return $this->slug; }
 
-	public function setName($name)
-	{
+	public function setName($name) {
 		$this->name = $name;
 		$this->last_name = self::getLastNameFromName($name);
 		if (empty($this->slug)) {
@@ -134,14 +129,12 @@ class Person extends Entity
 	}
 	public function getName() { return $this->name; }
 
-	public function getLastNameFromName($name)
-	{
+	public function getLastNameFromName($name) {
 		preg_match('/([^,]+) ([^,]+)(, .+)?/', $name, $m);
 		return isset($m[2]) ? $m[2] : $name;
 	}
 
-	public function setOrigName($origName)
-	{
+	public function setOrigName($origName) {
 		$this->orig_name = $origName;
 		if (empty($this->slug) && preg_match('/[a-z]/', $origName)) {
 			$this->setSlug($origName);
@@ -168,24 +161,21 @@ class Person extends Entity
 	public function setIsAuthor($isAuthor) { $this->is_author = $isAuthor; }
 	public function setIsTranslator($isTranslator) { $this->is_translator = $isTranslator; }
 
-	public function isAuthor($isAuthor = null)
-	{
+	public function isAuthor($isAuthor = null) {
 		if ($isAuthor !== null) {
 			$this->is_author = $isAuthor;
 		}
 		return $this->is_author;
 	}
 
-	public function isTranslator($isTranslator = null)
-	{
+	public function isTranslator($isTranslator = null) {
 		if ($isTranslator !== null) {
 			$this->is_translator = $isTranslator;
 		}
 		return $this->is_translator;
 	}
 
-	public function getRole()
-	{
+	public function getRole() {
 		$roles = array();
 		if ($this->is_author) $roles[] = 'author';
 		if ($this->is_translator) $roles[] = 'translator';
@@ -205,8 +195,7 @@ class Person extends Entity
 	public function getBooks() { return $this->books; }
 	public function getSeries() { return $this->series; }
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->name;
 	}
 }

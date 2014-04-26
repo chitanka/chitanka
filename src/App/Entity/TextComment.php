@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,8 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="time_idx", columns={"time"})}
 * )
 */
-class TextComment extends Entity
-{
+class TextComment extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -89,12 +86,21 @@ class TextComment extends Entity
 	public function setUser($user) { $this->user = $user; }
 	public function getUser() { return $this->user; }
 
+	/**
+	 * @param string $content
+	 */
 	public function setContent($content) { $this->content = $content; }
 	public function getContent() { return $this->content; }
 
+	/**
+	 * @param string $contenthash
+	 */
 	public function setContenthash($contenthash) { $this->contenthash = $contenthash; }
 	public function getContenthash() { return $this->contenthash; }
 
+	/**
+	 * @param \DateTime $time
+	 */
 	public function setTime($time) { $this->time = $time; }
 	public function getTime() { return $this->time; }
 
@@ -104,6 +110,9 @@ class TextComment extends Entity
 	public function setReplyto($replyto) { $this->replyto = $replyto; }
 	public function getReplyto() { return $this->replyto; }
 
+	/**
+	 * @param integer $isShown
+	 */
 	public function setIsShown($isShown) { $this->is_shown = $isShown; }
 	public function getIsShown() { return $this->is_shown; }
 

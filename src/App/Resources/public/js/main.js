@@ -442,13 +442,11 @@ var makePreview = (function() {
 
 
 var user = {
-	isAuthenticated: function()
-	{
+	isAuthenticated: function() {
 		return $(".user-profile").length > 0;
 	},
 
-	canTakeAction: function(handle)
-	{
+	canTakeAction: function(handle) {
 		var credentials = $(handle).data("credentials");
 		if ( ! credentials) {
 			return this.isAuthenticated();

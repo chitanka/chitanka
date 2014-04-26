@@ -1,5 +1,4 @@
-<?php
-namespace App\Tests\Controller;
+<?php namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseTestCase;
 use Symfony\Component\DomCrawler\Crawler;
@@ -11,45 +10,38 @@ abstract class WebTestCase extends BaseTestCase
 	 * @param string $route
 	 * @return Crawler
 	 */
-	public function request($route, $parameters = array())
-	{
+	public function request($route, $parameters = array()) {
 		$client = static::createClient();
 
 		return $client->request('GET', "/$route", $parameters);
 	}
 
-	public function requestJson($route, $parameters = array())
-	{
+	public function requestJson($route, $parameters = array()) {
 		$client = static::createClient();
 		$page = $client->request('GET', "/$route", $parameters);
 
 		return json_decode($client->getResponse()->getContent());
 	}
 
-	public function assertHtmlPageIs(Crawler $page, $route)
-	{
+	public function assertHtmlPageIs(Crawler $page, $route) {
 		$class = "page-$route";
 		$this->assertCount(1, $page->filter("body.$class"), "HTML page body should have the class '$class'.");
 	}
 
-	public function assertOpdsPageIs(Crawler $page, $route)
-	{
+	public function assertOpdsPageIs(Crawler $page, $route) {
 		$this->assertContains("/$route", $page->filter("feed > id")->text(), "Opds page body should have an id containing '/$route'.");
 		$this->assertCount(1, $page->filter('feed'));
 	}
 
-	public function	assertXmlSearchPageIsFor(Crawler $page, $query)
-	{
+	public function	assertXmlSearchPageIsFor(Crawler $page, $query) {
 		$this->assertEquals($query, $page->filter('results')->attr('query'));
 	}
 
-	public function assertOsdSearchPage(Crawler $page)
-	{
+	public function assertOsdSearchPage(Crawler $page) {
 		$this->assertCount(1, $page->filter('OpenSearchDescription'));
 	}
 
-	public function assertSuggestSearchPageIsFor($page, $query)
-	{
+	public function assertSuggestSearchPageIsFor($page, $query) {
 		$this->assertEquals(4, count($page));
 		$this->assertEquals($query, $page[0]);
 		$this->assertTrue(count($page[1]) == count($page[2]));
@@ -57,8 +49,7 @@ abstract class WebTestCase extends BaseTestCase
 		$this->assertTrue(count($page[1]) > 0);
 	}
 
-	public function assertCountGe($lowerLimit, Crawler $elements)
-	{
+	public function assertCountGe($lowerLimit, Crawler $elements) {
 		$this->assertTrue($elements->count() >= $lowerLimit);
 	}
 

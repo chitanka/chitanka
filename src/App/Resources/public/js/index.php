@@ -26,7 +26,6 @@ header('Last-Modified: Sun, 01 Jan 2001 00:00:01 GMT');
 
 readfile($combiFile);
 
-
 function createCombiFile($query, $combiName)
 {
 	$fileExt = '.js';

@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Entity\User;
 
@@ -11,14 +10,12 @@ class LoginPage extends RegisterPage {
 	protected
 		$action = 'login';
 
-
 	public function __construct($fields) {
 		parent::__construct($fields);
 		$this->title = "Вход в $this->sitename";
 		$this->remember = (int) $this->request->checkbox('remember');
 		$this->message = '';
 	}
-
 
 	protected function processSubmission() {
 		$err = $this->validateInput();
@@ -69,7 +66,6 @@ class LoginPage extends RegisterPage {
 		return "Влязохте в <em>$this->sitename</em> като $this->username.";
 	}
 
-
 	protected function validateInput() {
 		if ( empty($this->username) ) {
 			return 'Не сте въвели потребителско име.';
@@ -80,11 +76,9 @@ class LoginPage extends RegisterPage {
 		return '';
 	}
 
-
 	protected function buildContent() {
 		return $this->makeLoginForm();
 	}
-
 
 	protected function makeLoginForm() {
 		$loginlink = $this->controller->generateUrl('login');

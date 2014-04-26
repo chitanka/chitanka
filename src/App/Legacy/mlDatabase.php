@@ -153,7 +153,6 @@ class mlDatabase {
 		return "INSERT$signore INTO $table". $this->makeSetClause($data);
 	}
 
-
 	public function multiinsertQ($table, $data, $fields, $ignore = false) {
 		if ( empty($data) || empty($fields) ) {
 			return '';

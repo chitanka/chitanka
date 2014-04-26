@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,11 +7,9 @@ use Symfony\Component\Finder\Finder;
 use App\Legacy\Legacy;
 use App\Util\String;
 
-class MigrateDbCommand extends CommonDbCommand
-{
+class MigrateDbCommand extends CommonDbCommand {
 
-	protected function configure()
-	{
+	protected function configure() {
 		parent::configure();
 
 		$this
@@ -36,8 +32,7 @@ EOT
 	 *
 	 * @throws \LogicException When this abstract class is not implemented
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$options = $input->getOptions();
 
 		$em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
@@ -45,9 +40,7 @@ EOT
 		$output->writeln('Done.');
 	}
 
-
-	protected function migrateDb(OutputInterface $output, $em, $olddb)
-	{
+	protected function migrateDb(OutputInterface $output, $em, $olddb) {
 		$this->prepareOldDatabase($output, $em, $olddb);
 		$this->copyTables($output, $em, $olddb);
 		$this->convertBooleanColumns($output, $em);
@@ -63,12 +56,10 @@ EOT
 		$this->fillUserTextContribDates($output, $em);
 	}
 
-
 	/**
 	* @RawSql
 	*/
-	protected function copyTables(OutputInterface $output, $em, $olddb)
-	{
+	protected function copyTables(OutputInterface $output, $em, $olddb) {
 		$output->writeln('Copying database tables');
 		$conn = $em->getConnection();
 		foreach ($this->getRawCopyQueries() as $query) {
@@ -78,12 +69,10 @@ EOT
 		}
 	}
 
-
 	/**
 	* @RawSql
 	*/
-	protected function convertBooleanColumns(OutputInterface $output, $em)
-	{
+	protected function convertBooleanColumns(OutputInterface $output, $em) {
 		$output->writeln('Converting boolean columns');
 
 		$data = array(
@@ -105,12 +94,10 @@ EOT
 		}
 	}
 
-
 	/**
 	* @RawSql
 	*/
-	protected function convertTextSize(OutputInterface $output, $em)
-	{
+	protected function convertTextSize(OutputInterface $output, $em) {
 		$output->writeln('Converting text size to kibibytes');
 
 		$queries = array();
@@ -126,12 +113,10 @@ EOT
 		$this->executeUpdates($queries, $conn);
 	}
 
-
 	/**
 	* @RawSql
 	*/
-	protected function fillSlugFields(OutputInterface $output, $em)
-	{
+	protected function fillSlugFields(OutputInterface $output, $em) {
 		$output->writeln('Filling slug fields');
 
 		$queries = array();
@@ -168,12 +153,10 @@ EOT
 		$this->executeUpdates($queries, $conn);
 	}
 
-
 	/**
 	* @RawSql
 	*/
-	protected function fillHasCoverByBooks(OutputInterface $output, $em)
-	{
+	protected function fillHasCoverByBooks(OutputInterface $output, $em) {
 		$output->writeln('Setting the "has_cover" field by books');
 
 		$coverDir = $this->getContainer()->getParameter('kernel.root_dir').'/../web/content/book-cover';
@@ -190,12 +173,10 @@ EOT
 		$em->getConnection()->executeUpdate($query);
 	}
 
-
 	/**
 	* @RawSql
 	*/
-	protected function insertBookPersonRelations(OutputInterface $output, $em)
-	{
+	protected function insertBookPersonRelations(OutputInterface $output, $em) {
 		$output->writeln('Initializing missing book-author relations');
 
 		$queries = array();
@@ -212,23 +193,19 @@ EOT
 		$this->executeUpdates($queries, $conn);
 	}
 
-
 	/**
 	* @RawSql
 	*/
-	protected function convertPersonInfoField(OutputInterface $output, $em)
-	{
+	protected function convertPersonInfoField(OutputInterface $output, $em) {
 		$output->writeln('Converting info field by persons');
 		$query = 'UPDATE person SET info = CONCAT(info, ":", name) WHERE info <> ""';
 		$em->getConnection()->executeUpdate($query);
 	}
 
-
 	/**
 	* @RawSql
 	*/
-	protected function convertUserOptions(OutputInterface $output, $em, $olddb)
-	{
+	protected function convertUserOptions(OutputInterface $output, $em, $olddb) {
 		$output->writeln('Converting user options');
 
 		$queries = array();
@@ -257,12 +234,10 @@ EOT
 		$this->executeUpdates($queries, $conn);
 	}
 
-
 	/**
 	* @RawSql
 	*/
-	protected function fillUserTextContribDates(OutputInterface $output, $em)
-	{
+	protected function fillUserTextContribDates(OutputInterface $output, $em) {
 		$output->writeln('Filling dates by user_text_contrib');
 
 		$queries = array();
@@ -275,20 +250,15 @@ EOT
 		$this->executeUpdates($queries, $conn);
 	}
 
-
-	protected function prepareOldDatabase(OutputInterface $output, $em, $olddb)
-	{
+	protected function prepareOldDatabase(OutputInterface $output, $em, $olddb) {
 		$output->writeln('Preparing old database');
 		$this->nullifyColumnsIfNeeded($output, $em, $olddb);
 	}
 
-
-
 	/**
 	* @RawSql
 	*/
-	protected function nullifyColumnsIfNeeded(OutputInterface $output, $em, $olddb)
-	{
+	protected function nullifyColumnsIfNeeded(OutputInterface $output, $em, $olddb) {
 		$queries = array(
 			'ALTER TABLE `%olddb%`.`text`
 				CHANGE `series` `series` SMALLINT(5) UNSIGNED NULL DEFAULT NULL,
@@ -323,8 +293,7 @@ EOT
 	/**
 	* @RawSql
 	*/
-	protected function getRawCopyQueries()
-	{
+	protected function getRawCopyQueries() {
 		return array(
 			'INSERT INTO `user` (id, username, realname, password, newpassword, email, allowemail, groups, news, opts, login_tries, registration, touched) SELECT id, username, realname, password, newpassword, email, allowemail, `group`, news, opts, login_tries, registration, touched FROM `%olddb%`.`user`',
 			'INSERT INTO `category` (`id`, `slug`, `name`) VALUES

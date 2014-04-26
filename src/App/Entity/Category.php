@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,8 +11,7 @@ use App\Util\String;
  * @UniqueEntity(fields="slug", message="This slug is already in use.")
  * @UniqueEntity(fields="name")
  */
-class Category extends Entity
-{
+class Category extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -65,7 +62,6 @@ class Category extends Entity
 	 */
 	private $nr_of_books = 0;
 
-
 	public function getId() { return $this->id; }
 
 	public function setSlug($slug) { $this->slug = String::slugify($slug); }
@@ -85,13 +81,11 @@ class Category extends Entity
 
 	public function setNrOfBooks($nr_of_books) { $this->nr_of_books = $nr_of_books; }
 	public function getNrOfBooks() { return $this->nr_of_books; }
-	public function incNrOfBooks($value = 1)
-	{
+	public function incNrOfBooks($value = 1) {
 		$this->nr_of_books += $value;
 	}
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->name;
 	}
 
@@ -100,8 +94,7 @@ class Category extends Entity
 	 *
 	 * @return array
 	 */
-	public function getAncestors()
-	{
+	public function getAncestors() {
 		$ancestors = array();
 		$category = $this;
 		while (null !== ($parent = $category->getParent())) {
@@ -112,8 +105,7 @@ class Category extends Entity
 		return $ancestors;
 	}
 
-	public function getDescendantIdsAndSelf()
-	{
+	public function getDescendantIdsAndSelf() {
 		return array_merge(array($this->getId()), $this->getDescendantIds());
 	}
 
@@ -122,8 +114,7 @@ class Category extends Entity
 	 *
 	 * @return array
 	 */
-	public function getDescendantIds()
-	{
+	public function getDescendantIds() {
 		$ids = array();
 		foreach ($this->getChildren() as $category) {
 			$ids[] = $category->getId();

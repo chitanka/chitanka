@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -11,8 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(fields="code")
  * @UniqueEntity(fields="name")
  */
-class WikiSite extends Entity
-{
+class WikiSite extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -54,8 +51,7 @@ class WikiSite extends Entity
 	public function getName() { return $this->name; }
 
 	public function setUrl($url) { $this->url = $url; }
-	public function getUrl($page = null)
-	{
+	public function getUrl($page = null) {
 		if (is_null($page)) {
 			return $this->url;
 		}
@@ -66,8 +62,7 @@ class WikiSite extends Entity
 	public function setIntro($intro) { $this->intro = $intro; }
 	public function getIntro() { return $this->intro; }
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->name;
 	}
 }

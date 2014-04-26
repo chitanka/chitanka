@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -15,8 +13,7 @@ use App\Util\String;
  * )
  * @UniqueEntity(fields="slug", message="This slug is already in use.")
  */
-class Series extends Entity
-{
+class Series extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -84,8 +81,7 @@ class Series extends Entity
 
 	public function getTexts() { return $this->texts; }
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->name;
 	}
 }

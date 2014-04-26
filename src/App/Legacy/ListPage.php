@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 class ListPage extends Page {
 
@@ -21,17 +20,13 @@ class ListPage extends Page {
 		$_objRawSep = '.'
 	;
 
-
-	public function __construct()
-	{
+	public function __construct() {
 		parent::__construct();
 		$this->title = 'Опростени списъци';
 		$this->objectRaw = $this->request->value(self::PARAM_OBJ, '', 1);
 	}
 
-
-	protected function buildContent()
-	{
+	protected function buildContent() {
 		if ( empty( $this->objectRaw ) ) {
 			return $this->getObjectsList();
 		}
@@ -42,18 +37,14 @@ class ListPage extends Page {
 		return $this->$format( $lister->getList() );
 	}
 
-
-	protected function _initObjectVars($raw)
-	{
+	protected function _initObjectVars($raw) {
 		$parts = explode($this->_objRawSep, $raw);
 		$this->object = Legacy::normVal(@$parts[0], array_keys($this->objects));
 		$this->outFormat = Legacy::normVal(@$parts[1], $this->outFormats);
 		$this->title = $this->objects[ $this->object ];
 	}
 
-
-	public function getObjectsList()
-	{
+	public function getObjectsList() {
 		$items = array();
 		foreach ( $this->objects as $object => $title ) {
 			$links = array();
@@ -69,9 +60,7 @@ class ListPage extends Page {
 		return $this->out->ulist($items);
 	}
 
-
-	protected function formatHtml($data)
-	{
+	protected function formatHtml($data) {
 		foreach ( $data[0] as $k => $v ) {
 			$data[0][$k] = array(
 				array('type' => 'header'),
@@ -82,18 +71,14 @@ class ListPage extends Page {
 		return $this->out->simpleTable($this->title, $data);
 	}
 
-
-	protected function formatCsv($data)
-	{
+	protected function formatCsv($data) {
 		$this->contentType = 'text/csv';
 		$this->fullContent = $this->getAsCsv($data);
 		return '';
 	}
 
-
 	/** Format an array as CSV */
-	public function getAsCsv($data, $valSep = ',', $valDelim = '"')
-	{
+	public function getAsCsv($data, $valSep = ',', $valDelim = '"') {
 		$o = '';
 		foreach ($data as $row) {
 			$o .= $valDelim
@@ -104,8 +89,6 @@ class ListPage extends Page {
 	}
 
 }
-
-
 
 abstract class ObjectList {
 
@@ -120,26 +103,21 @@ abstract class ObjectList {
 		$data = array()
 	;
 
-	public function __construct($db, $page)
-	{
+	public function __construct($db, $page) {
 		$this->_db = $db;
 		$this->_page = $page;
 		$this->_init();
 	}
 
-
-	public function getList()
-	{
+	public function getList() {
 		$this->data[] = array_values( $this->cols );
 		$this->_populateList();
 		return $this->data;
 	}
 
-
 	protected function _init() {}
 
-	protected function _getSqlQuery()
-	{
+	protected function _getSqlQuery() {
 		$sel = '';
 		foreach ( $this->cols as $col => $_ ) {
 			$sel .= ',' . (isset($this->dbcols[$col]) ? $this->dbcols[$col] : $col);
@@ -148,33 +126,24 @@ abstract class ObjectList {
 		return $this->_db->extselectQ( $this->_sqlQuery );
 	}
 
-
-	protected function _populateList()
-	{
+	protected function _populateList() {
 		$this->_initTranslateList();
 		$this->_db->iterateOverResult($this->_getSqlQuery(), 'getListItem', $this);
 	}
 
-
-
-	public function getListItem($dbrow)
-	{
+	public function getListItem($dbrow) {
 		$this->data[] = $this->_translateDbRow($dbrow);
 		return '';
 	}
 
-
-	protected function _translateDbRow($dbrow)
-	{
+	protected function _translateDbRow($dbrow) {
 		foreach ( $this->_translate as $key => $tmethod ) {
 			$dbrow[$key] = $this->$tmethod($dbrow[$key], $dbrow);
 		}
 		return $dbrow;
 	}
 
-
-	protected function _initTranslateList()
-	{
+	protected function _initTranslateList() {
 		if ( ! empty( $this->_translate ) ) {
 			return;
 		}
@@ -187,8 +156,6 @@ abstract class ObjectList {
 	}
 
 }
-
-
 
 class TitleList extends ObjectList {
 
@@ -224,9 +191,7 @@ class TitleList extends ObjectList {
 		)
 		;
 
-
-	protected function _init()
-	{
+	protected function _init() {
 		$this->_sqlQuery = array(
 			'FROM' => DBT_TEXT . ' t',
 			'LEFT JOIN' => array(
@@ -244,24 +209,19 @@ class TitleList extends ObjectList {
 		);
 	}
 
-	public function type($dbval, $dbrow)
-	{
+	public function type($dbval, $dbrow) {
 		return work_type($dbval);
 	}
 
-	public function year($dbval, $dbrow)
-	{
+	public function year($dbval, $dbrow) {
 		return $this->_page->makeYearView($dbval);
 	}
 
-	public function trans_year($dbval, $dbrow)
-	{
+	public function trans_year($dbval, $dbrow) {
 		return $this->_page->makeYearView($dbval);
 	}
 
 }
-
-
 
 abstract class PersonList extends ObjectList {
 
@@ -282,9 +242,7 @@ abstract class PersonList extends ObjectList {
 		$_dbRoleBit = 0
 	;
 
-
-	protected function _init()
-	{
+	protected function _init() {
 		$this->_sqlQuery = array(
 			'FROM' => DBT_PERSON . ' p',
 			'WHERE' => array("role & $this->_dbRoleBit"),
@@ -296,18 +254,15 @@ abstract class PersonList extends ObjectList {
 		);
 	}
 
-	public function country($dbval, $dbrow)
-	{
+	public function country($dbval, $dbrow) {
 		return country_name($dbval);
 	}
 
 }
 
-
 class AuthorList extends PersonList {
 	protected $_dbRoleBit = 1;
 }
-
 
 class TranslatorList extends PersonList {
 	protected $_dbRoleBit = 2;

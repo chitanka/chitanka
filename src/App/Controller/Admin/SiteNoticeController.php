@@ -1,5 +1,4 @@
-<?php
-namespace App\Controller\Admin;
+<?php namespace App\Controller\Admin;
 
 class SiteNoticeController extends CRUDController {
 

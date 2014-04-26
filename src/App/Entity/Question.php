@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,8 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity
 * @ORM\Table(name="question")
 */
-class Question extends Entity
-{
+class Question extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -35,8 +32,7 @@ class Question extends Entity
 	 *
 	 * @return integer $id
 	 */
-	public function getId()
-	{
+	public function getId() {
 		return $this->id;
 	}
 
@@ -45,8 +41,7 @@ class Question extends Entity
 	 *
 	 * @param string $question
 	 */
-	public function setQuestion($question)
-	{
+	public function setQuestion($question) {
 		$this->question = $question;
 	}
 
@@ -55,8 +50,7 @@ class Question extends Entity
 	 *
 	 * @return string $question
 	 */
-	public function getQuestion()
-	{
+	public function getQuestion() {
 		return $this->question;
 	}
 
@@ -65,8 +59,7 @@ class Question extends Entity
 	 *
 	 * @param string $answers
 	 */
-	public function setAnswers($answers)
-	{
+	public function setAnswers($answers) {
 		$this->answers = $answers;
 	}
 
@@ -75,13 +68,11 @@ class Question extends Entity
 	 *
 	 * @return string $answers
 	 */
-	public function getAnswers()
-	{
+	public function getAnswers() {
 		return $this->answers;
 	}
 
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->question;
 	}
 }

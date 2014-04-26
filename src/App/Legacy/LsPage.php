@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 class LsPage extends Page {
 
@@ -25,7 +24,6 @@ class LsPage extends Page {
 		)
 	;
 
-
 	public function __construct() {
 		parent::__construct();
 		$this->title = 'Преглед на файлове';
@@ -36,7 +34,6 @@ class LsPage extends Page {
 			set_time_limit(600); // 10 минути за копиране на файлове
 		}
 	}
-
 
 	protected function buildContent() {
 		global $contentDirs;
@@ -63,7 +60,6 @@ class LsPage extends Page {
 		}
 		return $this->makeForm() . '<pre>'. $o .'</pre>';
 	}
-
 
 	protected function processDir($dir, $last_dir_level = 1, $level = 1) {
 		$dir = rtrim($dir, '/');
@@ -111,7 +107,6 @@ class LsPage extends Page {
 			file_put_contents($destfile.'.'.$i, $cont);
 		}
 	}
-
 
 	protected function makeForm() {
 		return <<<EOS

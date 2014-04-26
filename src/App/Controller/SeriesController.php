@@ -1,21 +1,17 @@
-<?php
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Pagination\Pager;
 use App\Util\String;
 
-class SeriesController extends Controller
-{
+class SeriesController extends Controller {
 	protected $responseAge = 86400; // 24 hours
 
-	public function indexAction($_format)
-	{
+	public function indexAction($_format) {
 		return $this->display("index.$_format");
 	}
 
-	public function listByAlphaAction($letter, $page, $_format)
-	{
+	public function listByAlphaAction($letter, $page, $_format) {
 		$repo = $this->getSeriesRepository();
 		$limit = 50;
 
@@ -34,9 +30,7 @@ class SeriesController extends Controller
 		return $this->display("list_by_alpha.$_format");
 	}
 
-
-	public function showAction($slug, $_format)
-	{
+	public function showAction($slug, $_format) {
 		$slug = String::slugify($slug);
 		$series = $this->getSeriesRepository()->findBySlug($slug);
 		if ($series === null) {

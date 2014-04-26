@@ -1,22 +1,17 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use App\Util\Datetime;
 
 /**
  *
  */
-class RevisionRepository extends EntityRepository
-{
+class RevisionRepository extends EntityRepository {
 
-	public function getLatest($limit = null, $page = 1, $groupByDate = true)
-	{
+	public function getLatest($limit = null, $page = 1, $groupByDate = true) {
 		return $this->getByDate(null, $page, $limit, $groupByDate);
 	}
 
-	public function getByMonth($month, $page = 1, $limit = null)
-	{
+	public function getByMonth($month, $page = 1, $limit = null) {
 		if (strpos($month, '-') === false) {
 			$yearMonth = date('Y') . '-' . $month;
 		} else {
@@ -27,9 +22,7 @@ class RevisionRepository extends EntityRepository
 		return $this->getByDate($dates, $page, $limit, false);
 	}
 
-
-	public function getByDate($date, $page = 1, $limit = null, $groupByDate = true)
-	{
+	public function getByDate($date, $page = 1, $limit = null, $groupByDate = true) {
 		$ids = $this->getIdsByDate($date, $page, $limit);
 
 		if (empty($ids)) {
@@ -41,8 +34,7 @@ class RevisionRepository extends EntityRepository
 		return $groupByDate ? $this->groupRevisionsByDay($revs) : $revs;
 	}
 
-	public function countByDate($date = null)
-	{
+	public function countByDate($date = null) {
 		$where = '';
 		if (is_array($date)) {
 			$where = "WHERE r.date BETWEEN '$date[0]' AND '$date[1]'";
@@ -53,8 +45,7 @@ class RevisionRepository extends EntityRepository
 		return $query->getSingleScalarResult();
 	}
 
-	public function getIdsByDate($date = null, $page = 1, $limit = null)
-	{
+	public function getIdsByDate($date = null, $page = 1, $limit = null) {
 		$where = '';
 		if (is_array($date)) {
 			$where = "WHERE r.date BETWEEN '$date[0]' AND '$date[1]'";
@@ -65,9 +56,10 @@ class RevisionRepository extends EntityRepository
 		return $query->getResult('id');
 	}
 
-
-	public function getByIds($ids, $orderBy = null)
-	{
+	/**
+	 * @param string $orderBy
+	 */
+	public function getByIds($ids, $orderBy = null) {
 		$texts = $this->getQueryBuilder($orderBy)
 			->andWhere(sprintf('r.id IN (%s)', implode(',', $ids)))
 			->getQuery()->getArrayResult();
@@ -75,13 +67,11 @@ class RevisionRepository extends EntityRepository
 		return WorkSteward::joinPersonKeysForWorks($texts);
 	}
 
-
 	/**
 	 * Uses raw SQL and DATE_FORMAT, a MySQL specific function
 	 * RAW_SQL
 	 */
-	public function getMonths()
-	{
+	public function getMonths() {
 		$sql = sprintf('SELECT
 				DISTINCT DATE_FORMAT(r.date, "%%Y-%%m") AS month,
 				COUNT(*) AS count
@@ -92,19 +82,16 @@ class RevisionRepository extends EntityRepository
 		return $this->_em->getConnection()->fetchAll($sql);
 	}
 
-
 	/**
 	 * RAW_SQL
 	 */
-	public function getMaxDate()
-	{
+	public function getMaxDate() {
 		$sql = sprintf('SELECT MAX(r.date) FROM %s r', $this->getClassMetadata()->getTableName());
 
 		return $this->_em->getConnection()->fetchColumn($sql);
 	}
 
-	public function getQueryBuilder($orderBys = null)
-	{
+	public function getQueryBuilder($orderBys = null) {
 		$qb = $this->_em->createQueryBuilder();
 
 		if ($orderBys) {
@@ -119,9 +106,7 @@ class RevisionRepository extends EntityRepository
 		return $qb;
 	}
 
-
-	public function groupRevisionsByDay($revisions)
-	{
+	public function groupRevisionsByDay($revisions) {
 		$grouped = array();
 		foreach ($revisions as $revision) {
 			$month = $revision['date']->format('Y-m-d');

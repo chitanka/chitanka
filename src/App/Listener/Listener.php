@@ -1,12 +1,9 @@
-<?php
-namespace App\Listener;
+<?php namespace App\Listener;
 
 //use Symfony\Bundle\FrameworkBundle\Debug\EventDispatcher;
 
-class Listener
-{
+class Listener {
 
-	public function run()
-	{
+	public function run() {
 	}
 }

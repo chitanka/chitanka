@@ -1,11 +1,8 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 /**
  *
  */
-class TextHeaderRepository extends EntityRepository
-{
+class TextHeaderRepository extends EntityRepository {
 
 }

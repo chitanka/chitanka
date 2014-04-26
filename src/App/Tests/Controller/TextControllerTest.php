@@ -1,13 +1,10 @@
-<?php
-namespace App\Tests\Controller;
+<?php namespace App\Tests\Controller;
 
-class TextControllerTest extends WebTestCase
-{
+class TextControllerTest extends WebTestCase {
 	/**
 	 * @group html
 	 */
-	public function testIndex()
-	{
+	public function testIndex() {
 		$page = $this->request('texts');
 
 		$this->assertHtmlPageIs($page, 'texts');
@@ -17,8 +14,7 @@ class TextControllerTest extends WebTestCase
 	/**
 	 * @group html
 	 */
-	public function testShow()
-	{
+	public function testShow() {
 		$client = static::createClient();
 
 		$page = $client->request('GET', "/text/1");
@@ -31,8 +27,7 @@ class TextControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testIndexOpds()
-	{
+	public function testIndexOpds() {
 		$route = "texts.opds";
 		$page = $this->request($route);
 
@@ -43,8 +38,7 @@ class TextControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testIndexByAlphaOpds()
-	{
+	public function testIndexByAlphaOpds() {
 		$route = "texts/alpha.opds";
 		$page = $this->request($route);
 
@@ -55,8 +49,7 @@ class TextControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testIndexByLabelOpds()
-	{
+	public function testIndexByLabelOpds() {
 		$route = "texts/label.opds";
 		$page = $this->request($route);
 
@@ -67,8 +60,7 @@ class TextControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testIndexByTypeOpds()
-	{
+	public function testIndexByTypeOpds() {
 		$route = "texts/type.opds";
 		$page = $this->request($route);
 
@@ -79,8 +71,7 @@ class TextControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testListByAlphaByLetterAOpds()
-	{
+	public function testListByAlphaByLetterAOpds() {
 		$route = "texts/alpha/".urlencode('А').".opds";
 		$page = $this->request($route);
 
@@ -91,8 +82,7 @@ class TextControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testListByLabelByAuthorOpds()
-	{
+	public function testListByLabelByAuthorOpds() {
 		$route = "texts/label/by-author.opds";
 		$page = $this->request($route);
 
@@ -103,8 +93,7 @@ class TextControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testListByTypeByNovelOpds()
-	{
+	public function testListByTypeByNovelOpds() {
 		$route = "texts/type/novel.opds";
 		$page = $this->request($route);
 

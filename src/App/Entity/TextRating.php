@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,8 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="date_idx", columns={"date"})}
 * )
 */
-class TextRating extends Entity
-{
+class TextRating extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -48,9 +45,7 @@ class TextRating extends Entity
 	 */
 	private $date;
 
-
-	public function __construct($text, $user)
-	{
+	public function __construct($text, $user) {
 		$this->setText($text);
 		$this->setUser($user);
 	}
@@ -66,16 +61,17 @@ class TextRating extends Entity
 	public function setRating($rating) { $this->rating = $rating; }
 	public function getRating() { return $this->rating; }
 
+	/**
+	 * @param \DateTime $date
+	 */
 	public function setDate($date) { $this->date = $date; }
 	public function getDate() { return $this->date; }
-	public function setCurrentDate()
-	{
+	public function setCurrentDate() {
 		$this->setDate(new \DateTime);
 	}
 
 	/** @ORM\PreUpdate */
-	public function preUpdate()
-	{
+	public function preUpdate() {
 		$this->setDate(new \DateTime);
 	}
 

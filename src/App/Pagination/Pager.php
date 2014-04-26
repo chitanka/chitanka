@@ -1,16 +1,12 @@
-<?php
+<?php namespace App\Pagination;
 
-namespace App\Pagination;
-
-class Pager
-{
+class Pager {
 	private $page = 1;
 	private $limit = 30;
 	private $total = 0;
 	private $count = 0;
 
-	public function __construct($options)
-	{
+	public function __construct($options) {
 		$fields = array('page', 'limit', 'total');
 		foreach ($fields as $field) {
 			if (isset($options[$field])) {
@@ -24,49 +20,39 @@ class Pager
 		}
 	}
 
-	public function page()
-	{
+	public function page() {
 		return $this->page;
 	}
 
-	public function count()
-	{
+	public function count() {
 		return $this->count;
 	}
 
-	public function total()
-	{
+	public function total() {
 		return $this->total;
 	}
 
-	public function show()
-	{
+	public function show() {
 		return $this->count > 1;
 	}
 
-	public function has_prev()
-	{
+	public function has_prev() {
 		return $this->page > 1;
 	}
 
-	public function prev()
-	{
+	public function prev() {
 		return max($this->page - 1, 1);
 	}
 
-	public function next()
-	{
+	public function next() {
 		return min($this->page + 1, $this->count);
 	}
 
-	public function has_next()
-	{
+	public function has_next() {
 		return $this->page < $this->count;
 	}
 
-
-	public function pages()
-	{
+	public function pages() {
 		$pages = array();
 		$first = 1;
 		$selected = max($this->page, $first);

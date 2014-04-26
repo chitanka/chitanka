@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Util\String;
 
@@ -8,13 +7,11 @@ class EditUserPagePage extends UserPage {
 	protected
 		$action = 'editUserPage';
 
-
 	public function __construct($fields) {
 		parent::__construct($fields);
 		$this->save = $this->request->value('save');
 		$this->preview = $this->request->value('preview');
 	}
-
 
 	protected function processSubmission() {
 		if ( ! $this->userExists() ) {
@@ -37,7 +34,6 @@ class EditUserPagePage extends UserPage {
 		return $this->makeEditOwnPageLink() . $this->makeHTML();
 	}
 
-
 	protected function buildContent() {
 		if ( ! $this->userExists() ) {
 			return;
@@ -47,7 +43,6 @@ class EditUserPagePage extends UserPage {
 
 		return $this->makeEditForm();
 	}
-
 
 	protected function makeEditForm() {
 		$this->title .= ' — Редактиране';

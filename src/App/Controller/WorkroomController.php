@@ -1,48 +1,39 @@
-<?php
-
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class WorkroomController extends Controller
-{
+class WorkroomController extends Controller {
 	protected $repository = 'WorkEntry';
 	protected $responseAge = 0;
 
-	public function indexAction($status, $page)
-	{
+	public function indexAction($status, $page) {
 		$_REQUEST['status'] = $status;
 		$_REQUEST['page'] = $page;
 
 		return $this->legacyPage('Work');
 	}
 
-	public function listAction($_format)
-	{
+	public function listAction($_format) {
 		$_REQUEST['vl'] = 'listonly';
 		$this->responseFormat = $_format;
 
 		return $this->legacyPage('Work');
 	}
 
-	public function listContributorsAction()
-	{
+	public function listContributorsAction() {
 		$_REQUEST['vl'] = 'contrib';
 
 		return $this->legacyPage('Work');
 	}
 
-	public function showAction($id)
-	{
+	public function showAction($id) {
 		$_REQUEST['id'] = $id;
 
 		return $this->legacyPage('Work');
 	}
 
-
-	public function newAction()
-	{
+	public function newAction() {
 		if ($this->getUser()->isAnonymous()) {
 			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
 		}
@@ -51,29 +42,23 @@ class WorkroomController extends Controller
 
 		return $this->legacyPage('Work');
 	}
-	public function createAction()
-	{
+	public function createAction() {
 		return $this->legacyPage('Work');
 	}
-	public function editAction($id)
-	{
+	public function editAction($id) {
 		$_REQUEST['id'] = $id;
 		$_REQUEST['status'] = 'edit';
 
 		return $this->legacyPage('Work');
 	}
-	public function updateAction()
-	{
+	public function updateAction() {
 		return $this->legacyPage('Work');
 	}
-	public function deleteAction()
-	{
+	public function deleteAction() {
 		return $this->legacyPage('Work');
 	}
 
-
-	public function deleteContribAction($id)
-	{
+	public function deleteContribAction($id) {
 		$this->responseAge = 0;
 
 		if ( ! $this->getUser()->inGroup('workroom-admin')) {
@@ -97,17 +82,13 @@ class WorkroomController extends Controller
 		return $this->urlRedirect($this->generateUrl('workroom_entry_edit', array('id' => $entry->getId())));
 	}
 
-
-	public function rssAction()
-	{
+	public function rssAction() {
 		$_REQUEST['type'] = 'work';
 
 		return $this->legacyPage('Feed');
 	}
 
-
-	public function latestAction($limit = 10)
-	{
+	public function latestAction($limit = 10) {
 		$this->view = array(
 			'entries' => $this->getWorkEntryRepository()->getLatest($limit),
 		);

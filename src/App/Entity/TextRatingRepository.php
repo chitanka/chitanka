@@ -1,14 +1,11 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\NoResultException;
 
 /**
  *
  */
-class TextRatingRepository extends EntityRepository
-{
+class TextRatingRepository extends EntityRepository {
 	static public $ratings = array(
 		6 => '6 — Шедьовър',
 		5 => '5 — Много добро',
@@ -18,9 +15,7 @@ class TextRatingRepository extends EntityRepository
 		1 => '1 — Отвратително',
 	);
 
-
-	public function getByTextAndUser($text, $user)
-	{
+	public function getByTextAndUser($text, $user) {
 		$dql = sprintf('SELECT r FROM %s r WHERE r.text = %d AND r.user = %d',
 			$this->getEntityName(),
 			(is_object($text) ? $text->getId() : $text),

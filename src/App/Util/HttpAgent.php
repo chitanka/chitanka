@@ -1,10 +1,7 @@
-<?php
-namespace App\Util;
+<?php namespace App\Util;
 
-class HttpAgent
-{
-	public function urlExists($url)
-	{
+class HttpAgent {
+	public function urlExists($url) {
 		$c = curl_init();
 		curl_setopt_array($c, array(
 			CURLOPT_URL             => $url,

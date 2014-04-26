@@ -1,6 +1,4 @@
-<?php
-
-namespace App;
+<?php namespace App;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 // use Symfony\Component\DependencyInjection\ContainerInterface;

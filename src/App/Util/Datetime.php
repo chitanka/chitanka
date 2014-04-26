@@ -1,10 +1,7 @@
-<?php
-namespace App\Util;
+<?php namespace App\Util;
 
-class Datetime
-{
-	static public function endOfMonth($month)
-	{
+class Datetime {
+	static public function endOfMonth($month) {
 		list($y, $m) = explode('-', $month);
 		$lastday = $m == 2
 			? ($y % 4 ? 28 : ($y % 100 ? 29 : ($y % 400 ? 28 : 29)))

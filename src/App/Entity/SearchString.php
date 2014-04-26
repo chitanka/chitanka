@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,8 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 *	indexes={
 *		@ORM\Index(name="date_idx", columns={"date"})})
 */
-class SearchString extends Entity
-{
+class SearchString extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -37,8 +34,7 @@ class SearchString extends Entity
 	 */
 	private $date;
 
-	public function __construct($name)
-	{
+	public function __construct($name) {
 		$this->name = $name;
 		$this->date = new \DateTime;
 	}

@@ -1,15 +1,12 @@
-<?php
-namespace App\Tests\Controller;
+<?php namespace App\Tests\Controller;
 
-class TranslatorControllerTest extends PersonControllerTest
-{
+class TranslatorControllerTest extends PersonControllerTest {
 	protected $routeBase = 'translators';
 
 	/**
 	 * @group html
 	 */
-	public function testShow()
-	{
+	public function testShow() {
 		$page = $this->request("translator/nikolaj-tellalov");
 
 		$this->assertHtmlPageIs($page, 'translator_show');
@@ -18,8 +15,7 @@ class TranslatorControllerTest extends PersonControllerTest
 	/**
 	 * @group opds
 	 */
-	public function testShowOpds()
-	{
+	public function testShowOpds() {
 		$route = "translator/nikolaj-tellalov.opds";
 		$page = $this->request($route);
 

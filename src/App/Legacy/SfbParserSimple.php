@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 function makeDbRows($file, $headlev) {
 	$parser = new SfbParserSimple($file, $headlev);
@@ -21,7 +20,6 @@ class SfbParserSimple {
 	protected $debug = false;
 	protected $titMarks = array(1=>'>', '>>', '>>>', '>>>>', '>>>>>');
 
-
 	public function __construct($file, $reqdepth = 1) {
 		$this->handle = fopen($file, 'r');
 		$this->reqdepth = $reqdepth;
@@ -32,18 +30,15 @@ class SfbParserSimple {
 		$this->curUnknownHead = array(1=>1, 1, 1, 1, 1);
 	}
 
-
 	public function __destruct() {
 		fclose($this->handle);
 	}
-
 
 	public function convert() {
 		while ( $this->nextLine() !== false ) {
 			$this->doText();
 		}
 	}
-
 
 	public function headers() {
 		return $this->makeEndHeaders();
@@ -86,7 +81,6 @@ class SfbParserSimple {
 		return $this->line;
 	}
 
-
 	protected function doText() {
 		#if ($this->debug) echo "in doText: '$this->line'\n";
 		switch ($this->lcmd) {
@@ -97,7 +91,6 @@ class SfbParserSimple {
 		case '>>>>>': $this->doTitle(5); break;
 		}
 	}
-
 
 	/**
 	 * @param integer $level
@@ -127,11 +120,9 @@ class SfbParserSimple {
 		$this->hasNextLine = true;
 	}
 
-
 	protected function titleHasEndingSymbol($title) {
 		return preg_match('/[.,;:?!]_*$/', $title);
 	}
-
 
 	protected function makeEndHeaders() {
 		$len = count($this->headers);

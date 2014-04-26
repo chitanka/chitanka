@@ -1,13 +1,10 @@
-<?php
-namespace App\Tests\Controller;
+<?php namespace App\Tests\Controller;
 
-class SearchControllerTest extends WebTestCase
-{
+class SearchControllerTest extends WebTestCase {
 	/**
 	 * @group html
 	 */
-	public function testIndex()
-	{
+	public function testIndex() {
 		$page = $this->request('search', array('q' => 'test'));
 
 		$this->assertHtmlPageIs($page, 'search');
@@ -17,8 +14,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group html
 	 */
-	public function testNonEmptySearch()
-	{
+	public function testNonEmptySearch() {
 		$page = $this->request('search', array('q' => 'фантастика'));
 
 		$this->assertCount(0, $page->filter('.no-items'), 'There should not be “empty” message');
@@ -27,8 +23,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group html
 	 */
-	public function testEmptySearch()
-	{
+	public function testEmptySearch() {
 		$page = $this->request('search', array('q' => 'testingemptysearch'));
 
 		$this->assertCount(1, $page->filter('.no-items'), 'There should be an “empty” message');
@@ -37,8 +32,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group xml
 	 */
-	public function testIndexInXml()
-	{
+	public function testIndexInXml() {
 		$query = 'Фантастика';
 		$page = $this->request('search.xml', array('q' => $query));
 
@@ -49,8 +43,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group xml
 	 */
-	public function testIndexWithEmptyQueryInXml()
-	{
+	public function testIndexWithEmptyQueryInXml() {
 		$page = $this->request('search.xml');
 
 		$this->assertCount(1, $page->filter('queries'));
@@ -61,8 +54,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group xml
 	 */
-	public function testPersonsByNameInXml()
-	{
+	public function testPersonsByNameInXml() {
 		$query = 'Николай Теллалов';
 		$page = $this->request('persons/search.xml', array('q' => $query));
 
@@ -73,8 +65,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group xml
 	 */
-	public function testTextsByTitleInXml()
-	{
+	public function testTextsByTitleInXml() {
 		$query = 'Да пробудиш драконче…';
 		$page = $this->request('texts/search.xml', array('q' => $query));
 
@@ -85,8 +76,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group xml
 	 */
-	public function testBooksByTitleInXml()
-	{
+	public function testBooksByTitleInXml() {
 		$query = 'Да пробудиш драконче…';
 		$page = $this->request('books/search.xml', array('q' => $query));
 
@@ -97,8 +87,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group xml
 	 */
-	public function testSeriesByNameInXml()
-	{
+	public function testSeriesByNameInXml() {
 		$query = 'Драконче';
 		$page = $this->request('series/search.xml', array('q' => $query));
 
@@ -109,8 +98,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group xml
 	 */
-	public function testSequencesByNameInXml()
-	{
+	public function testSequencesByNameInXml() {
 		$query = 'Хрониките на Амбър';
 		$page = $this->request('sequences/search.xml', array('q' => $query));
 
@@ -121,8 +109,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group osd
 	 */
-	public function testIndexInOsd()
-	{
+	public function testIndexInOsd() {
 		$page = $this->request('search.osd');
 
 		$this->assertOsdSearchPage($page);
@@ -131,8 +118,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group osd
 	 */
-	public function testPersonsInOsd()
-	{
+	public function testPersonsInOsd() {
 		$page = $this->request('persons/search.osd');
 
 		$this->assertOsdSearchPage($page);
@@ -141,8 +127,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group osd
 	 */
-	public function testAuthorsInOsd()
-	{
+	public function testAuthorsInOsd() {
 		$page = $this->request('authors/search.osd');
 
 		$this->assertOsdSearchPage($page);
@@ -151,8 +136,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group osd
 	 */
-	public function testTranslatorsInOsd()
-	{
+	public function testTranslatorsInOsd() {
 		$page = $this->request('translators/search.osd');
 
 		$this->assertOsdSearchPage($page);
@@ -161,8 +145,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group osd
 	 */
-	public function testBooksInOsd()
-	{
+	public function testBooksInOsd() {
 		$page = $this->request('books/search.osd');
 
 		$this->assertOsdSearchPage($page);
@@ -171,8 +154,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group osd
 	 */
-	public function testTextsInOsd()
-	{
+	public function testTextsInOsd() {
 		$page = $this->request('texts/search.osd');
 
 		$this->assertOsdSearchPage($page);
@@ -181,8 +163,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group osd
 	 */
-	public function testSeriesInOsd()
-	{
+	public function testSeriesInOsd() {
 		$page = $this->request('series/search.osd');
 
 		$this->assertOsdSearchPage($page);
@@ -191,8 +172,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group osd
 	 */
-	public function testSequencesInOsd()
-	{
+	public function testSequencesInOsd() {
 		$page = $this->request('sequences/search.osd');
 
 		$this->assertOsdSearchPage($page);
@@ -201,8 +181,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group suggest
 	 */
-	public function testPersonsSuggest()
-	{
+	public function testPersonsSuggest() {
 		$query = 'А';
 		$page = $this->requestJson('persons/search.suggest', array('q' => $query));
 
@@ -212,8 +191,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group suggest
 	 */
-	public function testAuthorsSuggest()
-	{
+	public function testAuthorsSuggest() {
 		$query = 'А';
 		$page = $this->requestJson('authors/search.suggest', array('q' => $query));
 
@@ -223,8 +201,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group suggest
 	 */
-	public function testTranslatorsSuggest()
-	{
+	public function testTranslatorsSuggest() {
 		$query = 'А';
 		$page = $this->requestJson('translators/search.suggest', array('q' => $query));
 
@@ -234,8 +211,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group suggest
 	 */
-	public function testBooksSuggest()
-	{
+	public function testBooksSuggest() {
 		$query = 'А';
 		$page = $this->requestJson('books/search.suggest', array('q' => $query));
 
@@ -245,8 +221,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group suggest
 	 */
-	public function testTextsSuggest()
-	{
+	public function testTextsSuggest() {
 		$query = 'А';
 		$page = $this->requestJson('texts/search.suggest', array('q' => $query));
 
@@ -256,8 +231,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group suggest
 	 */
-	public function testSeriesSuggest()
-	{
+	public function testSeriesSuggest() {
 		$query = 'А';
 		$page = $this->requestJson('series/search.suggest', array('q' => $query));
 
@@ -267,8 +241,7 @@ class SearchControllerTest extends WebTestCase
 	/**
 	 * @group suggest
 	 */
-	public function testSequencesSuggest()
-	{
+	public function testSequencesSuggest() {
 		$query = 'А';
 		$page = $this->requestJson('sequences/search.suggest', array('q' => $query));
 

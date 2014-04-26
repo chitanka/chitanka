@@ -1,5 +1,4 @@
-<?php
-namespace App\Admin;
+<?php namespace App\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -12,8 +11,7 @@ use App\Entity\Book;
 use App\Entity\BookRevision;
 use App\Util\Language;
 
-class BookAdmin extends Admin
-{
+class BookAdmin extends Admin {
 	protected $baseRoutePattern = 'book';
 	protected $baseRouteName = 'admin_book';
 	protected $translationDomain = 'admin';
@@ -22,18 +20,15 @@ class BookAdmin extends Admin
 
 	private $em;
 
-	public function setEntityManager(EntityManager $em)
-	{
+	public function setEntityManager(EntityManager $em) {
 		$this->em = $em;
 	}
 
-	protected function configureRoutes(RouteCollection $collection)
-	{
+	protected function configureRoutes(RouteCollection $collection) {
 		$collection->remove('create');
 	}
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
+	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper
 			->add('slug')
 			->add('title')
@@ -56,8 +51,7 @@ class BookAdmin extends Admin
 		;
 	}
 
-	protected function configureListFields(ListMapper $listMapper)
-	{
+	protected function configureListFields(ListMapper $listMapper) {
 		$listMapper
 			->add('url', 'string', array('template' => 'App:BookAdmin:list_url.html.twig'))
 			->add('slug')
@@ -78,8 +72,7 @@ class BookAdmin extends Admin
 
 	//public $preFormContent = 'App:BookAdmin:form_datafiles.html.twig';
 
-	protected function configureFormFields(FormMapper $formMapper)
-	{
+	protected function configureFormFields(FormMapper $formMapper) {
 		$formMapper
 			//->add('sfbg', 'string', array('template' => 'App:BookAdmin:form_sfbg.html.twig'))
 			//->add('datafiles', 'string', array('template' => 'App:BookAdmin:form_datafiles.html.twig'))
@@ -150,8 +143,7 @@ class BookAdmin extends Admin
 		$formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_BIND, array($this, 'fixNewLines'));
 	}
 
-	protected function configureDatagridFilters(DatagridMapper $datagrid)
-	{
+	protected function configureDatagridFilters(DatagridMapper $datagrid) {
 		$datagrid
 			->add('title')
 			->add('subtitle')
@@ -161,8 +153,7 @@ class BookAdmin extends Admin
 		;
 	}
 
-	public function preUpdate($book)
-	{
+	public function preUpdate($book) {
 		foreach ($book->getLinks() as $link) {
 			$link->setBook($book);
 		}

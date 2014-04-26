@@ -1,5 +1,4 @@
-<?php
-namespace App\Admin;
+<?php namespace App\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -13,8 +12,7 @@ use App\Legacy\Legacy;
 use App\Entity\Text;
 use App\Entity\TextRevision;
 
-class TextAdmin extends Admin
-{
+class TextAdmin extends Admin {
 	protected $baseRoutePattern = 'text';
 	protected $baseRouteName = 'admin_text';
 	protected $translationDomain = 'admin';
@@ -25,8 +23,7 @@ class TextAdmin extends Admin
 		$collection->remove('create');
 	}
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
+	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper
 			->add('slug')
 			->add('title')
@@ -67,8 +64,7 @@ class TextAdmin extends Admin
 		;
 	}
 
-	protected function configureListFields(ListMapper $listMapper)
-	{
+	protected function configureListFields(ListMapper $listMapper) {
 		$listMapper
 			->addIdentifier('title')
 			->add('slug')
@@ -83,8 +79,7 @@ class TextAdmin extends Admin
 		;
 	}
 
-	protected function configureFormFields(FormMapper $formMapper)
-	{
+	protected function configureFormFields(FormMapper $formMapper) {
 		$formMapper
 			->with('General attributes')
 				->add('slug')
@@ -180,8 +175,7 @@ class TextAdmin extends Admin
 		});
 	}
 
-	protected function configureDatagridFilters(DatagridMapper $datagrid)
-	{
+	protected function configureDatagridFilters(DatagridMapper $datagrid) {
 		$datagrid
 			->add('title')
 			->add('subtitle')

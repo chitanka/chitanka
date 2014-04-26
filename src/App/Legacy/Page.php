@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Util\Number;
 use App\Util\String;
@@ -69,9 +68,7 @@ abstract class Page
 		$includeInfoLinkByNone          = true,
 		$sendFiles                      = true;
 
-
-	public function __construct($fields)
-	{
+	public function __construct($fields) {
 		foreach ($fields as $f => $v) {
 			$this->$f = $v;
 		}
@@ -116,7 +113,6 @@ abstract class Page
 		return $this->content;
 	}
 
-
 	public function title() {
 		return $this->title;
 	}
@@ -153,11 +149,9 @@ abstract class Page
 		}
 	}
 
-
 	protected function addJs($js) {
 		$this->inlineJs .= $js . "\n";
 	}
-
 
 	/** TODO replace */
 	public function addRssLink($title = null, $actionOrUrl = null) {
@@ -183,7 +177,6 @@ EOS;
 		$this->addHeadContent($feedlink);
 	}
 
-
 	public function getInlineRssLink($route, $data = array(), $title = null) {
 		Legacy::fillOnEmpty($title, $this->title());
 
@@ -192,10 +185,8 @@ EOS;
 		return $link;
 	}
 
-
 	public function addScript($file, $debug = false) {
 	}
-
 
 	public function allowCaching() {
 		return $this->allowCaching;
@@ -214,7 +205,6 @@ EOS;
 		print $this->fullContent;
 	}
 
-
 	public function isValidEncoding($enc) {
 		return @iconv($this->inencoding, $enc, '') !== false;
 	}
@@ -223,8 +213,7 @@ EOS;
 		Build full page content.
 		@return string
 	*/
-	public function getFullContent()
-	{
+	public function getFullContent() {
 		$this->messages = empty( $this->messages ) ? ''
 			: "<div id='messages'>\n$this->messages\n</div>";
 
@@ -237,14 +226,11 @@ EOS;
 		return $this->fullContent;
 	}
 
-
-	private function getFirstHeading()
-	{
+	private function getFirstHeading() {
 		return empty($this->title) ? $this->sitename : $this->title;
 	}
 
-	public function getOpenSearch()
-	{
+	public function getOpenSearch() {
 		$opensearch = '';
 		if  ( array_key_exists($this->action, $this->searchOptions) ) {
 			$opensearch = "\n\t" . $this->out->xmlElement('link', null, array(
@@ -257,7 +243,6 @@ EOS;
 		}
 		return $opensearch;
 	}
-
 
 	/**
 		Process POST Forms if there are any.
@@ -275,13 +260,11 @@ EOS;
 		return '';
 	}
 
-
 	protected function addTemplates() {
 		Legacy::addTemplate('ROOT', $this->root);
 		Legacy::addTemplate('DOCROOT', $this->rootd.'/');
 		Legacy::addTemplate('SITENAME', $this->sitename);
 	}
-
 
 	protected function makeSimpleTextLink(
 		$title, $textId, $chunkId = 1, $linktext = '',
@@ -304,12 +287,10 @@ EOS;
 		return $this->out->xmlElement('a', $linktext, $attrs);
 	}
 
-
 	protected function makeTextLinkWithAuthor($work) {
 		return '„' . $this->makeSimpleTextLink($work->getTitle(), $work->getId()) . '“'
 			. $this->makeFromAuthorSuffix($work);
 	}
-
 
 	public function makeAuthorLink(
 		$name, $sortby='first', $pref='', $suf='', $query=array()
@@ -332,7 +313,6 @@ EOS;
 		}
 		return substr($o, 2);
 	}
-
 
 	public function makeFromAuthorSuffix($text) {
 		if ( is_array($text) ) {
@@ -373,7 +353,6 @@ EOS;
 		return $this->makeUserLink($username) .' '. $mlink;
 	}
 
-
 	protected function formatPersonName($name, $sortby = 'first') {
 		preg_match('/([^,]+) ([^,]+)(, .+)?/', $name, $m);
 		if ( !isset($m[2]) ) { return $name; }
@@ -382,7 +361,6 @@ EOS;
 		return $sortby == 'last' ? $last.', '.$m[1].$m3 : $m[1].' '.$last.$m3;
 	}
 
-
 	public function initPaginationFields() {
 		$this->lpage = (int) $this->request->value( self::FF_OFFSET, 1 );
 		$this->llimit = (int) $this->request->value(self::FF_LIMIT, $this->defListLimit );
@@ -390,7 +368,6 @@ EOS;
 
 		$this->loffset = ($this->lpage - 1) * $this->llimit;
 	}
-
 
 	protected function verifyCaptchaAnswer($showWarning = false,
 			$_question = null, $_answer = null) {
@@ -478,9 +455,7 @@ EOS;
 		return $this->out->addUrlQuery($this->request->requestUri(), $args);
 	}
 
-
-	protected function sendFile($file)
-	{
+	protected function sendFile($file) {
 		$this->outputLength = filesize($file);
 		if ($this->sendFiles) {
 			header('Location: '. $this->rootd . '/' .  $file);

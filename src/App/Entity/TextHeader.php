@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,8 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Entity\TextHeaderRepository")
  * @ORM\Table(name="text_header")
  */
-class TextHeader extends Entity
-{
+class TextHeader extends Entity {
 	/**
 	 * @var integer $id
 	 * @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
@@ -52,9 +49,11 @@ class TextHeader extends Entity
 	 */
 	private $linecnt;
 
-
 	public function getId() { return $this->id; }
 
+	/**
+	 * @param Text $text
+	 */
 	public function setText($text) { $this->text = $text; }
 	public function getText() { return $this->text; }
 
@@ -73,8 +72,7 @@ class TextHeader extends Entity
 	public function setLinecnt($linecnt) { $this->linecnt = $linecnt; }
 	public function getLinecnt() { return $this->linecnt; }
 
-	public function __toString()
-	{
+	public function __toString() {
 		return str_repeat('—', $this->getLevel()-1) .' '. $this->getName();
 	}
 }

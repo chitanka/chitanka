@@ -1,12 +1,9 @@
-<?php
-namespace App\Service;
+<?php namespace App\Service;
 
 /**
  */
-class ParametersYamlUpdater
-{
-	public function update($distFileName, $yamlFileName)
-	{
+class ParametersYamlUpdater {
+	public function update($distFileName, $yamlFileName) {
 		$yamlBackupFileName = $yamlFileName.'.bak';
 		if ( ! copy($yamlFileName, $yamlBackupFileName)) {
 			error_log("Failed to create '$yamlBackupFileName'");
@@ -20,8 +17,7 @@ class ParametersYamlUpdater
 	 * @param string $distYaml
 	 * @param string $yaml
 	 */
-	public function updateYaml($distYaml, $yaml)
-	{
+	public function updateYaml($distYaml, $yaml) {
 		if ( ! preg_match_all('/^    (\w[^:]+):(.*)/m', $yaml, $matches, PREG_SET_ORDER)) {
 			return $yaml;
 		}

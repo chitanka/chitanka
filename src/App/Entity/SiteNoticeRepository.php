@@ -1,5 +1,4 @@
-<?php
-namespace App\Entity;
+<?php namespace App\Entity;
 
 /**
  *

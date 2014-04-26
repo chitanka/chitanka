@@ -1,5 +1,4 @@
-<?php
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -7,11 +6,9 @@ use Doctrine\ORM\EntityManager;
 use App\Entity\Site;
 use App\Legacy\Legacy;
 
-class UpdateSiteLinksDbCommand extends CommonDbCommand
-{
+class UpdateSiteLinksDbCommand extends CommonDbCommand {
 
-	protected function configure()
-	{
+	protected function configure() {
 		parent::configure();
 
 		$this
@@ -33,16 +30,13 @@ EOT
 	 *
 	 * @throws \LogicException When this abstract class is not implemented
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->updateLinks($this->fetchWikiContent($output), $output, $em);
 		$output->writeln('Done.');
 	}
 
-
-	protected function updateLinks($wikiContent, OutputInterface $output, EntityManager $em)
-	{
+	protected function updateLinks($wikiContent, OutputInterface $output, EntityManager $em) {
 		$linksData = $this->extractLinkData($wikiContent);
 		if (empty($linksData)) {
 			return;
@@ -58,14 +52,12 @@ EOT
 		$em->flush();
 	}
 
-	protected function fetchWikiContent(OutputInterface $output)
-	{
+	protected function fetchWikiContent(OutputInterface $output) {
 		$output->writeln('Fetching wiki content...');
 		return Legacy::getMwContent('http://wiki.chitanka.info/Links', $this->getContainer()->get('buzz'), 0);
 	}
 
-	protected function extractLinkData($wikiContent)
-	{
+	protected function extractLinkData($wikiContent) {
 		if (preg_match_all('|class="external text" href="([^"]+)">([^<]+)</a>(.*)|', $wikiContent, $matches, PREG_SET_ORDER)) {
 			return $matches;
 		}

@@ -1,13 +1,10 @@
-<?php
-namespace App\Tests\Service;
+<?php namespace App\Tests\Service;
 
 use App\Tests\TestCase;
 use App\Service\ParametersYamlUpdater;
 
-class ParametersYamlUpdaterTest extends TestCase
-{
-	public function testYamlUpdate()
-	{
+class ParametersYamlUpdaterTest extends TestCase {
+	public function testYamlUpdate() {
 		$updater = new ParametersYamlUpdater;
 		$distYaml = <<<YAML
     database_user:      root

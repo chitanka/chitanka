@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Entity\Text;
 use App\Util\Ary;
@@ -24,7 +22,6 @@ class SuggestDataPage extends MailPage {
 		$defSubaction = 'annotation',
 		$work = null;
 
-
 	public function __construct($fields) {
 		parent::__construct($fields);
 		$this->subaction = Ary::normKey(
@@ -38,7 +35,6 @@ class SuggestDataPage extends MailPage {
 		$this->email = $this->request->value($this->FF_EMAIL, $this->user->getEmail());
 		$this->initData();
 	}
-
 
 	protected function processSubmission() {
 		if ( empty($this->info) ) {
@@ -62,13 +58,11 @@ class SuggestDataPage extends MailPage {
 		return parent::processSubmission();
 	}
 
-
 	protected function makeSubmissionReturn() {
 		return '<p>Обратно към „'.
 			$this->makeSimpleTextLink($this->work->getTitle(), $this->textId, 1)
 			.'“</p>';
 	}
-
 
 	protected function makeForm() {
 		if ( empty($this->work) ) {
@@ -99,7 +93,6 @@ $intro
 EOS;
 	}
 
-
 	protected function makeIntro() {
 		$ta = '„'. $this->makeSimpleTextLink($this->work->getTitle(), $this->textId, 1) .'“'.
 			$this->makeFromAuthorSuffix($this->work);
@@ -121,7 +114,6 @@ EOS;
 		}
 	}
 
-
 	protected function makeMailMessage() {
 		$title = $this->work->getTitle();
 		return <<<EOS
@@ -132,7 +124,6 @@ http://chitanka.info/admin/text/$this->textId/edit
 $this->info
 EOS;
 	}
-
 
 	protected function initData() {
 		$this->work = $this->controller->getRepository('Text')->find($this->textId);

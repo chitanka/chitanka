@@ -1,13 +1,10 @@
-<?php
-namespace App\Tests\Controller;
+<?php namespace App\Tests\Controller;
 
-class MainControllerTest extends WebTestCase
-{
+class MainControllerTest extends WebTestCase {
 	/**
 	 * @group html
 	 */
-	public function testIndex()
-	{
+	public function testIndex() {
 		$page = $this->request('');
 
 		$this->assertHtmlPageIs($page, 'homepage');
@@ -17,8 +14,7 @@ class MainControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testCatalogOpds()
-	{
+	public function testCatalogOpds() {
 		$page = $this->request('catalog.opds');
 
 		$this->assertOpdsPageIs($page, 'catalog');

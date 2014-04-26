@@ -1,17 +1,13 @@
-<?php
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use App\Entity\Person;
 
-class TranslatorController extends PersonController
-{
-	protected function prepareViewForShow(Person $person, $format)
-	{
+class TranslatorController extends PersonController {
+	protected function prepareViewForShow(Person $person, $format) {
 		$this->prepareViewForShowTranslator($person, $format);
 	}
 
-	protected function getPersonRepository()
-	{
+	protected function getPersonRepository() {
 		return parent::getPersonRepository()->asTranslator();
 	}
 }

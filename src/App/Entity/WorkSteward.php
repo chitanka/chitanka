@@ -1,10 +1,7 @@
-<?php
-namespace App\Entity;
+<?php namespace App\Entity;
 
-class WorkSteward
-{
-	public static function joinPersonKeysForWorks($works)
-	{
+class WorkSteward {
+	public static function joinPersonKeysForWorks($works) {
 		foreach ($works as $k => $work) {
 			if (isset($work['book']) && isset($work['book']['bookAuthors'])) {
 				$authors = array();
@@ -28,8 +25,7 @@ class WorkSteward
 		return $works;
 	}
 
-	public static function joinPersonKeysForBooks($books)
-	{
+	public static function joinPersonKeysForBooks($books) {
 		foreach ($books as $k => $book) {
 			if (isset($book['bookAuthors'])) {
 				$authors = array();
@@ -44,8 +40,7 @@ class WorkSteward
 		return $books;
 	}
 
-	public static function joinPersonKeysForTexts($texts)
-	{
+	public static function joinPersonKeysForTexts($texts) {
 		foreach ($texts as $k => $text) {
 			if (isset($text['textAuthors'])) {
 				$authors = array();

@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Entity\User;
 
@@ -7,7 +6,6 @@ class EmailUserPage extends MailPage {
 
 	protected
 		$action = 'emailUser';
-
 
 	public function __construct($fields) {
 		parent::__construct($fields);
@@ -19,7 +17,6 @@ class EmailUserPage extends MailPage {
 		$this->mailMessage = $this->request->value('message', '');
 		$this->mailSuccessMessage = 'Писмото беше изпратено.';
 	}
-
 
 	protected function processSubmission() {
 		$err = $this->validateData();
@@ -43,7 +40,6 @@ class EmailUserPage extends MailPage {
 		return parent::processSubmission();
 	}
 
-
 	protected function buildContent() {
 		$err = $this->validateData();
 		if ( ! empty($err) ) {
@@ -53,7 +49,6 @@ class EmailUserPage extends MailPage {
 
 		return $this->makeForm();
 	}
-
 
 	protected function validateData() {
 		if ( $this->user->isAnonymous() ) {
@@ -66,7 +61,6 @@ class EmailUserPage extends MailPage {
 		}
 		return '';
 	}
-
 
 	protected function validateInput() {
 		if ( empty($this->username) ) {
@@ -87,7 +81,6 @@ class EmailUserPage extends MailPage {
 		}
 		return '';
 	}
-
 
 	protected function makeForm() {
 		$ownsettingslink = $this->controller->generateUrl('user_edit', array('username' => $this->user->getUsername()));
@@ -119,7 +112,6 @@ class EmailUserPage extends MailPage {
 </form>
 EOS;
 	}
-
 
 	protected function makeMailMessage() {
 		return <<<EOS

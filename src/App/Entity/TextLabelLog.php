@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -52,6 +50,9 @@ class TextLabelLog extends Entity {
 	 */
 	private $date;
 
+	/**
+	 * @param string $action
+	 */
 	public function __construct(Text $text, Label $label, User $user, $action) {
 		$this->setText($text);
 		$this->setLabel($label);

@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Twig;
+<?php namespace App\Twig;
 
 use App\Util\Number;
 use App\Util\Char;
@@ -8,16 +6,13 @@ use App\Util\String;
 use App\Legacy\Legacy;
 use App\Entity\Text;
 
-class Extension extends \Twig_Extension
-{
+class Extension extends \Twig_Extension {
 
-	public function getName()
-	{
+	public function getName() {
 		return 'chitanka';
 	}
 
-	public function getFunctions()
-	{
+	public function getFunctions() {
 		return array(
 			'anchor_name' => new \Twig_Function_Method($this, 'getAnchorName'),
 			'cover' => new \Twig_Function_Method($this, 'getCover'),
@@ -25,8 +20,7 @@ class Extension extends \Twig_Extension
 		);
 	}
 
-	public function getFilters()
-	{
+	public function getFilters() {
 		return array(
 			'rating_class' => new \Twig_Filter_Method($this, 'getRatingClass'),
 			'rating_format' => new \Twig_Filter_Method($this, 'formatRating'),
@@ -54,16 +48,13 @@ class Extension extends \Twig_Extension
 		);
 	}
 
-	public function getTests()
-	{
+	public function getTests() {
 		return array(
 			'url' => new \Twig_Test_Method($this, 'isUrl'),
 		);
 	}
 
-
-	public function getRatingClass($rating)
-	{
+	public function getRatingClass($rating) {
 		if ( $rating >= 5.6 ) return 'degree-360 gt-half';
 		if ( $rating >= 5.2 ) return 'degree-330 gt-half';
 		if ( $rating >= 4.8 ) return 'degree-300 gt-half';
@@ -79,13 +70,11 @@ class Extension extends \Twig_Extension
 		return 0;
 	}
 
-	public function formatRating($rating)
-	{
+	public function formatRating($rating) {
 		return Legacy::rmTrailingZeros( Number::formatNumber($rating, 1) );
 	}
 
-	public function formatPersonName($name, $sortby = 'first-name')
-	{
+	public function formatPersonName($name, $sortby = 'first-name') {
 		if (empty($name)) {
 			return $name;
 		}
@@ -99,38 +88,31 @@ class Extension extends \Twig_Extension
 		return $sortby == 'last-name' ? $last.', '.$m[1].$m3 : $m[1].' '.$last.$m3;
 	}
 
-
-	public function getAcronym($title)
-	{
+	public function getAcronym($title) {
 		$letters = preg_match_all('/ ([a-zA-Zа-яА-Я\d])/u', ' '.$title, $matches);
 		$acronym = implode('', $matches[1]);
 
 		return Char::mystrtoupper($acronym);
 	}
 
-	public function getFirstChar($string)
-	{
+	public function getFirstChar($string) {
 		return mb_substr($string, 0, 1, 'UTF-8');
 	}
 
-	public function strtolower($string)
-	{
+	public function strtolower($string) {
 		return mb_strtolower($string, 'UTF-8');
 	}
 
-	public function getJson($content)
-	{
+	public function getJson($content) {
 		return json_encode($content);
 	}
 
-	public function obfuscateEmail($email)
-	{
+	public function obfuscateEmail($email) {
 		return strtr($email,
 			array('@' => '&#160;<span title="при сървъра">(при)</span>&#160;'));
 	}
 
-	public function getDocTitle($title)
-	{
+	public function getDocTitle($title) {
 		$title = preg_replace('/\s\s+/', ' ', $title);
 		$title = strtr($title, array(
 			'<br>' => ' — ',
@@ -141,13 +123,11 @@ class Extension extends \Twig_Extension
 		return $title;
 	}
 
-	public function repeatString($string, $count)
-	{
+	public function repeatString($string, $count) {
 		return str_repeat($string, $count);
 	}
 
-	public function putTextInBookTemplate($template, Text $text, $htmlTextView)
-	{
+	public function putTextInBookTemplate($template, Text $text, $htmlTextView) {
 		$textId = $text->getId();
 		$regexp = "/\{(text|file):$textId(-[^|}]+)?\|(.+)\}/";
 		if (preg_match($regexp, $template, $matches)) {
@@ -158,16 +138,13 @@ class Extension extends \Twig_Extension
 		return $template;
 	}
 
-	public function joinLists($string)
-	{
+	public function joinLists($string) {
 		return preg_replace('|</ul>\n<ul[^>]*>|', "\n", $string);
 	}
 
-	public function getHumanDate($date)
-	{
+	public function getHumanDate($date) {
 		return Legacy::humanDate($date);
 	}
-
 
 	private $_xmlElementCreator = null;
 
@@ -178,8 +155,7 @@ class Extension extends \Twig_Extension
 	* @param boolean $unique  Always generate a unique name
 	*                         (consider all previously generated names)
 	*/
-	public function getAnchorName($text, $unique = true)
-	{
+	public function getAnchorName($text, $unique = true) {
 		if (is_null($this->_xmlElementCreator)) {
 			$this->_xmlElementCreator = new \Sfblib_XmlElement;
 		}
@@ -187,15 +163,11 @@ class Extension extends \Twig_Extension
 		return $this->_xmlElementCreator->getAnchorName($text, $unique);
 	}
 
-
-	public function getCover($id, $width = 200, $format = 'jpg')
-	{
+	public function getCover($id, $width = 200, $format = 'jpg') {
 		return Legacy::getContentFilePath('book-cover', $id) . ".$width.$format";
 	}
 
-
-	public function getProgressbar($progressInPerc)
-	{
+	public function getProgressbar($progressInPerc) {
 		$perc = $progressInPerc .'%';
 		$progressBarWidth = '20';
 		$bar = str_repeat(' ', $progressBarWidth);
@@ -208,49 +180,35 @@ class Extension extends \Twig_Extension
 		return "<pre style=\"display:inline\"><span class=\"progressbar\"><span class=\"done\">$bar</span></pre>";
 	}
 
-
-	public function nl2br($value, $sep = '<br>')
-	{
+	public function nl2br($value, $sep = '<br>') {
 		return str_replace("\n", $sep."\n", $value);
 	}
 
-	public function dot2br($value)
-	{
+	public function dot2br($value) {
 		return preg_replace('/\. (?=[A-ZА-Я])/u', "<br>\n", $value);
 	}
 
-
-	public function formatUserMarkup($content)
-	{
+	public function formatUserMarkup($content) {
 		return String::pretifyInput(String::escapeInput($content));
 	}
 
-	public function stripTags($content)
-	{
+	public function stripTags($content) {
 		return strip_tags($content);
 	}
 
-
-	public function changeEncoding($string, $encoding)
-	{
+	public function changeEncoding($string, $encoding) {
 		return iconv('UTF-8', $encoding, $string);
 	}
 
-
-	public function getUrlEncode($string)
-	{
+	public function getUrlEncode($string) {
 		return urlencode($string);
 	}
 
-
-	public function getQrCode($url, $width = 100)
-	{
+	public function getQrCode($url, $width = 100) {
 		return "http://chart.apis.google.com/chart?cht=qr&chs={$width}x{$width}&chld=H|0&chl=". urlencode($url);
 	}
 
-
-	public function getDomain($url)
-	{
+	public function getDomain($url) {
 		return parse_url($url, PHP_URL_HOST);
 	}
 
@@ -259,8 +217,7 @@ class Extension extends \Twig_Extension
 	/**
 	 * @param string $text
 	 */
-	public function formatLinks($text)
-	{
+	public function formatLinks($text) {
 		$patterns = array(
 			'/\[\[(.+)\|(.+)\]\]/Us' => '<a href="$1">$2</a>',
 			'|(?<!")https?://\S+[^,.\s]|e' => "'<a href=\"$0\">'.\$this->getDomain('$0', '$2').'</a>'",
@@ -268,8 +225,7 @@ class Extension extends \Twig_Extension
 		return preg_replace(array_keys($patterns), array_values($patterns), $text);
 	}
 
-	public function isUrl($string)
-	{
+	public function isUrl($string) {
 		return strpos($string, 'http') === 0;
 	}
 }

@@ -1,14 +1,11 @@
-<?php
-namespace App\Tests\Controller;
+<?php namespace App\Tests\Controller;
 
-class SeriesControllerTest extends WebTestCase
-{
+class SeriesControllerTest extends WebTestCase {
 
 	/**
 	 * @group html
 	 */
-	public function testIndex()
-	{
+	public function testIndex() {
 		$page = $this->request('series');
 
 		$this->assertHtmlPageIs($page, 'series');
@@ -18,8 +15,7 @@ class SeriesControllerTest extends WebTestCase
 	/**
 	 * @group html
 	 */
-	public function testListByAlphaByLetterA()
-	{
+	public function testListByAlphaByLetterA() {
 		$page = $this->request("series/alpha/".urlencode('А'));
 
 		$this->assertHtmlPageIs($page, 'series_by_alpha');
@@ -28,8 +24,7 @@ class SeriesControllerTest extends WebTestCase
 	/**
 	 * @group html
 	 */
-	public function testShow()
-	{
+	public function testShow() {
 		$series = 'hronikite-na-ambyr';
 		$page = $this->request("serie/$series");
 
@@ -39,8 +34,7 @@ class SeriesControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testIndexOpds()
-	{
+	public function testIndexOpds() {
 		$page = $this->request("series.opds");
 
 		$this->assertOpdsPageIs($page, 'series');
@@ -50,8 +44,7 @@ class SeriesControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testListByAlphaByLetterAOpds()
-	{
+	public function testListByAlphaByLetterAOpds() {
 		$route = "series/alpha/".urlencode('А').".opds";
 		$page = $this->request($route);
 
@@ -61,8 +54,7 @@ class SeriesControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testShowOpds()
-	{
+	public function testShowOpds() {
 		$series = 'hronikite-na-ambyr';
 		$route = "serie/$series.opds";
 		$page = $this->request($route);

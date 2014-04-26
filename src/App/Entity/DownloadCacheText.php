@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,8 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 *	indexes={@ORM\Index(name="text_idx", columns={"text_id"})}
 * )
 */
-class DownloadCacheText extends Entity
-{
+class DownloadCacheText extends Entity {
 	/**
 	 * @ORM\Id
 	 * @ORM\ManyToOne(targetEntity="DownloadCache")

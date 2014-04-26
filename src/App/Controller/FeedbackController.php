@@ -1,17 +1,13 @@
-<?php
-
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Feedback;
 use App\Form\Type\FeedbackType;
 
-class FeedbackController extends Controller
-{
+class FeedbackController extends Controller {
 	protected $responseAge = 86400; // 24 hours
 
-	public function indexAction(Request $request)
-	{
+	public function indexAction(Request $request) {
 		$adminEmail = $this->container->getParameter('admin_email');
 		$feedback = new Feedback($this->get('mailer'), $adminEmail);
 

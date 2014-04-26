@@ -1,11 +1,9 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 class ClearCachePage extends Page {
 
 	protected
 		$action = 'clearCache';
-
 
 	public function __construct() {
 		parent::__construct();
@@ -15,7 +13,6 @@ class ClearCachePage extends Page {
 		$this->start = (int) $this->request->value('start');
 		$this->end = (int) $this->request->value('end');
 	}
-
 
 	protected function buildContent() {
 		if ( !empty($this->texts) ) {
@@ -45,7 +42,6 @@ class ClearCachePage extends Page {
 		}
 		return $this->makeForm();
 	}
-
 
 	protected function makeForm() {
 		$texts = $this->out->textarea('texts', '', '', 25, 8);

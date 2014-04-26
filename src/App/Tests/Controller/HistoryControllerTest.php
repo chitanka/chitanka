@@ -1,13 +1,10 @@
-<?php
-namespace App\Tests\Controller;
+<?php namespace App\Tests\Controller;
 
-class HistoryControllerTest extends WebTestCase
-{
+class HistoryControllerTest extends WebTestCase {
 	/**
 	 * @group html
 	 */
-	public function testNewTexts()
-	{
+	public function testNewTexts() {
 		$page = $this->request("new/texts");
 
 		$this->assertHtmlPageIs($page, 'new_texts');
@@ -16,8 +13,7 @@ class HistoryControllerTest extends WebTestCase
 	/**
 	 * @group html
 	 */
-	public function testNewBooks()
-	{
+	public function testNewBooks() {
 		$page = $this->request("new/books");
 
 		$this->assertHtmlPageIs($page, 'new_books');
@@ -26,8 +22,7 @@ class HistoryControllerTest extends WebTestCase
 	/**
 	 * @group html
 	 */
-	public function testNewTextsByMonth()
-	{
+	public function testNewTextsByMonth() {
 		$page = $this->request("new/texts/2005/9");
 
 		$this->assertHtmlPageIs($page, 'new_texts_by_month');
@@ -36,8 +31,7 @@ class HistoryControllerTest extends WebTestCase
 	/**
 	 * @group html
 	 */
-	public function testNewBooksByMonth()
-	{
+	public function testNewBooksByMonth() {
 		$page = $this->request("new/books/2005/9");
 
 		$this->assertHtmlPageIs($page, 'new_books_by_month');
@@ -46,8 +40,7 @@ class HistoryControllerTest extends WebTestCase
 	/**
 	 * @group rss
 	 */
-	public function testNewTextsRss()
-	{
+	public function testNewTextsRss() {
 		$route = "new/texts.rss";
 		$page = $this->request($route);
 
@@ -57,8 +50,7 @@ class HistoryControllerTest extends WebTestCase
 	/**
 	 * @group rss
 	 */
-	public function testNewBooksRss()
-	{
+	public function testNewBooksRss() {
 		$route = "new/books.rss";
 		$page = $this->request($route);
 
@@ -68,8 +60,7 @@ class HistoryControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testNewTextsOpds()
-	{
+	public function testNewTextsOpds() {
 		$route = "new/texts.opds";
 		$page = $this->request($route);
 
@@ -80,8 +71,7 @@ class HistoryControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testNewBooksOpds()
-	{
+	public function testNewBooksOpds() {
 		$route = "new/books.opds";
 		$page = $this->request($route);
 

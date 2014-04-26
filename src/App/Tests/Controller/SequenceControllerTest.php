@@ -1,13 +1,10 @@
-<?php
-namespace App\Tests\Controller;
+<?php namespace App\Tests\Controller;
 
-class SequenceControllerTest extends WebTestCase
-{
+class SequenceControllerTest extends WebTestCase {
 	/**
 	 * @group html
 	 */
-	public function testIndex()
-	{
+	public function testIndex() {
 		$page = $this->request('sequences');
 
 		$this->assertHtmlPageIs($page, 'sequences');
@@ -17,8 +14,7 @@ class SequenceControllerTest extends WebTestCase
 	/**
 	 * @group html
 	 */
-	public function testListByAlphaByLetterA()
-	{
+	public function testListByAlphaByLetterA() {
 		$page = $this->request("sequences/alpha/".urlencode('А'));
 
 		$this->assertHtmlPageIs($page, 'sequences_by_alpha');
@@ -27,8 +23,7 @@ class SequenceControllerTest extends WebTestCase
 	/**
 	 * @group html
 	 */
-	public function testShow()
-	{
+	public function testShow() {
 		$sequence = 'BARD-HA1';
 		$page = $this->request("sequence/$sequence");
 
@@ -38,8 +33,7 @@ class SequenceControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testIndexOpds()
-	{
+	public function testIndexOpds() {
 		$page = $this->request("sequences.opds");
 
 		$this->assertOpdsPageIs($page, 'sequences');
@@ -49,8 +43,7 @@ class SequenceControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testListByAlphaByLetterAOpds()
-	{
+	public function testListByAlphaByLetterAOpds() {
 		$route = "sequences/alpha/".urlencode('А').".opds";
 		$page = $this->request($route);
 
@@ -60,8 +53,7 @@ class SequenceControllerTest extends WebTestCase
 	/**
 	 * @group opds
 	 */
-	public function testShowOpds()
-	{
+	public function testShowOpds() {
 		$sequence = 'BARD-HA1';
 		$route = "sequence/$sequence.opds";
 		$page = $this->request($route);

@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Entity;
+<?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,8 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="text_idx", columns={"text_id"})}
 * )
 */
-class TextTranslator extends Entity
-{
+class TextTranslator extends Entity {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -46,8 +43,7 @@ class TextTranslator extends Entity
 	 */
 	private $year;
 
-	public function equals(TextTranslator $textTranslator)
-	{
+	public function equals(TextTranslator $textTranslator) {
 		return $this->getId() == $textTranslator->getId();
 	}
 
@@ -64,8 +60,7 @@ class TextTranslator extends Entity
 	 *
 	 * @param integer $pos
 	 */
-	public function setPos($pos)
-	{
+	public function setPos($pos) {
 		$this->pos = $pos;
 	}
 
@@ -74,8 +69,7 @@ class TextTranslator extends Entity
 	 *
 	 * @return integer $pos
 	 */
-	public function getPos()
-	{
+	public function getPos() {
 		return $this->pos;
 	}
 
@@ -84,8 +78,7 @@ class TextTranslator extends Entity
 	 *
 	 * @param integer $year
 	 */
-	public function setYear($year)
-	{
+	public function setYear($year) {
 		$this->year = $year;
 	}
 
@@ -94,8 +87,7 @@ class TextTranslator extends Entity
 	 *
 	 * @return integer $year
 	 */
-	public function getYear()
-	{
+	public function getYear() {
 		return $this->year;
 	}
 
