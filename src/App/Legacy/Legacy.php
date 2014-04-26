@@ -1,21 +1,15 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Util\Char;
-use App\Util\String;
 use App\Util\Ary;
 use Buzz\Browser;
 
-class Legacy
-{
+class Legacy {
 
-	static private
-		$months = array(
-			1 => 'Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни',
-			'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'
-		);
-
-
+	static private $months = array(
+		1 => 'Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни',
+		'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'
+	);
 
 	static private $types = array(
 		// code => array(singular, plural, sing. article, pl. article)
@@ -63,16 +57,30 @@ class Legacy
 		'other' => array('Разни', 'Разни', 'творбата', 'творбите'),
 	);
 
+	/**
+	 * @param string $code
+	 * @param bool $singular
+	 * @return string
+	 */
 	static public function workType($code, $singular = true) {
 		if ( !array_key_exists($code, self::$types) ) return '';
 		return $singular ? self::$types[$code][0] : self::$types[$code][1];
 	}
 
+	/**
+	 * @param string $code
+	 * @param bool $singular
+	 * @return string
+	 */
 	static public function workTypeArticle($code, $singular = true) {
 		if ( !array_key_exists($code, self::$types) ) return '';
 		return $singular ? self::$types[$code][2] : self::$types[$code][3];
 	}
 
+	/**
+	 * @param bool $singular
+	 * @return array
+	 */
 	static public function workTypes($singular = true) {
 		$ntypes = array();
 		foreach (self::$types as $code => $name) {
@@ -84,11 +92,14 @@ class Legacy
 	static private $picTypes = array(
 		'magazine' => 'Списание'
 	);
+	/**
+	 * @param string $code
+	 * @return string
+	 */
 	static public function picType($code) {
 		if ( !array_key_exists($code, self::$picTypes) ) return '';
 		return self::$picTypes[$code];
 	}
-
 
 	static private $seriesTypes = array(
 		// code => array(singular, plural, sing. article, pl. article)
@@ -100,30 +111,49 @@ class Legacy
 
 	static private $pseudoSeries = array('collection', 'poetry');
 
+	/**
+	 * @param string $code
+	 * @return string
+	 */
 	static public function seriesSuffix($code) {
 		return $code == 'series' || empty(self::$seriesTypes[$code][0])
 			? ''
 			: ' ('. self::$seriesTypes[$code][0] .')';
 	}
 
+	/**
+	 * @param string $code
+	 * @param bool $singular
+	 * @return string
+	 */
 	static public function seriesType($code, $singular = true) {
 		if ( !array_key_exists($code, self::$seriesTypes) ) return '';
 		return $singular ? self::$seriesTypes[$code][0] : self::$seriesTypes[$code][1];
 	}
 
+	/**
+	 * @param string $code
+	 * @param bool $singular
+	 * @return string
+	 */
 	static public function seriesTypeArticle($code, $singular = true) {
 		if ( !array_key_exists($code, self::$seriesTypes) ) return '';
 		return $singular ? self::$seriesTypes[$code][2] : self::$seriesTypes[$code][3];
 	}
 
-
+	/**
+	 * @param string $type
+	 * @return bool
+	 */
 	static public function isPseudoSeries($type) {
 		return in_array($type, self::$pseudoSeries);
 	}
 
-
-	static public function humanDate($isodate = '')
-	{
+	/**
+	 * @param string $isodate
+	 * @return string
+	 */
+	static public function humanDate($isodate = '') {
 		$format = 'Y-m-d H:i:s';
 		if ( empty($isodate) ) {
 			$isodate = date($format);
@@ -145,69 +175,74 @@ class Legacy
 		return ltrim($d, '0') .' '. Char::mystrtolower(self::monthName($m)) .' '. $y . $hours;
 	}
 
-
+	/**
+	 * @param var $var
+	 * @param mixed $value
+	 */
 	static public function fillOnEmpty(&$var, $value) {
 		if ( empty($var) ) {
 			$var = $value;
 		}
 	}
 
+	/**
+	 * @param var $var
+	 * @param mixed $value
+	 */
 	static public function fillOnNull(&$var, $value) {
 		if ( is_null($var) ) {
 			$var = $value;
 		}
 	}
 
+	/**
+	 * @param int $m
+	 * @param bool $asUpper
+	 * @return string
+	 */
 	static public function monthName($m, $asUpper = true) {
 		$name = self::$months[(int)$m];
 
 		return $asUpper ? $name : Char::mystrtolower($name);
 	}
 
-	static public function header_encode($header)
-	{
-		return '=?utf-8?B?'.base64_encode($header).'?=';
-	}
-
-
 	/**
-	* @param $val Value
-	* @param $data Associative array
-	* @param $defVal Default value
-	* @return $val if it exists in $data, otherwise $defVal
-	*/
+	 * @param $val Value
+	 * @param $data Associative array
+	 * @param $defVal Default value
+	 * @return $val if it exists in $data, otherwise $defVal
+	 */
 	static public function normVal($val, $data, $defVal = null) {
 		self::fillOnNull($defVal, @$data[0]);
 		return in_array($val, $data) ? $val : $defVal;
 	}
 
-
-	static private $regPatterns = array(
-		'/\[\[(.+)\|(.+)\]\]/Us' => '<a href="$1" title="$1 — $2">$2</a>',
-		'#(?<=[\s>])(\w+://[^])\s"<]+)([^])\s"<,.;!?])#' => '<a href="$1$2" title="$1$2">$1$2</a>',
-	);
-	static public function wiki2html($s) {
-		$s = preg_replace(array_keys(self::$regPatterns), array_values(self::$regPatterns), $s);
-
-		return $s;
-	}
-
-
 	static private $templates = array(
 		'{SITENAME}' => '{SITENAME}',
 	);
 
+	/**
+	 * @param string $s
+	 * @return string
+	 */
 	static public function expandTemplates($s) {
 		return strtr($s, self::$templates);
 	}
+
+	/**
+	 * @param string $key
+	 * @param string $val
+	 */
 	static public function addTemplate($key, $val) {
 		self::$templates['{'.$key.'}'] = $val;
 	}
 
-
 	/**
-	* Never run this function on a string with cyrillic letters: they all get converted to "Y"
-	*/
+	 * Remove diacritic characters from a latin string
+	 * Never run this function on a string with cyrillic letters: they all get converted to "Y".
+	 * @param string $s
+	 * @return string
+	 */
 	static public function removeDiacritics($s) {
 		return strtr(utf8_decode($s),
 			utf8_decode(
@@ -215,25 +250,40 @@ class Legacy
 			'SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy');
 	}
 
-
-	/** bytes to kibibytes */
+	/**
+	 * bytes to kibibytes
+	 * @param int $bytes
+	 * @return string
+	 */
 	static public function int_b2k($bytes) {
 		$k = $bytes >> 10; // divide by 2^10 w/o rest
 		return $k > 0 ? $k : 1;
 	}
-	/** bytes to mebibytes */
+	/**
+	 * bytes to mebibytes
+	 * @param int $bytes
+	 * @return string
+	 */
 	static public function int_b2m($bytes) {
 		$m = $bytes >> 20; // divide by 2^20 w/o rest
 		return $m > 0 ? $m : 1;
 	}
 
-	/** bytes to gibibytes */
+	/**
+	 * bytes to gibibytes
+	 * @param int $bytes
+	 * @return string
+	 */
 	static public function int_b2g($bytes) {
 		$m = $bytes >> 30; // divide by 2^30 w/o rest
 		return $m > 0 ? $m : 1;
 	}
 
-	/** bytes to human readable */
+	/**
+	 * bytes to human readable
+	 * @param int $bytes
+	 * @return string
+	 */
 	static public function int_b2h($bytes) {
 		if ( $bytes < ( 1 << 10 ) ) return $bytes . ' B';
 		if ( $bytes < ( 1 << 20 ) ) return self::int_b2k( $bytes ) . ' KiB';
@@ -242,9 +292,11 @@ class Legacy
 	}
 
 	/**
-		Convert a php.ini value to an integer
-		(copied from php.net)
-	*/
+	 * Convert a php.ini value to an integer
+	 * (copied from php.net)
+	 * @param string $val
+	 * @return int
+	 */
 	static public function ini_bytes($val) {
 		$val = trim($val);
 		$last = strtolower($val{strlen($val)-1});
@@ -261,8 +313,10 @@ class Legacy
 	}
 
 	/**
-		Removes trailing zeros after the decimal sign
-	*/
+	 * Removes trailing zeros after the decimal sign
+	 * @param string $number
+	 * @return string
+	 */
 	static public function rmTrailingZeros($number, $decPoint = ',') {
 		$number = rtrim($number, '0');
 		$number = rtrim($number, $decPoint); // remove the point too
@@ -274,7 +328,13 @@ class Legacy
 		return self::int_b2m( self::ini_bytes( ini_get('upload_max_filesize') ) );
 	}
 
-
+	/**
+	 * @param int $num
+	 * @param string $sing
+	 * @param string $plur
+	 * @param string $null
+	 * @return string
+	 */
 	static public function chooseGrammNumber($num, $sing, $plur, $null = '') {
 		settype($num, 'int');
 		if ($num > 1) {
@@ -286,13 +346,18 @@ class Legacy
 		}
 	}
 
-
-	static public function isUrl($string)
-	{
+	/**
+	 * @param string $string
+	 * @return bool
+	 */
+	static public function isUrl($string) {
 		return strpos($string, 'http://') === 0;
 	}
 
 
+	/**
+	 * @param string $words
+	 */
 	static public function getAcronym($words) {
 		$acronym = '';
 		$words = preg_replace('/[^a-zA-Z\d ]/', '', $words);
@@ -303,6 +368,10 @@ class Legacy
 	}
 
 
+	/**
+	 * @param array $assocArray
+	 * @param UserPage $object
+	 */
 	static public function extract2object($assocArray, &$object) {
 		foreach ( (array) $assocArray as $key => $val ) {
 			if ( ctype_alnum($key[0]) ) {
@@ -310,7 +379,6 @@ class Legacy
 			}
 		}
 	}
-
 
 	static private $contentDirs = array(
 		'text' => 'content/text/',
@@ -332,6 +400,11 @@ class Legacy
 		'book-pic' => 'content/book-pic/',
 	);
 
+	/**
+	 * @param string $key
+	 * @param int $num
+	 * @return string
+	 */
 	static public function getContentFile($key, $num) {
 		$file = self::getInternalContentFilePath($key, $num);
 		if ( file_exists($file) ) {
@@ -341,17 +414,34 @@ class Legacy
 		return null;
 	}
 
+	/**
+	 * @param string $key
+	 * @param int $num
+	 * @param bool $full
+	 * @return string
+	 */
 	static public function getContentFilePath($key, $num, $full = true) {
 		$pref = Ary::arrVal(self::$contentDirs, $key, $key .'/');
 
 		return $pref . self::makeContentFilePath($num, $full);
 	}
 
+	/**
+	 * @param string $key
+	 * @param int $num
+	 * @param bool $full
+	 * @return string
+	 */
 	static public function getInternalContentFilePath($key, $num, $full = true) {
 		return __DIR__ .'/../../../../web/'. self::getContentFilePath($key, $num, $full);
 	}
 
-	// use this for sfbzip too
+	/**
+	 * TODO use this for sfbzip too
+	 * @param int $num
+	 * @param bool $full
+	 * @return string
+	 */
 	static public function makeContentFilePath($num, $full = true) {
 		$realnum = $num;
 		$num = (int) $num;
@@ -368,10 +458,13 @@ class Legacy
 		return $path;
 	}
 
-
-	/** Handles only JPEG */
-	static public function genThumbnail($filename, $width = 250)
-	{
+	/**
+	 * Generate a thumbnail. Handles only JPEG.
+	 * @param string $filename
+	 * @param int $width
+	 * @return string Thumbnail file name
+	 */
+	static public function genThumbnail($filename, $width = 250) {
 		if ( ! preg_match('/\.jpe?g$/', $filename) ) {
 			return $filename;
 		}
@@ -393,10 +486,12 @@ class Legacy
 		return $temp;
 	}
 
-
-
-	static public function getFromUrl($url, $postData = array())
-	{
+	/**
+	 * @param string $url
+	 * @param array $postData
+	 * @return type
+	 */
+	static public function getFromUrl($url, array $postData = array()) {
 		$ch = curl_init();
 
 		$options = array(
@@ -421,7 +516,11 @@ class Legacy
 		return $contents;
 	}
 
-
+	/**
+	 * @param string $url
+	 * @param int $cacheTime
+	 * @return string
+	 */
 	static public function getFromUrlOrCache($url, $cacheTime = 0)
 	{
 		$id = md5($url);
@@ -439,9 +538,13 @@ class Legacy
 		return CacheManager::setCache($action, $id, $content);
 	}
 
-
-	static public function getMwContent($url, Browser $browser, $cacheDays = 7)
-	{
+	/**
+	 * @param string $url
+	 * @param \Buzz\Browser $browser
+	 * @param int $cacheDays
+	 * @return string
+	 */
+	static public function getMwContent($url, Browser $browser, $cacheDays = 7) {
 		$id = md5($url);
 		$action = 'info';
 
@@ -456,14 +559,18 @@ class Legacy
 				return CacheManager::setCache($action, $id, $content);
 			}
 		} catch (\RuntimeException $e) {
+			return null;
 		}
 
-		return '';
+		return null;
 	}
 
-
-	static protected function processMwContent($content, $url)
-	{
+	/**
+	 * @param string $content
+	 * @param string $url
+	 * @return string
+	 */
+	static protected function processMwContent($content, $url) {
 		$up = parse_url($url);
 		$server = "$up[scheme]://$up[host]";
 		$content = strtr($content, array(
@@ -482,15 +589,14 @@ class Legacy
 		return $content;
 	}
 
-
 	/**
-		Validates an e-mail address.
-		Regexps are taken from http://www.iki.fi/markus.sipila/pub/emailvalidator.php
-		(author: Markus Sipilä, version: 1.0, 2006-08-02)
-
-		@param string $input E-mail address to be validated
-		@return int 1 if valid, 0 if not valid, -1 if valid but strange
-	*/
+	 * Validates an e-mail address.
+	 * Regexps are taken from http://www.iki.fi/markus.sipila/pub/emailvalidator.php
+	 * (author: Markus Sipilä, version: 1.0, 2006-08-02)
+	 *
+	 * @param string $input E-mail address to be validated
+	 * @return int 1 if valid, 0 if not valid, -1 if valid but strange
+	 */
 	static public function validateEmailAddress($input, $allowEmpty = true) {
 		if ( empty($input) ) {
 			return $allowEmpty ? 1 : 0;
@@ -505,7 +611,10 @@ class Legacy
 		return 0;
 	}
 
-
+	/**
+	 * @param string $pass
+	 * @param int $loops
+	 */
 	static public function sha1_loop($pass, $loops = 1) {
 		for ($i=0; $i < $loops; $i++) {
 			$pass = sha1($pass);

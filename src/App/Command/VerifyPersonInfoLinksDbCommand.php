@@ -47,6 +47,9 @@ EOT
 	}
 
 
+	/**
+	 * @param boolean $dumpSql
+	 */
 	private function verifyWikiInfoLinks($dumpSql)
 	{
 		$personIds = $this->getIdsForPersonsWithInvalidInfoLinks();

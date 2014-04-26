@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -8,12 +6,9 @@ use Doctrine\ORM\EntityManager;
 use App\Legacy\Setup;
 use App\Util\String;
 
+class CommonDbCommand extends ContainerAwareCommand {
 
-class CommonDbCommand extends ContainerAwareCommand
-{
-
-	protected function configure()
-	{
+	protected function configure() {
 		parent::configure();
 
 		$this
@@ -25,28 +20,29 @@ class CommonDbCommand extends ContainerAwareCommand
 	/**
 	 * @RawSql
 	 */
-	protected function updateTextCountByLabels(OutputInterface $output, EntityManager $em)
-	{
+	protected function updateTextCountByLabels(OutputInterface $output, EntityManager $em) {
 		$output->writeln('Updating texts count by labels');
 		$update = $this->maintenanceSql('UPDATE label l SET nr_of_texts = (SELECT COUNT(*) FROM text_label WHERE label_id = l.id)');
 		$em->getConnection()->executeUpdate($update);
 	}
 
 
-	protected function updateTextCountByLabelsParents(OutputInterface $output, EntityManager $em)
-	{
+	protected function updateTextCountByLabelsParents(OutputInterface $output, EntityManager $em) {
 		$output->writeln('Updating texts count by labels parents');
 		$this->_updateCountByParents($em, 'App:Label', 'NrOfTexts');
 	}
 
-	protected function updateBookCountByCategoriesParents(OutputInterface $output, EntityManager $em)
-	{
+	protected function updateBookCountByCategoriesParents(OutputInterface $output, EntityManager $em) {
 		$output->writeln('Updating books count by categories parents');
 		$this->_updateCountByParents($em, 'App:Category', 'NrOfBooks');
 	}
 
-	protected function _updateCountByParents(EntityManager $em, $entity, $field)
-	{
+	/**
+	 * @param EntityManager $em
+	 * @param string $entity
+	 * @param string $field
+	 */
+	protected function _updateCountByParents(EntityManager $em, $entity, $field) {
 		$dirty = array();
 		$repo = $em->getRepository($entity);
 		foreach ($repo->findAll() as $item) {
@@ -67,31 +63,25 @@ class CommonDbCommand extends ContainerAwareCommand
 		$em->flush();
 	}
 
-
 	/**
 	 * @RawSql
 	 */
-	protected function updateCommentCountByTexts(OutputInterface $output, EntityManager $em)
-	{
+	protected function updateCommentCountByTexts(OutputInterface $output, EntityManager $em) {
 		$output->writeln('Updating comments count by texts');
 		$update = $this->maintenanceSql('UPDATE text t SET comment_count = (SELECT COUNT(*) FROM text_comment WHERE text_id = t.id)');
 		$em->getConnection()->executeUpdate($update);
 	}
 
-
 	/**
 	 * @RawSql
 	 */
-	protected function updateBookCountByCategories(OutputInterface $output, EntityManager $em)
-	{
+	protected function updateBookCountByCategories(OutputInterface $output, EntityManager $em) {
 		$output->writeln('Updating books count by categories');
 		$update = $this->maintenanceSql('UPDATE category c SET nr_of_books = (SELECT COUNT(*) FROM book WHERE category_id = c.id)');
 		$em->getConnection()->executeUpdate($update);
 	}
 
-
-	protected function executeUpdates($updates, \Doctrine\DBAL\Connection $connection)
-	{
+	protected function executeUpdates($updates, \Doctrine\DBAL\Connection $connection) {
 		$connection->beginTransaction();
 		foreach ($updates as $update) {
 			$connection->executeUpdate($update);
@@ -99,9 +89,7 @@ class CommonDbCommand extends ContainerAwareCommand
 		$connection->commit();
 	}
 
-
-	public function buildTextHeadersUpdateQuery($file, $textId, $headlevel)
-	{
+	public function buildTextHeadersUpdateQuery($file, $textId, $headlevel) {
 		require_once __DIR__ . '/../Legacy/SfbParserSimple.php';
 
 		$data = array();
@@ -121,25 +109,21 @@ class CommonDbCommand extends ContainerAwareCommand
 		return $qs;
 	}
 
-	public function printQueries($queries)
-	{
+	public function printQueries($queries) {
 		echo str_replace('*/;', '*/', implode(";\n", $queries) . ";\n");
 	}
 
-	public function webDir($file = null)
-	{
+	public function webDir($file = null) {
 		return __DIR__ . '/../../../web' . ($file ? "/$file" : '');
 	}
 
-	public function contentDir($file = null)
-	{
+	public function contentDir($file = null) {
 		return __DIR__ . '/../../../web/content' . ($file ? "/$file" : '');
 	}
 
 	private $_olddb;
-	/** @return mlDatabase */
-	protected function olddb()
-	{
+	/** @return \App\Legacy\mlDatabase */
+	protected function olddb() {
 		if ( ! $this->_olddb) {
 			Setup::doSetup($this->getContainer());
 			$this->_olddb = Setup::db();
@@ -147,13 +131,17 @@ class CommonDbCommand extends ContainerAwareCommand
 		return $this->_olddb;
 	}
 
-	private function maintenanceSql($sql)
-	{
+	/**
+	 * @param string $sql
+	 */
+	private function maintenanceSql($sql) {
 		return '/*MAINTENANCESQL*/'.$sql;
 	}
 
-	protected function getRepository($entityName)
-	{
+	/**
+	 * @param string $entityName
+	 */
+	protected function getRepository($entityName) {
 		if (strpos($entityName, ':') === false) {
 			$entityName = "App:$entityName";
 		}
@@ -161,8 +149,7 @@ class CommonDbCommand extends ContainerAwareCommand
 	}
 
 	/** @return \Doctrine\ORM\EntityManager */
-	protected function getEntityManager()
-	{
+	protected function getEntityManager() {
 		return $this->getContainer()->get('doctrine.orm.default_entity_manager');
 	}
 }

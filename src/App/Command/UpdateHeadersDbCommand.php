@@ -46,6 +46,10 @@ EOT
 	}
 
 
+	/**
+	 * @param string $texts
+	 * @param boolean $dumpSql
+	 */
 	protected function updateHeaders($texts, $dumpSql)
 	{
 		$queries = array();

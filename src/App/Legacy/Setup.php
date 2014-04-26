@@ -74,6 +74,9 @@ class Setup {
 	}
 
 
+	/**
+	 * @param string $settingName
+	 */
 	static public function setting($settingName)
 	{
 		return self::$config->getParameter($settingName);
@@ -115,6 +118,9 @@ class Setup {
 	}
 
 
+	/**
+	 * @param boolean $forceNew
+	 */
 	static private function setupOutputMaker($forceNew)
 	{
 		if ( $forceNew || ! isset(self::$outputMaker) ) {

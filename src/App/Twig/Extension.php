@@ -255,6 +255,10 @@ class Extension extends \Twig_Extension
 	}
 
 	// TODO unit test
+
+	/**
+	 * @param string $text
+	 */
 	public function formatLinks($text)
 	{
 		$patterns = array(

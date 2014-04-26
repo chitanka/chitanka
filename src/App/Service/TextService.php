@@ -1,5 +1,4 @@
-<?php
-namespace App\Service;
+<?php namespace App\Service;
 
 use App\Entity\Text;
 use App\Entity\User;
@@ -66,7 +65,6 @@ class TextService {
 		return $alikes;
 	}
 
-
 	/**
 	 * Get similar texts based ot readers count.
 	 * @param Text $text
@@ -100,13 +98,17 @@ class TextService {
 		return $texts;
 	}
 
-
-	private function filterSimilarByLabel(Text $text, $texts, $limit) {
+	/**
+	 * @param Text $text
+	 * @param array $textIds
+	 * @param int $limit   Return up to this limit number of texts
+	 */
+	private function filterSimilarByLabel(Text $text, $textIds, $limit) {
 		$qa = array(
 			'SELECT'   => 'text_id',
 			'FROM'     => DBT_TEXT_LABEL,
 			'WHERE'    => array(
-				'text_id' => array('IN', $texts),
+				'text_id' => array('IN', $textIds),
 				'label_id IN ('
 					. $this->legacyDb->selectQ(DBT_TEXT_LABEL, array('text_id' => $text->getId()), 'label_id')
 					. ')',

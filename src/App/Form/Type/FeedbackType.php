@@ -3,7 +3,6 @@ namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use App\Util\String;
 
 class FeedbackType extends AbstractType
 {

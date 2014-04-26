@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Util\Char;
 use App\Util\String;
@@ -15,8 +14,7 @@ class OutputMaker {
 		$argSeparator = '&',
 		$queryStart = '?';
 
-	public function textField($name, $id = '', $value = '', $size = 30,
-			$maxlength = 255, $tabindex = null, $title = '', $attrs = array()) {
+	public function textField($name, $id = '', $value = '', $size = 30, $maxlength = 255, $tabindex = null, $title = '', $attrs = array()) {
 		Legacy::fillOnEmpty($id, $name);
 		$attrs = array(
 			'type' => 'text', 'name' => $name, 'id' => $id,
@@ -26,8 +24,7 @@ class OutputMaker {
 		return $this->xmlElement('input', null, $attrs);
 	}
 
-	public function textarea($name, $id = '', $value = '', $rows = 5, $cols = 80,
-			$tabindex = null, $attrs = array()) {
+	public function textarea($name, $id = '', $value = '', $rows = 5, $cols = 80, $tabindex = null, $attrs = array()) {
 		Legacy::fillOnEmpty($id, $name);
 		$attrs = array(
 			'name' => $name, 'id' => $id,
@@ -36,8 +33,7 @@ class OutputMaker {
 		return $this->xmlElement('textarea', String::myhtmlentities($value), $attrs);
 	}
 
-	public function checkbox($name, $id = '', $checked = false, $label = '',
-			$value = null, $tabindex = null, $attrs = array()) {
+	public function checkbox($name, $id = '', $checked = false, $label = '', $value = null, $tabindex = null, $attrs = array()) {
 		Legacy::fillOnEmpty($id, $name);
 		$attrs = array(
 			'type' => 'checkbox', 'name' => $name, 'id' => $id,
@@ -50,13 +46,16 @@ class OutputMaker {
 		return $this->xmlElement('input', null, $attrs) . $label;
 	}
 
+	/**
+	 * @param string $name
+	 * @param string $value
+	 */
 	public function hiddenField($name, $value = '') {
 		$attrs = array('type' => 'hidden', 'name' => $name, 'value' => $value);
 		return $this->xmlElement('input', null, $attrs);
 	}
 
-	public function passField($name, $id = '', $value = '', $size = 30,
-			$maxlength = 255, $tabindex = null, $attrs = array()) {
+	public function passField($name, $id = '', $value = '', $size = 30, $maxlength = 255, $tabindex = null, $attrs = array()) {
 		Legacy::fillOnEmpty($id, $name);
 		$attrs = array(
 			'type' => 'password', 'name' => $name, 'id' => $id,
@@ -66,9 +65,7 @@ class OutputMaker {
 		return $this->xmlElement('input', null, $attrs);
 	}
 
-
-	public function fileField($name, $id = '', $tabindex = null,
-			$title = '', $attrs = array()) {
+	public function fileField($name, $id = '', $tabindex = null, $title = '', $attrs = array()) {
 		Legacy::fillOnEmpty($id, $name);
 		$attrs = array(
 			'type' => 'file', 'name' => $name, 'id' => $id,
@@ -77,14 +74,11 @@ class OutputMaker {
 		return $this->xmlElement('input', null, $attrs);
 	}
 
-
 	public function makeMaxFileSizeField() {
 		return $this->hiddenField('MAX_FILE_SIZE', Legacy::ini_bytes( ini_get('upload_max_filesize') ));
 	}
 
-
-	public function submitButton($value, $title = '', $tabindex = null,
-			$putname = true, $attrs = array()) {
+	public function submitButton($value, $title = '', $tabindex = null, $putname = true, $attrs = array()) {
 		$attrs = array(
 			'type' => 'submit', 'value' => $value, 'title' => $title,
 			'tabindex' => $tabindex
@@ -97,10 +91,7 @@ class OutputMaker {
 		return $this->xmlElement('input', null, $attrs);
 	}
 
-
-	public function selectBox($name, $id = '', $opts = array(), $selId = 0,
-			$tabindex = null, $attrs = array()) {
-
+	public function selectBox($name, $id = '', $opts = array(), $selId = 0, $tabindex = null, $attrs = array()) {
 		$o = '';
 		if ( ! is_array( $selId ) ) {
 			$selId = (array) $selId; // threat it as a multiple-select box
@@ -127,17 +118,20 @@ class OutputMaker {
 		return $this->xmlElement('select', $o, $attrs);
 	}
 
-
-	public function link(
-			$url, $text = '', $title = '', $attrs = array(), $args = array())
-	{
+	public function link($url, $text = '', $title = '', $attrs = array(), $args = array()) {
 		if ($text === '') $text = $url;
 		return $this->link_raw($url, $this->escape($text), $title, $attrs, $args);
 	}
 
-
-	public function link_raw($url, $text, $title = '', $attrs = array(),
-			$args = array()) {
+	/**
+	 * @param string $url
+	 * @param string $text
+	 * @param string $title
+	 * @param array $attrs
+	 * @param array $args
+	 * @return string
+	 */
+	public function link_raw($url, $text, $title = '', array $attrs = array(), array $args = array()) {
 		$q = array();
 		foreach ($args as $field => $value) {
 			$q[] = $field . Request::PARAM_SEPARATOR . $value;
@@ -150,21 +144,13 @@ class OutputMaker {
 		return $this->xmlElement('a', $text, $attrs);
 	}
 
-
-	public function listItem($item, $attrs = array())
-	{
+	public function listItem($item, $attrs = array()) {
 		return "\n\t" . $this->xmlElement('li', $item, $attrs);
 	}
 
-
-	public function image($url, $alt, $title = null, $attrs = array()) {
-		Legacy::fillOnNull($title, $alt);
-		$attrs = array(
-			'src' => $url, 'alt' => $alt, 'title' => $title
-		) + $attrs;
-		return $this->xmlElement('img', null, $attrs);
-	}
-
+	/**
+	 * @param string $text
+	 */
 	public function label($text, $for, $title = '', $attrs = array()) {
 		$attrs = array(
 			'for' => $for, 'title' => $title
@@ -172,9 +158,7 @@ class OutputMaker {
 		return $this->xmlElement('label', $text, $attrs);
 	}
 
-
-	public function ulist($items, $attrs = array())
-	{
+	public function ulist($items, $attrs = array()) {
 		$oitems = '';
 		foreach ($items as $item) {
 			if ( empty( $item ) ) {
@@ -193,24 +177,12 @@ class OutputMaker {
 		return $this->xmlElement('ul', $oitems, $attrs);
 	}
 
-
-	public function xmlElement($name, $content = '', $attrs = array(), $doEscape = true)
-	{
+	public function xmlElement($name, $content = '', $attrs = array(), $doEscape = true) {
 		$end = is_null($content) ? ' />' : ">$content</$name>";
 		return '<'.$name . $this->makeAttribs($attrs, $doEscape) . $end;
 	}
 
-
-	public function xmlElementOrNone($name, $content, $attrs = array(), $doEscape = true)
-	{
-		if ( empty($content) ) {
-			return '';
-		}
-		return $this->xmlElement($name, $content, $attrs, $doEscape);
-	}
-
-
-	public function makeAttribs($attrs, $doEscape = true) {
+	private function makeAttribs($attrs, $doEscape = true) {
 		$o = '';
 		foreach ($attrs as $attr => $value) {
 			$o .= $this->attrib($attr, $value, $doEscape);
@@ -218,7 +190,7 @@ class OutputMaker {
 		return $o;
 	}
 
-	public function attrib($attrib, $value, $doEscape = true) {
+	private function attrib($attrib, $value, $doEscape = true) {
 		if ( is_null($value) || ( empty($value) && $attrib == 'title' ) ) {
 			return '';
 		}
@@ -228,7 +200,6 @@ class OutputMaker {
 			. ( $doEscape ? String::myhtmlspecialchars($value) : $value )
 			.'"';
 	}
-
 
 	/**
 		Creates an HTML table.
@@ -279,18 +250,9 @@ class OutputMaker {
 		return $t.'</table>';
 	}
 
-
-
 	public function nextRowClass($curRowClass = '') {
 		return $curRowClass == 'even' ? 'odd' : 'even';
 	}
-
-
-	public function obfuscateEmail($email) {
-		return strtr($email,
-			array('@' => '&#160;<span title="при сървъра">(при)</span>&#160;'));
-	}
-
 
 	public function addUrlQuery($url, $args) {
 		if ( !empty($this->queryStart) && strpos($url, $this->queryStart) === false ) {
@@ -304,8 +266,7 @@ class OutputMaker {
 		return $url;
 	}
 
-
-	public function getArgSeparator($url = '') {
+	private function getArgSeparator($url = '') {
 		if ( empty($url) || strpos($url, $this->defArgSeparator) === false ) {
 			return $this->argSeparator;
 		}
@@ -321,7 +282,11 @@ class OutputMaker {
 		return String::myhtmlspecialchars( $s );
 	}
 
-	public function urlencode($str) {
+	/**
+	 * @param string $str
+	 * @return string
+	 */
+	private function urlencode($str) {
 		$enc = urlencode($str);
 		if ( strpos($str, '/') !== false ) {
 			$enc = strtr($enc, array('%2F' => '/'));
@@ -329,9 +294,12 @@ class OutputMaker {
 		return $enc;
 	}
 
-
-	public function slugify($name, $maxlength = 40)
-	{
+	/**
+	 * @param string $name
+	 * @param int $maxlength
+	 * @return string
+	 */
+	public function slugify($name, $maxlength = 40) {
 		$name = strtr($name, array(
 			' ' => '_', '/' => '_',
 			'²' => '2', '°' => 'deg',
@@ -348,25 +316,18 @@ class OutputMaker {
 		return $name;
 	}
 
-
-	public function getStartTag($elm, $attrs = array())
-	{
-		return '<'. $elm . $this->makeAttribs($attrs) . '>';
-	}
-
-	public function getEndTag($elm)
-	{
-		return '</'. $elm . '>';
-	}
-
-	public function getEmptyTag($elm, $attrs = array(), $xml = true)
-	{
+	/**
+	 * @param string $elm
+	 * @param array $attrs
+	 * @param bool $xml
+	 * @return string
+	 */
+	private function getEmptyTag($elm, array $attrs = array(), $xml = true) {
 		$end = $xml ? '/>' : ' />';
 		return '<'. $elm . $this->makeAttribs($attrs) . $end;
 	}
 
-	public function getRssLink($url, $title = '')
-	{
+	public function getRssLink($url, $title = '') {
 		return $this->getEmptyTag('link', array(
 			 'rel'   => 'alternate',
 			 'type'  => 'application/rss+xml',

@@ -1,14 +1,14 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Util\String;
 use App\Util\File;
+use App\Entity\Text;
 
-class EpubFile
-{
+class EpubFile {
+
 	protected $mainDir = 'OPS';
 	private
-		$text,
+		$obj,
 		$files = array(),
 		$items = array(
 			'pre' => array(),
@@ -17,9 +17,10 @@ class EpubFile
 		),
 		$curPlayOrder = 0;
 
-
-	public function __construct($text)
-	{
+	/**
+	 * @param Text $text
+	 */
+	public function __construct(Text $text) {
 		$this->obj = $text;
 
 		$this->containerFileName = 'container.xml';
@@ -36,55 +37,45 @@ class EpubFile
 		$this->addFile('stylesheet', $this->cssFileName, 'text/css');
 	}
 
-	public function getMimetypeFile()
-	{
+	public function getMimetypeFile() {
 		return array(
 			'name'    => 'mimetype',
 			'content' => 'application/epub+zip',
 		);
 	}
 
-
-	public function getContainerFile()
-	{
+	public function getContainerFile() {
 		return array(
 			'name'    => "META-INF/$this->containerFileName",
 			'content' => $this->getContainerFileContent(),
 		);
 	}
 
-	public function getContainerFileContent()
-	{
+	public function getContainerFileContent() {
 		return $this->getTemplate($this->containerFileName, array(
 			'ROOTFILE' => "$this->mainDir/$this->contentFileName"
 		));
 	}
 
-
-	public function getCssFile()
-	{
+	public function getCssFile() {
 		return array(
 			'name'    => "$this->mainDir/$this->cssFileName",
 			'content' => $this->getCssFileContent(),
 		);
 	}
 
-	public function getCssFileContent()
-	{
+	public function getCssFileContent() {
 		return $this->getTemplate($this->cssFileName);
 	}
 
-
-	public function getTocFile()
-	{
+	public function getTocFile() {
 		return array(
 			'name'    => "$this->mainDir/$this->tocFileName",
 			'content' => $this->getTocFileContent(),
 		);
 	}
 
-	public function getTocFileContent()
-	{
+	public function getTocFileContent() {
 		return $this->getTemplate($this->tocFileName, array(
 			'LANG'       => $this->obj->getLang(),
 			'ID'         => $this->obj->getDocId(),
@@ -96,14 +87,11 @@ class EpubFile
 		));
 	}
 
-
-	public function getNavPointTags()
-	{
+	public function getNavPointTags() {
 		return $this->getPreNavPointTags() . $this->getMainNavPointTags() . $this->getPostNavPointTags();
 	}
 
-	protected function getMainNavPointTags()
-	{
+	protected function getMainNavPointTags() {
 		$headers = strtr($this->obj->getHeadersAsNestedXml(false), array(
 			'</li>' => '</navPoint>',
 			'<ul>' => '', '</ul>' => '',
@@ -121,18 +109,18 @@ class EpubFile
 		return $headers;
 	}
 
-	protected function getPreNavPointTags()
-	{
+	protected function getPreNavPointTags() {
 		return $this->getExtraNavPointTags('pre');
 	}
 
-	protected function getPostNavPointTags()
-	{
+	protected function getPostNavPointTags() {
 		return $this->getExtraNavPointTags('post');
 	}
 
-	protected function getExtraNavPointTags($type)
-	{
+	/**
+	 * @param string $type
+	 */
+	protected function getExtraNavPointTags($type) {
 		$tags = array();
 		foreach ($this->items[$type] as $href => $title) {
 			$this->curPlayOrder++;
@@ -144,16 +132,14 @@ class EpubFile
 	}
 
 
-	public function getContentFile()
-	{
+	public function getContentFile() {
 		return array(
 			'name'    => "$this->mainDir/$this->contentFileName",
 			'content' => $this->getContentFileContent(),
 		);
 	}
 
-	public function getContentFileContent()
-	{
+	public function getContentFileContent() {
 		return $this->getTemplate($this->contentFileName, array(
 			'TITLE'          => htmlspecialchars($this->obj->getTitles()),
 			'AUTHOR'         => $this->getAuthorTags(),
@@ -169,15 +155,11 @@ class EpubFile
 		));
 	}
 
-
-	public function getPublisher()
-	{
+	public function getPublisher() {
 		return 'Моята библиотека (http://chitanka.info)';
 	}
 
-
-	public function getAuthorTags()
-	{
+	public function getAuthorTags() {
 		$tags = array();
 
 		if ($this->obj->getType() == 'book') {
@@ -189,8 +171,7 @@ class EpubFile
 		return implode("\n", $tags);
 	}
 
-	public function getTextAuthorTags()
-	{
+	public function getTextAuthorTags() {
 		$tags = array();
 		foreach ($this->obj->getAuthors() as $author) {
 			$tags[] = self::getCreatorTag($author->getName(), 'aut');
@@ -199,8 +180,7 @@ class EpubFile
 		return $tags;
 	}
 
-	public function getBookAuthorTags()
-	{
+	public function getBookAuthorTags() {
 		$tags = array();
 		foreach ($this->obj->getMainAuthors() as $author) {
 			$tags[] = self::getCreatorTag($author['name'], 'aut');
@@ -217,22 +197,25 @@ class EpubFile
 		return $tags;
 	}
 
-
-	static public function getCreatorTag($name, $role)
-	{
+	/**
+	 * @param string $name
+	 * @param string $role
+	 */
+	static public function getCreatorTag($name, $role) {
 		return sprintf('<dc:creator opf:file-as="%s" opf:role="%s">%s</dc:creator>',
 			String::getMachinePersonName($name), $role, $name);
 	}
 
-	static public function getContributorTag($name, $role)
-	{
+	/**
+	 * @param string $name
+	 * @param string $role
+	 */
+	static public function getContributorTag($name, $role) {
 		return sprintf('<dc:contributor opf:file-as="%s" opf:role="%s">%s</dc:contributor>',
 			String::getMachinePersonName($name), $role, $name);
 	}
 
-
-	public function getSubjectTags()
-	{
+	public function getSubjectTags() {
 		$tags = array();
 		foreach ($this->obj->getLabels() as $label) {
 			$tags[] = "<dc:subject>$label</dc:subject>";
@@ -241,8 +224,7 @@ class EpubFile
 		return implode("\n", $tags);
 	}
 
-	public function getContributorTags()
-	{
+	public function getContributorTags() {
 		$tags = array();
 		foreach ($this->obj->getTranslators() as $translator) {
 			$tags[] = self::getContributorTag($translator->getName(), 'trl');
@@ -251,9 +233,7 @@ class EpubFile
 		return implode("\n", $tags);
 	}
 
-
-	public function getDateTags()
-	{
+	public function getDateTags() {
 		$tags = array();
 		if ( ($year = $this->obj->getYear()) > 0 ) {
 			$tags[] = sprintf('<dc:date opf:event="original-publication">%04d</dc:date>', $year);
@@ -266,8 +246,7 @@ class EpubFile
 		return implode("\n", $tags);
 	}
 
-	public function getRevisionTags()
-	{
+	public function getRevisionTags() {
 		$tags = array();
 		foreach ($this->obj->getHistoryInfo() as $rev) {
 			$tags[] = sprintf('<dc:date opf:event="chitanka-%s">%s</dc:date>',
@@ -278,8 +257,7 @@ class EpubFile
 		return implode("\n", $tags);
 	}
 
-	public function getManifestItemTags()
-	{
+	public function getManifestItemTags() {
 		$tags = array();
 
 		foreach ($this->files as $id => $data) {
@@ -294,8 +272,7 @@ class EpubFile
 		return implode("\n", $tags);
 	}
 
-	public function getSpineItems()
-	{
+	public function getSpineItems() {
 		$tags = array();
 
 		for ($i = 1, $c = count($this->getItems()); $i <= $c; $i++) {
@@ -305,9 +282,11 @@ class EpubFile
 		return implode("\n", $tags);
 	}
 
-
-	public function getItems($plain = true)
-	{
+	/**
+	 * @param bool $plain
+	 * @return array
+	 */
+	public function getItems($plain = true) {
 		$items = $this->items;
 		if ($plain) {
 			$items = array_merge($items['pre'], $items['main'], $items['post']);
@@ -316,35 +295,36 @@ class EpubFile
 		return $items;
 	}
 
-
-	public function getCoverFileName()
-	{
+	public function getCoverFileName() {
 		return "$this->mainDir/cover";
 	}
 
-	public function getBackCoverFileName()
-	{
+	public function getBackCoverFileName() {
 		return "$this->mainDir/back-cover";
 	}
 
-	public function getImagesDir($full = true)
-	{
+	/**
+	 * @param bool $full
+	 * @return string
+	 */
+	public function getImagesDir($full = true) {
 		return $full ? "$this->mainDir/$this->imagesDir" : $this->imagesDir;
 	}
 
-
-	public function getCoverPageFile()
-	{
+	public function getCoverPageFile() {
 		return $this->_getCoverPageFile('cover', 'Корица');
 	}
 
-	public function getBackCoverPageFile()
-	{
+	public function getBackCoverPageFile() {
 		return $this->_getCoverPageFile('back-cover', 'Задна корица');
 	}
 
-	protected function _getCoverPageFile($key, $title)
-	{
+	/**
+	 * @param string $key
+	 * @param string $title
+	 * @return array
+	 */
+	protected function _getCoverPageFile($key, $title) {
 		$content = $this->_getCoverPageFileContent($key, $title);
 		if ( empty($content) ) {
 			return null;
@@ -357,8 +337,12 @@ class EpubFile
 		);
 	}
 
-	protected function _getCoverPageFileContent($key, $alt)
-	{
+	/**
+	 * @param string $key
+	 * @param string $alt
+	 * @return string
+	 */
+	protected function _getCoverPageFileContent($key, $alt) {
 		if ( ! isset($this->files[$key]) ) {
 			return '';
 		}
@@ -367,9 +351,7 @@ class EpubFile
 		return sprintf('<div id="cover-page" class="standalone"><img src="%s" alt="%s"/></div>', $cover, $alt);
 	}
 
-
-	public function getTitlePageFile()
-	{
+	public function getTitlePageFile() {
 		return array(
 			'name'    => "$this->mainDir/$this->titlePageFileName",
 			'content' => $this->getXhtmlContent($this->getTitlePageFileContent()),
@@ -377,8 +359,7 @@ class EpubFile
 		);
 	}
 
-	public function getTitlePageFileContent()
-	{
+	public function getTitlePageFileContent() {
 		if ( ($series = $this->obj->getPlainSeriesInfo()) ) {
 			$series = sprintf('<p class="series-info">%s</p>', $series);
 		}
@@ -395,9 +376,7 @@ class EpubFile
 		));
 	}
 
-
-	public function getCreditsFile()
-	{
+	public function getCreditsFile() {
 		return array(
 			'name'    => "$this->mainDir/$this->creditsPageFileName",
 			'content' => $this->getXhtmlContent($this->getCreditsFileContent()),
@@ -405,14 +384,11 @@ class EpubFile
 		);
 	}
 
-	public function getCreditsFileContent()
-	{
+	public function getCreditsFileContent() {
 		return $this->getTemplate($this->creditsPageFileName);
 	}
 
-
-	public function getAnnotation()
-	{
+	public function getAnnotation() {
 		$xhtml = $this->obj->getAnnotationAsXhtml($this->getImagesDir(false));
 		if ( empty($xhtml) ) {
 			return null;
@@ -426,9 +402,7 @@ class EpubFile
 		);
 	}
 
-
-	public function getExtraInfo()
-	{
+	public function getExtraInfo() {
 		$xhtml = $this->obj->getExtraInfoAsXhtml($this->getImagesDir(false));
 		if ( empty($xhtml) ) {
 			return null;
@@ -442,9 +416,10 @@ class EpubFile
 		);
 	}
 
-
-	public function getXhtmlContent($content, $title = null)
-	{
+	/**
+	 * @param string $title
+	 */
+	public function getXhtmlContent($content, $title = null) {
 		if ( is_null($title) ) {
 			$title = $this->obj->getTitles();
 		} else {
@@ -460,11 +435,10 @@ class EpubFile
 	}
 
 	/**
-	* @param string $template  File name
-	* @param array  $data      Key-value pairs for replacement
-	*/
-	protected function getTemplate($template, $data = array())
-	{
+	 * @param string $template  File name
+	 * @param array  $data      Key-value pairs for replacement
+	 */
+	protected function getTemplate($template, $data = array()) {
 		$file = $this->templateDir . '/'. $template;
 		if ( ! file_exists($file) ) {
 			throw new \Exception("$file does not exist.");
@@ -479,19 +453,20 @@ class EpubFile
 		return empty($data) ? $content : strtr($content, $data);
 	}
 
-
-	public function addCover($file)
-	{
+	public function addCover($file) {
 		$this->addFile('cover', $file);
 	}
 
-	public function addBackCover($file)
-	{
+	public function addBackCover($file) {
 		$this->addFile('back-cover', $file);
 	}
 
-	public function addFile($id, $href, $mimeType = null)
-	{
+	/**
+	 * @param string $id
+	 * @param string $href
+	 * @param string $mimeType
+	 */
+	public function addFile($id, $href, $mimeType = null) {
 		$href = str_replace("$this->mainDir/", '', $href);
 		if (is_null($mimeType)) {
 			$mimeType = File::guessMimeType($href);
@@ -499,46 +474,62 @@ class EpubFile
 		$this->files[$id] = array($href, $mimeType);
 	}
 
-
-	public function addItem($href, $title = '', $type = 'main')
-	{
+	/**
+	 * @param string $href
+	 * @param string $title
+	 * @param string $type
+	 */
+	public function addItem($href, $title = '', $type = 'main') {
 		$href = str_replace("$this->mainDir/", '', $href);
 		$this->items[$type][$href] = $title;
 	}
 
-
-	public function getItemFileName($id, $full = true)
-	{
+	/**
+	 * @param string $id
+	 * @param bool $full
+	 */
+	public function getItemFileName($id, $full = true) {
 		return $full
 			? sprintf('%s/chapter-%s.xhtml', $this->mainDir, $id)
 			: sprintf('chapter-%s.xhtml', $id);
 	}
 
-
-	public function fixContent($content)
-	{
+	/**
+	 * @param string $content
+	 * @return string
+	 */
+	public function fixContent($content) {
 		$content = $this->fixChitankaLinks($content);
 		$content = $this->removeImageLinks($content);
 
 		return $content;
 	}
 
-	public function fixChitankaLinks($content)
-	{
+	/**
+	 * @param string $content
+	 * @return string
+	 */
+	public function fixChitankaLinks($content) {
 		return preg_replace('/href="(\d+)"/', 'href="http://chitanka.info/text/$1"', $content);
 	}
 
-	public function removeImageLinks($content)
-	{
+	/**
+	 * @param string $content
+	 * @return string
+	 */
+	public function removeImageLinks($content) {
 		$content = preg_replace('!<a [^>]+>(<img [^>]+>)</a>!', '$1', $content);
 		$content = preg_replace('!<a href="[^"]+" class="zoom"[^]]+>(<span class="image-title">[^<]+</span>)</a>!U', '$1', $content);
 
 		return $content;
 	}
 
-
-	public function relocateUrls($content, $target)
-	{
+	/**
+	 * @param string $content
+	 * @param string $target
+	 * @return string
+	 */
+	public function relocateUrls($content, $target) {
 		$target = str_replace("$this->mainDir/", '', $target);
 		return strtr($content, array(
 			'href="#' => sprintf('href="%s#', $target)

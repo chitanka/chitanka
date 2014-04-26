@@ -20,10 +20,18 @@ class WikiEngine {
 	private $wikiPath;
 	private $repo;
 
+	/**
+	 * @param string $wikiPath
+	 */
 	public function __construct($wikiPath) {
 		$this->wikiPath = $wikiPath;
 	}
 
+	/**
+	 * @param string $filename
+	 * @param bool $withAncestors
+	 * @return WikiPage
+	 */
 	public function getPage($filename, $withAncestors = true) {
 		$filename = $this->sanitizeFileName($filename);
 		try {
@@ -37,6 +45,9 @@ class WikiEngine {
 		return $page;
 	}
 
+	/**
+	 * @param string $filename
+	 */
 	public function getAncestors($filename) {
 		$ancestors = array();
 		if (strpos($filename, '/') !== false) {
@@ -69,6 +80,9 @@ class WikiEngine {
 		return $commits;
 	}
 
+	/**
+	 * @param string $filename
+	 */
 	protected function getPageSections($filename) {
 		$fullpath = $this->getFullPath($filename);
 		if (!file_exists($fullpath)) {
@@ -111,6 +125,12 @@ class WikiPage {
 	private $metadata;
 	private $ancestors = array();
 
+	/**
+	 * @param string $name
+	 * @param string $content
+	 * @param string $metadata
+	 * @param WikiPage[] $ancestors
+	 */
 	public function __construct($name, $content, $metadata, $ancestors) {
 		$this->name = $name;
 		if (strpos($this->name, '.') !== false) {
@@ -156,6 +176,10 @@ class WikiPage {
 		return count($this->ancestors);
 	}
 
+	/**
+	 * @param string $key
+	 * @param string $default
+	 */
 	protected function getMetadata($key, $default = null) {
 		if (preg_match("/$key: (.+)/", $this->metadata, $matches)) {
 			return trim($matches[1]);

@@ -36,6 +36,9 @@ class SqlFileProcessor {
 		$this->filename = $filename;
 	}
 
+	/**
+	 * @param Closure $callback
+	 */
 	public function walkThruQueries($callback = null) {
 		$reader = new FileLineReader($this->filename);
 		$queries = array();
@@ -64,10 +67,16 @@ class SqlFileProcessor {
 		return $queries;
 	}
 
+	/**
+	 * @param string $line
+	 */
 	private function isComment($line) {
 		return strpos($line, '--') === 0;
 	}
 
+	/**
+	 * @param string $line
+	 */
 	private function isInternMysqlQuery($line) {
 		return strpos($line, '/*') === 0;
 	}

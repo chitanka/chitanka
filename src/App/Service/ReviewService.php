@@ -4,6 +4,10 @@ use App\Legacy\Legacy;
 
 class ReviewService {
 
+	/**
+	 * @param integer $limit
+	 * @param bool $random
+	 */
 	public static function getReviews($limit = null, $random = false) {
 		$reviews = array();
 		$feedUrl = 'http://blog.chitanka.info/section/reviews/feed';
@@ -38,6 +42,9 @@ class ReviewService {
 		return $reviews;
 	}
 
+	/**
+	 * @param bool $random
+	 */
 	public static function getReview($random = false) {
 		$reviews = self::getReviews(1, $random);
 		return $reviews ? $reviews[0] : null;

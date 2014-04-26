@@ -1,18 +1,23 @@
-<?php
-namespace App\Service;
+<?php namespace App\Service;
 
-class FileUpdater
-{
+class FileUpdater {
+
 	protected $rootDir;
 	protected $updateDir;
 
+	/**
+	 * @param string $rootDir
+	 * @param string $updateDir
+	 */
 	public function __construct($rootDir, $updateDir) {
 		$this->rootDir = $rootDir;
 		$this->updateDir = $updateDir;
 	}
 
-	public function extractArchive(\ZipArchive $zip)
-	{
+	/**
+	 * @param \ZipArchive $zip
+	 */
+	public function extractArchive(\ZipArchive $zip) {
 		$extractDir = sys_get_temp_dir().'/chitanka-'.uniqid();
 		mkdir($extractDir);
 		$zip->extractTo($extractDir);
@@ -29,12 +34,14 @@ class FileUpdater
 		copy("$extractDir/.last", "$this->updateDir/.last");
 	}
 
-	protected function onAfterExtract(\ZipArchive $zip, $extractDir)
-	{
+	/**
+	 * @param \ZipArchive $zip
+	 * @param string $extractDir
+	 */
+	protected function onAfterExtract(\ZipArchive $zip, $extractDir) {
 	}
 
-	public function rmdir($path)
-	{
+	public function rmdir($path) {
 		if ( ! file_exists($path)) {
 			return false;
 		}

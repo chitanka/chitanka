@@ -29,6 +29,9 @@ class SourceUpdater extends FileUpdater
 		}
 	}
 
+	/**
+	 * @return string
+	 */
 	private function frontControllerName()
 	{
 		return "$this->rootDir/web/index.php";

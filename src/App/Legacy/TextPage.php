@@ -1,10 +1,6 @@
 <?php
 namespace App\Legacy;
 
-use App\Util\String;
-use App\Util\File;
-use App\Entity\Text;
-
 class TextPage extends Page {
 
 	public function getTextPartContent()

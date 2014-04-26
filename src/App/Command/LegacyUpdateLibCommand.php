@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -11,11 +9,9 @@ use App\Legacy\Legacy;
 use App\Util\String;
 use App\Util\File;
 
-class LegacyUpdateLibCommand extends CommonDbCommand
-{
+class LegacyUpdateLibCommand extends CommonDbCommand {
 
-	protected function configure()
-	{
+	protected function configure() {
 		parent::configure();
 
 		$this
@@ -32,17 +28,9 @@ EOT
 	}
 
 	/**
-	 * Executes the current command.
-	 *
-	 * @param InputInterface  $input  An InputInterface instance
-	 * @param OutputInterface $output An OutputInterface instance
-	 *
-	 * @return integer 0 if everything went fine, or an error code
-	 *
-	 * @throws \LogicException When this abstract class is not implemented
+	 * {@inheritdoc}
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->saveFiles = $input->getOption('save') === true;
 		$this->dumpSql = $input->getOption('dump-sql') === true;
 		$this->defineVars();
@@ -58,8 +46,7 @@ EOT
 	}
 
 
-	private function defineVars()
-	{
+	private function defineVars() {
 		Setup::doSetup($this->getContainer());
 		$this->db = Setup::db();
 		$this->overwrite = true; // overwrite existing files?
@@ -96,8 +83,7 @@ EOT
 		$this->books = array();
 	}
 
-	function conquerTheWorld(InputInterface $input, OutputInterface $output, $em)
-	{
+	private function conquerTheWorld(InputInterface $input, OutputInterface $output, $em) {
 		$file = $input->getArgument('input');
 		$contents = file_get_contents($file);
 		if (strpos($contents, "\t") === false) {
@@ -110,11 +96,7 @@ EOT
 		return array($queries, $this->errors);
 	}
 
-
-
-
-	function insertManyFromManyFiles(array $files)
-	{
+	private function insertManyFromManyFiles(array $files) {
 		$queries = array();
 
 		foreach ($files as $file) {
@@ -140,9 +122,7 @@ EOT
 		return $queries;
 	}
 
-
-	function insertManyFromOneFile($file)
-	{
+	private function insertManyFromOneFile($file) {
 		$fp = fopen($file, 'r') or die("$file не съществува.\n");
 
 		$queries = array();
@@ -211,17 +191,14 @@ EOT
 	}
 
 
-	/*
-		the big, messy processing unit.
-		has side effects
-
-		@param $avars Variables for the current text.
-			Should have at least following keys:
-			- textContent
-			- title
-	*/
-	private function insertCurrentText(array $avars)
-	{
+	/**
+	 * The big, messy processing unit. Has side effects.
+	 * @param array $avars Variables for the current text.
+	 *                     Should have at least following keys:
+	 *                       - textContent
+	 *                       - title
+	 */
+	private function insertCurrentText(array $avars) {
 		extract($avars);
 
 		list($newCont, $vars) = $this->popvars($textContent);
@@ -432,9 +409,12 @@ EOT
 		return $qs;
 	}
 
-
-	public function makeUpdateChunkQuery($file, $textId, $headlevel)
-	{
+	/**
+	 * @param string $file
+	 * @param int $textId
+	 * @param int $headlevel
+	 */
+	public function makeUpdateChunkQuery($file, $textId, $headlevel) {
 		require_once __DIR__ . '/../Legacy/SfbParserSimple.php';
 
 		$data = array();
@@ -454,21 +434,23 @@ EOT
 		return $qs;
 	}
 
-
-	private function createAnnoFile($textId, $content, $saveFiles = false, $dir = 'text-anno')
-	{
+	/**
+	 * @param int $textId
+	 * @param string $content
+	 * @param bool $saveFiles
+	 * @param string $dir
+	 */
+	private function createAnnoFile($textId, $content, $saveFiles = false, $dir = 'text-anno') {
 		return $this->createExtraFile($textId, $content, "$this->contentDir/$dir/",
 			\Sfblib_SfbConverter::ANNO_S, \Sfblib_SfbConverter::ANNO_E, $saveFiles);
 	}
 
-	private function createInfoFile($textId, $content, $saveFiles = false, $dir = 'text-info')
-	{
+	private function createInfoFile($textId, $content, $saveFiles = false, $dir = 'text-info') {
 		return $this->createExtraFile($textId, $content, "$this->contentDir/$dir/",
 			\Sfblib_SfbConverter::INFO_S, \Sfblib_SfbConverter::INFO_E, $saveFiles);
 	}
 
-	private function createExtraFile($textId, $content, $dir, $startTag, $endTag, $saveFiles = false)
-	{
+	private function createExtraFile($textId, $content, $dir, $startTag, $endTag, $saveFiles = false) {
 		/* preg_* functions do not work correctly with big strings */
 
 		$startPos = strpos($content, $startTag);
@@ -493,7 +475,6 @@ EOT
 		return $content;
 	}
 
-
 	private function popvars($text) {
 		$vars = array();
 		$re = '/\t?\$(\w+)=(.*)\n/';
@@ -510,14 +491,16 @@ EOT
 		return array($text, $vars);
 	}
 
-
 	private $_curIds = array();
 	private $_ids = array(
 		'text' => array(),
 		'book' => array(),
 	);
-	private function getNextId($table)
-	{
+
+	/**
+	 * @param string $table
+	 */
+	private function getNextId($table) {
 		if (isset($this->_ids[$table]) && count($this->_ids[$table])) {
 			return array_shift($this->_ids[$table]);
 		}
@@ -530,8 +513,7 @@ EOT
 		return $this->_curIds[$table];
 	}
 
-	private function getPersonId($personName)
-	{
+	private function getPersonId($personName) {
 		$id = $this->db->getFields(DBT_PERSON, array('slug' => trim($personName)), 'id');
 
 		if ( empty($id) ) {
@@ -541,8 +523,7 @@ EOT
 		return $id;
 	}
 
-	private function getSeriesId($name)
-	{
+	private function getSeriesId($name) {
 		$id = $this->db->getFields(DBT_SERIES, array('slug' => trim($name)), 'id');
 
 		if ( empty($id) ) {
@@ -552,8 +533,7 @@ EOT
 		return $id;
 	}
 
-	private function getUserId($userName)
-	{
+	private function getUserId($userName) {
 		$id = $this->db->getFields(DBT_USER, array('username' => $userName), 'id');
 
 		if ( empty($id) ) {
@@ -563,34 +543,39 @@ EOT
 		return $id;
 	}
 
-
-	private function clearHeadline($headline)
-	{
+	/**
+	 * @param string $headline
+	 */
+	private function clearHeadline($headline) {
 		return trim($headline, " \n\t>|");
 		#return strtr($headline, array("|\t" => '', "\n" => ''));
 	}
 
-	private function isHeaderLine($line)
-	{
+	/**
+	 * @param string $line
+	 */
+	private function isHeaderLine($line) {
 		return $line[0] == '>' && $line[1] == "\t";
 	}
 
-	private function isBookHeaderLine($line)
-	{
+	/**
+	 * @param string $line
+	 */
+	private function isBookHeaderLine($line) {
 		return $line[0] == '+';
 	}
 
 	/** move headers one niveau up */
-	private function moveHeadersUp($content)
-	{
+	private function moveHeadersUp($content) {
 		$content = preg_replace('/^>(>+)/', '$1', $content);
 
 		return $content;
 	}
 
-
-	private function getFirstNonEmptyFileLine($fp)
-	{
+	/**
+	 * @param resource $fp
+	 */
+	private function getFirstNonEmptyFileLine($fp) {
 		while ( ! feof($fp) ) {
 			$line = fgets($fp);
 			$line = trim($line);
@@ -601,9 +586,10 @@ EOT
 		return $line;
 	}
 
-
-	private function getFileContentTillEnd($fp)
-	{
+	/**
+	 * @param resource $fp
+	 */
+	private function getFileContentTillEnd($fp) {
 		$content = '';
 		while ( !feof($fp) ) {
 			$content .= fgets($fp);

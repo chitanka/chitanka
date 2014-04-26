@@ -1,11 +1,8 @@
-<?php
-
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Util\Fb2Validator;
 use Doctrine\ORM\EntityManager;
@@ -13,13 +10,12 @@ use App\Entity\Text;
 use App\Entity\Book;
 use App\Legacy\Setup;
 
-class ValidateFb2Command extends ContainerAwareCommand
-{
+class ValidateFb2Command extends ContainerAwareCommand {
+
 	/** @var EntityManager */
 	private $em;
 
-	protected function configure()
-	{
+	protected function configure() {
 		parent::configure();
 
 		$command = 'lib:validate-fb2';
@@ -50,17 +46,9 @@ EOT
 	}
 
 	/**
-	 * Executes the current command.
-	 *
-	 * @param InputInterface  $input  An InputInterface instance
-	 * @param OutputInterface $output An OutputInterface instance
-	 *
-	 * @return integer 0 if everything went fine, or an error code
-	 *
-	 * @throws \LogicException When this abstract class is not implemented
+	 * {@inheritdoc}
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->output = $output;
 
@@ -71,8 +59,7 @@ EOT
 		$this->validateBooks($bookIds);
 	}
 
-	private function parseInputIds($inputIds)
-	{
+	private function parseInputIds($inputIds) {
 		$ids = array(
 			'text' => array(),
 			'book' => array(),
@@ -96,18 +83,19 @@ EOT
 		return array_values($ids);
 	}
 
-	private function validateTexts($textIds)
-	{
+	private function validateTexts($textIds) {
 		$this->validateWorks($textIds, 'Text');
 	}
 
-	private function validateBooks($bookIds)
-	{
+	private function validateBooks($bookIds) {
 		$this->validateWorks($bookIds, 'Book');
 	}
 
-	private function validateWorks($workIds, $entity)
-	{
+	/**
+	 * @param array $workIds
+	 * @param string $entity
+	 */
+	private function validateWorks($workIds, $entity) {
 		foreach ($workIds as $workId) {
 			$work = $this->em->getRepository("App:$entity")->find($workId);
 			if (!$work) {
@@ -125,8 +113,11 @@ EOT
 		}
 	}
 
-	private function saveFileInTmpDir($filename, $contents)
-	{
+	/**
+	 * @param string $filename
+	 * @param string $contents
+	 */
+	private function saveFileInTmpDir($filename, $contents) {
 		file_put_contents(sys_get_temp_dir().'/'.$filename, $contents);
 	}
 }

@@ -1,21 +1,16 @@
-<?php
-
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use App\Service\Mutex;
-use App\Service\DbUpdater;
 use App\Service\FileUpdater;
 use App\Service\SourceUpdater;
 
-class AutoUpdateCommand extends CommonDbCommand
-{
-	protected function configure()
-	{
+class AutoUpdateCommand extends CommonDbCommand {
+
+	protected function configure() {
 		parent::configure();
 
 		$this
@@ -31,8 +26,10 @@ EOT
 		);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->output = $output;
 
 		$container = $this->getContainer();
@@ -60,8 +57,12 @@ EOT
 		$output->writeln('Done.');
 	}
 
-	private function executeDbUpdate($fetchUrl, $updateDir)
-	{
+	/**
+	 * @param string $fetchUrl
+	 * @param string $updateDir
+	 * @return boolean
+	 */
+	private function executeDbUpdate($fetchUrl, $updateDir) {
 		$zip = $this->fetchUpdate($fetchUrl, $updateDir, date('Y-m-d/1'));
 		if ( ! $zip) {
 			return false;
@@ -78,8 +79,7 @@ EOT
 		return true;
 	}
 
-	private function createSqlImporter()
-	{
+	private function createSqlImporter() {
 		$c = $this->getContainer();
 		require_once $c->getParameter('kernel.root_dir').'/../maintenance/sql_importer.lib.php';
 
@@ -96,8 +96,7 @@ EOT
 		return new \SqlImporter($dsn, $dbuser, $dbpassword);
 	}
 
-	private function deleteRemovedNoticesIfDisallowed()
-	{
+	private function deleteRemovedNoticesIfDisallowed() {
 		$c = $this->getContainer();
 		$param = 'allow_removed_notice';
 		if ($c->hasParameter($param) && $c->getParameter($param) === false) {
@@ -107,8 +106,13 @@ EOT
 		}
 	}
 
-	private function executeContentUpdate($fetchUrl, $updateDir, $contentDir)
-	{
+	/**
+	 * @param string $fetchUrl
+	 * @param string $updateDir
+	 * @param string $contentDir
+	 * @return boolean
+	 */
+	private function executeContentUpdate($fetchUrl, $updateDir, $contentDir) {
 		$zip = $this->fetchUpdate($fetchUrl, $updateDir, time());
 		if ( ! $zip) {
 			return false;
@@ -118,8 +122,13 @@ EOT
 		return true;
 	}
 
-	private function executeSrcUpdate($fetchUrl, $updateDir, $rootDir)
-	{
+	/**
+	 * @param string $fetchUrl
+	 * @param string $updateDir
+	 * @param string $contentDir
+	 * @return boolean
+	 */
+	private function executeSrcUpdate($fetchUrl, $updateDir, $rootDir) {
 		$zip = $this->fetchUpdate($fetchUrl, $updateDir, time());
 		if ( ! $zip) {
 			return false;
@@ -133,8 +142,7 @@ EOT
 		return true;
 	}
 
-	private function clearAppCache()
-	{
+	private function clearAppCache() {
 		$cacheDir = $this->getApplication()->getKernel()->getCacheDir();
 		$cacheDirOld = $cacheDir.'_old_'.time();
 		$fs = new \Symfony\Component\Filesystem\Filesystem;
@@ -149,20 +157,26 @@ EOT
 		}
 	}
 
-	private function runCommand($commandName)
-	{
+	/**
+	 * @param string $commandName
+	 */
+	private function runCommand($commandName) {
 		$php = isset($_SERVER['_']) ? $_SERVER['_'] : PHP_BINDIR.'/php'; // PHP_BINARY available since 5.4
 		$rootDir = $this->getApplication()->getKernel()->getRootDir();
 		$environment = $this->getApplication()->getKernel()->getEnvironment();
 		shell_exec("$php $rootDir/console $commandName --env=$environment");
 	}
 
-	/** @return \ZipArchive */
-	private function fetchUpdate($fetchUrl, $updateDir, $now)
-	{
+	/**
+	 * @param string $fetchUrl
+	 * @param string $updateDir
+	 * @param string $now
+	 * @return boolean
+	 */
+	private function fetchUpdate($fetchUrl, $updateDir, $now) {
 		$url = $this->prepareFetchUrl($fetchUrl, $updateDir, $now);
 		if ($url == null) {
-			return false;
+			return null;
 		}
 		$this->output->writeln("Fetching update from $url");
 
@@ -170,20 +184,25 @@ EOT
 			$response = $this->downloadUpdate($url, $updateDir);
 		} catch (\RuntimeException $e) {
 			error_log("fetch error by $url ({$e->getMessage()})");
-			return false;
+			return null;
 		}
 		if ($response->isRedirection()) { // most probably not modified - 304
-			return false;
+			return null;
 		}
 		if ( ! $response->isSuccessful()) {
 			error_log("fetch error by $url (code {$response->getStatusCode()})");
-			return false;
+			return null;
 		}
 		return $this->initZipFileFromContent($response->getContent());
 	}
 
-	private function prepareFetchUrl($fetchUrl, $updateDir, $now)
-	{
+	/**
+	 * @param string $fetchUrl
+	 * @param string $updateDir
+	 * @param string $now
+	 * @return string
+	 */
+	private function prepareFetchUrl($fetchUrl, $updateDir, $now) {
 		$lastmodFile = "$updateDir/.last";
 		if ( ! file_exists($lastmodFile)) {
 			file_put_contents($lastmodFile, $now);
@@ -193,8 +212,12 @@ EOT
 		return "$fetchUrl/$lastmod";
 	}
 
-	private function downloadUpdate($url, $updateDir)
-	{
+	/**
+	 * @param string $url
+	 * @param string $updateDir
+	 * @return string Page contents
+	 */
+	private function downloadUpdate($url, $updateDir) {
 		$browser = $this->getContainer()->get('buzz');
 		$client = new \App\Service\ResumeCurlClient();
 		$client->setSaveDir($updateDir);
@@ -204,11 +227,13 @@ EOT
 		return $browser->get($url, array('User-Agent: Mylib (http://chitanka.info)'));
 	}
 
-	/** @return \ZipArchive */
-	private function initZipFileFromContent($content)
-	{
+	/**
+	 * @param string $content
+	 * @return \ZipArchive
+	 */
+	private function initZipFileFromContent($content) {
 		if (empty($content)) {
-			return false;
+			return null;
 		}
 		$tmpfile = sys_get_temp_dir().'/chitanka-'.uniqid().'.zip';
 		file_put_contents($tmpfile, $content);
@@ -216,6 +241,6 @@ EOT
 		if ($zip->open($tmpfile) === true) {
 			return $zip;
 		}
-		return false;
+		return null;
 	}
 }

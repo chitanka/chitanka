@@ -1,8 +1,6 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Util\String;
-use App\Util\Ary;
 use App\Entity\Text;
 use App\Entity\TextComment;
 use App\Pagination\Pager;
@@ -45,9 +43,7 @@ class CommentPage extends Page {
 		$this->initPaginationFields();
 	}
 
-
-	protected function addTextFeedLinks()
-	{
+	protected function addTextFeedLinks() {
 		if ( empty($this->work) ) {
 			$url = $this->controller->generateUrl('texts_comments', array('_format' => 'rss'));
 			$title = 'Читателски коментари';
@@ -58,7 +54,6 @@ class CommentPage extends Page {
 
 		//$this->addHeadContent($this->out->getRssLink($url, $title));
 	}
-
 
 	protected function processSubmission() {
 		if ( empty($this->reader) || empty($this->comment) ) {
@@ -126,7 +121,6 @@ class CommentPage extends Page {
 		return $this->buildContent();
 	}
 
-
 	protected function buildContent() {
 		if ( empty($this->textId) ) {
 			if ( !empty($this->username) ) {
@@ -149,7 +143,6 @@ class CommentPage extends Page {
 			. ($this->includeCommentForm ? $this->makeForm() : '')
 			. '</div>';
 	}
-
 
 	protected function makeComments() {
 		$key = $this->wheres[$this->showMode];
@@ -187,11 +180,9 @@ class CommentPage extends Page {
 			. $newcommentlink;
 	}
 
-
 	protected function makeNewCommentLink() {
 		return '<p><a href="#postform" onclick="return initReply(0)">Пускане на нов коментар</a> ↓</p>';
 	}
-
 
 	public function processCommentDbRow($dbrow) {
 		$id = $dbrow['id']; $replyto = $dbrow['replyto_id'];
@@ -228,10 +219,10 @@ class CommentPage extends Page {
 	}
 
 	/**
-	@param $fields array Associative array containing following (optional)
-		elements: rname, content, user_id, time, textId, textTitle, author, edit, showtime
-	@return string
-	*/
+	 * @param array $fields Associative array containing following (optional)
+	 *                      elements: rname, content, user_id, time, textId, textTitle, author, edit, showtime
+	 * @return string
+	 */
 	public function makeComment($fields = array()) {
 		extract($fields);
 		Legacy::fillOnEmpty($id, 0);
@@ -285,7 +276,6 @@ class CommentPage extends Page {
 EOS;
 	}
 
-
 	public function makePreview() {
 		return '<h2>Предварителен преглед</h2>' .
 			$this->makeComment(array(
@@ -294,14 +284,12 @@ EOS;
 			));
 	}
 
-
 	protected function makeForm() {
 		if ( empty($this->work) ) {
 			return '';
 		}
 		return $this->makeEditForm();
 	}
-
 
 	protected function makeEditForm() {
 		$textId = $this->out->hiddenField('textId', $this->textId);
@@ -388,9 +376,13 @@ $allowHelp
 EOS;
 	}
 
-
-	public function makeAllComments($limit = 0, $offset = 0, $order = null, $showPageLinks = true)
-	{
+	/**
+	 * @param int $limit
+	 * @param int $offset
+	 * @param string $order
+	 * @param book $showPageLinks
+	 */
+	public function makeAllComments($limit = 0, $offset = 0, $order = null, $showPageLinks = true) {
 		$sql = $this->makeSqlQuery($limit, $offset, $order);
 		$res = $this->db->query($sql);
 		if ($this->db->numRows($res) == 0) {
@@ -425,7 +417,6 @@ EOS;
 
 		return $rssLink . $pagelinks . $c . $pagelinks;
 	}
-
 
 	public function makeSqlQuery($limit = 0, $offset = 0, $order = null) {
 		if ( is_null($order) ) { $order = $this->sortOrder; }
@@ -466,7 +457,6 @@ EOS;
 
 		return $this->db->extselectQ($qa);
 	}
-
 
 	protected function initData() {
 		if ($this->initDone) {

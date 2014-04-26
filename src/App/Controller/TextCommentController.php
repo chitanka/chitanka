@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Form\TextCommentForm;
-
 class TextCommentController extends Controller {
 
 	public function indexAction($page, $_format) {

@@ -23,6 +23,9 @@ class CRUDController extends BaseController {
 		return $this->_user;
 	}
 
+	/**
+	 * @param string $entityName
+	 */
 	public function getRepository($entityName) {
 		return $this->get('doctrine.orm.entity_manager')->getRepository('App:'.$entityName);
 	}

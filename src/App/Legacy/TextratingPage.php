@@ -1,7 +1,6 @@
 <?php
 namespace App\Legacy;
 
-use App\Util\Number;
 use App\Entity\Text;
 
 class TextratingPage extends TextPage {

@@ -70,6 +70,11 @@ class CacheFile {
 	public function exists() {
 		return file_exists($this->name);
 	}
+
+	/**
+	 * @param string $content
+	 * @param integer $ttl
+	 */
 	public function write($content, $ttl) {
 		if ( ! file_exists($dir = dirname($this->name))) {
 			mkdir($dir, 0777, true);

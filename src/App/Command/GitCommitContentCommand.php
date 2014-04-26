@@ -1,16 +1,13 @@
-<?php
-
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GitCommitContentCommand extends CommonDbCommand
-{
-	protected function configure()
-	{
+class GitCommitContentCommand extends CommonDbCommand {
+
+	protected function configure() {
 		parent::configure();
 
 		$this
@@ -24,8 +21,10 @@ EOT
 		);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->output = $output;
 		$this->em = $this->getEntityManager();
 
@@ -37,8 +36,11 @@ EOT
 		$output->writeln('Done.');
 	}
 
-	private function commitChanges($contentDir, $messageFile)
-	{
+	/**
+	 * @param string $contentDir
+	 * @param string $messageFile
+	 */
+	private function commitChanges($contentDir, $messageFile) {
 		if ( ! file_exists($messageFile)) {
 			throw new \Exception("Message file '$messageFile' does not exist.");
 		}
@@ -48,8 +50,7 @@ EOT
 		}
 	}
 
-	private function gitCommitAndPush($directory, $messageFile)
-	{
+	private function gitCommitAndPush($directory, $messageFile) {
 		$this->output->writeln('');
 		$this->output->writeln('===> Entering ' . basename($directory));
 		chdir($directory);
@@ -67,15 +68,21 @@ EOT
 		shell_exec('git push');
 	}
 
-	private function createMessageFile($description, $fromTime)
-	{
+	/**
+	 * @param string $description
+	 * @param string $fromTime
+	 */
+	private function createMessageFile($description, $fromTime) {
 		$filename = sys_get_temp_dir().'/chitanka-commit-content-'.time();
 		file_put_contents($filename, $this->createMessageFileContents($description, $fromTime));
 		return $filename;
 	}
 
-	private function createMessageFileContents($description, $fromTime)
-	{
+	/**
+	 * @param string $description
+	 * @param string $fromTime
+	 */
+	private function createMessageFileContents($description, $fromTime) {
 		$messageId = date('#Ymd.His');
 		$booksChanges = $this->getChangedBooksDescriptions($fromTime);
 		$booksMessage = '';
@@ -104,8 +111,7 @@ MSG;
 	/**
 	 * @RawSql
 	 */
-	private function getChangedBooksDescriptions($fromTime)
-	{
+	private function getChangedBooksDescriptions($fromTime) {
 		$sql = "SELECT CONCAT(b.id, ' / ', br.comment, ' / ', IFNULL(b.title_author, ''), ' — ', b.title, ' / ', b.type)
 FROM `book_revision` br
 LEFT JOIN book b on br.book_id = b.id
@@ -117,8 +123,7 @@ LIMIT 1000";
 	/**
 	 * @RawSql
 	 */
-	private function getChangedTextsDescriptions($fromTime)
-	{
+	private function getChangedTextsDescriptions($fromTime) {
 		$sql = "SELECT CONCAT(t.id, ' / ', tr.comment, ' / ', GROUP_CONCAT(p.name SEPARATOR ', '), ' — ', t.title, ' / ', t.type)
 FROM `text_revision` tr
 LEFT JOIN `text` t ON tr.text_id = t.id

@@ -41,6 +41,9 @@ EOT
 		$output->writeln('Done.');
 	}
 
+	/**
+	 * @param string $pageName
+	 */
 	protected function processWikiPage($pageName)
 	{
 		$this->output->writeln('Fetching and processing wiki content...');
@@ -55,6 +58,9 @@ EOT
 		}
 	}
 
+	/**
+	 * @param string $wikiContent
+	 */
 	protected function updatePersons($wikiContent)
 	{
 		$persons = $this->_getPersonsDataFromWikiContent($wikiContent);

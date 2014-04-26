@@ -1,8 +1,6 @@
 <?php
 namespace App\Legacy;
 
-use App\Entity\User;
-
 class SendUsernamePage extends MailPage {
 
 	protected

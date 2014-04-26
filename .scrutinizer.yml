@@ -4,6 +4,7 @@ filter:
         - app/*
         - bin/*
         - src/App/Resources/public/bin/*
+        - src/App/Tests/*
         - web/config.php
 
 tools:

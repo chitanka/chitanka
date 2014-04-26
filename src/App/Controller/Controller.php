@@ -1,9 +1,6 @@
-<?php
-
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -35,8 +32,11 @@ abstract class Controller extends SymfonyController {
 
 	private $em;
 
-	protected function legacyPage($page, $controller = ':legacy')
-	{
+	/**
+	 * @param string $page
+	 * @param string $controller
+	 */
+	protected function legacyPage($page, $controller = ':legacy') {
 		if (strpos($page, '.') === false) {
 			$format = $this->responseFormat;
 		} else {
@@ -58,9 +58,7 @@ abstract class Controller extends SymfonyController {
 		return $response;
 	}
 
-
-	protected function display($action, array $params = array())
-	{
+	protected function display($action, array $params = array()) {
 		if (strpos($action, '.') === false) {
 			$format = $this->responseFormat;
 		} else {
@@ -108,8 +106,7 @@ abstract class Controller extends SymfonyController {
 		return $response;
 	}
 
-	protected function getDisplayVariables()
-	{
+	protected function getDisplayVariables() {
 		return array(
 			'navlinks' => $this->renderNavLinks(),
 			'navextra' => array(),
@@ -131,6 +128,10 @@ abstract class Controller extends SymfonyController {
 		return $this->renderLayoutComponent('footer-menu', 'App::footer_links.html.twig');
 	}
 
+	/**
+	 * @param string $wikiPage
+	 * @param string $fallbackTemplate
+	 */
 	protected function renderLayoutComponent($wikiPage, $fallbackTemplate) {
 		$wikiPagePath = $this->getParameter('content_dir')."/wiki/special/$wikiPage.html";
 		if (file_exists($wikiPagePath)) {
@@ -140,8 +141,7 @@ abstract class Controller extends SymfonyController {
 		return $this->renderView($fallbackTemplate);
 	}
 
-	protected function getStylesheet()
-	{
+	protected function getStylesheet() {
 		$url = $this->container->getParameter('style_url');
 		if ( ! $url) {
 			return false;
@@ -150,8 +150,7 @@ abstract class Controller extends SymfonyController {
 		return $url . http_build_query($this->getUser()->getSkinPreference());
 	}
 
-	protected function displayText($text, $headers = array())
-	{
+	protected function displayText($text, $headers = array()) {
 		$response = new Response($text);
 		foreach ($headers as $header => $value) {
 			$response->headers->set($header, $value);
@@ -161,22 +160,18 @@ abstract class Controller extends SymfonyController {
 		return $response;
 	}
 
-
-	protected function displayJson($content, $headers = array())
-	{
+	protected function displayJson($content, $headers = array()) {
 		return $this->displayText(json_encode($content), $headers);
 	}
 
-	protected function setCacheStatusByResponse(Response $response)
-	{
+	protected function setCacheStatusByResponse(Response $response) {
 		if ($this->responseAge && $this->container->getParameter('use_http_cache')) {
 			$response->setSharedMaxAge($this->responseAge);
 		}
 		return $response;
 	}
 
-	public function getName()
-	{
+	public function getName() {
 		if (is_null($this->name) && preg_match('/([\w]+)Controller$/', get_class($this), $m)) {
 			$this->name = $m[1];
 		}
@@ -184,14 +179,12 @@ abstract class Controller extends SymfonyController {
 		return $this->name;
 	}
 
-	protected function getCurrentRoute()
-	{
+	protected function getCurrentRoute() {
 		return $this->get('request')->attributes->get('_route');
 	}
 
 	/** @return \Doctrine\ORM\EntityManager */
-	public function getEntityManager()
-	{
+	public function getEntityManager() {
 		if (!isset($this->em)) {
 			// TODO do this in the configuration
 			$this->em = $this->get('doctrine.orm.entity_manager');
@@ -202,18 +195,16 @@ abstract class Controller extends SymfonyController {
 		return $this->em;
 	}
 
-
-	public function getRepository($entityName = null)
-	{
+	/**
+	 * @param string $entityName
+	 */
+	public function getRepository($entityName = null) {
 		return $this->getEntityManager()->getRepository($this->getEntityName($entityName));
 	}
 
-
-	protected function getEntityName($entityName)
-	{
+	protected function getEntityName($entityName) {
 		return 'App:'.$entityName;
 	}
-
 
 	private $user;
 	/** @return User */
@@ -237,8 +228,6 @@ abstract class Controller extends SymfonyController {
 	public function setUser($user) {
 		$this->user = $user;
 	}
-
-
 
 	/**
 	 * Redirects to another route.
@@ -265,7 +254,6 @@ abstract class Controller extends SymfonyController {
 
 		return new RedirectResponse($this->container->get('router')->generate($route, $attributes), $permanent ? 301 : 302);
 	}
-
 
 	/**
 	 * Redirects to a URL.
@@ -296,7 +284,6 @@ abstract class Controller extends SymfonyController {
 	protected function notFound($message = null) {
 		throw new NotFoundHttpException($message);
 	}
-
 
 	// TODO refactor: move to separate class
 	protected function getMirrorServer() {
@@ -333,6 +320,9 @@ abstract class Controller extends SymfonyController {
 		return dirname($_SERVER['SCRIPT_NAME']);
 	}
 
+	/**
+	 * @param string $param
+	 */
 	protected function getParameter($param) {
 		return $this->container->getParameter($param);
 	}
@@ -379,11 +369,11 @@ abstract class Controller extends SymfonyController {
 	protected function getUserTextContribRepository() { return $this->getRepository('UserTextContrib'); }
 	/** @return \App\Entity\UserTextReadRepository */
 	protected function getUserTextReadRepository() { return $this->getRepository('UserTextRead'); }
-	/** @return \App\Entity\WikiSiteRepository */
+	/** @return \Doctrine\ORM\EntityRepository */
 	protected function getWikiSiteRepository() { return $this->getRepository('WikiSite'); }
 	/** @return \App\Entity\WorkEntryRepository */
 	protected function getWorkEntryRepository() { return $this->getRepository('WorkEntry'); }
-	/** @return \App\Entity\WorkContribRepository */
+	/** @return \Doctrine\ORM\EntityRepository */
 	protected function getWorkContribRepository() { return $this->getRepository('WorkContrib'); }
 
 }

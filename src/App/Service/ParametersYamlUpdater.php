@@ -16,6 +16,10 @@ class ParametersYamlUpdater
 		return file_put_contents($yamlFileName, $updatedYaml);
 	}
 
+	/**
+	 * @param string $distYaml
+	 * @param string $yaml
+	 */
 	public function updateYaml($distYaml, $yaml)
 	{
 		if ( ! preg_match_all('/^    (\w[^:]+):(.*)/m', $yaml, $matches, PREG_SET_ORDER)) {

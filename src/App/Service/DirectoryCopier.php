@@ -1,11 +1,12 @@
-<?php
-namespace App\Service;
+<?php namespace App\Service;
 
-class DirectoryCopier
-{
+class DirectoryCopier {
 
-	public function copy($sourceDir, $destDir)
-	{
+	/**
+	 * @param string $sourceDir
+	 * @param string $destDir
+	 */
+	public function copy($sourceDir, $destDir) {
 		$iterator = new \RecursiveIteratorIterator(
 			new \RecursiveDirectoryIterator($sourceDir, \RecursiveDirectoryIterator::SKIP_DOTS),
 			\RecursiveIteratorIterator::SELF_FIRST);

@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Command;
+<?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -10,11 +8,9 @@ use App\Legacy\Legacy;
 use App\Util\String;
 use App\Util\File;
 
-class UpdateLibCommand extends CommonDbCommand
-{
+class UpdateLibCommand extends CommonDbCommand {
 
-	protected function configure()
-	{
+	protected function configure() {
 		parent::configure();
 
 		$this
@@ -30,17 +26,9 @@ EOT
 	}
 
 	/**
-	 * Executes the current command.
-	 *
-	 * @param InputInterface  $input  An InputInterface instance
-	 * @param OutputInterface $output An OutputInterface instance
-	 *
-	 * @return integer 0 if everything went fine, or an error code
-	 *
-	 * @throws \LogicException When this abstract class is not implemented
+	 * {@inheritdoc}
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->input = $input;
 		$this->output = $output;
 
@@ -53,9 +41,7 @@ EOT
 		$output->writeln('/*Done.*/');
 	}
 
-
-	private function defineVars($em)
-	{
+	private function defineVars($em) {
 		$this->em = $em;
 
 		$this->overwrite = false; // overwrite existing files?
@@ -68,8 +54,7 @@ EOT
 		$this->errors = array();
 	}
 
-	private function conquerTheWorld($em)
-	{
+	private function conquerTheWorld($em) {
 		$this->defineVars($em);
 
 		$queries = array();
@@ -88,8 +73,7 @@ EOT
 	}
 
 
-	private function processPacket($dir)
-	{
+	private function processPacket($dir) {
 		$workFiles = self::sortDataFiles(glob("$dir/work.*.data"));
 		$bookFiles = self::sortDataFiles(glob("$dir/book.*.data"));
 
@@ -105,8 +89,7 @@ EOT
 		return $queries;
 	}
 
-	private function processWorkFiles($dataFile)
-	{
+	private function processWorkFiles($dataFile) {
 		$work = array();
 		foreach (file($dataFile) as $line) {
 			$work += self::_extractVarFromLineData($line);
@@ -196,9 +179,7 @@ EOT
 		return $this->works[$packetId] = $work;
 	}
 
-
-	private function processBookFiles($dataFile)
-	{
+	private function processBookFiles($dataFile) {
 		$book = array();
 		foreach (file($dataFile) as $line) {
 			$book += self::_extractVarFromLineData($line);
@@ -258,9 +239,7 @@ EOT
 		return $book;
 	}
 
-
-	static private function _extractVarFromLineData($line)
-	{
+	static private function _extractVarFromLineData($line) {
 		$separator = '=';
 		$parts = explode($separator, $line);
 		$var = trim(array_shift($parts));
@@ -274,8 +253,7 @@ EOT
 		return array($var => $value);
 	}
 
-	static public function sortDataFiles($files)
-	{
+	static public function sortDataFiles($files) {
 		$sorted = array();
 		foreach ($files as $file) {
 			if (preg_match('/\.(\d+)\.data/', $file, $matches)) {
@@ -287,9 +265,7 @@ EOT
 		return $sorted;
 	}
 
-
-	static private function getBookTemplate($file, $works)
-	{
+	static private function getBookTemplate($file, $works) {
 		$bookTmpl = file_get_contents($file);
 		$bookWorks = array();
 		if (preg_match_all('/\{(file|text):(\d+)/', $bookTmpl, $m)) {
@@ -312,8 +288,7 @@ EOT
 		return array($bookTmpl, $bookWorks);
 	}
 
-	static private function prepareWorkTemplate($work)
-	{
+	static private function prepareWorkTemplate($work) {
 		$files = array();
 		$template = file_get_contents($work['tmpl']);
 		if (preg_match_all('/\{(text|file):-\d+(-.+)\}/', $template, $matches)) {
@@ -328,10 +303,14 @@ EOT
 		return $work;
 	}
 
-
 	private $_objectsIds = array();
-	private function getObjectId($table, $query, $column = 'slug')
-	{
+
+	/**
+	 * @param string $table
+	 * @param string $query
+	 * @param string $column
+	 */
+	private function getObjectId($table, $query, $column = 'slug') {
 		if ($column == 'slug') {
 			$query = String::slugify($query);
 		}
@@ -352,8 +331,7 @@ EOT
 		'text' => array(),
 		'book' => array(),
 	);
-	private function getNextId($table)
-	{
+	private function getNextId($table) {
 		if (isset($this->_ids[$table]) && count($this->_ids[$table])) {
 			return array_shift($this->_ids[$table]);
 		}
@@ -367,8 +345,7 @@ EOT
 		return $this->_curIds[$table];
 	}
 
-	private function getNextIdUpdateQueries()
-	{
+	private function getNextIdUpdateQueries() {
 		$tables = array(
 			'text_revision',
 			'book_revision',
@@ -386,8 +363,7 @@ EOT
 		return $queries;
 	}
 
-	private function insertWork(array $work)
-	{
+	private function insertWork(array $work) {
 		$qs = array();
 
 		$set = array(
@@ -581,9 +557,7 @@ EOT
 		return $qs;
 	}
 
-
-	private function insertBook(array $book)
-	{
+	private function insertBook(array $book) {
 		$qs = array();
 
 		$set = array(
@@ -708,8 +682,7 @@ EOT
 		return $qs;
 	}
 
-	private function buildBookTitleAuthorQuery($bookId)
-	{
+	private function buildBookTitleAuthorQuery($bookId) {
 		return str_replace("\n", ' ', <<<QUERY
 UPDATE book b
 SET title_author = (
@@ -724,8 +697,7 @@ QUERY
 		);
 	}
 
-	private function copyTextFile($source, $dest, $replaceChars = true)
-	{
+	private function copyTextFile($source, $dest, $replaceChars = true) {
 		if (filesize($source) == 0) {
 			unlink($dest);
 			return;
@@ -742,8 +714,7 @@ QUERY
 		File::myfile_put_contents($dest, $contents);
 	}
 
-	static private function copyFile($source, $dest)
-	{
+	static private function copyFile($source, $dest) {
 		if (is_dir($dest)) {
 			$dest .= '/'.basename($source);
 		}
@@ -766,8 +737,10 @@ QUERY
 		}
 	}
 
-	static public function guessTocLevel($text)
-	{
+	/**
+	 * @param string $text
+	 */
+	static public function guessTocLevel($text) {
 		if (strpos($text, "\n>>") !== false) {
 			return 2;
 		} else if (strpos($text, "\n>") !== false) {
@@ -776,8 +749,7 @@ QUERY
 		return 0;
 	}
 
-	static private function getFileSize($files)
-	{
+	static private function getFileSize($files) {
 		$size = 0;
 		if (is_array($files)) {
 			foreach ($files as $file) {
@@ -790,8 +762,7 @@ QUERY
 		return $size;
 	}
 
-	static private function fixOrigTitle($title)
-	{
+	static private function fixOrigTitle($title) {
 		return strtr($title, array(
 			'\'' => '’',
 		));

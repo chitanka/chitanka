@@ -32,11 +32,17 @@ class Mutex
 		return true;
 	}
 
+	/**
+	 * @param integer $expirationTime
+	 */
 	private function hasValidLockFile($expirationTime)
 	{
 		return file_exists($this->getLockFile()) && (time() - filemtime($this->getLockFile()) < $expirationTime);
 	}
 
+	/**
+	 * @return string
+	 */
 	private function getLockFile()
 	{
 		return "$this->directory/$this->id.lock";

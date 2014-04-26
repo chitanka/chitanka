@@ -1,8 +1,6 @@
 <?php
 namespace App\Legacy;
 
-use App\Util\String;
-
 class MailPage extends Page {
 
 	protected

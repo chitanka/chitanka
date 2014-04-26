@@ -1,10 +1,9 @@
-<?php
-namespace App\Util;
+<?php namespace App\Util;
 
 use App\Legacy\Legacy;
 
-class File
-{
+class File {
+
 	static public function mycopy($source, $dest) {
 		if ( is_dir($source) ) {
 			foreach ( scandir($source) as $file ) {
@@ -41,9 +40,7 @@ class File
 		}
 	}
 
-
-	static public function guessMimeType($file)
-	{
+	static public function guessMimeType($file) {
 		switch ( strtolower(self::getFileExtension($file)) ) {
 			case 'png' : return 'image/png';
 			case 'gif' : return 'image/gif';
@@ -55,7 +52,9 @@ class File
 		return $finfo->file($href);
 	}
 
-
+	/**
+	 * @param string $file
+	 */
 	static public function isArchive($file) {
 		$exts = array('zip', 'tgz', 'tar.gz', 'bz2', 'tar.bz2');
 		foreach ($exts as $ext) {
@@ -66,14 +65,15 @@ class File
 		return false;
 	}
 
-	static public function getFileExtension($filename)
-	{
+	static public function getFileExtension($filename) {
 		return ltrim(strrchr($filename, '.'), '.');
 	}
 
-
-	static public function cleanFileName($fname, $woDiac = true)
-	{
+	/**
+	 * @param string $fname
+	 * @param bool $woDiac
+	 */
+	static public function cleanFileName($fname, $woDiac = true) {
 		$fname = preg_replace('![^a-zA-Z0-9_. -]!u', '', $fname);
 		if ( $woDiac ) {
 			$fname = Legacy::removeDiacritics($fname);
@@ -89,9 +89,10 @@ class File
 		return $fname;
 	}
 
-
-	static public function isSFB($file)
-	{
+	/**
+	 * @param string $file
+	 */
+	static public function isSFB($file) {
 		if ( (strpos($file, '.sfb') !== false) && file_exists($file) ) {
 			$cont = file_get_contents( $file,  false, NULL, -1, 10 );
 			if ( strpos($cont, chr(124).chr(9)) !== false )
@@ -101,8 +102,7 @@ class File
 		return false;
 	}
 
-	static public function hasValidExtension($filename, $validExtensions)
-	{
+	static public function hasValidExtension($filename, $validExtensions) {
 		foreach ($validExtensions as $validExtension) {
 			if (preg_match("/\.$validExtension$/i", $filename)) {
 				return true;

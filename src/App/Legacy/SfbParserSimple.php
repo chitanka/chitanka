@@ -99,6 +99,9 @@ class SfbParserSimple {
 	}
 
 
+	/**
+	 * @param integer $level
+	 */
 	protected function doTitle($level) {
 		if ($this->debug) echo "in doTitle($level)\n";
 		if ($this->reqdepth < $level) { return; }

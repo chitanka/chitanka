@@ -60,6 +60,9 @@ class String
 		return htmlspecialchars($text, ENT_COMPAT, 'UTF-8');
 	}
 
+	/**
+	 * @param string $string
+	 */
 	static public function fixEncoding($string)
 	{
 		if ('UTF-8' != ($enc = mb_detect_encoding($string, 'UTF-8, Windows-1251'))) {
@@ -68,6 +71,9 @@ class String
 		return $string;
 	}
 
+	/**
+	 * @param string $text
+	 */
 	static public function pretifyInput($text) {
 		$patterns = array(
 			// link in brackets

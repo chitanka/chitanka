@@ -40,10 +40,18 @@ class ResumeCurlClient extends Curl implements ListenerInterface
 	{
 		$this->saveDir = $saveDir;
 	}
+
+	/**
+	 * @param string $filename
+	 */
 	private function openSaveFile($filename)
 	{
 		return $this->saveFile = new \SplFileObject($filename, "a");
 	}
+
+	/**
+	 * @param string $basename
+	 */
 	private function createSaveFileName($basename)
 	{
 		return ($this->saveDir ?: sys_get_temp_dir()) . "/". $basename . $this->saveFileSuffix;

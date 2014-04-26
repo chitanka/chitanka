@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 // from phpmyadmin
 
@@ -22,8 +21,7 @@ namespace App\Legacy;
  *
  * Modified 2006, by Borislav Manolov
  */
-class ZipFile
-{
+class ZipFile {
 	/**
 	 * Array to store compressed data
 	 * @var  array    $datasec
@@ -56,9 +54,8 @@ class ZipFile
 	 *
 	 * @param  integer  the current Unix timestamp
 	 * @return integer  the current date in a four byte DOS format
-	 * @access private
 	 */
-	public function unix2DosTime($unixtime = 0) {
+	private function unix2DosTime($unixtime = 0) {
 		$timearray = ($unixtime == 0) ? getdate() : getdate($unixtime);
 
 		if ($timearray['year'] < 1980) {
@@ -75,14 +72,13 @@ class ZipFile
 			 ($timearray['minutes'] << 5) | ($timearray['seconds'] >> 1);
 	}
 
-
 	/**
 	 * Creates new file entry as array
 	 *
-	 * @param  string  $data   file contents
-	 * @param  string  $name   name of the file in the archive (may contains the path)
-	 * @param  integer $time   the current timestamp
-	 * @access public
+	 * @param string $data file contents
+	 * @param string $name name of the file in the archive (may contains the path)
+	 * @param int $time the current timestamp
+	 * @param bool $compress
 	 */
 	public function newFileEntry($data, $name, $time = 0, $compress = true) {
 		$name     = str_replace('\\', '/', $name);
@@ -150,10 +146,13 @@ class ZipFile
 
 
 	/**
-	* @see newFileEntry
-	*/
-	public function addNewFileEntry($data, $name, $time = 0, $compress = true)
-	{
+	 * @see newFileEntry
+	 * @param string $data
+	 * @param string $name
+	 * @param int $time
+	 * @param bool $compress
+	 */
+	public function addNewFileEntry($data, $name, $time = 0, $compress = true) {
 		$this->addFileEntry($this->newFileEntry($data, $name, $time, $compress));
 	}
 
@@ -169,12 +168,10 @@ class ZipFile
 		$this->ctrl_dir[] = $fileEntry['cdrec'];
 	}
 
-
 	/**
 	 * Dumps out file
 	 *
 	 * @return  string  the zipped file
-	 * @access public
 	 */
 	public function file() {
 		$data    = implode('', $this -> datasec);

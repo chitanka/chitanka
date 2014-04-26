@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Controller;
+<?php namespace App\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ORM\NoResultException;
@@ -10,24 +8,22 @@ use App\Legacy\Setup;
 use App\Legacy\DownloadFile;
 use App\Util\String;
 
-class BookController extends Controller
-{
+class BookController extends Controller {
+
 	protected $repository = 'Book';
 	protected $responseAge = 86400; // 24 hours
 
-	public function indexAction($_format)
-	{
+	public function indexAction($_format) {
 		if ($_format == 'html') {
 			$this->view = array(
 				'categories' => $this->getCategoryRepository()->getAllAsTree(),
 			);
-        }
+		}
 
 		return $this->display("index.$_format");
 	}
 
-	public function listByCategoryIndexAction($_format)
-	{
+	public function listByCategoryIndexAction($_format) {
 		switch ($_format) {
 			case 'html':
 				$categories = $this->getCategoryRepository()->getAllAsTree();
@@ -41,13 +37,11 @@ class BookController extends Controller
 		return $this->display("list_by_category_index.$_format");
 	}
 
-	public function listByAlphaIndexAction($_format)
-	{
+	public function listByAlphaIndexAction($_format) {
 		return $this->display("list_by_alpha_index.$_format");
 	}
 
-	public function listByCategoryAction($slug, $page, $_format)
-	{
+	public function listByCategoryAction($slug, $page, $_format) {
 		$slug = String::slugify($slug);
 		$bookRepo = $this->getBookRepository();
 		$category = $this->getCategoryRepository()->findBySlug($slug);
@@ -71,9 +65,7 @@ class BookController extends Controller
 		return $this->display("list_by_category.$_format");
 	}
 
-
-	public function listByAlphaAction($letter, $page, $_format)
-	{
+	public function listByAlphaAction($letter, $page, $_format) {
 		$bookRepo = $this->getBookRepository();
 		$limit = 30;
 
@@ -92,8 +84,7 @@ class BookController extends Controller
 		return $this->display("list_by_alpha.$_format");
 	}
 
-	public function listWoCoverAction($page)
-	{
+	public function listWoCoverAction($page) {
 		$limit = 30;
 		$bookRepo = $this->getBookRepository();
 		$_format = 'html';
@@ -109,8 +100,7 @@ class BookController extends Controller
 		return $this->display("list_wo_cover.$_format");
 	}
 
-	public function showAction($id, $_format)
-	{
+	public function showAction($id, $_format) {
 		// FIXME
 		// very big books need too much memory, so give it to them
 		ini_set('memory_limit', '128M');
@@ -161,14 +151,17 @@ class BookController extends Controller
 		return $this->display("show.$_format");
 	}
 
-
-	public function randomAction()
-	{
+	public function randomAction() {
 		$id = $this->getBookRepository()->getRandomId();
 
 		return $this->urlRedirect($this->generateUrl('book_show', array('id' => $id)));
 	}
 
+	/**
+	 * @param Book $book
+	 * @param string $format
+	 * @return string File URL
+	 */
 	protected function processDownload(Book $book, $format) {
 		$dlSite = $this->getMirrorServer();
 		if ( $dlSite !== false ) {

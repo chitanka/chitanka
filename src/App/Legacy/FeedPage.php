@@ -1,5 +1,4 @@
-<?php
-namespace App\Legacy;
+<?php namespace App\Legacy;
 
 use App\Util\String;
 use App\Util\Number;
@@ -27,7 +26,9 @@ class FeedPage extends Page {
 		)
 	;
 
-
+	/**
+	 * @param array $fields
+	 */
 	public function __construct($fields) {
 		parent::__construct($fields);
 		$this->title = 'Зоб за новинарски четци';
@@ -49,7 +50,6 @@ class FeedPage extends Page {
 	public function title() {
 		return "$this->title — $this->sitename";
 	}
-
 
 	protected function buildContent() {
 		$ftPref = ucfirst($this->feedtype);
@@ -96,7 +96,12 @@ FEED;
 		return '';
 	}
 
-
+	/**
+	 * @param string $query
+	 * @param callback $makeItemFunc
+	 * @param string $bufferq
+	 * @return string
+	 */
 	protected function makeRssFeed($query, $makeItemFunc, $bufferq) {
 		$request_uri = $this->request->requestUri(true);
 		$ch =
@@ -113,7 +118,10 @@ FEED;
 EOS;
 	}
 
-
+	/**
+	 * @param array $dbrow
+	 * @return string
+	 */
 	public function makeRssWorkItem($dbrow) {
 		extract($dbrow);
 		$dbrow['showtitle'] = $dbrow['showtime'] = false;
@@ -131,7 +139,10 @@ EOS;
 		return $this->makeRssItem($data);
 	}
 
-
+	/**
+	 * @param array $data
+	 * @return string
+	 */
 	public function makeRssItem($data) {
 		extract($data);
 		if ( empty($title) ) $title = strtr($time, array(' 00:00:00' => ''));
@@ -155,7 +166,13 @@ EOS;
 			"\n\t</item>";
 	}
 
-
+	/**
+	 * @param string $name
+	 * @param string $content
+	 * @param int $level
+	 * @param array $attrs
+	 * @return string
+	 */
 	protected function makeXmlElement($name, $content, $level = 1, $attrs = array()) {
 		if ( empty($content) ) {
 			return '';
@@ -165,21 +182,28 @@ EOS;
 		return "\n". str_repeat("\t", $level) . $elem;
 	}
 
-
+	/**
+	 * @param string $isodate
+	 * @return string
+	 */
 	protected function makeRssDate($isodate = NULL) {
 		$format = 'r';
 		return empty($isodate) ? date($format) : date($format, strtotime($isodate));
 	}
 
-
+	/**
+	 * @param string $date
+	 * @return string
+	 */
 	protected function formatDateForGuid($date) {
 		return strtr($date, ' :', '__');
 	}
 
-
 	/**
-	* Remove dangerous elements along with their content
-	*/
+	 * Remove dangerous elements along with their content
+	 * @param string $desc
+	 * @return string
+	 */
 	protected function escape_element( $desc ) {
 		if ( ! isset( $this->_esc_desc_re ) ) {
 			$re = '';

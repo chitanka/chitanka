@@ -4,7 +4,6 @@ namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Bundle\DoctrineBundle\Form\ValueTransformer\EntityToIDTransformer;
 
 class LabelType extends AbstractType
 {
