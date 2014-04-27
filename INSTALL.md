@@ -28,7 +28,7 @@
 
 Ще получите нова директория chitanka. Нека се казва `/PATH/TO/chitanka`. След това изпълнете в конзолата:
 
-	cd /PATH/TO/chitanka && php composer.phar install
+	cd /PATH/TO/chitanka && php bin/composer install
 
 Това ще отнеме около десетина минути. В края ще се появи запитване за попълване на определени параметри. В скоби се намира стойността по подразбиране. Засега са важни само тези за базата от данни (database_xxx). За `database_driver` оставете `pdo_mysql`. При другите просто натиснете Enter.
 
@@ -36,7 +36,7 @@
 
 Последващите обновявания на софтуера могат да стават чрез:
 
-	cd /PATH/TO/chitanka && git pull && php composer.phar update
+	cd /PATH/TO/chitanka && git pull && php bin/composer update
 
 2.2. За огледало
 ----------------
@@ -58,12 +58,12 @@
 ============
 
 Сега е нужно да разрешите на софтуера (сървъра) да пише в следните директории:
-app/cache, app/logs, web/cache
+var/cache, var/logs, web/cache
 
 Това става най-лесно през командния ред:
 
 	cd /PATH/TO/chitanka
-	chmod -R a+w app/cache app/logs web/cache
+	chmod -R a+w var/cache var/logs web/cache
 
 Ако разполагате и с файла със съдържанието на библиотеката (текстове, изображения), го разархивирайте в директорията /PATH/TO/chitanka/web:
 
