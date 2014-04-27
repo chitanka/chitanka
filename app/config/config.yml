@@ -137,7 +137,7 @@ swiftmailer:
     password:  %mailer_password%
     spool:
         type: file
-        path: "%kernel.root_dir%/spool"
+        path: "%kernel.root_dir%/../var/spool"
 
 sensio_framework_extra:
     view:

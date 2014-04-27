@@ -23,7 +23,7 @@ class Setup {
 			'container' => $container,
 			//'newRequest' => $controller->get('request'),
 			'user'       => $controller->getUser(),
-			'logDir' => __DIR__ . '/../../../../app/logs',
+			'logDir' => __DIR__ . '/../../app/logs',
 		));
 
 		if ($execute) {
@@ -48,7 +48,7 @@ class Setup {
 	}
 
 	static public function defineConstants() {
-		define('BASEDIR', __DIR__ . '/../../../../web'); // TODO remove
+		define('BASEDIR', __DIR__ . '/../../web'); // TODO remove
 
 		define('SESSION_NAME', 'mls');
 

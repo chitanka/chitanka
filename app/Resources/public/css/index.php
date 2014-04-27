@@ -53,7 +53,7 @@ $positions = array(
 
 $thisDir = dirname(__FILE__);
 $cacheDir = strpos($thisDir, '/bundles/') === false
-	? $thisDir.'/../../../../../../app/cache/less'
+	? $thisDir.'/../../../../var/cache/less'
 	: $thisDir.'/../../../cache/less';
 require $thisDir."/../bin/Less.php";
 ini_set('memory_limit', '128M');

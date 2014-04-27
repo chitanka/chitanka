@@ -1,4 +1,6 @@
 <?php
+$rootDir = __DIR__.'/..';
+
 function exitWithMessage($template = 'error', $retryAfter = 300) {
 	header('HTTP/1.0 503 Service Temporarily Unavailable');
 	header('Status: 503 Service Temporarily Unavailable');
@@ -111,7 +113,7 @@ if ($isCacheable) {
 	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
 		$requestUri .= '.ajax';
 	}
-	$cache = new Cache($requestUri, __DIR__.'/../app/cache/simple_http_cache', __DIR__.'/../app/logs');
+	$cache = new Cache($requestUri, "$rootDir/var/cache/simple_http_cache", "$rootDir/var/logs");
 	if (null !== ($cachedContent = $cache->get())) {
 		header("Cache-Control: public, max-age=".$cachedContent['ttl']);
 		echo $cachedContent['data'];
@@ -129,7 +131,6 @@ use Symfony\Component\HttpFoundation\Request;
 // allow generated files (cache, logs) to be world-writable
 umask(0000);
 
-$rootDir = __DIR__.'/..';
 $loader = require $rootDir.'/app/bootstrap.php.cache';
 
 try {
@@ -144,7 +145,7 @@ try {
 require $rootDir.'/app/AppKernel.php';
 //require $rootDir.'/app/AppCache.php';
 
-register_shutdown_function(function(){
+register_shutdown_function(function() {
 	$error = error_get_last();
 	if ($error['type'] == E_ERROR) {
 		if (preg_match('/parameters\.yml.+does not exist/', $error['message'])) {

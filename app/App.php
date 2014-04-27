@@ -1,8 +1,6 @@
 <?php namespace App;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-// use Symfony\Component\DependencyInjection\ContainerInterface;
-// use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class App extends Bundle {
 	/**
@@ -18,4 +16,12 @@ class App extends Bundle {
 	public function getPath() {
 		return strtr(__DIR__, '\\', '/');
 	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getContainerExtension() {
+		return null;
+	}
+
 }

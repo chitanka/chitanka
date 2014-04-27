@@ -11,7 +11,7 @@
 $query = sanitizeInput($_SERVER['QUERY_STRING']);
 $curdir = dirname(__FILE__);
 $path = strpos($curdir, '/bundles/') === false
-	? "$curdir/../../../../../../web/cache"
+	? "$curdir/../../../../web/cache"
 	: "$curdir/../../../cache";
 $combiFile = $path . sanitizeInput($_SERVER['REQUEST_URI']);
 

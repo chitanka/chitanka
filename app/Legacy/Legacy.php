@@ -430,7 +430,7 @@ class Legacy {
 	 * @return string
 	 */
 	static public function getInternalContentFilePath($key, $num, $full = true) {
-		return __DIR__ .'/../../../../web/'. self::getContentFilePath($key, $num, $full);
+		return __DIR__ .'/../../web/'. self::getContentFilePath($key, $num, $full);
 	}
 
 	/**

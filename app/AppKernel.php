@@ -3,10 +3,11 @@
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
-class AppKernel extends Kernel
-{
-	public function registerBundles()
-	{
+class AppKernel extends Kernel {
+
+	protected $rootDir = __DIR__;
+
+	public function registerBundles() {
 		$bundles = array(
 			new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
 			new Symfony\Bundle\SecurityBundle\SecurityBundle(),
@@ -45,8 +46,7 @@ class AppKernel extends Kernel
 		return $bundles;
 	}
 
-	public function registerContainerConfiguration(LoaderInterface $loader)
-	{
+	public function registerContainerConfiguration(LoaderInterface $loader)	{
 		$loader->load($this->getConfigurationFile($this->getEnvironment()));
 	}
 
@@ -57,8 +57,26 @@ class AppKernel extends Kernel
 	 * @param string $format        File format (default: yml)
 	 * @return The configuration file path
 	 */
-	protected function getConfigurationFile($environment, $format = 'yml')
-	{
+	protected function getConfigurationFile($environment, $format = 'yml') {
 		return __DIR__."/config/config_$environment.$format";
 	}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @api
+	 */
+	public function getCacheDir() {
+		return __DIR__.'/../var/cache/'.$this->environment;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @api
+	 */
+	public function getLogDir() {
+		return __DIR__.'/../var/log';
+	}
+
 }

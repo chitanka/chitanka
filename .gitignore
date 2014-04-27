@@ -1,6 +1,5 @@
 /app/config/parameters.yml
-/app/cache/*
-/app/logs/*
+/var/*/*
 /vendor/*
 /web/content
 /web/cache/*
@@ -9,10 +8,10 @@
 /web/bundles/*
 *.min.js
 *.php~
+*.swp
 .last
 .lock
 /update/*/*
-/app/spool/*
 .DS_Store
 !.gitignore
 !.gitkeep
