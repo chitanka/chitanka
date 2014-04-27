@@ -64,7 +64,7 @@
 
 	<section id="mp-liternews" class="box liternewsbox">
 		<h2><a href="http://planet.chitanka.info/">От литературните блогове</a></h2>
-		{% if latest_liternews is not empty %}
+		{% if not latest_liternews.empty %}
 			{{ latest_liternews|raw }}
 		{% else %}
 			<p class="error">Неуспех при вземането на последните литературни новини.</p>
@@ -85,7 +85,7 @@
 	</section>
 	<section id="mp-forum-posts" class="box box2 forumbox">
 		<h2><a href="http://forum.chitanka.info">От форума</a></h2>
-		{% if latest_forum_posts is not empty %}
+		{% if not latest_forum_posts.empty %}
 			{{ latest_forum_posts|raw }}
 		{% else %}
 			<p class="error">Неуспех при вземането на последните форумни съобщения.</p>
