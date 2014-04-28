@@ -1,15 +1,15 @@
 <?php namespace App\Admin;
 
+use App\Entity\Book;
+use App\Entity\BookRevision;
+use App\Util\Language;
+use Doctrine\ORM\EntityManager;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\FormEvents;
-use Doctrine\ORM\EntityManager;
-use App\Entity\Book;
-use App\Entity\BookRevision;
-use App\Util\Language;
 
 class BookAdmin extends Admin {
 	protected $baseRoutePattern = 'book';

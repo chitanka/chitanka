@@ -5,14 +5,6 @@ use Symfony\Component\Form\FormEvent;
 
 abstract class Admin extends BaseAdmin {
 
-	public function getEntityManager() {
-		return $this->modelManager->getEntityManager($this->getClass());
-	}
-
-	public function getRepository() {
-		return $this->getEntityManager()->getRepository($this->getClass());
-	}
-
 	public function fixNewLines(FormEvent $event) {
 		$data = $event->getData();
 		foreach ($data as $field => $value) {
