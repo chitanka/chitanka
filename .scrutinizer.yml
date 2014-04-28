@@ -18,11 +18,7 @@ tools:
     php_pdepend: true
 
     # Some metrics + bug detection/auto-fixes
-    php_analyzer:
-        enabled: true
-        config:
-            doctrine_entity_manager_injection:
-                enabled: false
+    php_analyzer: true
 
     php_changetracking: true
 
