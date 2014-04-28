@@ -4,6 +4,15 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
 	<services>
+		<service id="app.person.repository" class="App\Entity\PersonRepository"
+			factory-service="doctrine.orm.entity_manager" factory-method="getRepository">
+			<argument>App:Person</argument>
+		</service>
+		<service id="app.text.repository" class="App\Entity\TextRepository"
+			factory-service="doctrine.orm.entity_manager" factory-method="getRepository">
+			<argument>App:Text</argument>
+		</service>
+
 		<service id="chitanka.admin.person" class="App\Admin\PersonAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="library_main" label="admin.person"/>
 			<argument />
@@ -12,8 +21,8 @@
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
-			<call method="setEntityManager">
-				<argument type="service" id="doctrine.orm.default_entity_manager" />
+			<call method="setRepository">
+				<argument type="service" id="app.person.repository" />
 			</call>
 		</service>
 		<service id="chitanka.admin.book" class="App\Admin\BookAdmin">
@@ -24,8 +33,8 @@
 			<call method="setMaxPerPage">
 				<argument>%admin_max_per_page%</argument>
 			</call>
-			<call method="setEntityManager">
-				<argument type="service" id="doctrine.orm.default_entity_manager" />
+			<call method="setTextRepository">
+				<argument type="service" id="app.text.repository" />
 			</call>
 		</service>
 		<service id="chitanka.admin.text" class="App\Admin\TextAdmin">

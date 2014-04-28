@@ -1,6 +1,6 @@
 <?php namespace App\Admin;
 
-use Doctrine\ORM\EntityManager;
+use App\Entity\PersonRepository;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -13,10 +13,10 @@ class PersonAdmin extends Admin {
 
 	public $extraActions = 'App:PersonAdmin:extra_actions.html.twig';
 
-	private $em;
+	private $repository;
 
-	public function setEntityManager(EntityManager $em) {
-		$this->em = $em;
+	public function setRepository(PersonRepository $r) {
+		$this->repository = $r;
 	}
 
 	protected function configureShowField(ShowMapper $showMapper) {
@@ -55,9 +55,8 @@ class PersonAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$repo = $this->em->getRepository('App:Person');
 		$countryList = array();
-		foreach ($repo->getCountryList() as $countryCode) {
+		foreach ($this->repository->getCountryList() as $countryCode) {
 			$countryList[$countryCode] = "country.$countryCode";
 		}
 		$formMapper
@@ -76,7 +75,7 @@ class PersonAdmin extends Admin {
 			->end()
 			->with('Main Person')
 				->add('type', 'choice', array(
-					'choices' => $repo->getTypeList(),
+					'choices' => $this->repository->getTypeList(),
 					//'expanded' => true,
 					'required' => false,
 					'label' => 'Person Type',

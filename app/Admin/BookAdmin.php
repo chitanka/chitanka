@@ -2,8 +2,8 @@
 
 use App\Entity\Book;
 use App\Entity\BookRevision;
+use App\Entity\TextRepository;
 use App\Util\Language;
-use Doctrine\ORM\EntityManager;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -18,10 +18,10 @@ class BookAdmin extends Admin {
 
 	public $extraActions = 'App:BookAdmin:extra_actions.html.twig';
 
-	private $em;
+	private $textRepository;
 
-	public function setEntityManager(EntityManager $em) {
-		$this->em = $em;
+	public function setTextRepository(TextRepository $r) {
+		$this->textRepository = $r;
 	}
 
 	protected function configureRoutes(RouteCollection $collection) {
@@ -163,8 +163,7 @@ class BookAdmin extends Admin {
 			}
 		}
 		if ($book->textsNeedUpdate()) {
-			$textRepo = $this->em->getRepository('App:Text');
-			$texts = $textRepo->findByIds($book->getTextIdsFromTemplate());
+			$texts = $this->textRepository->findByIds($book->getTextIdsFromTemplate());
 			$book->setTexts($texts);
 		}
 		if ($book->getRevisionComment()) {
