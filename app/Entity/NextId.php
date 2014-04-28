@@ -20,6 +20,9 @@ class NextId {
 	 */
 	private $value;
 
+	/**
+	 * @param string $id
+	 */
 	public function __construct($id) {
 		$this->id = $id;
 	}

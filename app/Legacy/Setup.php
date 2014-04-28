@@ -96,7 +96,7 @@ class Setup {
 	}
 
 	/**
-	 * @param boolean $forceNew
+	 * @param bool $forceNew
 	 */
 	static private function setupOutputMaker($forceNew) {
 		if ( $forceNew || ! isset(self::$outputMaker) ) {

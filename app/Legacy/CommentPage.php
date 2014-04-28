@@ -417,6 +417,11 @@ EOS;
 		return $rssLink . $pagelinks . $c . $pagelinks;
 	}
 
+	/**
+	 * @param int $limit
+	 * @param int $offset
+	 * @param string $order
+	 */
 	public function makeSqlQuery($limit = 0, $offset = 0, $order = null) {
 		if ( is_null($order) ) { $order = $this->sortOrder; }
 		$key = $this->wheres[$this->showMode];

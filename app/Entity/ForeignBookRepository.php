@@ -5,7 +5,7 @@
  */
 class ForeignBookRepository extends EntityRepository {
 	/**
-	 * @param integer $limit
+	 * @param int $limit
 	 */
 	public function getLatest($limit = null) {
 		return $this->createQueryBuilder('b')

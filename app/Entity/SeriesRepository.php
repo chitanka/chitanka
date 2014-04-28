@@ -14,7 +14,7 @@ class SeriesRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $limit
+	 * @param int $limit
 	 */
 	public function getByPrefix($prefix, $page = 1, $limit = null) {
 		$ids = $this->getIdsByPrefix($prefix, $page, $limit);
@@ -23,7 +23,9 @@ class SeriesRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $page
+	 * @param string $prefix
+	 * @param int $page
+	 * @param int $limit
 	 */
 	public function getIdsByPrefix($prefix, $page, $limit) {
 		$where = $prefix ? "s.name LIKE '$prefix%'" : "s.name != ''";
@@ -50,7 +52,8 @@ class SeriesRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $limit
+	 * @param string $name
+	 * @param int $limit
 	 */
 	public function getByNames($name, $limit = null) {
 		$q = $this->getQueryBuilder()
@@ -63,6 +66,9 @@ class SeriesRepository extends EntityRepository {
 		return $q->getArrayResult();
 	}
 
+	/**
+	 * @param string $orderBys
+	 */
 	public function getQueryBuilder($orderBys = null) {
 		return $this->_em->createQueryBuilder()
 			->select('e', 'a')

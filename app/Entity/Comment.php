@@ -57,6 +57,9 @@ class Comment extends BaseComment implements SignedCommentInterface {
 		return $this->getThread()->isForWorkEntry();
 	}
 
+	/**
+	 * @return WorkEntry
+	 */
 	public function getWorkEntry() {
 		return $this->getThread()->getWorkEntry();
 	}

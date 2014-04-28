@@ -29,6 +29,9 @@ class NextIdRepository extends \Doctrine\ORM\EntityRepository {
 		$this->getEntityManager()->getConnection()->executeUpdate($sql);
 	}
 
+	/**
+	 * @param string $entityName
+	 */
 	private function getMaxIdForEntity($entityName) {
 		$query = $this->getEntityManager()->createQuery(sprintf('SELECT MAX(e.id) FROM %s e', $entityName));
 		return $query->getSingleScalarResult();

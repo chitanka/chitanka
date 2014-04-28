@@ -93,7 +93,7 @@ class SfbParserSimple {
 	}
 
 	/**
-	 * @param integer $level
+	 * @param int $level
 	 */
 	protected function doTitle($level) {
 		if ($this->debug) echo "in doTitle($level)\n";

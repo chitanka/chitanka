@@ -32,6 +32,9 @@ class ResumeCurlClient extends Curl implements ListenerInterface {
 		unlink($this->saveFile->getRealPath());
 	}
 
+	/**
+	 * @param string $saveDir
+	 */
 	public function setSaveDir($saveDir) {
 		$this->saveDir = $saveDir;
 	}

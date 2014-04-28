@@ -97,6 +97,7 @@ class CacheFile {
 	/**
 	 * The time to live is set implicitly through the last modification time, e.g.
 	 * if a file has TTL of 1 hour, its modification time is set to 1 hour in the future
+	 * @param integer $ttl
 	 */
 	private function setTtl($ttl) {
 		touch($this->name, time() + $ttl);

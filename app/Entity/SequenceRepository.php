@@ -14,7 +14,7 @@ class SequenceRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $limit
+	 * @param int $limit
 	 */
 	public function getByPrefix($prefix, $page = 1, $limit = null) {
 		$where = $prefix ? "WHERE s.name LIKE '$prefix%'" : '';
@@ -33,7 +33,8 @@ class SequenceRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $limit
+	 * @param int $limit
+	 * @param string $name
 	 */
 	public function getByNames($name, $limit = null) {
 		$q = $this->getQueryBuilder()

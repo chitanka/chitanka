@@ -168,7 +168,7 @@ class User /*extends BaseUser*/ implements UserInterface {
 	public function getEmail() { return $this->email; }
 
 	/**
-	 * @param integer $allowemail
+	 * @param int $allowemail
 	 */
 	public function setAllowemail($allowemail) { $this->allowemail = $allowemail; }
 	public function getAllowemail() { return $this->allowemail; }
@@ -204,7 +204,7 @@ class User /*extends BaseUser*/ implements UserInterface {
 	}
 
 	/**
-	 * @param integer $news
+	 * @param int $news
 	 */
 	public function setNews($news) { $this->news = $news; }
 	public function getNews() { return $this->news; }
@@ -213,7 +213,7 @@ class User /*extends BaseUser*/ implements UserInterface {
 	public function getOpts() { return $this->opts; }
 
 	/**
-	 * @param integer $loginTries
+	 * @param int $loginTries
 	 */
 	public function setLoginTries($loginTries) { $this->login_tries = $loginTries; }
 	public function getLoginTries() { return $this->login_tries; }

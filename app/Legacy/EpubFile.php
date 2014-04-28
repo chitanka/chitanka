@@ -294,10 +294,16 @@ class EpubFile {
 		return $items;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getCoverFileName() {
 		return "$this->mainDir/cover";
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getBackCoverFileName() {
 		return "$this->mainDir/back-cover";
 	}
@@ -452,10 +458,16 @@ class EpubFile {
 		return empty($data) ? $content : strtr($content, $data);
 	}
 
+	/**
+	 * @param string $file
+	 */
 	public function addCover($file) {
 		$this->addFile('cover', $file);
 	}
 
+	/**
+	 * @param string $file
+	 */
 	public function addBackCover($file) {
 		$this->addFile('back-cover', $file);
 	}

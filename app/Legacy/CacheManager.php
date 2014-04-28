@@ -19,7 +19,7 @@ class CacheManager {
 	 * If file age is given, older than that files are discarded.
 	 * @param string $action  Page action
 	 * @param string $id      File ID
-	 * @param integer $age     File age in days
+	 * @param int $age     File age in days
 	 */
 	static public function cacheExists($action, $id, $age = null) {
 		$file = self::getPath($action, $id);
@@ -217,7 +217,7 @@ class CacheManager {
 	}
 
 	/**
-	 * @param array $textIds
+	 * @param array|int $textIds
 	 */
 	static public function clearDl($textIds) {
 		$db = Setup::db();

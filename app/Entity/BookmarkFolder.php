@@ -47,12 +47,21 @@ class BookmarkFolder extends Entity {
 
 	public function getId() { return $this->id; }
 
+	/**
+	 * @param string $slug
+	 */
 	public function setSlug($slug) { $this->slug = String::slugify($slug); }
 	public function getSlug() { return $this->slug; }
 
+	/**
+	 * @param string $name
+	 */
 	public function setName($name) { $this->name = $name; }
 	public function getName() { return $this->name; }
 
+	/**
+	 * @param User $user
+	 */
 	public function setUser($user) { $this->user = $user; }
 	public function getUser() { return $this->user; }
 

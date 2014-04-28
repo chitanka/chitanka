@@ -15,7 +15,7 @@ class BookmarkRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $page
+	 * @param int $page
 	 */
 	public function getIdsByUser($user, $page, $limit, $orderBys = 't.title ASC') {
 		$dql = sprintf('SELECT e.id FROM %s e LEFT JOIN e.text t WHERE e.user = %d ORDER BY %s', $this->getEntityName(), $user->getId(), $orderBys);

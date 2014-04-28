@@ -94,6 +94,9 @@ class String {
 		);
 	}
 
+	/**
+	 * @param string $name
+	 */
 	static public function getMachinePersonName($name) {
 		$parts = self::splitPersonName($name);
 		$machineName = isset($parts['lastname'])

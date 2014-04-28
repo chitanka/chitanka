@@ -40,6 +40,9 @@ class File {
 		}
 	}
 
+	/**
+	 * @param string $file
+	 */
 	static public function guessMimeType($file) {
 		switch ( strtolower(self::getFileExtension($file)) ) {
 			case 'png' : return 'image/png';

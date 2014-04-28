@@ -42,7 +42,7 @@ EOT
 
 	/**
 	 * @param string $texts
-	 * @param boolean $dumpSql
+	 * @param bool $dumpSql
 	 */
 	protected function updateHeaders($texts, $dumpSql) {
 		$queries = array();

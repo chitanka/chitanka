@@ -119,7 +119,7 @@ class License extends Entity {
 	/**
 	 * Set free
 	 *
-	 * @param boolean $free
+	 * @param bool $free
 	 */
 	public function setFree($free) {
 		$this->free = $free;
@@ -137,7 +137,7 @@ class License extends Entity {
 	/**
 	 * Set copyright
 	 *
-	 * @param boolean $copyright
+	 * @param bool $copyright
 	 */
 	public function setCopyright($copyright) {
 		$this->copyright = $copyright;

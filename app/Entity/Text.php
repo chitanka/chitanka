@@ -1124,7 +1124,7 @@ EOS;
 	public function getHeadlevel() { return $this->headlevel; }
 
 	/**
-	 * @param integer $size
+	 * @param int $size
 	 */
 	public function setSize($size) {
 		$this->size = $size;
@@ -1564,7 +1564,7 @@ EOS;
 	}
 
 	/**
-	 * @param integer $nr
+	 * @param int $nr
 	 */
 	public function getHeaderByNr($nr) {
 		foreach ($this->getHeaders() as $header) {

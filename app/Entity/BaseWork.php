@@ -48,6 +48,7 @@ abstract class BaseWork extends Entity {
 	/**
 	 * Return title and subtitle if any
 	 * @param string $format   Output format: %t1 — title, %t2 — subtitle
+	 * @return string
 	 */
 	public function getTitles($format = '%t1 — %t2') {
 		if ( ($subtitle = $this->getSubtitle()) ) {
@@ -82,10 +83,16 @@ abstract class BaseWork extends Entity {
 		return '';
 	}
 
+	/**
+	 * @param int $width
+	 */
 	public function getCover($width = null) {
 		return null;
 	}
 
+	/**
+	 * @param int $width
+	 */
 	public function getBackCover($width = null) {
 		return null;
 	}
@@ -265,6 +272,9 @@ abstract class BaseWork extends Entity {
 		return $this;
 	}
 
+	/**
+	 * @param string $imgDir
+	 */
 	public function getExtraInfoAsXhtml($imgDir = null) {
 		$text = $this->getExtraInfo();
 		if ($text) {
@@ -280,6 +290,9 @@ abstract class BaseWork extends Entity {
 		return array();
 	}
 
+	/**
+	 * @param string $imgDir
+	 */
 	abstract public function getEpubChunks($imgDir);
 
 	protected function getEpubChunksFrom($input, $imgDir) {

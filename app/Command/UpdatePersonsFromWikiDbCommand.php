@@ -110,6 +110,9 @@ EOT
 		return $this->_wikiBot;
 	}
 
+	/**
+	 * @param string $wikiContent
+	 */
 	private function _getPersonsDataFromWikiContent($wikiContent) {
 		$templates = $this->_getPersonTemplatesFromWikiContent($wikiContent);
 		$persons = array();

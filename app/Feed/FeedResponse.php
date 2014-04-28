@@ -53,7 +53,7 @@ class FeedResponse {
 
 	/**
 	 * Clean up the feed contents. Remove possible malicious input.
-	 * @return string
+	 * @return FeedResponse
 	 */
 	public function cleanup() {
 		$this->content = $this->cleanupContent($this->content);

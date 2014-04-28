@@ -46,6 +46,9 @@ class FeedPage extends Page {
 		$this->langCode = 'bg';
 	}
 
+	/**
+	 * @return string
+	 */
 	public function title() {
 		return "$this->title — $this->sitename";
 	}

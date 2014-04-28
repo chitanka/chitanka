@@ -73,6 +73,10 @@ class TextLabelLog extends Entity {
 	public function setUser(User $user) { $this->user = $user; }
 
 	public function getAction() { return $this->action; }
+
+	/**
+	 * @param string $action
+	 */
 	public function setAction($action) { $this->action = $action; }
 
 	public function getDate() { return $this->date; }

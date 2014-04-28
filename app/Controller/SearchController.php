@@ -326,6 +326,9 @@ class SearchController extends Controller {
 		);
 	}
 
+	/**
+	 * @param string $query
+	 */
 	private function validateQueryLength($query) {
 		$queryLength = mb_strlen($query, 'utf-8');
 		if ($queryLength < $this->minQueryLength) {
@@ -336,6 +339,9 @@ class SearchController extends Controller {
 		}
 	}
 
+	/**
+	 * @param string $query
+	 */
 	private function logSearch($query) {
 		$searchString = $this->getSearchStringRepository()->findOneBy(array('name' => $query));
 		if ( ! $searchString) {

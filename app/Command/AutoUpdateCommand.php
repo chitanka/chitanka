@@ -125,7 +125,7 @@ EOT
 	/**
 	 * @param string $fetchUrl
 	 * @param string $updateDir
-	 * @param string $contentDir
+	 * @param string $rootDir
 	 * @return boolean
 	 */
 	private function executeSrcUpdate($fetchUrl, $updateDir, $rootDir) {
@@ -171,7 +171,7 @@ EOT
 	 * @param string $fetchUrl
 	 * @param string $updateDir
 	 * @param string $now
-	 * @return boolean
+	 * @return \ZipArchive|null
 	 */
 	private function fetchUpdate($fetchUrl, $updateDir, $now) {
 		$url = $this->prepareFetchUrl($fetchUrl, $updateDir, $now);

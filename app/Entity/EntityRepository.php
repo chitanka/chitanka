@@ -28,6 +28,11 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
+	/**
+	 * @param \Doctrine\ORM\Query $query
+	 * @param int $page
+	 * @param int $limit
+	 */
 	protected function setPagination($query, $page, $limit) {
 		if ($limit) {
 			$query->setMaxResults($limit)->setFirstResult(($page - 1) * $limit);
@@ -51,6 +56,7 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 	}
 
 	/**
+	 * @param string $where
 	 * @param string $select
 	 */
 	protected function getRandomQuery($where = null, $select = null) {
@@ -76,6 +82,10 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 			->getQuery()->getResult();
 	}
 
+	/**
+	 * @param array $ids
+	 * @param string $orderBy
+	 */
 	public function getByIds($ids, $orderBy = null) {
 		if (empty($ids)) {
 			return array();

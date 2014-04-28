@@ -5,12 +5,15 @@
  */
 class WorkEntryRepository extends EntityRepository {
 	/**
-	 * @param integer $limit
+	 * @param int $limit
 	 */
 	public function getLatest($limit = null) {
 		return $this->getByIds($this->getLatestIdsByDate($limit), 'e.date DESC');
 	}
 
+	/**
+	 * @param int $limit
+	 */
 	public function getLatestIdsByDate($limit = null) {
 		$dql = sprintf('SELECT e.id FROM %s e WHERE e.deleted_at IS NULL ORDER BY e.date DESC', $this->getEntityName());
 		$query = $this->_em->createQuery($dql)->setMaxResults($limit);
@@ -18,6 +21,10 @@ class WorkEntryRepository extends EntityRepository {
 		return $query->getResult('id');
 	}
 
+	/**
+	 * @param string $title
+	 * @param int $limit
+	 */
 	public function getByTitleOrAuthor($title, $limit = null) {
 		return $this->getQueryBuilder()
 			->where('e.deleted_at IS NULL')
@@ -36,6 +43,9 @@ class WorkEntryRepository extends EntityRepository {
 			->getResult();
 	}
 
+	/**
+	 * @param string $orderBys
+	 */
 	public function getQueryBuilder($orderBys = null) {
 		$qb = parent::getQueryBuilder($orderBys)
 			->select('e', 'u', 'c', 'cu')

@@ -53,6 +53,9 @@ class CategoryRepository extends EntityRepository {
 		return $labels;
 	}
 
+	/**
+	 * @param string $name
+	 */
 	public function getByNames($name) {
 		return $this->getQueryBuilder()
 			->where('e.name LIKE ?1')

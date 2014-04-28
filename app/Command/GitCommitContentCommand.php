@@ -50,6 +50,10 @@ EOT
 		}
 	}
 
+	/**
+	 * @param string $directory
+	 * @param string $messageFile
+	 */
 	private function gitCommitAndPush($directory, $messageFile) {
 		$this->output->writeln('');
 		$this->output->writeln('===> Entering ' . basename($directory));
@@ -110,6 +114,7 @@ MSG;
 
 	/**
 	 * @RawSql
+	 * @param string $fromTime
 	 */
 	private function getChangedBooksDescriptions($fromTime) {
 		$sql = "SELECT CONCAT(b.id, ' / ', br.comment, ' / ', IFNULL(b.title_author, ''), ' — ', b.title, ' / ', b.type)
@@ -122,6 +127,7 @@ LIMIT 1000";
 
 	/**
 	 * @RawSql
+	 * @param string $fromTime
 	 */
 	private function getChangedTextsDescriptions($fromTime) {
 		$sql = "SELECT CONCAT(t.id, ' / ', tr.comment, ' / ', GROUP_CONCAT(p.name SEPARATOR ', '), ' — ', t.title, ' / ', t.type)

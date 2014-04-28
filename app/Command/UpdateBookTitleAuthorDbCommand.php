@@ -41,7 +41,7 @@ EOT
 	}
 
 	/**
-	 * @param boolean $dumpSql
+	 * @param bool $dumpSql
 	 */
 	protected function updateBookTitleAuthor($dumpSql) {
 		$queries = array();

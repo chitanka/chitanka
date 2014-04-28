@@ -253,7 +253,7 @@ class Legacy {
 	/**
 	 * bytes to kibibytes
 	 * @param int $bytes
-	 * @return string
+	 * @return int
 	 */
 	static public function int_b2k($bytes) {
 		$k = $bytes >> 10; // divide by 2^10 w/o rest
@@ -262,7 +262,7 @@ class Legacy {
 	/**
 	 * bytes to mebibytes
 	 * @param int $bytes
-	 * @return string
+	 * @return int
 	 */
 	static public function int_b2m($bytes) {
 		$m = $bytes >> 20; // divide by 2^20 w/o rest
@@ -272,7 +272,7 @@ class Legacy {
 	/**
 	 * bytes to gibibytes
 	 * @param int $bytes
-	 * @return string
+	 * @return int
 	 */
 	static public function int_b2g($bytes) {
 		$m = $bytes >> 30; // divide by 2^30 w/o rest
@@ -486,7 +486,7 @@ class Legacy {
 	/**
 	 * @param string $url
 	 * @param array $postData
-	 * @return type
+	 * @return string
 	 */
 	static public function getFromUrl($url, array $postData = array()) {
 		$ch = curl_init();

@@ -152,7 +152,7 @@ class Extension extends \Twig_Extension {
 	* Generate an anchor name for a given string.
 	*
 	* @param string  $text    A string
-	* @param boolean $unique  Always generate a unique name
+	* @param bool $unique  Always generate a unique name
 	*                         (consider all previously generated names)
 	*/
 	public function getAnchorName($text, $unique = true) {

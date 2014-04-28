@@ -5,7 +5,7 @@
  */
 class SearchStringRepository extends EntityRepository {
 	/**
-	 * @param integer $limit
+	 * @param int $limit
 	 */
 	public function getLatest($limit = null) {
 		$sort = 'e.date DESC';
@@ -13,7 +13,7 @@ class SearchStringRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $limit
+	 * @param int $limit
 	 */
 	public function getTop($limit = null) {
 		$sort = 'e.count DESC, e.date DESC';
@@ -22,6 +22,7 @@ class SearchStringRepository extends EntityRepository {
 
 	/**
 	 * @param string $sort
+	 * @param int $limit
 	 */
 	public function getIdsBySort($sort, $limit = null) {
 		$dql = sprintf('SELECT e.id FROM %s e ORDER BY %s', $this->getEntityName(), $sort);

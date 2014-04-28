@@ -16,7 +16,7 @@ class UserTextContribRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $page
+	 * @param int $page
 	 */
 	public function getIdsByUser($user, $page, $limit) {
 		$dql = sprintf('SELECT c.id FROM %s c WHERE c.user = %d ORDER BY c.date DESC', $this->getEntityName(), $user->getId());

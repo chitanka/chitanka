@@ -54,7 +54,7 @@ class BookText extends Entity {
 	public function getPos() { return $this->pos; }
 
 	/**
-	 * @param boolean $shareInfo
+	 * @param bool $shareInfo
 	 */
 	public function setShareInfo($shareInfo) { $this->share_info = $shareInfo; }
 	public function getShareInfo() { return $this->share_info; }

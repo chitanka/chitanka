@@ -111,7 +111,7 @@ class TextComment extends Entity {
 	public function getReplyto() { return $this->replyto; }
 
 	/**
-	 * @param integer $isShown
+	 * @param int $isShown
 	 */
 	public function setIsShown($isShown) { $this->is_shown = $isShown; }
 	public function getIsShown() { return $this->is_shown; }

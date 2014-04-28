@@ -177,6 +177,12 @@ class OutputMaker {
 		return $this->xmlElement('ul', $oitems, $attrs);
 	}
 
+	/**
+	 * @param string $name
+	 * @param string $content
+	 * @param array $attrs
+	 * @param bool $doEscape
+	 */
 	public function xmlElement($name, $content = '', $attrs = array(), $doEscape = true) {
 		$end = is_null($content) ? ' />' : ">$content</$name>";
 		return '<'.$name . $this->makeAttribs($attrs, $doEscape) . $end;

@@ -121,7 +121,7 @@ class BookRepository extends EntityRepository {
 
 	/**
 	 * @param string $title
-	 * @param integer $limit
+	 * @param int $limit
 	 */
 	public function getByTitles($title, $limit = null) {
 		$q = $this->getQueryBuilder()

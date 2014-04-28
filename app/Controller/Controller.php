@@ -211,6 +211,9 @@ abstract class Controller extends SymfonyController {
 		return $this->getEntityManager()->getRepository($this->getEntityName($entityName));
 	}
 
+	/**
+	 * @param string $entityName
+	 */
 	protected function getEntityName($entityName) {
 		return 'App:'.$entityName;
 	}

@@ -3,7 +3,6 @@
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\ORM\EntityManager;
-use App\Entity\Site;
 use App\Legacy\Legacy;
 
 class UpdateSiteLinksDbCommand extends CommonDbCommand {
@@ -21,14 +20,7 @@ EOT
 	}
 
 	/**
-	 * Executes the current command.
-	 *
-	 * @param InputInterface  $input  An InputInterface instance
-	 * @param OutputInterface $output An OutputInterface instance
-	 *
-	 * @return integer 0 if everything went fine, or an error code
-	 *
-	 * @throws \LogicException When this abstract class is not implemented
+	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
@@ -36,6 +28,11 @@ EOT
 		$output->writeln('Done.');
 	}
 
+	/**
+	 * @param string $wikiContent
+	 * @param OutputInterface $output
+	 * @param EntityManager $em
+	 */
 	protected function updateLinks($wikiContent, OutputInterface $output, EntityManager $em) {
 		$linksData = $this->extractLinkData($wikiContent);
 		if (empty($linksData)) {

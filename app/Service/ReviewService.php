@@ -5,7 +5,7 @@ use App\Legacy\Legacy;
 class ReviewService {
 
 	/**
-	 * @param integer $limit
+	 * @param int $limit
 	 * @param bool $random
 	 */
 	public static function getReviews($limit = null, $random = false) {

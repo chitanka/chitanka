@@ -58,7 +58,7 @@ class TextTranslator extends Entity {
 	/**
 	 * Set pos
 	 *
-	 * @param integer $pos
+	 * @param int $pos
 	 */
 	public function setPos($pos) {
 		$this->pos = $pos;
@@ -76,7 +76,7 @@ class TextTranslator extends Entity {
 	/**
 	 * Set year
 	 *
-	 * @param integer $year
+	 * @param int $year
 	 */
 	public function setYear($year) {
 		$this->year = $year;

@@ -28,7 +28,7 @@ class Mutex {
 	}
 
 	/**
-	 * @param integer $expirationTime
+	 * @param int $expirationTime
 	 */
 	private function hasValidLockFile($expirationTime) {
 		return file_exists($this->getLockFile()) && (time() - filemtime($this->getLockFile()) < $expirationTime);

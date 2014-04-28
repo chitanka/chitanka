@@ -54,6 +54,10 @@ class TextRepository extends EntityRepository {
 		'orig_subtitle',
 	);
 
+	/**
+	 * @param int $id
+	 * @return Text
+	 */
 	public function get($id) {
 		return $this->_em->createQueryBuilder()
 			->select('t', 'ta', 'tt', 's', 'l', 'b', 'ol', 'tl', 'r')
@@ -72,7 +76,9 @@ class TextRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $limit
+	 * @param string $prefix
+	 * @param int $page
+	 * @param int $limit
 	 */
 	public function getByPrefix($prefix, $page = 1, $limit = null) {
 		try {
@@ -85,7 +91,9 @@ class TextRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $page
+	 * @param string $prefix
+	 * @param int $page
+	 * @param int $limit
 	 */
 	public function getIdsByPrefix($prefix, $page, $limit) {
 		$where = $prefix ? "WHERE t.title LIKE '$prefix%'" : '';
@@ -100,6 +108,9 @@ class TextRepository extends EntityRepository {
 		return $ids;
 	}
 
+	/**
+	 * @param string $prefix
+	 */
 	public function countByPrefix($prefix) {
 		$where = $prefix ? "WHERE t.title LIKE '$prefix%'" : '';
 		$dql = sprintf('SELECT COUNT(t.id) FROM %s t %s', $this->getEntityName(), $where);
@@ -109,7 +120,9 @@ class TextRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $limit
+	 * @param string $type
+	 * @param int $page
+	 * @param int $limit
 	 */
 	public function getByType($type, $page = 1, $limit = null) {
 		try {
@@ -122,7 +135,9 @@ class TextRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $page
+	 * @param string $type
+	 * @param int $page
+	 * @param int $limit
 	 */
 	public function getIdsByType($type, $page, $limit) {
 		$where = "WHERE t.type = '$type'";
@@ -137,6 +152,9 @@ class TextRepository extends EntityRepository {
 		return $ids;
 	}
 
+	/**
+	 * @param string $type
+	 */
 	public function countByType($type) {
 		$where = "WHERE t.type = '$type'";
 		$dql = sprintf('SELECT COUNT(t.id) FROM %s t %s', $this->getEntityName(), $where);
@@ -146,7 +164,9 @@ class TextRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $limit
+	 * @param array $labels
+	 * @param int $page
+	 * @param int $limit
 	 */
 	public function getByLabel($labels, $page = 1, $limit = null) {
 		try {
@@ -159,7 +179,9 @@ class TextRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $page
+	 * @param array $labels
+	 * @param int $page
+	 * @param int $limit
 	 */
 	protected function getIdsByLabel($labels, $page, $limit) {
 		$dql = sprintf('SELECT DISTINCT t.id FROM %s t JOIN t.labels l WHERE l.id IN (%s) ORDER BY t.title', $this->getEntityName(), implode(',', $labels));
@@ -215,6 +237,11 @@ class TextRepository extends EntityRepository {
 		return $texts;
 	}
 
+	/**
+	 * @param array $ids
+	 * @param string $orderBy
+	 * @return array
+	 */
 	public function getByIds($ids, $orderBy = null) {
 		$texts = $this->getQueryBuilder()
 			->where(sprintf('e.id IN (%s)', implode(',', $ids)))

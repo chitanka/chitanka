@@ -68,7 +68,7 @@ class TextRevision extends Entity {
 	public function getDate() { return $this->date; }
 
 	/**
-	 * @param boolean $first
+	 * @param bool $first
 	 */
 	public function setFirst($first) { $this->first = $first; }
 	public function getFirst() { return $this->first; }

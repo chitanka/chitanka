@@ -114,7 +114,7 @@ class PersonRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $limit
+	 * @param int $limit
 	 */
 	public function getBy($filters, $page = 1, $limit = null) {
 		$query = $this->setPagination($this->getQueryBy($filters), $page, $limit);
@@ -185,7 +185,8 @@ class PersonRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param integer $limit
+	 * @param string $name
+	 * @param int $limit
 	 */
 	public function getByNames($name, $limit = null) {
 		$q = $this->getQueryBuilder()

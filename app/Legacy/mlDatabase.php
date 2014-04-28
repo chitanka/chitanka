@@ -153,6 +153,12 @@ class mlDatabase {
 		return "INSERT$signore INTO $table". $this->makeSetClause($data);
 	}
 
+	/**
+	 * @param string $table
+	 * @param array $data
+	 * @param string[] $fields
+	 * @param bool $ignore
+	 */
 	public function multiinsertQ($table, $data, $fields, $ignore = false) {
 		if ( empty($data) || empty($fields) ) {
 			return '';
@@ -329,30 +335,42 @@ class mlDatabase {
 		return preg_match('/UPDATE|INSERT|REPLACE|DELETE|START|COMMIT|ALTER/', $query);
 	}
 
-	/** @return array Associative array */
+	/**
+	 * @param resource $result
+	 * @return array Associative array
+	 */
 	public function fetchAssoc($result) {
 		return mysql_fetch_assoc($result);
 	}
 
-	/** @return array */
+	/**
+	 * @param resource $result
+	 * @return array
+	 */
 	public function fetchRow($result) {
 		return mysql_fetch_row($result);
 	}
 
-	/** @return integer */
+	/**
+	 * @param resource $result
+	 * @return int
+	 */
 	public function numRows($result) {
 		return mysql_num_rows($result);
 	}
 
+	/**
+	 * @param resource $result
+	 */
 	private function freeResult($result) {
 		return mysql_free_result($result);
 	}
 
 	/**
-		Return next auto increment for a table
-		@param string $tableName
-		@return integer
-	*/
+	 * Return next auto increment for a table
+	 * @param string $tableName
+	 * @return int
+	 */
 	public function autoIncrementId($tableName) {
 		$res = $this->query('SHOW TABLE STATUS LIKE "'.$tableName.'"');
 		$row = mysql_fetch_assoc($res);

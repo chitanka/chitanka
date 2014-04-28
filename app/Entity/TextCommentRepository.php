@@ -5,12 +5,15 @@
  */
 class TextCommentRepository extends EntityRepository {
 	/**
-	 * @param integer $limit
+	 * @param int $limit
 	 */
 	public function getLatest($limit = null) {
 		return $this->getByIds($this->getLatestIdsByDate($limit), 'e.time DESC');
 	}
 
+	/**
+	 * @param int $limit
+	 */
 	public function getLatestIdsByDate($limit = null) {
 		$dql = sprintf('SELECT e.id FROM %s e WHERE e.is_shown = 1 ORDER BY e.time DESC', $this->getEntityName());
 		$query = $this->_em->createQuery($dql)->setMaxResults($limit);
