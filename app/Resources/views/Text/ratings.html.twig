@@ -1,0 +1,29 @@
+{% extends 'App::layout.html.twig' %}
+
+{% import 'App::link.html.twig' as link %}
+
+{% set title = "Читателски оценки" %}
+{% set subtitle %}
+{% spaceless %}
+	{% import 'App::text.html.twig' as texttools %}
+	за „{{ link.text(text) }}“
+	{{ texttools.author_list(text.authors) }}
+{% endspaceless %}
+{% endset %}
+
+{% block content %}
+	<table class="content">
+		<tr>
+			<th>Дата</th>
+			<th>Потребител</th>
+			<th>Оценка</th>
+		</tr>
+		{% for rating in ratings %}
+			<tr>
+				<td>{{ rating.date|humandate }}</td>
+				<td>{{ link.user_with_email(rating.user) }}</td>
+				<td>{{ rating.rating }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endblock %}

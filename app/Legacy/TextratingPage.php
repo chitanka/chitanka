@@ -1,7 +1,5 @@
 <?php namespace App\Legacy;
 
-use App\Entity\Text;
-
 class TextratingPage extends TextPage {
 
 	protected
@@ -11,7 +9,6 @@ class TextratingPage extends TextPage {
 	public function __construct($fields) {
 		parent::__construct($fields);
 		$this->title = 'Оценки';
-		$this->textId = (int) $this->request->value( self::FF_TEXT_ID, 0, 1 );
 		$this->username = $this->request->value('username');
 	}
 
@@ -19,51 +16,7 @@ class TextratingPage extends TextPage {
 		if ( ! empty( $this->username ) ) {
 			return $this->makeListByUser();
 		}
-		return $this->makeListByText();
-	}
-
-	protected function makeListByText($limit = 0, $offset = 0) {
-		$this->initData();
-		if ( !is_object($this->work) ) {
-			return '';
-		}
-		$qa = array(
-			'SELECT' => 'tr.rating, tr.date, u.username',
-			'FROM' => DBT_TEXT_RATING .' tr',
-			'LEFT JOIN' => array(
-				DBT_USER .' u' => 'tr.user_id = u.id',
-			),
-			'WHERE' => array('tr.text_id' => $this->textId),
-			'ORDER BY' => "tr.date DESC",
-			'LIMIT' => array($offset, $limit),
-		);
-
-		$this->data = array();
-		$this->db->iterateOverResult(
-			$this->db->extselectQ($qa), 'makeListByTextItem', $this);
-		$this->title = 'Оценки за ' . $this->makeTextLinkWithAuthor($this->work);
-
-		if ( empty($this->data) ) {
-			return '<p class="no-items">Няма дадени оценки.</p>';
-		}
-
-		$this->data = array_merge(array(
-			array(
-				array( array('type' => 'header'), 'Дата'),
-				array( array('type' => 'header'), 'Потребител'),
-				array( array('type' => 'header'), 'Оценка'),
-			)
-		), $this->data);
-
-		return $this->out->simpleTable($this->title, $this->data);
-	}
-
-	public function makeListByTextItem($dbrow) {
-		$this->data[] = array(
-			Legacy::humanDate($dbrow['date']),
-			$this->includeUserLinks ? $this->makeUserLink($dbrow['username']) : $dbrow['username'],
-			$dbrow['rating']
-		);
+		return '';
 	}
 
 	protected function makeListByUser($limit = 0, $offset = 0) {
@@ -107,12 +60,4 @@ class TextratingPage extends TextPage {
 		);
 	}
 
-	protected function initData() {
-		$this->work = $this->controller->getRepository('Text')->find($this->textId);
-		if ( !is_object($this->work) ) {
-			$this->addMessage("Няма такова произведение (номер $this->textId).", true);
-			return false;
-		}
-		return true;
-	}
 }

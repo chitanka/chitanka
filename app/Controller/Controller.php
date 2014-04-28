@@ -58,6 +58,15 @@ abstract class Controller extends SymfonyController {
 		return $response;
 	}
 
+	/**
+	 * Render a given controler action.
+	 * @param string $action  Action name. Can include controller and/or format. Examples:
+	 *                        index - an action name
+	 *                        Main:index - controller and action
+	 *                        Main:catalog.opds - controller, action and format
+	 * @param array $params   Parameters to be sent to te view
+	 * @return Response
+	 */
 	protected function display($action, array $params = array()) {
 		if (strpos($action, '.') === false) {
 			$format = $this->responseFormat;

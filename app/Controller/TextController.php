@@ -326,10 +326,17 @@ class TextController extends Controller {
 		));
 	}
 
+	/**
+	 * Show all ratings for given text.
+	 * @param int $id Text ID
+	 */
 	public function ratingsAction($id) {
-		$_REQUEST['id'] = $id;
-
-		return $this->legacyPage('Textrating');
+		$text = $this->findText($id);
+		$ratings = $this->getTextRatingRepository()->getByText($text);
+		return $this->display('ratings', array(
+			'text' => $text,
+			'ratings' => $ratings,
+		));
 	}
 
 	public function markReadFormAction($id) {
