@@ -10,11 +10,10 @@ class CommentListener {
 	private $mailer;
 	private $em;
 
-    public function __construct(\Swift_Mailer $mailer, EntityManager $em)
-    {
-        $this->mailer = $mailer;
+	public function __construct(\Swift_Mailer $mailer, EntityManager $em) {
+		$this->mailer = $mailer;
 		$this->em = $em;
-    }
+	}
 
 	public function onCommentPostPersist(CommentEvent $event) {
 		/* @var $comment Comment */

@@ -25,10 +25,9 @@ class UserRepository extends EntityRepository implements UserProviderInterface {
 		return $this->findBy(array('username' => $usernames));
 	}
 
-    public function refreshUser(UserInterface $user)
-    {
-      return $user;
-    }
+	public function refreshUser(UserInterface $user) {
+		return $user;
+	}
 
 	public function supportsClass($class) {
 		return false;

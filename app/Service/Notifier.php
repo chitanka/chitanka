@@ -10,10 +10,9 @@ class Notifier {
 
 	private $mailer;
 
-    public function __construct(Swift_Mailer $mailer)
-    {
-        $this->mailer = $mailer;
-    }
+	public function __construct(Swift_Mailer $mailer) {
+		$this->mailer = $mailer;
+	}
 
 	public function sendMailByNewWorkroomComment(Comment $comment, WorkEntry $workEntry, array $recipients) {
 		if (empty($recipients)) {
