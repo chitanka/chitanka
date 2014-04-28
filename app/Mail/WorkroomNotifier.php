@@ -1,18 +1,12 @@
-<?php namespace App\Service;
+<?php namespace App\Mail;
 
-use \Swift_Mailer;
-use \Swift_Message;
 use App\Entity\Comment;
 use App\Entity\WorkEntry;
 use App\Entity\WorkContrib;
+use Swift_Message;
+use Swift_RfcComplianceException;
 
-class Notifier {
-
-	private $mailer;
-
-	public function __construct(Swift_Mailer $mailer) {
-		$this->mailer = $mailer;
-	}
+class WorkroomNotifier extends Notifier {
 
 	public function sendMailByNewWorkroomComment(Comment $comment, WorkEntry $workEntry, array $recipients) {
 		if (empty($recipients)) {
@@ -28,7 +22,7 @@ class Notifier {
 		foreach ($recipients as $recipientEmail => $recipientName) {
 			try {
 				$message->setTo($recipientEmail, $recipientName);
-			} catch (\Swift_RfcComplianceException $e) {
+			} catch (Swift_RfcComplianceException $e) {
 				$this->logError(__METHOD__.": {$e->getMessage()} (recipient: {$recipientName})");
 			}
 			$this->sendMessage($message);
@@ -59,7 +53,7 @@ BODY;
 		$recipient = $workEntry->getUser();
 		try {
 			$message->setTo($recipient->getEmail(), $recipient->getName());
-		} catch (\Swift_RfcComplianceException $e) {
+		} catch (Swift_RfcComplianceException $e) {
 			$this->logError(__METHOD__.": {$e->getMessage()} (recipient: {$recipient->getName()})");
 		}
 		$this->sendMessage($message);
@@ -81,7 +75,7 @@ BODY;
 		$recipient = $contrib->getUser();
 		try {
 			$message->setTo($recipient->getEmail(), $recipient->getName());
-		} catch (\Swift_RfcComplianceException $e) {
+		} catch (Swift_RfcComplianceException $e) {
 			$this->logError(__METHOD__.": {$e->getMessage()} (recipient: {$recipient->getName()})");
 		}
 		$this->sendMessage($message);
@@ -118,14 +112,4 @@ _______________________________________________________________________________
 BODY;
 	}
 
-	private function sendMessage(Swift_Message $message) {
-		$this->mailer->send($message);
-	}
-
-	/**
-	 * @param string $message
-	 */
-	private function logError($message) {
-		error_log($message);
-	}
 }

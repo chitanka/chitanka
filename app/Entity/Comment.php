@@ -77,6 +77,6 @@ class Comment extends BaseComment implements SignedCommentInterface {
 	}
 
 	public function isDeleted() {
-		return $this->getState() === self::STATE_DELETED;
+		return $this->getState() == self::STATE_DELETED;
 	}
 }

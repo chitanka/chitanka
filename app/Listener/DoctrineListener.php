@@ -1,11 +1,14 @@
 <?php namespace App\Listener;
 
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 use App\Entity\TextRating;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 class DoctrineListener {
 
-	public function preUpdate(PreUpdateEventArgs $eventArgs) {echo '#####';exit;
+	/**
+	 * @param PreUpdateEventArgs $eventArgs
+	 */
+	public function preUpdate(PreUpdateEventArgs $eventArgs) {
 		if ($eventArgs->getEntity() instanceof TextRating) {
 			if ($eventArgs->hasChangedField('rating')) {
 				$text = $eventArgs->getEntity()->getText();
