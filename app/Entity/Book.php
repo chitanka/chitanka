@@ -43,7 +43,7 @@ class Book extends BaseWork {
 	private $title_author;
 
 	/**
-	 * @var string $title
+	 * @var string
 	 * @ORM\Column(type="string", length=255)
 	 */
 	private $title = '';
@@ -122,35 +122,39 @@ class Book extends BaseWork {
 	private $category;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $has_anno;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $has_cover;
 
 	/**
 	 * List of formats in which the book is available
+	 * @var array
 	 * @ORM\Column(type="array")
 	 */
 	private $formats = array();
 
 	/**
+	 * @var ArrayCollection
 	 * @ORM\OneToMany(targetEntity="BookRevision", mappedBy="book", cascade={"persist"})
 	 */
 	private $revisions;
 
 	/**
 	 * A notice if the content is removed
+	 * @var string
 	 * @ORM\Column(type="text", nullable=true)
 	 */
 	private $removed_notice;
 
 	/*
+	 * @var ArrayCollection
 	 * @ORM\ManyToMany(targetEntity="Person", inversedBy="books")
 	 * @ORM\JoinTable(name="book_author")
 	 */
@@ -170,6 +174,7 @@ class Book extends BaseWork {
 	private $bookTexts;
 
 	/** FIXME doctrine:schema:create does not allow this relation
+	 * @var ArrayCollection
 	 * @ORM\ManyToMany(targetEntity="Text", inversedBy="books")
 	 * @ORM\JoinTable(name="book_text",
 	 *	joinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id")},

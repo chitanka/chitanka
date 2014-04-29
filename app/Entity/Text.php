@@ -888,7 +888,7 @@ class Text extends BaseWork {
 
 	public function getFbi() {
 		$generator = new FbiGenerator();
-		return $generator->getFbiForText($this);
+		return $generator->generateFbiForText($this);
 	}
 
 	public function getDataAsPlain() {

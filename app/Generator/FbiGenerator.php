@@ -1,6 +1,7 @@
 <?php namespace App\Generator;
 
 use App\Entity\Text;
+use App\Legacy\Legacy;
 
 class FbiGenerator {
 
@@ -9,90 +10,51 @@ class FbiGenerator {
 	 * @param Text $text
 	 * @return string
 	 */
-	public function getFbiForText(Text $text) {
-		return implode("\n", array(
-			$this->getFbiMain($text),
-			$this->getFbiOriginal($text),
-			$this->getFbiDocument($text),
-			//$this->getFbiEdition($text), // not implemented
-		));
+	public function generateFbiForText(Text $text) {
+		return $this->clearFbi(implode("\n", array(
+			$this->genFbiMain($text),
+			$this->genFbiOriginal($text),
+			$this->genFbiDocument($text),
+			$this->genFbiEdition(),
+		)));
 	}
 
-	protected function getFbiMain(Text $text) {
-		$authors = '';
-		foreach ($text->getAuthors() as $author) {
-			$authors .= "\n|Автор        = " . $author->getName();
-		}
-		$title = $text->getTitle();
-		if ($text->getSubtitle() != '') {
-			$subtitle = strtr($text->getSubtitle(), array(self::TITLE_NEW_LINE => ', '));
-			$title .= ' (' . trim($subtitle, '()') . ')';
-		}
-		$anno = $text->getAnnotation();
-		$translators = '';
-		foreach ($text->getTextTranslators() as $textTranslator) {
-			$year = $textTranslator->getYear() ?: $text->getTransYear();
-			$name = $textTranslator->getPerson()->getName();
-			$translators .= "\n|Преводач     = $name [&$year]";
-		}
-		$series = $text->getSeries();
-		$seriesView = empty($series) ? Legacy::workType($text->getType(), false) : $series->getName();
-		if ($series && $text->getSernr()) {
-			$seriesView .= " [{$text->getSernr()}]";
-		}
-		$keywords = implode(', ', $text->getLabelsNames());
-		$origLangView = $text->getLang() == $text->getOrigLang() ? '' : $text->getOrigLang();
+	private function genFbiMain(Text $text) {
 		return <<<EOS
-{Произведение:$authors
-|Заглавие     = $title
+{Произведение:
+{$this->genFbiMainAuthors($text)}
+|Заглавие     = {$this->genFbiMainTitle($text)}
 {Анотация:
-$anno
+{$text->getAnnotation()}
 }
 |Дата         = {$text->getYear()}
 |Корица       =
 |Език         = {$text->getLang()}
-|Ориг.език    = $origLangView$translators
-|Поредица     = $seriesView
+|Ориг.език    = {$this->genFbiMainOrigLang($text)}
+{$this->genFbiMainTranslators($text)}
+|Поредица     = {$this->genFbiMainSeries($text)}
 |Жанр         =
-|Ключови-думи = $keywords
+|Ключови-думи = {$this->genFbiMainKeywords($text)}
 }
 EOS;
 	}
 
-	protected function getFbiOriginal(Text $text) {
+	private function genFbiOriginal(Text $text) {
 		if ($text->getLang() == $text->getOrigLang()) {
 			return '';
 		}
-		$authors = '';
-		foreach ($text->getAuthors() as $author) {
-			$name = $author->getOrigName();
-			$authors .= "\n|Автор        = $name";
-		}
-		$title = $text->getOrigTitle();
-		$subtitle = $text->getOrigSubtitle();
-		if ($subtitle != '') {
-			$title .= ' (' . trim($subtitle, '()') . ')';
-		}
-		if ($text->getSeries()) {
-			$series = $text->getSeries()->getOrigName();
-			if ($series != '' && $text->getSernr()) {
-				$series .= " [{$text->getSernr()}]";
-			}
-		} else {
-			$series = '';
-		}
-
 		return <<<EOS
-{Оригинал:$authors
-|Заглавие     = $title
+{Оригинал:
+{$this->genFbiOriginalAuthors($text)}
+|Заглавие     = {$this->genFbiOriginalTitle($text)}
 |Дата         = {$text->getYear()}
 |Език         = {$text->getOrigLang()}
-|Поредица     = $series
+|Поредица     = {$this->genFbiOriginalSeries($text)}
 }
 EOS;
 	}
 
-	protected function getFbiDocument(Text $text) {
+	private function genFbiDocument(Text $text) {
 		$date = date('Y-m-d H:i:s');
 		list($history, $version) = $text->getHistoryAndVersion();
 		$history = "\n\t" . implode("\n\t", $history);
@@ -114,7 +76,10 @@ EOS;
 EOS;
 	}
 
-	protected function getFbiEdition(Text $text) {
+	/**
+	 * @todo implement
+	 */
+	private function genFbiEdition() {
 		return <<<EOS
 {Издание:
 |Заглавие     =
@@ -126,4 +91,84 @@ EOS;
 }
 EOS;
 	}
+
+	private function clearFbi($fbi) {
+		return strtr($fbi, array(
+			"\n\n|" => "\n|",
+		));
+	}
+
+	private function genFbiMainAuthors(Text $text) {
+		$fbi = '';
+		foreach ($text->getAuthors() as $author) {
+			$fbi .= "\n|Автор        = " . $author->getName();
+		}
+		return $fbi;
+	}
+
+	private function genFbiMainTitle(Text $text) {
+		$fbi = $text->getTitle();
+		if ($text->getSubtitle() != '') {
+			$subtitle = strtr($text->getSubtitle(), array(Text::TITLE_NEW_LINE => ', '));
+			$fbi .= ' (' . trim($subtitle, '()') . ')';
+		}
+		return $fbi;
+	}
+
+	private function genFbiMainTranslators(Text $text) {
+		$fbi = '';
+		foreach ($text->getTextTranslators() as $textTranslator) {
+			$year = $textTranslator->getYear() ?: $text->getTransYear();
+			$name = $textTranslator->getPerson()->getName();
+			$fbi .= "\n|Преводач     = $name [&$year]";
+		}
+		return $fbi;
+	}
+
+	private function genFbiMainSeries(Text $text) {
+		$series = $text->getSeries();
+		$fbi = empty($series) ? Legacy::workType($text->getType(), false) : $series->getName();
+		if ($series && $text->getSernr()) {
+			$fbi .= " [{$text->getSernr()}]";
+		}
+		return $fbi;
+	}
+
+	private function genFbiMainOrigLang(Text $text) {
+		return $text->getOrigLang() != $text->getLang() ? $text->getOrigLang() : '';
+	}
+
+	private function genFbiMainKeywords(Text $text) {
+		return implode(', ', $text->getLabelsNames());
+	}
+
+	private function genFbiOriginalAuthors(Text $text) {
+		$fbi = '';
+		foreach ($text->getAuthors() as $author) {
+			$fbi .= "\n|Автор        = " . $author->getOrigName();
+		}
+		return $fbi;
+	}
+
+	private function genFbiOriginalTitle(Text $text) {
+		$fbi = $text->getOrigTitle();
+		$subtitle = $text->getOrigSubtitle();
+		if ($subtitle != '') {
+			$fbi .= ' (' . trim($subtitle, '()') . ')';
+		}
+		return $fbi;
+	}
+
+	private function genFbiOriginalSeries(Text $text) {
+		$series = $text->getSeries();
+		if (!$series) {
+			return '';
+		}
+		$fbi = $series->getOrigName();
+		if ($fbi != '' && $text->getSernr()) {
+			$fbi .= " [{$text->getSernr()}]";
+		}
+		return $fbi;
+	}
+
 }
