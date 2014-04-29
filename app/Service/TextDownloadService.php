@@ -11,6 +11,7 @@ use App\Entity\TextRepository;
 class TextDownloadService {
 
 	private $textRepo;
+	private $zipFileName;
 
 	public function __construct(TextRepository $textRepo) {
 		$this->textRepo = $textRepo;
@@ -160,9 +161,7 @@ class TextDownloadService {
 			}
 		}
 		if ( $fileCount < 1 ) {
-			// TODO remove
-			$this->addMessage('Не е посочен валиден номер на текст за сваляне!', true);
-			return null;
+			throw new \Exception('Не е посочен валиден номер на текст за сваляне!');
 		}
 
 		if ( ! $setZipFileName && empty($this->zipFileName) ) {

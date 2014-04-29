@@ -4,6 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Generator\FbiGenerator;
 use App\Util\Char;
 use App\Util\File;
 use App\Util\Language;
@@ -863,112 +864,6 @@ class Text extends BaseWork {
 		return self::newFromDB($dbkey);
 	}
 
-	/**
-		Return fiction book info for this work
-	 */
-	public function getFbi() {
-		return $this->getFbiMain()
-			. "\n" . $this->getFbiOriginal()
-			. "\n" . $this->getFbiDocument()
-			//. "\n" . $this->getFbiEdition() // not implemented
-			;
-	}
-
-	protected function getFbiMain() {
-		$authors = '';
-		foreach ($this->getAuthors() as $author) {
-			$authors .= "\n|Автор        = " . $author->getName();
-		}
-		$title = $this->title;
-		if ( ! empty( $this->subtitle ) ) {
-			$subtitle = strtr($this->subtitle, array(self::TITLE_NEW_LINE => ', '));
-			$title .= ' (' . trim($subtitle, '()') . ')';
-		}
-		$anno = $this->getAnnotation();
-		$translators = '';
-		foreach ($this->getTextTranslators() as $textTranslator) {
-			$year = $textTranslator->getYear() ?: $this->trans_year;
-			$name = $textTranslator->getPerson()->getName();
-			$translators .= "\n|Преводач     = $name [&$year]";
-		}
-		$series = empty($this->series) ? Legacy::workType($this->type, false) : $this->series->getName();
-		if ( ! empty($this->series) && ! empty( $this->sernr ) ) {
-			$series .= " [$this->sernr]";
-		}
-		$keywords = implode(', ', $this->getLabelsNames());
-		$origLangView = $this->lang == $this->orig_lang ? '' : $this->orig_lang;
-		return <<<EOS
-{Произведение:$authors
-|Заглавие     = $title
-{Анотация:
-$anno
-}
-|Дата         = $this->year
-|Корица       =
-|Език         = $this->lang
-|Ориг.език    = $origLangView$translators
-|Поредица     = $series
-|Жанр         =
-|Ключови-думи = $keywords
-}
-EOS;
-	}
-
-	protected function getFbiOriginal() {
-		if ( $this->lang == $this->orig_lang ) {
-			return '';
-		}
-		$authors = '';
-		foreach ($this->getAuthors() as $author) {
-			$name = $author->getOrigName();
-			$authors .= "\n|Автор        = $name";
-		}
-		$title = $this->orig_title;
-		$subtitle = $this->orig_subtitle;
-		if ( ! empty( $subtitle ) ) {
-			$title .= ' (' . trim($subtitle, '()') . ')';
-		}
-		if ($this->series) {
-			$series = $this->series->getOrigName();
-			if ( ! empty($series) && ! empty( $this->sernr ) ) {
-				$series .= " [$this->sernr]";
-			}
-		} else {
-			$series = '';
-		}
-
-		return <<<EOS
-{Оригинал:$authors
-|Заглавие     = $title
-|Дата         = $this->year
-|Език         = $this->orig_lang
-|Поредица     = $series
-}
-EOS;
-	}
-
-	protected function getFbiDocument() {
-		$date = date('Y-m-d H:i:s');
-		list($history, $version) = $this->getHistoryAndVersion();
-		$history = "\n\t" . implode("\n\t", $history);
-		return <<<EOS
-{Документ:
-|Автор         =
-|Програми      =
-|Дата          = $date
-|Източник      =
-|Сканирал      =
-|Разпознал     =
-|Редактирал    =
-|Идентификатор = mylib-$this->id
-|Версия        = $version
-{История:$history
-}
-|Издател       =
-}
-EOS;
-	}
-
 	public function getHistoryAndVersion() {
 		$history = array();
 		$historyRows = $this->getHistoryInfo();
@@ -987,17 +882,9 @@ EOS;
 		return array($history, $ver);
 	}
 
-	protected function getFbiEdition() {
-		return <<<EOS
-{Издание:
-|Заглавие     =
-|Издател      =
-|Град         =
-|Година       =
-|ISBN         =
-|Поредица     =
-}
-EOS;
+	public function getFbi() {
+		$generator = new FbiGenerator();
+		return $generator->getFbiForText($this);
 	}
 
 	public function getDataAsPlain() {
