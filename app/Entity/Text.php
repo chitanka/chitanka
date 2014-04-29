@@ -40,121 +40,121 @@ class Text extends BaseWork {
 	protected $id;
 
 	/**
-	 * @var string $slug
+	 * @var string
 	 * @ORM\Column(type="string", length=50)
 	 */
 	private $slug;
 
 	/**
-	 * @var string $title
+	 * @var string
 	 * @ORM\Column(type="string", length=255)
 	 */
 	private $title = '';
 
 	/**
-	 * @var string $subtitle
+	 * @var string
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $subtitle;
 
 	/**
-	 * @var string $lang
+	 * @var string
 	 * @ORM\Column(type="string", length=2)
 	 */
 	private $lang = 'bg';
 
 	/**
-	 * @var integer $trans_year
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $trans_year;
 
 	/**
-	 * @var integer $trans_year2
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $trans_year2;
 
 	/**
-	 * @var string $orig_title
+	 * @var string
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $orig_title;
 
 	/**
-	 * @var string $orig_subtitle
+	 * @var string
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $orig_subtitle;
 
 	/**
-	 * @var string $orig_lang
+	 * @var string
 	 * @ORM\Column(type="string", length=3)
 	 */
 	private $orig_lang;
 
 	/**
-	 * @var integer $year
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $year;
 
 	/**
-	 * @var integer $year2
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $year2;
 
 	/**
-	 * @var integer $orig_license
+	 * @var License
 	 * @ORM\ManyToOne(targetEntity="License")
 	 */
 	private $orig_license;
 
 	/**
-	 * @var integer $trans_license
+	 * @var License
 	 * @ORM\ManyToOne(targetEntity="License")
 	 */
 	private $trans_license;
 
 	/**
-	 * @var string $type
+	 * @var string
 	 * @ORM\Column(type="string", length=14)
 	 */
 	private $type;
 
 	/**
-	 * @var integer $series
+	 * @var Series
 	 * @ORM\ManyToOne(targetEntity="Series", inversedBy="texts")
 	 */
 	private $series;
 
 	/**
-	 * @var integer $sernr
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $sernr;
 
 	/**
-	 * @var integer $sernr2
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $sernr2;
 
 	/**
-	 * @var integer $headlevel
+	 * @var int
 	 * @ORM\Column(type="smallint")
 	 */
 	private $headlevel = 0;
 
 	/**
-	 * @var integer $size
+	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
 	private $size;
 
 	/**
-	 * @var integer $zsize
+	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
 	private $zsize;
@@ -172,61 +172,61 @@ class Text extends BaseWork {
 	private $source;
 
 	/**
-	 * @var integer $cur_rev
+	 * @var int
 	 * @ORM\ManyToOne(targetEntity="TextRevision")
 	 */
 	private $cur_rev;
 
 	/**
-	 * @var integer $dl_count
+	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
 	private $dl_count = 0;
 
 	/**
-	 * @var integer $read_count
+	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
 	private $read_count = 0;
 
 	/**
-	 * @var integer $comment_count
+	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
 	private $comment_count = 0;
 
 	/**
-	 * @var float $rating
+	 * @var float
 	 * @ORM\Column(type="float")
 	 */
 	private $rating = 0;
 
 	/**
-	 * @var integer $votes
+	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
 	private $votes = 0;
 
 	/**
-	 * @var boolean $has_anno
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $has_anno = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $has_cover = false;
 
 	/*
-	 * @var boolean
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $has_title_note;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $is_compilation = false;
@@ -363,7 +363,6 @@ class Text extends BaseWork {
 
 	public function __toString() {
 		return $this->getTitle();
-		//return "$this->id";
 	}
 
 	public function getId() { return $this->id; }
@@ -821,47 +820,52 @@ class Text extends BaseWork {
 		return sprintf('Част %d от „%s“', $this->sernr, $this->series->getName());
 	}
 
+	// TODO reimplement if needed
 	public function getNextFromSeries() {
-		if ( empty($this->series) ) {
-			return false;
-		}
-		$dbkey = array('series_id' => $this->seriesId);
-		if ($this->sernr == 0) {
-			$dbkey['t.id'] = array('>', $this->id);
-		} else {
-			$dbkey[] = 'sernr = '. ($this->sernr + 1)
-				. " OR (sernr > $this->sernr AND t.id > $this->id)";
-		}
-		return self::newFromDB($dbkey);
+//		if ( empty($this->series) ) {
+//			return false;
+//		}
+//		$dbkey = array('series_id' => $this->seriesId);
+//		if ($this->sernr == 0) {
+//			$dbkey['t.id'] = array('>', $this->id);
+//		} else {
+//			$dbkey[] = 'sernr = '. ($this->sernr + 1)
+//				. " OR (sernr > $this->sernr AND t.id > $this->id)";
+//		}
+//		return self::newFromDB($dbkey);
 	}
 
+	// TODO reimplement if needed
 	public function getNextFromBooks() {
-		$nextWorks = array();
-		foreach ($this->books as $id => $book) {
-			$nextWorks[$id] = $this->getNextFromBook($id);
-		}
-		return $nextWorks;
+		return null;
+//		$nextWorks = array();
+//		foreach ($this->books as $id => $book) {
+//			$nextWorks[$id] = $this->getNextFromBook($id);
+//		}
+//		return $nextWorks;
 	}
 
+	// TODO reimplement if needed
 	public function getNextFromBook($book) {
-		if ( empty($this->books[$book]) ) {
-			return false;
-		}
-		$bookDescr = Legacy::getContentFile('book', $book);
-		if ( preg_match('/\{'. $this->id . '\}\n\{(\d+)\}/m', $bookDescr, $m) ) {
-			return self::newFromId($m[1]);
-		}
-		return false;
+//		if ( empty($this->books[$book]) ) {
+//			return false;
+//		}
+//		$bookDescr = Legacy::getContentFile('book', $book);
+//		if ( preg_match('/\{'. $this->id . '\}\n\{(\d+)\}/m', $bookDescr, $m) ) {
+//			return self::newFromId($m[1]);
+//		}
+//		return false;
 	}
 
+	// TODO reimplement if needed
 	public function getPrefaceOfBook($book) {
-		if ( empty($this->books[$book]) || $this->type == 'intro' ) {
-			return false;
-		}
-		$subkey = array('book_id' => $book);
-		$subquery = Setup::db()->selectQ(DBT_BOOK_TEXT, $subkey, 'text_id');
-		$dbkey = array("t.id IN ($subquery)", 't.type' => 'intro');
-		return self::newFromDB($dbkey);
+//		if ( empty($this->books[$book]) || $this->type == 'intro' ) {
+//			return false;
+//		}
+//		$subkey = array('book_id' => $book);
+//		$subquery = Setup::db()->selectQ(DBT_BOOK_TEXT, $subkey, 'text_id');
+//		$dbkey = array("t.id IN ($subquery)", 't.type' => 'intro');
+//		return self::newFromDB($dbkey);
 	}
 
 	public function getHistoryAndVersion() {
@@ -1020,7 +1024,7 @@ EOS;
 	public function getSize() { return $this->size; }
 
 	/**
-	 * @param double $zsize
+	 * @param float $zsize
 	 */
 	public function setZsize($zsize) { $this->zsize = $zsize; }
 	public function getZsize() { return $this->zsize; }
@@ -1288,101 +1292,6 @@ EOS;
 		return $slugs;
 	}
 
-	/**
-	 * @param string $id
-	 */
-	static public function newFromId($id, $reader = 0) {
-		return self::newFromDB( array('t.id' => $id), $reader );
-	}
-
-	static public function newFromTitle($title, $reader = 0) {
-		return self::newFromDB( array('t.title' => $title), $reader );
-	}
-
-	static public function incReadCounter($id) {
-		return; // disable
-		Setup::db()->update(DBT_TEXT, array('read_count=read_count+1'), compact('id'));
-	}
-
-	static public function incDlCounter($id) {
-		return; // disable
-		Setup::db()->update(DBT_TEXT, array('dl_count=dl_count+1'), compact('id'));
-	}
-
-	static protected function newFromDB($dbkey, $reader = 0) {
-		$db = Setup::db();
-		//$dbkey['mode'] = 'public';
-		$qa = array(
-			'SELECT' => 't.*,
-				s.id seriesId,
-				s.name series, s.orig_name seriesOrigName,
-				lo.code lo_code, lo.fullname lo_name, lo.copyright lo_copyright, lo.uri lo_uri,
-				lt.code lt_code, lt.fullname lt_name, lt.copyright lt_copyright, lt.uri lt_uri,
-				r.user_id isRead, h.date lastedit',
-			'FROM' => DBT_TEXT .' t',
-			'LEFT JOIN' => array(
-				DBT_SERIES .' s' => 't.series_id = s.id',
-				DBT_LICENSE .' lo' => 't.orig_license_id = lo.id',
-				DBT_LICENSE .' lt' => 't.trans_license_id = lt.id',
-				DBT_READER_OF .' r' => "t.id = r.text_id AND r.user_id = ".((int)$reader),
-				DBT_EDIT_HISTORY .' h' => 't.cur_rev_id = h.id',
-			),
-			'WHERE' => $dbkey,
-			'ORDER BY' => 't.sernr ASC',
-			'LIMIT' => 1,
-		);
-		$fields = $db->fetchAssoc( $db->extselect($qa) );
-		if ( empty($fields) ) {
-			return null;
-		}
-
-		// Author(s), translator(s)
-		$tables = array('author' => DBT_AUTHOR_OF, 'translator' => DBT_TRANSLATOR_OF);
-		foreach ($tables as $role => $table) {
-			$qa = array(
-				'SELECT' => 'p.*, of.year',
-				'FROM' => $table .' of',
-				'LEFT JOIN' => array(DBT_PERSON .' p' => "of.person_id = p.id"),
-				'WHERE' => array('of.text_id' => $fields['id']),
-				'ORDER BY' => 'of.pos ASC',
-			);
-			$res = $db->extselect($qa);
-			$persons = array();
-			$string_name = $string_orig_name = $string_year = '';
-			while ( $data = $db->fetchAssoc($res) ) {
-				$persons[] = $data;
-				$string_name .= ', '. $data['name'];
-				$string_orig_name .= ', '. $data['orig_name'];
-				$string_year .= ', '. $data['year'];
-			}
-			$fields[$role.'s'] = $persons;
-			$fields[$role.'_name'] = ltrim($string_name, ', ');
-			$fields[$role.'_orig_name'] = ltrim($string_orig_name, ', ');
-			$fields[$role.'_year'] = ltrim($string_year, ', 0');
-		}
-		// Books
-		$qa = array(
-			'SELECT' => 'b.*, bt.*',
-			'FROM' => DBT_BOOK_TEXT .' bt',
-			'LEFT JOIN' => array(DBT_BOOK .' b' => 'bt.book_id = b.id'),
-			'WHERE' => array('bt.text_id' => $fields['id']),
-		);
-		$res = $db->extselect($qa);
-		$fields['books'] = array();
-		while ( $data = $db->fetchAssoc($res) ) {
-			$fields['books'][$data['id']] = $data;
-		}
-		$text = new Text;
-		foreach ($fields as $field => $value) {
-			$mutator = 'set'.ucfirst($field);
-			if (is_callable(array($text, $mutator))) {
-				$text->$mutator($value);
-			}
-		}
-
-		return $text;
-	}
-
 	public function getHeaders() {
 		return $this->headers;
 	}
@@ -1482,8 +1391,8 @@ EOS;
 	/**
 	 * Update average rating
 	 *
-	 * @param int Newly given rating
-	 * @param int (optional) An old rating which should be overwritten by the new one
+	 * @param int $newRating Newly given rating
+	 * @param int $oldRating An old rating which should be overwritten by the new one
 	 * @return Text
 	 */
 	public function updateAvgRating($newRating, $oldRating = null) {

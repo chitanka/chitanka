@@ -505,27 +505,6 @@ class Book extends BaseWork {
 		return $this->trans_year;
 	}
 
-	static public function newFromId($id) {
-		$db = Setup::db();
-		$res = $db->select(DBT_BOOK, array('id' => $id));
-		$data = $db->fetchAssoc($res);
-		$book = new Book;
-		foreach ($data as $field => $value) {
-			$book->$field = $value;
-		}
-
-		return $book;
-	}
-
-	static public function newFromArray($fields) {
-		$book = new Book;
-		foreach ($fields as $field => $value) {
-			$book->$field = $value;
-		}
-
-		return $book;
-	}
-
 	public function withAutohide() {
 		return $this->getTemplate()->hasAutohide();
 	}
