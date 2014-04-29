@@ -3,7 +3,7 @@
 use App\Entity\Text;
 use App\Legacy\Legacy;
 
-class FbiGenerator {
+class TextFbiGenerator {
 
 	/**
 	 * Return fiction book info for given text.
@@ -40,7 +40,7 @@ EOS;
 	}
 
 	private function genFbiOriginal(Text $text) {
-		if ($text->getLang() == $text->getOrigLang()) {
+		if (!$text->isTranslation()) {
 			return '';
 		}
 		return <<<EOS
@@ -135,7 +135,7 @@ EOS;
 	}
 
 	private function genFbiMainOrigLang(Text $text) {
-		return $text->getOrigLang() != $text->getLang() ? $text->getOrigLang() : '';
+		return $text->isTranslation() ? $text->getOrigLang() : '';
 	}
 
 	private function genFbiMainKeywords(Text $text) {

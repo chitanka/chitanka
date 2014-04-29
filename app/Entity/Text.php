@@ -4,7 +4,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use App\Generator\FbiGenerator;
+use App\Generator\TextFb2Generator;
+use App\Generator\TextFbiGenerator;
 use App\Util\Char;
 use App\Util\File;
 use App\Util\Language;
@@ -14,7 +15,6 @@ use App\Legacy\Setup;
 use App\Legacy\SfbParserSimple;
 use Sfblib_SfbConverter as SfbConverter;
 use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
-use Sfblib_SfbToFb2Converter as SfbToFb2Converter;
 
 /**
 * @ORM\Entity(repositoryClass="App\Entity\TextRepository")
@@ -887,7 +887,7 @@ class Text extends BaseWork {
 	}
 
 	public function getFbi() {
-		$generator = new FbiGenerator();
+		$generator = new TextFbiGenerator();
 		return $generator->generateFbiForText($this);
 	}
 
@@ -1105,175 +1105,8 @@ EOS;
 	}
 
 	public function getContentAsFb2() {
-		$conv = new SfbToFb2Converter($this->getContentAsSfb(), Legacy::getInternalContentFilePath('img', $this->id));
-
-		$conv->setObjectCount(1);
-		$conv->setSubtitle(strtr($this->subtitle, array('\n' => ' — ')));
-		$conv->setGenre($this->getGenresForFb2());
-		$conv->setKeywords($this->getKeywordsForFb2());
-		$conv->setTextDate($this->year);
-
-		$conv->setLang($this->lang);
-		$conv->setSrcLang(empty($this->orig_lang) ? '?' : $this->orig_lang);
-
-		foreach ($this->getTranslators() as $translator) {
-			$conv->addTranslator($translator->getName());
-		}
-
-		if ($this->series) {
-			$conv->addSequence($this->series->getName(), $this->sernr);
-		}
-
-		if ( $this->lang != $this->orig_lang ) {
-			foreach ($this->authors as $author) {
-				if ($author->getOrigName() == '') {
-					$conv->addSrcAuthor('(no original name for '.$author->getName().')', false);
-				} else {
-					$conv->addSrcAuthor($author->getOrigName());
-				}
-			}
-
-			$conv->setSrcTitle(empty($this->orig_title) ? '(no data for original title)' : '');
-			$conv->setSrcSubtitle($this->orig_subtitle);
-
-			if ($this->series && $this->series->getOrigName()) {
-				$conv->addSrcSequence($this->series->getOrigName(), $this->sernr);
-			}
-		}
-
-		$conv->setDocId($this->getDocId());
-		list($history, $version) = $this->getHistoryAndVersion();
-		$conv->setDocVersion($version);
-		$conv->setHistory($history);
-		$conv->setDocAuthor('Моята библиотека');
-
-		if ($this->type == 'gamebook') {
-			// recognize section links
-			$conv->addRegExpPattern('/#(\d+)/', '<a l:href="#l-$1">$1</a>');
-		}
-
-		$conv->enablePrettyOutput();
-
-		return $conv->convert()->getContent();
-	}
-
-	// TODO move this to a proper generation class
-	private $labelsToGenres = array(
-		'Алтернативна история' => 'sf_history',
-		'Антиутопия' => 'sf_social',
-		'Антична литература' => 'antique_ant',
-		'Антропология' => 'science',
-		'Археология' => 'science',
-		'Биография' => 'nonf_biography',
-		'Будизъм' => 'religion',
-		'Военна фантастика' => 'sf_action',
-		'Втора световна война' => 'sci_history',
-		'Готварство' => 'home_cooking',
-		'Готически роман' => 'sf_horror',
-		'Дамска проза (чиклит)' => 'love_contemporary',
-		'Даоизъм' => 'religion',
-		'Детска литература' => 'child_prose',
-		'Документална литература' => array('sci_history', 'nonfiction'),
-		'Древен Египет' => 'sci_history',
-		'Древен Рим' => 'sci_history',
-		'Древна Гърция' => 'sci_history',
-		'Епос' => 'antique_myths',
-		'Еротика' => 'love_erotica',
-		'Идеи и идеали' => 'sci_philosophy',
-		'Икономика' => 'sci_business',
-		'Индианска литература' => 'adv_indian',
-		'Индия' => 'sci_culture',
-		'Исторически роман' => 'prose_history',
-		'История' => 'sci_history',
-		'Киберпънк' => 'sf_cyberpunk',
-		'Китай' => 'sci_culture',
-		'Комедия' => 'humor',
-		'Контракултура' => 'prose_counter',
-		'Криминална литература' => 'detective',
-		'Културология' => 'sci_culture',
-		'Любовен роман' => 'love_contemporary',
-		'Любовна лирика' => 'poetry',
-		'Магически реализъм' => 'sf_horror',
-		'Медицина' => 'sci_medicine',
-		'Мемоари' => 'prose_history',
-		'Мистика' => 'sf_horror',
-		'Митология' => 'sci_culture',
-		'Модернизъм' => array('sci_culture', 'design'),
-		'Морска тематика' => 'adv_maritime',
-		'Музика' => array('sci_culture', 'design'),
-		'Народно творчество' => array('sci_culture', 'design'),
-		'Научна фантастика' => 'sf',
-		'Научнопопулярна литература' => 'science',
-		'Окултизъм' => 'religion',
-		'Организирана престъпност' => 'det_political',
-		'Паралелни вселени' => array('sf', 'sf_epic', 'sf_heroic'),
-		'Политология' => 'sci_politics',
-		'Полусвободна литература' => 'home',
-		'Постапокалипсис' => 'sf_history',
-		'Приключенска литература' => 'adventure',
-		'Психология' => 'sci_psychology',
-		'Психофактор' => 'sci_philosophy',
-		'Пътешествия' => 'adv_geo',
-		'Реализъм' => array('sci_culture', 'design'),
-		'Религия' => 'religion_rel',
-		'Ренесанс' => 'sci_history',
-		'Рицарски роман' => 'adv_history',
-		'Робинзониада' => 'sf_heroic',
-		'Родителство' => array('home_health', 'home'),
-		'Романтизъм' => array('sci_culture', 'design'),
-		'Руска класика' => 'prose_rus_classic',
-		'Сатанизъм' => 'religion',
-		'Сатира' => 'humor',
-		'Световна класика' => 'prose_classic',
-		'Секс' => 'home_sex',
-		'Символизъм' => array('sci_culture', 'design'),
-		'Средновековие' => 'antique',
-		'Средновековна литература' => 'antique_european',
-		'Старобългарска литература' => 'antique',
-		'Съвременен роман (XX–XXI век)' => 'prose_contemporary',
-		'Съвременна проза' => 'prose_contemporary',
-		'Тайни и загадки' => 'sf_horror',
-		'Трагедия' => 'antique',
-		'Трилър' => 'thriller',
-		'Уестърн' => 'adv_western',
-		'Ужаси' => 'sf_horror',
-		'Утопия' => 'sf_social',
-		'Фантастика' => 'sf',
-		'Фентъзи' => 'sf_fantasy',
-		'Философия' => 'sci_philosophy',
-		'Флора' => 'sci_biology',
-		'Хумор' => 'humor',
-		'Човек и бунт' => 'sci_philosophy',
-		'Шпионаж' => 'det_espionage',
-		'Япония' => 'sci_culture',
-
-//		'Любовен роман+Исторически роман' => 'love_history',
-//		'Детска литература+Фантастика' => 'child_sf',
-//		'type play' => 'dramaturgy',
-//		'type poetry' => 'poetry',
-//		'type poetry+Детска литература' => 'child_verse',
-//		'type tale+Детска литература' => 'child_tale',
-	);
-	public function getGenresForFb2() {
-		$genres = array();
-		$labels = $this->getLabelsNames();
-		foreach ($labels as $label) {
-			if (array_key_exists($label, $this->labelsToGenres)) {
-				$genres = array_merge($genres, (array) $this->labelsToGenres[$label]);
-			}
-		}
-		$genres = array_unique($genres);
-		if (empty($genres)) {
-			switch ($this->getType()) {
-				case 'poetry': $genres[] = 'poetry'; break;
-				default:       $genres[] = 'prose_contemporary';
-			}
-		}
-		return $genres;
-	}
-
-	private function getKeywordsForFb2() {
-		return implode(', ', $this->getLabelsNames());
+		$generator = new TextFb2Generator();
+		return $generator->generateFb2($this);
 	}
 
 	public function getLabelsNames() {
@@ -1350,7 +1183,7 @@ EOS;
 		} else {
 			$internalLinkTarget = '';
 		}
-		if ($this->type == 'gamebook') {
+		if ($this->isGamebook()) {
 			// recognize section links
 			$conv->patterns['/#(\d+)/'] = '<a href="#l-$1" class="ep" title="Към епизод $1">$1</a>';
 		}

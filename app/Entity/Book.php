@@ -7,7 +7,7 @@ use App\Legacy\Legacy;
 use App\Legacy\Setup;
 use App\Util\Ary;
 use Sfblib_SfbConverter as SfbConverter;
-use Sfblib_SfbToFb2Converter as SfbToFb2Converter;
+use App\Generator\BookFb2Generator;
 
 /**
 * @ORM\Entity(repositoryClass="App\Entity\BookRepository")
@@ -193,8 +193,6 @@ class Book extends BaseWork {
 	 * @ORM\Column(type="date")
 	 */
 	private $created_at;
-
-	private $fb2CoverWidth = 400;
 
 	public function __construct() {
 		$this->bookAuthors = new ArrayCollection;
@@ -782,48 +780,8 @@ class Book extends BaseWork {
 	}
 
 	public function getContentAsFb2() {
-		if (!$this->isInSfbFormat()) {
-			return null;
-		}
-		$imgdir = $this->initTmpImagesDir();
-
-		$conv = new SfbToFb2Converter($this->getContentAsSfb(), $imgdir);
-
-		$conv->setObjectCount(1);
-		$conv->setSubtitle($this->subtitle);
-		$conv->setGenre($this->getGenresForFb2());
-		$conv->setKeywords( implode(', ', $this->getLabels()) );
-		$conv->setTextDate($this->getYear());
-
-		if ( ($cover = $this->getCover($this->fb2CoverWidth)) ) {
-			$conv->addCoverpage($cover);
-		}
-
-		$conv->setLang($this->getLang());
-		$orig_lang = $this->getOrigLang();
-		$conv->setSrcLang(empty($orig_lang) ? '?' : $orig_lang);
-
-		foreach ($this->getTranslators() as $translator) {
-			$conv->addTranslator($translator->getName());
-		}
-
-		$conv->setDocId($this->getDocId());
-		$conv->setDocAuthor('Моята библиотека');
-
-		$conv->enablePrettyOutput();
-
-		$content = $conv->convert()->getContent();
-
-		return $content;
-	}
-
-	private function getGenresForFb2() {
-		$genres = array();
-		foreach ($this->getTexts() as $text) {
-			$genres = array_merge($genres, $text->getGenresForFb2());
-		}
-		$genres = array_unique($genres);
-		return $genres;
+		$generator = new BookFb2Generator();
+		return $generator->generateFb2($this);
 	}
 
 	public function getHeaders() {
