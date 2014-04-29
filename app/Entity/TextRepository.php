@@ -58,7 +58,10 @@ class TextRepository extends EntityRepository {
 	 * @param int $id
 	 * @return Text
 	 */
-	public function get($id) {
+	public function get($id, $fetchRelations = true) {
+		if (!$fetchRelations) {
+			return $this->find($id);
+		}
 		return $this->_em->createQueryBuilder()
 			->select('t', 'ta', 'tt', 's', 'l', 'b', 'ol', 'tl', 'r')
 			->from($this->getEntityName(), 't')

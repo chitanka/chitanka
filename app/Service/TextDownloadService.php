@@ -17,6 +17,20 @@ class TextDownloadService {
 		$this->textRepo = $textRepo;
 	}
 
+	public function generateFile($ids, $format, $requestedFilename) {
+		switch ($format) {
+			case 'txt.zip':
+				return $this->getTxtZipFile($ids, $format, $requestedFilename);
+			case 'fb2.zip':
+				return $this->getFb2ZipFile($ids, $format, $requestedFilename);
+			case 'sfb.zip':
+				return $this->getSfbZipFile($ids, $format, $requestedFilename);
+			case 'epub':
+				return $this->getEpubFile($ids, $format, $requestedFilename);
+		}
+		return null;
+	}
+
 	public function getTxtZipFile($id, $format, $requestedFilename) {
 		$this->initZipData($id, $requestedFilename);
 		return $this->createTxtDlFile();

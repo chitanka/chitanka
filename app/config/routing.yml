@@ -357,11 +357,6 @@ text_show_part:
     defaults:       { _controller: App:Text:showPart, part: 1 }
     requirements:   { part: \d+ }
 
-text_show_multi:
-    pattern:        /text-multi/{id}.{_format}
-    defaults:       { _controller: App:Text:showMulti, _format: html }
-    requirements:   { _format: html|sfb\.zip|fb2\.zip|txt\.zip|epub }
-
 
 search:
     pattern:      /search.{_format}

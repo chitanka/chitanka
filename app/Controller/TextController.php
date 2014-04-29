@@ -107,52 +107,54 @@ class TextController extends Controller {
 	}
 
 	public function showAction(Request $request, $id, $_format) {
-		list($id) = explode('-', $id); // remove optional slug
-		try {
-			$text = $this->getTextRepository()->get($id);
-		} catch (NoResultException $e) {
-			return $this->notFound("Няма текст с номер $id.");
+		if ($this->canRedirectToMirror($_format) && ($mirrorServer = $this->getMirrorServer())) {
+			return $this->redirectToMirror($mirrorServer, $id, $_format, $request->get('filename'));
 		}
-
+		list($id) = explode('-', $id); // remove optional slug
 		switch ($_format) {
-			case 'txt':
-				return $this->displayText($text->getContentAsTxt(), array('Content-Type' => 'text/plain'));
+			case 'html':
+				return $this->showHtml($this->findText($id, true));
+			case 'epub':
+			case 'fb2.zip':
+			case 'txt.zip':
+			case 'sfb.zip':
+				Setup::doSetup($this->container);
+				$service = new TextDownloadService($this->getTextRepository());
+				return $this->urlRedirect($this->getWebRoot() . $service->generateFile(explode(',', $id), $_format, $request->get('filename')));
 			case 'fb2':
 				Setup::doSetup($this->container);
-				return $this->displayText($text->getContentAsFb2(), array('Content-Type' => 'application/xml'));
-			case 'sfb':
-				return $this->displayText($text->getContentAsSfb(), array('Content-Type' => 'text/plain'));
+				return $this->displayText($this->findText($id, true)->getContentAsFb2(), array('Content-Type' => 'application/xml'));
 			case 'fbi':
 				Setup::doSetup($this->container);
-				return $this->displayText($text->getFbi(), array('Content-Type' => 'text/plain'));
+				return $this->displayText($this->findText($id, true)->getFbi(), array('Content-Type' => 'text/plain'));
+			case 'txt':
+				return $this->displayText($this->findText($id, true)->getContentAsTxt(), array('Content-Type' => 'text/plain'));
+			case 'sfb':
+				return $this->displayText($this->findText($id, true)->getContentAsSfb(), array('Content-Type' => 'text/plain'));
 			case 'data':
-				return $this->displayText($text->getDataAsPlain(), array('Content-Type' => 'text/plain'));
-			case 'html':
-				return $this->showHtml($text, 1);
+				return $this->displayText($this->findText($id, true)->getDataAsPlain(), array('Content-Type' => 'text/plain'));
 		}
-		if ($redirect = $this->tryMirrorRedirect($id, $_format)) {
-			return $this->urlRedirect($redirect);
-		}
-		Setup::doSetup($this->container);
-		$service = new TextDownloadService($this->getTextRepository());
-		switch ($_format) {
-			case 'txt.zip':
-				return $this->urlRedirect($this->getWebRoot() . $service->getTxtZipFile(explode(',', $id), $_format, $request->get('filename')));
-			case 'fb2.zip':
-				return $this->urlRedirect($this->getWebRoot() . $service->getFb2ZipFile(explode(',', $id), $_format, $request->get('filename')));
-			case 'sfb.zip':
-				return $this->urlRedirect($this->getWebRoot() . $service->getSfbZipFile(explode(',', $id), $_format, $request->get('filename')));
-			case 'epub':
-				return $this->urlRedirect($this->getWebRoot() . $service->getEpubFile(explode(',', $id), $_format, $request->get('filename')));
-		}
-		throw new \Exception("Неизвестен формат: $_format");
+		return $this->notFound("Неизвестен формат: $_format");
+	}
+
+	private function canRedirectToMirror($format) {
+		return in_array($format, array(
+			'epub',
+			'fb2.zip',
+			'txt.zip',
+			'sfb.zip',
+		));
+	}
+
+	private function redirectToMirror($mirrorServer, $id, $format, $requestedFilename) {
+		return $this->urlRedirect("$mirrorServer/text/$id.$format?filename=$requestedFilename");
 	}
 
 	public function showPartAction($id, $part) {
-		return $this->showHtml($this->getTextRepository()->get($id), $part);
+		return $this->showHtml($this->findText($id, true), $part);
 	}
 
-	public function showHtml(Text $text, $part) {
+	public function showHtml(Text $text, $part = 1) {
 		$nextHeader = $text->getNextHeaderByNr($part);
 		$nextPart = $nextHeader ? $nextHeader->getNr() : 0;
 		$this->view = array(
@@ -171,31 +173,6 @@ class TextController extends Controller {
 		$this->view['js_extra'][] = 'text';
 
 		return $this->display('show');
-	}
-
-	public function showMultiAction(Request $request, $id, $_format) {
-		$mirror = $this->tryMirrorRedirect(explode(',', $id), $_format);
-		$requestedFilename = $request->get('filename');
-		if ($mirror) {
-			if ($requestedFilename) {
-				$mirror .= '?filename=' . urlencode($requestedFilename);
-			}
-			return $this->urlRedirect($mirror);
-		}
-
-		Setup::doSetup($this->container);
-		$service = new TextDownloadService($this->getTextRepository());
-		switch ($_format) {
-			case 'txt.zip':
-				return $this->urlRedirect($this->getWebRoot() . $service->getTxtZipFile(explode(',', $id), $_format, $requestedFilename));
-			case 'fb2.zip':
-				return $this->urlRedirect($this->getWebRoot() . $service->getFb2ZipFile(explode(',', $id), $_format, $requestedFilename));
-			case 'sfb.zip':
-				return $this->urlRedirect($this->getWebRoot() . $service->getSfbZipFile(explode(',', $id), $_format, $requestedFilename));
-			case 'epub':
-				return $this->urlRedirect($this->getWebRoot() . $service->getEpubFile(explode(',', $id), $_format, $requestedFilename));
-		}
-		throw new \Exception("Неизвестен формат: $_format");
 	}
 
 	public function randomAction() {
@@ -228,31 +205,26 @@ class TextController extends Controller {
 		// TODO replace with DoctrineListener
 		$oldRating = $rating->getRating();
 
-		if ($request->getMethod() == 'POST') {
-			$form->bind($request);
-			if ($form->isValid() && $this->getUser()->isAuthenticated()) {
-				// TODO replace with DoctrineListener
-				$text->updateAvgRating($rating->getRating(), $oldRating);
-				$this->getEntityManager()->persist($text);
+		if ($request->isMethod('POST') && $user->isAuthenticated() && $form->submit($request)->isValid()) {
+			// TODO replace with DoctrineListener
+			$text->updateAvgRating($rating->getRating(), $oldRating);
+			$this->getEntityManager()->persist($text);
 
-				// TODO bind overwrites the Text object with an id
-				$rating->setText($text);
+			// TODO bind overwrites the Text object with an id
+			$rating->setText($text);
 
-				$rating->setCurrentDate();
-				$em->persist($rating);
-				$em->flush();
-			}
+			$rating->setCurrentDate();
+			$em->persist($rating);
+			$em->flush();
 		}
-
-		$this->view = array(
-			'text' => $text,
-			'form' => $form->createView(),
-			'rating' => $rating,
-		);
 
 		if ($request->isXmlHttpRequest() || $request->isMethod('GET')) {
 			$this->disableCache();
-			return $this->display('rating');
+			return $this->display('rating', array(
+				'text' => $text,
+				'form' => $form->createView(),
+				'rating' => $rating,
+			));
 		}
 		return $this->redirectToText($text);
 	}
@@ -402,8 +374,8 @@ class TextController extends Controller {
 		return $this->urlRedirect($this->generateUrl('text_show', array('id' => $id)));
 	}
 
-	protected function findText($textId, $bailIfNotFound = true) {
-		$text = $this->getTextRepository()->find($textId);
+	protected function findText($textId, $bailIfNotFound = true, $fetchRelations = false) {
+		$text = $this->getTextRepository()->get($textId, $fetchRelations);
 		if ($bailIfNotFound && $text === null) {
 			return $this->notFound("Няма текст с номер $textId.");
 		}
@@ -416,19 +388,6 @@ class TextController extends Controller {
 			return $this->notFound("Няма етикет с номер $labelId.");
 		}
 		return $label;
-	}
-
-	private function tryMirrorRedirect($ids, $format = null) {
-		$dlSite = $this->getMirrorServer();
-		if (!$dlSite) {
-			return false;
-		}
-		$ids = (array) $ids;
-		$url = (count($ids) > 1 ? '/text-multi/' : '/text/') . implode(',', $ids);
-		if ($format) {
-			$url .= '.' . $format;
-		}
-		return $dlSite . $url;
 	}
 
 }

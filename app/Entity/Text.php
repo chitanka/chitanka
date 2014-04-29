@@ -874,11 +874,6 @@ class Text extends BaseWork {
 		$history = array();
 		$historyRows = $this->getHistoryInfo();
 		$verNo = 1;
-/*		if ( "$this->created_at 24" < $historyRows[0]['date'] ) {
-			$ver = '0.' . ($verNo++);
-			$vdate = $this->created_at == '0000-00-00' ? LIB_OPEN_DATE : $this->created_at;
-			$history[] = "$ver ($vdate) — Добавяне";
-		}*/
 		$ver = '0';
 		foreach ( $historyRows as $data ) {
 			$ver = '0.' . ($verNo++);
@@ -978,8 +973,7 @@ EOS;
 		if ($rows) {
 			$isoEntryDate = $this->created_at->format('Y-m-d');
 			if ( "$isoEntryDate 24" < $rows[0]['date'] ) {
-				$date = is_null($this->created_at) ? LIB_OPEN_DATE : $isoEntryDate;
-				array_unshift($rows, array('date' => $date, 'comment' => 'Добавяне'));
+				array_unshift($rows, array('date' => $isoEntryDate, 'comment' => 'Добавяне'));
 			}
 		}
 
