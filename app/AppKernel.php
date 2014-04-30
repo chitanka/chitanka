@@ -9,7 +9,16 @@ class AppKernel extends Kernel {
 
 	/** {@inheritdoc} */
 	public function registerBundles() {
-		$bundles = array(
+		switch ($this->getEnvironment()) {
+			case 'prod':
+				return $this->registerBundlesForProduction();
+			default:
+				return $this->registerBundlesForDevelopment();
+		}
+	}
+
+	protected function registerBundlesForProduction() {
+		return array(
 			new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
 			new Symfony\Bundle\SecurityBundle\SecurityBundle(),
 			new Symfony\Bundle\TwigBundle\TwigBundle(),
@@ -38,13 +47,12 @@ class AppKernel extends Kernel {
 
 			new App\App(),
 		);
+	}
 
-		if ($this->getEnvironment() != 'prod') {
-			$bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-//			$bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-		}
-
-		return $bundles;
+	protected function registerBundlesForDevelopment() {
+		return array_merge($this->registerBundlesForProduction(), array(
+			new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle(),
+		));
 	}
 
 	/** {@inheritdoc} */
