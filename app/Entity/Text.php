@@ -6,6 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Generator\TextFb2Generator;
 use App\Generator\TextFbiGenerator;
+use App\Generator\TextHtmlGenerator;
 use App\Util\Char;
 use App\Util\File;
 use App\Util\Language;
@@ -774,6 +775,7 @@ class Text extends BaseWork {
 	}
 
 	/**
+	 * @param string $content SFB content
 	 * @param string $imgDirPrefix
 	 */
 	protected function _getContentHtml($content, $imgDirPrefix) {
@@ -1167,29 +1169,8 @@ EOS;
 	}
 
 	public function getContentHtml($imgDirPrefix = '', $part = 1, $objCount = 0) {
-		$imgDir = $imgDirPrefix . Legacy::getContentFilePath('img', $this->id);
-		$conv = new SfbToHtmlConverter($this->getRawContent(true), $imgDir);
-
-		// TODO do not hardcode it; inject it through parameter
-		$internalLinkTarget = "/text/$this->id/0";
-
-		if ( ! empty( $objCount ) ) {
-			$conv->setObjectCount($objCount);
-		}
-		$header = $this->getHeaderByNr($part);
-		if ($header) {
-			$conv->startpos = $header->getFpos();
-			$conv->maxlinecnt = $header->getLinecnt();
-		} else {
-			$internalLinkTarget = '';
-		}
-		if ($this->isGamebook()) {
-			// recognize section links
-			$conv->patterns['/#(\d+)/'] = '<a href="#l-$1" class="ep" title="Към епизод $1">$1</a>';
-		}
-		$conv->setInternalLinkTarget($internalLinkTarget);
-
-		return $conv->convert()->getContent();
+		$generator = new TextHtmlGenerator();
+		return $generator->generateHtml($this, $imgDirPrefix, $part, $objCount);
 	}
 
 	/**
