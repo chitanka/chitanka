@@ -31,7 +31,7 @@ class AppKernel extends Kernel {
 			new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
 			new SimpleThings\EntityAudit\SimpleThingsEntityAuditBundle(),
 			new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-			new JMS\SerializerBundle\JMSSerializerBundle($this),
+			new JMS\SerializerBundle\JMSSerializerBundle(),
 			new FOS\RestBundle\FOSRestBundle(),
 			new FOS\CommentBundle\FOSCommentBundle(),
 			new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
