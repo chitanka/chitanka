@@ -154,7 +154,7 @@ class UserController extends Controller {
 			throw new HttpException(401);
 		}
 
-		$styleUrl = '/bundles/lib/css/?skin=SKIN&menu=NAV';
+		$styleUrl = '/bundles/app/css/?skin=SKIN&menu=NAV';
 		$this->view['inline_js'] = <<<EOS
 	var nav = "", skin = "";
 	function changeStyleSheet() {

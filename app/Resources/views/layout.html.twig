@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('bundles/lib/font-awesome/css/font-awesome.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('bundles/app/font-awesome/css/font-awesome.min.css') }}">
 	{{ render_esi(controller('App:User:stylesheet')) }}
 	{% if css_extra is defined %}
 		{% for extra_stylesheet in css_extra %}
@@ -143,13 +143,13 @@
 	{% if script_library %}
 		<script src="{{ script_library }}"></script>
 	{% else %}
-		{% set scripts = ['jquery'] %}
+		{% set scripts = ['vendor/js/jquery'] %}
 	{% endif %}
-	{% set scripts = scripts|merge(['jquery-cookie', 'jquery-myplugins', 'main']) %}
-	<script src="{{ asset('bundles/lib/js/'~ scripts|join(',') ~'.js') }}"></script>
-	<script src="{{ asset('bundles/lib/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+	{% set scripts = scripts|merge(['vendor/js/jquery-cookie', 'jquery-myplugins', 'main']) %}
+	<script src="{{ asset('bundles/app/js/' ~ scripts|join(',')|replace({'/': '--'}) ~'.js') }}"></script>
+	<script src="{{ asset('bundles/app/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 	{% if js_extra is defined %}
-		<script src="{{ asset('bundles/lib/js/'~ js_extra|join(',') ~'.js') }}"></script>
+		<script src="{{ asset('bundles/app/js/' ~ js_extra|join(',')|replace({'/': '--'}) ~'.js') }}"></script>
 	{% endif %}
 
 	<script>

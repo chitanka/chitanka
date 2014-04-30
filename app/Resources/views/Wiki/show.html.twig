@@ -35,7 +35,7 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% set scripts = ['jquery-ui-1.10.0.custom', 'reMarked', 'rangy-core-1.2.3', 'hallo', 'wiki_editor'] %}
+	{% set scripts = ['vendor/js/jquery-ui-1.10.0.custom', 'vendor/js/reMarked', 'vendor/js/rangy-core-1.2.3', 'hallo', 'wiki_editor'] %}
 	<script>
 jQuery(function($) {
 	var $wikidata = $('.wikidata.editable:eq(0)');
@@ -46,7 +46,7 @@ jQuery(function($) {
 			alert("Не ви е разрешено да редактирате страници в уикито на библиотеката.");
 			return false;
 		}
-		var scripts = "{{ asset('bundles/lib/js/'~ scripts|join(',') ~'.js') }}";
+		var scripts = "{{ asset('bundles/app/js/'~ scripts|join(',')|replace({'/': '--'}) ~'.js') }}";
 		var editorOptions = {
 			page: "{{ page.name }}",
 			format: "{{ page.format }}",

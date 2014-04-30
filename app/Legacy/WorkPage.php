@@ -854,7 +854,7 @@ EOS;
 		}
 		// same domain as main site - for ajax
 		$newFile = str_replace('http://static.chitanka.info', '', $this->tmpfiles);
-		$dmpPath = $this->container->getParameter('assets_base_urls') . '/js/diff_match_patch.js';
+		$dmpPath = $this->container->getParameter('assets_base_urls') . '/vendor/js/diff_match_patch.js';
 		return <<<CORRECTIONS
 <fieldset>
 	<legend>Корекции</legend>
@@ -918,7 +918,7 @@ CORRECTIONS;
 		}
 		$user = $this->controller->getRepository('User')->find($this->scanuser);
 		$threadUrl = $this->controller->generateUrl('fos_comment_post_threads');
-		$commentJs = $this->container->getParameter('assets_base_urls') . '/bundles/lib/js/comments.js';
+		$commentJs = $this->container->getParameter('assets_base_urls') . '/bundles/app/js/comments.js';
 		return <<<JS
 var fos_comment_thread_id = 'WorkEntry:$entry';
 
