@@ -34,6 +34,9 @@ class SearchString extends Entity {
 	 */
 	private $date;
 
+	/**
+	 * @param string $name
+	 */
 	public function __construct($name) {
 		$this->name = $name;
 		$this->date = new \DateTime;

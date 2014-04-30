@@ -68,6 +68,9 @@ class File {
 		return false;
 	}
 
+	/**
+	 * @param string $filename
+	 */
 	static public function getFileExtension($filename) {
 		return ltrim(strrchr($filename, '.'), '.');
 	}

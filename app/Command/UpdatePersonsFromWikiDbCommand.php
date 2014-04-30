@@ -144,6 +144,9 @@ EOT
 		return $wikiVars;
 	}
 
+	/**
+	 * @param string $wikiContent
+	 */
 	private function _getPersonTemplatesFromWikiContent($wikiContent) {
 		if (preg_match_all('|\{\{Нов автор(.+)\}\}|Ums', $wikiContent, $matches)) {
 			return $matches[1];

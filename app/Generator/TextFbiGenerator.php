@@ -92,6 +92,9 @@ EOS;
 EOS;
 	}
 
+	/**
+	 * @param string $fbi
+	 */
 	private function clearFbi($fbi) {
 		return strtr($fbi, array(
 			"\n\n|" => "\n|",

@@ -166,6 +166,9 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 		return $qb;
 	}
 
+	/**
+	 * @param string $s
+	 */
 	protected function stringForLikeClause($s) {
 		return "%".str_replace(' ', '% ', $s)."%";
 	}

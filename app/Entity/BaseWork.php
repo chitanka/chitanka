@@ -291,10 +291,14 @@ abstract class BaseWork extends Entity {
 	}
 
 	/**
-	 * @param string $imgDir
+	 * @param string $imgDir Image directory
 	 */
 	abstract public function getEpubChunks($imgDir);
 
+	/**
+	 * @param string $input  SFB content
+	 * @param string $imgDir Image directory
+	 */
 	protected function getEpubChunksFrom($input, $imgDir) {
 		$chapters = array();
 

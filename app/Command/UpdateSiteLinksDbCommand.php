@@ -54,6 +54,9 @@ EOT
 		return Legacy::getMwContent('http://wiki.chitanka.info/Links', $this->getContainer()->get('buzz'), 0);
 	}
 
+	/**
+	 * @param string $wikiContent
+	 */
 	protected function extractLinkData($wikiContent) {
 		if (preg_match_all('|class="external text" href="([^"]+)">([^<]+)</a>(.*)|', $wikiContent, $matches, PREG_SET_ORDER)) {
 			return $matches;

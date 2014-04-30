@@ -81,6 +81,9 @@ class String {
 		return $text;
 	}
 
+	/**
+	 * @param string $name
+	 */
 	static public function splitPersonName($name) {
 		preg_match('/([^,]+) ([^,]+)(, .+)?/', $name, $m);
 
