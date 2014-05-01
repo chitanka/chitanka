@@ -26,8 +26,8 @@ class mlDatabase {
 		$this->pass = $pass;
 		$this->dbName = $dbName;
 		$date = date('Y-m-d');
-		$this->logFile = __DIR__."/../../app/logs/db-$date.sql";
-		$this->errLogFile = __DIR__."/../../app/logs/db-error-$date";
+		$this->logFile = __DIR__."/../../var/log/db-$date.sql";
+		$this->errLogFile = __DIR__."/../../var/log/db-error-$date";
 	}
 
 	public function exists($table, $keys = array()) {

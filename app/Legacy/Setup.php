@@ -23,7 +23,7 @@ class Setup {
 			'container' => $container,
 			//'newRequest' => $controller->get('request'),
 			'user'       => $controller->getUser(),
-			'logDir' => __DIR__ . '/../../app/logs',
+			'logDir' => __DIR__ . '/../../var/log',
 		));
 
 		if ($execute) {
