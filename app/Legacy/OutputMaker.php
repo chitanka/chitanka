@@ -5,10 +5,6 @@ use App\Util\String;
 
 class OutputMaker {
 
-	public
-		$inencoding = 'utf-8',
-		$outencoding = 'utf-8';
-
 	protected
 		$defArgSeparator = '&',
 		$argSeparator = '&',
@@ -313,7 +309,7 @@ class OutputMaker {
 		));
 		$name = Char::cyr2lat($name);
 		$name = Legacy::removeDiacritics($name);
-		$name = iconv($this->inencoding, 'ISO-8859-1//TRANSLIT', $name);
+		$name = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $name);
 		$name = strtolower($name);
 		$name = preg_replace('/__+/', '_', $name);
 		$name = preg_replace('/[^\w\d_]/', '', $name);

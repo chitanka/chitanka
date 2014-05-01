@@ -35,7 +35,6 @@ class FeedPage extends Page {
 		$this->feedDescription = 'Универсална електронна библиотека';
 		$this->server = $this->request->server();
 		$this->root = $this->server . $this->root;
-		$this->contentType = 'application/rss+xml';
 		$this->obj = Legacy::normVal(
 			$this->request->value('type', $this->defObj),
 			$this->validObjs, $this->defObj);
@@ -75,10 +74,9 @@ class FeedPage extends Page {
 		$q = $this->basepage->makeSqlQuery($this->llimit, 0, 'DESC');
 		$this->title = $this->basepage->title();
 
-		$this->fullContent = $this->$makeFunc($q, $makeItemFunc, $bufferq);
-
+		$feed = $this->$makeFunc($q, $makeItemFunc, $bufferq);
 		$this->addTemplates();
-		$feed = Legacy::expandTemplates($this->fullContent);
+		$feed = Legacy::expandTemplates($feed);
 		$page = <<<FEED
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0"
@@ -90,12 +88,10 @@ class FeedPage extends Page {
 </channel>
 </rss>
 FEED;
-		header("Content-Type: $this->contentType; charset=UTF-8");
+		header("Content-Type: application/rss+xml; charset=UTF-8");
 		header('Content-Length: '. strlen($page));
 		echo $page;
 		exit;
-
-		return '';
 	}
 
 	/**

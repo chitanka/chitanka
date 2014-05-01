@@ -13,14 +13,10 @@ abstract class Page {
 		FF_CHUNK_ID = 'part',
 		FF_LIMIT = 'plmt',
 		FF_OFFSET = 'page',
-		FF_SORTBY = 'sortby',
 		FF_CQUESTION = 'captchaQuestion',
 		FF_CQUESTION_T = 'captchaQuestionT',
 		FF_CANSWER = 'captchaAnswer',
-		FF_CTRIES = 'captchaTries',
-
-		// do not save any changed page settings
-		FF_SKIP_SETTINGS = 'sss';
+		FF_CTRIES = 'captchaTries';
 
 	public
 		$redirect = '',
@@ -29,95 +25,35 @@ abstract class Page {
 	protected
 		$action = '',
 		$title,
-		$outencoding,
-		$contentType,
 		$request,
 		$user,
 		$db,
 		$content,
 		$messages,
-		$fullContent,
-		$outputLength,
-		$allowCaching,
-
-		$query_escapes = array(
-			'"' => '', '\'' => '’'
-		),
 
 		$llimit = 0, $loffset = 0,
 		$maxCaptchaTries = 2, $defListLimit = 10, $maxListLimit = 50,
 
-		$includeFirstHeading            = true,
-		$includeJumptoLinks             = true,
-		$includeOpenSearch              = false,#true, // TODO
-		$includeNavigation              = true,
-		$includeNavigationLinks         = true,
-		$includeNavigationExtraLinks    = true,
-		$includePersonalTools           = true,
-		$includeSearch                  = true,
-		$includeFooter                  = true,
-		$includeDataSuggestionLinks     = true,
-		$includeDownloadLinks           = true,
-		$includeMultiDownloadForm       = true,
-		$includeUserLinks               = true,
-		$includeFeedLinks               = true,
-		$includeFilters                 = true,
-		$includeCommentLinkByNone       = true,
-		$includeRatingLinkByNone        = true,
-		$includeInfoLinkByNone          = true,
-		$sendFiles                      = true;
+		$includeUserLinks               = true;
 
-	public function __construct($fields) {
+	public function __construct(array $fields) {
 		foreach ($fields as $f => $v) {
 			$this->$f = $v;
 		}
 
-		$this->save_settings = $this->request->value(self::FF_SKIP_SETTINGS, 1);
-
-		$this->inencoding = 'utf-8';
-		$this->doIconv = true;
-		$this->allowCaching = true;
-		$this->encfilter = '';
-		// TODO
 		$this->root = '/';
-		$this->rootPage = $this->root;
-		$this->rootd = $this->root;
 		$this->sitename = Setup::setting('sitename');
-
-		$this->messages = $this->content = $this->fullContent = '';
-		$this->contentType = 'text/html';
-
-		$this->isMobile = $this->request->value('mobile', 0) == 1;
-
-		$this->outputDone = false;
+		$this->messages = $this->content = '';
 		$this->title = $this->sitename;
-
-		if ( $this->isMobile ) {
-			if ( $this->action != 'main' ) {
-				$this->includeNavigation = false;
-			}
-			$this->includeNavigationLinks      = false;
-			$this->includeNavigationExtraLinks = false;
-			$this->includePersonalTools        = false;
-		}
 	}
 
-	/**
-		Generate page content according to submission type (POST or GET).
-	*/
+	/** Generate page content according to submission type (POST or GET). */
 	public function execute() {
-		$this->content = $this->request->wasPosted()
-			? $this->processSubmission()
-			: $this->buildContent();
-		return $this->content;
+		return $this->content = $this->request->wasPosted() ? $this->processSubmission() : $this->buildContent();
 	}
 
 	public function title() {
 		return $this->title;
-	}
-
-	public function content() {
-		return $this->content;
 	}
 
 	public function get($field) {
@@ -138,7 +74,7 @@ abstract class Page {
 		@param $message
 		@param $isError
 	*/
-	public function addMessage($message, $isError = false) {
+	protected function addMessage($message, $isError = false) {
 		$class = $isError ? 'error' : 'notice';
 
 		if ($this->controller->getRequest()->isXmlHttpRequest()) {
@@ -153,59 +89,13 @@ abstract class Page {
 	}
 
 	/** TODO replace */
-	public function addRssLink($title = null, $actionOrUrl = null) {
+	protected function addRssLink($title, $actionOrUrl = null) {
 		return;
-
-		Legacy::fillOnEmpty($title, $this->title());
-		$title = strip_tags($title);
-
-		if ( Legacy::isUrl($actionOrUrl) ) {
-			$url = $actionOrUrl;
-		} else {
-			Legacy::fillOnEmpty($actionOrUrl, $this->action);
-			$params = array(
-				self::FF_ACTION => 'feed',
-				'obj'           => $actionOrUrl,
-			);
-			$url = '';#url($params, 2);
-		}
-		$feedlink = <<<EOS
-
-	<link rel="alternate" type="application/rss+xml" title="RSS 2.0 — $title" href="$url" />
-EOS;
-		$this->addHeadContent($feedlink);
+		$this->addHeadContent('<link rel="alternate" type="application/rss+xml" title="RSS 2.0 — TITLE" href="URL">');
 	}
 
-	public function getInlineRssLink($route, $data = array(), $title = null) {
-		Legacy::fillOnEmpty($title, $this->title());
-
-		$link = sprintf('<div class="feed-standalone"><a href="%s" title="RSS 2.0 — %s" rel="feed"><span class="fa fa-rss"></span> <span>RSS</span></a></div>', $this->controller->generateUrl($route, $data), $title);
-
-		return $link;
-	}
-
-	public function addScript($file, $debug = false) {
-	}
-
-	public function allowCaching() {
-		return $this->allowCaching;
-	}
-
-	/**
-		Output page content.
-	*/
-	public function output() {
-		if ( $this->outputDone ) { // already outputted
-			return;
-		}
-		if ( empty($this->fullContent) ) {
-			$this->getFullContent();
-		}
-		print $this->fullContent;
-	}
-
-	public function isValidEncoding($enc) {
-		return @iconv($this->inencoding, $enc, '') !== false;
+	protected function getInlineRssLink($route, $data = array()) {
+		return sprintf('<div class="feed-standalone"><a href="%s" title="RSS 2.0 — %s" rel="feed"><span class="fa fa-rss"></span> <span>RSS</span></a></div>', $this->controller->generateUrl($route, $data), $this->title);
 	}
 
 	/**
@@ -213,34 +103,9 @@ EOS;
 		@return string
 	*/
 	public function getFullContent() {
-		$this->messages = empty( $this->messages ) ? ''
-			: "<div id='messages'>\n$this->messages\n</div>";
-
-		$this->fullContent = $this->messages . $this->content;
-		unset($this->content); // free some memory
-
+		$this->messages = empty($this->messages) ? '' : "<div id='messages'>\n$this->messages\n</div>";
 		$this->addTemplates();
-		$this->fullContent = Legacy::expandTemplates($this->fullContent);
-
-		return $this->fullContent;
-	}
-
-	private function getFirstHeading() {
-		return empty($this->title) ? $this->sitename : $this->title;
-	}
-
-	public function getOpenSearch() {
-		$opensearch = '';
-		if  ( array_key_exists($this->action, $this->searchOptions) ) {
-			$opensearch = "\n\t" . $this->out->xmlElement('link', null, array(
-				'rel' => 'search',
-				'type' => 'application/opensearchdescription+xml',
-				'href' => 'action=opensearchdesc',
-				'title' => "$this->sitename ({$this->searchOptions[$this->action]})"
-
-			));
-		}
-		return $opensearch;
+		return Legacy::expandTemplates($this->messages . $this->content);
 	}
 
 	/**
@@ -260,19 +125,11 @@ EOS;
 	}
 
 	protected function addTemplates() {
-		Legacy::addTemplate('ROOT', $this->root);
-		Legacy::addTemplate('DOCROOT', $this->rootd.'/');
 		Legacy::addTemplate('SITENAME', $this->sitename);
 	}
 
-	protected function makeSimpleTextLink(
-		$title, $textId, $chunkId = 1, $linktext = '',
-		$attrs = array(), $data = array(), $params = array()
-	) {
-		$p = array(
-			self::FF_TEXT_ID => $textId,
-			//'slug' => $this->out->slugify(preg_replace('/^(\d+\.)+ /', '', $title)),
-		);
+	protected function makeSimpleTextLink($title, $textId, $chunkId = 1, $linktext = '', $attrs = array(), $data = array(), $params = array()) {
+		$p = array(self::FF_TEXT_ID => $textId);
 		if ($chunkId != 1) {
 			$p[self::FF_CHUNK_ID] = $chunkId;
 		}
@@ -291,9 +148,7 @@ EOS;
 			. $this->makeFromAuthorSuffix($work);
 	}
 
-	public function makeAuthorLink(
-		$name, $sortby='first', $pref='', $suf='', $query=array()
-	) {
+	protected function makeAuthorLink($name, $sortby='first', $pref='', $suf='', $query=array()) {
 		$name = rtrim($name, ',');
 		if ( empty($name) ) {
 			return '';
@@ -313,7 +168,7 @@ EOS;
 		return substr($o, 2);
 	}
 
-	public function makeFromAuthorSuffix($text) {
+	protected function makeFromAuthorSuffix($text) {
 		if ( is_array($text) ) {
 			if ( isset($text['author']) && trim($text['author'], ', ') != '' ) {
 				return ' от '.$text['author'];
@@ -352,7 +207,7 @@ EOS;
 		return $this->makeUserLink($username) .' '. $mlink;
 	}
 
-	protected function formatPersonName($name, $sortby = 'first') {
+	private function formatPersonName($name, $sortby = 'first') {
 		preg_match('/([^,]+) ([^,]+)(, .+)?/', $name, $m);
 		if ( !isset($m[2]) ) { return $name; }
 		$last = "<span class='lastname'>$m[2]</span>";
@@ -360,16 +215,14 @@ EOS;
 		return $sortby == 'last' ? $last.', '.$m[1].$m3 : $m[1].' '.$last.$m3;
 	}
 
-	public function initPaginationFields() {
+	protected function initPaginationFields() {
 		$this->lpage = (int) $this->request->value( self::FF_OFFSET, 1 );
 		$this->llimit = (int) $this->request->value(self::FF_LIMIT, $this->defListLimit );
 		$this->llimit = Number::normInt( $this->llimit, $this->maxListLimit );
-
 		$this->loffset = ($this->lpage - 1) * $this->llimit;
 	}
 
-	protected function verifyCaptchaAnswer($showWarning = false,
-			$_question = null, $_answer = null) {
+	protected function verifyCaptchaAnswer($showWarning = false, $_question = null, $_answer = null) {
 		if ( !$this->showCaptchaToUser() ) {
 			return true;
 		}
@@ -429,7 +282,7 @@ EOS;
 		$this->captchaTries = 0;
 	}
 
-	protected function makeCaptchaWarning() {
+	private function makeCaptchaWarning() {
 		if ( $this->hasMoreCaptchaTries() ) {
 			$rest = $this->maxCaptchaTries - $this->captchaTries;
 			$tries = Legacy::chooseGrammNumber($rest, 'един опит', $rest.' опита');
@@ -442,26 +295,12 @@ EOS;
 		return $this->captchaTries < $this->maxCaptchaTries;
 	}
 
-	protected function showCaptchaToUser() {
+	private function showCaptchaToUser() {
 		return $this->user->isAnonymous() && !$this->user->isHuman();
 	}
 
 	private function logFailedCaptcha($msg) {
-		file_put_contents(__DIR__."/../../app/logs/failed_captcha.log", date('Y-m-d H:i:s').": $msg\n", FILE_APPEND);
-	}
-
-	protected function addUrlQuery($args) {
-		return $this->out->addUrlQuery($this->request->requestUri(), $args);
-	}
-
-	protected function sendFile($file) {
-		$this->outputLength = filesize($file);
-		if ($this->sendFiles) {
-			header('Location: '. $this->rootd . '/' .  $file);
-		} else {
-			$this->fullContent = file_get_contents($file);
-		}
-		$this->outputDone = true;
+		file_put_contents($this->logDir."/failed_captcha.log", date('Y-m-d H:i:s').": $msg\n", FILE_APPEND);
 	}
 
 }
