@@ -1,4 +1,4 @@
-<?php namespace App\Legacy;
+<?php namespace App\Generator;
 
 use App\Util\Char;
 use App\Util\File;

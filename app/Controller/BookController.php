@@ -5,7 +5,7 @@ use Doctrine\ORM\NoResultException;
 use App\Entity\Book;
 use App\Pagination\Pager;
 use App\Legacy\Setup;
-use App\Legacy\DownloadFile;
+use App\Generator\DownloadFile;
 use App\Util\String;
 
 class BookController extends Controller {

@@ -2,7 +2,6 @@
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\NoResultException;
 use App\Entity\Text;
 use App\Entity\TextRating;
 use App\Entity\UserTextRead;
@@ -10,8 +9,8 @@ use App\Form\Type\TextRatingType;
 use App\Form\Type\TextLabelType;
 use App\Legacy\Setup;
 use App\Pagination\Pager;
+use App\Generator\TextDownloadService;
 use App\Service\TextBookmarkService;
-use App\Service\TextDownloadService;
 use App\Service\TextLabelService;
 use App\Util\String;
 

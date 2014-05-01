@@ -89,9 +89,8 @@ abstract class Page {
 	}
 
 	/** TODO replace */
-	protected function addRssLink($title, $actionOrUrl = null) {
-		return;
-		$this->addHeadContent('<link rel="alternate" type="application/rss+xml" title="RSS 2.0 — TITLE" href="URL">');
+	protected function addRssLink() {
+		//$this->addHeadContent('<link rel="alternate" type="application/rss+xml" title="RSS 2.0 — TITLE" href="URL">');
 	}
 
 	protected function getInlineRssLink($route, $data = array()) {

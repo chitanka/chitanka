@@ -21,7 +21,6 @@ class Setup {
 			'out'        => self::outputMaker(),
 			'controller' => $controller,
 			'container' => $container,
-			//'newRequest' => $controller->get('request'),
 			'user'       => $controller->getUser(),
 			'logDir' => __DIR__ . '/../../var/log',
 		));
@@ -116,7 +115,6 @@ class Setup {
 		define('DBT_EDIT_HISTORY', 'text_revision');
 		define('DBT_HEADER', 'header');
 		define('DBT_LABEL', 'label');
-		define('DBT_LABEL_LOG', 'label_log');
 		define('DBT_LICENSE', 'license');
 		define('DBT_PERSON', 'person');
 		define('DBT_QUESTION', 'question');

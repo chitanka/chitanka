@@ -600,11 +600,12 @@ li img {
 	vertical-align: middle;
 }
 
-// TODO replace with font-awesome
 .zoom {
 	position: relative;
-	padding-left: 1.35em;
-	background: url("../images/006-viewmag.png") no-repeat top left;
+}
+.zoom:before {
+	content: "\F002"; // fa-search
+	font-family: FontAwesome;
 }
 .is_frozen {
 	opacity: .6;
@@ -799,9 +800,9 @@ ul.superlist {
 	text-decoration: none;
 }
 .read:before {
-    color: #00CC00;
-    content: "\F00C"; // fa-check
-    font-family: FontAwesome;
+	color: #00CC00;
+	content: "\F00C"; // fa-check
+	font-family: FontAwesome;
 }
 
 // връзки за сваляне
@@ -810,13 +811,13 @@ ul.superlist {
 	padding-left: 20px;
 	background-repeat: no-repeat;
 }
-.dl-txt { background-image: data-uri('images/dl03-txt.png'); }
-.dl-fb2 { background-image: data-uri('images/dl02-fb2.png'); }
-.dl-epub { background-image: data-uri('images/dl04-epub.png'); }
-.dl-sfb { background-image: data-uri('images/dl01-sfb.png'); }
-.dl-djvu { background-image: data-uri('images/dl05-djvu.png'); }
-.dl-pdf { background-image: data-uri('images/dl07-pdf.png'); }
-.dl-pic { background-image: data-uri('images/dl06-jpg.png'); }
+.dl-txt { background-image: data-uri('../images/formats/txt.png'); }
+.dl-fb2 { background-image: data-uri('../images/formats/fb2.png'); }
+.dl-epub { background-image: data-uri('../images/formats/epub.png'); }
+.dl-sfb { background-image: data-uri('../images/formats/sfb.png'); }
+.dl-djvu { background-image: data-uri('../images/formats/djvu.png'); }
+.dl-pdf { background-image: data-uri('../images/formats/pdf.png'); }
+.dl-pic { background-image: data-uri('../images/formats/jpg.png'); }
 
 .dl-list, .dl-list li {
 	display: inline;
@@ -1301,7 +1302,7 @@ span.image-title {
 
 .loading,
 .indicator.loading {
-	background: data-uri("./images/loading.gif") right center no-repeat !important;
+	background: data-uri("../images/loading.gif") right center no-repeat !important;
 }
 .indicator.loading {
 	margin-right: .3em;
@@ -1725,19 +1726,17 @@ ul.two-columns {
 .delete-form button:hover .fa {
 	display: inline;
 }
-.bookmark-form button {
-	background-image: data-uri('images/bookmark.png');
-	background-repeat: no-repeat;
-	background-position: 4px 45%;
-	padding-left: 22px;
+.bookmark-form button:before {
+	content: "\F006\00A0"; // fa-star-o
+	font-family: FontAwesome;
 }
 .dl-list .bookmark-form button {
 	background-color: transparent;
 }
-.bookmark-form button.active,
-.bookmark-form button:focus,
-.bookmark-form button:hover {
-	background-image: data-uri('images/bookmark_active.png');
+.bookmark-form button.active:before,
+.bookmark-form button:focus:before,
+.bookmark-form button:hover:before {
+	content: "\F005\00A0"; // fa-star
 }
 .image-form {
 	display: inline;

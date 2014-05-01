@@ -295,47 +295,4 @@ class OutputMaker {
 		}
 		return $enc;
 	}
-
-	/**
-	 * @param string $name
-	 * @param int $maxlength
-	 * @return string
-	 */
-	public function slugify($name, $maxlength = 40) {
-		$name = strtr($name, array(
-			' ' => '_', '/' => '_',
-			'²' => '2', '°' => 'deg',
-			'—' => '',
-		));
-		$name = Char::cyr2lat($name);
-		$name = Legacy::removeDiacritics($name);
-		$name = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $name);
-		$name = strtolower($name);
-		$name = preg_replace('/__+/', '_', $name);
-		$name = preg_replace('/[^\w\d_]/', '', $name);
-		$name = rtrim(substr($name, 0, $maxlength), '_');
-
-		return $name;
-	}
-
-	/**
-	 * @param string $elm
-	 * @param array $attrs
-	 * @param bool $xml
-	 * @return string
-	 */
-	private function getEmptyTag($elm, array $attrs = array(), $xml = true) {
-		$end = $xml ? '/>' : ' />';
-		return '<'. $elm . $this->makeAttribs($attrs) . $end;
-	}
-
-	public function getRssLink($url, $title = '') {
-		return $this->getEmptyTag('link', array(
-			 'rel'   => 'alternate',
-			 'type'  => 'application/rss+xml',
-			 'title' => "$title (RSS 2.0)",
-			 'href'  => $url,
-		), false);
-	}
-
 }

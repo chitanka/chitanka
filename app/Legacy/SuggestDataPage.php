@@ -1,6 +1,5 @@
 <?php namespace App\Legacy;
 
-use App\Entity\Text;
 use App\Util\Ary;
 use App\Validator\Constraints\NotSpamValidator;
 use App\Validator\Constraints\NotSpam;

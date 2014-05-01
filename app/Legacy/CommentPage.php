@@ -50,8 +50,6 @@ class CommentPage extends Page {
 			$url = $this->controller->generateUrl('text_comments', array('id' => $this->textId, '_format' => 'rss'));
 			$title = 'Читателски коментари за „' . strip_tags($this->work->getTitle()) . '“';
 		}
-
-		//$this->addHeadContent($this->out->getRssLink($url, $title));
 	}
 
 	protected function processSubmission() {

@@ -1,7 +1,6 @@
-<?php namespace App\Service;
+<?php namespace App\Generator;
 
 use App\Legacy\CacheManager;
-use App\Legacy\DownloadFile;
 use App\Legacy\Legacy;
 use App\Legacy\ZipFile;
 use App\Util\Char;
