@@ -43,14 +43,11 @@ class TextCommentAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
+		$formMapper->with('General attributes');
 		$formMapper
-			->with('General attributes')
-				->add('rname')
-				->add('content')
-				->add('is_shown', null, array('required' => false))
-			->end()
-		;
-
+			->add('rname')
+			->add('content')
+			->add('is_shown', null, array('required' => false));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

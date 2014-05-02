@@ -33,13 +33,11 @@ class SiteAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
+		$formMapper->with('General attributes');
 		$formMapper
-			->with('General attributes')
-				->add('name')
-				->add('url')
-				->add('description', null, array('required' => false))
-			->end()
-		;
+			->add('name')
+			->add('url')
+			->add('description', null, array('required' => false));
 
 	}
 

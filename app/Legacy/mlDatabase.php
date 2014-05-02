@@ -289,13 +289,9 @@ class mlDatabase {
 		Send a query to the database.
 		@param string $query
 		@param bool $useBuffer Use buffered or unbuffered query
-		@return resource, or false by failure
+		@return resource
 	*/
 	public function query($query, $useBuffer = true) {
-		if ( empty($query) ) {
-			return true;
-		}
-
 		if ( !isset($this->conn) ) { $this->connect(); }
 		$res = $useBuffer
 			? mysql_query($query, $this->conn)
@@ -304,7 +300,7 @@ class mlDatabase {
 			$errno = mysql_errno();
 			$error = mysql_error();
 			$this->log("Error $errno: $error\nQuery: $query\n", true);
-			return false;
+			throw new \Exception("A database query made a boo boo. Check the log.");
 		}
 		return $res;
 	}

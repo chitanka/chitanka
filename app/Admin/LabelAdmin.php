@@ -36,15 +36,13 @@ class LabelAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
+		$formMapper->with('General attributes');
 		$formMapper
-			->with('General attributes')
-				->add('name')
-				->add('slug')
-				->add('parent', null, array('required' => false, 'query_builder' => function ($repo) {
-					return $repo->createQueryBuilder('e')->orderBy('e.name');
-				}))
-			->end()
-		;
+			->add('name')
+			->add('slug')
+			->add('parent', null, array('required' => false, 'query_builder' => function ($repo) {
+				return $repo->createQueryBuilder('e')->orderBy('e.name');
+			}));
 
 	}
 

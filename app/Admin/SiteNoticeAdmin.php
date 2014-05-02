@@ -37,16 +37,13 @@ class SiteNoticeAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
+		$formMapper->with('General attributes');
 		$formMapper
-			->with('General attributes')
-				->add('name')
-				->add('content')
-				->add('isActive', null, array('required' => false))
-				->add('isForFrontPage', null, array('required' => false))
-				->add('style')
-			->end()
-		;
-
+			->add('name')
+			->add('content')
+			->add('isActive', null, array('required' => false))
+			->add('isForFrontPage', null, array('required' => false))
+			->add('style');
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

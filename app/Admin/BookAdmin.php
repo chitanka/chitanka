@@ -73,74 +73,72 @@ class BookAdmin extends Admin {
 	//public $preFormContent = 'App:BookAdmin:form_datafiles.html.twig';
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$formMapper
 			//->add('sfbg', 'string', array('template' => 'App:BookAdmin:form_sfbg.html.twig'))
 			//->add('datafiles', 'string', array('template' => 'App:BookAdmin:form_datafiles.html.twig'))
-			->with('General attributes')
-				->add('slug')
-				->add('title')
-				->add('lang', 'choice', array('choices' => Language::getLangs()))
-				->add('orig_lang', 'choice', array('required' => false, 'choices' => Language::getLangs()))
-				->add('type', 'choice', array('choices' => Book::getTypeList()))
-				->add('bookAuthors', 'sonata_type_collection', array(
-					'by_reference' => false,
-					'required' => false,
-				), array(
-					'edit' => 'inline',
-					'inline' => 'table',
-				))
-			->end()
-			->with('Extra attributes')
-				->add('subtitle', null, array('required' => false))
-				->add('title_extra', null, array('required' => false))
-				->add('orig_title', null, array('required' => false))
-				->add('year')
-				//->add('trans_year', null, array('required' => false))
-				->add('sequence', null, array('required' => false, 'query_builder' => function ($repo) {
-					return $repo->createQueryBuilder('e')->orderBy('e.name');
-				}))
-				->add('seqnr', null, array('required' => false))
-				->add('category', null, array('required' => false, 'query_builder' => function ($repo) {
-					return $repo->createQueryBuilder('e')->orderBy('e.name');
-				}))
-				->add('links', 'sonata_type_collection', array(
-					'by_reference' => false,
-					'required' => false,
-					'label' => 'Site Links',
-				), array(
-					'edit' => 'inline',
-					'inline' => 'table',
-					'sortable' => 'site_id'
-				))
-			->end()
-			->with('Textual content')
-				->add('raw_template', 'textarea', array(
-					'label' => 'Template',
-					'required' => false,
-					'trim' => false,
-					'attr' => array(
-						'class' => 'span12',
-					),
-				))
-				->add('annotation', 'textarea', array(
-					'required' => false,
-					'trim' => false,
-					'attr' => array(
-						'class' => 'span12',
-					),
-				))
-				->add('extra_info', 'textarea', array(
-					'required' => false,
-					'trim' => false,
-					'attr' => array(
-						'class' => 'span12',
-					),
-				))
-				->add('revision_comment', 'text', array('required' => false))
-				->add('removed_notice')
-			->end()
-		;
-		$formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_BIND, array($this, 'fixNewLines'));
+		$formMapper->with('General attributes');
+		$formMapper
+			->add('slug')
+			->add('title')
+			->add('lang', 'choice', array('choices' => Language::getLangs()))
+			->add('orig_lang', 'choice', array('required' => false, 'choices' => Language::getLangs()))
+			->add('type', 'choice', array('choices' => Book::getTypeList()))
+			->add('bookAuthors', 'sonata_type_collection', array(
+				'by_reference' => false,
+				'required' => false,
+			), array(
+				'edit' => 'inline',
+				'inline' => 'table',
+			));
+		$formMapper->with('Extra attributes');
+		$formMapper
+			->add('subtitle', null, array('required' => false))
+			->add('title_extra', null, array('required' => false))
+			->add('orig_title', null, array('required' => false))
+			->add('year')
+			//->add('trans_year', null, array('required' => false))
+			->add('sequence', null, array('required' => false, 'query_builder' => function ($repo) {
+				return $repo->createQueryBuilder('e')->orderBy('e.name');
+			}))
+			->add('seqnr', null, array('required' => false))
+			->add('category', null, array('required' => false, 'query_builder' => function ($repo) {
+				return $repo->createQueryBuilder('e')->orderBy('e.name');
+			}))
+			->add('links', 'sonata_type_collection', array(
+				'by_reference' => false,
+				'required' => false,
+				'label' => 'Site Links',
+			), array(
+				'edit' => 'inline',
+				'inline' => 'table',
+				'sortable' => 'site_id'
+			));
+		$formMapper->with('Textual content');
+		$formMapper
+			->add('raw_template', 'textarea', array(
+				'label' => 'Template',
+				'required' => false,
+				'trim' => false,
+				'attr' => array(
+					'class' => 'span12',
+				),
+			))
+			->add('annotation', 'textarea', array(
+				'required' => false,
+				'trim' => false,
+				'attr' => array(
+					'class' => 'span12',
+				),
+			))
+			->add('extra_info', 'textarea', array(
+				'required' => false,
+				'trim' => false,
+				'attr' => array(
+					'class' => 'span12',
+				),
+			))
+			->add('revision_comment', 'text', array('required' => false))
+			->add('removed_notice');
+		$formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'fixNewLines'));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

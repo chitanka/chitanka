@@ -34,20 +34,17 @@ class WikiSiteAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
+		$formMapper->with('General attributes');
 		$formMapper
-			->with('General attributes')
-				->add('code')
-				->add('name')
-				->add('url')
-				->add('intro', null, array('required' => false))
-				->setHelps(array(
-					'code' => $this->trans('help.wikisite.code'),
-					'url' => $this->trans('help.wikisite.url'),
-					'intro' => $this->trans('help.wikisite.intro'),
-				))
-			->end()
-		;
-
+			->add('code')
+			->add('name')
+			->add('url')
+			->add('intro', null, array('required' => false))
+			->setHelps(array(
+				'code' => $this->trans('help.wikisite.code'),
+				'url' => $this->trans('help.wikisite.url'),
+				'intro' => $this->trans('help.wikisite.intro'),
+			));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

@@ -44,25 +44,22 @@ class WorkEntryAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
+		$formMapper->with('General attributes');
 		$formMapper
-			->with('General attributes')
-				->add('type')
-				->add('title')
-				->add('author', null, array('required' => false))
-				->add('user', 'sonata_type_model_list', array('required' => false))
-				->add('comment', null, array('required' => false))
-				->add('status')
-				->add('progress')
-				->add('is_frozen', null, array('required' => false))
-				->add('tmpfiles', null, array('required' => false))
-				->add('tfsize', null, array('required' => false))
-				->add('uplfile', null, array('required' => false))
-				->add('admin_status')
-				->add('admin_comment')
-				->add('deleted_at', null, array('required' => false))
-			->end()
-		;
-
+			->add('type')
+			->add('title')
+			->add('author', null, array('required' => false))
+			->add('user', 'sonata_type_model_list', array('required' => false))
+			->add('comment', null, array('required' => false))
+			->add('status')
+			->add('progress')
+			->add('is_frozen', null, array('required' => false))
+			->add('tmpfiles', null, array('required' => false))
+			->add('tfsize', null, array('required' => false))
+			->add('uplfile', null, array('required' => false))
+			->add('admin_status')
+			->add('admin_comment')
+			->add('deleted_at', null, array('required' => false));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

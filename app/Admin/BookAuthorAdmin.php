@@ -31,12 +31,10 @@ class BookAuthorAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
+		$formMapper->with('General attributes');
 		$formMapper
-			->with('General attributes')
-				//->add('book')
-				->add('person', 'sonata_type_model_list', array('required' => false))
-			->end()
-		;
+			//->add('book')
+			->add('person', 'sonata_type_model_list', array('required' => false));
 	}
 
 }

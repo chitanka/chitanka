@@ -35,14 +35,12 @@ class TextLinkAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
+		$formMapper->with('General attributes');
 		$formMapper
-			->with('General attributes')
-				//->add('text')
-				->add('site')
-				->add('code')
-				->add('description')
-			->end()
-		;
+			//->add('text')
+			->add('site')
+			->add('code')
+			->add('description');
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

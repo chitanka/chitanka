@@ -37,21 +37,18 @@ class SeriesAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
+		$formMapper->with('General attributes');
 		$formMapper
-			->with('General attributes')
-				->add('slug')
-				->add('name')
-				->add('orig_name', null, array('required' => false))
-				->add('seriesAuthors', 'sonata_type_collection', array(
-					'by_reference' => false,
-					'required' => false,
-				), array(
-					'edit' => 'inline',
-					'inline' => 'table',
-				))
-			->end()
-		;
-
+			->add('slug')
+			->add('name')
+			->add('orig_name', null, array('required' => false))
+			->add('seriesAuthors', 'sonata_type_collection', array(
+				'by_reference' => false,
+				'required' => false,
+			), array(
+				'edit' => 'inline',
+				'inline' => 'table',
+			));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

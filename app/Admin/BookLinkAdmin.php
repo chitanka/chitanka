@@ -34,13 +34,11 @@ class BookLinkAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
+		$formMapper->with('General attributes');
 		$formMapper
-			->with('General attributes')
-				//->add('book')
-				->add('site')
-				->add('code')
-			->end()
-		;
+			//->add('book')
+			->add('site')
+			->add('code');
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

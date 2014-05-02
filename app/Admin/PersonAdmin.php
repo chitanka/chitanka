@@ -59,33 +59,31 @@ class PersonAdmin extends Admin {
 		foreach ($this->repository->getCountryList() as $countryCode) {
 			$countryList[$countryCode] = "country.$countryCode";
 		}
+		$formMapper->with('General attributes');
 		$formMapper
-			->with('General attributes')
-				->add('slug', null, array('required' => false))
-				->add('name')
-				->add('orig_name', null, array('required' => false))
-				->add('real_name', null, array('required' => false))
-				->add('oreal_name', null, array('required' => false))
-				->add('country', 'choice', array(
-					'choices' => $countryList,
-				))
-				->add('is_author', null, array('required' => false))
-				->add('is_translator', null, array('required' => false))
-				->add('info', null, array('required' => false))
-			->end()
-			->with('Main Person')
-				->add('type', 'choice', array(
-					'choices' => $this->repository->getTypeList(),
-					//'expanded' => true,
-					'required' => false,
-					'label' => 'Person Type',
-				))
-				->add('person', 'sonata_type_model_list', array('required' => false, 'label' => 'Main Person'))
-			->end()
-			->setHelps(array(
-				'info' => $this->trans('help.person.info')
+			->add('slug', null, array('required' => false))
+			->add('name')
+			->add('orig_name', null, array('required' => false))
+			->add('real_name', null, array('required' => false))
+			->add('oreal_name', null, array('required' => false))
+			->add('country', 'choice', array(
+				'choices' => $countryList,
 			))
-		;
+			->add('is_author', null, array('required' => false))
+			->add('is_translator', null, array('required' => false))
+			->add('info', null, array('required' => false));
+		$formMapper->with('Main Person');
+		$formMapper
+			->add('type', 'choice', array(
+				'choices' => $this->repository->getTypeList(),
+				//'expanded' => true,
+				'required' => false,
+				'label' => 'Person Type',
+			))
+			->add('person', 'sonata_type_model_list', array('required' => false, 'label' => 'Main Person'));
+		$formMapper->setHelps(array(
+			'info' => $this->trans('help.person.info')
+		));
 
 	}
 
