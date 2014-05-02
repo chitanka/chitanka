@@ -3,29 +3,23 @@
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Feedback;
 use App\Form\Type\FeedbackType;
+use App\Mail\Notifier;
 
 class FeedbackController extends Controller {
-	protected $responseAge = 86400; // 24 hours
 
 	public function indexAction(Request $request) {
-		$adminEmail = $this->container->getParameter('admin_email');
-		$feedback = new Feedback($this->get('mailer'), $adminEmail);
+		$form = $this->createForm(new FeedbackType, new Feedback());
+		$adminEmail = $this->getParameter('admin_email');
 
-		$form = $this->createForm(new FeedbackType, $feedback);
-
-		if ($request->getMethod() == 'POST') {
-			$form->bind($request);
-
-			if ($form->isValid()) {
-				$form->getData()->process();
-				$this->view['message'] = 'Съобщението ви беше изпратено.';
-//				$this->mailFailureMessage = 'Изглежда е станал някакъв фал при изпращането на съобщението ви. Ако желаете, пробвайте още веднъж.';
-//				if ( empty($this->referer) ) {
-//					return '';
-//				}
-//				"<p>Обратно към предишната страница</p>";
-//				return $this->redirect($this->generateUrl('task_success'));
-			}
+		if ($request->isMethod('POST') && $form->submit($request)->isValid()) {
+			$notifier = new Notifier($this->get('mailer'));
+			$notifier->sendPerMail($form->getData(), $adminEmail);
+			$this->view['message'] = 'Съобщението ви беше изпратено.';
+//			if ( empty($this->referer) ) {
+//				return '';
+//			}
+//			"<p>Обратно към предишната страница</p>";
+//			return $this->redirect($this->generateUrl('task_success'));
 		}
 
 		$this->view['admin_email'] = key($adminEmail);

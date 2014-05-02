@@ -1,9 +1,11 @@
 <?php namespace App\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Validator\Constraints as MyAssert;
+use App\Validator\Constraints as AppAssert;
+use App\Mail\MailSource;
 
-class Feedback {
+class Feedback implements MailSource {
+
 	public $referer;
 
 	/**
@@ -16,38 +18,30 @@ class Feedback {
 	 */
 	public $email;
 
-	/** */
+	/**
+	 * @Assert\NotBlank()
+	 */
 	public $subject = 'Обратна връзка от Моята библиотека';
 
 	/**
 	 * @Assert\NotBlank()
 	 * @Assert\Length(min=80)
-	 * @MyAssert\NotSpam()
+	 * @AppAssert\NotSpam()
 	 */
 	public $comment;
 
-	private $mailer;
-	private $recipient;
-
-	public function __construct(\Swift_Mailer $mailer, $recipient) {
-		$this->mailer = $mailer;
-		$this->recipient = $recipient;
+	public function getBody() {
+		return $this->comment;
 	}
 
-	public function process() {
-		$fromEmail = empty($this->email) ? 'anonymous@anonymous.net' : $this->email;
-		$fromName = empty($this->name) ? 'Анонимен' : $this->name;
-		$sender = array($fromEmail => $fromName);
-
-		$message = \Swift_Message::newInstance($this->subject)
-			->setFrom($sender)
-			->setTo($this->recipient)
-			->setBody($this->comment);
-
-		$headers = $message->getHeaders();
-		$headers->addMailboxHeader('Reply-To', $sender);
-		$headers->addTextHeader('X-Mailer', 'Chitanka');
-
-		$this->mailer->send($message);
+	public function getSender() {
+		$fromEmail = $this->email ?: self::ANONYMOUS_EMAIL;
+		$fromName = $this->name ?: self::ANONYMOUS_NAME;
+		return array($fromEmail => $fromName);
 	}
+
+	public function getSubject() {
+		return $this->subject;
+	}
+
 }

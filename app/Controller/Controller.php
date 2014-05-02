@@ -20,7 +20,7 @@ abstract class Controller extends SymfonyController {
 	protected $responseFormat = 'html';
 
 	/** The max cache time of the response (in seconds) */
-	protected $responseAge = 600;
+	protected $responseAge = 86400; // 24 hours
 
 	/** The status code of the response */
 	protected $responseStatusCode = null;

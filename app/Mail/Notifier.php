@@ -11,6 +11,19 @@ class Notifier {
 		$this->mailer = $mailer;
 	}
 
+	public function sendPerMail(MailSource $source, $recipient) {
+		$message = \Swift_Message::newInstance($source->getSubject())
+			->setFrom($source->getSender())
+			->setTo($recipient)
+			->setBody($source->getBody());
+
+		$headers = $message->getHeaders();
+		$headers->addMailboxHeader('Reply-To', $source->getSender());
+		$headers->addTextHeader('X-Mailer', 'Chitanka');
+
+		$this->mailer->send($message);
+	}
+
 	protected function sendMessage(Swift_Message $message) {
 		$this->mailer->send($message);
 	}

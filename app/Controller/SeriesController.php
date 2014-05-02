@@ -5,7 +5,6 @@ use App\Pagination\Pager;
 use App\Util\String;
 
 class SeriesController extends Controller {
-	protected $responseAge = 86400; // 24 hours
 
 	public function indexAction($_format) {
 		return $this->display("index.$_format");

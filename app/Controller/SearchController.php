@@ -6,7 +6,7 @@ use App\Entity\SearchString;
 use App\Util\String;
 
 class SearchController extends Controller {
-	protected $responseAge = 86400; // 24 hours
+
 	private $minQueryLength = 3;
 	private $maxQueryLength = 60;
 

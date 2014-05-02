@@ -16,8 +16,6 @@ use App\Util\String;
 
 class TextController extends Controller {
 
-	protected $responseAge = 86400; // 24 hours
-
 	public function indexAction($_format) {
 		if ($_format == 'html') {
 			$this->view = array(

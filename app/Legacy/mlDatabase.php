@@ -2,23 +2,15 @@
 
 class mlDatabase {
 
-	/** Database server name */
 	private $server;
-	/** Database user name */
 	private $user;
-	/** Database user password */
 	private $pass;
-	/** Database name */
 	private $dbName;
-	private $charset = 'utf8';
-	private $collationConn = 'utf8_general_ci';
 	/**
 		Connection to the database
 		@var resource
 	*/
-	private $conn = NULL;
-	private $doLog = true;
-	private $errno;
+	private $conn;
 
 	public function __construct($server, $user, $pass, $dbName) {
 		$this->server = $server;
@@ -68,8 +60,7 @@ class mlDatabase {
 		return (int) $count;
 	}
 
-	public function iterateOverResult($query, $func, $obj = null,
-			$buffered = false) {
+	public function iterateOverResult($query, $func, $obj = null, $buffered = false) {
 		$result = $this->query($query, $buffered);
 		$out = '';
 		if ($result) {
@@ -279,9 +270,6 @@ class mlDatabase {
 	}
 
 	private function normalizeValue($value) {
-		/*if ( is_null($value) ) {
-			return 'NULL';
-		} else */
 		if ( is_bool($value) ) {
 			$value = $value ? 1 : 0;
 		} else if ($value instanceof \DateTime) {
@@ -313,26 +301,12 @@ class mlDatabase {
 			? mysql_query($query, $this->conn)
 			: mysql_unbuffered_query($query, $this->conn);
 		if ( !$res ) {
-			$this->errno = mysql_errno();
-			$this->error = mysql_error();
-			$this->log("Error $this->errno: $this->error\nQuery: $query\n"
-				/*."Backtrace\n". print_r(debug_backtrace(), true)*/, true);
+			$errno = mysql_errno();
+			$error = mysql_error();
+			$this->log("Error $errno: $error\nQuery: $query\n", true);
 			return false;
 		}
-
-		if ( self::isWriteQuery($query) ) {
-			$u = isset($GLOBALS['user']) ? $GLOBALS['user']->id : 0;
-			$this->log("/*U=$u*/ $query;", false);
-		}
-
 		return $res;
-	}
-
-	/**
-	 * @param string $query
-	 */
-	static public function isWriteQuery($query) {
-		return preg_match('/UPDATE|INSERT|REPLACE|DELETE|START|COMMIT|ALTER/', $query);
 	}
 
 	/**
@@ -378,25 +352,14 @@ class mlDatabase {
 	}
 
 	private function connect() {
-		$this->conn = mysql_connect($this->server, $this->user, $this->pass, true)
-			or $this->mydie("Проблем: Няма връзка с базата. Изчакайте пет минути и опитайте отново да заредите страницата.");
-		mysql_select_db($this->dbName, $this->conn)
-			or $this->mydie("Could not select database $this->dbName.");
-		mysql_query("SET NAMES '$this->charset' COLLATE '$this->collationConn'", $this->conn)
-			or $this->mydie("Could not set names to '$this->charset':");
-	}
-
-	private function mydie($msg) {
-		header('Content-Type: text/plain; charset=UTF-8');
-		header('HTTP/1.1 503 Service Temporarily Unavailable');
-		die($msg .' '. mysql_error());
+		$this->conn = mysql_connect($this->server, $this->user, $this->pass, true);
+		mysql_select_db($this->dbName, $this->conn);
+		mysql_query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'", $this->conn);
 	}
 
 	private function log($msg, $isError = true) {
-		if ($this->doLog) {
-			file_put_contents($isError ? $this->errLogFile : $this->logFile,
-				'/*'.date('Y-m-d H:i:s').'*/ '. $msg."\n", FILE_APPEND);
-		}
+		file_put_contents($isError ? $this->errLogFile : $this->logFile,
+			'/*'.date('Y-m-d H:i:s').'*/ '. $msg."\n", FILE_APPEND);
 	}
 
 }

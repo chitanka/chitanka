@@ -10,9 +10,6 @@ use App\Util\String;
 
 class BookController extends Controller {
 
-	protected $repository = 'Book';
-	protected $responseAge = 86400; // 24 hours
-
 	public function indexAction($_format) {
 		if ($_format == 'html') {
 			$this->view = array(
