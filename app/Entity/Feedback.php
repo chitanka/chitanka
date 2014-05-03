@@ -4,7 +4,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as AppAssert;
 use App\Mail\MailSource;
 
-class Feedback implements MailSource {
+class Feedback extends MailSource {
 
 	public $referer;
 
@@ -32,16 +32,6 @@ class Feedback implements MailSource {
 
 	public function getBody() {
 		return $this->comment;
-	}
-
-	public function getSender() {
-		$fromEmail = $this->email ?: self::ANONYMOUS_EMAIL;
-		$fromName = $this->name ?: self::ANONYMOUS_NAME;
-		return array($fromEmail => $fromName);
-	}
-
-	public function getSubject() {
-		return $this->subject;
 	}
 
 }

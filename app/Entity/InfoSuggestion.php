@@ -4,7 +4,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as AppAssert;
 use App\Mail\MailSource;
 
-class InfoSuggestion implements MailSource {
+class InfoSuggestion extends MailSource {
 
 	private static $subjects = array(
 		'orig_title' => 'Информация за оригинално заглавие',
@@ -46,12 +46,6 @@ http://chitanka.info/admin/text/{$this->text->getId()}/edit
 
 $this->info
 EOS;
-	}
-
-	public function getSender() {
-		$fromEmail = $this->email ?: self::ANONYMOUS_EMAIL;
-		$fromName = $this->name ?: self::ANONYMOUS_NAME;
-		return array($fromEmail => $fromName);
 	}
 
 	public function getSubject() {

@@ -248,7 +248,7 @@ abstract class Controller extends SymfonyController {
 	 * @return Response
 	 */
 	protected function redirectWithNotice($notice) {
-		$this->get('request')->getSession()->getFlashBag()->set('notice', $notice);
+		$this->get('session')->getFlashBag()->add('notice', $notice);
 		return $this->redirect('message');
 	}
 

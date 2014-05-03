@@ -9,7 +9,7 @@ class InfoSuggestionController extends Controller {
 
 	public function indexAction(Request $request, $type, $id) {
 		try {
-			$text = $this->getTextRepository()->find($id);
+			$text = $this->getTextRepository()->get($id);
 			$infoSuggestion = new InfoSuggestion($type, $text);
 			$infoSuggestion->setSender($this->getUser());
 		} catch (\InvalidArgumentException $e) {
