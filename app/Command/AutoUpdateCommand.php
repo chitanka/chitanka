@@ -217,7 +217,7 @@ EOT
 	/**
 	 * @param string $url
 	 * @param string $updateDir
-	 * @return string Page contents
+	 * @return \Buzz\Message\Response
 	 */
 	private function downloadUpdate($url, $updateDir) {
 		$browser = $this->getContainer()->get('buzz');
