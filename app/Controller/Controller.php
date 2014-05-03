@@ -80,7 +80,7 @@ abstract class Controller extends SymfonyController {
 		} else {
 			$controller = $this->getName();
 		}
-		$this->getRequest()->setFormat('osd', 'application/opensearchdescription+xml');
+		$this->get('request')->setFormat('osd', 'application/opensearchdescription+xml');
 		$globals = $this->getDisplayVariables();
 
 		if ($format == 'opds') {
@@ -127,7 +127,7 @@ abstract class Controller extends SymfonyController {
 			'global_info_message' => $this->container->getParameter('global_info_message'),
 			'analytics_snippet' => $this->container->getParameter('analytics_snippet'),
 			'environment' => $this->container->get('kernel')->getEnvironment(),
-			'ajax' => $this->getRequest()->isXmlHttpRequest(),
+			'ajax' => $this->get('request')->isXmlHttpRequest(),
 		);
 	}
 
