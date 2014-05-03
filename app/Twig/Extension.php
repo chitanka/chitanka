@@ -14,42 +14,41 @@ class Extension extends \Twig_Extension {
 
 	public function getFunctions() {
 		return array(
-			'anchor_name' => new \Twig_Function_Method($this, 'getAnchorName'),
-			'cover' => new \Twig_Function_Method($this, 'getCover'),
+			new \Twig_SimpleFunction('anchor_name', array($this, 'getAnchorName')),
+			new \Twig_SimpleFunction('cover', array($this, 'getCover')),
 		);
 	}
 
 	public function getFilters() {
 		return array(
-			'rating_class' => new \Twig_Filter_Method($this, 'getRatingClass'),
-			'rating_format' => new \Twig_Filter_Method($this, 'formatRating'),
-			'name_format' => new \Twig_Filter_Method($this, 'formatPersonName'),
-			'acronym' => new \Twig_Filter_Method($this, 'getAcronym'),
-			'first_char' => new \Twig_Filter_Method($this, 'getFirstChar'),
-			'email' => new \Twig_Filter_Method($this, 'obfuscateEmail'),
-			'doctitle' => new \Twig_Filter_Method($this, 'getDocTitle'),
-			'lower' => new \Twig_Filter_Method($this, 'strtolower'),
-			'json' => new \Twig_Filter_Method($this, 'getJson'),
-			'repeat' => new \Twig_Filter_Method($this, 'repeatString'),
-			'join_lists' => new \Twig_Filter_Method($this, 'joinLists'),
-			'humandate' => new \Twig_Filter_Method($this, 'getHumanDate'),
-			'nl2br' => new \Twig_Filter_Method($this, 'nl2br', array('pre_escape' => 'html', 'is_safe' => array('html'))),
-			'dot2br' => new \Twig_Filter_Method($this, 'dot2br'),
-			'user_markup' => new \Twig_Filter_Method($this, 'formatUserMarkup'),
-			'striptags' => new \Twig_Filter_Method($this, 'stripTags'),
-			'domain' => new \Twig_Filter_Method($this, 'getDomain'),
-			'link' => new \Twig_Filter_Method($this, 'formatLinks'),
-			'encoding' => new \Twig_Filter_Method($this, 'changeEncoding'),
-			'urlencode' => new \Twig_Filter_Method($this, 'getUrlEncode'),
-			'qrcode' => new \Twig_Filter_Method($this, 'getQrCode'),
-
-			'put_text_in_template' => new \Twig_Filter_Method($this, 'putTextInBookTemplate'),
+			new \Twig_SimpleFilter('rating_class', array($this, 'getRatingClass')),
+			new \Twig_SimpleFilter('rating_format', array($this, 'formatRating')),
+			new \Twig_SimpleFilter('name_format', array($this, 'formatPersonName')),
+			new \Twig_SimpleFilter('acronym', array($this, 'getAcronym')),
+			new \Twig_SimpleFilter('first_char', array($this, 'getFirstChar')),
+			new \Twig_SimpleFilter('email', array($this, 'obfuscateEmail')),
+			new \Twig_SimpleFilter('doctitle', array($this, 'getDocTitle')),
+			new \Twig_SimpleFilter('lower', array($this, 'strtolower')),
+			new \Twig_SimpleFilter('json', array($this, 'getJson')),
+			new \Twig_SimpleFilter('repeat', array($this, 'repeatString')),
+			new \Twig_SimpleFilter('join_lists', array($this, 'joinLists')),
+			new \Twig_SimpleFilter('humandate', array($this, 'getHumanDate')),
+			new \Twig_SimpleFilter('nl2br', array($this, 'nl2br'), array('pre_escape' => 'html', 'is_safe' => array('html'))),
+			new \Twig_SimpleFilter('dot2br', array($this, 'dot2br')),
+			new \Twig_SimpleFilter('user_markup', array($this, 'formatUserMarkup')),
+			new \Twig_SimpleFilter('striptags', array($this, 'stripTags')),
+			new \Twig_SimpleFilter('domain', array($this, 'getDomain')),
+			new \Twig_SimpleFilter('link', array($this, 'formatLinks')),
+			new \Twig_SimpleFilter('encoding', array($this, 'changeEncoding')),
+			new \Twig_SimpleFilter('urlencode', array($this, 'getUrlEncode')),
+			new \Twig_SimpleFilter('qrcode', array($this, 'getQrCode')),
+			new \Twig_SimpleFilter('put_text_in_template', array($this, 'putTextInBookTemplate')),
 		);
 	}
 
 	public function getTests() {
 		return array(
-			'url' => new \Twig_Test_Method($this, 'isUrl'),
+			new \Twig_SimpleTest('url', array($this, 'isUrl')),
 		);
 	}
 
