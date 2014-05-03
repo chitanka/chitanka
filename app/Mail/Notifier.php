@@ -13,7 +13,7 @@ class Notifier {
 
 	public function sendPerMail(MailSource $source, $recipient) {
 		$message = \Swift_Message::newInstance($source->getSubject())
-			->setFrom($source->getSender())
+			->setFrom($source->getSenderEmail(), $source->getSenderName())
 			->setTo($recipient)
 			->setBody($source->getBody());
 

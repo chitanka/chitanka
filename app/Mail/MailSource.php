@@ -14,14 +14,14 @@ abstract class MailSource {
 	abstract public function getBody();
 
 	public function getSender() {
-		return array($this->getEmail() => $this->getName());
+		return array($this->getSenderEmail() => $this->getSenderName());
 	}
 
-	protected function getName() {
+	public function getSenderName() {
 		return $this->name ?: self::ANONYMOUS_NAME;
 	}
 
-	protected function getEmail() {
+	public function getSenderEmail() {
 		return $this->email ?: self::ANONYMOUS_EMAIL;
 	}
 
