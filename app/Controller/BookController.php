@@ -134,6 +134,7 @@ class BookController extends Controller {
 				break;
 			case 'pic':
 				Setup::doSetup($this->container);
+				break;
 			case 'html':
 			default:
 		}
