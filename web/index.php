@@ -170,6 +170,7 @@ if ($isCacheable && $response->isOk()) {
 	try {
 		$cache->set($response->getContent(), $response->getTtl());
 	} catch (\RuntimeException $e) {
+		// do nothing for now; possibly log it in the future
 	}
 }
 $response->send();
