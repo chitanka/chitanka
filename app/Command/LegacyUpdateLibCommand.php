@@ -9,7 +9,7 @@ use App\Legacy\Legacy;
 use App\Util\String;
 use App\Util\File;
 
-class LegacyUpdateLibCommand extends CommonDbCommand {
+class LegacyUpdateLibCommand extends Command {
 
 	protected function configure() {
 		parent::configure();

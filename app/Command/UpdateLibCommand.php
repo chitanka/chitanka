@@ -8,7 +8,7 @@ use App\Legacy\Legacy;
 use App\Util\String;
 use App\Util\File;
 
-class UpdateLibCommand extends CommonDbCommand {
+class UpdateLibCommand extends Command {
 
 	protected function configure() {
 		parent::configure();

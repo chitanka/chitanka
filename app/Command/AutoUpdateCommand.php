@@ -8,7 +8,9 @@ use App\Service\Mutex;
 use App\Service\FileUpdater;
 use App\Service\SourceUpdater;
 
-class AutoUpdateCommand extends CommonDbCommand {
+class AutoUpdateCommand extends Command {
+
+	private $output;
 
 	protected function configure() {
 		parent::configure();

@@ -3,7 +3,7 @@
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateCountsDbCommand extends CommonDbCommand {
+class UpdateCountsDbCommand extends Command {
 
 	protected function configure() {
 		parent::configure();

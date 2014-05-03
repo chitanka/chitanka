@@ -4,7 +4,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateNewsletterCommand extends CommonDbCommand {
+class GenerateNewsletterCommand extends Command {
 
 	protected function configure() {
 		parent::configure();

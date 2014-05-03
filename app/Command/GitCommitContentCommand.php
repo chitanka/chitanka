@@ -5,7 +5,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GitCommitContentCommand extends CommonDbCommand {
+class GitCommitContentCommand extends Command {
 
 	protected function configure() {
 		parent::configure();

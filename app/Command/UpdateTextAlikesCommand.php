@@ -4,7 +4,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Service\TextService;
 
-class UpdateTextAlikesCommand extends CommonDbCommand {
+class UpdateTextAlikesCommand extends Command {
 
 	protected function configure() {
 		parent::configure();

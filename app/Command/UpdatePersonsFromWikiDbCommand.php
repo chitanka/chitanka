@@ -4,7 +4,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity\Person;
 
-class UpdatePersonsFromWikiDbCommand extends CommonDbCommand {
+class UpdatePersonsFromWikiDbCommand extends Command {
 
 	protected function configure() {
 		parent::configure();

@@ -6,7 +6,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity\WorkEntry;
 use App\Service\Notifier;
 
-class NotifyUsersForOldWorkEntriesCommand extends CommonDbCommand {
+class NotifyUsersForOldWorkEntriesCommand extends Command {
 
 	protected function configure() {
 		parent::configure();

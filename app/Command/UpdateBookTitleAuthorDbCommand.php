@@ -7,7 +7,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * TODO Usage of book.title_author is deprecated
  */
-class UpdateBookTitleAuthorDbCommand extends CommonDbCommand {
+class UpdateBookTitleAuthorDbCommand extends Command {
 
 	protected function configure() {
 		parent::configure();

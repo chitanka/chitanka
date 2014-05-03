@@ -6,15 +6,14 @@ use Doctrine\ORM\EntityManager;
 use App\Legacy\Setup;
 use App\Util\String;
 
-class CommonDbCommand extends ContainerAwareCommand {
+abstract class Command extends ContainerAwareCommand {
 
-	protected function configure() {
-		parent::configure();
-
-		$this
-			->setName('db:common')
-			->setDescription('Does nothing. Only encapsulates common database stuff')
-		;
+	/**
+	 * Override only to replace return value in the docblock
+	 * @return \Symfony\Bundle\FrameworkBundle\Console\Application
+	 */
+	protected function getApplication() {
+		return parent::getApplication();
 	}
 
 	/**

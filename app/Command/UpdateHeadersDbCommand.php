@@ -5,7 +5,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateHeadersDbCommand extends CommonDbCommand {
+class UpdateHeadersDbCommand extends Command {
 
 	protected function configure() {
 		parent::configure();

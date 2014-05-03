@@ -5,7 +5,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Util\HttpAgent;
 
-class VerifyPersonInfoLinksDbCommand extends CommonDbCommand {
+class VerifyPersonInfoLinksDbCommand extends Command {
 	private $secsBetweenRequests = 5;
 
 	protected function configure() {

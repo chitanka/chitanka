@@ -5,7 +5,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\ORM\EntityManager;
 use App\Legacy\Legacy;
 
-class UpdateSiteLinksDbCommand extends CommonDbCommand {
+class UpdateSiteLinksDbCommand extends Command {
 
 	protected function configure() {
 		parent::configure();

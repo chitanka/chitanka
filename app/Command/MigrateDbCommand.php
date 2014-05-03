@@ -7,7 +7,7 @@ use Symfony\Component\Finder\Finder;
 use App\Legacy\Legacy;
 use App\Util\String;
 
-class MigrateDbCommand extends CommonDbCommand {
+class MigrateDbCommand extends Command {
 
 	protected function configure() {
 		parent::configure();
