@@ -12,7 +12,7 @@ abstract class Command extends ContainerAwareCommand {
 	 * Override only to replace return value in the docblock
 	 * @return \Symfony\Bundle\FrameworkBundle\Console\Application
 	 */
-	protected function getApplication() {
+	public function getApplication() {
 		return parent::getApplication();
 	}
 
