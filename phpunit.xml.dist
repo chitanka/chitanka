@@ -15,7 +15,7 @@
 
     <testsuites>
         <testsuite name="Chitanka Test Suite">
-            <directory>src/App/Tests</directory>
+            <directory>app/Tests</directory>
         </testsuite>
     </testsuites>
 
@@ -29,8 +29,8 @@
         <whitelist>
             <directory>src</directory>
             <exclude>
-                <directory>src/App/Resources</directory>
-                <directory>src/App/Tests</directory>
+                <directory>app/Resources</directory>
+                <directory>app/Tests</directory>
             </exclude>
         </whitelist>
     </filter>
