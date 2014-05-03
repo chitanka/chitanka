@@ -1,10 +1,8 @@
 <article class="readercomment" id="e{{ comment.id }}">
 	{% if standalone %}
-		{% import 'App::link.html.twig' as link %}
-		{% import 'App::text.html.twig' as texttools %}
 		<h1>
-			За „{{ link.text(comment.text) }}“
-			{{ texttools.author_list(comment.text.authors) }}
+			{% import 'App::text.html.twig' as texttools %}
+			За {{ texttools.text_title_with_author(comment.text) }}
 		</h1>
 	{% endif %}
 

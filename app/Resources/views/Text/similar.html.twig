@@ -2,12 +2,8 @@
 
 {% set title = "Подобни произведения" %}
 {% set subtitle %}
-{% spaceless %}
-	{% import 'App::link.html.twig' as link %}
 	{% import 'App::text.html.twig' as texttools %}
-	за „{{ link.text(text) }}“
-	{{ texttools.author_list(text.authors) }}
-{% endspaceless %}
+	за {{ texttools.text_title_with_author(text) }}
 {% endset %}
 
 {% block content %}
