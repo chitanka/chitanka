@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "4e2441d8e065103e5c1cb8c9d8230210",
+    "hash": "4cfd3895d6382c58acd12c2c33d68bde",
     "packages": [
         {
             "name": "apibot",
@@ -737,12 +737,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSCommentBundle.git",
-                "reference": "a3d9cf6c601daf86bfbce30a51e571276241c135"
+                "reference": "efc2fc63e85b306b165d9afceac630e3ebfa089f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSCommentBundle/zipball/a3d9cf6c601daf86bfbce30a51e571276241c135",
-                "reference": "a3d9cf6c601daf86bfbce30a51e571276241c135",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSCommentBundle/zipball/efc2fc63e85b306b165d9afceac630e3ebfa089f",
+                "reference": "efc2fc63e85b306b165d9afceac630e3ebfa089f",
                 "shasum": ""
             },
             "require": {
@@ -763,7 +763,8 @@
                 "ornicar/akismet-bundle": "dev-master",
                 "symfony/assetic-bundle": "~2.1",
                 "symfony/browser-kit": "~2.1",
-                "symfony/css-selector": "~2.1"
+                "symfony/css-selector": "~2.1",
+                "symfony/expression-language": "~2.4"
             },
             "suggest": {
                 "friendsofsymfony/user-bundle": "Allows for user integration.",
@@ -794,7 +795,7 @@
                     "homepage": "https://github.com/friendsofsymfony/FOSCommentBundle/contributors"
                 },
                 {
-                    "name": "Alexander Mols",
+                    "name": "Alexander",
                     "email": "iam.asm89@gmail.com",
                     "homepage": "http://asm89.github.io/"
                 }
@@ -806,7 +807,7 @@
                 "forum",
                 "threads"
             ],
-            "time": "2014-04-05 12:46:44"
+            "time": "2014-04-27 10:12:44"
         },
         {
             "name": "friendsofsymfony/rest-bundle",
@@ -1500,16 +1501,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.8.0",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "392ef35fd470638e08d0160d6b1cbab63cb23174"
+                "reference": "65026b610f8c19e61d7242f600530677b0466aac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/392ef35fd470638e08d0160d6b1cbab63cb23174",
-                "reference": "392ef35fd470638e08d0160d6b1cbab63cb23174",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/65026b610f8c19e61d7242f600530677b0466aac",
+                "reference": "65026b610f8c19e61d7242f600530677b0466aac",
                 "shasum": ""
             },
             "require": {
@@ -1537,7 +1538,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.8.x-dev"
+                    "dev-master": "1.9.x-dev"
                 }
             },
             "autoload": {
@@ -1564,7 +1565,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-03-23 19:50:26"
+            "time": "2014-04-24 13:29:03"
         },
         {
             "name": "oyejorge/less.php",
@@ -1817,12 +1818,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "951e529513e17a9919f213be403f83c2695b9219"
+                "reference": "5e015ee9f525bea0ebd77951558934402fcf28cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/951e529513e17a9919f213be403f83c2695b9219",
-                "reference": "951e529513e17a9919f213be403f83c2695b9219",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/5e015ee9f525bea0ebd77951558934402fcf28cd",
+                "reference": "5e015ee9f525bea0ebd77951558934402fcf28cd",
                 "shasum": ""
             },
             "require": {
@@ -1859,7 +1860,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2014-04-01 16:11:48"
+            "time": "2014-04-29 09:48:35"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -1971,7 +1972,7 @@
             "version": "master",
             "source": {
                 "type": "git",
-                "url": "git://gitorious.org/sfb-converter/mainline.git",
+                "url": "https://github.com/bmanolov/sfb-converter.git",
                 "reference": "master"
             },
             "type": "library",
@@ -1980,7 +1981,7 @@
                     "Sfblib_": "lib/"
                 }
             },
-            "time": "2014-01-20 19:57:41"
+            "time": "2014-05-03 18:19:48"
         },
         {
             "name": "simplethings/entity-audit-bundle",
@@ -2031,12 +2032,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "9273791bdbffbe8bf75e92babddec393dc06e37f"
+                "reference": "8d665ac8ea5a1bd6c13a512faf5f7d90ca065095"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/9273791bdbffbe8bf75e92babddec393dc06e37f",
-                "reference": "9273791bdbffbe8bf75e92babddec393dc06e37f",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/8d665ac8ea5a1bd6c13a512faf5f7d90ca065095",
+                "reference": "8d665ac8ea5a1bd6c13a512faf5f7d90ca065095",
                 "shasum": ""
             },
             "require": {
@@ -2103,7 +2104,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-03-31 10:42:40"
+            "time": "2014-04-16 10:29:02"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -2362,12 +2363,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataEasyExtendsBundle.git",
-                "reference": "44aed5aaa4e563a9cad2d1dad000fcbfd0a29efc"
+                "reference": "05d4cdfabe1815b7d8cc9483ebf0ea7707bb48c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataEasyExtendsBundle/zipball/44aed5aaa4e563a9cad2d1dad000fcbfd0a29efc",
-                "reference": "44aed5aaa4e563a9cad2d1dad000fcbfd0a29efc",
+                "url": "https://api.github.com/repos/sonata-project/SonataEasyExtendsBundle/zipball/05d4cdfabe1815b7d8cc9483ebf0ea7707bb48c9",
+                "reference": "05d4cdfabe1815b7d8cc9483ebf0ea7707bb48c9",
                 "shasum": ""
             },
             "require": {
@@ -2411,7 +2412,7 @@
                 "Easy Extends",
                 "sonata"
             ],
-            "time": "2014-03-24 16:15:13"
+            "time": "2014-04-16 10:32:54"
         },
         {
             "name": "sonata-project/exporter",
@@ -2862,16 +2863,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.4.3",
+            "version": "v2.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "3199b2e0d194f71fe2e13c95768b2ef22206682b"
+                "reference": "4697c33cdfb520dcf83fd6e4f7864fa26ddaebea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/3199b2e0d194f71fe2e13c95768b2ef22206682b",
-                "reference": "3199b2e0d194f71fe2e13c95768b2ef22206682b",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/4697c33cdfb520dcf83fd6e4f7864fa26ddaebea",
+                "reference": "4697c33cdfb520dcf83fd6e4f7864fa26ddaebea",
                 "shasum": ""
             },
             "require": {
@@ -2973,7 +2974,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-04-04 10:27:02"
+            "time": "2014-04-27 13:39:18"
         },
         {
             "name": "twbs/bootstrap",
