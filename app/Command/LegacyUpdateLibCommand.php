@@ -99,9 +99,14 @@ EOT
 		$queries = array();
 
 		foreach ($files as $file) {
-			if (empty($file)) continue;
+			if (empty($file)) {
+				continue;
+			}
+			if (!file_exists($file)) {
+				throw new \InvalidArgumentException("$file не съществува");
+			}
 
-			$fp = fopen($file, 'r') or die("$file не съществува.\n");
+			$fp = fopen($file, 'r');
 
 			$authorLine = $this->clearHeadline( $this->getFirstNonEmptyFileLine($fp) );
 			$titleLine = rtrim($this->clearHeadline( fgets($fp) ), '*');
@@ -122,7 +127,10 @@ EOT
 	}
 
 	private function insertManyFromOneFile($file) {
-		$fp = fopen($file, 'r') or die("$file не съществува.\n");
+		if (!file_exists($file)) {
+			throw new \InvalidArgumentException("$file не съществува");
+		}
+		$fp = fopen($file, 'r') ;
 
 		$queries = array();
 
