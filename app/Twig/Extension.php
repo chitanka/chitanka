@@ -16,7 +16,6 @@ class Extension extends \Twig_Extension {
 		return array(
 			'anchor_name' => new \Twig_Function_Method($this, 'getAnchorName'),
 			'cover' => new \Twig_Function_Method($this, 'getCover'),
-			'progressbar' => new \Twig_Function_Method($this, 'getProgressbar'),
 		);
 	}
 
@@ -165,19 +164,6 @@ class Extension extends \Twig_Extension {
 
 	public function getCover($id, $width = 200, $format = 'jpg') {
 		return Legacy::getContentFilePath('book-cover', $id) . ".$width.$format";
-	}
-
-	public function getProgressbar($progressInPerc) {
-		$perc = $progressInPerc .'%';
-		$progressBarWidth = '20';
-		$bar = str_repeat(' ', $progressBarWidth);
-		$bar = substr_replace($bar, $perc, $progressBarWidth/2-1, strlen($perc));
-		$curProgressWidth = ceil($progressBarWidth * $progressInPerc / 100);
-		// done bar end
-		$bar = substr_replace($bar, '</span>', $curProgressWidth, 0);
-		$bar = strtr($bar, array(' ' => '&#160;'));
-
-		return "<pre style=\"display:inline\"><span class=\"progressbar\"><span class=\"done\">$bar</span></pre>";
 	}
 
 	public function nl2br($value, $sep = '<br>') {
