@@ -23,6 +23,8 @@ abstract class Page {
 		$inlineJs = '';
 
 	protected
+		$root,
+		$sitename,
 		$action = '',
 		$title,
 		$request,
@@ -30,6 +32,10 @@ abstract class Page {
 		$db,
 		$content,
 		$messages,
+		$out,
+		$controller,
+		$container,
+		$logDir,
 
 		$llimit = 0, $loffset = 0,
 		$maxCaptchaTries = 2, $defListLimit = 10, $maxListLimit = 50,
