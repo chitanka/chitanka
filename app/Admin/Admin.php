@@ -5,6 +5,8 @@ use Symfony\Component\Form\FormEvent;
 
 abstract class Admin extends BaseAdmin {
 
+	protected $translationDomain = 'admin';
+
 	public function fixNewLines(FormEvent $event) {
 		$data = $event->getData();
 		foreach ($data as $field => $value) {

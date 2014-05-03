@@ -8,7 +8,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 class BookSiteAdmin extends Admin {
 	protected $baseRoutePattern = 'book-site';
 	protected $baseRouteName = 'admin_book_site';
-	protected $translationDomain = 'admin';
 
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper

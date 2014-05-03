@@ -8,7 +8,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 class WorkEntryAdmin extends Admin {
 	protected $baseRoutePattern = 'work-entry';
 	protected $baseRouteName = 'admin_work_entry';
-	protected $translationDomain = 'admin';
 
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper

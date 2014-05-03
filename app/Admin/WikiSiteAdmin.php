@@ -8,7 +8,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 class WikiSiteAdmin extends Admin {
 	protected $baseRoutePattern = 'wiki-site';
 	protected $baseRouteName = 'admin_wiki_site';
-	protected $translationDomain = 'admin';
 
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper

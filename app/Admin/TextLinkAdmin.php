@@ -8,7 +8,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 class TextLinkAdmin extends Admin {
 	protected $baseRoutePattern = 'text-link';
 	protected $baseRouteName = 'admin_text_link';
-	protected $translationDomain = 'admin';
 
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper

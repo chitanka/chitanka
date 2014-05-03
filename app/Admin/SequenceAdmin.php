@@ -8,7 +8,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 class SequenceAdmin extends Admin {
 	protected $baseRoutePattern = 'sequence';
 	protected $baseRouteName = 'admin_sequence';
-	protected $translationDomain = 'admin';
 
 	public $extraActions = 'App:SequenceAdmin:extra_actions.html.twig';
 

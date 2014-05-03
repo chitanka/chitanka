@@ -9,7 +9,6 @@ use Sonata\AdminBundle\Route\RouteCollection;
 class TextCommentAdmin extends Admin {
 	protected $baseRoutePattern = 'text-comment';
 	protected $baseRouteName = 'admin_text_comment';
-	protected $translationDomain = 'admin';
 
 	protected function configureRoutes(RouteCollection $collection) {
 		$collection->remove('create');

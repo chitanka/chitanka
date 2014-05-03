@@ -14,7 +14,6 @@ use Symfony\Component\Form\FormEvents;
 class BookAdmin extends Admin {
 	protected $baseRoutePattern = 'book';
 	protected $baseRouteName = 'admin_book';
-	protected $translationDomain = 'admin';
 
 	public $extraActions = 'App:BookAdmin:extra_actions.html.twig';
 

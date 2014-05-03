@@ -9,7 +9,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 class PersonAdmin extends Admin {
 	protected $baseRoutePattern = 'person';
 	protected $baseRouteName = 'admin_person';
-	protected $translationDomain = 'admin';
 
 	public $extraActions = 'App:PersonAdmin:extra_actions.html.twig';
 

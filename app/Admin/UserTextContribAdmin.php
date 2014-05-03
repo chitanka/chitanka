@@ -7,7 +7,6 @@ class UserTextContribAdmin extends Admin {
 
 	protected $baseRoutePattern = 'user-text-contrib';
 	protected $baseRouteName = 'admin_user_text_contrib';
-	protected $translationDomain = 'admin';
 
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper

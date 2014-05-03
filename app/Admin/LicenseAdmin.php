@@ -8,7 +8,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 class LicenseAdmin extends Admin {
 	protected $baseRoutePattern = 'license';
 	protected $baseRouteName = 'admin_license';
-	protected $translationDomain = 'admin';
 
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper

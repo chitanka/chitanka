@@ -9,7 +9,6 @@ use App\Entity\User;
 class UserAdmin extends Admin {
 	protected $baseRoutePattern = 'user';
 	protected $baseRouteName = 'admin_user';
-	protected $translationDomain = 'admin';
 
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper

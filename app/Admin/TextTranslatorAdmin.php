@@ -7,7 +7,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 class TextTranslatorAdmin extends Admin {
 	protected $baseRoutePattern = 'text-translator';
 	protected $baseRouteName = 'admin_text_translator';
-	protected $translationDomain = 'admin';
 
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper

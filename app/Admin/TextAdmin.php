@@ -15,7 +15,6 @@ use App\Entity\TextRevision;
 class TextAdmin extends Admin {
 	protected $baseRoutePattern = 'text';
 	protected $baseRouteName = 'admin_text';
-	protected $translationDomain = 'admin';
 
 	public $extraActions = 'App:TextAdmin:extra_actions.html.twig';
 

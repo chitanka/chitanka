@@ -9,7 +9,6 @@ class SiteNoticeAdmin extends Admin {
 
 	protected $baseRoutePattern = 'site-notice';
 	protected $baseRouteName = 'admin_site_notice';
-	protected $translationDomain = 'admin';
 
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper
