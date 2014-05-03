@@ -340,7 +340,7 @@ abstract class Controller extends SymfonyController {
 	}
 
 	protected function getWebRoot() {
-		return dirname($_SERVER['SCRIPT_NAME']);
+		return dirname($this->get('request')->server->get('SCRIPT_NAME'));
 	}
 
 	/**
