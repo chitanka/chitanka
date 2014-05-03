@@ -10,6 +10,54 @@ use App\Util\File;
 
 class UpdateLibCommand extends Command {
 
+	private $input;
+	private $output;
+	/**
+	 * Whether to save generated files.
+	 * @var bool
+	 */
+	private $saveFiles;
+	/**
+	 * Whether to execute SQL queries or to dump them.
+	 * @var bool
+	 */
+	private $dumpSql;
+
+	/**
+	 * Entity manager
+	 */
+	private $em;
+
+	/**
+	 * Whether to overwrite existing files.
+	 * @var bool
+	 */
+	private $overwrite;
+
+	private $entrydate;
+	private $modifDate;
+
+	/**
+	 * Path to the content directory
+	 * @var string
+	 */
+	private $contentDir;
+	/**
+	 * All processed texts
+	 * @var array
+	 */
+	private $works;
+	/**
+	 * All processed books
+	 * @var array
+	 */
+	private $books;
+	/**
+	 * All encountered errors
+	 * @var array
+	 */
+	private $errors;
+
 	protected function configure() {
 		parent::configure();
 
