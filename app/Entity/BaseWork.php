@@ -316,8 +316,8 @@ abstract class BaseWork extends Entity {
 			if ($lastpos != $header->getFpos()) {
 				$lastpos = $header->getFpos();
 				$converter = $this->_getSfbConverter($input, $imgDir);
-				$converter->startpos = $header->getFpos();
-				$converter->maxlinecnt = $header->getLinecnt();
+				$converter->setStartPosition($header->getFpos());
+				$converter->setMaxLineCount($header->getLinecnt());
 				$converter->convert();
 				$text = $converter->getText() . $converter->getNotes(2);
 				$chapters[] = array('title' => $header->getName(), 'text'  => $text);
@@ -331,7 +331,7 @@ abstract class BaseWork extends Entity {
 		$conv = new SfbToHtmlConverter($file, $imgDir);
 		if ($this->isGamebook()) {
 			// recognize section links
-			$conv->patterns['/#(\d+)/'] = '<a href="#l-$1" class="ep" title="Към част $1">$1</a>';
+			$conv->addRegExpPattern('/#(\d+)/', '<a href="#l-$1" class="ep" title="Към част $1">$1</a>');
 		}
 
 		return $conv;
