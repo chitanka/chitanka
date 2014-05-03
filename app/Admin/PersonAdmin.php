@@ -29,12 +29,11 @@ class PersonAdmin extends Admin {
 			->add('is_author')
 			->add('is_translator')
 			->add('info')
-			->add('series', null, array('label' => 'Series plural'))
-			->with($this->trans('Main Person'))
-				->add('type')
-				->add('person', null, array('label' => 'Main Person'))
-			->end()
-		;
+			->add('series', null, array('label' => 'Series plural'));
+		$showMapper->with($this->trans('Main Person'));
+		$showMapper
+			->add('type')
+			->add('person', null, array('label' => 'Main Person'));
 	}
 
 	protected function configureListFields(ListMapper $listMapper) {
