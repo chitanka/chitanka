@@ -1,12 +1,14 @@
 <?php namespace App\Controller;
 
+use App\Legacy\Setup;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Legacy\Setup;
-use App\Entity\User;
 
 abstract class Controller extends SymfonyController {
 
@@ -242,6 +244,15 @@ abstract class Controller extends SymfonyController {
 	}
 
 	/**
+	 * @param string $notice
+	 * @return Response
+	 */
+	protected function redirectWithNotice($notice) {
+		$this->get('request')->getSession()->getFlashBag()->set('notice', $notice);
+		return $this->redirect('message');
+	}
+
+	/**
 	 * Redirects to another route.
 	 *
 	 * It expects a route path parameter.
@@ -252,7 +263,7 @@ abstract class Controller extends SymfonyController {
 	 * (copied from Symfony\Bundle\FrameworkBundle\Controller\RedirectController)
 	 *
 	 * @param string  $route     The route pattern to redirect to
-	 * @param Boolean $permanent Whether the redirect is permanent or not
+	 * @param bool    $permanent Whether the redirect is permanent or not
 	 *
 	 * @return Response A Response instance
 	 */
@@ -277,7 +288,7 @@ abstract class Controller extends SymfonyController {
 	 * If the permanent path parameter is set, the status code will be 302.
 	 *
 	 * @param string  $url       The url to redirect to
-	 * @param Boolean $permanent Whether the redirect is permanent or not
+	 * @param bool    $permanent Whether the redirect is permanent or not
 	 *
 	 * @return Response A Response instance
 	 */
@@ -388,4 +399,7 @@ abstract class Controller extends SymfonyController {
 	/** @return \Doctrine\ORM\EntityRepository */
 	protected function getWorkContribRepository() { return $this->getRepository('WorkContrib'); }
 
+	protected function isValidPost(Request $request, Form $form) {
+		return $request->isMethod('POST') && $form->handleRequest($request)->isValid();
+	}
 }

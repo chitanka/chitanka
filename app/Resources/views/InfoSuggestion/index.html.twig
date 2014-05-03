@@ -1,0 +1,12 @@
+{% extends 'App::layout.html.twig' %}
+
+{% set title = 'Попълване на липсваща информация' %}
+{% block content %}
+
+	{% import 'App::text.html.twig' as texttools %}
+	{% set text_title = texttools.text_title_with_author(text) %}
+	{% include 'App:InfoSuggestion:intro_'~type~'.html.twig' with {text_title: text_title} %}
+
+	{% include 'App:InfoSuggestion:form.html.twig' %}
+
+{% endblock %}

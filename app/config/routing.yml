@@ -543,6 +543,13 @@ workroom_rss:
     defaults: { _controller: App:Workroom:rss }
     requirements: { _method: get }
 
+suggest_info:
+    pattern:  /suggest/{type}/text/{id}
+    defaults: { _controller: App:InfoSuggestion:index }
+
+message:
+    pattern:  /message
+    defaults: { _controller: App:Message:index }
 
 featured_books:
     pattern:   /featured-books.{_format}

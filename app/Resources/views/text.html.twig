@@ -1,6 +1,6 @@
 {% macro year(text) %}
 	{% if text.year is empty %}
-		<a href="{{ path('text_suggest_info', {'id': text.id, 'object': 'orig_year'}) }}">????</a>
+		<a href="{{ path('suggest_info', {'id': text.id, 'type': 'orig_year'}) }}">????</a>
 	{% elseif text.year < 0 %}
 		{{ -1 * text.year }}{{ text.year2 > 0 ? '–' ~ text.year2 : '' }} пр.н.е.
 	{% else %}
@@ -10,7 +10,7 @@
 
 {% macro trans_year(text) %}
 	{% if text.trans_year is empty %}
-		<a href="{{ path('text_suggest_info', {'id': text.id, 'object': 'trans_year'}) }}">????</a>
+		<a href="{{ path('suggest_info', {'id': text.id, 'type': 'trans_year'}) }}">????</a>
 	{% else %}
 		<span itemprop="datePublished">{{ text.trans_year }}</span>
 	{% endif %}
@@ -24,7 +24,7 @@
 			({{ text.orig_subtitle }})
 		{% endif %}
 	{% else %}
-		[не е въведено; <a href="{{ path('text_suggest_info', {'id': text.id, 'object': 'orig_title'}) }}">помогнете</a> за добавянето му]
+		[не е въведено; <a href="{{ path('suggest_info', {'id': text.id, 'type': 'orig_title'}) }}">помогнете</a> за добавянето му]
 	{% endif %}
 	{% endspaceless %}
 {% endmacro %}
@@ -37,7 +37,7 @@
 		{{ link.persons(text.translators) }}
 		</span>
 	{% else %}
-		[Няма данни за преводача; <a href="{{ path('text_suggest_info', {'id': text.id, 'object': 'translator'}) }}">помогнете</a> за добавянето му]
+		[Няма данни за преводача; <a href="{{ path('suggest_info', {'id': text.id, 'type': 'translator'}) }}">помогнете</a> за добавянето му]
 	{% endif %}
 	{% endspaceless %}
 {% endmacro %}
@@ -94,6 +94,12 @@
 </dl>
 {% endmacro %}
 
+{% macro text_title_with_author(text) %}
+{% spaceless %}
+	{% import 'App::link.html.twig' as link %}
+	„{{ link.text(text) }}“ {{ _self.author_list(text.authors) }}
+{% endspaceless %}
+{% endmacro %}
 
 {% macro text(text, options) %}
 	{% import 'App::link.html.twig' as link %}
