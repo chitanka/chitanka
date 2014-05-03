@@ -25,14 +25,14 @@ class TextHtmlGenerator {
 		}
 		$header = $text->getHeaderByNr($part);
 		if ($header) {
-			$conv->startpos = $header->getFpos();
-			$conv->maxlinecnt = $header->getLinecnt();
+			$conv->setStartPosition($header->getFpos());
+			$conv->setMaxLineCount($header->getLinecnt());
 		} else {
 			$internalLinkTarget = '';
 		}
 		if ($text->isGamebook()) {
 			// recognize section links
-			$conv->patterns['/#(\d+)/'] = '<a href="#l-$1" class="ep" title="Към епизод $1">$1</a>';
+			$conv->addRegExpPattern('/#(\d+)/', '<a href="#l-$1" class="ep" title="Към епизод $1">$1</a>');
 		}
 		$conv->setInternalLinkTarget($internalLinkTarget);
 
