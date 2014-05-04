@@ -1,11 +1,10 @@
-<?php namespace App\Tests\Service;
+<?php namespace App\Tests\Feed;
 
 use App\Tests\TestCase;
-use App\Service\FeedService;
+use App\Feed\FeedCleaner;
 
-class FeedServiceTest extends TestCase {
+class FeedCleanerTest extends TestCase {
 	public function testRemoveScriptContent() {
-		$service = new FeedService;
 		$html = <<<HTML
 Some text
 <script src="http://example"></script>
@@ -18,26 +17,24 @@ Some more text
 
 <scr<script>Evil</script>ipt>alert("Hey!");</script>
 HTML;
-		$cleanedHtml = $service->removeScriptContent($html);
+		$cleanedHtml = FeedCleaner::removeScriptContent($html);
 		$this->assertNotContains('script', $cleanedHtml, 'Script tags should be removed');
 		$this->assertContains('More text', $cleanedHtml, 'Text inbetween shoud stay');
 		$this->assertContains('Some more text', $cleanedHtml, 'Text inbetween shoud stay');
 	}
 
 	public function testRemoveImageBeacons() {
-		$service = new FeedService;
 		$html = 'Some text <img alt="" border="0" height="1" src="http://beacon" width="1">';
-		$cleanedHtml = $service->removeImageBeacons($html);
+		$cleanedHtml = FeedCleaner::removeImageBeacons($html);
 		$this->assertNotContains('<img', $cleanedHtml);
 	}
 
 	public function testRemoveImageBeaconsButLeaveNormalImages() {
-		$service = new FeedService;
 		$html = <<<HTML
 <img src="http://example/normalimage" width="100">
 Some text <img alt="" border="0" height="1" src="http://beacon" width="1">
 HTML;
-		$cleanedHtml = $service->removeImageBeacons($html);
+		$cleanedHtml = FeedCleaner::removeImageBeacons($html);
 		$this->assertNotContains('beacon', $cleanedHtml);
 		$this->assertContains('normalimage', $cleanedHtml);
 	}
