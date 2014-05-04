@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "4cfd3895d6382c58acd12c2c33d68bde",
+    "hash": "45325c28747bbb78fc78665a28c0151a",
     "packages": [
         {
             "name": "apibot",
@@ -15,6 +15,46 @@
             },
             "type": "library",
             "time": "2012-03-04 10:23:52"
+        },
+        {
+            "name": "chitanka/sfb-converter",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bmanolov/sfb-converter.git",
+                "reference": "61334c7beacaa57963a2e7386cee3a95820c965c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bmanolov/sfb-converter/zipball/61334c7beacaa57963a2e7386cee3a95820c965c",
+                "reference": "61334c7beacaa57963a2e7386cee3a95820c965c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sfblib\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Borislav Manolov",
+                    "role": "Developer"
+                }
+            ],
+            "description": "SFB converter used by chitanka",
+            "homepage": "https://github.com/bmanolov/sfb-converter",
+            "keywords": [
+                "sfb"
+            ],
+            "time": "2014-05-04 09:13:43"
         },
         {
             "name": "cypresslab/gitelephant",
@@ -1968,22 +2008,6 @@
             "time": "2013-08-21 18:09:35"
         },
         {
-            "name": "sfblib",
-            "version": "master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bmanolov/sfb-converter.git",
-                "reference": "master"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Sfblib_": "lib/"
-                }
-            },
-            "time": "2014-05-03 18:19:48"
-        },
-        {
             "name": "simplethings/entity-audit-bundle",
             "version": "dev-master",
             "source": {
@@ -3229,7 +3253,7 @@
         "sonata-project/intl-bundle": 20,
         "simplethings/entity-audit-bundle": 20,
         "friendsofsymfony/comment-bundle": 20,
-        "sfblib": 20,
+        "chitanka/sfb-converter": 20,
         "apibot": 20,
         "oyejorge/less.php": 20
     },

@@ -3,8 +3,8 @@
 use App\Entity\Book;
 use App\Entity\Text;
 use App\Legacy\Legacy;
-use Sfblib_SfbConverter as SfbConverter;
-use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
+use Sfblib\SfbConverter;
+use Sfblib\SfbToHtmlConverter;
 
 class BookTemplate {
 

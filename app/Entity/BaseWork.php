@@ -3,7 +3,8 @@
 use App\Util\File;
 use App\Util\String;
 use App\Legacy\Legacy;
-use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
+use Sfblib\SfbConverter;
+use Sfblib\SfbToHtmlConverter;
 
 abstract class BaseWork extends Entity {
 
@@ -231,10 +232,10 @@ abstract class BaseWork extends Entity {
 	public function getAnnotationAsSfb() {
 		$text = $this->getAnnotation();
 		if ($text) {
-			$text = \Sfblib_SfbConverter::ANNO_S . \Sfblib_SfbConverter::EOL
-				. rtrim($text) . \Sfblib_SfbConverter::EOL
-				. \Sfblib_SfbConverter::ANNO_E . \Sfblib_SfbConverter::EOL
-				. \Sfblib_SfbConverter::EOL;
+			$text = SfbConverter::ANNO_S . SfbConverter::EOL
+				. rtrim($text) . SfbConverter::EOL
+				. SfbConverter::ANNO_E . SfbConverter::EOL
+				. SfbConverter::EOL;
 		}
 
 		return $text;

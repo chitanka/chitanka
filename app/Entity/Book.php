@@ -2,12 +2,12 @@
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Generator\BookFb2Generator;
 use App\Util\String;
 use App\Legacy\Legacy;
 use App\Legacy\Setup;
 use App\Util\Ary;
-use Sfblib_SfbConverter as SfbConverter;
-use App\Generator\BookFb2Generator;
+use Sfblib\SfbConverter;
 
 /**
 * @ORM\Entity(repositoryClass="App\Entity\BookRepository")

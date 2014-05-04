@@ -8,6 +8,7 @@ use App\Legacy\Setup;
 use App\Legacy\Legacy;
 use App\Util\String;
 use App\Util\File;
+use Sfblib\SfbConverter;
 
 class LegacyUpdateLibCommand extends Command {
 
@@ -448,12 +449,12 @@ EOT
 	 */
 	private function createAnnoFile($textId, $content, $saveFiles = false, $dir = 'text-anno') {
 		return $this->createExtraFile($textId, $content, "$this->contentDir/$dir/",
-			\Sfblib_SfbConverter::ANNO_S, \Sfblib_SfbConverter::ANNO_E, $saveFiles);
+			SfbConverter::ANNO_S, SfbConverter::ANNO_E, $saveFiles);
 	}
 
 	private function createInfoFile($textId, $content, $saveFiles = false, $dir = 'text-info') {
 		return $this->createExtraFile($textId, $content, "$this->contentDir/$dir/",
-			\Sfblib_SfbConverter::INFO_S, \Sfblib_SfbConverter::INFO_E, $saveFiles);
+			SfbConverter::INFO_S, SfbConverter::INFO_E, $saveFiles);
 	}
 
 	private function createExtraFile($textId, $content, $dir, $startTag, $endTag, $saveFiles = false) {

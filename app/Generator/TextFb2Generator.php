@@ -1,8 +1,8 @@
 <?php namespace App\Generator;
 
 use App\Entity\Text;
-use Sfblib_SfbToFb2Converter as SfbToFb2Converter;
 use App\Legacy\Legacy;
+use Sfblib\SfbToFb2Converter;
 
 class TextFb2Generator {
 

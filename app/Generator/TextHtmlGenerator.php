@@ -2,7 +2,7 @@
 
 use App\Entity\Text;
 use App\Legacy\Legacy;
-use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
+use Sfblib\SfbToHtmlConverter;
 
 class TextHtmlGenerator {
 

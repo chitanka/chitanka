@@ -1,6 +1,6 @@
 <?php namespace App\Controller;
 
-use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
+use Sfblib\SfbToHtmlConverter;
 
 class SandboxController extends Controller {
 	public function indexAction() {

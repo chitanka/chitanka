@@ -5,6 +5,7 @@ use App\Util\File;
 use App\Entity\BaseWork;
 use App\Entity\Book;
 use App\Entity\Text;
+use Sfblib\SfbConverter;
 
 class DownloadFile {
 
@@ -235,7 +236,7 @@ class DownloadFile {
 	 * @param EpubFile $epubFile
 	 */
 	protected function addChaptersForEpub(BaseWork $work, $epubFile) {
-		$curObjCount = \Sfblib_SfbConverter::getObjectCount();
+		$curObjCount = SfbConverter::getObjectCount();
 		$chapters = $work->getEpubChunks($epubFile->getImagesDir(false));
 		foreach ($chapters as $i => $chapter) {
 			$file = $epubFile->getItemFileName($i);

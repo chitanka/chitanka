@@ -1,7 +1,7 @@
 <?php namespace App\Generator;
 
 use App\Entity\Book;
-use Sfblib_SfbToFb2Converter as SfbToFb2Converter;
+use Sfblib\SfbToFb2Converter;
 
 class BookFb2Generator {
 

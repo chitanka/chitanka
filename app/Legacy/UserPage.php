@@ -1,7 +1,7 @@
 <?php namespace App\Legacy;
 
 use App\Util\String;
-use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
+use Sfblib\SfbToHtmlConverter;
 
 class UserPage extends Page {
 

@@ -14,8 +14,8 @@ use App\Util\String;
 use App\Legacy\Legacy;
 use App\Legacy\Setup;
 use App\Legacy\SfbParserSimple;
-use Sfblib_SfbConverter as SfbConverter;
-use Sfblib_SfbToHtmlConverter as SfbToHtmlConverter;
+use Sfblib\SfbConverter;
+use Sfblib\SfbToHtmlConverter;
 
 /**
 * @ORM\Entity(repositoryClass="App\Entity\TextRepository")

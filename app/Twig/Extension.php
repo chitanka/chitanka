@@ -1,10 +1,11 @@
 <?php namespace App\Twig;
 
+use App\Entity\Text;
 use App\Util\Number;
 use App\Util\Char;
 use App\Util\String;
 use App\Legacy\Legacy;
-use App\Entity\Text;
+use Sfblib\XmlElement;
 
 class Extension extends \Twig_Extension {
 
@@ -155,7 +156,7 @@ class Extension extends \Twig_Extension {
 	*/
 	public function getAnchorName($text, $unique = true) {
 		if (is_null($this->_xmlElementCreator)) {
-			$this->_xmlElementCreator = new \Sfblib_XmlElement;
+			$this->_xmlElementCreator = new XmlElement;
 		}
 
 		return $this->_xmlElementCreator->getAnchorName($text, $unique);
