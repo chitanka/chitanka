@@ -34,7 +34,8 @@
 		"cypresslab/gitelephant": "v1.0.6"
 	},
 	"require-dev": {
-		"sensio/generator-bundle": "~2.3"
+		"sensio/generator-bundle": "~2.3",
+		"phpunit/phpunit": "4.1.*"
 	},
 	"repositories": [
 		{
