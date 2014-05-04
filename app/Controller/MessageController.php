@@ -1,13 +1,11 @@
 <?php namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-
 class MessageController extends Controller {
 
-	public function indexAction(Request $request) {
-		if ($request->getSession()->getFlashBag()->peekAll() == array()) {
-			return $this->redirect('homepage');
+	public function indexAction() {
+		if ($this->hasFlashMessages()) {
+			return $this->display('index');
 		}
-		return $this->display('index');
+		return $this->redirect('homepage');
 	}
 }

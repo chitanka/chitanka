@@ -37,9 +37,8 @@ class SecurityController extends Controller {
 			$user->logout();
 		}
 
-		$session = $request->getSession();
-		$session->invalidate();
-		$session->getFlashBag()->set('notice', 'Излязохте от Моята библиотека.');
+		$request->getSession()->invalidate();
+		$this->addFlashNotice('Излязохте от Моята библиотека.');
 
 		return $this->redirect('homepage');
 	}

@@ -248,8 +248,39 @@ abstract class Controller extends SymfonyController {
 	 * @return Response
 	 */
 	protected function redirectWithNotice($notice) {
-		$this->get('session')->getFlashBag()->add('notice', $notice);
+		$this->addFlashNotice($notice);
 		return $this->redirect('message');
+	}
+
+	/**
+	 * Add a flash message of type 'notice'
+	 * @param string $notice
+	 */
+	protected function addFlashNotice($notice) {
+		$this->addFlashMessage('notice', $notice);
+	}
+
+	/**
+	 * Add a flash message
+	 * @param string $type
+	 * @param string $message
+	 */
+	protected function addFlashMessage($type, $message) {
+		$this->getFlashBag()->add($type, $message);
+	}
+
+	/**
+	 * @return bool
+	 */
+	protected function hasFlashMessages() {
+		return $this->getFlashBag()->peekAll() !== array();
+	}
+
+	/**
+	 * @return \Symfony\Component\HttpFoundation\Session\Flash\FlashBag
+	 */
+	protected function getFlashBag() {
+		return $this->get('session')->getFlashBag();
 	}
 
 	/**
