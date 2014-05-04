@@ -7,6 +7,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GitCommitContentCommand extends Command {
 
+	private $em;
+	private $output;
+
 	protected function configure() {
 		parent::configure();
 

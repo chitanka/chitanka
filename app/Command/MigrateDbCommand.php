@@ -23,14 +23,7 @@ EOT
 	}
 
 	/**
-	 * Executes the current command.
-	 *
-	 * @param InputInterface  $input  An InputInterface instance
-	 * @param OutputInterface $output An OutputInterface instance
-	 *
-	 * @return integer 0 if everything went fine, or an error code
-	 *
-	 * @throws \LogicException When this abstract class is not implemented
+	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$options = $input->getOptions();

@@ -9,6 +9,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class UpdateBookTitleAuthorDbCommand extends Command {
 
+	private $em;
+	private $output;
+	private $dumpSql;
+
 	protected function configure() {
 		parent::configure();
 
@@ -23,14 +27,7 @@ EOT
 	}
 
 	/**
-	 * Executes the current command.
-	 *
-	 * @param InputInterface  $input  An InputInterface instance
-	 * @param OutputInterface $output An OutputInterface instance
-	 *
-	 * @return integer 0 if everything went fine, or an error code
-	 *
-	 * @throws \LogicException When this abstract class is not implemented
+	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');

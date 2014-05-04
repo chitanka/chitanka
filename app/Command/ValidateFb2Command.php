@@ -14,6 +14,8 @@ class ValidateFb2Command extends ContainerAwareCommand {
 
 	/** @var EntityManager */
 	private $em;
+	private $output;
+	private $validator;
 
 	protected function configure() {
 		parent::configure();

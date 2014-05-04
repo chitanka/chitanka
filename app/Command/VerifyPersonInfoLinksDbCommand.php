@@ -6,6 +6,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use App\Util\HttpAgent;
 
 class VerifyPersonInfoLinksDbCommand extends Command {
+
+	private $em;
+	private $output;
 	private $secsBetweenRequests = 5;
 
 	protected function configure() {

@@ -12,6 +12,41 @@ use Sfblib\SfbConverter;
 
 class LegacyUpdateLibCommand extends Command {
 
+	private $saveFiles;
+	private $dumpSql;
+	private $db;
+	private $overwrite;
+
+	private $curEditId;
+	private $curBookRev;
+	private $entrydate;
+	private $modifDate;
+
+	private $orig_lang;
+	private $series;
+	private $sernr;
+	private $book;
+	private $book_author;
+	private $author;
+	private $license_orig;
+	private $license_trans;
+	private $translator;
+	private $lang;
+	private $year;
+	private $trans_year;
+	private $type;
+	private $comment;
+
+	private $users;
+	private $year2;
+	private $trans_year2;
+	private $subtitle;
+	private $labels;
+
+	private $errors;
+	private $contentDir;
+	private $books;
+
 	protected function configure() {
 		parent::configure();
 
