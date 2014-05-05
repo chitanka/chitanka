@@ -118,7 +118,9 @@ class TextFb2Generator {
 			$converter->addTranslator($translator->getName());
 		}
 
-		$this->setSeriesData($converter, $text);
+		if ($text->getSeries()) {
+			$converter->addSequence($text->getSeries()->getName(), $text->getSernr());
+		}
 
 		$this->setSrcData($converter, $text);
 
