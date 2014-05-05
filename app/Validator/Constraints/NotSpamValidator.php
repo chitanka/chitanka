@@ -4,20 +4,29 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class NotSpamValidator extends ConstraintValidator {
+
 	public function validate($value, Constraint $constraint) {
-		$isSpam = false;
-		$isSpam = $isSpam || $this->containsUrl($value);
-		$isSpam = $isSpam || $this->containsTooManyUrls($value, $constraint->urlLimit);
-		$isSpam = $isSpam || $this->containsStopWords($value, $constraint->stopWords);
-
-		if ($isSpam) {
+		if ($this->isSpam($value, $constraint)) {
 			$this->setMessage($constraint->message);
+			return false;
 		}
-
-		return ! $isSpam;
+		return true;
 	}
 
-	private function containsUrl($value) {
+	private function isSpam($value, NotSpam $constraint) {
+		if ($this->containsUrlTag($value)) {
+			return true;
+		}
+		if ($this->containsTooManyUrls($value, $constraint->urlLimit)) {
+			return true;
+		}
+		if ($this->containsStopWords($value, $constraint->stopWords)) {
+			return true;
+		}
+		return false;
+	}
+
+	private function containsUrlTag($value) {
 		return strpos($value, 'href=') !== false || strpos($value, 'url=') !== false;
 	}
 
