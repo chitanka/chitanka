@@ -1,6 +1,7 @@
 <?php namespace App\Generator;
 
 use App\Entity\Text;
+use App\Entity\Person;
 use App\Legacy\Legacy;
 use Sfblib\SfbToFb2Converter;
 
@@ -104,56 +105,37 @@ class TextFb2Generator {
 	);
 
 	public function generateFb2(Text $text) {
-		$conv = new SfbToFb2Converter($text->getContentAsSfb(), Legacy::getInternalContentFilePath('img', $text->getId()));
+		$converter = new SfbToFb2Converter($text->getContentAsSfb(), Legacy::getInternalContentFilePath('img', $text->getId()));
 
-		$conv->setObjectCount(1);
-		$conv->setSubtitle(strtr($text->getSubtitle(), array('\n' => ' — ')));
-		$conv->setGenre($this->getGenres($text));
-		$conv->setKeywords($this->getKeywords($text));
-		$conv->setTextDate($text->getYear());
-
-		$conv->setLang($text->getLang());
-		$conv->setSrcLang($text->getOrigLang() ?: '');
+		$converter->setObjectCount(1);
+		$converter->setSubtitle(strtr($text->getSubtitle(), array('\n' => ' — ')));
+		$converter->setGenre($this->getGenres($text));
+		$converter->setKeywords($this->getKeywords($text));
+		$converter->setTextDate($text->getYear());
+		$converter->setLang($text->getLang());
 
 		foreach ($text->getTranslators() as $translator) {
-			$conv->addTranslator($translator->getName());
+			$converter->addTranslator($translator->getName());
 		}
 
-		if ($text->getSeries()) {
-			$conv->addSequence($text->getSeries()->getName(), $text->getSernr());
-		}
+		$this->setSeriesData($converter, $text);
 
-		if ($text->isTranslation()) {
-			foreach ($text->getAuthors() as $author) {
-				if ($author->getOrigName() == '') {
-					$conv->addSrcAuthor('(no original name for '.$author->getName().')', false);
-				} else {
-					$conv->addSrcAuthor($author->getOrigName());
-				}
-			}
+		$this->setSrcData($converter, $text);
 
-			$conv->setSrcTitle($text->getOrigTitle() != '' ? $text->getOrigTitle() : '(no data for original title)');
-			$conv->setSrcSubtitle($text->getOrigSubtitle());
-
-			if ($text->getSeries() && $text->getSeries()->getOrigName()) {
-				$conv->addSrcSequence($text->getSeries()->getOrigName(), $text->getSernr());
-			}
-		}
-
-		$conv->setDocId($text->getDocId());
+		$converter->setDocId($text->getDocId());
 		list($history, $version) = $text->getHistoryAndVersion();
-		$conv->setDocVersion($version);
-		$conv->setHistory($history);
-		$conv->setDocAuthor('Моята библиотека');
+		$converter->setDocVersion($version);
+		$converter->setHistory($history);
+		$converter->setDocAuthor('Моята библиотека');
 
 		if ($text->isGamebook()) {
 			// recognize section links
-			$conv->addRegExpPattern('/#(\d+)/', '<a l:href="#l-$1">$1</a>');
+			$converter->addRegExpPattern('/#(\d+)/', '<a l:href="#l-$1">$1</a>');
 		}
 
-		$conv->enablePrettyOutput();
+		$converter->enablePrettyOutput();
 
-		return $conv->convert()->getContent();
+		return $converter->convert()->getContent();
 	}
 
 	public function getGenres(Text $text) {
@@ -176,5 +158,30 @@ class TextFb2Generator {
 
 	private function getKeywords(Text $text) {
 		return implode(', ', $text->getLabelsNames());
+	}
+
+	private function setSrcData(SfbToFb2Converter $converter, Text $text) {
+		$converter->setSrcLang($text->getOrigLang() ?: '');
+		if (!$text->isTranslation()) {
+			return;
+		}
+		foreach ($text->getAuthors() as $author) {
+			$this->addSrcAuthor($converter, $author);
+		}
+
+		$converter->setSrcTitle($text->getOrigTitle() != '' ? $text->getOrigTitle() : '(no data for original title)');
+		$converter->setSrcSubtitle($text->getOrigSubtitle());
+
+		if ($text->getSeries() && $text->getSeries()->getOrigName()) {
+			$converter->addSrcSequence($text->getSeries()->getOrigName(), $text->getSernr());
+		}
+	}
+
+	private function addSrcAuthor(SfbToFb2Converter $converter, Person $author) {
+		if ($author->getOrigName() == '') {
+			$converter->addSrcAuthor('(no original name for '.$author->getName().')', false);
+		} else {
+			$converter->addSrcAuthor($author->getOrigName());
+		}
 	}
 }
