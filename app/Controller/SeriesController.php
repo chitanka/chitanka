@@ -1,6 +1,5 @@
 <?php namespace App\Controller;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Pagination\Pager;
 use App\Util\String;
 
@@ -33,7 +32,7 @@ class SeriesController extends Controller {
 		$slug = String::slugify($slug);
 		$series = $this->getSeriesRepository()->findBySlug($slug);
 		if ($series === null) {
-			throw new NotFoundHttpException("Няма серия с код $slug.");
+			return $this->notFound("Няма серия с код $slug.");
 		}
 
 		$this->view = array(

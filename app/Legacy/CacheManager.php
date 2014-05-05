@@ -9,10 +9,7 @@ class CacheManager {
 	static private
 		$cacheDir  = 'cache/',
 		$dlDir     = 'cache/dl/',
-		$zipDir    = 'zip/',
-
-		/** Time to Live for download cache (in hours) */
-		$dlTtl = 168;
+		$zipDir    = 'zip/';
 
 	/**
 	 * Tells whether a given cache file exists.
@@ -21,7 +18,7 @@ class CacheManager {
 	 * @param string $id      File ID
 	 * @param int $age     File age in days
 	 */
-	static public function cacheExists($action, $id, $age = null) {
+	public static function cacheExists($action, $id, $age = null) {
 		$file = self::getPath($action, $id);
 		if ( ! file_exists($file) ) {
 			return false;
@@ -37,7 +34,7 @@ class CacheManager {
 	 * @param string $id
 	 * @param bool $compressed
 	 */
-	static public function getCache($action, $id, $compressed = false) {
+	public static function getCache($action, $id, $compressed = false) {
 		$c = file_get_contents( self::getPath($action, $id) );
 		return $compressed ? gzinflate($c) : $c;
 	}
@@ -48,18 +45,19 @@ class CacheManager {
 	 * @param string $content
 	 * @param bool $compressed
 	 */
-	static public function setCache($action, $id, $content, $compressed = false) {
+	public static function setCache($action, $id, $content, $compressed = false) {
 		$file = self::getPath($action, $id);
 		File::myfile_put_contents($file, $compressed ? gzdeflate($content) : $content);
 		return $content;
 	}
 
 	/**
+	 * NOT USED
 	 * @param string $action
 	 * @param string $id
 	 * @return bool
 	 */
-	static public function clearCache($action, $id) {
+	public static function clearCache($action, $id) {
 		$file = self::getPath($action, $id);
 		return file_exists($file) ? unlink($file) : true;
 	}
@@ -69,7 +67,7 @@ class CacheManager {
 	 * @param string $ext
 	 * @return bool
 	 */
-	static public function dlCacheExists($id, $ext = '') {
+	public static function dlCacheExists($id, $ext = '') {
 		return file_exists( self::getDlCachePath($id, $ext) );
 	}
 
@@ -78,7 +76,7 @@ class CacheManager {
 	 * @param string $ext
 	 * @return string
 	 */
-	static public function getDlCache($id, $ext = '') {
+	public static function getDlCache($id, $ext = '') {
 		$file = self::getDlCachePath($id, $ext);
 		touch($file); // mark it as fresh
 		return file_get_contents($file);
@@ -89,40 +87,30 @@ class CacheManager {
 	 * @param string $content
 	 * @param string $ext
 	 */
-	static public function setDlCache($id, $content, $ext = '') {
+	public static function setDlCache($id, $content, $ext = '') {
 		return File::myfile_put_contents(self::getDlCachePath($id, $ext), $content);
 	}
 
 	/**
+	 * NOT USED
 	 * @param string $id
 	 * @return bool
 	 */
-	static public function clearDlCache($id) {
+	private static function clearDlCache($id) {
 		$file = self::getDlCachePath($id);
 		@unlink($file . '.fbi');
 		@unlink($file . '.fb2');
 		@unlink($file . '.txt');
 		self::clearDl($id);
-		self::clearMirrorCache($id);
 
 		return file_exists($file) ? unlink($file) : true;
-	}
-
-	/**
-	 * @param string $id
-	 */
-	static public function clearMirrorCache($id) {
-		foreach (Setup::setting('mirror_sites') as $mirror) {
-			$url = sprintf('%s/clearCache?texts=%d', $mirror, $id);
-			Legacy::getFromUrl($url);
-		}
 	}
 
 	/**
 	 * @param string $fname
 	 * @return string
 	 */
-	static public function getDlFile($fname) {
+	public static function getDlFile($fname) {
 		$file = self::$dlDir . $fname;
 		// commented, file can be non-existant
 		#touch($file); // mark it as fresh
@@ -133,7 +121,7 @@ class CacheManager {
 	 * @param string $fname
 	 * @param string $fcontent
 	 */
-	static public function setDlFile($fname, $fcontent) {
+	public static function setDlFile($fname, $fcontent) {
 		return File::myfile_put_contents(self::$dlDir . $fname, $fcontent);
 	}
 
@@ -141,28 +129,8 @@ class CacheManager {
 	 * @param string $fname
 	 * @return bool
 	 */
-	static public function dlFileExists($fname) {
+	private static function dlFileExists($fname) {
 		return file_exists(self::$dlDir . $fname);
-	}
-
-	/**
-	 * Deletes all download files older than the time to live.
-	 */
-	static public function deleteOldDlFiles() {
-		// disable until synced with the database
-		return;
-
-		$thresholdTime = time() - self::$dlTtl * 3600;
-		$dh = opendir(self::$dlDir);
-		if (!$dh) return;
-		while (($file = readdir($dh)) !== false) {
-			if ( $file[0] == '.' ) { continue; }
-			$fullname = self::$dlDir . $file;
-			if (filemtime($fullname) < $thresholdTime) {
-				unlink($fullname);
-			}
-		}
-		closedir($dh);
 	}
 
 	/**
@@ -170,7 +138,7 @@ class CacheManager {
 	 * @param string $id
 	 * @return string
 	 */
-	static public function getPath($action, $id) {
+	private static function getPath($action, $id) {
 		$subdir = $action . '/';
 		settype($id, 'string');
 		$subsubdir = $id[0] . '/' . $id[1] . '/' . $id[2] . '/';
@@ -182,7 +150,7 @@ class CacheManager {
 	 * @param string $ext
 	 * @return string
 	 */
-	static public function getDlCachePath($id, $ext = '') {
+	private static function getDlCachePath($id, $ext = '') {
 		return self::$cacheDir . self::$zipDir . Legacy::makeContentFilePath($id) . $ext;
 	}
 
@@ -191,7 +159,7 @@ class CacheManager {
 	 * @param string $format
 	 * @return string
 	 */
-	static public function getDl($textIds, $format = '') {
+	public static function getDl($textIds, $format = '') {
 		return self::getDlFileByHash( self::getHashForTextIds($textIds, $format) );
 	}
 
@@ -200,7 +168,7 @@ class CacheManager {
 	 * @param string $file
 	 * @param string $format
 	 */
-	static public function setDl($textIds, $file, $format = '') {
+	public static function setDl($textIds, $file, $format = '') {
 		$db = Setup::db();
 		$pk = self::getHashForTextIds($textIds, $format);
 		$db->insert(DBT_DL_CACHE, array(
@@ -219,7 +187,7 @@ class CacheManager {
 	/**
 	 * @param array|int $textIds
 	 */
-	static public function clearDl($textIds) {
+	private static function clearDl($textIds) {
 		$db = Setup::db();
 		$dctKey = array(
 			'text_id' => is_array($textIds) ? array('IN', $textIds) : $textIds
@@ -235,7 +203,7 @@ class CacheManager {
 	/**
 	 * @param array $hashes
 	 */
-	static protected function clearDlFiles($hashes) {
+	private static function clearDlFiles($hashes) {
 		$files = Setup::db()->getFieldsMulti(DBT_DL_CACHE, array('id' => array('IN', $hashes)), 'file');
 		foreach ($files as $file) {
 			self::clearDlFile($file);
@@ -246,7 +214,7 @@ class CacheManager {
 	 * @param string $file
 	 * @return bool
 	 */
-	static protected function clearDlFile($file) {
+	private static function clearDlFile($file) {
 		$file = self::getDlFile($file);
 		if ( file_exists($file) ) {
 			return unlink($file);
@@ -257,7 +225,7 @@ class CacheManager {
 	/**
 	 * @param string $hash
 	 */
-	static public function getDlFileByHash($hash) {
+	public static function getDlFileByHash($hash) {
 		return Setup::db()->getFields(DBT_DL_CACHE, array("id = $hash"), 'file');
 	}
 
@@ -266,7 +234,7 @@ class CacheManager {
 	 * @param string $format
 	 * @return string
 	 */
-	static protected function getHashForTextIds($textIds, $format = '') {
+	private static function getHashForTextIds($textIds, $format = '') {
 		if ( is_array($textIds) ) {
 			$textIds = implode(',', $textIds);
 		}

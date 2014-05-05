@@ -1,6 +1,5 @@
 <?php namespace App\Controller;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ORM\NoResultException;
 use App\Entity\Book;
 use App\Pagination\Pager;
@@ -28,10 +27,13 @@ class BookController extends Controller {
 			case 'opds':
 				$categories = $this->getCategoryRepository()->getAll();
 				break;
+			default:
+				return $this->notFound("Format $_format is not supported");
 		}
-		$this->view['categories'] = $categories;
 
-		return $this->display("list_by_category_index.$_format");
+		return $this->display("list_by_category_index.$_format", array(
+			'categories' => $categories,
+		));
 	}
 
 	public function listByAlphaIndexAction($_format) {
@@ -43,7 +45,7 @@ class BookController extends Controller {
 		$bookRepo = $this->getBookRepository();
 		$category = $this->getCategoryRepository()->findBySlug($slug);
 		if ($category === null) {
-			throw new NotFoundHttpException("Няма категория с код $slug.");
+			return $this->notFound("Няма категория с код $slug.");
 		}
 		$limit = 30;
 
@@ -106,7 +108,7 @@ class BookController extends Controller {
 		try {
 			$book = $this->getBookRepository()->get($id);
 		} catch (NoResultException $e) {
-			throw new NotFoundHttpException("Няма книга с номер $id.");
+			return $this->notFound("Няма книга с номер $id.");
 		}
 
 		switch ($_format) {

@@ -1,6 +1,5 @@
 <?php namespace App\Controller;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Pagination\Pager;
 use App\Legacy\Legacy;
 use App\Util\String;
@@ -84,7 +83,7 @@ class PersonController extends Controller {
 		if ($person) {
 			return $this->urlRedirect($this->generateUrl('person_show', array('slug' => $person->getSlug())), true);
 		}
-		throw new NotFoundHttpException("Няма личност с код $slug.");
+		return $this->notFound("Няма личност с код $slug.");
 	}
 
 	protected function prepareViewForShow(Person $person, $format) {
@@ -115,7 +114,7 @@ class PersonController extends Controller {
 	}
 
 	public function suggest($slug) {
-		return $this->lecacyPage('Info');
+		return $this->legacyPage('Info');
 	}
 
 }

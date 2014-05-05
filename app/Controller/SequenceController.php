@@ -1,6 +1,5 @@
 <?php namespace App\Controller;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Pagination\Pager;
 use App\Util\String;
 
@@ -33,7 +32,7 @@ class SequenceController extends Controller {
 		$slug = String::slugify($slug);
 		$sequence = $this->getSequenceRepository()->findBySlug($slug);
 		if ($sequence === null) {
-			throw new NotFoundHttpException("Няма поредица с код $slug.");
+			return $this->notFound("Няма поредица с код $slug.");
 		}
 
 		$this->view = array(

@@ -18,13 +18,13 @@ class BookLink extends Entity {
 	private $id;
 
 	/**
-	 * @var integer
+	 * @var Book
 	 * @ORM\ManyToOne(targetEntity="Book", inversedBy="links")
 	 */
 	private $book;
 
 	/**
-	 * @var integer
+	 * @var BookSite
 	 * @ORM\ManyToOne(targetEntity="BookSite")
 	 */
 	private $site;

@@ -6,10 +6,11 @@ function makeDbRows($file, $headlev) {
 
 	$dbRows = array();
 	foreach ($parser->headers() as $nr => $hdata) {
-		extract($hdata);
-		if ( !isset($titles) ) continue;
-		foreach ($titles as $lev => $title) {
-			$dbRows[] = array($nr, $lev, $title, $fpos, $lcnt);
+		if (!isset($hdata['titles'])) {
+			continue;
+		}
+		foreach ($hdata['titles'] as $lev => $title) {
+			$dbRows[] = array($nr, $lev, $title, $hdata['fpos'], $hdata['lcnt']);
 		}
 	}
 	return $dbRows;
@@ -19,6 +20,13 @@ class SfbParserSimple {
 
 	protected $debug = false;
 	protected $titMarks = array(1=>'>', '>>', '>>>', '>>>>', '>>>>>');
+	private $handle;
+	private $reqdepth;
+	private $lcnt;
+	private $hasNextLine;
+	private $headers;
+	private $fpos;
+	private $curUnknownHead;
 
 	public function __construct($file, $reqdepth = 1) {
 		$this->handle = fopen($file, 'r');
@@ -82,13 +90,12 @@ class SfbParserSimple {
 	}
 
 	protected function doText() {
-		#if ($this->debug) echo "in doText: '$this->line'\n";
 		switch ($this->lcmd) {
-		case '>': $this->doTitle(1); break;
-		case '>>': $this->doTitle(2); break;
-		case '>>>': $this->doTitle(3); break;
-		case '>>>>': $this->doTitle(4); break;
-		case '>>>>>': $this->doTitle(5); break;
+			case '>': $this->doTitle(1); break;
+			case '>>': $this->doTitle(2); break;
+			case '>>>': $this->doTitle(3); break;
+			case '>>>>': $this->doTitle(4); break;
+			case '>>>>>': $this->doTitle(5); break;
 		}
 	}
 
@@ -96,24 +103,31 @@ class SfbParserSimple {
 	 * @param int $level
 	 */
 	protected function doTitle($level) {
-		if ($this->debug) echo "in doTitle($level)\n";
-		if ($this->reqdepth < $level) { return; }
-		#echo $this->fpos." - $this->ltext\n";
+		if ($this->debug) {
+			echo "in doTitle($level)\n";
+		}
+		if ($this->reqdepth < $level) {
+			return;
+		}
 		$fpos = $this->fpos;
 		$lcnt = $this->lcnt;
-		if ( $this->ltext[0] == '>' ) {
+		if ($this->ltext[0] == '>') {
 			$header = $this->curUnknownHead[$level]++;
 		} else {
 			$header = $this->ltext;
-			if ( !$this->titleHasEndingSymbol($this->ltext) ) { $header .= '.'; }
+			if (!$this->titleHasEndingSymbol($this->ltext)) { 
+				$header .= '.';
+			}
 		}
 		$this->nextLine();
 		while ( $this->lcmd == $this->titMarks[$level] ) {
 			$header .= ' '.$this->ltext;
-			if ( !$this->titleHasEndingSymbol($this->ltext) ) { $header .= '.'; }
+			if (!$this->titleHasEndingSymbol($this->ltext)) { 
+				$header .= '.';
+			}
 			$this->nextLine();
 		}
-		if ( !preg_match('/ г\.$/', $header) ) {
+		if (!preg_match('/ г\.$/', $header)) {
 			$header = rtrim($header, '.');
 		}
 		$this->headers[] = array($level, $header, $fpos, $lcnt);
@@ -141,8 +155,7 @@ class SfbParserSimple {
 			}
 			$prevlev = $lev;
 		}
-		// А сега, на мястото на lcnt ще се съхрани разликата в lcnt-тите на два
-		// съседни елемента
+		// А сега, на мястото на lcnt ще се съхрани разликата в lcnt-тите на два съседни елемента
 		$len = count($newheaders);
 		$prevcnt = 1;
 		for ($i=2; $i <= $len; $i++) {

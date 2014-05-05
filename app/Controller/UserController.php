@@ -1,7 +1,6 @@
 <?php namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use App\Pagination\Pager;
 
 class UserController extends Controller {
@@ -68,7 +67,7 @@ class UserController extends Controller {
 		if ($this->getUser()->getUsername() != $username) {
 			$user = $this->getUserRepository()->findOneBy(array('token' => $username));
 			if ( ! $user) {
-				throw new HttpException(401);
+				return $this->notAllowed();
 			}
 			$isOwner = false;
 		} else {
@@ -101,7 +100,7 @@ class UserController extends Controller {
 		if ($this->getUser()->getUsername() != $username) {
 			$user = $this->getUserRepository()->findOneBy(array('token' => $username));
 			if ( ! $user) {
-				throw new HttpException(401);
+				return $this->notAllowed();
 			}
 			$isOwner = false;
 		} else {
@@ -136,7 +135,7 @@ class UserController extends Controller {
 		$this->responseAge = 0;
 
 		if ($this->getUser()->isAnonymous()) {
-			throw new HttpException(401);
+			return $this->notAllowed();
 		}
 
 		$texts = $request->get('texts');
@@ -151,7 +150,7 @@ class UserController extends Controller {
 		$this->responseAge = 0;
 
 		if ($this->getUser()->getUsername() != $username) {
-			throw new HttpException(401);
+			return $this->notAllowed();
 		}
 
 		$styleUrl = '/bundles/app/css/?skin=SKIN&menu=NAV';

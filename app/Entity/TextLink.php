@@ -18,13 +18,13 @@ class TextLink extends Entity {
 	private $id;
 
 	/**
-	 * @var integer
+	 * @var Text
 	 * @ORM\ManyToOne(targetEntity="Text", inversedBy="links")
 	 */
 	private $text;
 
 	/**
-	 * @var integer
+	 * @var BookSite
 	 * @ORM\ManyToOne(targetEntity="BookSite")
 	 */
 	private $site;

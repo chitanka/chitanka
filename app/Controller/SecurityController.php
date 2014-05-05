@@ -1,27 +1,11 @@
 <?php namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContext;
 
 class SecurityController extends Controller {
 
-	public function loginAction(Request $request) {
+	public function loginAction() {
 		return $this->legacyPage('Login');
-
-		// get the error if any (works with forward and redirect -- see below)
-		if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-			$error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
-		} else {
-			$error = $request->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
-		}
-
-		$this->view = array(
-			// last username entered by the user
-			'last_username' => $request->getSession()->get(SecurityContext::LAST_USERNAME),
-			'error'         => $error,
-		);
-
-		return $this->display('login');
 	}
 
 	public function registerAction() {

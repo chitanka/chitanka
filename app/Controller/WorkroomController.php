@@ -1,8 +1,5 @@
 <?php namespace App\Controller;
 
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 class WorkroomController extends Controller {
 	protected $repository = 'WorkEntry';
 	protected $responseAge = 0;
@@ -35,7 +32,7 @@ class WorkroomController extends Controller {
 
 	public function newAction() {
 		if ($this->getUser()->isAnonymous()) {
-			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
+			return $this->notAllowed('Нямате достатъчни права за това действие.');
 		}
 		$_REQUEST['id'] = 0;
 		$_REQUEST['status'] = 'edit';
@@ -62,12 +59,12 @@ class WorkroomController extends Controller {
 		$this->responseAge = 0;
 
 		if ( ! $this->getUser()->inGroup('workroom-admin')) {
-			throw new HttpException(401, 'Нямате достатъчни права за това действие.');
+			return $this->notAllowed('Нямате достатъчни права за това действие.');
 		}
 
 		$contrib = $this->getWorkContribRepository()->find($id);
 		if ($contrib === null) {
-			throw new NotFoundHttpException();
+			return $this->notFound();
 		}
 		$entry = $contrib->getEntry();
 		$contrib->delete();
