@@ -20,14 +20,14 @@ class TextLabel extends Entity {
 	private $id;
 
 	/**
-	 * @var integer
+	 * @var Text
 	 * @ORM\Id
 	 * @ORM\ManyToOne(targetEntity="Text", inversedBy="textLabels")
 	 */
 	private $text;
 
 	/**
-	 * @var integer
+	 * @var Label
 	 * @ORM\Id
 	 * @ORM\ManyToOne(targetEntity="Label")
 	 */

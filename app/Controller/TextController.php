@@ -359,6 +359,9 @@ class TextController extends Controller {
 		return $this->redirectToText($text);
 	}
 
+	/**
+	 * @param Text $text
+	 */
 	protected function redirectToText($text) {
 		$id = $text instanceof Text ? $text->getId() : $text;
 		return $this->urlRedirect($this->generateUrl('text_show', array('id' => $id)));

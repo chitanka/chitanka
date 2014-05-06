@@ -20,25 +20,25 @@ class TextTranslator extends Entity {
 	private $id;
 
 	/**
-	 * @var integer $person
+	 * @var Person
 	 * @ORM\ManyToOne(targetEntity="Person", inversedBy="textTranslators")
 	 */
 	private $person;
 
 	/**
-	 * @var integer $text
+	 * @var Text
 	 * @ORM\ManyToOne(targetEntity="Text", inversedBy="textTranslators")
 	 */
 	private $text;
 
 	/**
-	 * @var integer $pos
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $pos;
 
 	/**
-	 * @var integer $year
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $year;
@@ -67,7 +67,7 @@ class TextTranslator extends Entity {
 	/**
 	 * Get pos
 	 *
-	 * @return integer $pos
+	 * @return int
 	 */
 	public function getPos() {
 		return $this->pos;
@@ -85,7 +85,7 @@ class TextTranslator extends Entity {
 	/**
 	 * Get year
 	 *
-	 * @return integer $year
+	 * @return int
 	 */
 	public function getYear() {
 		return $this->year;

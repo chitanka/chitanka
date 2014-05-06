@@ -18,19 +18,19 @@ class BookAuthor extends Entity {
 	private $id;
 
 	/**
-	 * @var integer $person
+	 * @var Person
 	 * @ORM\ManyToOne(targetEntity="Person")
 	 */
 	private $person;
 
 	/**
-	 * @var integer $book
+	 * @var Book
 	 * @ORM\ManyToOne(targetEntity="Book", inversedBy="bookAuthors")
 	 */
 	private $book;
 
 	/**
-	 * @var integer $pos
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $pos;

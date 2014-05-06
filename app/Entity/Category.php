@@ -21,35 +21,35 @@ class Category extends Entity {
 	private $id;
 
 	/**
-	 * @var string $slug
+	 * @var string
 	 * @ORM\Column(type="string", length=50, unique=true)
 	 * @Assert\NotBlank
 	 */
 	private $slug = '';
 
 	/**
-	 * @var string $name
+	 * @var string
 	 * @ORM\Column(type="string", length=80, unique=true)
 	 * @Assert\NotBlank
 	 */
 	private $name = '';
 
 	/**
-	 * @var integer $parent
+	 * @var Category
 	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
 	 */
 	private $parent;
 
 	/**
 	 * The children of this category
-	 * @var array
+	 * @var Category[]
 	 * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
 	 * @ORM\OrderBy({"name" = "ASC"})
 	 */
 	private $children;
 
 	/**
-	 * @var array
+	 * @var Book[]
 	 * @ORM\OneToMany(targetEntity="Book", mappedBy="category")
 	 * @ORM\OrderBy({"title" = "ASC"})
 	 */
@@ -57,7 +57,7 @@ class Category extends Entity {
 
 	/**
 	 * Number of books in this category
-	 * @var integer
+	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
 	private $nr_of_books = 0;
@@ -92,7 +92,7 @@ class Category extends Entity {
 	/**
 	 * Get all ancestors
 	 *
-	 * @return array
+	 * @return Category[]
 	 */
 	public function getAncestors() {
 		$ancestors = array();
@@ -112,7 +112,7 @@ class Category extends Entity {
 	/**
 	 * Get all descendants
 	 *
-	 * @return array
+	 * @return array Array of IDs
 	 */
 	public function getDescendantIds() {
 		$ids = array();

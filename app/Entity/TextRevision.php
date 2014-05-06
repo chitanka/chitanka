@@ -21,31 +21,31 @@ class TextRevision extends Entity {
 	private $id;
 
 	/**
-	 * @var integer $text
+	 * @var Text
 	 * @ORM\ManyToOne(targetEntity="Text", inversedBy="revisions")
 	 */
 	private $text;
 
 	/**
-	 * @var integer $user
+	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User")
 	 */
 	private $user;
 
 	/**
-	 * @var string $comment
+	 * @var string
 	 * @ORM\Column(type="string", length=255)
 	 */
 	private $comment;
 
 	/**
-	 * @var datetime $date
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 */
 	private $date;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $first = true;

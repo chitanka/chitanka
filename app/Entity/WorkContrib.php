@@ -20,54 +20,55 @@ class WorkContrib extends Entity {
 	private $id;
 
 	/**
-	 * @var integer $entry
+	 * @var WorkEntry
 	 * @ORM\ManyToOne(targetEntity="WorkEntry", inversedBy="contribs")
 	 */
 	private $entry;
 
 	/**
-	 * @var integer $user
+	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User")
 	 */
 	private $user;
 
 	/**
-	 * @var text $comment
+	 * @var string
 	 * @ORM\Column(type="text")
 	 */
 	private $comment;
 
 	/**
-	 * @var integer $progress
+	 * @var int
 	 * @ORM\Column(type="smallint")
 	 */
 	private $progress = 0;
 
 	/**
-	 * @var boolean $is_frozen
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $is_frozen = false;
 
 	/**
-	 * @var datetime $date
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 */
 	private $date;
 
 	/**
-	 * @var string $uplfile
+	 * @var string
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $uplfile;
 
 	/**
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $filesize;
 
 	/**
-	 * @var datetime
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime", nullable=true)
 	 */
 	private $deleted_at;
@@ -78,7 +79,6 @@ class WorkContrib extends Entity {
 	public function getEntry() { return $this->entry; }
 
 	public function setUser($user) { $this->user = $user; }
-	/** @return integer */
 	public function getUser() { return $this->user; }
 
 	public function setComment($comment) { $this->comment = $comment; }

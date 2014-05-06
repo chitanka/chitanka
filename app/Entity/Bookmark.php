@@ -19,25 +19,25 @@ class Bookmark extends Entity {
 	private $id;
 
 	/**
-	 * @var integer
+	 * @var BookmarkFolder
 	 * @ORM\ManyToOne(targetEntity="BookmarkFolder")
 	 */
 	private $folder;
 
 	/**
-	 * @var integer
+	 * @var Text
 	 * @ORM\ManyToOne(targetEntity="Text")
 	 */
 	private $text;
 
 	/**
-	 * @var integer
+	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User", inversedBy="bookmarks")
 	 */
 	private $user;
 
 	/**
-	 * @var date
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 */
 	private $created_at;

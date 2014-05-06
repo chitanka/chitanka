@@ -331,6 +331,9 @@ abstract class Controller extends SymfonyController {
 		return new RedirectResponse($url, $permanent ? 301 : 302);
 	}
 
+	/**
+	 * @param string $message
+	 */
 	protected function notAllowed($message = null) {
 		throw new HttpException(401, $message);
 	}

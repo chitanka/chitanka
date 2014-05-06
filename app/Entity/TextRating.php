@@ -22,29 +22,33 @@ class TextRating extends Entity {
 	private $id;
 
 	/**
-	 * @var integer $text
+	 * @var Text
 	 * @ORM\ManyToOne(targetEntity="Text")
 	 */
 	private $text;
 
 	/**
-	 * @var integer $user
+	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User")
 	 */
 	private $user;
 
 	/**
-	 * @var integer $rating
+	 * @var int
 	 * @ORM\Column(type="smallint")
 	 */
 	private $rating;
 
 	/**
-	 * @var date $date
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 */
 	private $date;
 
+	/**
+	 * @param Text $text
+	 * @param User $user
+	 */
 	public function __construct($text, $user) {
 		$this->setText($text);
 		$this->setUser($user);

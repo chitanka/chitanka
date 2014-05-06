@@ -1,6 +1,5 @@
 <?php namespace App\Legacy;
 
-use App\Util\Char;
 use App\Util\Number;
 use App\Util\String;
 

@@ -16,25 +16,25 @@ class BookText extends Entity {
 	private $id;
 
 	/**
-	 * @var integer $book
+	 * @var Book
 	 * @ORM\ManyToOne(targetEntity="Book", inversedBy="bookTexts")
 	 */
 	private $book;
 
 	/**
-	 * @var integer $text
+	 * @var Text
 	 * @ORM\ManyToOne(targetEntity="Text", inversedBy="bookTexts")
 	 */
 	private $text;
 
 	/**
-	 * @var integer $pos
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $pos;
 
 	/**
-	 * @var boolean $share_info
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $share_info = true;

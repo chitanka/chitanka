@@ -1180,6 +1180,9 @@ EOS;
 		return null;
 	}
 
+	/**
+	 * @param int $nr
+	 */
 	public function getNextHeaderByNr($nr) {
 		if ($nr > 0) {
 			foreach ($this->getHeaders() as $header) {

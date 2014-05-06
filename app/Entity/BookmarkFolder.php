@@ -34,13 +34,13 @@ class BookmarkFolder extends Entity {
 	private $name = '';
 
 	/**
-	 * @var integer
+	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User")
 	 */
 	private $user;
 
 	/**
-	 * @var date
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 */
 	private $created_at;

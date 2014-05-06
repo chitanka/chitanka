@@ -20,25 +20,25 @@ class TextAuthor extends Entity {
 	private $id;
 
 	/**
-	 * @var integer $person
+	 * @var Person
 	 * @ORM\ManyToOne(targetEntity="Person", inversedBy="textAuthors")
 	 */
 	private $person;
 
 	/**
-	 * @var integer $text
+	 * @var Text
 	 * @ORM\ManyToOne(targetEntity="Text", inversedBy="textAuthors")
 	 */
 	private $text;
 
 	/**
-	 * @var integer $pos
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $pos;
 
 	/**
-	 * @var integer $year
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $year;

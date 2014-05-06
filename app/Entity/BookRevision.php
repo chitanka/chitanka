@@ -20,25 +20,25 @@ class BookRevision extends Entity {
 	private $id;
 
 	/**
-	 * @var integer
+	 * @var Book
 	 * @ORM\ManyToOne(targetEntity="Book", inversedBy="revisions")
 	 */
 	private $book;
 
 	/**
-	 * @var string $comment
+	 * @var string
 	 * @ORM\Column(type="string", length=255)
 	 */
 	private $comment;
 
 	/**
-	 * @var datetime $date
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 */
 	private $date;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $first;

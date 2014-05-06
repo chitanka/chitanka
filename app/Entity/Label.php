@@ -21,41 +21,41 @@ class Label extends Entity {
 	private $id;
 
 	/**
-	 * @var string $slug
+	 * @var string
 	 * @ORM\Column(type="string", length=80, unique=true)
 	 * @Assert\NotBlank
 	 */
 	private $slug = '';
 
 	/**
-	 * @var string $name
+	 * @var string
 	 * @ORM\Column(type="string", length=80, unique=true)
 	 * @Assert\NotBlank
 	 */
 	private $name = '';
 
 	/**
-	 * @var integer $parent
+	 * @var Label
 	 * @ORM\ManyToOne(targetEntity="Label", inversedBy="children")
 	 */
 	private $parent;
 
 	/**
 	 * Number of texts having this label
-	 * @var integer $nr_of_texts
+	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
 	private $nr_of_texts = 0;
 
 	/**
 	 * The children of this label
-	 * @var array
+	 * @var Label[]
 	 * @ORM\OneToMany(targetEntity="Label", mappedBy="parent")
 	 */
 	private $children;
 
 	/**
-	 * @var array
+	 * @var Text[]
 	 * @ORM\ManyToMany(targetEntity="Text", mappedBy="labels")
 	 * @ORM\OrderBy({"title" = "ASC"})
 	 */
@@ -98,7 +98,7 @@ class Label extends Entity {
 	/**
 	 * Get all ancestors
 	 *
-	 * @return array
+	 * @return Label[]
 	 */
 	public function getAncestors() {
 		$ancestors = array();
@@ -111,6 +111,9 @@ class Label extends Entity {
 		return $ancestors;
 	}
 
+	/**
+	 * @return array Array of IDs
+	 */
 	public function getDescendantIdsAndSelf() {
 		return array_merge(array($this->getId()), $this->getDescendantIds());
 	}
@@ -118,7 +121,7 @@ class Label extends Entity {
 	/**
 	 * Get all descendants
 	 *
-	 * @return array
+	 * @return array Array of IDs
 	 */
 	public function getDescendantIds() {
 		$ids = array();

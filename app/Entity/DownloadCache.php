@@ -8,13 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 */
 class DownloadCache extends Entity {
 	/**
-	 * @var integer $id
+	 * @var int
 	 * @ORM\Id @ORM\Column(type="bigint")
 	 */
 	private $id;
 
 	/**
-	 * @var string $file
+	 * @var string
 	 * @ORM\Column(type="string", length=255)
 	 */
 	private $file;
@@ -22,7 +22,7 @@ class DownloadCache extends Entity {
 	/**
 	 * Get id
 	 *
-	 * @return integer $id
+	 * @return int
 	 */
 	public function getId() {
 		return $this->id;

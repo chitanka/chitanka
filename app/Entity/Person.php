@@ -29,43 +29,43 @@ class Person extends Entity {
 	private $id;
 
 	/**
-	 * @var string $slug
+	 * @var string
 	 * @ORM\Column(type="string", length=50, unique=true)
 	 */
 	private $slug;
 
 	/**
-	 * @var string $name
+	 * @var string
 	 * @ORM\Column(type="string", length=100)
 	 */
 	private $name = '';
 
 	/**
-	 * @var string $orig_name
+	 * @var string
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
 	private $orig_name;
 
 	/**
-	 * @var string $real_name
+	 * @var string
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
 	private $real_name;
 
 	/**
-	 * @var string $oreal_name
+	 * @var string
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
 	private $oreal_name;
 
 	/**
-	 * @var string $last_name
+	 * @var string
 	 * @ORM\Column(type="string", length=50, nullable=true)
 	 */
 	private $last_name;
 
 	/**
-	 * @var string $country
+	 * @var string
 	 * @ORM\Column(type="string", length=10)
 	 */
 	private $country;
@@ -77,39 +77,43 @@ class Person extends Entity {
 	private $is_translator = false;
 
 	/**
-	 * @var string $info
+	 * @var string
 	 * @ORM\Column(type="string", length=160, nullable=true)
 	 */
 	private $info;
 
 	/**
-	 * @var integer $person
+	 * @var Person
 	 * @ORM\ManyToOne(targetEntity="Person")
 	 */
 	private $person;
 
 	/**
-	 * @var string $type
+	 * @var string
 	 * @ORM\Column(type="string", length=1, nullable=true)
 	 */
 	private $type;
 
 	/**
+	 * @var TextAuthor[]
 	 * @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="person")
 	 */
 	private $textAuthors;
 
 	/**
+	 * @var TextTranslator[]
 	 * @ORM\OneToMany(targetEntity="TextTranslator", mappedBy="person")
 	 */
 	private $textTranslators;
 
 	/**
+	 * @var Book[]
 	 * @ORM\ManyToMany(targetEntity="Book")
 	 */
 	private $books;
 
 	/**
+	 * @var Series[]
 	 * @ORM\ManyToMany(targetEntity="Series", mappedBy="authors")
 	 * @ORM\JoinTable(name="series_author")
 	 */

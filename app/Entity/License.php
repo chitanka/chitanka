@@ -18,37 +18,37 @@ class License extends Entity {
 	private $id;
 
 	/**
-	 * @var string $code
+	 * @var string
 	 * @ORM\Column(type="string", length=20, unique=true)
 	 */
 	private $code;
 
 	/**
-	 * @var string $name
+	 * @var string
 	 * @ORM\Column(type="string", length=15)
 	 */
 	private $name = '';
 
 	/**
-	 * @var string $fullname
+	 * @var string
 	 * @ORM\Column(type="string", length=255)
 	 */
 	private $fullname;
 
 	/**
-	 * @var boolean $free
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $free;
 
 	/**
-	 * @var boolean $copyright
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $copyright;
 
 	/**
-	 * @var string $uri
+	 * @var string
 	 * @ORM\Column(type="string", length=255)
 	 */
 	private $uri;
@@ -74,7 +74,7 @@ class License extends Entity {
 	/**
 	 * Get code
 	 *
-	 * @return string $code
+	 * @return string
 	 */
 	public function getCode() {
 		return $this->code;
@@ -92,7 +92,7 @@ class License extends Entity {
 	/**
 	 * Get name
 	 *
-	 * @return string $name
+	 * @return string
 	 */
 	public function getName() {
 		return $this->name;
@@ -110,7 +110,7 @@ class License extends Entity {
 	/**
 	 * Get fullname
 	 *
-	 * @return string $fullname
+	 * @return string
 	 */
 	public function getFullname() {
 		return $this->fullname;
@@ -128,7 +128,7 @@ class License extends Entity {
 	/**
 	 * Get free
 	 *
-	 * @return boolean $free
+	 * @return bool
 	 */
 	public function getFree() {
 		return $this->free;
@@ -146,7 +146,7 @@ class License extends Entity {
 	/**
 	 * Get copyright
 	 *
-	 * @return boolean $copyright
+	 * @return bool
 	 */
 	public function getCopyright() {
 		return $this->copyright;
@@ -164,7 +164,7 @@ class License extends Entity {
 	/**
 	 * Get uri
 	 *
-	 * @return string $uri
+	 * @return string
 	 */
 	public function getUri() {
 		return $this->uri;

@@ -22,85 +22,87 @@ class WorkEntry extends Entity {
 	private $id;
 
 	/**
-	 * @var integer $type
+	 * @var int
 	 * @ORM\Column(type="smallint")
 	 */
 	private $type;
 
 	/**
-	 * @var string $title
+	 * @var string
 	 * @ORM\Column(type="string", length=100)
 	 */
 	private $title;
 
 	/**
-	 * @var string $author
+	 * @var string
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
 	private $author;
 
 	/**
 	 * Year of publication on paper or in e-format
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $pubYear;
 
 	/**
 	 * Publisher of the book
+	 * @var string
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
 	private $publisher;
 
 	/**
-	 * @var integer $user
+	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User")
 	 */
 	private $user;
 
 	/**
-	 * @var text $comment
+	 * @var string
 	 * @ORM\Column(type="text")
 	 */
 	private $comment;
 
 	/**
-	 * @var datetime $date
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 */
 	private $date;
 
 	/**
-	 * @var integer $status
+	 * @var int
 	 * @ORM\Column(type="smallint")
 	 */
 	private $status = 0;
 
 	/**
-	 * @var integer $progress
+	 * @var int
 	 * @ORM\Column(type="smallint")
 	 */
 	private $progress = 0;
 
 	/**
-	 * @var boolean $is_frozen
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $is_frozen = false;
 
 	/**
-	 * @var string $tmpfiles
+	 * @var string
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $tmpfiles;
 
 	/**
-	 * @var integer $tfsize
+	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $tfsize;
 
 	/**
-	 * @var string $uplfile
+	 * @var string
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $uplfile;
@@ -108,34 +110,39 @@ class WorkEntry extends Entity {
 	/**
 	 * Every user gets an automatic e-mail if his entry reaches some predefined
 	 * period without updates. Here we track the date of the most recent notification.
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime", nullable=true)
 	 */
 	private $last_notification_date;
 
 	/**
 	 * A status managed and seen only from the adminstrator
+	 * @var string
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
 	private $admin_status;
 
 	/**
 	 * A comment managed and seen only from the adminstrator
+	 * @var string
 	 * @ORM\Column(type="text", nullable=true)
 	 */
 	private $admin_comment;
 
 	/**
-	 * @var datetime
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime", nullable=true)
 	 */
 	private $deleted_at;
 
 	/**
+	 * @var WorkContrib[]
 	 * @ORM\OneToMany(targetEntity="WorkContrib", mappedBy="entry")
 	 */
 	private $contribs;
 
 	/**
+	 * @var Thread
 	 * @ORM\OneToOne(targetEntity="Thread", inversedBy="workEntry")
 	 */
 	private $comment_thread;

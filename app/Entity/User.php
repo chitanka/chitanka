@@ -26,19 +26,19 @@ class User /*extends BaseUser*/ implements UserInterface {
 	private $id;
 
 	/**
-	 * @var string $username
+	 * @var string
 	 * @ORM\Column(type="string", length=100, unique=true)
 	 */
 	private $username = '~anon';
 
 	/**
-	 * @var string $realname
+	 * @var string
 	 * @ORM\Column(type="string", length=120, nullable=true)
 	 */
 	private $realname;
 
 	/**
-	 * @var string $password
+	 * @var string
 	 * @ORM\Column(type="string", length=40)
 	 */
 	private $password;
@@ -50,19 +50,19 @@ class User /*extends BaseUser*/ implements UserInterface {
 	private $algorithm;
 
 	/**
-	 * @var string $newpassword
+	 * @var string
 	 * @ORM\Column(type="string", length=40, nullable=true)
 	 */
 	private $newpassword;
 
 	/**
-	 * @var string $email
+	 * @var string
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
 	private $email;
 
 	/**
-	 * @var boolean $allowemail
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $allowemail = false;
@@ -82,31 +82,31 @@ class User /*extends BaseUser*/ implements UserInterface {
 	);
 
 	/**
-	 * @var boolean $news
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $news = false;
 
 	/**
-	 * @var array $opts
+	 * @var array
 	 * @ORM\Column(type="array")
 	 */
 	private $opts = array();
 
 	/**
-	 * @var integer $login_tries
+	 * @var int
 	 * @ORM\Column(type="smallint")
 	 */
 	private $login_tries = 0;
 
 	/**
-	 * @var datetime $registration
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 */
 	private $registration;
 
 	/**
-	 * @var datetime $touched
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 */
 	private $touched;
@@ -120,7 +120,7 @@ class User /*extends BaseUser*/ implements UserInterface {
 	private $token;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	 * @var array
+	 * @var Text[]
 	 * @ORM\ManyToMany(targetEntity="Text", mappedBy="readers")
 	 * @ORM\JoinTable(name="user_text_read",
 	 *	joinColumns={@ORM\JoinColumn(name="user_id")},
@@ -129,6 +129,7 @@ class User /*extends BaseUser*/ implements UserInterface {
 	private $readTexts;
 
 	/**
+	 * @var Bookmark[]
 	 * @ORM\OneToMany(targetEntity="Bookmark", mappedBy="user")
 	 */
 	private $bookmarks;

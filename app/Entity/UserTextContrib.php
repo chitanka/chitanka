@@ -20,7 +20,7 @@ class UserTextContrib extends Entity {
 	private $id;
 
 	/**
-	 * @var integer $user
+	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User")
 	 */
 	private $user;
@@ -38,25 +38,25 @@ class UserTextContrib extends Entity {
 	private $text;
 
 	/**
-	 * @var integer $size
+	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
 	private $size;
 
 	/**
-	 * @var integer $percent
+	 * @var int
 	 * @ORM\Column(type="smallint")
 	 */
 	private $percent;
 
 	/**
-	 * @var string $comment
+	 * @var string
 	 * @ORM\Column(type="string", length=255)
 	 */
 	private $comment;
 
 	/**
-	 * @var date
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 */
 	private $date;

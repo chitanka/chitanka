@@ -23,7 +23,7 @@ class SearchString extends Entity {
 	private $name;
 
 	/**
-	 * @var integer
+	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
 	private $count = 0;

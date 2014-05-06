@@ -8,43 +8,43 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TextHeader extends Entity {
 	/**
-	 * @var integer $id
+	 * @var int
 	 * @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
 	 */
 	private $id;
 
 	/**
-	 * @var integer $text
+	 * @var Text
 	 * @ORM\ManyToOne(targetEntity="Text", inversedBy="headers")
 	 */
 	private $text;
 
 	/**
-	 * @var integer $nr
+	 * @var int
 	 * @ORM\Column(type="smallint")
 	 */
 	private $nr;
 
 	/**
-	 * @var integer $level
+	 * @var int
 	 * @ORM\Column(type="smallint")
 	 */
 	private $level;
 
 	/**
-	 * @var string $name
+	 * @var string
 	 * @ORM\Column(type="string", length=255)
 	 */
 	private $name;
 
 	/**
-	 * @var integer $fpos
+	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
 	private $fpos;
 
 	/**
-	 * @var integer $linecnt
+	 * @var int
 	 * @ORM\Column(type="smallint")
 	 */
 	private $linecnt;

@@ -18,13 +18,13 @@ class SeriesAuthor extends Entity {
 	private $id;
 
 	/**
-	 * @var integer $person
+	 * @var Person
 	 * @ORM\ManyToOne(targetEntity="Person")
 	 */
 	private $person;
 
 	/**
-	 * @var integer $series
+	 * @var Series
 	 * @ORM\ManyToOne(targetEntity="Series", inversedBy="seriesAuthors")
 	 */
 	private $series;

@@ -17,14 +17,23 @@ abstract class MailSource {
 		return array($this->getSenderEmail() => $this->getSenderName());
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getSenderName() {
 		return $this->name ?: self::ANONYMOUS_NAME;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getSenderEmail() {
 		return $this->email ?: self::ANONYMOUS_EMAIL;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getSubject() {
 		return $this->subject;
 	}

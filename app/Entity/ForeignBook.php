@@ -46,7 +46,7 @@ class ForeignBook extends Entity {
 	private $description;
 
 	/**
-	 * @var boolean
+	 * @var boo
 	 * @ORM\Column(name="is_free", type="boolean")
 	 */
 	private $isFree;

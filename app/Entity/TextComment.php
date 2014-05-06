@@ -22,55 +22,55 @@ class TextComment extends Entity {
 	private $id;
 
 	/**
-	 * @var integer $text
+	 * @var Text
 	 * @ORM\ManyToOne(targetEntity="Text")
 	 */
 	private $text;
 
 	/**
-	 * @var string $rname
+	 * @var string
 	 * @ORM\Column(type="string", length=100)
 	 */
 	private $rname;
 
 	/**
-	 * @var integer $user
+	 * @var int
 	 * @ORM\ManyToOne(targetEntity="User")
 	 */
 	private $user;
 
 	/**
-	 * @var text
+	 * @var string
 	 * @ORM\Column(type="text")
 	 */
 	private $content;
 
 	/**
-	 * @var string $contenthash
+	 * @var string
 	 * @ORM\Column(type="string", length=32)
 	 */
 	private $contenthash;
 
 	/**
-	 * @var datetime $time
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 */
 	private $time;
 
 	/**
-	 * @var string $ip
+	 * @var string
 	 * @ORM\Column(type="string", length=15)
 	 */
 	private $ip;
 
 	/**
-	 * @var integer $replyto
+	 * @var TextComment
 	 * @ORM\ManyToOne(targetEntity="TextComment")
 	 */
 	private $replyto;
 
 	/**
-	 * @var boolean $is_shown
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $is_shown;
@@ -111,7 +111,7 @@ class TextComment extends Entity {
 	public function getReplyto() { return $this->replyto; }
 
 	/**
-	 * @param int $isShown
+	 * @param bool $isShown
 	 */
 	public function setIsShown($isShown) { $this->is_shown = $isShown; }
 	public function getIsShown() { return $this->is_shown; }
