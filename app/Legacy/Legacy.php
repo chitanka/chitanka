@@ -2,6 +2,7 @@
 
 use App\Util\Char;
 use App\Util\Ary;
+use App\Util\Number;
 use Buzz\Browser;
 
 class Legacy {
@@ -251,64 +252,6 @@ class Legacy {
 	}
 
 	/**
-	 * bytes to kibibytes
-	 * @param int $bytes
-	 * @return int
-	 */
-	static public function int_b2k($bytes) {
-		$k = $bytes >> 10; // divide by 2^10 w/o rest
-		return $k > 0 ? $k : 1;
-	}
-	/**
-	 * bytes to mebibytes
-	 * @param int $bytes
-	 * @return int
-	 */
-	static public function int_b2m($bytes) {
-		$m = $bytes >> 20; // divide by 2^20 w/o rest
-		return $m > 0 ? $m : 1;
-	}
-
-	/**
-	 * bytes to gibibytes
-	 * @param int $bytes
-	 * @return int
-	 */
-	static public function int_b2g($bytes) {
-		$m = $bytes >> 30; // divide by 2^30 w/o rest
-		return $m > 0 ? $m : 1;
-	}
-
-	/**
-	 * bytes to human readable
-	 * @param int $bytes
-	 * @return string
-	 */
-	static public function int_b2h($bytes) {
-		if ( $bytes < ( 1 << 10 ) ) return $bytes . ' B';
-		if ( $bytes < ( 1 << 20 ) ) return self::int_b2k( $bytes ) . ' KiB';
-		if ( $bytes < ( 1 << 30 ) ) return self::int_b2m( $bytes ) . ' MiB';
-		return self::int_b2g( $bytes ) . ' GiB';
-	}
-
-	/**
-	 * Convert a php.ini value to an integer
-	 * @param string $val
-	 * @return int
-	 */
-	static public function ini_bytes($val) {
-		$val = trim($val);
-		$lastChar = strtolower($val[strlen($val)-1]);
-		switch ($lastChar) {
-			case 'k': return $val << 10;
-			case 'm': return $val << 20;
-			case 'g': return $val << 30;
-			case 't': return $val << 40;
-		}
-		return $val;
-	}
-
-	/**
 	 * Removes trailing zeros after the decimal sign
 	 * @param string $number
 	 * @return string
@@ -320,7 +263,7 @@ class Legacy {
 	}
 
 	static public function getMaxUploadSizeInMiB() {
-		return self::int_b2m( self::ini_bytes( ini_get('upload_max_filesize') ) );
+		return Number::int_b2m(Number::iniBytes(ini_get('upload_max_filesize')));
 	}
 
 	/**

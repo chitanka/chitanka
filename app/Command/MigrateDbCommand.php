@@ -4,7 +4,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-use App\Legacy\Legacy;
+use App\Util\Number;
 use App\Util\String;
 
 class MigrateDbCommand extends Command {
@@ -98,8 +98,8 @@ EOT
 		$sql = 'SELECT id, size, zsize FROM text';
 		foreach ($conn->fetchAll($sql) as $text) {
 			$queries[] = sprintf('UPDATE text SET size = %d, zsize = %d WHERE id = %d',
-				Legacy::int_b2k($text['size']),
-				Legacy::int_b2k($text['zsize']),
+				Number::int_b2k($text['size']),
+				Number::int_b2k($text['zsize']),
 				$text['id']);
 		}
 

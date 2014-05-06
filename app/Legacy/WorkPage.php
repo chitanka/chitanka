@@ -245,7 +245,7 @@ class WorkPage extends Page {
 			$set['uplfile'] = $this->uplfile;
 			//if ( $this->isMultiUser() ) {
 				$set['tmpfiles'] = $this->makeTmpFilePath(self::rawurlencode($this->uplfile));
-				$set['tfsize'] = Legacy::int_b2m(filesize($this->absTmpDir . $this->uplfile));
+				$set['tfsize'] = Number::int_b2m(filesize($this->absTmpDir . $this->uplfile));
 			//}
 		}
 		$this->db->update(self::DB_TABLE, $set, $this->entryId);

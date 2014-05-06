@@ -1,6 +1,7 @@
 <?php namespace App\Legacy;
 
 use App\Util\Char;
+use App\Util\Number;
 use App\Util\String;
 
 class OutputMaker {
@@ -71,7 +72,7 @@ class OutputMaker {
 	}
 
 	public function makeMaxFileSizeField() {
-		return $this->hiddenField('MAX_FILE_SIZE', Legacy::ini_bytes( ini_get('upload_max_filesize') ));
+		return $this->hiddenField('MAX_FILE_SIZE', Number::iniBytes(ini_get('upload_max_filesize')));
 	}
 
 	public function submitButton($value, $title = '', $tabindex = null, $putname = true, $attrs = array()) {
