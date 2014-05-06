@@ -1740,18 +1740,21 @@ ul.two-columns {
 }
 .image-form {
 	display: inline;
-}
-.image-form button span,
-.image-form button .fa {
-	display: none;
-}
-.image-form button {
-	height: 16px;
-	width: 16px;
-	vertical-align: top;
-	border: none;
-	border-radius: 0;
-	background-color: transparent;
+	button {
+		padding: 0;
+		height: 16px;
+		width: 16px;
+		vertical-align: top;
+		border: none;
+		border-radius: 0;
+		background-color: transparent;
+		span, .fa {
+			display: none;
+		}
+		&.active {
+			box-shadow: none;
+		}
+	}
 }
 .user-actions {
 	text-align: center;
