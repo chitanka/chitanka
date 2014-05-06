@@ -293,21 +293,17 @@ class Legacy {
 
 	/**
 	 * Convert a php.ini value to an integer
-	 * (copied from php.net)
 	 * @param string $val
 	 * @return int
 	 */
 	static public function ini_bytes($val) {
 		$val = trim($val);
-		$last = strtolower($val{strlen($val)-1});
-		switch ($last) {
-			// The 'G' modifier is available since PHP 5.1.0
-			case 'g':
-				$val *= 1024;
-			case 'm':
-				$val *= 1024;
-			case 'k':
-				$val *= 1024;
+		$lastChar = strtolower($val[strlen($val)-1]);
+		switch ($lastChar) {
+			case 'k': return $val << 10;
+			case 'm': return $val << 20;
+			case 'g': return $val << 30;
+			case 't': return $val << 40;
 		}
 		return $val;
 	}
