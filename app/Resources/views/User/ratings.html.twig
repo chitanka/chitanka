@@ -1,0 +1,6 @@
+{% extends 'App::layout.html.twig' %}
+
+{% set title = 'Оценки от ' ~ user.username %}
+{% block content %}
+	{% include 'App:User:ratings_list.html.twig' %}
+{% endblock %}

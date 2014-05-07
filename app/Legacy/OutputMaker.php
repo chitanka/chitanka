@@ -203,55 +203,6 @@ class OutputMaker {
 			.'"';
 	}
 
-	/**
-		Creates an HTML table.
-
-		@param $caption Table caption
-		@param $data Array of arrays, i.e.
-			array(
-				array(CELL, CELL, ...),
-				array(CELL, CELL, ...),
-				...
-			)
-			CELL can be:
-			— a string — equivalent to a simple table cell
-			— an array:
-				— first element must be an associative array for cell attributes;
-					if this array contains a key 'type' with the value 'header',
-					then the cell is rendered as a header cell
-				— second element must be a string representing the cell content
-		@param attrs Optional associative array for table attributes
-	*/
-	public function simpleTable($caption, $data, $attrs = array()) {
-		$ext = $this->makeAttribs($attrs);
-		$t = "\n<table class=\"content\"$ext>";
-		if ( !empty($caption) ) {
-			$t .= "<caption>$caption</caption>";
-		}
-		$curRowClass = '';
-		foreach ($data as $row) {
-			$curRowClass = $this->nextRowClass($curRowClass);
-			$t .= "\n<tr class=\"$curRowClass\">";
-			foreach ($row as $cell) {
-				$ctype = 'd';
-				if ( is_array($cell) ) {
-					if ( isset( $cell[0]['type'] ) ) {
-						$ctype = $cell[0]['type'] == 'header' ? 'h' : 'd';
-						unset( $cell[0]['type'] );
-					}
-					$cattrs = $this->makeAttribs($cell[0]);
-					$content = $cell[1];
-				} else {
-					$cattrs = '';
-					$content = $cell;
-				}
-				$t .= "\n\t<t{$ctype}{$cattrs}>{$content}</t{$ctype}>";
-			}
-			$t .= "\n</tr>";
-		}
-		return $t.'</table>';
-	}
-
 	public function nextRowClass($curRowClass = '') {
 		return $curRowClass == 'even' ? 'odd' : 'even';
 	}

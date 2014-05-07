@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
  */
 class UserRepository extends EntityRepository implements UserProviderInterface {
 	public function loadUserByUsername($username) {
-		$user = $this->findOneBy(array('username' => $username));
+		$user = $this->findByUsername($username);
 		if ( ! $user) {
 			throw new UsernameNotFoundException;
 		}
@@ -23,6 +23,10 @@ class UserRepository extends EntityRepository implements UserProviderInterface {
 
 	public function findByUsernames(array $usernames) {
 		return $this->findBy(array('username' => $usernames));
+	}
+
+	public function findByToken($token) {
+		return $this->findOneBy(array('token' => $token));
 	}
 
 	public function refreshUser(UserInterface $user) {

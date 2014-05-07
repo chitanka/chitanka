@@ -1,7 +1,7 @@
 <?php namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use App\Pagination\Pager;
+use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller {
 	public function personalToolsAction() {
@@ -29,9 +29,12 @@ class UserController extends Controller {
 	}
 
 	public function ratingsAction($username) {
-		$_REQUEST['username'] = $username;
-
-		return $this->legacyPage('Textrating');
+		$user = $this->getUserRepository()->findByUsername($username);
+		$ratings = $this->getTextRatingRepository()->getByUser($user);
+		return $this->display('ratings', array(
+			'user' => $user,
+			'ratings' => $ratings,
+		));
 	}
 
 	public function commentsAction($username, $page) {
@@ -43,7 +46,7 @@ class UserController extends Controller {
 
 	public function contribsAction($username, $page) {
 		$limit = 50;
-		$user = $this->getUserRepository()->findOneby(array('username' => $username));
+		$user = $this->getUserRepository()->findByUsername($username);
 		$repo = $this->getUserTextContribRepository();
 
 		$this->view = array(
@@ -65,13 +68,13 @@ class UserController extends Controller {
 		$this->responseAge = 0;
 
 		if ($this->getUser()->getUsername() != $username) {
-			$user = $this->getUserRepository()->findOneBy(array('token' => $username));
+			$user = $this->getUserRepository()->findByToken($username);
 			if ( ! $user) {
 				return $this->notAllowed();
 			}
 			$isOwner = false;
 		} else {
-			$user = $this->getUserRepository()->findOneBy(array('username' => $username));
+			$user = $this->getUserRepository()->findByUsername($username);
 			$isOwner = true;
 		}
 
@@ -98,13 +101,13 @@ class UserController extends Controller {
 		$this->responseAge = 0;
 
 		if ($this->getUser()->getUsername() != $username) {
-			$user = $this->getUserRepository()->findOneBy(array('token' => $username));
+			$user = $this->getUserRepository()->findByToken($username);
 			if ( ! $user) {
 				return $this->notAllowed();
 			}
 			$isOwner = false;
 		} else {
-			$user = $this->getUserRepository()->findOneBy(array('username' => $username));
+			$user = $this->getUserRepository()->findByUsername($username);
 			$isOwner = true;
 		}
 

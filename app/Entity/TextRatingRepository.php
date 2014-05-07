@@ -39,13 +39,27 @@ class TextRatingRepository extends EntityRepository {
 	/**
 	 * Get all ratings for a given text.
 	 * @param Text $text
-	 * @return array  Ratings with users who gave them
+	 * @return array Ratings with users who gave them
 	 */
 	public function getByText(Text $text) {
 		return $this->getQueryBuilder()
 			->select('e', 'u')
 			->leftJoin('e.user', 'u')
 			->where('e.text = ?1')->setParameter(1, $text)
+			->orderBy('e.date', 'desc')
+			->getQuery()->getArrayResult();
+	}
+
+	/**
+	 * Get all ratings of a given user.
+	 * @param User $user
+	 * @return array All user ratings
+	 */
+	public function getByUser(User $user) {
+		return $this->getQueryBuilder()
+			->select('e', 't')
+			->leftJoin('e.text', 't')
+			->where('e.user = ?1')->setParameter(1, $user)
 			->orderBy('e.date', 'desc')
 			->getQuery()->getArrayResult();
 	}

@@ -1,0 +1,15 @@
+{% import 'App::link.html.twig' as link %}
+<table class="table table-striped content">
+	<tr>
+		<th>Дата</th>
+		<th>Заглавие</th>
+		<th>Оценка</th>
+	</tr>
+	{% for rating in ratings %}
+		<tr>
+			<td>{{ rating.date|humandate }}</td>
+			<td>{{ link.text(rating.text) }}</td>
+			<td>{{ rating.rating }}</td>
+		</tr>
+	{% endfor %}
+</table>

@@ -92,29 +92,11 @@ class CacheManager {
 	}
 
 	/**
-	 * NOT USED
-	 * @param string $id
-	 * @return bool
-	 */
-	private static function clearDlCache($id) {
-		$file = self::getDlCachePath($id);
-		@unlink($file . '.fbi');
-		@unlink($file . '.fb2');
-		@unlink($file . '.txt');
-		self::clearDl($id);
-
-		return file_exists($file) ? unlink($file) : true;
-	}
-
-	/**
 	 * @param string $fname
 	 * @return string
 	 */
 	public static function getDlFile($fname) {
-		$file = self::$dlDir . $fname;
-		// commented, file can be non-existant
-		#touch($file); // mark it as fresh
-		return $file;
+		return self::$dlDir . $fname;
 	}
 
 	/**
