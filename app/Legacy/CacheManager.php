@@ -52,17 +52,6 @@ class CacheManager {
 	}
 
 	/**
-	 * NOT USED
-	 * @param string $action
-	 * @param string $id
-	 * @return bool
-	 */
-	public static function clearCache($action, $id) {
-		$file = self::getPath($action, $id);
-		return file_exists($file) ? unlink($file) : true;
-	}
-
-	/**
 	 * @param string $id
 	 * @param string $ext
 	 * @return bool
@@ -78,7 +67,7 @@ class CacheManager {
 	 */
 	public static function getDlCache($id, $ext = '') {
 		$file = self::getDlCachePath($id, $ext);
-		touch($file); // mark it as fresh
+		touch($file); // mark it as used
 		return file_get_contents($file);
 	}
 
@@ -169,39 +158,16 @@ class CacheManager {
 	/**
 	 * @param array|int $textIds
 	 */
-	private static function clearDl($textIds) {
+	public static function clearDl($textIds) {
 		$db = Setup::db();
 		$dctKey = array(
 			'text_id' => is_array($textIds) ? array('IN', $textIds) : $textIds
 		);
 		$hashes = $db->getFieldsMulti(DBT_DL_CACHE_TEXT, $dctKey, 'dc_id');
 		if ( ! empty($hashes) ) {
-			self::clearDlFiles($hashes);
 			$db->delete(DBT_DL_CACHE, array('id' => array('IN', $hashes)));
 			$db->delete(DBT_DL_CACHE_TEXT, array('dc_id' => array('IN', $hashes)));
 		}
-	}
-
-	/**
-	 * @param array $hashes
-	 */
-	private static function clearDlFiles($hashes) {
-		$files = Setup::db()->getFieldsMulti(DBT_DL_CACHE, array('id' => array('IN', $hashes)), 'file');
-		foreach ($files as $file) {
-			self::clearDlFile($file);
-		}
-	}
-
-	/**
-	 * @param string $file
-	 * @return bool
-	 */
-	private static function clearDlFile($file) {
-		$file = self::getDlFile($file);
-		if ( file_exists($file) ) {
-			return unlink($file);
-		}
-		return true;
 	}
 
 	/**
