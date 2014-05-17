@@ -32,7 +32,7 @@ class SequenceController extends Controller {
 		$slug = String::slugify($slug);
 		$sequence = $this->getSequenceRepository()->findBySlug($slug);
 		if ($sequence === null) {
-			return $this->notFound("Няма поредица с код $slug.");
+			throw $this->createNotFoundException("Няма поредица с код $slug.");
 		}
 
 		$this->view = array(

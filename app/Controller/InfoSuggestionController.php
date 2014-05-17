@@ -13,7 +13,7 @@ class InfoSuggestionController extends Controller {
 			$infoSuggestion = new InfoSuggestion($type, $text);
 			$infoSuggestion->setSender($this->getUser());
 		} catch (\InvalidArgumentException $e) {
-			return $this->notFound();
+			throw $this->createNotFoundException();
 		}
 		$form = $this->createForm(new InfoSuggestionType(), $infoSuggestion);
 

@@ -83,7 +83,7 @@ class PersonController extends Controller {
 		if ($person) {
 			return $this->urlRedirect($this->generateUrl('person_show', array('slug' => $person->getSlug())), true);
 		}
-		return $this->notFound("Няма личност с код $slug.");
+		throw $this->createNotFoundException("Няма личност с код $slug.");
 	}
 
 	protected function prepareViewForShow(Person $person, $format) {

@@ -17,6 +17,7 @@ class LegacyUpdateLibCommand extends Command {
 	private $db;
 	private $overwrite;
 
+	private $curTextId;
 	private $curEditId;
 	private $curBookRev;
 	private $entrydate;

@@ -32,7 +32,7 @@ class SeriesController extends Controller {
 		$slug = String::slugify($slug);
 		$series = $this->getSeriesRepository()->findBySlug($slug);
 		if ($series === null) {
-			return $this->notFound("Няма серия с код $slug.");
+			throw $this->createNotFoundException("Няма серия с код $slug.");
 		}
 
 		$this->view = array(

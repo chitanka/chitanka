@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 abstract class Controller extends SymfonyController {
 
@@ -198,7 +197,7 @@ abstract class Controller extends SymfonyController {
 	public function getEntityManager() {
 		if (!isset($this->em)) {
 			// TODO do this in the configuration
-			$this->em = $this->get('doctrine.orm.entity_manager');
+			$this->em = $this->getDoctrine()->getManager();
 			$this->em->getConfiguration()->addCustomHydrationMode('id', 'App\Hydration\IdHydrator');
 			$this->em->getConfiguration()->addCustomHydrationMode('key_value', 'App\Hydration\KeyValueHydrator');
 		}
@@ -209,15 +208,8 @@ abstract class Controller extends SymfonyController {
 	/**
 	 * @param string $entityName
 	 */
-	public function getRepository($entityName = null) {
-		return $this->getEntityManager()->getRepository($this->getEntityName($entityName));
-	}
-
-	/**
-	 * @param string $entityName
-	 */
-	protected function getEntityName($entityName) {
-		return 'App:'.$entityName;
+	public function getRepository($entityName) {
+		return $this->getEntityManager()->getRepository('App:'.$entityName);
 	}
 
 	private $user;
@@ -336,10 +328,6 @@ abstract class Controller extends SymfonyController {
 	 */
 	protected function notAllowed($message = null) {
 		throw new HttpException(401, $message);
-	}
-
-	protected function notFound($message = null) {
-		throw new NotFoundHttpException($message);
 	}
 
 	// TODO refactor: move to separate class

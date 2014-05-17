@@ -28,7 +28,7 @@ class BookController extends Controller {
 				$categories = $this->getCategoryRepository()->getAll();
 				break;
 			default:
-				return $this->notFound("Format $_format is not supported");
+				throw $this->createNotFoundException("Format $_format is not supported");
 		}
 
 		return $this->display("list_by_category_index.$_format", array(
@@ -45,7 +45,7 @@ class BookController extends Controller {
 		$bookRepo = $this->getBookRepository();
 		$category = $this->getCategoryRepository()->findBySlug($slug);
 		if ($category === null) {
-			return $this->notFound("Няма категория с код $slug.");
+			throw $this->createNotFoundException("Няма категория с код $slug.");
 		}
 		$limit = 30;
 
@@ -108,7 +108,7 @@ class BookController extends Controller {
 		try {
 			$book = $this->getBookRepository()->get($id);
 		} catch (NoResultException $e) {
-			return $this->notFound("Няма книга с номер $id.");
+			throw $this->createNotFoundException("Няма книга с номер $id.");
 		}
 
 		switch ($_format) {

@@ -64,7 +64,7 @@ class WorkroomController extends Controller {
 
 		$contrib = $this->getWorkContribRepository()->find($id);
 		if ($contrib === null) {
-			return $this->notFound();
+			throw $this->createNotFoundException();
 		}
 		$entry = $contrib->getEntry();
 		$contrib->delete();

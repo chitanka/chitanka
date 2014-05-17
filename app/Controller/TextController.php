@@ -68,7 +68,7 @@ class TextController extends Controller {
 		$slug = String::slugify($slug);
 		$label = $this->getLabelRepository()->findBySlug($slug);
 		if ($label === null) {
-			return $this->notFound("Няма етикет с код $slug.");
+			throw $this->createNotFoundException("Няма етикет с код $slug.");
 		}
 		$labels = $label->getDescendantIdsAndSelf();
 
@@ -131,7 +131,7 @@ class TextController extends Controller {
 			case 'data':
 				return $this->displayText($this->findText($id, true)->getDataAsPlain(), array('Content-Type' => 'text/plain'));
 		}
-		return $this->notFound("Неизвестен формат: $_format");
+		throw $this->createNotFoundException("Неизвестен формат: $_format");
 	}
 
 	private function canRedirectToMirror($format) {
@@ -370,7 +370,7 @@ class TextController extends Controller {
 	protected function findText($textId, $bailIfNotFound = true, $fetchRelations = false) {
 		$text = $this->getTextRepository()->get($textId, $fetchRelations);
 		if ($bailIfNotFound && $text === null) {
-			return $this->notFound("Няма текст с номер $textId.");
+			throw $this->createNotFoundException("Няма текст с номер $textId.");
 		}
 		return $text;
 	}
@@ -378,7 +378,7 @@ class TextController extends Controller {
 	protected function findLabel($labelId, $bailIfNotFound = true) {
 		$label = $this->getLabelRepository()->find($labelId);
 		if ($bailIfNotFound && $label === null) {
-			return $this->notFound("Няма етикет с номер $labelId.");
+			throw $this->createNotFoundException("Няма етикет с номер $labelId.");
 		}
 		return $label;
 	}
