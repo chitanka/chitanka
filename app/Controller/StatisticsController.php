@@ -4,17 +4,17 @@ class StatisticsController extends Controller {
 	public function indexAction() {
 		$this->view = array(
 			'count' => array(
-				'authors'       => $this->getPersonRepository()->asAuthor()->getCount(),
-				'translators'   => $this->getPersonRepository()->asTranslator()->getCount(),
-				'texts'         => $this->getTextRepository()->getCount(),
-				'series'        => $this->getSeriesRepository()->getCount(),
-				'labels'        => $this->getLabelRepository()->getCount(),
-				'books'         => $this->getBookRepository()->getCount(),
-				'books_wo_cover'=> $this->getBookRepository()->getCountWithMissingCover(),
-				'sequences'     => $this->getSequenceRepository()->getCount(),
-				'categories'    => $this->getCategoryRepository()->getCount(),
-				'text_comments' => $this->getTextCommentRepository()->getCount('e.is_shown = 1'),
-				'users'         => $this->getUserRepository()->getCount(),
+				'authors'       => $this->em->getPersonRepository()->asAuthor()->getCount(),
+				'translators'   => $this->em->getPersonRepository()->asTranslator()->getCount(),
+				'texts'         => $this->em->getTextRepository()->getCount(),
+				'series'        => $this->em->getSeriesRepository()->getCount(),
+				'labels'        => $this->em->getLabelRepository()->getCount(),
+				'books'         => $this->em->getBookRepository()->getCount(),
+				'books_wo_cover'=> $this->em->getBookRepository()->getCountWithMissingCover(),
+				'sequences'     => $this->em->getSequenceRepository()->getCount(),
+				'categories'    => $this->em->getCategoryRepository()->getCount(),
+				'text_comments' => $this->em->getTextCommentRepository()->getCount('e.is_shown = 1'),
+				'users'         => $this->em->getUserRepository()->getCount(),
 			),
 			'author_countries'  => $this->getAuthorCountries(),
 			'text_types'        => $this->getTextTypes(),
@@ -24,13 +24,13 @@ class StatisticsController extends Controller {
 	}
 
 	private function getAuthorCountries() {
-		$authors = $this->getPersonRepository()->asAuthor()->getCountsByCountry();
+		$authors = $this->em->getPersonRepository()->asAuthor()->getCountsByCountry();
 		arsort($authors);
 		return $authors;
 	}
 
 	private function getTextTypes() {
-		$texts = $this->getTextRepository()->getCountsByType();
+		$texts = $this->em->getTextRepository()->getCountsByType();
 		arsort($texts);
 		return $texts;
 	}

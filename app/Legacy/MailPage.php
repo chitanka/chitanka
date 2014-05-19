@@ -2,23 +2,24 @@
 
 class MailPage extends Page {
 
-	protected
-		$action = 'mail',
-		$mailSuccessMessage,
-		$mailFailureMessage,
-		$mailTo,
-		$mailFrom,
-		$mailSubject = '',
-		$extraMailHeaders = array()
-	;
+	protected $action = 'mail';
+	protected $name;
+	protected $email;
+	protected $mailToName;
+	protected $mailToEmail;
+	protected $mailFromName;
+	protected $mailFromEmail;
+	protected $mailSubject = '';
+	protected $mailSuccessMessage;
+	protected $mailFailureMessage;
+	protected $mailMessage;
+	protected $extraMailHeaders = array();
 
 	public function __construct($fields) {
 		parent::__construct($fields);
 
 		$this->logFile = $this->logDir . '/email.log';
 
-// 		$this->name = $this->request->value('name', ADMIN);
-// 		$this->email = $this->request->value('email', ADMIN_EMAIL);
 		$this->name = $this->request->value('name');
 		$this->email = $this->request->value('email');
 

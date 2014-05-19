@@ -12,7 +12,7 @@ class BookController extends Controller {
 	public function indexAction($_format) {
 		if ($_format == 'html') {
 			$this->view = array(
-				'categories' => $this->getCategoryRepository()->getAllAsTree(),
+				'categories' => $this->em->getCategoryRepository()->getAllAsTree(),
 			);
 		}
 
@@ -22,10 +22,10 @@ class BookController extends Controller {
 	public function listByCategoryIndexAction($_format) {
 		switch ($_format) {
 			case 'html':
-				$categories = $this->getCategoryRepository()->getAllAsTree();
+				$categories = $this->em->getCategoryRepository()->getAllAsTree();
 				break;
 			case 'opds':
-				$categories = $this->getCategoryRepository()->getAll();
+				$categories = $this->em->getCategoryRepository()->getAll();
 				break;
 			default:
 				throw $this->createNotFoundException("Format $_format is not supported");
@@ -42,8 +42,8 @@ class BookController extends Controller {
 
 	public function listByCategoryAction($slug, $page, $_format) {
 		$slug = String::slugify($slug);
-		$bookRepo = $this->getBookRepository();
-		$category = $this->getCategoryRepository()->findBySlug($slug);
+		$bookRepo = $this->em->getBookRepository();
+		$category = $this->em->getCategoryRepository()->findBySlug($slug);
 		if ($category === null) {
 			throw $this->createNotFoundException("Няма категория с код $slug.");
 		}
@@ -65,7 +65,7 @@ class BookController extends Controller {
 	}
 
 	public function listByAlphaAction($letter, $page, $_format) {
-		$bookRepo = $this->getBookRepository();
+		$bookRepo = $this->em->getBookRepository();
 		$limit = 30;
 
 		$prefix = $letter == '-' ? null : $letter;
@@ -85,14 +85,14 @@ class BookController extends Controller {
 
 	public function listWoCoverAction($page) {
 		$limit = 30;
-		$bookRepo = $this->getBookRepository();
+		$bookRepo = $this->em->getBookRepository();
 		$_format = 'html';
 		$this->view = array(
 			'books' => $bookRepo->getWithMissingCover($page, $limit),
 			'pager' => new Pager(array(
 				'page'  => $page,
 				'limit' => $limit,
-				'total' => $this->getBookRepository()->getCountWithMissingCover()
+				'total' => $this->em->getBookRepository()->getCountWithMissingCover()
 			)),
 		);
 
@@ -106,7 +106,7 @@ class BookController extends Controller {
 
 		list($id) = explode('-', $id); // remove optional slug
 		try {
-			$book = $this->getBookRepository()->get($id);
+			$book = $this->em->getBookRepository()->get($id);
 		} catch (NoResultException $e) {
 			throw $this->createNotFoundException("Няма книга с номер $id.");
 		}
@@ -152,7 +152,7 @@ class BookController extends Controller {
 	}
 
 	public function randomAction() {
-		$id = $this->getBookRepository()->getRandomId();
+		$id = $this->em->getBookRepository()->getRandomId();
 
 		return $this->urlRedirect($this->generateUrl('book_show', array('id' => $id)));
 	}

@@ -6,7 +6,7 @@ class TextCommentController extends Controller {
 		if ($_format == 'rss') {
 			$limit = 10;
 			$this->view = array(
-				'comments' => $this->getTextCommentRepository()->getLatest($limit),
+				'comments' => $this->em->getTextCommentRepository()->getLatest($limit),
 			);
 
 			return $this->display("index.$_format");
@@ -19,7 +19,7 @@ class TextCommentController extends Controller {
 
 	public function listForTextAction($id) {
 		$this->responseAge = 0;
-		$text = $this->getTextRepository()->find($id);
+		$text = $this->em->getTextRepository()->find($id);
 
 		$_REQUEST['id'] = $id;
 
@@ -33,7 +33,7 @@ class TextCommentController extends Controller {
 //
 		$this->view = array(
 			'text' => $text,
-// 			'comments' => $this->getTextCommentRepository()->getByText($text),
+// 			'comments' => $this->em->getTextCommentRepository()->getByText($text),
 // 			'form' => $form,
 		);
 

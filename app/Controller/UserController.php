@@ -29,8 +29,8 @@ class UserController extends Controller {
 	}
 
 	public function ratingsAction($username) {
-		$user = $this->getUserRepository()->findByUsername($username);
-		$ratings = $this->getTextRatingRepository()->getByUser($user);
+		$user = $this->em->getUserRepository()->findByUsername($username);
+		$ratings = $this->em->getTextRatingRepository()->getByUser($user);
 		return $this->display('ratings', array(
 			'user' => $user,
 			'ratings' => $ratings,
@@ -46,8 +46,8 @@ class UserController extends Controller {
 
 	public function contribsAction($username, $page) {
 		$limit = 50;
-		$user = $this->getUserRepository()->findByUsername($username);
-		$repo = $this->getUserTextContribRepository();
+		$user = $this->em->getUserRepository()->findByUsername($username);
+		$repo = $this->em->getUserTextContribRepository();
 
 		$this->view = array(
 			'user' => $user,
@@ -68,18 +68,18 @@ class UserController extends Controller {
 		$this->responseAge = 0;
 
 		if ($this->getUser()->getUsername() != $username) {
-			$user = $this->getUserRepository()->findByToken($username);
+			$user = $this->em->getUserRepository()->findByToken($username);
 			if ( ! $user) {
 				return $this->notAllowed();
 			}
 			$isOwner = false;
 		} else {
-			$user = $this->getUserRepository()->findByUsername($username);
+			$user = $this->em->getUserRepository()->findByUsername($username);
 			$isOwner = true;
 		}
 
 		$limit = 50;
-		$repo = $this->getUserTextReadRepository();
+		$repo = $this->em->getUserTextReadRepository();
 
 		$this->view = array(
 			'user' => $user,
@@ -101,18 +101,18 @@ class UserController extends Controller {
 		$this->responseAge = 0;
 
 		if ($this->getUser()->getUsername() != $username) {
-			$user = $this->getUserRepository()->findByToken($username);
+			$user = $this->em->getUserRepository()->findByToken($username);
 			if ( ! $user) {
 				return $this->notAllowed();
 			}
 			$isOwner = false;
 		} else {
-			$user = $this->getUserRepository()->findByUsername($username);
+			$user = $this->em->getUserRepository()->findByUsername($username);
 			$isOwner = true;
 		}
 
 		$limit = 50;
-		$repo = $this->getBookmarkRepository();
+		$repo = $this->em->getBookmarkRepository();
 
 		$this->view = array(
 			'user' => $user,
@@ -144,8 +144,8 @@ class UserController extends Controller {
 		$texts = $request->get('texts');
 
 		return $this->displayJson(array(
-			'read' => array_flip($this->getUserTextReadRepository()->getValidTextIds($this->getUser(), $texts)),
-			'favorities' => array_flip($this->getBookmarkRepository()->getValidTextIds($this->getUser(), $texts)),
+			'read' => array_flip($this->em->getUserTextReadRepository()->getValidTextIds($this->getUser(), $texts)),
+			'favorities' => array_flip($this->em->getBookmarkRepository()->getValidTextIds($this->getUser(), $texts)),
 		));
 	}
 

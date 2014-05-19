@@ -45,7 +45,7 @@ class AuthorController extends PersonController {
 
 		$this->view = array(
 			'person' => $person,
-			'books'  => $this->getBookRepository()->getByAuthor($person),
+			'books'  => $this->em->getBookRepository()->getByAuthor($person),
 		);
 
 		return $this->display("show_books.$_format");
@@ -60,7 +60,7 @@ class AuthorController extends PersonController {
 		$groupBySeries = $_format == 'html';
 		$this->view = array(
 			'person' => $person,
-			'texts'  => $this->getTextRepository()->findByAuthor($person, $groupBySeries),
+			'texts'  => $this->em->getTextRepository()->findByAuthor($person, $groupBySeries),
 		);
 
 		return $this->display("show_texts.$_format");
@@ -71,6 +71,6 @@ class AuthorController extends PersonController {
 	}
 
 	protected function getPersonRepository() {
-		return parent::getPersonRepository()->asAuthor();
+		return $this->em->getPersonRepository()->asAuthor();
 	}
 }

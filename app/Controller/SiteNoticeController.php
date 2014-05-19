@@ -5,7 +5,7 @@ class SiteNoticeController extends Controller {
 	public function stripeAction() {
 		if ( rand(0, 5) === 0 /*every fifth*/ ) {
 			$this->view = array(
-				'siteNotice' => $this->getSiteNoticeRepository()->getGlobalRandom(),
+				'siteNotice' => $this->em->getSiteNoticeRepository()->getGlobalRandom(),
 			);
 		}
 

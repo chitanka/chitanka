@@ -6,20 +6,59 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 
 	protected $queryableFields = array();
 
-	public function persist($object) {
+	/**
+	 * Save an entity into the database.
+	 * @param Entity $object
+	 * @see \Doctrine\ORM\EntityManager::persist()
+	 * @see \Doctrine\ORM\EntityManager::flush()
+	 */
+	public function save($object) {
 		$em = $this->getEntityManager();
 		$em->persist($object);
 		$em->flush();
 	}
 
+	/**
+	 * Flushes the entity manager queue.
+	 * @see \Doctrine\ORM\EntityManager::flush()
+	 */
 	public function flush() {
 		$this->getEntityManager()->flush();
 	}
 
+	/**
+	 * Executes an SQL INSERT/UPDATE/DELETE query with the given parameters
+	 * and returns the number of affected rows.
+	 *
+	 * This method supports PDO binding types as well as DBAL mapping types.
+	 *
+	 * @param string $query  The SQL query.
+	 * @param array  $params The query parameters.
+	 * @param array  $types  The parameter types.
+	 *
+	 * @return integer The number of affected rows.
+	 *
+	 * @throws \Doctrine\DBAL\DBALException
+	 * @see \Doctrine\DBAL\Connection::executeUpdate
+	 */
+	public function execute($query, array $params = array(), array $types = array()) {
+		return $this->getEntityManager()->getConnection()->executeUpdate($query, $params, $types);
+	}
+
+	/**
+	 * A proxy to self::getCount()
+	 * @param string $where
+	 * @return int
+	 */
 	public function count($where = null) {
 		return $this->getCount($where);
 	}
 
+	/**
+	 * Get count of entities matching a given where clause
+	 * @param string $where
+	 * @return int
+	 */
 	public function getCount($where = null) {
 		$qb = $this->createQueryBuilder('e')->select('COUNT(e.id)');
 		if ($where) {
@@ -29,9 +68,11 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 	}
 
 	/**
+	 * Set pagination parameters for a given query.
 	 * @param \Doctrine\ORM\Query $query
 	 * @param int $page
 	 * @param int $limit
+	 * @return \Doctrine\ORM\Query
 	 */
 	protected function setPagination($query, $page, $limit) {
 		if ($limit) {
@@ -43,6 +84,7 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 
 	/**
 	 * @param string $where
+	 * @return Entity
 	 */
 	public function getRandom($where = null) {
 		return $this->getRandomQuery($where)->getSingleResult();
@@ -50,6 +92,7 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 
 	/**
 	 * @param string $where
+	 * @return int
 	 */
 	public function getRandomId($where = null) {
 		return $this->getRandomQuery($where, 'e.id')->getSingleScalarResult();
@@ -58,6 +101,7 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 	/**
 	 * @param string $where
 	 * @param string $select
+	 * @return \Doctrine\ORM\Query
 	 */
 	protected function getRandomQuery($where = null, $select = null) {
 		$qb = $this->getEntityManager()->createQueryBuilder()
@@ -73,6 +117,11 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 		return $query;
 	}
 
+	/**
+	 *
+	 * @param array $ids
+	 * @return Entity[]
+	 */
 	public function findByIds(array $ids) {
 		if (empty($ids)) {
 			return array();
@@ -85,6 +134,7 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 	/**
 	 * @param array $ids
 	 * @param string $orderBy
+	 * @return array
 	 */
 	public function getByIds($ids, $orderBy = null) {
 		if (empty($ids)) {
@@ -147,6 +197,11 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 		return $this->queryableFields;
 	}
 
+	/**
+	 *
+	 * @param string $orderBys
+	 * @return \Doctrine\ORM\QueryBuilder
+	 */
 	public function getQueryBuilder($orderBys = null) {
 		$qb = $this->createQueryBuilder('e');
 

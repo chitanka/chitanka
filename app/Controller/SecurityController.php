@@ -31,8 +31,11 @@ class SecurityController extends Controller {
 		return $this->legacyPage('SendUsername');
 	}
 
-	public function requestPasswordAction() {
-		return $this->legacyPage('SendNewPassword');
+	public function requestPasswordAction(Request $request) {
+		if ($request->isMethod('POST')) {
+			return $this->legacyPage('SendNewPassword');
+		}
+		return $this->display('request_password');
 	}
 
 }

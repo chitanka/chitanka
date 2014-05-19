@@ -1,7 +1,7 @@
 <?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use FOS\CommentBundle\Entity\Thread as BaseThread;
 
 /**
@@ -30,7 +30,7 @@ class Thread extends BaseThread {
 		return strpos($this->id, 'WorkEntry:') === 0;
 	}
 
-	public function getTarget(EntityManager $em) {
+	public function getTarget(DoctrineEntityManager $em) {
 		list($entity, $id) = explode(':', $this->id);
 		$repo = $em->getRepository("App:$entity");
 		return $repo ? $repo->find($id) : null;

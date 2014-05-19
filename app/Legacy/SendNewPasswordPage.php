@@ -4,8 +4,9 @@ use App\Entity\User;
 
 class SendNewPasswordPage extends MailPage {
 
-	protected
-		$action = 'sendNewPassword';
+	protected $action = 'sendNewPassword';
+	protected $username;
+	protected $newPassword;
 
 	public function __construct($fields) {
 		parent::__construct($fields);
@@ -14,28 +15,24 @@ class SendNewPasswordPage extends MailPage {
 	}
 
 	protected function processSubmission() {
-		$key = array('username' => $this->username);
-		$res = $this->db->select(DBT_USER, $key, 'email');
-
-		$data = $this->db->fetchAssoc($res);
-		if ( empty($data) ) {
+		$userRepo = $this->controller->getUserRepository();
+		$user = $userRepo->findByUsername($this->username);
+		if (!$user) {
 			$this->addMessage("Не съществува потребител с име <strong>$this->username</strong>.", true);
 
 			return $this->buildContent();
 		}
 
-		extract($data);
-		if ( empty($email) ) {
+		if ($user->getEmail() == '') {
 			$this->addMessage("За потребителя <strong>$this->username</strong> не е посочена електронна поща.", true);
 
 			return $this->buildContent();
 		}
 
 		$this->mailToName = $this->username;
-		$this->mailToEmail = $email;
+		$this->mailToEmail = $user->getEmail();
 
 		$this->newPassword = User::randomPassword();
-		$user = $this->controller->getRepository('User')->findOneBy(array('username' => $this->username));
 		$user->setNewpassword($this->newPassword);
 		$em = $this->controller->getEntityManager();
 		$em->persist($user);
@@ -47,25 +44,6 @@ class SendNewPasswordPage extends MailPage {
 		$this->mailFailureMessage = 'Изпращането на новата парола не сполучи.';
 
 		return parent::processSubmission();
-	}
-
-	protected function makeForm() {
-		$username = $this->out->textField('username', '', $this->username, 25, 255, 2);
-		$submit = $this->out->submitButton('Изпращане на нова парола', '', 3);
-
-		return <<<EOS
-
-<p>Чрез долния формуляр можете да поискате нова парола за влизане в <em>$this->sitename</em>, ако сте забравили сегашната си. Такава обаче може да ви бъде изпратена само ако сте посочили валидна електронна поща в потребителските си данни.</p>
-
-<form action="" method="post">
-<fieldset>
-	<legend>Нова парола</legend>
-	<label for="username">Потребителско име:</label>
-	$username
-	$submit
-</fieldset>
-</form>
-EOS;
 	}
 
 	protected function makeMailMessage() {

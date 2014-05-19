@@ -10,8 +10,8 @@ class HistoryController extends Controller {
 
 	public function indexAction() {
 		$this->view = array(
-			'book_revisions_by_date' => $this->getBookRevisionRepository()->getLatest($this->booksPerPage),
-			'text_revisions_by_date' => $this->getTextRevisionRepository()->getLatest($this->textsPerPage),
+			'book_revisions_by_date' => $this->em->getBookRevisionRepository()->getLatest($this->booksPerPage),
+			'text_revisions_by_date' => $this->em->getTextRevisionRepository()->getLatest($this->textsPerPage),
 		);
 
 		return $this->display('index');
@@ -19,7 +19,7 @@ class HistoryController extends Controller {
 
 	public function listBooksAction($page, $_format) {
 		$maxPerPage = $this->booksPerPage;
-		$repo = $this->getBookRevisionRepository();
+		$repo = $this->em->getBookRevisionRepository();
 		switch ($_format) {
 			case 'html':
 			case 'rss':
@@ -50,7 +50,7 @@ class HistoryController extends Controller {
 		$dates = array("$year-$month-01", Datetime::endOfMonth("$year-$month"));
 		$limit = $this->booksPerPage;
 
-		$repo = $this->getBookRevisionRepository();
+		$repo = $this->em->getBookRevisionRepository();
 		$this->view = array(
 			'dates' => $this->getDateOptions($repo),
 			'month' => ltrim($month, '0'),
@@ -69,7 +69,7 @@ class HistoryController extends Controller {
 
 	public function listTextsAction($page, $_format) {
 		$maxPerPage = $this->textsPerPage;
-		$repo = $this->getTextRevisionRepository();
+		$repo = $this->em->getTextRevisionRepository();
 		switch ($_format) {
 			case 'html':
 			case 'rss':
@@ -100,7 +100,7 @@ class HistoryController extends Controller {
 		$dates = array("$year-$month-01", Datetime::endOfMonth("$year-$month"));
 		$limit = $this->textsPerPage;
 
-		$repo = $this->getTextRevisionRepository();
+		$repo = $this->em->getTextRevisionRepository();
 		$revisions = $repo->getByDate($dates, $page, $limit);
 		$this->view = array(
 			'dates' => $this->getDateOptions($repo),

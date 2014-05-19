@@ -4,13 +4,13 @@ class FeaturedBookController extends Controller {
 
 	public function indexAction($_format) {
 		return $this->display("index.$_format", array(
-			'books' => $this->getFeaturedBookRepository()->getLatest(100),
+			'books' => $this->em->getFeaturedBookRepository()->getLatest(100),
 		));
 	}
 
 	public function bookAction() {
 		return $this->render('App:FeaturedBook:book.html.twig', array(
-			'book' => $this->getFeaturedBookRepository()->getRandom()
+			'book' => $this->em->getFeaturedBookRepository()->getRandom()
 		));
 	}
 }

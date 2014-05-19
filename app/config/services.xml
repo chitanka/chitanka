@@ -4,6 +4,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
 	<services>
+		<service id="app.entity_manager" class="App\Entity\EntityManager">
+			<argument type="service" id="doctrine.orm.entity_manager" />
+		</service>
+
 		<service id="app.person.repository" class="App\Entity\PersonRepository"
 			factory-service="doctrine.orm.entity_manager" factory-method="getRepository">
 			<argument>App:Person</argument>

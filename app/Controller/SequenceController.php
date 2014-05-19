@@ -10,7 +10,7 @@ class SequenceController extends Controller {
 	}
 
 	public function listByAlphaAction($letter, $page, $_format) {
-		$repo = $this->getSequenceRepository();
+		$repo = $this->em->getSequenceRepository();
 		$limit = 50;
 
 		$prefix = $letter == '-' ? null : $letter;
@@ -30,14 +30,14 @@ class SequenceController extends Controller {
 
 	public function showAction($slug, $_format) {
 		$slug = String::slugify($slug);
-		$sequence = $this->getSequenceRepository()->findBySlug($slug);
+		$sequence = $this->em->getSequenceRepository()->findBySlug($slug);
 		if ($sequence === null) {
 			throw $this->createNotFoundException("Няма поредица с код $slug.");
 		}
 
 		$this->view = array(
 			'sequence' => $sequence,
-			'books'  => $this->getBookRepository()->getBySequence($sequence),
+			'books'  => $this->em->getBookRepository()->getBySequence($sequence),
 		);
 
 		return $this->display("show.$_format");

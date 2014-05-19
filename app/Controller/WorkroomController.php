@@ -62,7 +62,7 @@ class WorkroomController extends Controller {
 			return $this->notAllowed('Нямате достатъчни права за това действие.');
 		}
 
-		$contrib = $this->getWorkContribRepository()->find($id);
+		$contrib = $this->em->getWorkContribRepository()->find($id);
 		if ($contrib === null) {
 			throw $this->createNotFoundException();
 		}
@@ -87,7 +87,7 @@ class WorkroomController extends Controller {
 
 	public function latestAction($limit = 10) {
 		$this->view = array(
-			'entries' => $this->getWorkEntryRepository()->getLatest($limit),
+			'entries' => $this->em->getWorkEntryRepository()->getLatest($limit),
 		);
 
 		return $this->display('WorkEntry:list');

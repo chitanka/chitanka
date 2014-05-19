@@ -6,41 +6,54 @@ use App\Util\Char;
 
 abstract class Page {
 
-	const
-		FF_ACTION = 'action',
-		FF_QUERY = 'q',
-		FF_TEXT_ID = 'id',
-		FF_CHUNK_ID = 'part',
-		FF_LIMIT = 'plmt',
-		FF_OFFSET = 'page',
-		FF_CQUESTION = 'captchaQuestion',
-		FF_CQUESTION_T = 'captchaQuestionT',
-		FF_CANSWER = 'captchaAnswer',
-		FF_CTRIES = 'captchaTries';
+	const FF_ACTION = 'action';
+	const FF_QUERY = 'q';
+	const FF_TEXT_ID = 'id';
+	const FF_CHUNK_ID = 'part';
+	const FF_LIMIT = 'plmt';
+	const FF_OFFSET = 'page';
+	const FF_CQUESTION = 'captchaQuestion';
+	const FF_CQUESTION_T = 'captchaQuestionT';
+	const FF_CANSWER = 'captchaAnswer';
+	const FF_CTRIES = 'captchaTries';
 
-	public
-		$redirect = '',
-		$inlineJs = '';
+	public $redirect = '';
+	public $inlineJs = '';
 
-	protected
-		$root,
-		$sitename,
-		$action = '',
-		$title,
-		$request,
-		$user,
-		$db,
-		$content,
-		$messages,
-		$out,
-		$controller,
-		$container,
-		$logDir,
+	/** @var string */
+	protected $root;
+	/** @var string */
+	protected $sitename;
+	/** @var string */
+	protected $action = '';
+	/** @var string */
+	protected $title;
+	/** @var Request */
+	protected $request;
+	/** @var \App\Entity\User */
+	protected $user;
+	/** @var mlDatabase */
+	protected $db;
+	/** @var string */
+	protected $content;
+	/** @var string */
+	protected $messages;
+	/** @var OutputMaker */
+	protected $out;
+	/** @var \App\Controller\Controller */
+	protected $controller;
+	/** @var \Symfony\Component\DependencyInjection\Container */
+	protected $container;
+	/** @var string */
+	protected $logDir;
 
-		$llimit = 0, $loffset = 0,
-		$maxCaptchaTries = 2, $defListLimit = 10, $maxListLimit = 50,
+	protected $llimit = 0;
+	protected $loffset = 0;
+	protected $maxCaptchaTries = 2;
+	protected $defListLimit = 10;
+	protected $maxListLimit = 50;
 
-		$includeUserLinks               = true;
+	protected $includeUserLinks = true;
 
 	public function __construct(array $fields) {
 		foreach ($fields as $f => $v) {

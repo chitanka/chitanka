@@ -83,8 +83,8 @@ abstract class Controller extends SymfonyController {
 		$globals = $this->getDisplayVariables();
 
 		if ($format == 'opds') {
-			$textsUpdatedAt = $this->getTextRevisionRepository()->getMaxDate();
-			$booksUpdatedAt = $this->getBookRevisionRepository()->getMaxDate();
+			$textsUpdatedAt = $this->em->getTextRevisionRepository()->getMaxDate();
+			$booksUpdatedAt = $this->em->getBookRevisionRepository()->getMaxDate();
 			$globals += array(
 				'texts_updated_at' => $textsUpdatedAt,
 				'books_updated_at' => $booksUpdatedAt,
@@ -193,23 +193,16 @@ abstract class Controller extends SymfonyController {
 		return $this->get('request')->attributes->get('_route');
 	}
 
-	/** @return \Doctrine\ORM\EntityManager */
+	/** @return \App\Entity\EntityManager */
 	public function getEntityManager() {
-		if (!isset($this->em)) {
-			// TODO do this in the configuration
-			$this->em = $this->getDoctrine()->getManager();
-			$this->em->getConfiguration()->addCustomHydrationMode('id', 'App\Hydration\IdHydrator');
-			$this->em->getConfiguration()->addCustomHydrationMode('key_value', 'App\Hydration\KeyValueHydrator');
-		}
-
-		return $this->em;
+		return $this->em ?: $this->em = $this->container->get('app.entity_manager');
 	}
 
 	/**
 	 * @param string $entityName
 	 */
 	public function getRepository($entityName) {
-		return $this->getEntityManager()->getRepository('App:'.$entityName);
+		return $this->getEntityManager()->getRepository($entityName);
 	}
 
 	private $user;
@@ -217,7 +210,7 @@ abstract class Controller extends SymfonyController {
 	public function getUser() {
 		// TODO remove
 		if ( ! isset($this->user)) {
-			$this->user = User::initUser($this->getUserRepository());
+			$this->user = User::initUser($this->em->getUserRepository());
 			if ($this->user->isAuthenticated()) {
 				$token = new \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken($this->user, $this->user->getPassword(), 'User', $this->user->getRoles());
 				$this->get('security.context')->setToken($token);
@@ -372,56 +365,14 @@ abstract class Controller extends SymfonyController {
 		return $this->container->getParameter($param);
 	}
 
-	/** @return \App\Entity\BookRepository */
-	protected function getBookRepository() { return $this->getRepository('Book'); }
-	/** @return \App\Entity\BookmarkRepository */
-	protected function getBookmarkRepository() { return $this->getRepository('Bookmark'); }
-	/** @return \App\Entity\BookmarkFolderRepository */
-	protected function getBookmarkFolderRepository() { return $this->getRepository('BookmarkFolder'); }
-	/** @return \App\Entity\BookRevisionRepository */
-	protected function getBookRevisionRepository() { return $this->getRepository('BookRevision'); }
-	/** @return \App\Entity\CategoryRepository */
-	protected function getCategoryRepository() { return $this->getRepository('Category'); }
-	/** @return \App\Entity\FeaturedBookRepository */
-	protected function getFeaturedBookRepository() { return $this->getRepository('FeaturedBook'); }
-	/** @return \App\Entity\ForeignBookRepository */
-	protected function getForeignBookRepository() { return $this->getRepository('ForeignBook'); }
-	/** @return \App\Entity\LabelRepository */
-	protected function getLabelRepository() { return $this->getRepository('Label'); }
-	/** @return \App\Entity\PersonRepository */
-	protected function getPersonRepository() { return $this->getRepository('Person'); }
-	/** @return \App\Entity\SearchStringRepository */
-	protected function getSearchStringRepository() { return $this->getRepository('SearchString'); }
-	/** @return \App\Entity\SequenceRepository */
-	protected function getSequenceRepository() { return $this->getRepository('Sequence'); }
-	/** @return \App\Entity\SeriesRepository */
-	protected function getSeriesRepository() { return $this->getRepository('Series'); }
-	/** @return \App\Entity\SiteRepository */
-	protected function getSiteRepository() { return $this->getRepository('Site'); }
-	/** @return \App\Entity\SiteNoticeRepository */
-	protected function getSiteNoticeRepository() { return $this->getRepository('SiteNotice'); }
-	/** @return \App\Entity\TextRepository */
-	protected function getTextRepository() { return $this->getRepository('Text'); }
-	/** @return \App\Entity\TextCommentRepository */
-	protected function getTextCommentRepository() { return $this->getRepository('TextComment'); }
-	/** @return \App\Entity\TextRatingRepository */
-	protected function getTextRatingRepository() { return $this->getRepository('TextRating'); }
-	/** @return \App\Entity\TextRevisionRepository */
-	protected function getTextRevisionRepository() { return $this->getRepository('TextRevision'); }
-	/** @return \App\Entity\UserRepository */
-	protected function getUserRepository() { return $this->getRepository('User'); }
-	/** @return \App\Entity\UserTextContribRepository */
-	protected function getUserTextContribRepository() { return $this->getRepository('UserTextContrib'); }
-	/** @return \App\Entity\UserTextReadRepository */
-	protected function getUserTextReadRepository() { return $this->getRepository('UserTextRead'); }
-	/** @return \Doctrine\ORM\EntityRepository */
-	protected function getWikiSiteRepository() { return $this->getRepository('WikiSite'); }
-	/** @return \App\Entity\WorkEntryRepository */
-	protected function getWorkEntryRepository() { return $this->getRepository('WorkEntry'); }
-	/** @return \Doctrine\ORM\EntityRepository */
-	protected function getWorkContribRepository() { return $this->getRepository('WorkContrib'); }
-
 	protected function isValidPost(Request $request, Form $form) {
 		return $request->isMethod('POST') && $form->handleRequest($request)->isValid();
+	}
+
+	public function __get($name) {
+		switch ($name) {
+			case 'em': return $this->getEntityManager();
+		}
+		throw new \BadMethodCallException("The controller '".get_class($this)."' does not have a field with name '$name'");
 	}
 }

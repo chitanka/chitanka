@@ -388,7 +388,7 @@ class User /*extends BaseUser*/ implements UserInterface {
 		$user = $repo->find($_COOKIE[self::UID_COOKIE]);
 		if ( $user->validateToken($_COOKIE[self::TOKEN_COOKIE], $user->getPassword()) ) {
 			$user->touch();
-			$repo->persist($user);
+			$repo->save($user);
 
 			return $user;
 		}

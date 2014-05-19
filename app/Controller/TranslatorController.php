@@ -8,6 +8,6 @@ class TranslatorController extends PersonController {
 	}
 
 	protected function getPersonRepository() {
-		return parent::getPersonRepository()->asTranslator();
+		return $this->em->getPersonRepository()->asTranslator();
 	}
 }

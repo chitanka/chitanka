@@ -1,19 +1,19 @@
 <?php namespace App\Service;
 
-use Doctrine\ORM\EntityManager;
 use App\Entity\Label;
 use App\Entity\Text;
 use App\Entity\TextLabel;
 use App\Entity\TextLabelLog;
+use App\Entity\TextLabelLogRepository;
 use App\Entity\User;
 
 class TextLabelService {
 
-	private $em;
+	private $repo;
 	private $user;
 
-	public function __construct(EntityManager $em, User $user) {
-		$this->em = $em;
+	public function __construct(TextLabelLogRepository $repo, User $user) {
+		$this->repo = $repo;
 		$this->user = $user;
 	}
 
@@ -23,20 +23,21 @@ class TextLabelService {
 		return $textLabel;
 	}
 
+	/**
+	 * @param TextLabel $textLabel
+	 * @param Text $text
+	 */
 	public function addTextLabel(TextLabel $textLabel, Text $text) {
-		// TODO Form::bind() overwrites the Text object with an id
 		$textLabel->setText($text);
 		$text->addLabel($textLabel->getLabel());
 		$log = new TextLabelLog($text, $textLabel->getLabel(), $this->user, '+');
-		$this->em->persist($text);
-		$this->em->persist($log);
-		$this->em->flush();
+		$this->repo->save($text);
+		$this->repo->save($log);
 	}
 
 	public function removeTextLabel(Text $text, Label $label) {
-		$this->em->getConnection()->executeUpdate("DELETE FROM text_label WHERE text_id = {$text->getId()} AND label_id = {$label->getId()}");
+		$this->repo->execute("DELETE FROM text_label WHERE text_id = {$text->getId()} AND label_id = {$label->getId()}");
 		$log = new TextLabelLog($text, $label, $this->user, '-');
-		$this->em->persist($log);
-		$this->em->flush();
+		$this->repo->save($log);
 	}
 }
