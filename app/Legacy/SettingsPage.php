@@ -61,7 +61,7 @@ class SettingsPage extends RegisterPage {
 			$user->setPassword($this->password);
 		}
 
-		$em = $this->controller->getEntityManager();
+		$em = $this->controller->em();
 		$em->persist($user);
 		$em->flush();
 

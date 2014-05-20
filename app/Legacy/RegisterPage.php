@@ -50,7 +50,7 @@ class RegisterPage extends Page {
 		$user->setAllowemail(1);
 		$user->setNews((int) $this->news);
 
-		$em = $this->controller->getEntityManager();
+		$em = $this->controller->em();
 		$em->persist($user);
 		$em->flush();
 

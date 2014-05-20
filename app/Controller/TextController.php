@@ -19,8 +19,8 @@ class TextController extends Controller {
 	public function indexAction($_format) {
 		if ($_format == 'html') {
 			$this->view = array(
-				'labels' => $this->em->getLabelRepository()->getAllAsTree(),
-				'types' => $this->em->getTextRepository()->getTypes(),
+				'labels' => $this->em()->getLabelRepository()->getAllAsTree(),
+				'types' => $this->em()->getTextRepository()->getTypes(),
 			);
 		}
 
@@ -29,13 +29,13 @@ class TextController extends Controller {
 
 	public function listByTypeIndexAction($_format) {
 		return $this->display("list_by_type_index.$_format", array(
-			'types' => $this->em->getTextRepository()->getTypes()
+			'types' => $this->em()->getTextRepository()->getTypes()
 		));
 	}
 
 	public function listByLabelIndexAction($_format) {
 		return $this->display("list_by_label_index.$_format", array(
-			'labels' => $this->em->getLabelRepository()->getAll()
+			'labels' => $this->em()->getLabelRepository()->getAll()
 		));
 	}
 
@@ -44,7 +44,7 @@ class TextController extends Controller {
 	}
 
 	public function listByTypeAction($type, $page, $_format) {
-		$textRepo = $this->em->getTextRepository();
+		$textRepo = $this->em()->getTextRepository();
 		$limit = 30;
 
 		$this->view = array_merge($this->view, array(
@@ -62,11 +62,11 @@ class TextController extends Controller {
 	}
 
 	public function listByLabelAction($slug, $page, $_format) {
-		$textRepo = $this->em->getTextRepository();
+		$textRepo = $this->em()->getTextRepository();
 		$limit = 30;
 
 		$slug = String::slugify($slug);
-		$label = $this->em->getLabelRepository()->findBySlug($slug);
+		$label = $this->em()->getLabelRepository()->findBySlug($slug);
 		if ($label === null) {
 			throw $this->createNotFoundException("Няма етикет с код $slug.");
 		}
@@ -87,7 +87,7 @@ class TextController extends Controller {
 	}
 
 	public function listByAlphaAction($letter, $page, $_format) {
-		$textRepo = $this->em->getTextRepository();
+		$textRepo = $this->em()->getTextRepository();
 		$limit = 30;
 		$prefix = $letter == '-' ? null : $letter;
 
@@ -116,7 +116,7 @@ class TextController extends Controller {
 			case 'txt.zip':
 			case 'sfb.zip':
 				Setup::doSetup($this->container);
-				$service = new TextDownloadService($this->em->getTextRepository());
+				$service = new TextDownloadService($this->em()->getTextRepository());
 				return $this->urlRedirect($this->getWebRoot() . $service->generateFile(explode(',', $id), $_format, $request->get('filename')));
 			case 'fb2':
 				Setup::doSetup($this->container);
@@ -164,7 +164,7 @@ class TextController extends Controller {
 
 		if (empty($nextPart)) {
 			$alikes = $text->getAlikes();
-			$this->view['similar_texts'] = $alikes ? $this->em->getTextRepository()->getByIds(array_slice($alikes, 0, 30)) : array();
+			$this->view['similar_texts'] = $alikes ? $this->em()->getTextRepository()->getByIds(array_slice($alikes, 0, 30)) : array();
 		}
 
 		$this->view['js_extra'][] = 'text';
@@ -173,7 +173,7 @@ class TextController extends Controller {
 	}
 
 	public function randomAction() {
-		$id = $this->em->getTextRepository()->getRandomId();
+		$id = $this->em()->getTextRepository()->getRandomId();
 
 		return $this->urlRedirect($this->generateUrl('text_show', array('id' => $id)));
 	}
@@ -183,7 +183,7 @@ class TextController extends Controller {
 		$alikes = $text->getAlikes();
 		$this->view = array(
 			'text' => $text,
-			'similar_texts' => $alikes ? $this->em->getTextRepository()->getByIds(array_slice($alikes, 0, 30)) : array(),
+			'similar_texts' => $alikes ? $this->em()->getTextRepository()->getByIds(array_slice($alikes, 0, 30)) : array(),
 		);
 		return $this->display('similar');
 	}
@@ -191,9 +191,9 @@ class TextController extends Controller {
 	public function ratingAction(Request $request, $id) {
 		$text = $this->findText($id);
 
-		$em = $this->getEntityManager();
+		$em = $this->em();
 		$user = $em->merge($this->getUser());
-		$rating = $this->em->getTextRatingRepository()->getByTextAndUser($text, $user);
+		$rating = $this->em()->getTextRatingRepository()->getByTextAndUser($text, $user);
 		if ( ! $rating) {
 			$rating = new TextRating($text, $user);
 		}
@@ -205,7 +205,7 @@ class TextController extends Controller {
 		if ($request->isMethod('POST') && $user->isAuthenticated() && $form->submit($request)->isValid()) {
 			// TODO replace with DoctrineListener
 			$text->updateAvgRating($rating->getRating(), $oldRating);
-			$this->getEntityManager()->persist($text);
+			$this->em()->persist($text);
 
 			// TODO bind overwrites the Text object with an id
 			$rating->setText($text);
@@ -233,7 +233,7 @@ class TextController extends Controller {
 			return $this->notAllowed();
 		}
 		$text = $this->findText($id);
-		$service = new TextLabelService($this->em->getTextLabelLogRepository(), $this->getSavableUser());
+		$service = new TextLabelService($this->em()->getTextLabelLogRepository(), $this->getSavableUser());
 		$textLabel = $service->newTextLabel($text);
 		$form = $this->createForm(new TextLabelType, $textLabel);
 
@@ -261,7 +261,7 @@ class TextController extends Controller {
 		}
 		$text = $this->findText($id);
 		$label = $this->findLabel($labelId);
-		$service = new TextLabelService($this->em->getTextLabelLogRepository(), $this->getSavableUser());
+		$service = new TextLabelService($this->em()->getTextLabelLogRepository(), $this->getSavableUser());
 		$service->removeTextLabel($text, $label);
 
 		if ($request->isXmlHttpRequest()) {
@@ -299,7 +299,7 @@ class TextController extends Controller {
 	 */
 	public function ratingsAction($id) {
 		$text = $this->findText($id);
-		$ratings = $this->em->getTextRatingRepository()->getByText($text);
+		$ratings = $this->em()->getTextRatingRepository()->getByText($text);
 		return $this->display('ratings', array(
 			'text' => $text,
 			'ratings' => $ratings,
@@ -310,7 +310,7 @@ class TextController extends Controller {
 		$this->disableCache();
 
 		if ($this->getUser()->isAuthenticated()) {
-			$tr = $this->em->getUserTextReadRepository()->findOneBy(array('text' => $id, 'user' => $this->getUser()->getId()));
+			$tr = $this->em()->getUserTextReadRepository()->findOneBy(array('text' => $id, 'user' => $this->getUser()->getId()));
 			if ($tr) {
 				return new Response('Произведението е отбелязано като прочетено.');
 			}
@@ -327,7 +327,7 @@ class TextController extends Controller {
 		}
 
 		$text = $this->findText($id);
-		$em = $this->getEntityManager();
+		$em = $this->em();
 		$em->persist(new UserTextRead($this->getSavableUser(), $text));
 		$em->flush();
 
@@ -345,7 +345,7 @@ class TextController extends Controller {
 		}
 
 		$text = $this->findText($id);
-		$service = new TextBookmarkService($this->getEntityManager(), $this->getSavableUser());
+		$service = new TextBookmarkService($this->em(), $this->getSavableUser());
 		$bookmark = $service->addBookmark($text);
 
 		if ($request->isXmlHttpRequest()) {
@@ -366,7 +366,7 @@ class TextController extends Controller {
 	}
 
 	protected function findText($textId, $bailIfNotFound = true, $fetchRelations = false) {
-		$text = $this->em->getTextRepository()->get($textId, $fetchRelations);
+		$text = $this->em()->getTextRepository()->get($textId, $fetchRelations);
 		if ($bailIfNotFound && $text === null) {
 			throw $this->createNotFoundException("Няма текст с номер $textId.");
 		}
@@ -374,7 +374,7 @@ class TextController extends Controller {
 	}
 
 	protected function findLabel($labelId, $bailIfNotFound = true) {
-		$label = $this->em->getLabelRepository()->find($labelId);
+		$label = $this->em()->getLabelRepository()->find($labelId);
 		if ($bailIfNotFound && $label === null) {
 			throw $this->createNotFoundException("Няма етикет с номер $labelId.");
 		}

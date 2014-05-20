@@ -81,7 +81,7 @@ class CommentPage extends Page {
 				$showComment = 0;
 			}
 		}
-		$em = $this->controller->getEntityManager();
+		$em = $this->controller->em();
 		$comment = new TextComment;
 		$comment->setText($em->find('App:Text', $this->textId));
 		$comment->setRname($this->reader);

@@ -83,8 +83,8 @@ abstract class Controller extends SymfonyController {
 		$globals = $this->getDisplayVariables();
 
 		if ($format == 'opds') {
-			$textsUpdatedAt = $this->em->getTextRevisionRepository()->getMaxDate();
-			$booksUpdatedAt = $this->em->getBookRevisionRepository()->getMaxDate();
+			$textsUpdatedAt = $this->em()->getTextRevisionRepository()->getMaxDate();
+			$booksUpdatedAt = $this->em()->getBookRevisionRepository()->getMaxDate();
 			$globals += array(
 				'texts_updated_at' => $textsUpdatedAt,
 				'books_updated_at' => $booksUpdatedAt,
@@ -194,7 +194,7 @@ abstract class Controller extends SymfonyController {
 	}
 
 	/** @return \App\Entity\EntityManager */
-	public function getEntityManager() {
+	public function em() {
 		return $this->em ?: $this->em = $this->container->get('app.entity_manager');
 	}
 
@@ -202,7 +202,7 @@ abstract class Controller extends SymfonyController {
 	 * @param string $entityName
 	 */
 	public function getRepository($entityName) {
-		return $this->getEntityManager()->getRepository($entityName);
+		return $this->em()->getRepository($entityName);
 	}
 
 	private $user;
@@ -210,7 +210,7 @@ abstract class Controller extends SymfonyController {
 	public function getUser() {
 		// TODO remove
 		if ( ! isset($this->user)) {
-			$this->user = User::initUser($this->em->getUserRepository());
+			$this->user = User::initUser($this->em()->getUserRepository());
 			if ($this->user->isAuthenticated()) {
 				$token = new \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken($this->user, $this->user->getPassword(), 'User', $this->user->getRoles());
 				$this->get('security.context')->setToken($token);
@@ -221,7 +221,7 @@ abstract class Controller extends SymfonyController {
 	}
 
 	protected function getSavableUser() {
-		return $this->getEntityManager()->merge($this->getUser());
+		return $this->em()->merge($this->getUser());
 	}
 
 	public function setUser($user) {
@@ -369,10 +369,4 @@ abstract class Controller extends SymfonyController {
 		return $request->isMethod('POST') && $form->handleRequest($request)->isValid();
 	}
 
-	public function __get($name) {
-		switch ($name) {
-			case 'em': return $this->getEntityManager();
-		}
-		throw new \BadMethodCallException("The controller '".get_class($this)."' does not have a field with name '$name'");
-	}
 }

@@ -24,7 +24,7 @@ class PersonController extends Controller {
 		$country = $request->get('country', '');
 		$limit = 100;
 
-		$repo = $this->em->getPersonRepository();
+		$repo = $this->em()->getPersonRepository();
 		$filters = array(
 			'by'      => $by,
 			'prefix'  => $letter,
@@ -74,12 +74,12 @@ class PersonController extends Controller {
 	}
 
 	protected function tryToFindPerson($slug) {
-		$person = $this->em->getPersonRepository()->findBySlug(String::slugify($slug));
+		$person = $this->em()->getPersonRepository()->findBySlug(String::slugify($slug));
 		if ($person) {
 			return $person;
 		}
 
-		$person = $this->em->getPersonRepository()->findOneBy(array('name' => $slug));
+		$person = $this->em()->getPersonRepository()->findOneBy(array('name' => $slug));
 		if ($person) {
 			return $this->urlRedirect($this->generateUrl('person_show', array('slug' => $person->getSlug())), true);
 		}
@@ -92,18 +92,18 @@ class PersonController extends Controller {
 	}
 	protected function prepareViewForShowAuthor(Person $person, $format) {
 		$groupBySeries = $format == 'html';
-		$this->view['texts_as_author'] = $this->em->getTextRepository()->findByAuthor($person, $groupBySeries);
-		$this->view['books'] = $this->em->getBookRepository()->getByAuthor($person);
+		$this->view['texts_as_author'] = $this->em()->getTextRepository()->findByAuthor($person, $groupBySeries);
+		$this->view['books'] = $this->em()->getBookRepository()->getByAuthor($person);
 	}
 	protected function prepareViewForShowTranslator(Person $person, $format) {
-		$this->view['texts_as_translator'] = $this->em->getTextRepository()->findByTranslator($person);
+		$this->view['texts_as_translator'] = $this->em()->getTextRepository()->findByTranslator($person);
 	}
 
 	protected function putPersonInfoInView(Person $person) {
 		if ($person->getInfo() != '') {
 			// TODO move this in the entity
 			list($prefix, $name) = explode(':', $person->getInfo(), 2);
-			$site = $this->em->getWikiSiteRepository()->findOneBy(array('code' => $prefix));
+			$site = $this->em()->getWikiSiteRepository()->findOneBy(array('code' => $prefix));
 			$url = $site->getUrl($name);
 			$this->view['info'] = Legacy::getMwContent($url, $this->container->get('buzz'));
 			$this->view['info_intro'] = strtr($site->getIntro(), array(

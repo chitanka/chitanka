@@ -15,7 +15,7 @@ class SendNewPasswordPage extends MailPage {
 	}
 
 	protected function processSubmission() {
-		$userRepo = $this->controller->getUserRepository();
+		$userRepo = $this->controller->em()->getUserRepository();
 		$user = $userRepo->findByUsername($this->username);
 		if (!$user) {
 			$this->addMessage("Не съществува потребител с име <strong>$this->username</strong>.", true);
@@ -34,9 +34,7 @@ class SendNewPasswordPage extends MailPage {
 
 		$this->newPassword = User::randomPassword();
 		$user->setNewpassword($this->newPassword);
-		$em = $this->controller->getEntityManager();
-		$em->persist($user);
-		$em->flush();
+		$userRepo->save($user);
 
 		$this->mailSubject = "Нова парола за $this->sitename";
 		$loginurl = $this->controller->generateUrl('login');

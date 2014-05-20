@@ -17,14 +17,14 @@ class MainController extends Controller {
 		$this->responseAge = 600;
 
 		return $this->display('index', array(
-			'siteNotices' => $this->em->getSiteNoticeRepository()->findForFrontPage(),
+			'siteNotices' => $this->em()->getSiteNoticeRepository()->findForFrontPage(),
 			'review' => ReviewService::getReview(true),
-			'foreign_book' => $this->em->getForeignBookRepository()->getRandom(),
-			'featured_book' => $this->em->getFeaturedBookRepository()->getRandom(),
-			'latest_books' => $this->em->getBookRevisionRepository()->getLatest(self::LATEST_BOOKS_LIMIT, 1, false),
-			'latest_texts' => $this->em->getTextRevisionRepository()->getLatest(self::LATEST_TEXTS_LIMIT, 1, false),
-			'latest_searches' => $this->em->getSearchStringRepository()->getLatest(self::LATEST_SEARCHES_LIMIT),
-			'latest_comments' => $this->em->getTextCommentRepository()->getLatest(self::LATEST_COMMENTS_LIMIT),
+			'foreign_book' => $this->em()->getForeignBookRepository()->getRandom(),
+			'featured_book' => $this->em()->getFeaturedBookRepository()->getRandom(),
+			'latest_books' => $this->em()->getBookRevisionRepository()->getLatest(self::LATEST_BOOKS_LIMIT, 1, false),
+			'latest_texts' => $this->em()->getTextRevisionRepository()->getLatest(self::LATEST_TEXTS_LIMIT, 1, false),
+			'latest_searches' => $this->em()->getSearchStringRepository()->getLatest(self::LATEST_SEARCHES_LIMIT),
+			'latest_comments' => $this->em()->getTextCommentRepository()->getLatest(self::LATEST_COMMENTS_LIMIT),
 			'latest_liternews' => LiternewsFeed::fetchLatest(self::LATEST_LITERNEWS_LIMIT),
 			'latest_forum_posts' => ForumFeed::fetchLatest(self::LATEST_FORUM_POSTS_LIMIT),
 		));
@@ -40,7 +40,7 @@ class MainController extends Controller {
 
 	public function siteboxAction() {
 		return $this->render('App:Main:sitebox.html.twig', array(
-			'site' => $this->em->getSiteRepository()->getRandom()
+			'site' => $this->em()->getSiteRepository()->getRandom()
 		));
 	}
 

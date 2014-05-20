@@ -19,14 +19,14 @@ class SearchController extends Controller {
 		}
 
 		$lists = array(
-			'persons'      => $this->em->getPersonRepository()->getByNames($query['text'], 15),
-			'texts'        => $this->em->getTextRepository()->getByTitles($query['text'], 15),
-			'books'        => $this->em->getBookRepository()->getByTitles($query['text'], 15),
-			'series'       => $this->em->getSeriesRepository()->getByNames($query['text'], 15),
-			'sequences'    => $this->em->getSequenceRepository()->getByNames($query['text'], 15),
-			'work_entries' => $this->em->getWorkEntryRepository()->getByTitleOrAuthor($query['text']),
-			'labels'       => $this->em->getLabelRepository()->getByNames($query['text']),
-			'categories'   => $this->em->getCategoryRepository()->getByNames($query['text']),
+			'persons'      => $this->em()->getPersonRepository()->getByNames($query['text'], 15),
+			'texts'        => $this->em()->getTextRepository()->getByTitles($query['text'], 15),
+			'books'        => $this->em()->getBookRepository()->getByTitles($query['text'], 15),
+			'series'       => $this->em()->getSeriesRepository()->getByNames($query['text'], 15),
+			'sequences'    => $this->em()->getSequenceRepository()->getByNames($query['text'], 15),
+			'work_entries' => $this->em()->getWorkEntryRepository()->getByTitleOrAuthor($query['text']),
+			'labels'       => $this->em()->getLabelRepository()->getByNames($query['text']),
+			'categories'   => $this->em()->getCategoryRepository()->getByNames($query['text']),
 		);
 
 		$found = array_sum(array_map('count', $lists)) > 0;
@@ -52,7 +52,7 @@ class SearchController extends Controller {
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = array();
 			$query = $request->query->get('q');
-			$persons = $this->em->getPersonRepository()->getByQuery(array(
+			$persons = $this->em()->getPersonRepository()->getByQuery(array(
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
@@ -73,7 +73,7 @@ class SearchController extends Controller {
 		if (empty($query['by'])) {
 			$query['by'] = 'name,orig_name,real_name,orig_real_name';
 		}
-		$persons = $this->em->getPersonRepository()->getByQuery($query);
+		$persons = $this->em()->getPersonRepository()->getByQuery($query);
 		if ( ! ($found = count($persons) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -90,7 +90,7 @@ class SearchController extends Controller {
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = array();
 			$query = $request->query->get('q');
-			$persons = $this->em->getPersonRepository()->asAuthor()->getByQuery(array(
+			$persons = $this->em()->getPersonRepository()->asAuthor()->getByQuery(array(
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
@@ -111,7 +111,7 @@ class SearchController extends Controller {
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = array();
 			$query = $request->query->get('q');
-			$persons = $this->em->getPersonRepository()->asTranslator()->getByQuery(array(
+			$persons = $this->em()->getPersonRepository()->asTranslator()->getByQuery(array(
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
@@ -135,7 +135,7 @@ class SearchController extends Controller {
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = array();
 			$query = $request->query->get('q');
-			$texts = $this->em->getTextRepository()->getByQuery(array(
+			$texts = $this->em()->getTextRepository()->getByQuery(array(
 				'text'  => $query,
 				'by'    => 'title',
 				'match' => 'prefix',
@@ -156,7 +156,7 @@ class SearchController extends Controller {
 		if (empty($query['by'])) {
 			$query['by'] = 'title,subtitle,orig_title';
 		}
-		$texts = $this->em->getTextRepository()->getByQuery($query);
+		$texts = $this->em()->getTextRepository()->getByQuery($query);
 		if ( ! ($found = count($texts) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -176,7 +176,7 @@ class SearchController extends Controller {
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = array();
 			$query = $request->query->get('q');
-			$books = $this->em->getBookRepository()->getByQuery(array(
+			$books = $this->em()->getBookRepository()->getByQuery(array(
 				'text'  => $query,
 				'by'    => 'title',
 				'match' => 'prefix',
@@ -197,7 +197,7 @@ class SearchController extends Controller {
 		if (empty($query['by'])) {
 			$query['by'] = 'title,subtitle,orig_title';
 		}
-		$books = $this->em->getBookRepository()->getByQuery($query);
+		$books = $this->em()->getBookRepository()->getByQuery($query);
 		if ( ! ($found = count($books) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -217,7 +217,7 @@ class SearchController extends Controller {
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = array();
 			$query = $request->query->get('q');
-			$series = $this->em->getSeriesRepository()->getByQuery(array(
+			$series = $this->em()->getSeriesRepository()->getByQuery(array(
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
@@ -238,7 +238,7 @@ class SearchController extends Controller {
 		if (empty($query['by'])) {
 			$query['by'] = 'name,orig_name';
 		}
-		$series = $this->em->getSeriesRepository()->getByQuery($query);
+		$series = $this->em()->getSeriesRepository()->getByQuery($query);
 		if ( ! ($found = count($series) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -258,7 +258,7 @@ class SearchController extends Controller {
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = array();
 			$query = $request->query->get('q');
-			$sequences = $this->em->getSequenceRepository()->getByQuery(array(
+			$sequences = $this->em()->getSequenceRepository()->getByQuery(array(
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
@@ -279,7 +279,7 @@ class SearchController extends Controller {
 		if (empty($query['by'])) {
 			$query['by'] = 'name';
 		}
-		$sequences = $this->em->getSequenceRepository()->getByQuery($query);
+		$sequences = $this->em()->getSequenceRepository()->getByQuery($query);
 		if ( ! ($found = count($sequences) > 0)) {
 			$this->responseStatusCode = 404;
 		}
@@ -298,8 +298,8 @@ class SearchController extends Controller {
 
 		if (empty($query)) {
 			$this->view = array(
-				'latest_strings' => $this->em->getSearchStringRepository()->getLatest(30),
-				'top_strings' => $this->em->getSearchStringRepository()->getTop(30),
+				'latest_strings' => $this->em()->getSearchStringRepository()->getLatest(30),
+				'top_strings' => $this->em()->getSearchStringRepository()->getTop(30),
 			);
 
 			return $this->display("list_top_strings.$_format");
@@ -343,13 +343,13 @@ class SearchController extends Controller {
 	 * @param string $query
 	 */
 	private function logSearch($query) {
-		$searchString = $this->em->getSearchStringRepository()->findOneBy(array('name' => $query));
+		$searchString = $this->em()->getSearchStringRepository()->findOneBy(array('name' => $query));
 		if ( ! $searchString) {
 			$searchString = new SearchString($query);
 		}
 		$searchString->incCount();
-		$this->getEntityManager()->persist($searchString);
-		$this->getEntityManager()->flush();
+		$this->em()->persist($searchString);
+		$this->em()->flush();
 	}
 
 }
