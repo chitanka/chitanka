@@ -2,6 +2,7 @@
 
 use App\Legacy\Setup;
 use App\Entity\User;
+use App\Service\FlashService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +32,10 @@ abstract class Controller extends SymfonyController {
 	*/
 	protected $responseHeaders = array();
 
+	/** @var \App\Entity\EntityManager */
 	private $em;
+	/** @var \App\Service\FlashService */
+	private $flashes;
 
 	/**
 	 * @param string $page
@@ -226,39 +230,13 @@ abstract class Controller extends SymfonyController {
 	 * @return Response
 	 */
 	protected function redirectWithNotice($notice) {
-		$this->addFlashNotice($notice);
+		$this->flashes()->addNotice($notice);
 		return $this->redirect('message');
 	}
 
-	/**
-	 * Add a flash message of type 'notice'
-	 * @param string $notice
-	 */
-	protected function addFlashNotice($notice) {
-		$this->addFlashMessage('notice', $notice);
-	}
-
-	/**
-	 * Add a flash message
-	 * @param string $type
-	 * @param string $message
-	 */
-	protected function addFlashMessage($type, $message) {
-		$this->getFlashBag()->add($type, $message);
-	}
-
-	/**
-	 * @return bool
-	 */
-	protected function hasFlashMessages() {
-		return $this->getFlashBag()->peekAll() !== array();
-	}
-
-	/**
-	 * @return \Symfony\Component\HttpFoundation\Session\Flash\FlashBag
-	 */
-	protected function getFlashBag() {
-		return $this->get('session')->getFlashBag();
+	/** @return \App\Service\FlashService */
+	protected function flashes() {
+		return $this->flashes ?: $this->flashes = new FlashService($this->get('session')->getFlashBag());
 	}
 
 	/**

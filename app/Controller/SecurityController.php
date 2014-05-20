@@ -22,7 +22,7 @@ class SecurityController extends Controller {
 		}
 
 		$request->getSession()->invalidate();
-		$this->addFlashNotice('Излязохте от Моята библиотека.');
+		$this->flashes()->addNotice('Излязохте от Моята библиотека.');
 
 		return $this->redirect('homepage');
 	}

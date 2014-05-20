@@ -3,7 +3,7 @@
 class MessageController extends Controller {
 
 	public function indexAction() {
-		if ($this->hasFlashMessages()) {
+		if ($this->flashes()->hasMessages()) {
 			return $this->display('index');
 		}
 		return $this->redirect('homepage');
