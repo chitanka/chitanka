@@ -37,6 +37,8 @@ class EntityManager {
 	public function getForeignBookRepository() { return $this->getRepository('ForeignBook'); }
 	/** @return LabelRepository */
 	public function getLabelRepository() { return $this->getRepository('Label'); }
+	/** @return NextIdRepository */
+	public function getNextIdRepository() { return $this->getRepository('NextId'); }
 	/** @return PersonRepository */
 	public function getPersonRepository() { return $this->getRepository('Person'); }
 	/** @return SearchStringRepository */

@@ -272,7 +272,7 @@ class TextController extends Controller {
 
 	public function labelLogAction($id) {
 		$text = $this->findText($id);
-		$log = $this->getRepository('TextLabelLog')->getForText($text);
+		$log = $this->em()->getTextLabelLogRepository()->getForText($text);
 		return $this->display('label_log', array(
 			'text' => $text,
 			'log' => $log,
@@ -282,7 +282,7 @@ class TextController extends Controller {
 	public function fullLabelLogAction(Request $request) {
 		$page = $request->get('page', 1);
 		$limit = 30;
-		$repo = $this->getRepository('TextLabelLog');
+		$repo = $this->em()->getTextLabelLogRepository();
 		return $this->display('label_log', array(
 			'log' => $repo->getAll($page, $limit),
 			'pager' => new Pager(array(

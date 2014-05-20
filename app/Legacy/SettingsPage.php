@@ -50,7 +50,7 @@ class SettingsPage extends RegisterPage {
 			return $this->makeRegUserForm();
 		}
 
-		$user = $this->controller->getRepository('User')->find($this->user->getId());
+		$user = $this->controller->em()->getUserRepository()->find($this->user->getId());
 		$user->setRealname($this->realname);
 		$user->setEmail($this->email);
 		$user->setAllowemail((int) $this->allowemail);

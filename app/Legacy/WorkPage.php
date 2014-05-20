@@ -138,7 +138,7 @@ class WorkPage extends Page {
 	}
 
 	private function findUser($user) {
-		$userRepo = $this->controller->getRepository('User');
+		$userRepo = $this->controller->em()->getUserRepository();
 		return is_numeric($user) ? $userRepo->find($user) : $userRepo->findByUsername($user);
 	}
 
@@ -174,7 +174,7 @@ class WorkPage extends Page {
 			$this->scanuser_view = 0;
 			if ( ! $this->bypassExisting) {
 				// TODO does not work if there are more than one titles with the same name
-				$texts = $this->controller->getRepository('Text')->findBy(array('title' => $this->btitle));
+				$texts = $this->controller->em()->getTextRepository()->findBy(array('title' => $this->btitle));
 				foreach ($texts as $text) {
 					if ($text->getAuthorNames() == $this->author) {
 						$wl = $this->makeSimpleTextLink($text->getTitle(), $text->getId());
@@ -199,7 +199,7 @@ class WorkPage extends Page {
 		}
 
 		if ( $this->entryId == 0 ) {
-			$id = $this->controller->getRepository('NextId')->findNextId('App:WorkEntry')->getValue();
+			$id = $this->controller->em()->getNextIdRepository()->findNextId('App:WorkEntry')->getValue();
 			$this->uplfile = preg_replace('/^0-/', "$id-", $this->uplfile);
 		} else {
 			$id = $this->entryId;
@@ -295,7 +295,7 @@ class WorkPage extends Page {
 			$this->db->update(self::DB_TABLE2, $set, $key);
 			$msg = 'Данните бяха обновени.';
 		} else {
-			$set['id'] = $this->controller->getRepository('NextId')->findNextId('App:WorkContrib')->getValue();
+			$set['id'] = $this->controller->em()->getNextIdRepository()->findNextId('App:WorkContrib')->getValue();
 			$this->db->insert(self::DB_TABLE2, $set);
 			$msg = 'Току-що се включихте в подготовката на произведението.';
 			$this->informScanUser($this->entryId);
@@ -772,7 +772,7 @@ HTML;
 		$corrections = $this->createCorrectionsView();
 
 		$adminFields = $this->userIsAdmin() ? $this->makeAdminOnlyFields() : '';
-		$user = $this->controller->getRepository('User')->find($this->scanuser);
+		$user = $this->controller->em()->getUserRepository()->find($this->scanuser);
 		$ulink = $this->makeUserLinkWithEmail($user->getUsername(),
 			$user->getEmail(), $user->getAllowemail());
 
@@ -916,7 +916,7 @@ CORRECTIONS;
 		if (empty($entry)) {
 			return '';
 		}
-		$user = $this->controller->getRepository('User')->find($this->scanuser);
+		$user = $this->controller->em()->getUserRepository()->find($this->scanuser);
 		$threadUrl = $this->controller->generateUrl('fos_comment_post_threads');
 		$commentJs = $this->container->getParameter('assets_base_urls') . '/bundles/app/js/comments.js';
 		return <<<JS
@@ -1587,6 +1587,6 @@ EOS;
 
 	/** @return WorkEntryRepository */
 	private function repo() {
-		return $this->controller->getRepository('WorkEntry');
+		return $this->controller->em()->getWorkEntryRepository();
 	}
 }

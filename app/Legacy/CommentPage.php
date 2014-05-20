@@ -465,7 +465,7 @@ EOS;
 			return true;
 		}
 		$this->initDone = true;
-		$this->work = $this->controller->getRepository('Text')->find($this->textId);
+		$this->work = $this->controller->em()->getTextRepository()->find($this->textId);
 		if ( empty($this->work) ) {
 			$this->addMessage("Не съществува текст с номер <strong>$this->textId</strong>.", true);
 			return false;

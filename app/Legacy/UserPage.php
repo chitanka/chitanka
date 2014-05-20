@@ -21,7 +21,7 @@ class UserPage extends Page {
 		$this->q = $this->request->value(self::FF_QUERY, '');
 		$this->initPaginationFields();
 
-		$this->shown_user = $this->controller->getRepository('User')->findOneBy(array('username' => $this->username));
+		$this->shown_user = $this->controller->em()->getUserRepository()->findByUsername($this->username);
 	}
 
 	protected function buildContent() {
@@ -126,7 +126,7 @@ EOS;
 	}
 
 	protected function makeContribList() {
-		$repo = $this->controller->getRepository('UserTextContrib');
+		$repo = $this->controller->em()->getUserTextContribRepository();
 		$count = $repo->countByUser($this->shown_user);
 		if ( ! $count) {
 			return '';
@@ -142,7 +142,7 @@ EOS;
 	}
 
 	protected function makeReadList() {
-		$repo = $this->controller->getRepository('UserTextRead');
+		$repo = $this->controller->em()->getUserTextReadRepository();
 		$count = $repo->countByUser($this->shown_user);
 		if ( ! $count) {
 			return '';
@@ -158,7 +158,7 @@ EOS;
 	}
 
 	protected function makeBookmarksList() {
-		$repo = $this->controller->getRepository('Bookmark');
+		$repo = $this->controller->em()->getBookmarkRepository();
 		$count = $repo->countByUser($this->shown_user);
 		if ( ! $count) {
 			return '';

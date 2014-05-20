@@ -198,13 +198,6 @@ abstract class Controller extends SymfonyController {
 		return $this->em ?: $this->em = $this->container->get('app.entity_manager');
 	}
 
-	/**
-	 * @param string $entityName
-	 */
-	public function getRepository($entityName) {
-		return $this->em()->getRepository($entityName);
-	}
-
 	private $user;
 	/** @return User */
 	public function getUser() {
