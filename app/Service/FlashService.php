@@ -14,7 +14,7 @@ class FlashService {
 	 * Add a flash message of type 'notice'
 	 * @param string $notice
 	 */
-	protected function addNotice($notice) {
+	public function addNotice($notice) {
 		$this->addFlashMessage('notice', $notice);
 	}
 
@@ -23,14 +23,14 @@ class FlashService {
 	 * @param string $type
 	 * @param string $message
 	 */
-	protected function addMessage($type, $message) {
+	public function addMessage($type, $message) {
 		$this->bag->add($type, $message);
 	}
 
 	/**
 	 * @return bool
 	 */
-	protected function hasMessages() {
+	public function hasMessages() {
 		return $this->bag->peekAll() !== array();
 	}
 
