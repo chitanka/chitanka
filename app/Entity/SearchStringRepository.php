@@ -4,6 +4,11 @@
  *
  */
 class SearchStringRepository extends EntityRepository {
+
+	public function findByName($name) {
+		return $this->findOneBy(array('name' => $name));
+	}
+
 	/**
 	 * @param int $limit
 	 */

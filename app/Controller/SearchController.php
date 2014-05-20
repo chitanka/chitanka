@@ -343,13 +343,12 @@ class SearchController extends Controller {
 	 * @param string $query
 	 */
 	private function logSearch($query) {
-		$searchString = $this->em()->getSearchStringRepository()->findOneBy(array('name' => $query));
+		$searchString = $this->em()->getSearchStringRepository()->findByName($query);
 		if ( ! $searchString) {
 			$searchString = new SearchString($query);
 		}
 		$searchString->incCount();
-		$this->em()->persist($searchString);
-		$this->em()->flush();
+		$this->em()->getSearchStringRepository()->save($searchString);
 	}
 
 }

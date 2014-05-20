@@ -13,6 +13,7 @@ class EntityManager {
 	/**
 	 * @param string $entityName
 	 * @return EntityRepository
+	 * @see DoctrineEntityManager::getRepository()
 	 */
 	public function getRepository($entityName) {
 		if (strpos($entityName, ':') === false && strpos($entityName, '\\') === false) {
@@ -73,6 +74,15 @@ class EntityManager {
 	public function getWorkEntryRepository() { return $this->getRepository('WorkEntry'); }
 	/** @return \Doctrine\ORM\EntityRepository */
 	public function getWorkContribRepository() { return $this->getRepository('WorkContrib'); }
+
+	/**
+	 * @param Entity $entity
+	 * @return Entity
+	 * @see DoctrineEntityManager::merge()
+	 */
+	public function merge($entity) {
+		return $this->em->merge($entity);
+	}
 
 	/**
 	 * A proxy to Doctrine EntityManager methods

@@ -68,9 +68,7 @@ class WorkroomController extends Controller {
 		}
 		$entry = $contrib->getEntry();
 		$contrib->delete();
-		$em = $this->em();
-		$em->persist($contrib);
-		$em->flush();
+		$this->em()->getWorkContribRepository()->save($contrib);
 
 		if ($this->get('request')->isXmlHttpRequest()) {
 			return $this->displayJson($contrib);

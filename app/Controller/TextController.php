@@ -191,8 +191,7 @@ class TextController extends Controller {
 	public function ratingAction(Request $request, $id) {
 		$text = $this->findText($id);
 
-		$em = $this->em();
-		$user = $em->merge($this->getUser());
+		$user = $this->em()->merge($this->getUser());
 		$rating = $this->em()->getTextRatingRepository()->getByTextAndUser($text, $user);
 		if ( ! $rating) {
 			$rating = new TextRating($text, $user);
@@ -205,14 +204,13 @@ class TextController extends Controller {
 		if ($request->isMethod('POST') && $user->isAuthenticated() && $form->submit($request)->isValid()) {
 			// TODO replace with DoctrineListener
 			$text->updateAvgRating($rating->getRating(), $oldRating);
-			$this->em()->persist($text);
+			$this->em()->getTextRepository()->save($text);
 
 			// TODO bind overwrites the Text object with an id
 			$rating->setText($text);
 
 			$rating->setCurrentDate();
-			$em->persist($rating);
-			$em->flush();
+			$this->em()->getTextRatingRepository()->save($rating);
 		}
 
 		if ($request->isXmlHttpRequest() || $request->isMethod('GET')) {
@@ -327,9 +325,7 @@ class TextController extends Controller {
 		}
 
 		$text = $this->findText($id);
-		$em = $this->em();
-		$em->persist(new UserTextRead($this->getSavableUser(), $text));
-		$em->flush();
+		$this->em()->getUserTextReadRepository()->save(new UserTextRead($this->getSavableUser(), $text));
 
 		if ($request->isXmlHttpRequest()) {
 			return $this->displayJson('Произведението е отбелязано като прочетено.');
