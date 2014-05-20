@@ -76,8 +76,8 @@ class EntityManager {
 	public function getWorkContribRepository() { return $this->getRepository('WorkContrib'); }
 
 	/**
-	 * @param Entity $entity
-	 * @return Entity
+	 * @param object $entity
+	 * @return object
 	 * @see DoctrineEntityManager::merge()
 	 */
 	public function merge($entity) {
