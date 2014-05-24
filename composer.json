@@ -15,7 +15,6 @@
 		"symfony/assetic-bundle": "~2.3",
 		"symfony/swiftmailer-bundle": "~2.3",
 		"symfony/monolog-bundle": "~2.4",
-		"sensio/distribution-bundle": "3.0.*@dev",
 		"sensio/framework-extra-bundle": "~3.0",
 		"sensio/buzz-bundle": "1.0.*@dev",
 		"incenteev/composer-parameter-handler": "~2.0",
@@ -70,7 +69,6 @@
 	"config": {
 		"bin-dir": "bin"
 	},
-	"minimum-stability": "stable",
 	"extra": {
 		"symfony-app-dir": "app",
 		"symfony-web-dir": "web",
