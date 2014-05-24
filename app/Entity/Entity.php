@@ -5,8 +5,7 @@ use Doctrine\Common\Collections\Collection;
 /**
  * An abstract class for all entities in this bundle
  */
-abstract class Entity
-{
+abstract class Entity {
 
 	public function clearCollection(Collection $collection) {
 		$collection->forAll(function($key) use ($collection) {
