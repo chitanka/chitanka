@@ -16,6 +16,7 @@
 		"symfony/swiftmailer-bundle": "~2.3",
 		"symfony/monolog-bundle": "~2.4",
 		"sensio/framework-extra-bundle": "~3.0",
+		"sensio/distribution-bundle": "~2.3",
 		"sensio/buzz-bundle": "1.0.*@dev",
 		"incenteev/composer-parameter-handler": "~2.0",
 		"sonata-project/admin-bundle": "2.2.*@dev",
