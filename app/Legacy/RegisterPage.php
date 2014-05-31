@@ -175,7 +175,7 @@ class RegisterPage extends Page {
 	</div>
 	<div class="input-group">
 		<span class="input-group-addon"><label for="email"><span class="fa fa-envelope"></span> Е-поща</label></span>
-		<input type="text" class="form-control" id="email" name="email" value="{$this->email}">
+		<input type="email" class="form-control" id="email" name="email" value="{$this->email}">
 	</div>
 	<div class="form-control">
 		<div class="checkbox">
