@@ -181,6 +181,7 @@ abstract class Controller extends SymfonyController {
 	protected function setCacheStatusByResponse(Response $response) {
 		if ($this->responseAge && $this->container->getParameter('use_http_cache')) {
 			$response->setSharedMaxAge($this->responseAge);
+			$response->setMaxAge($this->responseAge);
 		}
 		return $response;
 	}
