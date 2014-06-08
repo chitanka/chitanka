@@ -16,23 +16,18 @@ class TextRatingRepository extends EntityRepository {
 	);
 
 	/**
-	 * Get user rating for a given text
-	 * @param Text|int $text
-	 * @param User|int $user
-	 * @return float
+	 * Get user rating for a given text.
+	 * Return new Rating object if none exists.
+	 * @param Text $text
+	 * @param User $user
+	 * @return TextRating
 	 */
-	public function getByTextAndUser($text, $user) {
-		$dql = sprintf('SELECT r FROM %s r WHERE r.text = %d AND r.user = %d',
-			$this->getEntityName(),
-			(is_object($text) ? $text->getId() : $text),
-			(is_object($user) ? $user->getId() : $user)
-		);
-		$query = $this->_em->createQuery($dql)->setMaxResults(1);
-
+	public function getByTextAndUser(Text $text, User $user) {
+		$dql = "SELECT r FROM {$this->getEntityName()} r WHERE r.text = {$text->getId()} AND r.user = {$user->getId()}";
 		try {
-			return $query->getSingleResult();
+			return $this->_em->createQuery($dql)->setMaxResults(1)->getSingleResult();
 		} catch (NoResultException $e) {
-			return null;
+			return new TextRating($text, $user);
 		}
 	}
 

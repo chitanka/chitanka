@@ -86,8 +86,24 @@ class EntityManager {
 		return $this->em->merge($entity);
 	}
 
+	/**
+	 * Gets the database connection object used by the EntityManager.
+	 *
+	 * @return \Doctrine\DBAL\Connection
+	 */
 	public function getConnection() {
 		return $this->em->getConnection();
+	}
+
+	/**
+	 * Creates a new Query object.
+	 *
+	 * @param string $dql The DQL string.
+	 *
+	 * @return \Doctrine\ORM\Query
+	 */
+	public function createQuery($dql) {
+		return $this->em->createQuery($dql);
 	}
 
 	/**

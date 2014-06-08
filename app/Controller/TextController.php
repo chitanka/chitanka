@@ -193,9 +193,6 @@ class TextController extends Controller {
 
 		$user = $this->em()->merge($this->getUser());
 		$rating = $this->em()->getTextRatingRepository()->getByTextAndUser($text, $user);
-		if ( ! $rating) {
-			$rating = new TextRating($text, $user);
-		}
 		$form = $this->createForm(new TextRatingType, $rating);
 
 		// TODO replace with DoctrineListener
