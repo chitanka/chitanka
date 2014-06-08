@@ -1,7 +1,9 @@
 <?php namespace App\Controller;
 
 use App\Form\Type\RequestPasswordType;
+use App\Form\Type\RequestUsernameType;
 use App\Mail\PasswordRequestMailer;
+use App\Mail\UsernameRequestMailer;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,8 +32,18 @@ class SecurityController extends Controller {
 		return $this->redirect('homepage');
 	}
 
-	public function requestUsernameAction() {
-		return $this->legacyPage('SendUsername');
+	public function requestUsernameAction(Request $request) {
+		$form = $this->createForm(new RequestUsernameType());
+
+		if ($this->isValidPost($request, $form)) {
+			$data = $form->getData();
+			if ($user = $this->processUsernameRequest($data['email'])) {
+				return $this->redirectWithNotice("На адреса <strong>{$user->getEmail()}</strong> беше изпратено напомнящо писмо. Ако не се сещате и за паролата си, ползвайте функцията „<a href=\"{$this->generateUrl('request_password')}\">Изпращане на нова парола</a>“. Иначе можете спокойно <a href=\"{$this->generateUrl('login')}\">да влезете</a>.");
+			}
+		}
+		return $this->display('request_username', array(
+			'form' => $form->createView(),
+		));
 	}
 
 	public function requestPasswordAction(Request $request) {
@@ -48,10 +60,20 @@ class SecurityController extends Controller {
 		));
 	}
 
+	private function processUsernameRequest($email) {
+		$user = $this->em()->getUserRepository()->findByEmail($email);
+		if (!$user) {
+			$this->flashes()->addError("Не съществува потребител с електронна поща <strong>{$email}</strong>.");
+			return false;
+		}
+		$mailer = new UsernameRequestMailer($this->get('mailer'), $this->get('twig'));
+		$mailer->sendNewPassword($user, $this->getParameter('site_email'));
+		return $user;
+	}
+
 	private function processPasswordRequest($username) {
 		$userRepo = $this->em()->getUserRepository();
 		$user = $userRepo->findByUsername($username);
-
 		if (!$user) {
 			$this->flashes()->addError("Не съществува потребител с име <strong>$username</strong>.");
 			return false;

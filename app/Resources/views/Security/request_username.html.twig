@@ -1,0 +1,22 @@
+{% extends 'App::layout.html.twig' %}
+
+{% set title = 'Изпращане на потребителско име' %}
+{% block content %}
+<p>Е, на всекиго може да се случи да си забрави името. ;-) Няма страшно! Ако в потребителските си данни сте посочили валидна електронна поща, сега можете да поискате напомняне за името, с което сте се регистрирали в <em>Моята библиотека</em>.</p>
+
+<form action="" method="post" role="form" class="form-horizontal">
+	{{ form_errors(form) }}
+
+	<div class="form-group">
+		{{ form_label(form.email, 'Електронна поща', { label_attr: {class: 'col-sm-2 control-label'} }) }}
+		<div class="col-sm-10">
+			{{ form_errors(form.email) }}
+			{{ form_widget(form.email, { attr: {class: 'form-control'} }) }}
+		</div>
+	</div>
+	<div class="form-submit">
+		{{ form_widget(form.save, { attr: {class: 'btn btn-primary'} , label: 'Изпращане на потребителското име' }) }}
+	</div>
+	{{ form_rest(form) }}
+</form>
+{% endblock content %}
