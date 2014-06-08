@@ -169,7 +169,7 @@ class WorkEntry extends Entity {
 	public function getPubYear() { return $this->pubYear; }
 
 	public function setUser($user) { $this->user = $user; }
-	/** @return integer */
+	/** @return User */
 	public function getUser() { return $this->user; }
 
 	public function setComment($comment) { $this->comment = $comment; }

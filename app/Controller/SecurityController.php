@@ -67,7 +67,7 @@ class SecurityController extends Controller {
 			return false;
 		}
 		$mailer = new UsernameRequestMailer($this->get('mailer'), $this->get('twig'));
-		$mailer->sendNewPassword($user, $this->getParameter('site_email'));
+		$mailer->sendUsername($user, $this->getParameter('site_email'));
 		return $user;
 	}
 

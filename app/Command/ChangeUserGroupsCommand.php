@@ -24,6 +24,12 @@ class ChangeUserGroupsCommand extends Command {
 		$output->writeln("Done.");
 	}
 
+	/**
+	 *
+	 * @param \App\Entity\User[] $users
+	 * @param array $groupsToAdd
+	 * @param array $groupsToRemove
+	 */
 	protected function modifyUserGroups($users, $groupsToAdd, $groupsToRemove) {
 		$em = $this->getEntityManager();
 		foreach ($users as $user) {
@@ -38,6 +44,11 @@ class ChangeUserGroupsCommand extends Command {
 		return array_map('trim', explode(',', $input->getArgument('users')));
 	}
 
+	/**
+	 * Process input and prepare groups to be added and to be removed
+	 * @param InputInterface $input
+	 * @return array Array with two subarrays - groups for additions and groups for removal
+	 */
 	protected function readGroups(InputInterface $input) {
 		$groupsToAdd = $groupsToRemove = array();
 		foreach (array_map('trim', explode(',', $input->getArgument('groups'))) as $groupIdent) {

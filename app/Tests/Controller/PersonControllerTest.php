@@ -65,6 +65,10 @@ class PersonControllerTest extends WebTestCase {
 	public function testIndexByLastNameOpds() {
 		$this->doTestIndexByAlphaOpds('last-name');
 	}
+
+	/**
+	 * @param string $by
+	 */
 	private function doTestIndexByAlphaOpds($by) {
 		$route = "$this->routeBase/$by.opds";
 		$page = $this->request($route);
@@ -85,6 +89,11 @@ class PersonControllerTest extends WebTestCase {
 	public function testListByAlphaByLastNameByLetterAOpds() {
 		$this->doTestListByAlphaByLetterOpds('last-name', urlencode('А'));
 	}
+
+	/**
+	 * @param string $by
+	 * @param string $letter
+	 */
 	private function doTestListByAlphaByLetterOpds($by, $letter) {
 		$route = "$this->routeBase/$by/$letter.opds";
 		$page = $this->request($route);

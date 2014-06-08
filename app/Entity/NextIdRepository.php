@@ -1,8 +1,13 @@
 <?php namespace App\Entity;
 
+/**
+ *
+ */
 class NextIdRepository extends \Doctrine\ORM\EntityRepository {
+
 	/**
 	 * @param \Doctrine\ORM\Mapping\Entity $entity
+	 * @return int
 	 */
 	public function selectNextId($entity) {
 		$nextId = $this->findNextId(get_class($entity));
@@ -12,8 +17,10 @@ class NextIdRepository extends \Doctrine\ORM\EntityRepository {
 		return $entityId;
 	}
 
-	/** @param string $entityName
-/** @return NextId */
+	/**
+	 * @param string $entityName
+	 * @return NextId
+	 */
 	public function findNextId($entityName) {
 		$nextId = $this->find($entityName);
 		if ($nextId == false) {
@@ -23,6 +30,9 @@ class NextIdRepository extends \Doctrine\ORM\EntityRepository {
 		return $nextId;
 	}
 
+	/**
+	 * @param NextId $nextId
+	 */
 	private function incrementAndSaveNextId(NextId $nextId) {
 		$nextId->increment();
 		$sql = sprintf("REPLACE next_id SET id = '%s', value = %d", addslashes($nextId->getId()), $nextId->getValue());
@@ -31,6 +41,7 @@ class NextIdRepository extends \Doctrine\ORM\EntityRepository {
 
 	/**
 	 * @param string $entityName
+	 * @return int
 	 */
 	private function getMaxIdForEntity($entityName) {
 		$query = $this->getEntityManager()->createQuery(sprintf('SELECT MAX(e.id) FROM %s e', $entityName));

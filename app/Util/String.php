@@ -3,6 +3,13 @@
 use App\Legacy\Legacy;
 
 class String {
+
+	/**
+	 * Truncate a string to a given length
+	 * @param string $str
+	 * @param int $len
+	 * @return string
+	 */
 	static public function limitLength($str, $len = 80) {
 		if ( strlen($str) > $len ) {
 			return substr($str, 0, $len - 1) . '…';
@@ -11,8 +18,10 @@ class String {
 	}
 
 	/**
-		Escape meta-characters used in regular expressions
-	*/
+	 * Escape meta-characters used in regular expressions
+	 * @param string $string
+	 * @return string
+	 */
 	static public function prepareStringForPreg($string) {
 		return strtr($string, array(
 			// in a regexp a backslash can be escaped with four backslashes - \\\\
@@ -36,6 +45,10 @@ class String {
 
 	static private $allowableTags = array('em', 'strong');
 
+	/**
+	 * @param string $text
+	 * @return string
+	 */
 	static public function escapeInput($text) {
 		$text = self::myhtmlentities($text);
 		$repl = array();
@@ -47,16 +60,25 @@ class String {
 		return $text;
 	}
 
+	/**
+	 * @param string $text
+	 * @return string
+	 */
 	static public function myhtmlentities( $text ) {
 		return htmlentities( $text, ENT_QUOTES, 'UTF-8');
 	}
 
+	/**
+	 * @param string $text
+	 * @return string
+	 */
 	static public function myhtmlspecialchars( $text ) {
 		return htmlspecialchars($text, ENT_COMPAT, 'UTF-8');
 	}
 
 	/**
 	 * @param string $string
+	 * @return string
 	 */
 	static public function fixEncoding($string) {
 		if ('UTF-8' != ($enc = mb_detect_encoding($string, 'UTF-8, Windows-1251'))) {
@@ -67,6 +89,7 @@ class String {
 
 	/**
 	 * @param string $text
+	 * @return string
 	 */
 	static public function pretifyInput($text) {
 		$patterns = array(
@@ -83,6 +106,7 @@ class String {
 
 	/**
 	 * @param string $name
+	 * @return array
 	 */
 	static public function splitPersonName($name) {
 		preg_match('/([^,]+) ([^,]+)(, .+)?/', $name, $m);
@@ -99,6 +123,7 @@ class String {
 
 	/**
 	 * @param string $name
+	 * @return string
 	 */
 	static public function getMachinePersonName($name) {
 		$parts = self::splitPersonName($name);
@@ -109,6 +134,12 @@ class String {
 		return $machineName;
 	}
 
+	/**
+	 * Create a slug from a given string
+	 * @param string $name
+	 * @param int $maxlength
+	 * @return string
+	 */
 	static public function slugify($name, $maxlength = 60) {
 		$name = strtr($name, array(
 			'²' => '2', '°' => 'deg',
@@ -124,10 +155,11 @@ class String {
 		return $name;
 	}
 
-	static public function cb_quotes($matches) {
-		return '„'. strtr($matches[1], array('„'=>'«', '“'=>'»', '«'=>'„', '»'=>'“')) .'“';
-	}
-
+	/**
+	 * Replace some characters and generally prettify content
+	 * @param string $cont
+	 * @return string
+	 */
 	static public function my_replace($cont) {
 		$chars = array("\r" => '',
 			'„' => '"', '“' => '"', '”' => '"', '«' => '"', '»' => '"', '&quot;' => '"',
@@ -136,7 +168,6 @@ class String {
 			'&lt;' => '&amp;lt;', '&gt;' => '&amp;gt;', '&nbsp;' => '&amp;nbsp;',
 			"'" => '’', '...' => '…',
 			'</p>' => '', '</P>' => '',
-			#"\n     " => "<p>", "\n" => ' ',
 			'<p>' => "\n\t", '<P>' => "\n\t",
 		);
 		$reg_chars = array(
@@ -149,12 +180,10 @@ class String {
 
 		$cont = preg_replace('/([\s(]\d+ *)-( *\d+[\s),.])/', '$1–$2', "\n".$cont);
 		$cont = str_replace(array_keys($chars), array_values($chars), $cont);
-		#$cont = html_entity_decode($cont, ENT_NOQUOTES, 'UTF-8');
 		$cont = preg_replace(array_keys($reg_chars), array_values($reg_chars), $cont);
 
 		# кавички
 		$qreg = '/(?<=[([\s|\'"_\->\/])"(\S?|\S[^"]*[^\s"([])"/m';
-		#$cont = preg_replace($qreg, '„$1“', $cont);
 		$i = 0;
 		$maxIters = 6;
 		while ( strpos($cont, '"') !== false ) {
@@ -162,14 +191,17 @@ class String {
 				self::log_error("ВЕРОЯТНА ГРЕШКА: Повече от $maxIters итерации при вътрешните кавички.");
 				break;
 			}
-			$cont = preg_replace_callback($qreg, 'App\Util\String::cb_quotes', $cont);
+			$cont = preg_replace_callback($qreg, function($matches) {
+				return '„'. strtr($matches[1], array('„'=>'«', '“'=>'»', '«'=>'„', '»'=>'“')) .'“';
+			}, $cont);
 		}
 
 		return ltrim($cont, "\n");
 	}
 
 	static private function log_error($s, $loud = false) {
-		#file_put_contents('./log/error', date('d-m-Y H:i:s'). "  $s\n", FILE_APPEND);
-		if ($loud) { echo $s."\n"; }
+		if ($loud) {
+			echo $s."\n";
+		}
 	}
 }

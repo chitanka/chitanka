@@ -15,6 +15,10 @@ class AuthorControllerTest extends PersonControllerTest {
 	public function testIndexByCountryByLastName() {
 		$this->doTestIndexByCountry('last-name');
 	}
+
+	/**
+	 * @param string $by
+	 */
 	private function doTestIndexByCountry($by) {
 		$page = $this->request("$this->routeBase/country/$by");
 
@@ -33,6 +37,10 @@ class AuthorControllerTest extends PersonControllerTest {
 	public function testListByCountryByLastName() {
 		$this->doTestListByCountry('last-name');
 	}
+
+	/**
+	 * @param string $by
+	 */
 	private function doTestListByCountry($by) {
 		$page = $this->request("$this->routeBase/country/bg/$by");
 
@@ -78,6 +86,10 @@ class AuthorControllerTest extends PersonControllerTest {
 	public function testIndexByCountryByLastNameOpds() {
 		$this->doTestIndexByCountryOpds('last-name');
 	}
+
+	/**
+	 * @param string $by
+	 */
 	private function doTestIndexByCountryOpds($by) {
 		$route = "$this->routeBase/country/$by.opds";
 		$page = $this->request($route);
@@ -97,6 +109,10 @@ class AuthorControllerTest extends PersonControllerTest {
 	public function testListByCountryByLastNameOpds() {
 		$this->doTestListByCountryOpds('last-name');
 	}
+
+	/**
+	 * @param string $by
+	 */
 	private function doTestListByCountryOpds($by) {
 		$route = "$this->routeBase/country/bg/$by.opds";
 		$page = $this->request($route);

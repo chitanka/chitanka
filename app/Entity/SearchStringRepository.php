@@ -5,6 +5,9 @@
  */
 class SearchStringRepository extends EntityRepository {
 
+	/**
+	 * @param string $name
+	 */
 	public function findByName($name) {
 		return $this->findOneBy(array('name' => $name));
 	}

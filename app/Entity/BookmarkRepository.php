@@ -4,20 +4,30 @@
  *
  */
 class BookmarkRepository extends EntityRepository {
-	public function getLatestByUser($user, $limit = null) {
+
+	/**
+	 * @param User $user
+	 * @param int $limit
+	 * @return type
+	 */
+	public function getLatestByUser(User $user, $limit = null) {
 		return $this->getByUser($user, 1, $limit, 'e.created_at DESC');
 	}
 
-	public function getByUser($user, $page = 1, $limit = null, $orderBys = 't.title ASC') {
+	public function getByUser(User $user, $page = 1, $limit = null, $orderBys = 't.title ASC') {
 		$ids = $this->getIdsByUser($user, $page, $limit, $orderBys);
 
 		return empty($ids) ? array() : $this->getByIds($ids, $orderBys);
 	}
 
 	/**
+	 * @param User $user
 	 * @param int $page
+	 * @param int $limit
+	 * @param string $orderBys
+	 * @return array
 	 */
-	public function getIdsByUser($user, $page, $limit, $orderBys = 't.title ASC') {
+	public function getIdsByUser(User $user, $page, $limit, $orderBys = 't.title ASC') {
 		$dql = sprintf('SELECT e.id FROM %s e LEFT JOIN e.text t WHERE e.user = %d ORDER BY %s', $this->getEntityName(), $user->getId(), $orderBys);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$ids = $query->getResult('id');
@@ -25,6 +35,10 @@ class BookmarkRepository extends EntityRepository {
 		return $ids;
 	}
 
+	/**
+	 * @param User $user
+	 * @return int
+	 */
 	public function countByUser($user) {
 		return $this->getCount('e.user = '.$user->getId());
 	}
@@ -32,6 +46,7 @@ class BookmarkRepository extends EntityRepository {
 	/**
 	 * RAW_SQL
 	 * @param User $user
+	 * @param array|string $textIds
 	 */
 	public function getValidTextIds($user, $textIds) {
 		if (is_array($textIds)) {
@@ -52,12 +67,16 @@ class BookmarkRepository extends EntityRepository {
 	}
 
 	/**
+	 * @param array $ids
 	 * @param string $orderBy
 	 */
 	public function getByIds($ids, $orderBy = null) {
 		return WorkSteward::joinPersonKeysForWorks(parent::getByIds($ids, $orderBy));
 	}
 
+	/**
+	 * @param string $orderBy
+	 */
 	public function getQueryBuilder($orderBys = null) {
 		return parent::getQueryBuilder($orderBys)
 			->addSelect('t', 's', 'a', 'ap')
