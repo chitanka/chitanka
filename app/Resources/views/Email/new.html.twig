@@ -5,7 +5,8 @@
 
 <p>Чрез долния формуляр можете да пратите писмо на потребител по електронната поща. Адресът, записан в <a href="{{ path('user_edit', {username: sender.username}) }}">настройките ви</a>, ще се появи в полето „От“ на изпратеното писмо, така че получателят ще е в състояние да ви отговори.</p>
 
-<form action="" method="post" role="form" class="form-horizontal">
+{{ form_start(form, { attr: {class: "form-horizontal"} }) }}
+
 	{{ form_errors(form) }}
 
 	<div class="form-group">
@@ -41,7 +42,7 @@
 	<div class="form-submit">
 		{{ form_widget(form.save, { attr: {class: 'btn btn-primary'} , label: 'Изпращане на писмото' }) }}
 	</div>
-	{{ form_rest(form) }}
-</form>
+
+{{ form_end(form) }}
 
 {% endblock %}

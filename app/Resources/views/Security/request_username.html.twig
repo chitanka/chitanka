@@ -4,7 +4,7 @@
 {% block content %}
 <p>Е, на всекиго може да се случи да си забрави името. ;-) Няма страшно! Ако в потребителските си данни сте посочили валидна електронна поща, сега можете да поискате напомняне за името, с което сте се регистрирали в <em>Моята библиотека</em>.</p>
 
-<form action="" method="post" role="form" class="form-horizontal">
+{{ form_start(form, { attr: {class: "form-horizontal"} }) }}
 	{{ form_errors(form) }}
 
 	<div class="form-group">
@@ -17,6 +17,5 @@
 	<div class="form-submit">
 		{{ form_widget(form.save, { attr: {class: 'btn btn-primary'} , label: 'Изпращане на потребителското име' }) }}
 	</div>
-	{{ form_rest(form) }}
-</form>
+{{ form_end(form) }}
 {% endblock content %}

@@ -1,5 +1,5 @@
 <p>Посочването на име и електронна поща не е задължително.</p>
-<form action="" method="post" role="form" class="form-horizontal">
+{{ form_start(form, { attr: {class: "form-horizontal"} }) }}
 	{{ form_errors(form) }}
 
 	<div class="form-group">
@@ -26,5 +26,4 @@
 	<div class="form-submit">
 		{{ form_widget(form.save, { attr: {class: 'btn btn-primary'} , label: 'Изпращане' }) }}
 	</div>
-	{{ form_rest(form) }}
-</form>
+{{ form_end(form) }}
