@@ -38,8 +38,6 @@ class MailPage extends Page {
 	protected function processSubmission() {
 		$mailer = $this->controller->get('mailer');
 
-		//$mail->setReturnPath($this->mailFromEmail);
-
 		$messageBody = $this->makeMailMessage();
 		Legacy::fillOnEmpty($this->mailFromEmail, 'anonymous@anonymous.net');
 		Legacy::fillOnEmpty($this->mailFromName, 'Анонимен');
@@ -52,11 +50,10 @@ class MailPage extends Page {
 				->setBody($messageBody);
 
 			$headers = $message->getHeaders();
-			//$headers->addPathHeader('Return-Path', $this->mailFromEmail);
 			$headers->addMailboxHeader('Reply-To', $from);
 			$headers->addTextHeader('X-Mailer', 'Mylib');
 		}
-		catch (Exception $e) {
+		catch (\Exception $e) {
 			$this->addMessage('Станал е някакъв гаф. Може адреса да не е правилен.', true);
 			file_put_contents($this->logFile, $e, FILE_APPEND);
 			return $this->buildContent();
@@ -64,16 +61,11 @@ class MailPage extends Page {
 
 		$this->logEmail($messageBody);
 		try {
-			$result = $mailer->send($message);
+			$mailer->send($message);
 		}
 		catch (\Exception $e) {
-			$result = false;
 			file_put_contents($this->logFile, $e, FILE_APPEND);
-		}
-		if ( $result == 0 ) {
-			$this->addMessage($this->mailFailureMessage /*.
-				'<br />Съобщението за грешка, между другото, гласи: <code>'.
-				String::myhtmlentities( $res->getMessage() ) .'</code>'*/, true);
+			$this->addMessage($this->mailFailureMessage, true);
 			return $this->buildContent();
 		}
 		$this->addMessage($this->mailSuccessMessage);
