@@ -27,7 +27,7 @@ EOT
 	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$oldEntries = $this->getRepository('WorkEntry')->findOlderThan($this->getThresholdDate($input));
+		$oldEntries = $this->getEntityManager()->getWorkEntryRepository()->findOlderThan($this->getThresholdDate($input));
 		$skippedUsers = $this->getSkippedUsers($input);
 		$notifer = new Notifier($this->getContainer()->get('mailer'));
 		foreach ($oldEntries as $entry) {

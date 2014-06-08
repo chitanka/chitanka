@@ -26,7 +26,6 @@ EOT
 	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->output = $output;
 		$this->errors = array();
 		$this->processWikiPage('Работно ателие/Нови автори');
@@ -62,9 +61,9 @@ EOT
 					$this->errors[] = "При $personData[name] се генерира идентификатор ({$person->getSlug()}), който вече присъства в базата.";
 					continue;
 				}
-				$this->em->persist($person);
+				$this->getEntityManager()->persist($person);
 				try {
-					$this->em->flush();
+					$this->getEntityManager()->flush();
 				} catch (\PDOException $e) {
 					$this->errors[] = $e->getMessage();
 				}
@@ -75,7 +74,7 @@ EOT
 
 	protected function createPerson($data) {
 		if ($data['slug']) {
-			$person = $this->em->getRepository('App:Person')->getBySlug($data['slug']);
+			$person = $this->getEntityManager()->getPersonRepository()->getBySlug($data['slug']);
 			if ( ! $person) {
 				$person = new Person;
 				$person->setSlug($data['slug']);
@@ -94,7 +93,7 @@ EOT
 	}
 
 	protected function isNewPersonWithTakenSlug($person) {
-		return !$person->getId() && $this->em->getRepository('App:Person')->getBySlug($person->getSlug());
+		return !$person->getId() && $this->getEntityManager()->getPersonRepository()->getBySlug($person->getSlug());
 	}
 
 	private $_wikiBot;

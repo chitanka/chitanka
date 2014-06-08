@@ -7,7 +7,6 @@ use App\Util\HttpAgent;
 
 class VerifyPersonInfoLinksDbCommand extends Command {
 
-	private $em;
 	private $output;
 	private $secsBetweenRequests = 5;
 
@@ -24,11 +23,8 @@ EOT
 		);
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
+	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 		$this->output = $output;
 		$dumpSql = $input->getOption('dump-sql') === true;
 		$this->verifyWikiInfoLinks($dumpSql);
@@ -44,8 +40,8 @@ EOT
 	}
 
 	private function getIdsForPersonsWithInvalidInfoLinks() {
-		$iterableResult = $this->em->createQuery('SELECT p FROM App:Person p WHERE p.info LIKE \'%:%\'')->iterate();
-		$siteRepo = $this->em->getRepository('App:WikiSite');
+		$iterableResult = $this->getEntityManager()->createQuery('SELECT p FROM App:Person p WHERE p.info LIKE \'%:%\'')->iterate();
+		$siteRepo = $this->getEntityManager()->getWikiSiteRepository();
 		$httpAgent = new HttpAgent;
 
 		$ids = array();
@@ -76,7 +72,7 @@ EOT
 			if ($dumpSql) {
 				$this->printQueries($queries);
 			} else {
-				$this->executeUpdates($queries, $this->em->getConnection());
+				$this->executeUpdates($queries, $this->getEntityManager()->getConnection());
 			}
 		}
 	}

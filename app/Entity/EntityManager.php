@@ -24,6 +24,8 @@ class EntityManager {
 
 	/** @return BookRepository */
 	public function getBookRepository() { return $this->getRepository('Book'); }
+	/** @return \Doctrine\ORM\EntityRepository */
+	public function getBookTextRepository() { return $this->getRepository('BookText'); }
 	/** @return BookmarkRepository */
 	public function getBookmarkRepository() { return $this->getRepository('Bookmark'); }
 	/** @return BookmarkFolderRepository */

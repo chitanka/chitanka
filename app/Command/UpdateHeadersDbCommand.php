@@ -24,11 +24,9 @@ EOT
 		);
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
+	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
+		$this->em = $this->getEntityManager();
 		$this->output = $output;
 		$texts = trim($input->getArgument('texts'));
 		$dumpSql = $input->getOption('dump-sql') === true;

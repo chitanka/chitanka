@@ -27,9 +27,7 @@ EOT
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$options = $input->getOptions();
-
-		$em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
-		$this->migrateDb($output, $em, $options['old-db']);
+		$this->migrateDb($output, $this->getEntityManager(), $options['old-db']);
 		$output->writeln('Done.');
 	}
 

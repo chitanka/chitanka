@@ -30,7 +30,7 @@ EOT
 	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
+		$this->em = $this->getEntityManager();
 		$this->output = $output;
 		$this->dumpSql = $input->getOption('dump-sql') === true;
 		$this->updateBookTitleAuthor($this->dumpSql);

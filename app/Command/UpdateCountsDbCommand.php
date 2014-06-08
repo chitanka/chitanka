@@ -21,7 +21,7 @@ EOT
 	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$this->updateCounts($output, $this->getContainer()->get('doctrine.orm.default_entity_manager'));
+		$this->updateCounts($output, $this->getEntityManager());
 		$output->writeln('Done.');
 	}
 

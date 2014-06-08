@@ -19,7 +19,7 @@ class ChangeUserGroupsCommand extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$userNames = $this->readUsers($input);
 		list($groupsToAdd, $groupsToRemove) = $this->readGroups($input);
-		$users = $this->getUserRepository()->findByUsernames($userNames);
+		$users = $this->getEntityManager()->getUserRepository()->findByUsernames($userNames);
 		$this->modifyUserGroups($users, $groupsToAdd, $groupsToRemove);
 		$output->writeln("Done.");
 	}
@@ -64,10 +64,5 @@ class ChangeUserGroupsCommand extends Command {
 			}
 		}
 		return array($groupsToAdd, $groupsToRemove);
-	}
-
-	/** @return \App\Entity\UserRepository */
-	protected function getUserRepository() {
-		return $this->getRepository('User');
 	}
 }

@@ -19,34 +19,29 @@ EOT
 		);
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
+	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
-		$this->updateLinks($this->fetchWikiContent($output), $output, $em);
+		$this->updateLinks($this->fetchWikiContent($output), $output);
 		$output->writeln('Done.');
 	}
 
 	/**
 	 * @param string $wikiContent
 	 * @param OutputInterface $output
-	 * @param EntityManager $em
 	 */
-	protected function updateLinks($wikiContent, OutputInterface $output, EntityManager $em) {
+	protected function updateLinks($wikiContent, OutputInterface $output) {
 		$linksData = $this->extractLinkData($wikiContent);
 		if (empty($linksData)) {
 			return;
 		}
 		$output->writeln('Updating site links...');
-		$repo = $em->getRepository('App:Site');
+		$repo = $this->getEntityManager()->getSiteRepository();
 		foreach ($linksData as $linkData) {
 			$site = $repo->findOneByUrlOrCreate($linkData[1]);
 			$site->setName($linkData[2]);
 			$site->setDescription(strip_tags($linkData[3]));
-			$em->persist($site);
+			$repo->save($site);
 		}
-		$em->flush();
 	}
 
 	protected function fetchWikiContent(OutputInterface $output) {

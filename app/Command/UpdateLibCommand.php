@@ -82,7 +82,7 @@ EOT
 
 		$this->saveFiles = $input->getOption('save') === true;
 		$this->dumpSql = $input->getOption('dump-sql') === true;
-		$queries = $this->conquerTheWorld($this->getContainer()->get('doctrine.orm.default_entity_manager'));
+		$queries = $this->conquerTheWorld($this->getEntityManager());
 
 		$this->printQueries($queries);
 
@@ -672,7 +672,7 @@ EOT
 		}
 
 		if ( ! empty($book['works'])) {
-			$bookTextRepo = $this->em->getRepository('App:BookText');
+			$bookTextRepo = $this->getEntityManager()->getBookTextRepository();
 			foreach ($book['works'] as $work) {
 				$key = 'book_text'.$book['id'].'_'.$work['id'];
 				if ($book['is_new'] || $work['is_new']) {

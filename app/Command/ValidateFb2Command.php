@@ -1,6 +1,5 @@
 <?php namespace App\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -10,7 +9,7 @@ use App\Entity\Text;
 use App\Entity\Book;
 use App\Legacy\Setup;
 
-class ValidateFb2Command extends ContainerAwareCommand {
+class ValidateFb2Command extends Command {
 
 	/** @var EntityManager */
 	private $em;
@@ -51,7 +50,7 @@ EOT
 	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
+		$this->em = $this->getEntityManager();
 		$this->output = $output;
 
 		Setup::doSetup($this->getContainer());
@@ -86,30 +85,31 @@ EOT
 	}
 
 	private function validateTexts($textIds) {
-		$this->validateWorks($textIds, 'Text');
+		$this->validateWorks($textIds, $this->getEntityManager()->getTextRepository(), 'Text');
 	}
 
 	private function validateBooks($bookIds) {
-		$this->validateWorks($bookIds, 'Book');
+		$this->validateWorks($bookIds, $this->getEntityManager()->getBookRepository(), 'Book');
 	}
 
 	/**
 	 * @param array $workIds
-	 * @param string $entity
+	 * @param \Doctrine\ORM\EntityRepository $repo
+	 * @param string $entityName
 	 */
-	private function validateWorks($workIds, $entity) {
+	private function validateWorks($workIds, $repo, $entityName) {
 		foreach ($workIds as $workId) {
-			$work = $this->em->getRepository("App:$entity")->find($workId);
+			$work = $repo->find($workId);
 			if (!$work) {
 				continue;
 			}
-			$this->output->writeln("Validating $entity $workId");
+			$this->output->writeln("Validating $entityName $workId");
 			$fb2 = $work->getContentAsFb2();
 			if (!$fb2) {
 				continue;
 			}
 			if (!$this->validator->isValid($fb2)) {
-				$this->saveFileInTmpDir($entity.'-'.$work->getId().'.fb2', $fb2);
+				$this->saveFileInTmpDir("$entityName-{$work->getId()}.fb2", $fb2);
 				throw new \Exception($this->validator->getErrors());
 			}
 		}

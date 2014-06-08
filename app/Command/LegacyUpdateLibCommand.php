@@ -71,7 +71,7 @@ EOT
 		$this->saveFiles = $input->getOption('save') === true;
 		$this->dumpSql = $input->getOption('dump-sql') === true;
 		$this->defineVars();
-		list($queries, $errors) = $this->conquerTheWorld($input, $output, $this->getContainer()->get('doctrine.orm.default_entity_manager'));
+		list($queries, $errors) = $this->conquerTheWorld($input, $output, $this->getEntityManager());
 
 		if ( ! empty($errors) ) {
 			$output->writeln("/* ###########!!!   ГРЕШКИ:\n\n"

@@ -136,18 +136,8 @@ abstract class Command extends ContainerAwareCommand {
 		return '/*MAINTENANCESQL*/'.$sql;
 	}
 
-	/**
-	 * @param string $entityName
-	 */
-	protected function getRepository($entityName) {
-		if (strpos($entityName, ':') === false) {
-			$entityName = "App:$entityName";
-		}
-		return $this->getEntityManager()->getRepository($entityName);
-	}
-
-	/** @return \Doctrine\ORM\EntityManager */
+	/** @return \App\Entity\EntityManager */
 	protected function getEntityManager() {
-		return $this->getContainer()->get('doctrine.orm.default_entity_manager');
+		return $this->getContainer()->get('app.entity_manager');
 	}
 }

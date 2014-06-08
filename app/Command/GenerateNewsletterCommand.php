@@ -6,7 +6,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateNewsletterCommand extends Command {
 
-	private $em;
 	private $input;
 	private $output;
 
@@ -27,9 +26,6 @@ EOT
 	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
-		$this->em->getConfiguration()->addCustomHydrationMode('id', 'App\Hydration\IdHydrator');
-		$this->em->getConfiguration()->addCustomHydrationMode('key_value', 'App\Hydration\KeyValueHydrator');
 		$this->input = $input;
 		$this->output = $output;
 		$this->generateNewsletter($input->getArgument('month'));
@@ -58,7 +54,7 @@ EOT
 	}
 
 	private function _getBooks($month) {
-		$repo = $this->em->getRepository('App:BookRevision');
+		$repo = $this->getEntityManager()->getBookRevisionRepository();
 		$booksByCat = array();
 		#foreach ($repo->getByDate(array('2011-07-01', '2011-08-31 23:59'), 1, null, false) as $revision) {
 		foreach ($repo->getByMonth($month) as $revision) {
@@ -79,7 +75,7 @@ EOT
 
 	// TODO fetch only texts w/o books
 	private function _getTexts($month) {
-		$repo = $this->em->getRepository('App:TextRevision');
+		$repo = $this->getEntityManager()->getTextRevisionRepository();
 		$texts = array();
 		#foreach ($repo->getByDate(array('2011-07-01', '2011-08-31 23:59'), 1, null, false) as $revision) {
 		foreach ($repo->getByMonth($month) as $revision) {
