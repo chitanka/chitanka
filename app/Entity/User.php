@@ -29,7 +29,7 @@ class User /*extends BaseUser*/ implements UserInterface {
 	 * @var string
 	 * @ORM\Column(type="string", length=100, unique=true)
 	 */
-	private $username = '~anon';
+	private $username;
 
 	/**
 	 * @var string
