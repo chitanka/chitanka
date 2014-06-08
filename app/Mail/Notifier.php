@@ -17,14 +17,12 @@ class Notifier {
 			->setTo($recipient)
 			->setBody($source->getBody());
 
-		$headers = $message->getHeaders();
-		$headers->addMailboxHeader('Reply-To', $source->getSender());
-		$headers->addTextHeader('X-Mailer', 'Chitanka');
-
-		$this->mailer->send($message);
+		$this->sendMessage($message);
 	}
 
 	protected function sendMessage(Swift_Message $message) {
+		$message->setReplyTo($message->getFrom());
+		$message->getHeaders()->addTextHeader('X-Mailer', 'Chitanka');
 		$this->mailer->send($message);
 	}
 
