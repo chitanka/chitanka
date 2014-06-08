@@ -69,8 +69,8 @@ class UserController extends Controller {
 
 		if ($this->getUser()->getUsername() != $username) {
 			$user = $this->em()->getUserRepository()->findByToken($username);
-			if ( ! $user) {
-				return $this->notAllowed();
+			if (!$user) {
+				throw $this->createAccessDeniedException();
 			}
 			$isOwner = false;
 		} else {
@@ -102,8 +102,8 @@ class UserController extends Controller {
 
 		if ($this->getUser()->getUsername() != $username) {
 			$user = $this->em()->getUserRepository()->findByToken($username);
-			if ( ! $user) {
-				return $this->notAllowed();
+			if (!$user) {
+				throw $this->createAccessDeniedException();
 			}
 			$isOwner = false;
 		} else {
@@ -138,7 +138,7 @@ class UserController extends Controller {
 		$this->responseAge = 0;
 
 		if ($this->getUser()->isAnonymous()) {
-			return $this->notAllowed();
+			throw $this->createAccessDeniedException();
 		}
 
 		$texts = $request->get('texts');
@@ -153,7 +153,7 @@ class UserController extends Controller {
 		$this->responseAge = 0;
 
 		if ($this->getUser()->getUsername() != $username) {
-			return $this->notAllowed();
+			throw $this->createAccessDeniedException();
 		}
 
 		$styleUrl = '/bundles/app/css/?skin=SKIN&menu=NAV';

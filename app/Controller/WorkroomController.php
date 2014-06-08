@@ -32,7 +32,7 @@ class WorkroomController extends Controller {
 
 	public function newAction() {
 		if ($this->getUser()->isAnonymous()) {
-			return $this->notAllowed('Нямате достатъчни права за това действие.');
+			throw $this->createAccessDeniedException('Нямате достатъчни права за това действие.');
 		}
 		$_REQUEST['id'] = 0;
 		$_REQUEST['status'] = 'edit';
@@ -58,8 +58,8 @@ class WorkroomController extends Controller {
 	public function deleteContribAction($id) {
 		$this->responseAge = 0;
 
-		if ( ! $this->getUser()->inGroup('workroom-admin')) {
-			return $this->notAllowed('Нямате достатъчни права за това действие.');
+		if (!$this->getUser()->inGroup('workroom-admin')) {
+			throw $this->createAccessDeniedException('Нямате достатъчни права за това действие.');
 		}
 
 		$contrib = $this->em()->getWorkContribRepository()->find($id);

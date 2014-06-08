@@ -288,13 +288,6 @@ abstract class Controller extends SymfonyController {
 		return new RedirectResponse($url, $permanent ? 301 : 302);
 	}
 
-	/**
-	 * @param string $message
-	 */
-	protected function notAllowed($message = null) {
-		throw new HttpException(401, $message);
-	}
-
 	// TODO refactor: move to separate class
 	protected function getMirrorServer() {
 		$mirrorSites = $this->container->getParameter('mirror_sites');

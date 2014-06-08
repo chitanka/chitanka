@@ -228,7 +228,7 @@ class TextController extends Controller {
 		$this->disableCache();
 
 		if (!$this->getUser()->canPutTextLabel()) {
-			return $this->notAllowed();
+			throw $this->createAccessDeniedException();
 		}
 		$text = $this->findText($id);
 		$service = new TextLabelService($this->em()->getTextLabelLogRepository(), $this->getSavableUser());
@@ -255,7 +255,7 @@ class TextController extends Controller {
 		$this->disableCache();
 
 		if (!$this->getUser()->canPutTextLabel()) {
-			return $this->notAllowed();
+			throw $this->createAccessDeniedException();
 		}
 		$text = $this->findText($id);
 		$label = $this->findLabel($labelId);
@@ -321,7 +321,7 @@ class TextController extends Controller {
 		$this->disableCache();
 
 		if ( ! $this->getUser()->isAuthenticated()) {
-			return $this->notAllowed();
+			throw $this->createAccessDeniedException();
 		}
 
 		$text = $this->findText($id);
@@ -337,7 +337,7 @@ class TextController extends Controller {
 		$this->disableCache();
 
 		if ( ! $this->getUser()->isAuthenticated()) {
-			return $this->notAllowed();
+			throw $this->createAccessDeniedException();
 		}
 
 		$text = $this->findText($id);
