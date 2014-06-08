@@ -1,7 +1,6 @@
-<form action="{{ path('text_rating', {'id': text.id}) }}" method="post" class="inline" onsubmit="return saveRating(this)">
+{{ form_start(form, { action: path('text_rating', {'id': text.id}), attr: {class: 'inline', onsubmit: 'return saveRating(this)'} }) }}
 	<fieldset>
 		{{ form_widget(form.rating, {'attr' : {'class': 'form-control', 'onchange': 'if (this.value) saveRating(this.form)'}}) }}
-		{{ form_rest(form) }}
 		<span class="extra indicator">
 			{% if rating.id > 0 %}
 				(Дадена на {{ rating.date|humandate }})
@@ -9,4 +8,4 @@
 		</span>
 		<noscript><input type="submit" value="Гласуване"></noscript>
 	</fieldset>
-</form>
+{{ form_end(form) }}

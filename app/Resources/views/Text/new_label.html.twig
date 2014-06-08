@@ -2,13 +2,12 @@
 
 {% set title = 'Добавяне на етикет' %}
 {% block content %}
-<form action="{{ path('text_label_new', {'id': text.id}) }}" method="post" class="new-form form-inline">
+{{ form_start(form, { action: path('text_label_new', {'id': text.id}), attr: {class: 'new-form form-inline'} }) }}
 	{{ form_errors(form) }}
 	<div class="form-group">
 		{{ form_label(form.label, ' ') }}
 		{{ form_widget(form.label, { 'attr': {'class': 'form-control'} }) }}
 	</div>
-	{{ form_rest(form) }}
 	<button type="submit" class="btn btn-default">Добавяне</button>
-</form>
+{{ form_end(form) }}
 {% endblock %}

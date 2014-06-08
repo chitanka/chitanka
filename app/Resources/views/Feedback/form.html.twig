@@ -1,4 +1,4 @@
-<form action="{{ path('feedback') }}" method="post" role="form" class="form-horizontal" onsubmit="return validateFeedbackForm(this)">
+{{ form_start(form, { action: path('feedback'), attr: {class: 'form-horizontal', onsubmit: 'return validateFeedbackForm(this)'} }) }}
 	{{ form_errors(form) }}
 
 	<div class="form-group">
@@ -33,8 +33,7 @@
 	<div class="form-submit">
 		<button class="btn btn-primary" type="submit">Пращане</button>
 	</div>
-	{{ form_rest(form) }}
-</form>
+{{ form_end(form) }}
 <script>
 var validateFeedbackForm = (function() {
 	var hasNotice = false;
