@@ -8,7 +8,7 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 
 	/**
 	 * Save an entity into the database.
-	 * @param Entity $object
+	 * @param object $object
 	 * @see \Doctrine\ORM\EntityManager::persist()
 	 * @see \Doctrine\ORM\EntityManager::flush()
 	 */
@@ -42,7 +42,7 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 	 * @see \Doctrine\DBAL\Connection::executeUpdate
 	 */
 	public function execute($query, array $params = array(), array $types = array()) {
-		return $this->getEntityManager()->execute($query, $params, $types);
+		return $this->getEntityManager()->getConnection()->executeUpdate($query, $params, $types);
 	}
 
 	/**
