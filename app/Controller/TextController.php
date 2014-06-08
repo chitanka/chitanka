@@ -235,7 +235,7 @@ class TextController extends Controller {
 		$textLabel = $service->newTextLabel($text);
 		$form = $this->createForm(new TextLabelType, $textLabel);
 
-		if ($this->isValidPost($request, $form)) {
+		if ($form->handleRequest($request)->isValid()) {
 			// TODO Form::handleRequest() overwrites the Text object with an id, so we give $text explicitly
 			$service->addTextLabel($textLabel, $text);
 			if ($request->isXmlHttpRequest()) {

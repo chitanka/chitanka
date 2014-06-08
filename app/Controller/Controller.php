@@ -337,8 +337,4 @@ abstract class Controller extends SymfonyController {
 		return $this->container->getParameter($param);
 	}
 
-	protected function isValidPost(Request $request, Form $form) {
-		return $request->isMethod('POST') && $form->handleRequest($request)->isValid();
-	}
-
 }
