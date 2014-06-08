@@ -31,13 +31,12 @@ class ChangeUserGroupsCommand extends Command {
 	 * @param array $groupsToRemove
 	 */
 	protected function modifyUserGroups($users, $groupsToAdd, $groupsToRemove) {
-		$em = $this->getEntityManager();
+		$repo = $this->getEntityManager()->getUserRepository();
 		foreach ($users as $user) {
 			$user->addGroups($groupsToAdd);
 			$user->removeGroups($groupsToRemove);
-			$em->persist($user);
+			$repo->save($user);
 		}
-		$em->flush();
 	}
 
 	protected function readUsers(InputInterface $input) {

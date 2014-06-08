@@ -6,7 +6,6 @@ use App\Entity\Person;
 
 class UpdatePersonsFromWikiDbCommand extends Command {
 
-	private $em;
 	private $output;
 	private $errors;
 
@@ -61,9 +60,8 @@ EOT
 					$this->errors[] = "При $personData[name] се генерира идентификатор ({$person->getSlug()}), който вече присъства в базата.";
 					continue;
 				}
-				$this->getEntityManager()->persist($person);
 				try {
-					$this->getEntityManager()->flush();
+					$this->getEntityManager()->getPersonRepository()->save($person);
 				} catch (\PDOException $e) {
 					$this->errors[] = $e->getMessage();
 				}

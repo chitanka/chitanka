@@ -27,7 +27,8 @@ EOT
 	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$oldEntries = $this->getEntityManager()->getWorkEntryRepository()->findOlderThan($this->getThresholdDate($input));
+		$repo = $this->getEntityManager()->getWorkEntryRepository();
+		$oldEntries = $repo->findOlderThan($this->getThresholdDate($input));
 		$skippedUsers = $this->getSkippedUsers($input);
 		$notifer = new Notifier($this->getContainer()->get('mailer'));
 		foreach ($oldEntries as $entry) {
@@ -36,7 +37,7 @@ EOT
 			}
 			$this->sendNotification($notifer, $entry, $input->getArgument('stalk-interval'));
 		}
-		$this->getEntityManager()->flush();
+		$repo->flush();
 
 		$output->writeln('/*Done.*/');
 	}

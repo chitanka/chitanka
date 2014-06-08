@@ -86,6 +86,10 @@ class EntityManager {
 		return $this->em->merge($entity);
 	}
 
+	public function getConnection() {
+		return $this->em->getConnection();
+	}
+
 	/**
 	 * A proxy to Doctrine EntityManager methods
 	 * @param string $name

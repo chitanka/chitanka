@@ -42,7 +42,7 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 	 * @see \Doctrine\DBAL\Connection::executeUpdate
 	 */
 	public function execute($query, array $params = array(), array $types = array()) {
-		return $this->getEntityManager()->getConnection()->executeUpdate($query, $params, $types);
+		return $this->getEntityManager()->execute($query, $params, $types);
 	}
 
 	/**

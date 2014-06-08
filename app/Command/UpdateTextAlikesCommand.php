@@ -16,22 +16,17 @@ class UpdateTextAlikesCommand extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$textService = new TextService($this->olddb());
 		$maxAlikesCount = 50;
-		$em = $this->getEntityManager();
+		$repo = $this->getEntityManager()->getTextRepository();
 		$dql = 'SELECT t FROM App:Text t WHERE t.id < 10';
-		$iterableResult = $em->createQuery($dql)->iterate();
-		$flushGuard = 0;
+		$iterableResult = $this->getEntityManager()->createQuery($dql)->iterate();
 		foreach ($iterableResult AS $row) {
 			$text = $row[0];
 			$alikes = $textService->findTextAlikes($text, $maxAlikesCount);
 			if ($text->getAlikes() != $alikes) {
 				$text->setAlikes($alikes);
-				$em->persist($text);
-				if (++$flushGuard > 500) {
-					$em->flush();
-				}
+				$repo->save($text);
 				$output->write('.');
 			}
 		}
-		$em->flush();
 	}
 }

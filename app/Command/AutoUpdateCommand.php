@@ -102,9 +102,8 @@ EOT
 		$c = $this->getContainer();
 		$param = 'allow_removed_notice';
 		if ($c->hasParameter($param) && $c->getParameter($param) === false) {
-			$db = $this->getEntityManager()->getConnection();
-			$db->executeUpdate('UPDATE text SET removed_notice = NULL');
-			$db->executeUpdate('UPDATE book SET removed_notice = NULL');
+			$this->getEntityManager()->getTextRepository()->execute('UPDATE text SET removed_notice = NULL');
+			$this->getEntityManager()->getBookRepository()->execute('UPDATE book SET removed_notice = NULL');
 		}
 	}
 
