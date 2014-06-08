@@ -15,7 +15,15 @@ class FlashService {
 	 * @param string $notice
 	 */
 	public function addNotice($notice) {
-		$this->addFlashMessage('notice', $notice);
+		$this->addMessage('notice', $notice);
+	}
+
+	/**
+	 * Add a flash message of type 'error'
+	 * @param string $error
+	 */
+	public function addError($error) {
+		$this->addMessage('error', $error);
 	}
 
 	/**
