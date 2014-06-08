@@ -168,6 +168,10 @@ class User /*extends BaseUser*/ implements UserInterface {
 	public function setEmail($email) { $this->email = $email; }
 	public function getEmail() { return $this->email; }
 
+	public function hasEmail() {
+		return $this->getEmail() != '';
+	}
+
 	/**
 	 * @param int $allowemail
 	 */
