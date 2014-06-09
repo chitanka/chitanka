@@ -161,7 +161,7 @@ class Text extends BaseWork {
 	private $zsize;
 
 	/**
-	 * @var date
+	 * @var \DateTime
 	 * @ORM\Column(type="date")
 	 */
 	private $created_at;
@@ -173,7 +173,7 @@ class Text extends BaseWork {
 	private $source;
 
 	/**
-	 * @var int
+	 * @var TextRevision
 	 * @ORM\ManyToOne(targetEntity="TextRevision")
 	 */
 	private $cur_rev;
@@ -550,6 +550,7 @@ class Text extends BaseWork {
 	public function setAlikes($alikes) { $this->alikes = $alikes; }
 	public function getAlikes() { return $this->alikes; }
 
+	private $_book;
 	/**
 	 * Return the main book for the text
 	 */
@@ -634,6 +635,7 @@ class Text extends BaseWork {
 		return $this->authorOrigNames;
 	}
 
+	private $authorSlugs;
 	public function getAuthorSlugs() {
 		if ( ! isset($this->authorSlugs)) {
 			$this->authorSlugs = array();
@@ -644,6 +646,7 @@ class Text extends BaseWork {
 		return $this->authorSlugs;
 	}
 
+	private $translatorSlugs;
 	public function getTranslatorSlugs() {
 		if ( ! isset($this->translatorSlugs)) {
 			$this->translatorSlugs = array();
