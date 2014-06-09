@@ -11,26 +11,14 @@ class AppKernel extends Kernel {
 	public function registerBundles() {
 		switch ($this->getEnvironment()) {
 			case 'prod':
-				return $this->registerBundlesForProduction();
+				return $this->getBundlesForProduction();
 			default:
-				return $this->registerBundlesForDevelopment();
+				return $this->getBundlesForDevelopment();
 		}
 	}
 
-	protected function registerBundlesForProduction() {
-		return array(
-			new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-			new Symfony\Bundle\SecurityBundle\SecurityBundle(),
-			new Symfony\Bundle\TwigBundle\TwigBundle(),
-			new Symfony\Bundle\MonologBundle\MonologBundle(),
-			new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-			new Symfony\Bundle\AsseticBundle\AsseticBundle(),
-			new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-//			new JMS\AopBundle\JMSAopBundle(),
-//			new JMS\DiExtraBundle\JMSDiExtraBundle($this),
-//			new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-
+	protected function getBundlesForProduction() {
+		return array_merge($this->getCoreBundles(), array(
 			//new FOS\UserBundle\FOSUserBundle(),
 			new Sonata\CoreBundle\SonataCoreBundle(),
 			new Sonata\AdminBundle\SonataAdminBundle(),
@@ -44,13 +32,25 @@ class AppKernel extends Kernel {
 			new FOS\RestBundle\FOSRestBundle(),
 			new FOS\CommentBundle\FOSCommentBundle(),
 			new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
-
 			new App\App(),
+		));
+	}
+
+	protected function getCoreBundles() {
+		return array(
+			new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+			new Symfony\Bundle\SecurityBundle\SecurityBundle(),
+			new Symfony\Bundle\TwigBundle\TwigBundle(),
+			new Symfony\Bundle\MonologBundle\MonologBundle(),
+			new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
+			new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+			new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 		);
 	}
 
-	protected function registerBundlesForDevelopment() {
-		return array_merge($this->registerBundlesForProduction(), array(
+	protected function getBundlesForDevelopment() {
+		return array_merge($this->getBundlesForProduction(), array(
 			new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle(),
 		));
 	}
