@@ -31,7 +31,8 @@
 		"oyejorge/less.php": "1.7.*@dev",
 		"fortawesome/font-awesome": "v4.0.3",
 		"michelf/php-markdown": "1.4.0",
-		"cypresslab/gitelephant": "v1.0.6"
+		"cypresslab/gitelephant": "v1.0.6",
+		"eko/feedbundle": "1.1.*"
 	},
 	"require-dev": {
 		"sensio/generator-bundle": "~2.3",
@@ -60,10 +61,10 @@
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
 		],
 		"post-update-cmd": [
-			"Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
 		]
 	},
 	"config": {
