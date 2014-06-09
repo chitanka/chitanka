@@ -1,6 +1,5 @@
 <?php namespace App\Service;
 
-use Doctrine\ORM\EntityManager;
 use App\Entity\Text;
 use App\Entity\User;
 use App\Entity\Bookmark;
@@ -9,24 +8,31 @@ use App\Entity\BookmarkFolderRepository;
 
 class TextBookmarkService {
 
-	private $em;
+	private $bookmarkRepo;
+	private $bookmarkFolderRepo;
 	private $user;
 
-	public function __construct(EntityManager $em, User $user) {
-		$this->em = $em;
+	public function __construct(BookmarkRepository $bookmarkRepo, BookmarkFolderRepository $bookmarkFolderRepo, User $user) {
+		$this->bookmarkRepo = $bookmarkRepo;
+		$this->bookmarkFolderRepo = $bookmarkFolderRepo;
 		$this->user = $user;
 	}
 
+	/**
+	 *
+	 * @param Text $text
+	 * @param string $folder
+	 * @return Bookmark|null
+	 */
 	public function addBookmark(Text $text, $folder = 'favorities') {
-		$folder = $this->getBookmarkFolderRepository()->getOrCreateForUser($this->user, $folder);
-		$bookmark = $this->getBookmarkRepository()->findOneBy(array(
+		$folder = $this->bookmarkFolderRepo->getOrCreateForUser($this->user, $folder);
+		$bookmark = $this->bookmarkRepo->findOneBy(array(
 			'folder' => $folder->getId(),
 			'text' => $text->getId(),
 			'user' => $this->user->getId(),
 		));
 		if ($bookmark) { // an existing bookmark, remove it
-			$this->em->remove($bookmark);
-			$this->em->flush();
+			$this->bookmarkRepo->delete($bookmark);
 			return null;
 		}
 		$newBookmark = new Bookmark(array(
@@ -36,20 +42,10 @@ class TextBookmarkService {
 		));
 		$this->user->addBookmark($newBookmark);
 
-		$this->em->persist($folder);
-		$this->em->persist($newBookmark);
-		$this->em->persist($this->user);
-		$this->em->flush();
+		$this->bookmarkFolderRepo->save($folder);
+		$this->bookmarkRepo->save($newBookmark);
+		$this->bookmarkRepo->save($this->user); // check if this is necessary
 		return $newBookmark;
 	}
 
-	/** @return BookmarkFolderRepository */
-	protected function getBookmarkFolderRepository() {
-		return $this->em->getRepository('App:BookmarkFolder');
-	}
-
-	/** @return BookmarkRepository */
-	protected function getBookmarkRepository() {
-		return $this->em->getRepository('App:Bookmark');
-	}
 }

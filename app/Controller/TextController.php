@@ -338,7 +338,7 @@ class TextController extends Controller {
 		}
 
 		$text = $this->findText($id);
-		$service = new TextBookmarkService($this->em(), $this->getSavableUser());
+		$service = new TextBookmarkService($this->em()->getBookmarkRepository(), $this->em()->getBookmarkFolderRepository(), $this->getSavableUser());
 		$bookmark = $service->addBookmark($text);
 
 		if ($request->isXmlHttpRequest()) {
