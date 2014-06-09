@@ -285,6 +285,10 @@ abstract class Controller extends SymfonyController {
 		return new RedirectResponse($url, $permanent ? 301 : 302);
 	}
 
+	public function createAccessDeniedException($message = 'Access Denied', \Exception $previous = null) {
+		return new \Symfony\Component\Security\Core\Exception\AccessDeniedException($message, $previous);
+	}
+
 	// TODO refactor: move to separate class
 	protected function getMirrorServer() {
 		$mirrorSites = $this->container->getParameter('mirror_sites');
