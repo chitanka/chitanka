@@ -214,12 +214,6 @@ class Text extends BaseWork {
 	 */
 	private $has_anno = false;
 
-	/**
-	 * @var bool
-	 * @ORM\Column(type="boolean")
-	 */
-	private $has_cover = false;
-
 	/*
 	 * @var bool
 	 * @ORM\Column(type="boolean")
@@ -422,12 +416,6 @@ class Text extends BaseWork {
 
 	public function setType($type) { $this->type = $type; }
 	public function getType() { return $this->type; }
-
-	public function setCover($cover) { $this->cover = $cover; }
-	//public function getCover() { return $this->cover; }
-	public function hasCover() {
-		return false;
-	}
 
 	public function setSeries($series) { $this->series = $series; }
 	public function getSeries() { return $this->series; }
