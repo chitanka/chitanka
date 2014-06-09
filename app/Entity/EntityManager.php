@@ -13,7 +13,7 @@ class EntityManager {
 	/**
 	 * @param string $entityName
 	 * @return EntityRepository
-	 * @see DoctrineEntityManager::getRepository()
+	 * @see \Doctrine\ORM\EntityManager::getRepository()
 	 */
 	public function getRepository($entityName) {
 		if (strpos($entityName, ':') === false && strpos($entityName, '\\') === false) {
@@ -78,12 +78,23 @@ class EntityManager {
 	public function getWorkContribRepository() { return $this->getRepository('WorkContrib'); }
 
 	/**
+	 * A proxy method to \Doctrine\ORM\EntityManager::merge()
 	 * @param object $entity
 	 * @return object
-	 * @see DoctrineEntityManager::merge()
+	 * @see \Doctrine\ORM\EntityManager::merge()
 	 */
 	public function merge($entity) {
 		return $this->em->merge($entity);
+	}
+
+	/**
+	 * Remove a given entity from entity management.
+	 * A proxy method to \Doctrine\ORM\EntityManager::detach()
+	 * @param object $entity
+	 * @see \Doctrine\ORM\EntityManager::detach()
+	 */
+	public function setFree($entity) {
+		$this->em->detach($entity);
 	}
 
 	/**

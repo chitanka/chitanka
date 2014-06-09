@@ -54,7 +54,7 @@ EOT
 			}
 			$titleAuthor = implode(', ', $authorNames);
 			$queries[] = "UPDATE book SET title_author = '$titleAuthor' WHERE id = ".$book->getId();
-			$this->em->detach($book);
+			$this->em->setFree($book); // free memory
 		}
 
 		if ($dumpSql) {

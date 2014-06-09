@@ -54,7 +54,7 @@ EOT
 				$file = $this->webDir($text->getMainContentFile());
 			}
 			$queries = array_merge($queries, $this->buildTextHeadersUpdateQuery($file, $text->getId(), $text->getHeadlevel()));
-			$this->em->detach($text);
+			$this->em->setFree($text); // free memory
 		}
 
 		if ($dumpSql) {
