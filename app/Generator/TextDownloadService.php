@@ -10,7 +10,16 @@ use App\Entity\TextRepository;
 class TextDownloadService {
 
 	private $textRepo;
+	private $textIds;
+	private $zf;
 	private $zipFileName;
+	private $filename;
+	private $fPrefix;
+	private $fSuffix;
+	private $work;
+	private $withFbi;
+	// track here how many times a filename occurs
+	private $_fnameCount = array();
 
 	public function __construct(TextRepository $textRepo) {
 		$this->textRepo = $textRepo;
@@ -271,7 +280,6 @@ class TextDownloadService {
 		if ($requestedFilename) {
 			$this->zipFileName = "chitanka-$requestedFilename";
 		}
-		// track here how many times a filename occurs
 		$this->_fnameCount = array();
 	}
 
