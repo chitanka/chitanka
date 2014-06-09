@@ -1,5 +1,6 @@
 <?php namespace App\Admin;
 
+use App\Entity\Series;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -58,12 +59,21 @@ class SeriesAdmin extends Admin {
 		;
 	}
 
+	/** {@inheritdoc} */
+	public function prePersist($series) {
+		$this->fixSeriesAuthorRelationship($series);
+	}
+
+	/** {@inheritdoc} */
 	public function preUpdate($series) {
+		$this->fixSeriesAuthorRelationship($series);
+	}
+
+	private function fixSeriesAuthorRelationship(Series $series) {
 		foreach ($series->getSeriesAuthors() as $seriesAuthor) {
 			if ($seriesAuthor->getPerson()) {
 				$seriesAuthor->setSeries($series);
 			}
 		}
 	}
-
 }
