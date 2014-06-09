@@ -1,6 +1,7 @@
 <?php namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Eko\FeedBundle\Field\Item\ItemField;
 
 class WorkroomController extends Controller {
@@ -84,6 +85,10 @@ class WorkroomController extends Controller {
 		return $this->urlRedirect($this->generateUrl('workroom_entry_edit', array('id' => $entry->getId())));
 	}
 
+	/**
+	 * @param int $limit
+	 * @Cache(maxage="60", public=true)
+	 */
 	public function rssAction($limit) {
 		$entries = $this->em()->getWorkEntryRepository()->findLatest(min($limit, self::$feedListLimit));
 
