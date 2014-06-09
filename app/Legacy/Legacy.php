@@ -151,7 +151,7 @@ class Legacy {
 	}
 
 	/**
-	 * @param string $isodate
+	 * @param string|\DateTime $isodate
 	 * @return string
 	 */
 	static public function humanDate($isodate = '') {
