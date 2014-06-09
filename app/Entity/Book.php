@@ -189,7 +189,7 @@ class Book extends BaseWork {
 	private $links;
 
 	/**
-	 * @var date
+	 * @var \DateTime
 	 * @ORM\Column(type="date")
 	 */
 	private $created_at;
@@ -198,6 +198,22 @@ class Book extends BaseWork {
 		$this->bookAuthors = new ArrayCollection;
 		$this->bookTexts = new ArrayCollection;
 		$this->links = new ArrayCollection;
+	}
+
+	/**
+	 * @ORM\PrePersist()
+	 */
+	public function onPreInsert() {
+		$this->setCreatedAt(new \DateTime());
+	}
+
+	/**
+	 * @ORM\PostPersist()
+	 * @ORM\PostUpdate()
+	 */
+	public function onPostSave() {
+		$this->persistAnnotation();
+		$this->persistExtraInfo();
 	}
 
 	public function __toString() {

@@ -27,12 +27,16 @@
 				Оригинално заглавие: <em>{{ textinfo.orig_title(text) }}</em>,
 				<span title="Година на написване или първа публикация">{{ textinfo.year(text) }}</span>
 			{% endif %}
-			({{ textinfo.license(text.origlicense) }})
+			{% if text.origlicense is not empty %}
+				({{ textinfo.license(text.origlicense) }})
+			{% endif %}
 		</li>
 		{% if text.origlang != text.lang %}
 			<li>
 			Превод от {{ ('lang.'~text.origlang) | trans }}: {{ textinfo.translator(text) }}, {{ textinfo.trans_year(text) }}
-			({{ textinfo.license(text.translicense) }})
+			{% if text.translicense is not empty %}
+				({{ textinfo.license(text.translicense) }})
+			{% endif %}
 			</li>
 		{% endif %}
 		<li>

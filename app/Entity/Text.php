@@ -150,13 +150,13 @@ class Text extends BaseWork {
 
 	/**
 	 * @var int
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	private $size;
 
 	/**
 	 * @var int
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	private $zsize;
 
@@ -532,6 +532,22 @@ class Text extends BaseWork {
 	public function getRevisions() { return $this->revisions; }
 	public function addRevision(TextRevision $revision) {
 		$this->revisions[] = $revision;
+	}
+
+	/**
+	 * @param string $comment
+	 * @param User $user
+	 * @param \DateTime $date
+	 */
+	public function addNewRevision($comment = null, User $user = null, \DateTime $date = null) {
+		$revision = new TextRevision;
+		$revision->setComment($comment ?: 'Добавяне');
+		$revision->setText($this);
+		$revision->setUser($user);
+		$revision->setDate($date ?: new \DateTime);
+		$isFirst = count($this->getRevisions()) == 0;
+		$revision->setFirst($isFirst);
+		$this->addRevision($revision);
 	}
 
 	public function setLinks($links) { $this->links = $links; }
@@ -1017,10 +1033,19 @@ EOS;
 	public function getZsize() { return $this->zsize; }
 
 	/**
+	 * @ORM\PrePersist()
+	 */
+	public function onPreInsert() {
+		$this->setCreatedAt(new \DateTime());
+	}
+
+	/**
 	 * @ORM\PostPersist()
 	 * @ORM\PostUpdate()
 	 */
-	public function postUpload() {
+	public function onPostSave() {
+		$this->persistAnnotation();
+		$this->persistExtraInfo();
 		$this->moveUploadedContentFile($this->getContentFile());
 	}
 

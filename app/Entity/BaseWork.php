@@ -207,7 +207,7 @@ abstract class BaseWork extends Entity {
 	}
 
 	static public function loadAnnotation($id) {
-		$file = Legacy::getContentFilePath(static::$annotationDir, $id);
+		$file = Legacy::getInternalContentFilePath(static::$annotationDir, $id);
 		return file_exists($file) ? file_get_contents($file) : null;
 	}
 
@@ -217,16 +217,12 @@ abstract class BaseWork extends Entity {
 	}
 
 	public function setAnnotation($annotation) {
-		$file = Legacy::getContentFilePath(static::$annotationDir, $this->id);
-		if ($annotation) {
-			file_put_contents($file, String::my_replace($annotation));
-			$this->setHasAnno(true);
-		} else {
-			file_exists($file) && unlink($file);
-			$this->setHasAnno(false);
-		}
 		$this->annotation = $annotation;
-		return $this;
+		$this->setHasAnno($this->annotation != '');
+	}
+
+	protected function persistAnnotation() {
+		$this->saveContentInFile($this->annotation, static::$annotationDir);
 	}
 
 	public function getAnnotationAsSfb() {
@@ -253,7 +249,7 @@ abstract class BaseWork extends Entity {
 	}
 
 	static public function loadExtraInfo($id) {
-		$file = Legacy::getContentFilePath(static::$infoDir, $id);
+		$file = Legacy::getInternalContentFilePath(static::$infoDir, $id);
 		return file_exists($file) ? file_get_contents($file) : null;
 	}
 
@@ -263,14 +259,27 @@ abstract class BaseWork extends Entity {
 	}
 
 	public function setExtraInfo($extraInfo) {
-		$file = Legacy::getContentFilePath(static::$infoDir, $this->id);
-		if ($extraInfo) {
-			file_put_contents($file, String::my_replace($extraInfo));
-		} else {
-			file_exists($file) && unlink($file);
-		}
 		$this->extraInfo = $extraInfo;
-		return $this;
+	}
+
+	protected function persistExtraInfo() {
+		$this->saveContentInFile($this->extraInfo, static::$infoDir);
+	}
+
+	/**
+	 * Save a content (annotation, extra info) for the work in a file.
+	 * If the content is empty, the corresponding file is deleted.
+	 * @param string $content Content to save
+	 * @param string $dir     Target directory
+	 */
+	private function saveContentInFile($content, $dir) {
+		$file = Legacy::getInternalContentFilePath($dir, $this->id);
+		$fs = new \Symfony\Component\Filesystem\Filesystem();
+		if ($content) {
+			$fs->dumpFile($file, String::my_replace($content));
+		} else if (file_exists($file) && is_file($file)) {
+			unlink($file);
+		}
 	}
 
 	/**

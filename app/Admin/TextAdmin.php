@@ -1,5 +1,8 @@
 <?php namespace App\Admin;
 
+use App\Util\Language;
+use App\Legacy\Legacy;
+use App\Entity\Text;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -7,20 +10,12 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use App\Util\Language;
-use App\Legacy\Legacy;
-use App\Entity\Text;
-use App\Entity\TextRevision;
 
 class TextAdmin extends Admin {
 	protected $baseRoutePattern = 'text';
 	protected $baseRouteName = 'admin_text';
 
 	public $extraActions = 'App:TextAdmin:extra_actions.html.twig';
-
-	protected function configureRoutes(RouteCollection $collection) {
-		$collection->remove('create');
-	}
 
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper
@@ -192,7 +187,21 @@ class TextAdmin extends Admin {
 		;
 	}
 
+	/** {@inheritdoc} */
+	public function prePersist($text) {
+		$this->fixRelationships($text);
+		$text->addNewRevision();
+	}
+
+	/** {@inheritdoc} */
 	public function preUpdate($text) {
+		$this->fixRelationships($text);
+		if ($text->getRevisionComment()) {
+			$text->addNewRevision($text->getRevisionComment());
+		}
+	}
+
+	private function fixRelationships(Text $text) {
 		foreach ($text->getLinks() as $link) {
 			$link->setText($text);
 		}
@@ -210,14 +219,6 @@ class TextAdmin extends Admin {
 			if (!$userContrib->getText()) {
 				$userContrib->setText($text);
 			}
-		}
-		if ($text->getRevisionComment()) {
-			$revision = new TextRevision;
-			$revision->setComment($text->getRevisionComment());
-			$revision->setText($text);
-			$revision->setDate(new \DateTime);
-			$revision->setFirst(false);
-			$text->addRevision($revision);
 		}
 	}
 }
