@@ -16,6 +16,10 @@ abstract class Command extends ContainerAwareCommand {
 		return parent::getApplication();
 	}
 
+	protected function getKernel() {
+		return $this->getApplication()->getKernel();
+	}
+
 	/**
 	 * @RawSql
 	 */
