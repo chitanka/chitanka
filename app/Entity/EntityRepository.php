@@ -8,14 +8,22 @@ abstract class EntityRepository extends DoctrineEntityRepository {
 
 	/**
 	 * Save an entity into the database.
-	 * @param object $object
+	 * @param object $entity
 	 * @see \Doctrine\ORM\EntityManager::persist()
 	 * @see \Doctrine\ORM\EntityManager::flush()
 	 */
-	public function save($object) {
-		$em = $this->getEntityManager();
-		$em->persist($object);
-		$em->flush();
+	public function save($entity) {
+		$this->_em->persist($entity);
+		$this->_em->flush();
+	}
+
+	/**
+	 * Remove an entity from the database.
+	 * @param object $entity
+	 */
+	public function delete($entity) {
+		$this->_em->remove($entity);
+		$this->_em->flush();
 	}
 
 	/**
