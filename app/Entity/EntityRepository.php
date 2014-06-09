@@ -1,8 +1,6 @@
 <?php namespace App\Entity;
 
-use Doctrine\ORM\EntityRepository as DoctrineEntityRepository;
-
-abstract class EntityRepository extends DoctrineEntityRepository {
+abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 
 	protected $queryableFields = array();
 

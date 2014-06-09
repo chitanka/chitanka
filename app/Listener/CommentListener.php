@@ -2,8 +2,8 @@
 
 use App\Entity\Comment;
 use App\Entity\Thread;
+use App\Entity\EntityManager;
 use App\Mail\WorkroomNotifier;
-use Doctrine\ORM\EntityManager;
 use FOS\CommentBundle\Event\CommentEvent;
 use FOS\CommentBundle\Event\ThreadEvent;
 
@@ -43,8 +43,7 @@ class CommentListener {
 
 	private function attachThreadToTargetEntity(Thread $thread) {
 		$target = $thread->getTarget($this->em)->setCommentThread($thread);
-		$this->em->persist($target);
-		$this->em->flush();
+		$this->em->getThreadRepository()->save($target);
 	}
 
 	/**
@@ -54,7 +53,7 @@ class CommentListener {
 	private function loadExtraRecipientsForWorkEntryComment(Comment $comment) {
 		$recipients = array();
 		$usernames = array_map('trim', explode(',', $comment->getCc()));
-		$users = $this->em->getRepository('App:User')->findByUsernames($usernames);
+		$users = $this->em->getUserRepository()->findByUsernames($usernames);
 		foreach ($users as $user) {
 			$recipients[$user->getEmail()] = $user->getName();
 		}

@@ -49,7 +49,7 @@ services:
 
     comment.listener:
         class: App\Listener\CommentListener
-        arguments: ['@mailer', '@doctrine.orm.entity_manager']
+        arguments: ['@mailer', '@app.entity_manager']
         tags:
             - { name: kernel.event_listener, event: fos_comment.comment.post_persist, method: onCommentPostPersist }
             - { name: kernel.event_listener, event: fos_comment.thread.post_persist, method: onThreadPostPersist }
