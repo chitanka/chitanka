@@ -57,39 +57,4 @@ class TextAuthor extends Entity {
 	public function setYear($year) { $this->year = $year; }
 	public function getYear() { return $this->year; }
 
-	/**
-	 * Add Text
-	 *
-	 * @param Text $text
-	 */
-	public function addText(\App\Entity\Text $text) {
-		$this->texts[] = $text;
-	}
-
-	/**
-	 * Get Text
-	 *
-	 * @return Text[] $text
-	 */
-	public function getTexts() {
-		return $this->texts;
-	}
-
-	/**
-	 * Add Person
-	 *
-	 * @param Person $person
-	 */
-	public function addPerson(\App\Entity\Person $person) {
-		$this->persons[] = $person;
-	}
-
-	/**
-	 * Get Person
-	 *
-	 * @return Doctrine\Common\Collections\Collection $person
-	 */
-	public function getPersons() {
-		return $this->persons;
-	}
 }
