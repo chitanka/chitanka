@@ -752,6 +752,7 @@ class Book extends BaseWork {
 		return $generator->generateFb2($this);
 	}
 
+	private $_headers;
 	public function getHeaders() {
 		if ( isset($this->_headers) ) {
 			return $this->_headers;
@@ -922,6 +923,7 @@ EOS;
 		return $pic->__toString();
 	}
 
+	private $_files;
 	public function getFiles() {
 		if ( isset($this->_files) ) {
 			return $this->_files;
@@ -949,6 +951,7 @@ EOS;
 		return array();
 	}
 
+	private $_docRoot;
 	public function getDocRoot($cache = true) {
 		if ( isset($this->_docRoot) && $cache ) {
 			return $this->_docRoot;
@@ -965,6 +968,7 @@ EOS;
 		return $this->_docRoot;
 	}
 
+	private $_imageDir;
 	public function getImageDir() {
 		if ( ! isset($this->_imageDir) ) {
 			$this->_imageDir = Legacy::getContentFilePath('book-pic', $this->id);
@@ -973,6 +977,7 @@ EOS;
 		return $this->_imageDir;
 	}
 
+	private $_thumbDir;
 	public function getThumbDir() {
 		if ( ! isset($this->_thumbDir) ) {
 			$this->_thumbDir = $this->getImageDir() .'/'. self::THUMB_DIR;
@@ -981,6 +986,7 @@ EOS;
 		return $this->_thumbDir;
 	}
 
+	private $_webImageDir;
 	public function getWebImageDir() {
 		if ( ! isset($this->_webImageDir) ) {
 			$this->_webImageDir = $this->getDocRoot() . $this->getImageDir();
@@ -989,6 +995,7 @@ EOS;
 		return $this->_webImageDir;
 	}
 
+	private $_webThumbDir;
 	public function getWebThumbDir() {
 		if ( ! isset($this->_webThumbDir) ) {
 			$this->_webThumbDir = $this->getDocRoot() . $this->getThumbDir();
@@ -1007,50 +1014,50 @@ EOS;
 		return 'th' . ($currentPage % self::MAX_JOINED_THUMBS);
 	}
 
-	public function getSiblings() {
-		if ( isset($this->_siblings) ) {
-			return $this->_siblings;
-		}
+//	public function getSiblings() {
+//		if ( isset($this->_siblings) ) {
+//			return $this->_siblings;
+//		}
+//
+//		$qa = array(
+//			'SELECT' => 'p.*, s.name seriesName, s.type seriesType',
+//			'FROM' => DBT_PIC .' p',
+//			'LEFT JOIN' => array(
+//				DBT_PIC_SERIES .' s' => 'p.series = s.id'
+//			),
+//			'WHERE' => array(
+//				'series' => $this->series,
+//				'p.series' => array('>', 0),
+//			),
+//			'ORDER BY' => 'sernr ASC'
+//		);
+//		$db = Setup::db();
+//		$res = $db->extselect($qa);
+//		$siblings = array();
+//		while ( $row = $db->fetchAssoc($res) ) {
+//			$siblings[ $row['id'] ] = new PicWork($row);
+//		}
+//
+//		return $this->_siblings = $siblings;
+//	}
 
-		$qa = array(
-			'SELECT' => 'p.*, s.name seriesName, s.type seriesType',
-			'FROM' => DBT_PIC .' p',
-			'LEFT JOIN' => array(
-				DBT_PIC_SERIES .' s' => 'p.series = s.id'
-			),
-			'WHERE' => array(
-				'series' => $this->series,
-				'p.series' => array('>', 0),
-			),
-			'ORDER BY' => 'sernr ASC'
-		);
-		$db = Setup::db();
-		$res = $db->extselect($qa);
-		$siblings = array();
-		while ( $row = $db->fetchAssoc($res) ) {
-			$siblings[ $row['id'] ] = new PicWork($row);
-		}
+//	public function getNextSibling() {
+//		if ( empty($this->series) ) {
+//			return false;
+//		}
+//		$dbkey = array('series' => $this->series);
+//		if ($this->sernr == 0) {
+//			$dbkey['p.id'] = array('>', $this->id);
+//		} else {
+//			$dbkey[] = 'sernr = '. ($this->sernr + 1)
+//				. " OR (sernr > $this->sernr AND p.id > $this->id)";
+//		}
+//		return self::newFromDB($dbkey);
+//	}
 
-		return $this->_siblings = $siblings;
-	}
-
-	public function getNextSibling() {
-		if ( empty($this->series) ) {
-			return false;
-		}
-		$dbkey = array('series' => $this->series);
-		if ($this->sernr == 0) {
-			$dbkey['p.id'] = array('>', $this->id);
-		} else {
-			$dbkey[] = 'sernr = '. ($this->sernr + 1)
-				. " OR (sernr > $this->sernr AND p.id > $this->id)";
-		}
-		return self::newFromDB($dbkey);
-	}
-
-	public function sameAs($otherPic) {
-		return $this->id == $otherPic->id;
-	}
+//	public function sameAs($otherPic) {
+//		return $this->id == $otherPic->id;
+//	}
 
 	static public function getTypeList() {
 		return self::$typeList;
