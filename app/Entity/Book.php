@@ -395,6 +395,7 @@ class Book extends BaseWork {
 		return $this->title_author;
 	}
 
+	private $mainAuthors;
 	public function getMainAuthors() {
 		if ( ! isset($this->mainAuthors) ) {
 			$this->mainAuthors = array();
@@ -422,6 +423,7 @@ class Book extends BaseWork {
 		return ! in_array($type, array('intro', 'outro'/*, 'interview', 'article'*/));
 	}
 
+	private $authorsBy = array();
 	public function getAuthorsBy($type) {
 		if ( ! isset($this->authorsBy[$type]) ) {
 			$this->authorsBy[$type] = array();
@@ -437,6 +439,7 @@ class Book extends BaseWork {
 		return $this->authorsBy[$type];
 	}
 
+	private $translators;
 	public function getTranslators() {
 		if ( ! isset($this->translators) ) {
 			$this->translators = array();
@@ -678,6 +681,7 @@ class Book extends BaseWork {
 		return $this->getTemplate()->generateSfb();
 	}
 
+	private $_mainBodyAsSfbFile;
 	public function getMainBodyAsSfbFile() {
 		if ( isset($this->_mainBodyAsSfbFile) ) {
 			return $this->_mainBodyAsSfbFile;
@@ -722,11 +726,7 @@ class Book extends BaseWork {
 	}
 
 	public function getAllAnnotationsAsSfb() {
-		if ( ($text = $this->getAnnotationAsSfb()) ) {
-			return $text;
-		}
-
-		return $this->getTextAnnotations();
+		return $this->getAnnotationAsSfb();
 	}
 
 	public function getAnnotationAsXhtml($imgDir = null) {
@@ -734,38 +734,6 @@ class Book extends BaseWork {
 			$imgDir = 'IMG_DIR_PREFIX' . Legacy::getContentFilePath('book-img', $this->id);
 		}
 		return parent::getAnnotationAsXhtml($imgDir);
-	}
-
-	/* TODO remove: there should not be any annotations by texts */
-	public function getTextAnnotations() {
-		return '';
-
-		$annotations = array();
-		foreach ($this->getTextsById() as $text) {
-			$annotation = $text->getAnnotation();
-			if ($annotation != '') {
-				$annotations[$text->title] = $annotation;
-			}
-		}
-
-		if (empty($annotations)) {
-			return '';
-		}
-
-		$bannotation = '';
-		$putTitles = count($annotations) > 1;
-		foreach ($annotations as $title => $annotation) {
-			if ($putTitles) {
-				$bannotation .= SfbConverter::EOL . SfbConverter::EOL
-					. SfbConverter::SUBHEADER . SfbConverter::CMD_DELIM . $title
-					. SfbConverter::EOL;
-			}
-			$bannotation .= $annotation;
-		}
-
-		return SfbConverter::ANNO_S . SfbConverter::EOL
-			. rtrim($bannotation) . SfbConverter::EOL
-			. SfbConverter::ANNO_E . SfbConverter::EOL;
 	}
 
 	public function getInfoAsSfb() {
