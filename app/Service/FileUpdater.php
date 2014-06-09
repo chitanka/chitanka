@@ -1,5 +1,7 @@
 <?php namespace App\Service;
 
+use Symfony\Component\Filesystem\Filesystem;
+
 class FileUpdater {
 
 	protected $rootDir;
@@ -24,8 +26,8 @@ class FileUpdater {
 		$this->onAfterExtract($zip, $extractDir);
 		$zip->close();
 
-		$copier = new DirectoryCopier;
-		$copier->copy($extractDir, $this->rootDir);
+		$fs = new Filesystem();
+		$fs->mirror($extractDir, $this->rootDir);
 
 		foreach (file("$extractDir/.deleted", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $filename) {
 			unlink("$this->rootDir/$filename");
