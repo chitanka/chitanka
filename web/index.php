@@ -108,8 +108,7 @@ class CacheFile {
 	}
 }
 
-$isCacheable = isCacheable();
-if ($isCacheable) {
+if (isCacheable()) {
 	$requestUri = $_SERVER['REQUEST_URI'];
 	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
 		$requestUri .= '.ajax';
@@ -166,7 +165,7 @@ $kernel->loadClassCache();
 //Request::enableHttpMethodParameterOverride();
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
-if ($isCacheable && $response->isOk()) {
+if (isset($cache) && $response->isOk()) {
 	try {
 		$cache->set($response->getContent(), $response->getTtl());
 	} catch (\RuntimeException $e) {
