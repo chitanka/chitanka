@@ -1,6 +1,7 @@
 <?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eko\FeedBundle\Item\Writer\RoutedItemInterface;
 
 /**
 * @ORM\Entity(repositoryClass="App\Entity\WorkEntryRepository")
@@ -12,7 +13,28 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="date_idx", columns={"date"})}
 * )
 */
-class WorkEntry extends Entity {
+class WorkEntry extends Entity implements RoutedItemInterface {
+
+	const STATUS_0 = 0;
+	const STATUS_1 = 1;
+	const STATUS_2 = 2;
+	const STATUS_3 = 3;
+	const STATUS_4 = 4;
+	const STATUS_5 = 5;
+	const STATUS_6 = 6;
+	const STATUS_7 = 7;
+
+	private static $statuses = array(
+		self::STATUS_0 => 'Планира се',
+		self::STATUS_1 => 'Сканира се',
+		self::STATUS_2 => 'За корекция',
+		self::STATUS_3 => 'Коригира се',
+		self::STATUS_4 => 'Иска се SFB',
+		self::STATUS_5 => 'Чака проверка',
+		self::STATUS_6 => 'Проверен',
+		self::STATUS_7 => 'За добавяне',
+	);
+
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -181,6 +203,10 @@ class WorkEntry extends Entity {
 	public function setStatus($status) { $this->status = $status; }
 	public function getStatus() { return $this->status; }
 
+	public function getStatusName() {
+		return self::$statuses[$this->getStatus()];
+	}
+
 	public function setProgress($progress) { $this->progress = $progress; }
 	public function getProgress() { return $this->progress; }
 
@@ -244,5 +270,54 @@ class WorkEntry extends Entity {
 			}
 		}
 		return $openContribs;
+	}
+
+	/** {@inheritdoc} */
+	public function getFeedItemTitle() {
+		return implode(' — ', array_filter(array($this->getTitle(), $this->getAuthor())));
+	}
+
+	/** {@inheritdoc} */
+	public function getFeedItemDescription() {
+		$comment = nl2br($this->getComment());
+		return <<<DESC
+$comment
+<ul>
+	<li>Заглавие: {$this->getTitle()}</li>
+	<li>Автор: {$this->getAuthor()}</li>
+	<li>Издател: {$this->getPublisher()}</li>
+	<li>Година: {$this->getPubYear()}</li>
+	<li>Отговорник: {$this->getUser()->getUsername()}</li>
+	<li>Етап: {$this->getStatusName()}</li>
+</ul>
+DESC;
+	}
+
+	/** {@inheritdoc} */
+	public function getFeedItemPubDate() {
+		return $this->getDate();
+	}
+
+	/** {@inheritdoc} */
+	public function getFeedItemRouteName() {
+		return 'workroom_entry_edit';
+	}
+
+	/** {@inheritdoc} */
+	public function getFeedItemRouteParameters() {
+		return array('id' => $this->getId());
+	}
+
+	/** {@inheritdoc} */
+	public function getFeedItemUrlAnchor() {
+		return '';
+	}
+
+	public function getFeedItemCreator() {
+		return $this->getUser()->getUsername();
+	}
+
+	public function getFeedItemGuid() {
+		return "chitanka-work-entry-{$this->getId()}-{$this->getStatus()}-{$this->getProgress()}";
 	}
 }

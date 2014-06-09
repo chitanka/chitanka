@@ -1,6 +1,13 @@
 <?php namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+use Eko\FeedBundle\Field\Item\ItemField;
+
 class WorkroomController extends Controller {
+
+	/** How many entries are allowed in a feed */
+	static private $feedListLimit = 200;
+
 	protected $repository = 'WorkEntry';
 	protected $responseAge = 0;
 
@@ -77,10 +84,15 @@ class WorkroomController extends Controller {
 		return $this->urlRedirect($this->generateUrl('workroom_entry_edit', array('id' => $entry->getId())));
 	}
 
-	public function rssAction() {
-		$_REQUEST['type'] = 'work';
+	public function rssAction($limit) {
+		$entries = $this->em()->getWorkEntryRepository()->findLatest(min($limit, self::$feedListLimit));
 
-		return $this->legacyPage('Feed');
+		$feed = $this->get('eko_feed.feed.manager')->get('workroom');
+		//$feed->addItemField(new ItemField('dc:creator', 'getFeedItemCreator'));
+		$feed->addItemField(new ItemField('guid', 'getFeedItemGuid'));
+		$feed->addFromArray($entries);
+
+		return new Response($feed->render('rss'));
 	}
 
 	public function latestAction($limit = 10) {

@@ -34,6 +34,19 @@ class WorkEntryRepository extends EntityRepository {
 			->getArrayResult();
 	}
 
+	/**
+	 * @param int $limit
+	 * @return WorkEntry[]
+	 */
+	public function findLatest($limit) {
+		return $this->getQueryBuilder()
+			->where('e.deleted_at IS NULL')
+			->orderBy('e.date', 'DESC')
+			->setMaxResults($limit)
+			->getQuery()
+			->getResult();
+	}
+
 	public function findOlderThan($date) {
 		return $this->getQueryBuilder()
 			->where('e.deleted_at IS NULL')

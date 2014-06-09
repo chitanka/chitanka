@@ -539,8 +539,8 @@ workroom:
     requirements: { page: \d+ }
 
 workroom_rss:
-    pattern:   /workroom.rss
-    defaults: { _controller: App:Workroom:rss }
+    pattern:   /workroom.rss/{limit}
+    defaults: { _controller: App:Workroom:rss, limit: 25 }
     requirements: { _method: get }
 
 suggest_info:
