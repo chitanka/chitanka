@@ -20,10 +20,10 @@ class PasswordRequestMailer extends Notifier {
 	public function sendNewPassword(User $user, $newPassword, $sender) {
 		$template = $this->twig->loadTemplate('App:Mail:request_password.txt.twig');
 		$templateParams = array('newPassword' => $newPassword);
-		$message = \Swift_Message::newInstance($template->renderBlock('subject', $templateParams))
-			->setFrom($sender, 'Моята библиотека')
-			->setTo($user->getEmail(), $user->getUsername())
-			->setBody($template->renderBlock('body', $templateParams));
+		$message = \Swift_Message::newInstance($template->renderBlock('subject', $templateParams));
+		$message->setFrom($sender, 'Моята библиотека');
+		$message->setTo($user->getEmail(), $user->getUsername());
+		$message->setBody($template->renderBlock('body', $templateParams));
 
 		$this->sendMessage($message);
 	}
