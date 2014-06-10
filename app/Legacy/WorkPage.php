@@ -26,53 +26,81 @@ class WorkPage extends Page {
 	protected $defListLimit = 50;
 	protected $maxListLimit = 500;
 
-	private
-		$tabs = array('Самостоятелна подготовка', 'Работа в екип'),
-		$tabImgs = array('fa fa-user singleuser', 'fa fa-users multiuser'),
-		$tabImgAlts = array('сам', 'екип'),
-		$statuses = array(
-			WorkEntry::STATUS_0 => 'Планира се',
-			WorkEntry::STATUS_1 => 'Сканира се',
-			WorkEntry::STATUS_2 => 'За корекция',
-			WorkEntry::STATUS_3 => 'Коригира се',
-			WorkEntry::STATUS_4 => 'Иска се SFB',
-			WorkEntry::STATUS_5 => 'Чака проверка',
-			WorkEntry::STATUS_6 => 'Проверен',
-			WorkEntry::STATUS_7 => 'За добавяне',
-		),
-		$viewLists = array(
-			'work' => 'списъка на подготвяните произведения',
-			'contrib' => 'списъка на помощниците',
-			'listonly' => '',
-		),
-		$viewTypes = array(
-			'all' => 'Всички',
-			'my' => 'Мое участие',
-			'waiting' => 'Търси се коректор',
-		),
-		$statusClasses = array(
-			WorkEntry::STATUS_0 => 'fa fa-square-o status-plan',
-			WorkEntry::STATUS_1 => 'fa fa-square status-scan',
-			WorkEntry::STATUS_2 => 'fa fa-circle-o status-waiting',
-			WorkEntry::STATUS_3 => 'fa fa-dot-circle-o status-edit',
-			WorkEntry::STATUS_4 => 'fa fa-code status-format',
-			WorkEntry::STATUS_5 => 'fa fa-question-circle status-forcheck',
-			WorkEntry::STATUS_6 => 'fa fa-check-circle status-checked',
-			WorkEntry::STATUS_7 => 'fa fa-circle status-done',
-			'all' => 'fa fa-tasks',
-			'my' => 'fa fa-user',
-			'waiting' => 'fa fa-search-plus status-waiting',
-		),
+	private $tabs = array('Самостоятелна подготовка', 'Работа в екип');
+	private $tabImgs = array('fa fa-user singleuser', 'fa fa-users multiuser');
+	private $tabImgAlts = array('сам', 'екип');
+	private $statuses = array(
+		WorkEntry::STATUS_0 => 'Планира се',
+		WorkEntry::STATUS_1 => 'Сканира се',
+		WorkEntry::STATUS_2 => 'За корекция',
+		WorkEntry::STATUS_3 => 'Коригира се',
+		WorkEntry::STATUS_4 => 'Иска се SFB',
+		WorkEntry::STATUS_5 => 'Чака проверка',
+		WorkEntry::STATUS_6 => 'Проверен',
+		WorkEntry::STATUS_7 => 'За добавяне',
+	);
+	private $viewLists = array(
+		'work' => 'списъка на подготвяните произведения',
+		'contrib' => 'списъка на помощниците',
+		'listonly' => '',
+	);
+	private $viewTypes = array(
+		'all' => 'Всички',
+		'my' => 'Мое участие',
+		'waiting' => 'Търси се коректор',
+	);
+	private $statusClasses = array(
+		WorkEntry::STATUS_0 => 'fa fa-square-o status-plan',
+		WorkEntry::STATUS_1 => 'fa fa-square status-scan',
+		WorkEntry::STATUS_2 => 'fa fa-circle-o status-waiting',
+		WorkEntry::STATUS_3 => 'fa fa-dot-circle-o status-edit',
+		WorkEntry::STATUS_4 => 'fa fa-code status-format',
+		WorkEntry::STATUS_5 => 'fa fa-question-circle status-forcheck',
+		WorkEntry::STATUS_6 => 'fa fa-check-circle status-checked',
+		WorkEntry::STATUS_7 => 'fa fa-circle status-done',
+		'all' => 'fa fa-tasks',
+		'my' => 'fa fa-user',
+		'waiting' => 'fa fa-search-plus status-waiting',
+	);
 
-		$fileWhiteList = array(
-			'sfb', 'fb2', 'txt',
-			'odt', 'rtf', 'djvu', 'pdf', 'epub',
-			'zip', '7z', 'gz', 'tar', 'tgz', 'bz2',
-		);
+	private $fileWhiteList = array(
+		'sfb', 'fb2', 'txt',
+		'odt', 'rtf', 'djvu', 'pdf', 'epub',
+		'zip', '7z', 'gz', 'tar', 'tgz', 'bz2',
+	);
+
+	private $subaction;
+
+	private $tmpDir;
+	private $absTmpDir;
 
 	private $entryId;
 	private $entry;
+	private $workType;
+	private $btitle;
+	private $author;
+	private $publisher;
+	private $pubYear;
+	private $status;
+	private $progress;
+	private $is_frozen;
+	private $delete;
+	private $scanuser;
+	private $scanuser_view;
+	private $data_scanuser_view;
+	private $comment;
+	private $tmpfiles;
+	private $tfsize;
+	private $editComment;
+	private $uplfile;
 	private $multidata = array();
+
+	private $searchQuery;
+	private $form;
+	private $bypassExisting;
+	private $date;
+	private $rowclass;
+	private $viewList;
 
 	public function __construct($fields) {
 		parent::__construct($fields);
