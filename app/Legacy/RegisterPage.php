@@ -4,22 +4,27 @@ use App\Entity\User;
 
 class RegisterPage extends Page {
 
-	protected
-		$action = 'register',
-		$nonEmptyFields = array('username', 'password', 'passwordRe'),
-		$mainFields = array('username', 'password', 'passwordRe', 'realname', 'email');
+	protected $action = 'register';
+	protected $attempt;
+	protected $returnto;
 
-	private
-		$invalidReferers = array('login', 'logout', 'register', 'sendNewPassword');
+	private $invalidReferers = array('login', 'logout', 'register', 'sendNewPassword');
+	private $username;
+	private $password;
+	private $passwordRe;
+	private $realname;
+	private $email;
+	private $news;
 
 	public function __construct($fields) {
 		parent::__construct($fields);
 		$this->title = "Регистрация в $this->sitename";
 		$this->attempt = (int) $this->request->value('attempt', 1);
-		$this->mainFields = $this->nonEmptyFields + $this->mainFields;
-		foreach ($this->mainFields as $field) {
-			$this->$field = trim($this->request->value($field, ''));
-		}
+		$this->username = trim($this->request->value('username', ''));
+		$this->password = trim($this->request->value('password', ''));
+		$this->passwordRe = trim($this->request->value('passwordRe', ''));
+		$this->realname = trim($this->request->value('realname', ''));
+		$this->email = trim($this->request->value('email', ''));
 		$this->news = $this->request->checkbox('news');
 		$this->returnto = $this->request->value('returnto', $this->request->referer());
 		foreach ($this->invalidReferers as $invalidReferer) {
@@ -50,21 +55,19 @@ class RegisterPage extends Page {
 		$user->setAllowemail(1);
 		$user->setNews((int) $this->news);
 
-		$em = $this->controller->em();
-		$em->persist($user);
-		$em->flush();
+		$this->controller->em()->getUserRepository()->save($user);
 
 		$this->addMessage("Регистрирахте се в <em>$this->sitename</em> като $this->username.");
 
 		return '';
 	}
 
-	protected function validateInput() {
+	private function validateInput() {
 		if ( ! $this->verifyCaptchaAnswer() ) {
 			return 'Не сте отговорили правилно на въпроса уловка.';
 		}
 
-		foreach ($this->nonEmptyFields as $nonEmptyField) {
+		foreach (array('username', 'password', 'passwordRe') as $nonEmptyField) {
 			if ( empty($this->$nonEmptyField) ) {
 				return 'Не сте попълнили всички полета.';
 			}
@@ -86,11 +89,11 @@ class RegisterPage extends Page {
 		return '';
 	}
 
-	protected function isValidPassword() {
+	private function isValidPassword() {
 		return strcmp($this->password, $this->passwordRe) === 0;
 	}
 
-	protected function userExists() {
+	private function userExists() {
 		$key = array('username' => $this->username);
 		if ( $this->db->exists(DBT_USER, $key) ) {
 			$this->addMessage("Името <strong>$this->username</strong> вече е заето.", true);
@@ -110,9 +113,7 @@ class RegisterPage extends Page {
 		}
 		if ( $this->db->exists(DBT_USER, $emailKey) ) {
 			$this->addMessage("Пощенският адрес <strong>{$this->email}</strong> вече се ползва от друг потребител.", true);
-			$sendname = $this->controller->generateUrl('request_username');
-			$this->addMessage("Ако сте забравили потребителското си име, можете <a href=\"$sendname\">да поискате напомняне за него</a>.");
-
+			$this->addMessage("Ако сте забравили потребителското си име, можете <a href=\"{$this->controller->generateUrl('request_username')}\">да поискате напомняне за него</a>.");
 			return true;
 		}
 
@@ -120,15 +121,8 @@ class RegisterPage extends Page {
 	}
 
 	protected function buildContent() {
-		$login = $this->controller->generateUrl('login');
-		$reglink = $this->controller->generateUrl('register');
-		$attempt = $this->out->hiddenField('attempt', $this->attempt);
-		$returnto = $this->out->hiddenField('returnto', $this->returnto);
-		$historyLink = $this->controller->generateUrl('new');
-		$captcha = $this->makeCaptchaQuestion();
-
 		return <<<EOS
-<p>Ако вече сте се регистрирали, няма нужда да го правите още веднъж. Можете направо да <a href="$login" class="btn btn-default">влезете</a>.</p>
+<p>Ако вече сте се регистрирали, няма нужда да го правите още веднъж. Можете направо да <a href="{$this->controller->generateUrl('login')}" class="btn btn-default">влезете</a>.</p>
 <ul class="fa-ul">
 <li><span class="fa-li fa fa-user"></span> Позволено е използването на кирилица, когато въвеждате потребителското си име.</li>
 <li><span class="fa-li fa fa-key"></span> Като парола се опитайте да изберете нещо, което за вас да е лесно запомнящо се, а за останалите — невъзможно за разгадаване.</li>
@@ -154,9 +148,9 @@ class RegisterPage extends Page {
 	padding-top: 0;
 }
 </style>
-<form action="$reglink" method="post" class="form-horizontal form-register" role="form">
-		$returnto
-		$attempt
+<form action="{$this->controller->generateUrl('register')}" method="post" class="form-horizontal form-register" role="form">
+		{$this->out->hiddenField('returnto', $this->returnto)}
+		{$this->out->hiddenField('attempt', $this->attempt)}
 	<div class="input-group">
 		<span class="input-group-addon"><label for="username"><span class="fa fa-user"></span> Потребителско име</label></span>
 		<input type="text" class="form-control" id="username" name="username" value="{$this->username}" required autofocus>
@@ -183,10 +177,10 @@ class RegisterPage extends Page {
 				<input type="checkbox" name="news"> Получаване на месечен бюлетин
 			</label>
 		</div>
-		<div class="help-block">Алтернативен начин да следите новото в библиотеката предлага страницата <a href="$historyLink">Новодобавено</a>.</div>
+		<div class="help-block">Алтернативен начин да следите новото в библиотеката предлага страницата <a href="{$this->controller->generateUrl('new')}">Новодобавено</a>.</div>
 	</div>
 	<div class="form-group">
-		$captcha
+		{$this->makeCaptchaQuestion()}
 	</div>
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Регистриране</button>
 </form>

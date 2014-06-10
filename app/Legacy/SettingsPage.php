@@ -4,19 +4,28 @@ use App\Entity\User;
 
 class SettingsPage extends RegisterPage {
 
-	protected
-		$action = 'settings',
-		$canChangeUsername = false,
-		$optKeys = array('skin', 'nav', 'css', 'js'),
-		$defEcnt = 10,
-		$nonEmptyFields = array();
+	protected $action = 'settings';
+
+	private $password;
+	private $passwordRe;
+	private $realname;
+	private $email;
+	private $allowemail;
+	private $news;
+	private $optKeys = array('skin', 'nav', 'css', 'js');
+	private $tabindex;
 
 	public function __construct($fields) {
 		parent::__construct($fields);
 
 		$this->title = 'Настройки';
-		$this->userId = $this->user->getId();
+
+		$this->password = trim($this->request->value('password', ''));
+		$this->passwordRe = trim($this->request->value('passwordRe', ''));
+		$this->realname = trim($this->request->value('realname', ''));
+		$this->email = trim($this->request->value('email', ''));
 		$this->allowemail = $this->request->checkbox('allowemail');
+		$this->news = $this->request->checkbox('news');
 		foreach ($this->optKeys as $key) {
 			$this->opts[$key] = $this->request->value($key, User::$defOptions[$key]);
 		}
@@ -25,20 +34,6 @@ class SettingsPage extends RegisterPage {
 	}
 
 	protected function processSubmission() {
-		return $this->processRegUserRequest();
-	}
-
-	protected function isValidPassword() {
-		// sometimes browsers automaticaly fill the first password field
-		// so the user does NOT want to change it
-		if ( $this->user->validatePassword($this->password) ) {
-			return true;
-		}
-
-		return parent::isValidPassword();
-	}
-
-	protected function processRegUserRequest() {
 		$err = $this->validateInput();
 		$this->attempt++;
 		if ( !empty($err) ) {
@@ -61,9 +56,7 @@ class SettingsPage extends RegisterPage {
 			$user->setPassword($this->password);
 		}
 
-		$em = $this->controller->em();
-		$em->persist($user);
-		$em->flush();
+		$this->controller->em()->getUserRepository()->save($user);
 
 		$this->addMessage("Данните ви бяха променени.");
 
@@ -74,16 +67,48 @@ class SettingsPage extends RegisterPage {
 		return $this->makeRegUserForm();
 	}
 
+	private function validateInput() {
+		if ( ! $this->verifyCaptchaAnswer() ) {
+			return 'Не сте отговорили правилно на въпроса уловка.';
+		}
+
+		if ( !$this->isValidPassword() ) {
+			return 'Двете въведени пароли се различават.';
+		}
+		$res = Legacy::validateEmailAddress($this->email);
+		if ($res == 0) {
+			return 'Въведеният адрес за електронна поща е невалиден.';
+		}
+		if ($res == -1 && $this->attempt == 1) {
+			return 'Въведеният адрес за електронна поща е валиден, но е леко странен. Проверете дали не сте допуснали грешка.';
+		}
+		return '';
+	}
+
+	private function isValidPassword() {
+		// sometimes browsers automaticaly fill the first password field
+		// so the user does NOT want to change it
+		if ( $this->user->validatePassword($this->password) ) {
+			return true;
+		}
+
+		return parent::isValidPassword();
+	}
+
 	protected function buildContent() {
-		$this->initRegUserData();
+		$this->password = $this->user->getPassword();
+		$this->realname = $this->user->getRealname();
+		$this->email = $this->user->getEmail();
+
+		$this->opts = array_merge($this->opts, $this->user->getOpts());
+		$this->allowemail = $this->user->getAllowemail();
+		$this->news = $this->user->getNews();
 
 		return $this->makeRegUserForm();
 	}
 
-	protected function makeRegUserForm() {
-		$username = $this->canChangeUsername
-			? $this->out->textField('username', '', $this->username, 25, 60, $this->tabindex++, '', array('class' => 'form-control'))
-			: '<span id="username" class="form-control">'.$this->user->getUsername()."</span>";
+	private function makeRegUserForm() {
+		$username = '<span id="username" class="form-control">'.$this->user->getUsername()."</span>";
 		$password = $this->out->passField('password', '', '', 25, 40, $this->tabindex++, array('class' => 'form-control'));
 		$passwordRe = $this->out->passField('passwordRe', '', '', 25, 40, $this->tabindex++, array('class' => 'form-control'));
 		$realname = $this->out->textField('realname', '', $this->realname, 25, 60, $this->tabindex++, '', array('class' => 'form-control'));
@@ -156,7 +181,7 @@ class SettingsPage extends RegisterPage {
 EOS;
 	}
 
-	protected function makeCommonInput() {
+	private function makeCommonInput() {
 		$skin = $this->makeSkinInput($this->tabindex++);
 		$nav = $this->makeNavPosInput($this->tabindex++);
 
@@ -176,23 +201,23 @@ EOS;
 EOS;
 	}
 
-	protected function makeSkinInput($tabindex) {
-		return $this->out->selectBox('skin', '', Setup::setting('skins'),
+	private function makeSkinInput($tabindex) {
+		return $this->out->selectBox('skin', '', $this->container->getParameter('skins'),
 			$this->opts['skin'], $tabindex,
 			array('class' => 'form-control', 'onchange' => 'skin=this.value; changeStyleSheet()'));
 	}
 
-	protected function makeNavPosInput($tabindex) {
-		return $this->out->selectBox('nav', '', Setup::setting('navpos'),
+	private function makeNavPosInput($tabindex) {
+		return $this->out->selectBox('nav', '', $this->container->getParameter('navpos'),
 			$this->opts['nav'], $tabindex,
 			array('class' => 'form-control', 'onchange' => 'nav=this.value; changeStyleSheet()'));
 	}
 
-	protected function makeCustomInput() {
+	private function makeCustomInput() {
 		$inputs = '';
 		$inputs .= '<div class="form-group">';
-		$files = $this->container->getParameter('user_css');
-		foreach ($files as $file => $title) {
+		$cssFiles = $this->container->getParameter('user_css');
+		foreach ($cssFiles as $file => $title) {
 			$inputs .= sprintf(<<<HTML
 		<div class="col-sm-offset-4 col-sm-8">
 			<div class="checkbox">
@@ -208,8 +233,8 @@ HTML
 				(isset($this->opts['css'][$file]) ? 'checked="checked"' : ''),
 				$title);
 		}
-		$files = $this->container->getParameter('user_js');
-		foreach ($files as $file => $title) {
+		$jsFiles = $this->container->getParameter('user_js');
+		foreach ($jsFiles as $file => $title) {
 			$inputs .= sprintf(<<<HTML
 		<div class="col-sm-offset-4 col-sm-8">
 			<div class="checkbox">
@@ -247,8 +272,7 @@ HTML;
 		return $inputs;
 	}
 
-	protected function makeOptionsOutput( $with_page_fields = true ) {
-		//$opts = array_merge( $this->user->options(), $this->opts );
+	private function makeOptionsOutput( $with_page_fields = true ) {
 		$opts = $this->opts;
 		if ( ! $with_page_fields ) {
 			foreach ( $opts as $k => $_ ) {
@@ -259,17 +283,6 @@ HTML;
 		}
 
 		return $opts;
-	}
-
-	protected function initRegUserData() {
-		$this->username = $this->user->getUsername();
-		$this->password = $this->user->getPassword();
-		$this->realname = $this->user->getRealname();
-		$this->email = $this->user->getEmail();
-
-		$this->opts = array_merge($this->opts, $this->user->getOpts());
-		$this->allowemail = $this->user->getAllowemail();
-		$this->news = $this->user->getNews();
 	}
 
 }

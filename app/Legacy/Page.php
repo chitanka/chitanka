@@ -61,7 +61,7 @@ abstract class Page {
 		}
 
 		$this->root = '/';
-		$this->sitename = Setup::setting('sitename');
+		$this->sitename = $this->container->getParameter('sitename');
 		$this->messages = $this->content = '';
 		$this->title = $this->sitename;
 	}

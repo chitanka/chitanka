@@ -2,30 +2,33 @@
 
 class LoginPage extends RegisterPage {
 
-	const
-		MAX_LOGIN_TRIES = 50;
+	const MAX_LOGIN_TRIES = 50;
 
-	protected
-		$action = 'login';
+	protected $action = 'login';
+	private $username;
+	private $password;
+	private $remember;
 
 	public function __construct($fields) {
 		parent::__construct($fields);
 		$this->title = "Вход в $this->sitename";
+		$this->username = trim($this->request->value('username', ''));
+		$this->password = trim($this->request->value('password', ''));
 		$this->remember = (int) $this->request->checkbox('remember');
-		$this->message = '';
 	}
 
 	protected function processSubmission() {
-		$err = $this->validateInput();
-		if ( !empty($err) ) {
-			$this->addMessage($err, true);
-
+		if ( empty($this->username) ) {
+			$this->addMessage('Не сте въвели потребителско име.', true);
+			return $this->buildContent();
+		}
+		if ( empty($this->password) ) {
+			$this->addMessage('Не сте въвели парола.', true);
 			return $this->buildContent();
 		}
 		$user = $this->controller->em()->getUserRepository()->findByUsername($this->username);
 		if ( ! $user) {
 			$this->addMessage("Не съществува потребител с име <strong>$this->username</strong>.", true );
-
 			return $this->buildContent();
 		}
 
@@ -49,9 +52,7 @@ class LoginPage extends RegisterPage {
 		$user->setPassword($this->password); // update with the new algorithm
 		$user->login($this->remember);
 
-		$em = $this->controller->em();
-		$em->persist($user);
-		$em->flush();
+		$this->controller->em()->getUserRepository()->save($user);
 
 		$this->controller->setUser($user);
 
@@ -64,31 +65,10 @@ class LoginPage extends RegisterPage {
 		return "Влязохте в <em>$this->sitename</em> като $this->username.";
 	}
 
-	protected function validateInput() {
-		if ( empty($this->username) ) {
-			return 'Не сте въвели потребителско име.';
-		}
-		if ( empty($this->password) ) {
-			return 'Не сте въвели парола.';
-		}
-		return '';
-	}
-
 	protected function buildContent() {
-		return $this->makeLoginForm();
-	}
-
-	protected function makeLoginForm() {
-		$loginlink = $this->controller->generateUrl('login');
-		$reglink = $this->controller->generateUrl('register');
-		$sendname = $this->controller->generateUrl('request_username');
-		$sendpass = $this->controller->generateUrl('request_password');
-
 		if ( ! empty( $this->returnto ) ) {
-			$this->returnto .= (strpos($this->returnto, '?') === false ? '?' : '&amp;') . 'cache=0';
+			$this->returnto .= (strpos($this->returnto, '?') === false ? '?' : '&amp;') . 'cache='.time();
 		}
-		$f_returnto = $this->out->hiddenField('returnto', $this->returnto);
-
 		return <<<EOS
 
 <style>
@@ -104,19 +84,19 @@ class LoginPage extends RegisterPage {
 	width: .8em;
 }
 </style>
-<form action="$loginlink" method="post" class="form-signin" role="form">
-	$f_returnto
+<form action="{$this->controller->generateUrl('login')}" method="post" class="form-signin" role="form">
+	{$this->out->hiddenField('returnto', $this->returnto)}
 	<div class="input-group">
 		<span class="input-group-addon"><span class="fa fa-user"></span></span>
 		<label for="username" class="sr-only">Потребителско име</label>
 		<input type="text" class="form-control" id="username" name="username" placeholder="Потребителско име" value="{$this->username}" required autofocus>
-		<span class="input-group-addon"><a href="$sendname" title="Заявка за забравено име"><span class="fa fa-question"></span></a></span>
+		<span class="input-group-addon"><a href="{$this->controller->generateUrl('request_username')}" title="Заявка за забравено име"><span class="fa fa-question"></span></a></span>
 	</div>
 	<div class="input-group">
 		<span class="input-group-addon"><span class="fa fa-key"></span></span>
 		<label for="username" class="sr-only">Парола</label>
 		<input type="password" class="form-control" id="password" name="password" placeholder="Парола" required>
-		<span class="input-group-addon"><a href="$sendpass" title="Заявка за забравена парола"><span class="fa fa-question"></span></a></span>
+		<span class="input-group-addon"><a href="{$this->controller->generateUrl('request_password')}" title="Заявка за забравена парола"><span class="fa fa-question"></span></a></span>
 	</div>
 	<div class="checkbox">
 		<label>
@@ -131,7 +111,7 @@ class LoginPage extends RegisterPage {
 		<span class="fa fa-2x fa-frown-o"></span>
 	</div>
 	<div class="media-body">
-		Забравихте си входните данни ли? Няма страшно. Подайте <a href="$sendname" title="Заявка за забравено име" class="btn btn-default">заявка за забравено име</a> или <a href="$sendpass" title="Заявка за забравена парола" class="btn btn-default">парола</a>.
+		Забравихте си входните данни ли? Няма страшно. Подайте <a href="{$this->controller->generateUrl('request_username')}" title="Заявка за забравено име" class="btn btn-default">заявка за забравено име</a> или <a href="{$this->controller->generateUrl('request_password')}" title="Заявка за забравена парола" class="btn btn-default">парола</a>.
 	</div>
 </div>
 <div class="alert alert-info media">
@@ -139,7 +119,7 @@ class LoginPage extends RegisterPage {
 		<span class="fa fa-2x fa-user"></span>
 	</div>
 	<div class="media-body">
-		Можете да се <a href="$reglink" class="btn btn-default">регистрирате</a> за секунди, ако все още не сте го направили.
+		Можете да се <a href="{$this->controller->generateUrl('register')}" class="btn btn-default">регистрирате</a> за секунди, ако все още не сте го направили.
 	</div>
 </div>
 
