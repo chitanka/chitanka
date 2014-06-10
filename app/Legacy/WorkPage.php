@@ -5,8 +5,6 @@ use App\Util\String;
 use App\Util\Number;
 use App\Util\Char;
 use App\Util\File;
-use App\Entity\User;
-use App\Entity\WorkEntry;
 use App\Entity\WorkEntryRepository;
 use App\Pagination\Pager;
 
@@ -531,7 +529,7 @@ EOS;
 		$entryLink = $this->controller->generateUrl('workroom_entry_edit', array('id' => $id));
 		$commentsLink = $num_comments ? sprintf('<a href="%s#fos_comment_thread" title="Коментари"><span class="fa fa-comments-o"></span>%s</a>', $entryLink, $num_comments) : '';
 		$title = sprintf('<a href="%s" title="Към страницата за редактиране">%s</a>', $entryLink, $title);
-		$this->rowclass = $this->out->nextRowClass($this->rowclass);
+		$this->rowclass = $this->nextRowClass($this->rowclass);
 		$st = $progress > 0
 			? $this->makeProgressBar($progress)
 			: $this->makeStatus($status);
@@ -1236,7 +1234,7 @@ EOS;
 		$l = $class = '';
 		foreach ($mdata as $edata) {
 			extract($edata);
-			$class = $this->out->nextRowClass($class);
+			$class = $this->nextRowClass($class);
 			$ulink = $this->makeUserLinkWithEmail($username, $email, $allowemail);
 			$comment = strtr($comment, array("\n" => "<br>\n"));
 			if ( !empty($uplfile) ) {
@@ -1355,7 +1353,7 @@ EOS;
 	}
 
 	public function makeContribListItem($dbrow) {
-		$this->rowclass = $this->out->nextRowClass($this->rowclass);
+		$this->rowclass = $this->nextRowClass($this->rowclass);
 		$ulink = $dbrow['user_id'] ? $this->makeUserLink($dbrow['username']) : $dbrow['username'];
 		$s = Number::formatNumber($dbrow['size'], 0);
 		$this->rownr += 1;
@@ -1588,5 +1586,9 @@ EOS;
 	/** @return WorkEntryRepository */
 	private function repo() {
 		return $this->controller->em()->getWorkEntryRepository();
+	}
+
+	private function nextRowClass($curRowClass = '') {
+		return $curRowClass == 'even' ? 'odd' : 'even';
 	}
 }

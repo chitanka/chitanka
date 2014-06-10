@@ -113,7 +113,7 @@ class OutputMaker {
 
 	public function link($url, $text = '', $title = '', $attrs = array(), $args = array()) {
 		if ($text === '') $text = $url;
-		return $this->link_raw($url, $this->escape($text), $title, $attrs, $args);
+		return $this->link_raw($url, String::myhtmlspecialchars($text), $title, $attrs, $args);
 	}
 
 	/**
@@ -175,19 +175,6 @@ class OutputMaker {
 		return ' '. $attrib .'="'
 			. ( $doEscape ? String::myhtmlspecialchars($value) : $value )
 			.'"';
-	}
-
-	public function nextRowClass($curRowClass = '') {
-		return $curRowClass == 'even' ? 'odd' : 'even';
-	}
-
-	/**
-		TODO was done with myhtmlentities() (r1146), check why.
-		XHTML Mobile does not have most of the html entities,
-		so revert back to myhtmlspecialchars().
-	*/
-	public function escape($s) {
-		return String::myhtmlspecialchars( $s );
 	}
 
 }

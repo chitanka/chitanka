@@ -161,11 +161,6 @@ abstract class Page {
 		return $this->out->xmlElement('a', $linktext, $attrs);
 	}
 
-	protected function makeTextLinkWithAuthor($work) {
-		return '„' . $this->makeSimpleTextLink($work->getTitle(), $work->getId()) . '“'
-			. $this->makeFromAuthorSuffix($work);
-	}
-
 	protected function makeAuthorLink($name, $sortby='first', $pref='', $suf='', $query=array()) {
 		$name = rtrim($name, ',');
 		if ( empty($name) ) {
