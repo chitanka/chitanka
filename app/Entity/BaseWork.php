@@ -2,7 +2,6 @@
 
 use App\Util\File;
 use App\Util\String;
-use App\Legacy\Legacy;
 use Sfblib\SfbConverter;
 use Sfblib\SfbToHtmlConverter;
 
@@ -10,15 +9,14 @@ abstract class BaseWork extends Entity {
 
 	const TITLE_NEW_LINE = "<br>\n";
 
-	static public
-		$ratings = array(
-			6 => 'Шедьовър',
-			5 => 'Много добро',
-			4 => 'Добро',
-			3 => 'Посредствено',
-			2 => 'Лошо',
-			1 => 'Отвратително',
-		);
+	static public $ratings = array(
+		6 => 'Шедьовър',
+		5 => 'Много добро',
+		4 => 'Добро',
+		3 => 'Посредствено',
+		2 => 'Лошо',
+		1 => 'Отвратително',
+	);
 
 	static protected $_minRating = null;
 	static protected $_maxRating = null;
@@ -207,7 +205,7 @@ abstract class BaseWork extends Entity {
 	}
 
 	static public function loadAnnotation($id) {
-		$file = Legacy::getInternalContentFilePath(static::$annotationDir, $id);
+		$file = File::getInternalContentFilePath(static::$annotationDir, $id);
 		return file_exists($file) ? file_get_contents($file) : null;
 	}
 
@@ -249,7 +247,7 @@ abstract class BaseWork extends Entity {
 	}
 
 	static public function loadExtraInfo($id) {
-		$file = Legacy::getInternalContentFilePath(static::$infoDir, $id);
+		$file = File::getInternalContentFilePath(static::$infoDir, $id);
 		return file_exists($file) ? file_get_contents($file) : null;
 	}
 
@@ -273,7 +271,7 @@ abstract class BaseWork extends Entity {
 	 * @param string $dir     Target directory
 	 */
 	private function saveContentInFile($content, $dir) {
-		$file = Legacy::getInternalContentFilePath($dir, $this->id);
+		$file = File::getInternalContentFilePath($dir, $this->id);
 		$fs = new \Symfony\Component\Filesystem\Filesystem();
 		if ($content) {
 			$fs->dumpFile($file, String::my_replace($content));

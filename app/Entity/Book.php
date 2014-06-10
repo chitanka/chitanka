@@ -1,13 +1,12 @@
 <?php namespace App\Entity;
 
+use App\Generator\BookFb2Generator;
+use App\Util\Ary;
+use App\Util\File;
+use App\Util\String;
+use Sfblib\SfbConverter;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Generator\BookFb2Generator;
-use App\Util\String;
-use App\Legacy\Legacy;
-use App\Legacy\Setup;
-use App\Util\Ary;
-use Sfblib\SfbConverter;
 
 /**
 * @ORM\Entity(repositoryClass="App\Entity\BookRepository")
@@ -556,14 +555,12 @@ class Book extends BaseWork {
 
 	public function getCover($width = null) {
 		$this->initCovers();
-
-		return is_null($width) ? $this->covers['front'] : Legacy::genThumbnail($this->covers['front'], $width);
+		return is_null($width) ? $this->covers['front'] : File::genThumbnail($this->covers['front'], $width);
 	}
 
 	public function getBackCover($width = null) {
 		$this->initCovers();
-
-		return is_null($width) ? $this->covers['back'] : Legacy::genThumbnail($this->covers['back'], $width);
+		return is_null($width) ? $this->covers['back'] : File::genThumbnail($this->covers['back'], $width);
 	}
 
 	static protected $exts = array('.jpg');
@@ -601,9 +598,9 @@ class Book extends BaseWork {
 	 */
 	static public function getCovers($id, $defCover = null) {
 		$key = 'book-cover-content';
-		$bases = array(Legacy::getContentFilePath($key, $id));
+		$bases = array(File::getContentFilePath($key, $id));
 		if ( ! empty($defCover)) {
-			$bases[] = Legacy::getContentFilePath($key, $defCover);
+			$bases[] = File::getContentFilePath($key, $defCover);
 		}
 		$coverFiles = Ary::cartesianProduct($bases, self::$exts);
 		$covers = array();
@@ -641,7 +638,7 @@ class Book extends BaseWork {
 	public function getLocalImages() {
 		$images = array();
 
-		$dir = Legacy::getInternalContentFilePath('book-img', $this->id);
+		$dir = File::getInternalContentFilePath('book-img', $this->id);
 		foreach (glob("$dir/*") as $img) {
 			$images[] = $img;
 		}
@@ -747,7 +744,7 @@ class Book extends BaseWork {
 
 	public function getAnnotationAsXhtml($imgDir = null) {
 		if ($imgDir === null) {
-			$imgDir = 'IMG_DIR_PREFIX' . Legacy::getContentFilePath('book-img', $this->id);
+			$imgDir = 'IMG_DIR_PREFIX' . File::getContentFilePath('book-img', $this->id);
 		}
 		return parent::getAnnotationAsXhtml($imgDir);
 	}
@@ -885,14 +882,14 @@ EOS;
 
 	public function getDatafiles() {
 		$files = array();
-		$files['book'] = Legacy::getContentFilePath('book', $this->id);
+		$files['book'] = File::getContentFilePath('book', $this->id);
 		if ($this->hasCover()) {
-			$files['book-cover'] = Legacy::getContentFilePath('book-cover', $this->id) . '.max.jpg';
+			$files['book-cover'] = File::getContentFilePath('book-cover', $this->id) . '.max.jpg';
 		}
 		if ($this->hasAnno()) {
-			$files['book-anno'] = Legacy::getContentFilePath('book-anno', $this->id);
+			$files['book-anno'] = File::getContentFilePath('book-anno', $this->id);
 		}
-		$files['book-info'] = Legacy::getContentFilePath('book-info', $this->id);
+		$files['book-info'] = File::getContentFilePath('book-info', $this->id);
 
 		return $files;
 	}
@@ -902,7 +899,7 @@ EOS;
 		if (!in_array($format, array('djvu', 'pdf'))) {
 			throw new \Exception("Format $format is not a valid static format for a book.");
 		}
-		return Legacy::getContentFilePath('book-'.$format, $this->id);
+		return File::getContentFilePath('book-'.$format, $this->id);
 	}
 
 	##################
@@ -945,7 +942,7 @@ EOS;
 			return $this->_files;
 		}
 
-		$dir = Legacy::getContentFilePath('book-pic', $this->id);
+		$dir = File::getContentFilePath('book-pic', $this->id);
 
 		$ignore = array(self::MIRRORS_FILE, self::THUMB_DIR);
 
@@ -987,7 +984,7 @@ EOS;
 	private $_imageDir;
 	public function getImageDir() {
 		if ( ! isset($this->_imageDir) ) {
-			$this->_imageDir = Legacy::getContentFilePath('book-pic', $this->id);
+			$this->_imageDir = File::getContentFilePath('book-pic', $this->id);
 		}
 
 		return $this->_imageDir;

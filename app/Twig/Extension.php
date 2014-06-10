@@ -1,8 +1,9 @@
 <?php namespace App\Twig;
 
 use App\Entity\Text;
-use App\Util\Number;
 use App\Util\Char;
+use App\Util\File;
+use App\Util\Number;
 use App\Util\String;
 use App\Legacy\Legacy;
 use Sfblib\XmlElement;
@@ -163,7 +164,7 @@ class Extension extends \Twig_Extension {
 	}
 
 	public function getCover($id, $width = 200, $format = 'jpg') {
-		return Legacy::getContentFilePath('book-cover', $id) . ".$width.$format";
+		return File::getContentFilePath('book-cover', $id) . ".$width.$format";
 	}
 
 	public function nl2br($value, $sep = '<br>') {

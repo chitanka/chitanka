@@ -1,7 +1,6 @@
 <?php namespace App\Generator;
 
 use App\Legacy\CacheManager;
-use App\Legacy\Legacy;
 use App\Legacy\ZipFile;
 use App\Util\Char;
 use App\Util\File;
@@ -226,7 +225,7 @@ class TextDownloadService {
 
 	private function addBinaryFileEntries($textId, $filename) {
 		// add images
-		$dir = Legacy::getContentFilePath('img', $textId);
+		$dir = File::getContentFilePath('img', $textId);
 		if ( !is_dir($dir) ) { return; }
 		if ($dh = opendir($dir)) {
 			while (($file = readdir($dh)) !== false) {
@@ -241,7 +240,7 @@ class TextDownloadService {
 	}
 
 	private function getContentData($textId) {
-		$fname = Legacy::getContentFilePath('text', $textId);
+		$fname = File::getContentFilePath('text', $textId);
 		if ( file_exists($fname) ) {
 			return file_get_contents($fname);
 		}

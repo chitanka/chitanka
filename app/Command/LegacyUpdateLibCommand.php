@@ -5,9 +5,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Legacy\Setup;
-use App\Legacy\Legacy;
-use App\Util\String;
 use App\Util\File;
+use App\Util\String;
 use Sfblib\SfbConverter;
 
 class LegacyUpdateLibCommand extends Command {
@@ -420,7 +419,7 @@ EOT
 
 		$textContent = trim($textContent, "\n") . "\n";
 
-		$file = $this->contentDir . '/text/' . Legacy::makeContentFilePath($textId);
+		$file = $this->contentDir . '/text/' . File::makeContentFilePath($textId);
 
 		if ( !$this->overwrite && file_exists($file) ) {
 			$qs[] = "/* $textId СЪЩЕСТВУВА! */\n";
@@ -510,7 +509,7 @@ EOT
 		$extra = ltrim($extra, "\n");
 
 		if ($saveFiles) {
-			File::myfile_put_contents($dir . Legacy::makeContentFilePath($textId), $extra);
+			File::myfile_put_contents($dir . File::makeContentFilePath($textId), $extra);
 		}
 		$content = substr_replace($content, '', $startPos, $len + strlen($endTag));
 		$content = trim($content, "\n") . "\n";

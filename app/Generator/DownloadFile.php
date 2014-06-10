@@ -466,7 +466,7 @@ class DownloadFile {
 		}
 
 		// add images
-		$dir = Legacy::getContentFilePath('img', $textId);
+		$dir = File::getContentFilePath('img', $textId);
 		if ( !is_dir($dir) ) { return; }
 		if ($dh = opendir($dir)) {
 			while (($file = readdir($dh)) !== false) {

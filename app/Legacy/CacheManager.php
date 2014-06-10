@@ -122,7 +122,7 @@ class CacheManager {
 	 * @return string
 	 */
 	private static function getDlCachePath($id, $ext = '') {
-		return self::$cacheDir . self::$zipDir . Legacy::makeContentFilePath($id) . $ext;
+		return self::$cacheDir . self::$zipDir . File::makeContentFilePath($id) . $ext;
 	}
 
 	/**

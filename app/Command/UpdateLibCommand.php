@@ -4,9 +4,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Legacy\Legacy;
-use App\Util\String;
 use App\Util\File;
+use App\Util\String;
 
 class UpdateLibCommand extends Command {
 
@@ -560,7 +559,7 @@ EOT
 		}
 
 		if ($this->saveFiles) {
-			$path = Legacy::makeContentFilePath($work['id']);
+			$path = File::makeContentFilePath($work['id']);
 			if (isset($work['tmpl'])) {
 				File::myfile_put_contents("$this->contentDir/text/$path", String::my_replace($work['tmpl']));
 
@@ -702,7 +701,7 @@ EOT
 		}
 
 		if ($this->saveFiles) {
-			$path = Legacy::makeContentFilePath($book['id']);
+			$path = File::makeContentFilePath($book['id']);
 			if (isset($book['tmpl'])) {
 				File::myfile_put_contents("$this->contentDir/book/$path", String::my_replace($book['tmpl']));
 			}

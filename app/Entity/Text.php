@@ -712,7 +712,7 @@ class Text extends BaseWork {
 			return $this->_hasTitleNote;
 		}
 
-		$conv = new SfbToHtmlConverter( Legacy::getInternalContentFilePath( 'text', $this->id ) );
+		$conv = new SfbToHtmlConverter( File::getInternalContentFilePath( 'text', $this->id ) );
 		return $this->_hasTitleNote = $conv->hasTitleNote();
 	}
 
@@ -741,11 +741,11 @@ class Text extends BaseWork {
 	}
 
 	public function getImages() {
-		return $this->getImagesFromDir(Legacy::getInternalContentFilePath('img', $this->id));
+		return $this->getImagesFromDir(File::getInternalContentFilePath('img', $this->id));
 	}
 
 	public function getThumbImages() {
-		return $this->getImagesFromDir(Legacy::getInternalContentFilePath('img', $this->id) . '/thumb');
+		return $this->getImagesFromDir(File::getInternalContentFilePath('img', $this->id) . '/thumb');
 	}
 
 	/**
@@ -786,7 +786,7 @@ class Text extends BaseWork {
 	 * @param string $imgDirPrefix
 	 */
 	protected function _getContentHtml($content, $imgDirPrefix) {
-		$imgDir = $imgDirPrefix . Legacy::getContentFilePath('img', $this->id);
+		$imgDir = $imgDirPrefix . File::getContentFilePath('img', $this->id);
 		$conv = new SfbToHtmlConverter($content, $imgDir);
 
 		return $conv->convert()->getContent();
@@ -796,7 +796,7 @@ class Text extends BaseWork {
 		$info = '';
 		foreach ($this->bookTexts as $bookText) {
 			if ($bookText->getShareInfo()) {
-				$file = Legacy::getInternalContentFilePath('book-info', $bookText->getBook()->getId());
+				$file = File::getInternalContentFilePath('book-info', $bookText->getBook()->getId());
 				if ( file_exists($file) ) {
 					$info .= "\n\n" . file_get_contents($file);
 				}
@@ -859,7 +859,7 @@ class Text extends BaseWork {
 //		if ( empty($this->books[$book]) ) {
 //			return false;
 //		}
-//		$bookDescr = Legacy::getContentFile('book', $book);
+//		$bookDescr = File::getContentFile('book', $book);
 //		if ( preg_match('/\{'. $this->id . '\}\n\{(\d+)\}/m', $bookDescr, $m) ) {
 //			return self::newFromId($m[1]);
 //		}
@@ -1051,7 +1051,7 @@ EOS;
 
 	private function moveUploadedContentFile(UploadedFile $file = null) {
 		if ($file) {
-			$filename = Legacy::getContentFilePath('text', $this->id);
+			$filename = File::getContentFilePath('text', $this->id);
 			$file->move(dirname($filename), basename($filename));
 		}
 	}
@@ -1083,17 +1083,17 @@ EOS;
 	public function getRawContent($asFileName = false) {
 		if ( ! $this->is_compilation) {
 			if ($asFileName) {
-				return Legacy::getContentFilePath('text', $this->id);
+				return File::getContentFilePath('text', $this->id);
 			} else {
-				return Legacy::getContentFile('text', $this->id);
+				return File::getContentFile('text', $this->id);
 			}
 		}
 
-		$template = Legacy::getContentFile('text', $this->id);
+		$template = File::getContentFile('text', $this->id);
 		if (preg_match_all('/\t\{file:(\d+-.+)\}/', $template, $matches, PREG_SET_ORDER)) {
 			foreach ($matches as $match) {
 				list($row, $filename) = $match;
-				$template = str_replace($row, Legacy::getContentFile('text', $filename), $template);
+				$template = str_replace($row, File::getContentFile('text', $filename), $template);
 			}
 		}
 		// TODO cache the full output
@@ -1155,7 +1155,7 @@ EOS;
 	 * @param string $file
 	 */
 	public function rebuildHeaders($file = null) {
-		if ($file === null) $file = Legacy::getContentFilePath('text', $this->id);
+		if ($file === null) $file = File::getContentFilePath('text', $this->id);
 		$headlevel = $this->getHeadlevel();
 
 		$this->clearHeaders();
@@ -1234,7 +1234,7 @@ EOS;
 	}
 
 	public function getMainContentFile() {
-		return Legacy::getContentFilePath('text', $this->id);
+		return File::getContentFilePath('text', $this->id);
 	}
 
 }
