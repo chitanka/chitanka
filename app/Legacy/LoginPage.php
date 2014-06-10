@@ -5,8 +5,6 @@ class LoginPage extends RegisterPage {
 	const MAX_LOGIN_TRIES = 50;
 
 	protected $action = 'login';
-	private $username;
-	private $password;
 	private $remember;
 
 	public function __construct($fields) {

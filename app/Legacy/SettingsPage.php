@@ -6,12 +6,7 @@ class SettingsPage extends RegisterPage {
 
 	protected $action = 'settings';
 
-	private $password;
-	private $passwordRe;
-	private $realname;
-	private $email;
 	private $allowemail;
-	private $news;
 	private $optKeys = array('skin', 'nav', 'css', 'js');
 	private $tabindex;
 
@@ -85,7 +80,7 @@ class SettingsPage extends RegisterPage {
 		return '';
 	}
 
-	private function isValidPassword() {
+	protected function isValidPassword() {
 		// sometimes browsers automaticaly fill the first password field
 		// so the user does NOT want to change it
 		if ( $this->user->validatePassword($this->password) ) {

@@ -8,13 +8,14 @@ class RegisterPage extends Page {
 	protected $attempt;
 	protected $returnto;
 
+	protected $username;
+	protected $password;
+	protected $passwordRe;
+	protected $realname;
+	protected $email;
+	protected $news;
+
 	private $invalidReferers = array('login', 'logout', 'register', 'sendNewPassword');
-	private $username;
-	private $password;
-	private $passwordRe;
-	private $realname;
-	private $email;
-	private $news;
 
 	public function __construct($fields) {
 		parent::__construct($fields);
@@ -89,7 +90,7 @@ class RegisterPage extends Page {
 		return '';
 	}
 
-	private function isValidPassword() {
+	protected function isValidPassword() {
 		return strcmp($this->password, $this->passwordRe) === 0;
 	}
 
