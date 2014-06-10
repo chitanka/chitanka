@@ -5,10 +5,7 @@ use App\Util\String;
 
 class OutputMaker {
 
-	protected
-		$defArgSeparator = '&',
-		$argSeparator = '&',
-		$queryStart = '?';
+	private $argSeparator = '&';
 
 	public function textField($name, $id = '', $value = '', $size = 30, $maxlength = 255, $tabindex = null, $title = '', $attrs = array()) {
 		Legacy::fillOnEmpty($id, $name);
@@ -140,10 +137,6 @@ class OutputMaker {
 		return $this->xmlElement('a', $text, $attrs);
 	}
 
-	public function listItem($item, $attrs = array()) {
-		return "\n\t" . $this->xmlElement('li', $item, $attrs);
-	}
-
 	/**
 	 * @param string $text
 	 */
@@ -152,25 +145,6 @@ class OutputMaker {
 			'for' => $for, 'title' => $title
 		) + $attrs;
 		return $this->xmlElement('label', $text, $attrs);
-	}
-
-	public function ulist($items, $attrs = array()) {
-		$oitems = '';
-		foreach ($items as $item) {
-			if ( empty( $item ) ) {
-				continue;
-			}
-			$lattrs = array();
-			if ( is_array($item) ) {
-				assert( 'count($item) >= 2' );
-				list($item, $lattrs) = $item;
-			}
-			$oitems .= $this->listItem($item, $lattrs);
-		}
-		if ( empty($oitems) ) {
-			return '';
-		}
-		return $this->xmlElement('ul', $oitems, $attrs);
 	}
 
 	/**
@@ -207,25 +181,6 @@ class OutputMaker {
 		return $curRowClass == 'even' ? 'odd' : 'even';
 	}
 
-	public function addUrlQuery($url, $args) {
-		if ( !empty($this->queryStart) && strpos($url, $this->queryStart) === false ) {
-			$url .= $this->queryStart;
-		}
-		foreach ((array) $args as $key => $val) {
-			$sep = $this->getArgSeparator($url);
-			$url = preg_replace("!$sep$key".Request::PARAM_SEPARATOR."[^$sep]*!", '', $url);
-			$url .= $sep . $key . Request::PARAM_SEPARATOR . $this->urlencode($val);
-		}
-		return $url;
-	}
-
-	private function getArgSeparator($url = '') {
-		if ( empty($url) || strpos($url, $this->defArgSeparator) === false ) {
-			return $this->argSeparator;
-		}
-		return $this->defArgSeparator;
-	}
-
 	/**
 		TODO was done with myhtmlentities() (r1146), check why.
 		XHTML Mobile does not have most of the html entities,
@@ -235,15 +190,4 @@ class OutputMaker {
 		return String::myhtmlspecialchars( $s );
 	}
 
-	/**
-	 * @param string $str
-	 * @return string
-	 */
-	private function urlencode($str) {
-		$enc = urlencode($str);
-		if ( strpos($str, '/') !== false ) {
-			$enc = strtr($enc, array('%2F' => '/'));
-		}
-		return $enc;
-	}
 }
