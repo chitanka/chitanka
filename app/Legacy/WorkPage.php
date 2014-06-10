@@ -1,35 +1,25 @@
 <?php namespace App\Legacy;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Util\String;
 use App\Util\Number;
 use App\Util\Char;
 use App\Util\File;
-use App\Entity\WorkEntryRepository;
+use App\Entity\WorkEntry;
 use App\Pagination\Pager;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class WorkPage extends Page {
 
-	const
-		DEF_TMPFILE = '',
-		DB_TABLE = DBT_WORK,
-		DB_TABLE2 = DBT_WORK_MULTI,
-		MAX_SCAN_STATUS = 2,
-		STATUS_0 = 0,
-		STATUS_1 = 1,
-		STATUS_2 = 2,
-		STATUS_3 = 3,
-		STATUS_4 = 4,
-		STATUS_5 = 5,
-		STATUS_6 = 6,
-		STATUS_7 = 7;
+	const DEF_TMPFILE = '';
+	const DB_TABLE = DBT_WORK;
+	const DB_TABLE2 = DBT_WORK_MULTI;
+	const MAX_SCAN_STATUS = 2;
 
-	private
-		$FF_COMMENT = 'comment',
-		$FF_EDIT_COMMENT = 'editComment',
-		$FF_VIEW_LIST = 'vl',
-		$FF_SUBACTION = 'status',
-		$FF_LQUERY = 'wq';
+	private $FF_COMMENT = 'comment';
+	private $FF_EDIT_COMMENT = 'editComment';
+	private $FF_VIEW_LIST = 'vl';
+	private $FF_SUBACTION = 'status';
+	private $FF_LQUERY = 'wq';
 
 	protected $action = 'work';
 	protected $defViewList = 'work';
@@ -41,14 +31,14 @@ class WorkPage extends Page {
 		$tabImgs = array('fa fa-user singleuser', 'fa fa-users multiuser'),
 		$tabImgAlts = array('сам', 'екип'),
 		$statuses = array(
-			self::STATUS_0 => 'Планира се',
-			self::STATUS_1 => 'Сканира се',
-			self::STATUS_2 => 'За корекция',
-			self::STATUS_3 => 'Коригира се',
-			self::STATUS_4 => 'Иска се SFB',
-			self::STATUS_5 => 'Чака проверка',
-			self::STATUS_6 => 'Проверен',
-			self::STATUS_7 => 'За добавяне',
+			WorkEntry::STATUS_0 => 'Планира се',
+			WorkEntry::STATUS_1 => 'Сканира се',
+			WorkEntry::STATUS_2 => 'За корекция',
+			WorkEntry::STATUS_3 => 'Коригира се',
+			WorkEntry::STATUS_4 => 'Иска се SFB',
+			WorkEntry::STATUS_5 => 'Чака проверка',
+			WorkEntry::STATUS_6 => 'Проверен',
+			WorkEntry::STATUS_7 => 'За добавяне',
 		),
 		$viewLists = array(
 			'work' => 'списъка на подготвяните произведения',
@@ -61,14 +51,14 @@ class WorkPage extends Page {
 			'waiting' => 'Търси се коректор',
 		),
 		$statusClasses = array(
-			self::STATUS_0 => 'fa fa-square-o status-plan',
-			self::STATUS_1 => 'fa fa-square status-scan',
-			self::STATUS_2 => 'fa fa-circle-o status-waiting',
-			self::STATUS_3 => 'fa fa-dot-circle-o status-edit',
-			self::STATUS_4 => 'fa fa-code status-format',
-			self::STATUS_5 => 'fa fa-question-circle status-forcheck',
-			self::STATUS_6 => 'fa fa-check-circle status-checked',
-			self::STATUS_7 => 'fa fa-circle status-done',
+			WorkEntry::STATUS_0 => 'fa fa-square-o status-plan',
+			WorkEntry::STATUS_1 => 'fa fa-square status-scan',
+			WorkEntry::STATUS_2 => 'fa fa-circle-o status-waiting',
+			WorkEntry::STATUS_3 => 'fa fa-dot-circle-o status-edit',
+			WorkEntry::STATUS_4 => 'fa fa-code status-format',
+			WorkEntry::STATUS_5 => 'fa fa-question-circle status-forcheck',
+			WorkEntry::STATUS_6 => 'fa fa-check-circle status-checked',
+			WorkEntry::STATUS_7 => 'fa fa-circle status-done',
 			'all' => 'fa fa-tasks',
 			'my' => 'fa fa-user',
 			'waiting' => 'fa fa-search-plus status-waiting',
@@ -79,6 +69,10 @@ class WorkPage extends Page {
 			'odt', 'rtf', 'djvu', 'pdf', 'epub',
 			'zip', '7z', 'gz', 'tar', 'tgz', 'bz2',
 		);
+
+	private $entryId;
+	private $entry;
+	private $multidata = array();
 
 	public function __construct($fields) {
 		parent::__construct($fields);
@@ -115,9 +109,7 @@ class WorkPage extends Page {
 		$this->bypassExisting = (int) $this->request->value('bypass', 0);
 		$this->date = date('Y-m-d H:i:s');
 		$this->rowclass = null;
-		$this->showProgressbar = true;
-		$this->viewList = $this->request->value($this->FF_VIEW_LIST,
-			$this->defViewList, null, $this->viewLists);
+		$this->viewList = $this->request->value($this->FF_VIEW_LIST, $this->defViewList, null, $this->viewLists);
 
 		if ( !empty($this->subaction) && !empty($this->viewTypes[$this->subaction]) ) {
 			$this->title .= ' — ' . $this->viewTypes[$this->subaction];
@@ -125,12 +117,11 @@ class WorkPage extends Page {
 			$this->setScanUserView($this->scanuser_view);
 			$this->title .= ' — ' . $this->data_scanuser_view->getUsername();
 		}
-		$this->multidata = array();
 
 		$this->initPaginationFields();
 	}
 
-	public function setScanUserView($user) {
+	private function setScanUserView($user) {
 		$this->scanuser_view = $user;
 		$this->data_scanuser_view = $this->findUser($user);
 	}
@@ -141,8 +132,7 @@ class WorkPage extends Page {
 	}
 
 	protected function processSubmission() {
-		if ( !empty($this->entryId) &&
-				!$this->thisUserCanEditEntry($this->entryId, $this->workType) ) {
+		if ( !empty($this->entryId) && !$this->thisUserCanEditEntry($this->entryId, $this->workType) ) {
 			$this->addMessage('Нямате права да редактирате този запис.', true);
 
 			return $this->makeLists();
@@ -160,7 +150,7 @@ class WorkPage extends Page {
 		}
 	}
 
-	protected function updateMainUserData() {
+	private function updateMainUserData() {
 		if ( empty($this->btitle) ) {
 			$this->addMessage('Не сте посочили заглавие на произведението.', true);
 
@@ -204,7 +194,7 @@ class WorkPage extends Page {
 		}
 		$set = array(
 			'id' => $id,
-			'type' => in_array($this->status, array(self::STATUS_4)) ? 1 : $this->workType,
+			'type' => in_array($this->status, array(WorkEntry::STATUS_4)) ? 1 : $this->workType,
 			'title'=>$this->btitle,
 			'author'=> strtr($this->author, array(';'=>',')),
 			'publisher' => $this->publisher,
@@ -215,7 +205,7 @@ class WorkPage extends Page {
 			'is_frozen' => $this->is_frozen,
 			'status'=>$this->status,
 			'progress' => $this->progress,
-			'tmpfiles' => self::rawurlencode($this->tmpfiles),	#strpos($this->tmpfiles, '%') === false ? $this->tmpfiles : rawurldecode($this->tmpfiles),
+			'tmpfiles' => self::rawurlencode($this->tmpfiles),
 			'tfsize' => $this->tfsize
 		);
 		if ($this->userIsAdmin()) {
@@ -224,15 +214,14 @@ class WorkPage extends Page {
 				'admin_comment' => $this->request->value('admin_comment'),
 			);
 		}
-
-		$key = array('id' => $this->entryId);
 		if ($this->delete && $this->userIsAdmin()) {
-			$set += array('deleted_at' => new \DateTime, 'is_frozen' => 0);
-			$this->db->update(self::DB_TABLE, $set, $key);
+			$curDate = new \DateTime;
+			$set += array('deleted_at' => $curDate->format('Y-m-d H:i:s'), 'is_frozen' => 0);
+			$this->controller->em()->getConnection()->update(self::DB_TABLE, $set, array('id' => $this->entryId));
 			if ( $this->isMultiUser($this->workType) ) {
-				$this->db->update(self::DB_TABLE2, array('deleted_at' => new \DateTime), array('entry_id' => $this->entryId));
+				$this->controller->em()->getConnection()->update(self::DB_TABLE2, array('deleted_at' => $curDate->format('Y-m-d H:i:s')), array('entry_id' => $this->entryId));
 			}
-			$this->addMessage("Произведението „{$this->btitle}“ беше махнато от списъка.");
+			$this->addMessage("Произведението „{$this->btitle}“ беше премахнато от списъка.");
 			$this->deleteEntryFiles($this->entryId);
 			$this->scanuser_view = null;
 
@@ -241,22 +230,23 @@ class WorkPage extends Page {
 
 		if ( $this->handleUpload() && !empty($this->uplfile) ) {
 			$set['uplfile'] = $this->uplfile;
-			//if ( $this->isMultiUser() ) {
-				$set['tmpfiles'] = $this->makeTmpFilePath(self::rawurlencode($this->uplfile));
-				$set['tfsize'] = Number::int_b2m(filesize($this->absTmpDir . $this->uplfile));
-			//}
+			$set['tmpfiles'] = $this->makeTmpFilePath(self::rawurlencode($this->uplfile));
+			$set['tfsize'] = Number::int_b2m(filesize($this->absTmpDir . $this->uplfile));
 		}
-		$this->db->update(self::DB_TABLE, $set, $this->entryId);
-		$msg = $this->entryId == 0
-			? 'Произведението беше добавено в списъка с подготвяните.'
-			: 'Данните за произведението бяха обновени.';
+		if ($this->entryId) {
+			$this->controller->em()->getConnection()->update(self::DB_TABLE, $set, array('id' => $this->entryId));
+			$msg = 'Данните за произведението бяха обновени.';
+		} else {
+			$this->controller->em()->getConnection()->insert(self::DB_TABLE, $set);
+			$msg = 'Произведението беше добавено в списъка с подготвяните.';
+		}
 		$this->scanuser_view = 0;
 		$this->addMessage($msg);
 
 		return $this->makeLists();
 	}
 
-	protected function updateMultiUserData() {
+	private function updateMultiUserData() {
 		if ( $this->thisUserCanDeleteEntry() && $this->form != 'edit' ) {
 			return $this->updateMainUserData();
 		}
@@ -290,11 +280,11 @@ class WorkPage extends Page {
 			$set['uplfile'] = $this->uplfile;
 		}
 		if ($this->db->exists(self::DB_TABLE2, $key)) {
-			$this->db->update(self::DB_TABLE2, $set, $key);
+			$this->controller->em()->getConnection()->update(self::DB_TABLE2, $set, $key);
 			$msg = 'Данните бяха обновени.';
 		} else {
 			$set['id'] = $this->controller->em()->getNextIdRepository()->findNextId('App:WorkContrib')->getValue();
-			$this->db->insert(self::DB_TABLE2, $set);
+			$this->controller->em()->getConnection()->insert(self::DB_TABLE2, $set);
 			$msg = 'Току-що се включихте в подготовката на произведението.';
 			$this->informScanUser($this->entryId);
 		}
@@ -303,15 +293,15 @@ class WorkPage extends Page {
 		$set = array(
 			'date' => $this->date,
 			'status' => $this->isEditDone()
-				? ( $this->isReady() ? self::STATUS_6 : self::STATUS_5 )
-				: self::STATUS_3
+				? ( $this->isReady() ? WorkEntry::STATUS_6 : WorkEntry::STATUS_5 )
+				: WorkEntry::STATUS_3
 		);
-		$this->db->update(self::DB_TABLE, $set, $pkey);
+		$this->controller->em()->getConnection()->update(self::DB_TABLE, $set, $pkey);
 
 		return $this->makeLists();
 	}
 
-	protected function handleUpload() {
+	private function handleUpload() {
 		$tmpfile = $this->request->fileTempName('file');
 		if ( !is_uploaded_file($tmpfile) ) {
 			return false;
@@ -327,8 +317,8 @@ class WorkPage extends Page {
 		}
 
 		// copy local file if there is a remote workroom
-		if ( $remote = Setup::setting('workroom_remote') ) {
-			$com = sprintf('scp "%s" %s', $dest, $remote);#echo $com;
+		if ( $remote = $this->container->getParameter('workroom_remote') ) {
+			$com = sprintf('scp "%s" %s', $dest, $remote);
 			shell_exec($com);
 		}
 
@@ -337,7 +327,7 @@ class WorkPage extends Page {
 		return true;
 	}
 
-	protected function makeUploadedFileName() {
+	private function makeUploadedFileName() {
 		$filename = $this->request->fileName('file');
 		if ( empty($filename) ) {
 			return '';
@@ -357,9 +347,9 @@ class WorkPage extends Page {
 			return $this->makeWorkList();
 		}
 		$content = $this->makeUserGuideLink();
-		if ($this->subaction == 'edit'/* && $this->userCanAddEntry()*/) {
+		if ($this->subaction == 'edit') {
 			if ($this->entryId) {
-				$this->initData();
+				$this->initData($this->entryId);
 			}
 			$content .= $this->makeForm();
 		} else {
@@ -370,11 +360,11 @@ class WorkPage extends Page {
 		return $content;
 	}
 
-	protected function makeUserGuideLink() {
+	private function makeUserGuideLink() {
 		return '<div class="float-right"><a href="http://wiki.chitanka.info/Workroom" title="Наръчник за работното ателие"><span class="fa fa-info-circle"></span> Наръчник за работното ателие</a></div>';
 	}
 
-	protected function makeLists() {
+	private function makeLists() {
 		$o = $this->makePageHelp()
 			. $this->makeSearchForm()
 			. '<div class="standalone">' . $this->makeNewEntryLink() . '</div>'
@@ -389,7 +379,7 @@ class WorkPage extends Page {
 		return $o;
 	}
 
-	protected function makeSearchForm() {
+	private function makeSearchForm() {
 		$id = $this->FF_LQUERY;
 		$action = $this->controller->generateUrl('workroom');
 		return <<<EOS
@@ -409,16 +399,15 @@ class WorkPage extends Page {
 EOS;
 	}
 
-	public function makeWorkList(
-			$limit = 0,
-			$offset = 0,
-			$order = null,
-			$showPageLinks = true,
-			$where = array()) {
-		$q = $this->makeSqlQuery($limit, $offset, $order, $where);
-		$l = $this->db->iterateOverResult($q, 'makeWorkListItem', $this, true);
-		if ( empty($l) ) {
+	private function makeWorkList($limit = 0, $offset = 0, $order = null, $showPageLinks = true, $where = array()) {
+		$sql = $this->makeSqlQuery($limit, $offset, $order, $where);
+		$results = $this->controller->em()->getConnection()->executeQuery($sql)->fetchAll();
+		if ( empty($results) ) {
 			return '<p class="standalone emptylist"><strong>Няма подготвящи се произведения.</strong></p>';
+		}
+		$table = '';
+		foreach ($results as $result) {
+			$table .= $this->makeWorkListItem($result);
 		}
 		if ($showPageLinks) {
 			$params = array(
@@ -426,7 +415,7 @@ EOS;
 			);
 			if ($this->searchQuery) $params[$this->FF_LQUERY] = $this->searchQuery;
 			if ($this->scanuser_view) $params['user'] = $this->scanuser_view;
-			$pagelinks = $showPageLinks ? $this->controller->renderView('App::pager.html.twig', array(
+			$pagelinks = $this->controller->renderView('App::pager.html.twig', array(
 				'pager'    => new Pager(array(
 					'page'  => $this->lpage,
 					'limit' => $this->llimit,
@@ -434,7 +423,7 @@ EOS;
 				)),
 				'current_route' => 'workroom',
 				'route_params' => $params,
-			)) : '';
+			));
 		} else {
 			$pagelinks = '';
 		}
@@ -457,15 +446,14 @@ EOS;
 	</tr>
 </thead>
 <tbody>
-$l
+$table
 </tbody>
 </table>
 $pagelinks
 EOS;
 	}
 
-	public function makeSqlQuery(
-		$limit = 0, $offset = 0, $order = null, $where = array() ) {
+	private function makeSqlQuery($limit = 0, $offset = 0, $order = null, $where = array()) {
 		$qa = array(
 			'SELECT' => 'w.*, DATE(date) ddate, u.username, u.email, u.allowemail, num_comments',
 			'FROM' => self::DB_TABLE. ' w',
@@ -481,7 +469,7 @@ EOS;
 		return $this->db->extselectQ($qa);
 	}
 
-	public function makeSqlWhere($pref = '', $base = array()) {
+	private function makeSqlWhere($pref = '', $base = array()) {
 		$w = (array) $base;
 		if ( !empty($pref) ) $pref .= '.';
 		$showuser = 0;
@@ -492,7 +480,7 @@ EOS;
 			$showuser = $user ? $user->getId() : null;
 		}
 		if ( ! empty($showuser) ) {
-			$entry_idQ = $this->db->selectQ(self::DB_TABLE2, array('user_id' => $showuser, 'deleted_at IS NULL'), 'entry_id');
+			$entry_idQ = "SELECT entry_id FROM ".self::DB_TABLE2." WHERE user_id = {$showuser} AND deleted_at IS NULL";
 			$ors = array(
 				$pref.'user_id' => $showuser,
 				$pref.'id IN ('. $entry_idQ .')');
@@ -513,7 +501,8 @@ EOS;
 		return $w;
 	}
 
-	public function makeWorkListItem($dbrow, $astable = true) {
+	private function makeWorkListItem($dbrow, $astable = true) {
+		$entry = $this->repo()->find($dbrow['id']);
 		extract($dbrow);
 		$author = strtr($author, array(', '=>','));
 		$author = $this->makeAuthorLink($author);
@@ -541,30 +530,26 @@ EOS;
 			$sis_frozen = '';
 		}
 		if ( $this->isMultiUser($type) ) {
-			$mdata = $this->getMultiEditData($id);
 			$musers = '';
-			foreach ($mdata as $muser => $data) {
-				$uinfo = $this->makeExtraInfo("$data[comment] ($data[progress]%)");
-				$ufile = empty( $data['uplfile'] )
+			foreach ($entry->getOpenContribs() as $contrib) {
+				$uinfo = $this->makeExtraInfo("{$contrib->getComment()} ({$contrib->getProgress()}%)");
+				$ufile = $contrib->getUplfile() == ''
 					? ''
-					: $this->makeFileLink($data['uplfile'], $data['username']);
-				if ($muser == $user_id) {
+					: $this->makeFileLink($contrib->getUplfile(), $contrib->getUser()->getUsername());
+				if ($contrib->getUser()->getId() == $user_id) {
 					$userlink = "$userlink $uinfo $ufile";
 					continue;
 				}
-				$ulink = $this->makeUserLinkWithEmail($data['username'],
-					$data['email'], $data['allowemail']);
-				if ($data['is_frozen']) {
+				$ulink = $this->makeUserLinkWithEmail($contrib->getUser()->getUsername(),
+					$contrib->getUser()->getEmail(), $contrib->getUser()->getAllowemail());
+				if ($contrib->isFrozen()) {
 					$ulink = "<span class='is_frozen'>$ulink</span>";
 				}
 				$musers .= "\n\t<li>$ulink $uinfo $ufile</li>";
-				$extraclass .= $this->user->getId() == $muser ? ' hilite' : '';
+				$extraclass .= $this->user->getId() == $contrib->getUser()->getId() ? ' hilite' : '';
 			}
-			if ( !empty($mdata) ) {
+			if ( !empty($musers) ) {
 				$userlink = "<ul class='simplelist'>\n\t<li>$userlink</li>$musers</ul>";
-				if ( isset($showeditors) && $showeditors ) {
-					$userlink .= $this->makeEditorList($mdata);
-				}
 			} else if ( $status == self::MAX_SCAN_STATUS ) {
 				$userlink .= ' (<strong>очакват се коректори</strong>)';
 			}
@@ -618,11 +603,11 @@ EOS;
 HTML;
 	}
 
-	protected function _getUserTypeMarker($type) {
+	private function _getUserTypeMarker($type) {
 		return "<span class=\"{$this->tabImgs[$type]}\"><span class=\"sr-only\">{$this->tabImgAlts[$type]}</span></span>";
 	}
 
-	public function makeStatus($code) {
+	private function makeStatus($code) {
 		return "<span class='{$this->statusClasses[$code]}'></span> {$this->statuses[$code]}";
 	}
 
@@ -638,7 +623,7 @@ HTML;
 		return $this->makeExtraInfo(implode("\n", $lines), $expand);
 	}
 
-	public function makeExtraInfo($info, $expand = false) {
+	private function makeExtraInfo($info, $expand = false) {
 		$info = strtr(trim($info), array(
 			"\n"   => '<br>',
 			"\r"   => '',
@@ -651,11 +636,7 @@ HTML;
 		return '<span class="popover-trigger" data-content="'.$info.'"><span class="fa fa-info-circle"></span><span class="sr-only">Инфо</span></span>';
 	}
 
-	public function makeProgressBar($progressInPerc) {
-		$perc = $progressInPerc .'%';
-		if ( !$this->showProgressbar ) {
-			return $perc;
-		}
+	private function makeProgressBar($progressInPerc) {
 		return <<<HTML
 <div class="progress">
 	<div class="progress-bar" role="progressbar" aria-valuenow="$progressInPerc" aria-valuemin="0" aria-valuemax="100" style="width: $progressInPerc%;">
@@ -665,7 +646,7 @@ HTML;
 HTML;
 	}
 
-	protected function makeNewEntryLink() {
+	private function makeNewEntryLink() {
 		if ( !$this->userCanAddEntry() ) {
 			return '';
 		}
@@ -675,7 +656,7 @@ HTML;
 
 	}
 
-	protected function makeViewWorksLinks() {
+	private function makeViewWorksLinks() {
 		$links = array();
 		foreach ($this->viewTypes as $type => $title) {
 			$class = $this->subaction == $type ? 'selected' : '';
@@ -705,7 +686,7 @@ HTML;
 			</div>';
 	}
 
-	protected function makeForm() {
+	private function makeForm() {
 		$this->title .= ' — '.(empty($this->entryId) ? 'Добавяне' : 'Редактиране');
 		$helpTop = empty($this->entryId) ? $this->makeAddEntryHelp() : '';
 		$tabs = '';
@@ -731,7 +712,6 @@ HTML;
 			$extra = '';
 		} else {
 			$editFields = $this->makeMultiUserEditFields();
-			#$extra = $this->isScanDone() ? $this->makeMultiEditInput() : '';
 			$extra = $this->makeMultiEditInput();
 		}
 		if ( $this->thisUserCanDeleteEntry() ) {
@@ -746,7 +726,7 @@ HTML;
 				$this->out->checkbox('delete', '', false, 'Изтриване на записа') .
 				' (напр., ако произведението вече е добавено в библиотеката)</div>';
 			$button = $this->makeSubmitButton();
-			if ($this->status == self::STATUS_7 && !$this->userCanSetStatus(self::STATUS_7)) {
+			if ($this->status == WorkEntry::STATUS_7 && !$this->userCanSetStatus(WorkEntry::STATUS_7)) {
 				$button = $delete = '';
 			}
 		} else {
@@ -771,8 +751,7 @@ HTML;
 
 		$adminFields = $this->userIsAdmin() ? $this->makeAdminOnlyFields() : '';
 		$user = $this->controller->em()->getUserRepository()->find($this->scanuser);
-		$ulink = $this->makeUserLinkWithEmail($user->getUsername(),
-			$user->getEmail(), $user->getAllowemail());
+		$ulink = $this->makeUserLinkWithEmail($user->getUsername(), $user->getEmail(), $user->getAllowemail());
 
 		return <<<EOS
 
@@ -965,14 +944,14 @@ JS;
 			&& File::isSFB($this->absTmpDir.basename($this->tmpfiles));
 	}
 
-	protected function makeSubmitButton() {
+	private function makeSubmitButton() {
 		$submit = $this->out->submitButton('Запис', '', null, true, array('class' => 'btn btn-primary'));
 		$cancel = sprintf('<a href="%s" title="Към основния списък">Отказ</a>', $this->controller->generateUrl('workroom'));
 
 		return $submit .' &#160; '. $cancel;
 	}
 
-	protected function makeSingleUserEditFields() {
+	private function makeSingleUserEditFields() {
 		$status = $this->getStatusSelectField($this->status);
 		$progress = $this->out->textField('progress', '', $this->progress, 2, 3);
 		$is_frozen = $this->out->checkbox('is_frozen', '', $this->is_frozen,
@@ -1039,9 +1018,9 @@ EOS;
 FIELDS;
 	}
 
-	protected function getStatusSelectField($selected, $max = null) {
+	private function getStatusSelectField($selected, $max = null) {
 		$statuses = $this->statuses;
-		foreach (array(self::STATUS_6, self::STATUS_7) as $status) {
+		foreach (array(WorkEntry::STATUS_6, WorkEntry::STATUS_7) as $status) {
 			if ( ! $this->userCanSetStatus($status) ) {
 				unset( $statuses[$status] );
 			}
@@ -1056,11 +1035,11 @@ FIELDS;
 		return $field;
 	}
 
-	protected function makeMultiUserEditFields() {
+	private function makeMultiUserEditFields() {
 		return $this->makeMultiScanInput();
 	}
 
-	protected function makeMultiScanInput() {
+	private function makeMultiScanInput() {
 		$is_frozenLabel = 'Подготовката е спряна за известно време';
 		$cstatus = $this->status > self::MAX_SCAN_STATUS
 			? self::MAX_SCAN_STATUS
@@ -1119,7 +1098,7 @@ FIELDS;
 EOS;
 	}
 
-	protected function makeMultiEditInput() {
+	private function makeMultiEditInput() {
 		$editorList = $this->makeEditorList();
 		$myContrib = $this->isMyContribAllowed() ? $this->makeMultiEditMyInput() : '';
 
@@ -1130,11 +1109,11 @@ EOS;
 EOS;
 	}
 
-	protected function isMyContribAllowed() {
+	private function isMyContribAllowed() {
 		if ($this->userIsSupervisor()) {
 			return true;
 		}
-		if (in_array($this->status, array(self::STATUS_5, self::STATUS_6, self::STATUS_7))) {
+		if (in_array($this->status, array(WorkEntry::STATUS_5, WorkEntry::STATUS_6, WorkEntry::STATUS_7))) {
 			return false;
 		}
 		if ($this->user->isAnonymous()) {
@@ -1143,14 +1122,19 @@ EOS;
 		return true;
 	}
 
-	protected function makeMultiEditMyInput() {
+	private function makeMultiEditMyInput() {
 		$msg = '';
 		if ( empty($this->multidata[$this->user->getId()]) ) {
 			$comment = $progress = $uplfile = $filesize = '';
 			$is_frozen = false;
 			$msg = '<p>Вие също може да се включите в подготовката на текста.</p>';
 		} else {
-			extract( $this->multidata[$this->user->getId()] );
+			$contrib = $this->multidata[$this->user->getId()];
+			$comment = $contrib->getComment();
+			$progress = $contrib->getProgress();
+			$uplfile = $contrib->getUplfile();
+			$filesize = $contrib->getFilesize();
+			$is_frozen = $contrib->isFrozen();
 		}
 		$ulink = $this->makeUserLink($this->user->getUsername());
 		$button = $this->makeSubmitButton();
@@ -1226,27 +1210,25 @@ EOS;
 EOS;
 	}
 
-	protected function makeEditorList($mdata = null) {
-		Legacy::fillOnEmpty($mdata, $this->multidata);
-		if ( empty($mdata) ) {
+	private function makeEditorList() {
+		if ( empty($this->multidata) ) {
 			return '<p>Все още никой не се е включил в корекцията на текста.</p>';
 		}
 		$l = $class = '';
-		foreach ($mdata as $edata) {
-			extract($edata);
+		foreach ($this->multidata as $contrib) {
 			$class = $this->nextRowClass($class);
-			$ulink = $this->makeUserLinkWithEmail($username, $email, $allowemail);
-			$comment = strtr($comment, array("\n" => "<br>\n"));
-			if ( !empty($uplfile) ) {
-				$comment .= ' ' . $this->makeFileLink($uplfile, $username, $filesize);
+			$ulink = $this->makeUserLinkWithEmail($contrib->getUser()->getUsername(), $contrib->getUser()->getEmail(), $contrib->getUser()->getAllowemail());
+			$comment = strtr($contrib->getComment(), array("\n" => "<br>\n"));
+			if ($contrib->getUplfile() != '') {
+				$comment .= ' ' . $this->makeFileLink($contrib->getUplfile(), $contrib->getUser()->getUsername(), $contrib->getFilesize());
 			}
-			$progressbar = $this->makeProgressBar($progress);
-			if ($is_frozen) {
+			$progressbar = $this->makeProgressBar($contrib->getProgress());
+			if ($contrib->isFrozen()) {
 				$class .= ' is_frozen';
 				$progressbar .= ' (замразена)';
 			}
-			$deleteForm = $this->controller->renderView('App:Workroom:contrib_delete_form.html.twig', array('contrib' => array('id' => $edata['id'])));
-
+			$deleteForm = $this->controller->renderView('App:Workroom:contrib_delete_form.html.twig', array('contrib' => array('id' => $contrib->getId())));
+			$date = $contrib->getDate()->format('d.m.Y');
 			$l .= <<<EOS
 
 		<tr class="$class deletable">
@@ -1276,7 +1258,7 @@ EOS;
 EOS;
 	}
 
-	protected function makePageHelp() {
+	private function makePageHelp() {
 		$regUrl = $this->controller->generateUrl('register');
 		$ext = $this->user->isAnonymous() ? "е необходимо първо да се <a href=\"$regUrl\">регистрирате</a> (не се притеснявайте, ще ви отнеме най-много 10–20 секунди, колкото и бавно да пишете). След това се върнете на тази страница и" : '';
 		$umarker = $this->_getUserTypeMarker(1);
@@ -1297,19 +1279,19 @@ EOS;
 EOS;
 	}
 
-	protected function makeAddEntryHelp() {
+	private function makeAddEntryHelp() {
 		$mainlink = $this->controller->generateUrl('workroom');
 
 		return <<<EOS
 
 <p>Чрез долния формуляр може да добавите ново произведение към <a href="$mainlink">списъка с подготвяните</a>.</p>
 <p>Имате възможност за избор между „{$this->tabs[0]}“ (сами ще обработите целия текст) или „{$this->tabs[1]}“ (вие ще сканирате текста, а други потребители ще имат възможността да се включат в коригирането му).</p>
-<p>Въведете заглавието и автора и накрая посочете на какъв етап се намира подготовката. Ако още не сте започнали сканирането, изберете „{$this->statuses[self::STATUS_0]}“.</p>
+<p>Въведете заглавието и автора и накрая посочете на какъв етап се намира подготовката. Ако още не сте започнали сканирането, изберете „{$this->statuses[WorkEntry::STATUS_0]}“.</p>
 <p>През следващите дни винаги може да промените етапа, на който се намира подготовката на произведението. За тази цел, в основния списък, заглавието ще представлява връзка към страницата за редактиране.</p>
 EOS;
 	}
 
-	protected function makeSingleUserHelp() {
+	private function makeSingleUserHelp() {
 		return <<<EOS
 
 <p>На тази страница може да променяте данните за произведението.
@@ -1318,22 +1300,34 @@ EOS;
 EOS;
 	}
 
-	protected function makeContribList() {
-		$this->rownr = 0;
-		$this->rowclass = '';
-		$qa = array(
-			'SELECT' => 'ut.user_id, u.username, COUNT(ut.user_id) count, SUM(ut.size) size',
-			'FROM' => DBT_USER_TEXT .' ut',
-			'LEFT JOIN' => array(DBT_USER .' u' => 'ut.user_id = u.id'),
-			'GROUP BY' => 'ut.user_id',
-			'ORDER BY' => 'size DESC',
-		);
-		$q = $this->db->extselectQ($qa);
-		$list = $this->db->iterateOverResult($q, 'makeContribListItem', $this);
-		if ( empty($list) ) {
+	private function makeContribList() {
+		$sql = 'SELECT ut.user_id, u.username, COUNT(ut.user_id) count, SUM(ut.size) size
+			FROM '. DBT_USER_TEXT .' ut
+			LEFT JOIN '. DBT_USER .' u ON ut.user_id = u.id
+			GROUP BY ut.user_id
+			ORDER BY size DESC';
+		$results = $this->controller->em()->getConnection()->executeQuery($sql)->fetchAll();
+
+		if ( empty($results) ) {
 			return '';
 		}
-
+		$list = '';
+		$rownr = 0;
+		$rowclass = '';
+		foreach ($results as $dbrow) {
+			$rowclass = $this->nextRowClass($rowclass);
+			$ulink = $dbrow['user_id'] ? $this->makeUserLink($dbrow['username']) : $dbrow['username'];
+			$s = Number::formatNumber($dbrow['size'], 0);
+			$rownr += 1;
+			$list .= <<<HTML
+	<tr class="$rowclass">
+		<td>$rownr</td>
+		<td>$ulink</td>
+		<td class="text-right">$s</td>
+		<td class="text-right">$dbrow[count]</td>
+	</tr>
+HTML;
+		}
 		return <<<EOS
 
 	<table class="table table-striped table-condensed table-bordered" style="margin: 0 auto; max-width: 30em">
@@ -1352,26 +1346,10 @@ EOS;
 EOS;
 	}
 
-	public function makeContribListItem($dbrow) {
-		$this->rowclass = $this->nextRowClass($this->rowclass);
-		$ulink = $dbrow['user_id'] ? $this->makeUserLink($dbrow['username']) : $dbrow['username'];
-		$s = Number::formatNumber($dbrow['size'], 0);
-		$this->rownr += 1;
-
-		return <<<HTML
-<tr class="$this->rowclass">
-	<td>$this->rownr</td>
-	<td>$ulink</td>
-	<td class="text-right">$s</td>
-	<td class="text-right">$dbrow[count]</td>
-</tr>
-HTML;
-	}
-
-	protected function initData() {
-		$entry = $this->repo()->find($this->entryId);
-		if ($entry == null) {
-			throw new NotFoundHttpException("Няма запис с номер $this->entryId.");
+	private function initData($id) {
+		$entry = $this->repo()->find($id);
+		if (!$entry) {
+			throw new NotFoundHttpException("Няма запис с номер $id.");
 		}
 		if ($entry->isDeleted() && !$this->userIsAdmin()) {
 			throw new NotFoundHttpException("Изтрит запис.");
@@ -1391,37 +1369,15 @@ HTML;
 		if ( !$this->thisUserCanDeleteEntry() || $this->request->value('workType', null, 3) === null ) {
 			$this->workType = $entry->getType();
 		}
-		$this->multidata = $this->getMultiEditData($entry->getId());
+		$this->multidata = array();
+		foreach ($entry->getContribs() as $contrib) {
+			$this->multidata[$contrib->getUser()->getId()] = $contrib;
+		}
 
 		$this->entry = $entry;
 	}
 
-	public function getMultiEditData($mainId) {
-		$qa = array(
-			'SELECT' => 'm.*, DATE(m.date) date, u.username, u.email, u.allowemail',
-			'FROM' => self::DB_TABLE2 .' m',
-			'LEFT JOIN' => array(
-				DBT_USER .' u' => 'm.user_id = u.id',
-			),
-			'WHERE' => array('entry_id' => $mainId, 'deleted_at IS NULL'),
-			'ORDER BY' => 'm.date DESC',
-		);
-		$q = $this->db->extselectQ($qa);
-		$this->_medata = array();
-		$this->db->iterateOverResult($q, 'addMultiEditData', $this);
-
-		return $this->_medata;
-	}
-
-	public function addMultiEditData($dbrow) {
-		$this->_medata[$dbrow['user_id']] = $dbrow;
-	}
-
-	protected function isScanDone() {
-		return $this->status >= self::MAX_SCAN_STATUS;
-	}
-
-	protected function isEditDone() {
+	private function isEditDone() {
 		$key = array(
 			'entry_id' => $this->entryId,
 			'is_frozen' => false,
@@ -1431,18 +1387,18 @@ HTML;
 		return ! $this->db->exists(self::DB_TABLE2, $key);
 	}
 
-	public function isSingleUser($type = null) {
+	private function isSingleUser($type = null) {
 		if ($type === null) $type = $this->workType;
 
 		return $type == 0;
 	}
-	public function isMultiUser($type = null) {
+	private function isMultiUser($type = null) {
 		if ($type === null) $type = $this->workType;
 
 		return $type == 1;
 	}
 
-	public function thisUserCanEditEntry($entry, $type) {
+	private function thisUserCanEditEntry($entry, $type) {
 		if ($this->user->isAnonymous()) {
 			return false;
 		}
@@ -1452,16 +1408,7 @@ HTML;
 		return $this->db->exists(self::DB_TABLE, $key);
 	}
 
-	public function userCanEditEntry($user, $type = 0) {
-		if ($user->isAnonymous()) {
-			return false;
-		}
-		return $this->userIsSupervisor()
-			|| $user == $this->user->getId()
-			|| ($type == 1 && $this->userCanAddEntry());
-	}
-
-	public function thisUserCanDeleteEntry() {
+	private function thisUserCanDeleteEntry() {
 		if ($this->userIsSupervisor() || empty($this->entryId)) return true;
 		if ( isset($this->_tucde) ) return $this->_tucde;
 		$key = array('id' => $this->entryId, 'user_id' => $this->user->getId());
@@ -1469,19 +1416,15 @@ HTML;
 		return $this->_tucde = $this->db->exists(self::DB_TABLE, $key);
 	}
 
-	public function userCanDeleteEntry($user) {
-		return $this->user->inGroup('workroom-admin', 'workroom-supervisor') || $user == $this->scanuser;
-	}
-
-	public function userCanAddEntry() {
+	private function userCanAddEntry() {
 		return $this->user->isAuthenticated() && $this->user->allowsEmail();
 	}
 
-	public function userCanMarkAsReady() {
+	private function userCanMarkAsReady() {
 		return $this->userIsAdmin();
 	}
 
-	public function isReady() {
+	private function isReady() {
 		return $this->userCanMarkAsReady() && $this->request->checkbox('ready');
 	}
 
@@ -1495,64 +1438,47 @@ HTML;
 
 	private function userCanSetStatus($status) {
 		switch ($status) {
-			case self::STATUS_7:
+			case WorkEntry::STATUS_7:
 				return $this->user->inGroup('workroom-admin');
-			case self::STATUS_6:
+			case WorkEntry::STATUS_6:
 				return $this->user->inGroup(array('workroom-admin', 'workroom-supervisor'));
 			default:
 				return $this->user->isAuthenticated();
 		}
 	}
 
-	protected function informScanUser($entry) {
-		$res = $this->db->select(self::DB_TABLE, array('id' => $entry));
-		extract( $this->db->fetchAssoc($res) );
+	private function informScanUser($entryId) {
+		$entry = $this->repo()->find($entryId);
 
-		$sel = array('realname', 'email');
-		$res = $this->db->select(DBT_USER, array('id' => $user_id), $sel);
-		extract( $this->db->fetchAssoc($res) );
-		if ( empty($email) ) {
-			return true;
+		if ($entry->getUser()->getEmail() == '') {
+			return;
 		}
-		$editLink = $this->controller->generateUrl('workroom_entry_edit', array('id' => $entry));
-
-		$mailpage = Setup::getPage('Mail', $this->controller, $this->container, false);
-		$msg = <<<EOS
-Нов потребител се присъедини към подготовката на „{$title}“ от $author.
+		$editLink = $this->controller->generateUrl('workroom_entry_edit', array('id' => $entry->getId()), true);
+		$messageBody = <<<EOS
+Нов потребител се присъедини към подготовката на „{$entry->getTitle()}“ от {$entry->getAuthor()}.
 
 $editLink
 
 Моята библиотека
 EOS;
-		$fields = array(
-			'mailToName'  => $realname,
-			'mailToEmail' => $email,
-			'mailSubject' => "$this->sitename: Нов коректор на ваш текст",
-			'mailMessage' => $msg);
-		$mailpage->setFields($fields);
+		$message = \Swift_Message::newInstance("Моята библиотека: Нов коректор на ваш текст");
+		$message->setFrom($this->container->getParameter('work_email'), 'Моята библиотека');
+		$message->setTo($entry->getUser()->getEmail(), $entry->getUser()->getUsername());
+		$message->setBody($messageBody);
 
-		return $mailpage->execute();
+		$notifier = new \App\Mail\Notifier($this->container->get('mailer'));
+		$notifier->sendMessage($message);
 	}
 
-	protected function escapeBlackListedExt($filename) {
-		if ( ! File::hasValidExtension($filename, $this->fileWhiteList)) {
-			$filename .= '.txt';
-		}
-		// remove leading dots
-		$filename = ltrim($filename, '.');
-
-		return $filename;
-	}
-
-	protected function makeTmpFilePath($file = '') {
+	private function makeTmpFilePath($file = '') {
 		if (preg_match('|https?://|', $file)) {
 			return $file;
 		}
 
-		return Setup::setting('workroom_root').'/'.$this->tmpDir . $file;
+		return $this->container->getParameter('workroom_root').'/'.$this->tmpDir . $file;
 	}
 
-	protected function makeFileLink($file, $username = '', $filesize = null) {
+	private function makeFileLink($file, $username = '', $filesize = null) {
 		$title = empty($username)
 			? $file
 			: "Качен файл от $username — $file";
@@ -1566,24 +1492,24 @@ EOS;
 			$title);
 	}
 
-	static public function rawurlencode($file) {
+	static private function rawurlencode($file) {
 		return strtr(rawurlencode($file), array(
 			'%2F' => '/',
 			'%3A' => ':',
 		));
 	}
 
-	protected function deleteEntryFiles($entry) {
+	private function deleteEntryFiles($entry) {
 		$files = $this->absTmpDir . "$entry-*";
 		$delDir = $this->absTmpDir . 'deleted';
 		`mv $files $delDir`;
 	}
 
-	public function pretifyComment($text) {
+	private function pretifyComment($text) {
 		return String::my_replace($text);
 	}
 
-	/** @return WorkEntryRepository */
+	/** @return \App\Entity\WorkEntryRepository */
 	private function repo() {
 		return $this->controller->em()->getWorkEntryRepository();
 	}

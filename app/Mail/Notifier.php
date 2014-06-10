@@ -20,7 +20,7 @@ class Notifier {
 		$this->sendMessage($message);
 	}
 
-	protected function sendMessage(Swift_Message $message) {
+	public function sendMessage(Swift_Message $message) {
 		$message->setReplyTo($message->getFrom());
 		$message->getHeaders()->addTextHeader('X-Mailer', 'Chitanka');
 		$this->mailer->send($message);

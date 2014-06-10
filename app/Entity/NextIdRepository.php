@@ -6,7 +6,7 @@
 class NextIdRepository extends \Doctrine\ORM\EntityRepository {
 
 	/**
-	 * @param \Doctrine\ORM\Mapping\Entity $entity
+	 * @param object $entity
 	 * @return int
 	 */
 	public function selectNextId($entity) {

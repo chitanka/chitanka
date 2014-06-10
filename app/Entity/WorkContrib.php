@@ -88,7 +88,7 @@ class WorkContrib extends Entity {
 	public function getProgress() { return $this->progress; }
 
 	public function setIsFrozen($isFrozen) { $this->is_frozen = $isFrozen; }
-	public function getIsFrozen() { return $this->is_frozen; }
+	public function isFrozen() { return $this->is_frozen; }
 
 	public function setDate($date) { $this->date = $date; }
 	public function getDate() { return $this->date; }

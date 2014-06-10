@@ -60,18 +60,6 @@ class mlDatabase {
 		return (int) $count;
 	}
 
-	public function iterateOverResult($query, $func, $obj = null, $buffered = false) {
-		$result = $this->query($query, $buffered);
-		$out = '';
-		if ($result) {
-			while ( $row = mysql_fetch_assoc($result) ) {
-				$out .= is_null($obj) ? $func($row) : $obj->$func($row);
-			}
-			$this->freeResult($result);
-		}
-		return $out;
-	}
-
 	public function select($table, $keys = array(), $fields = array(), $orderby = '', $offset = 0, $limit = 0, $groupby = '') {
 		$q = $this->selectQ($table, $keys, $fields, $orderby, $offset, $limit);
 		return $this->query($q);
@@ -166,10 +154,6 @@ class mlDatabase {
 		}
 		$signore = $ignore ? ' IGNORE' : '';
 		return "INSERT$signore INTO $table". rtrim($vals, ',');
-	}
-
-	public function update($table, $data, $keys) {
-		return $this->query( $this->updateQ($table, $data, $keys) );
 	}
 
 	public function updateQ($table, $data, $keys) {
@@ -327,13 +311,6 @@ class mlDatabase {
 	 */
 	public function numRows($result) {
 		return mysql_num_rows($result);
-	}
-
-	/**
-	 * @param resource $result
-	 */
-	private function freeResult($result) {
-		return mysql_free_result($result);
 	}
 
 	/**

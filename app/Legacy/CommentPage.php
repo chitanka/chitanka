@@ -156,11 +156,14 @@ class CommentPage extends Page {
 			'WHERE' => $key,
 			'ORDER BY' => "`time` $this->sortOrder",
 		);
-		$q = $this->db->extselectQ($qa);
+		$sql = $this->db->extselectQ($qa);
 		$this->comments = '';
 		$this->acomments = $this->acommentsTree = $this->acommentsTmp = array();
 		$this->curRowNr = 0;
-		$this->db->iterateOverResult($q, 'processCommentDbRow', $this);
+		$results = $this->controller->em()->getConnection()->executeQuery($sql)->fetchAll();
+		foreach ($results as $result) {
+			$this->processCommentDbRow($result);
+		}
 		if ( empty($this->acomments) ) {
 			return $this->includeCommentForm ? $this->makeNewCommentLink() : '';
 		}
