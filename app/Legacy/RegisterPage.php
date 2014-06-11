@@ -5,7 +5,6 @@ use App\Entity\User;
 class RegisterPage extends Page {
 
 	protected $action = 'register';
-	protected $attempt;
 	protected $returnto;
 
 	protected $username;
@@ -16,6 +15,7 @@ class RegisterPage extends Page {
 	protected $news;
 
 	private $invalidReferers = array('login', 'logout', 'register', 'sendNewPassword');
+	private $attempt;
 
 	public function __construct($fields) {
 		parent::__construct($fields);
@@ -80,12 +80,8 @@ class RegisterPage extends Page {
 		if ( $isValid !== true ) {
 			return "Знакът „{$isValid}“ не е позволен в потребителското име.";
 		}
-		$res = Legacy::validateEmailAddress($this->email);
-		if ($res == 0) {
+		if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
 			return 'Въведеният адрес за електронна поща е невалиден.';
-		}
-		if ($res == -1 && $this->attempt == 1) {
-			return 'Въведеният адрес за електронна поща е валиден, но е леко странен. Проверете дали не сте допуснали грешка.';
 		}
 		return '';
 	}

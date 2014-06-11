@@ -30,7 +30,6 @@ class SettingsPage extends RegisterPage {
 
 	protected function processSubmission() {
 		$err = $this->validateInput();
-		$this->attempt++;
 		if ( !empty($err) ) {
 			$this->addMessage($err, true);
 			return $this->makeRegUserForm();
@@ -70,12 +69,8 @@ class SettingsPage extends RegisterPage {
 		if ( !$this->isValidPassword() ) {
 			return 'Двете въведени пароли се различават.';
 		}
-		$res = Legacy::validateEmailAddress($this->email);
-		if ($res == 0) {
+		if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
 			return 'Въведеният адрес за електронна поща е невалиден.';
-		}
-		if ($res == -1 && $this->attempt == 1) {
-			return 'Въведеният адрес за електронна поща е валиден, но е леко странен. Проверете дали не сте допуснали грешка.';
 		}
 		return '';
 	}
@@ -117,7 +112,6 @@ class SettingsPage extends RegisterPage {
 		return <<<EOS
 
 <form action="" method="post" class="form-horizontal" role="form">
-	<input type="hidden" name="attempt" value="$this->attempt">
 	<div class="form-group">
 		<label for="username" class="col-sm-4 control-label">Потребителско име:</label>
 		<div class="col-sm-8">

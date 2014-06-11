@@ -419,28 +419,6 @@ class Legacy {
 	}
 
 	/**
-	 * Validates an e-mail address.
-	 * Regexps are taken from http://www.iki.fi/markus.sipila/pub/emailvalidator.php
-	 * (author: Markus Sipilä, version: 1.0, 2006-08-02)
-	 *
-	 * @param string $input E-mail address to be validated
-	 * @return int 1 if valid, 0 if not valid, -1 if valid but strange
-	 */
-	static public function validateEmailAddress($input, $allowEmpty = true) {
-		if ( empty($input) ) {
-			return $allowEmpty ? 1 : 0;
-		}
-		$ct = '[a-zA-Z0-9-]';
-		$cn = '[a-zA-Z0-9_+-]';
-		$cr = '[a-zA-Z0-9,!#$%&\'\*+\/=?^_`{|}~-]';
-		$normal = "/^$cn+(\.$cn+)*@$ct+(\.$ct+)*\.([a-z]{2,4})$/";
-		$rare   = "/^$cr+(\.$cr+)*@$ct+(\.$ct+)*\.([a-z]{2,})$/";
-		if ( preg_match($normal, $input) ) { return 1; }
-		if ( preg_match($rare, $input) ) { return -1; }
-		return 0;
-	}
-
-	/**
 	 * @param string $pass
 	 * @param int $loops
 	 */
