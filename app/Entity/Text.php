@@ -8,10 +8,10 @@ use App\Generator\TextFb2Generator;
 use App\Generator\TextFbiGenerator;
 use App\Generator\TextHtmlGenerator;
 use App\Util\Char;
+use App\Util\Date;
 use App\Util\File;
 use App\Util\Language;
 use App\Util\String;
-use App\Legacy\Legacy;
 use App\Legacy\Setup;
 use App\Legacy\SfbParserSimple;
 use Sfblib\SfbConverter;
@@ -610,7 +610,7 @@ class Text extends BaseWork {
 
 	public function getAuthorNameEscaped() {
 		if ( preg_match('/[a-z]/', $this->getAuthorOrigNames()) ) {
-			return Legacy::removeDiacritics( Char::cyr2lat($this->getAuthorOrigNames()) );
+			return String::removeDiacritics( Char::cyr2lat($this->getAuthorOrigNames()) );
 		}
 
 		return Char::cyr2lat($this->getAuthorNames());
@@ -938,7 +938,7 @@ EOS;
 	public function getNameForFile() {
 		$filename = strtr(Setup::setting('download_file'), array(
 			'AUTHOR' => $this->getAuthorNameEscaped(),
-			'SERIES' => empty($this->series) ? '' : Legacy::getAcronym(Char::cyr2lat($this->series->getName())),
+			'SERIES' => empty($this->series) ? '' : String::createAcronym(Char::cyr2lat($this->series->getName())),
 			'SERNO' => empty($this->sernr) ? '' : $this->sernr,
 			'TITLE' => Char::cyr2lat($this->title),
 			'ID' => $this->id,
@@ -1113,7 +1113,7 @@ EOS;
 		return $this->getOrigTitleAsSfb() . "\n\n"
 			. $this->getFullExtraInfo()      . "\n\n"
 			. "\tСвалено от „Моята библиотека“: ".$this->getDocId()."\n"
-			. "\tПоследна корекция: ".Legacy::humanDate($this->cur_rev->getDate())."\n";
+			. "\tПоследна корекция: ".Date::humanDate($this->cur_rev->getDate())."\n";
 	}
 
 	public function getContentAsFb2() {

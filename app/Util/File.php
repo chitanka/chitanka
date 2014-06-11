@@ -1,10 +1,8 @@
 <?php namespace App\Util;
 
-use App\Legacy\Legacy;
-
 class File {
 
-	static private $contentDirs = array(
+	private static $contentDirs = array(
 		'text' => 'content/text/',
 		'text-info' => 'content/text-info/',
 		'text-anno' => 'content/text-anno/',
@@ -102,7 +100,7 @@ class File {
 	public static function cleanFileName($fname, $woDiac = true) {
 		$fname = preg_replace('![^a-zA-Z0-9_. -]!u', '', $fname);
 		if ( $woDiac ) {
-			$fname = Legacy::removeDiacritics($fname);
+			$fname = String::removeDiacritics($fname);
 		}
 		$fname = preg_replace('/  +/', ' ', $fname);
 		$fname = str_replace('- -', '-', $fname); // from empty entities

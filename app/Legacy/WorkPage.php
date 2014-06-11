@@ -1398,7 +1398,7 @@ EOS;
 			$this->workType = $entry->getType();
 		}
 		$this->multidata = array();
-		foreach ($entry->getContribs() as $contrib) {
+		foreach ($entry->getOpenContribs() as $contrib) {
 			$this->multidata[$contrib->getUser()->getId()] = $contrib;
 		}
 

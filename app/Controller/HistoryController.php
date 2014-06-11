@@ -1,7 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Pagination\Pager;
-use App\Util\Datetime;
+use App\Util\Date;
 
 class HistoryController extends Controller {
 
@@ -47,7 +47,7 @@ class HistoryController extends Controller {
 	}
 
 	public function listBooksByMonthAction($year, $month, $page) {
-		$dates = array("$year-$month-01", Datetime::endOfMonth("$year-$month"));
+		$dates = array("$year-$month-01", Date::endOfMonth("$year-$month"));
 		$limit = $this->booksPerPage;
 
 		$repo = $this->em()->getBookRevisionRepository();
@@ -97,7 +97,7 @@ class HistoryController extends Controller {
 	}
 
 	public function listTextsByMonthAction($year, $month, $page) {
-		$dates = array("$year-$month-01", Datetime::endOfMonth("$year-$month"));
+		$dates = array("$year-$month-01", Date::endOfMonth("$year-$month"));
 		$limit = $this->textsPerPage;
 
 		$repo = $this->em()->getTextRevisionRepository();

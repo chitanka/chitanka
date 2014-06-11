@@ -914,28 +914,6 @@ EOS;
 		THUMBS_FILE_TPL = 'thumbs-%d.jpg',
 		MAX_JOINED_THUMBS = 50;
 
-	public function getSeriesName($pic = null) {
-		if ( is_null($pic) ) {
-			$pic = $this;
-		}
-		if ( empty($pic->series) ) {
-			return '';
-		}
-		$name = $pic->seriesName;
-		$picType = picType($pic->seriesType);
-		if ( ! empty($picType) ) {
-			$name = "$picType „{$name}“";
-		}
-		return $name;
-	}
-
-	public function getIssueName($pic = null) {
-		if ( is_null($pic) ) {
-			$pic = $this;
-		}
-		return $pic->__toString();
-	}
-
 	private $_files;
 	public function getFiles() {
 		if ( isset($this->_files) ) {

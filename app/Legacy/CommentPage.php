@@ -1,5 +1,6 @@
 <?php namespace App\Legacy;
 
+use App\Util\Date;
 use App\Util\String;
 use App\Entity\Text;
 use App\Entity\TextComment;
@@ -235,7 +236,7 @@ class CommentPage extends Page {
 				? $this->makeUserLink($rname)
 				: $rname;
 			$timev = !isset($showtime) || $showtime // show per default
-				? ' <small>('. Legacy::humanDate(@$time) .')</small>' : '';
+				? ' <small>('. Date::humanDate(@$time) .')</small>' : '';
 			$firstrow = empty($textId) || empty($textTitle) ? ''
 				: '<p class="firstrow">'.
 					$this->makeSimpleTextLink($textTitle, $textId) .
@@ -258,10 +259,10 @@ class CommentPage extends Page {
 			$nr = $this->putNr ? $nr.'. ' : '';
 			$ratingview = empty($rating)
 				? ''
-				: ', оценка: <span title="Дадена на '.Legacy::humanDate($ratingdate).'">' . $rating . ' от ' . Text::getMaxRating() . '</span>';
+				: ', оценка: <span title="Дадена на '.Date::humanDate($ratingdate).'">' . $rating . ' от ' . Text::getMaxRating() . '</span>';
 			$secondrow = "<div class='secondrow'>$acts<strong>$nr$rnameview</strong>$timev$ratingview</div><hr>";
 		}
-		$content = String::pretifyInput(String::escapeInput($content));
+		$content = String::prettifyInput(String::escapeInput($content));
 
 		return <<<EOS
 

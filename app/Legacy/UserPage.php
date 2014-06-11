@@ -5,10 +5,21 @@ use Sfblib\SfbToHtmlConverter;
 
 class UserPage extends Page {
 
-	protected
-		$action = 'user',
-		$contribLimit = 50, $defListLimit = 100, $maxListLimit = 400,
-		$colCount = 4;
+	protected $action = 'user';
+	protected $defListLimit = 100;
+	protected $maxListLimit = 400;
+
+	private $contentDir;
+	private $userId;
+	private $username;
+	private $realname;
+	private $email;
+	private $registration;
+	private $touched;
+	private $filename;
+	private $userpage;
+	private $q;
+	private $shown_user;
 
 	public function __construct($fields) {
 		parent::__construct($fields);
@@ -17,7 +28,6 @@ class UserPage extends Page {
 
 		$this->username = $this->request->value('username', null, 1);
 		$this->userpage = $this->request->value('userpage');
-		$this->climit = $this->request->value('climit', 1);
 		$this->q = $this->request->value(self::FF_QUERY, '');
 		$this->initPaginationFields();
 
@@ -59,7 +69,12 @@ class UserPage extends Page {
 			$this->userpage = '';
 			return false;
 		}
-		Legacy::extract2object($data, $this);
+		$this->userId = $data['userId'];
+		$this->username = $data['username'];
+		$this->realname = $data['realname'];
+		$this->email = $data['email'];
+		$this->registration = $data['registration'];
+		$this->touched = $data['touched'];
 		$this->setDefaultTitle();
 		$this->filename = $this->contentDir .'/'. $this->userId;
 

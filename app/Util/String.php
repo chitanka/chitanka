@@ -10,7 +10,7 @@ class String {
 	 * @param int $len
 	 * @return string
 	 */
-	static public function limitLength($str, $len = 80) {
+	public static function limitLength($str, $len = 80) {
 		if ( strlen($str) > $len ) {
 			return substr($str, 0, $len - 1) . '…';
 		}
@@ -22,7 +22,7 @@ class String {
 	 * @param string $string
 	 * @return string
 	 */
-	static public function prepareStringForPreg($string) {
+	public static function prepareStringForPreg($string) {
 		return strtr($string, array(
 			// in a regexp a backslash can be escaped with four backslashes - \\\\
 			'\\' => '\\\\\\\\',
@@ -49,7 +49,7 @@ class String {
 	 * @param string $text
 	 * @return string
 	 */
-	static public function escapeInput($text) {
+	public static function escapeInput($text) {
 		$text = self::myhtmlentities($text);
 		$repl = array();
 		foreach (self::$allowableTags as $allowable) {
@@ -64,7 +64,7 @@ class String {
 	 * @param string $text
 	 * @return string
 	 */
-	static public function myhtmlentities( $text ) {
+	public static function myhtmlentities( $text ) {
 		return htmlentities( $text, ENT_QUOTES, 'UTF-8');
 	}
 
@@ -72,7 +72,7 @@ class String {
 	 * @param string $text
 	 * @return string
 	 */
-	static public function myhtmlspecialchars( $text ) {
+	public static function myhtmlspecialchars( $text ) {
 		return htmlspecialchars($text, ENT_COMPAT, 'UTF-8');
 	}
 
@@ -80,7 +80,7 @@ class String {
 	 * @param string $string
 	 * @return string
 	 */
-	static public function fixEncoding($string) {
+	public static function fixEncoding($string) {
 		if ('UTF-8' != ($enc = mb_detect_encoding($string, 'UTF-8, Windows-1251'))) {
 			$string = iconv($enc, 'UTF-8', $string);
 		}
@@ -91,7 +91,7 @@ class String {
 	 * @param string $text
 	 * @return string
 	 */
-	static public function pretifyInput($text) {
+	public static function prettifyInput($text) {
 		$patterns = array(
 			// link in brackets
 			'!(?<=[\s>])\((http://[^]\s,<]+)\)!e' => "'(<a href=\"$1\" title=\"'.urldecode('$1').'\">'.urldecode('$1').'</a>)'",
@@ -108,7 +108,7 @@ class String {
 	 * @param string $name
 	 * @return array
 	 */
-	static public function splitPersonName($name) {
+	public static function splitPersonName($name) {
 		preg_match('/([^,]+) ([^,]+)(, .+)?/', $name, $m);
 
 		if ( ! isset($m[2]) ) {
@@ -125,7 +125,7 @@ class String {
 	 * @param string $name
 	 * @return string
 	 */
-	static public function getMachinePersonName($name) {
+	public static function getMachinePersonName($name) {
 		$parts = self::splitPersonName($name);
 		$machineName = isset($parts['lastname'])
 			? $parts['lastname'] . ', ' . $parts['firstname']
@@ -140,12 +140,12 @@ class String {
 	 * @param int $maxlength
 	 * @return string
 	 */
-	static public function slugify($name, $maxlength = 60) {
+	public static function slugify($name, $maxlength = 60) {
 		$name = strtr($name, array(
 			'²' => '2', '°' => 'deg',
 		));
 		$name = Char::cyr2lat($name);
-		$name = Legacy::removeDiacritics($name);
+		$name = self::removeDiacritics($name);
 		$name = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $name);
 		$name = strtolower($name);
 		$name = preg_replace('/[^a-z\d]/', '-', $name);
@@ -156,11 +156,24 @@ class String {
 	}
 
 	/**
+	 * Remove diacritic characters from a latin string
+	 * Never run this function on a string with cyrillic letters: they all get converted to "Y".
+	 * @param string $string
+	 * @return string
+	 */
+	public static function removeDiacritics($string) {
+		return strtr(utf8_decode($string),
+			utf8_decode(
+			'ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ'),
+			'SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy');
+	}
+
+	/**
 	 * Replace some characters and generally prettify content
 	 * @param string $cont
 	 * @return string
 	 */
-	static public function my_replace($cont) {
+	public static function my_replace($cont) {
 		$chars = array("\r" => '',
 			'„' => '"', '“' => '"', '”' => '"', '«' => '"', '»' => '"', '&quot;' => '"',
 			'&bdquo;' => '"', '&ldquo;' => '"', '&rdquo;' => '"', '&laquo;' => '"',
@@ -197,6 +210,19 @@ class String {
 		}
 
 		return ltrim($cont, "\n");
+	}
+
+	/**
+	 * Create an acronym from a given name
+	 * @param string $name
+	 * @return string
+	 */
+	public static function createAcronym($name) {
+		if (preg_match_all('/ ([a-zA-Zа-яА-Я\d])/u', ' '.$name, $matches)) {
+			$acronym = implode('', $matches[1]);
+			return Char::mystrtoupper($acronym);
+		}
+		return null;
 	}
 
 	static private function log_error($s, $loud = false) {

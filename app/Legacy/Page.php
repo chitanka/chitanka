@@ -55,6 +55,8 @@ abstract class Page {
 
 	protected $includeUserLinks = true;
 
+	private $templates = array();
+
 	public function __construct(array $fields) {
 		foreach ($fields as $f => $v) {
 			$this->$f = $v;
@@ -117,33 +119,29 @@ abstract class Page {
 	}
 
 	/**
-		Build full page content.
-		@return string
-	*/
+	 * Build full page content.
+	 * @return string
+	 */
 	public function getFullContent() {
 		$this->messages = empty($this->messages) ? '' : "<div id='messages'>\n$this->messages\n</div>";
-		$this->addTemplates();
-		return Legacy::expandTemplates($this->messages . $this->content);
+		$this->templates['{SITENAME}'] = $this->sitename;
+		return strtr($this->messages . $this->content, $this->templates);
 	}
 
 	/**
-		Process POST Forms if there are any.
-		Override this function if your page contains POST Forms.
-	*/
+	 * Process POST Forms if there are any.
+	 * Override this function if your page contains POST Forms.
+	 */
 	protected function processSubmission() {
 		return $this->buildContent();
 	}
 
 	/**
-		Create page content.
-		Override this function to include content in your page.
-	*/
+	 * Create page content.
+	 * Override this function to include content in your page.
+	 */
 	protected function buildContent() {
 		return '';
-	}
-
-	protected function addTemplates() {
-		Legacy::addTemplate('SITENAME', $this->sitename);
 	}
 
 	protected function makeSimpleTextLink($title, $textId, $chunkId = 1, $linktext = '', $attrs = array(), $data = array(), $params = array()) {
@@ -298,8 +296,7 @@ abstract class Page {
 	private function makeCaptchaWarning() {
 		if ( $this->hasMoreCaptchaTries() ) {
 			$rest = $this->maxCaptchaTries - $this->captchaTries;
-			$tries = Legacy::chooseGrammNumber($rest, 'един опит', $rest.' опита');
-			return "Отговорили сте грешно на въпроса „{$this->captchaQuestionT}“. Имате право на още $tries.";
+			return "Отговорили сте грешно на въпроса „{$this->captchaQuestionT}“. Имате право на още ".($rest == 1 ? 'един опит' : "$rest опита").'.';
 		}
 		return "Вече сте направили $this->maxCaptchaTries неуспешни опита да отговорите на въпроса „{$this->captchaQuestionT}“. Нямате право на повече.";
 	}

@@ -30,6 +30,19 @@ class Number {
 	}
 
 	/**
+	 * Removes trailing zeros after the decimal sign
+	 * @param string $number
+	 * @param string $decPoint
+	 * @return string
+	 */
+	public static function rmTrailingZeros($number, $decPoint = ',') {
+		$number = rtrim($number, '0');
+		$number = rtrim($number, $decPoint); // remove the point too
+		return $number;
+	}
+
+
+	/**
 	 * Convert a php.ini value to an integer
 	 * @param string $val
 	 * @return int

@@ -1,6 +1,6 @@
 <?php namespace App\Entity;
 
-use App\Util\Datetime;
+use App\Util\Date;
 
 /**
  *
@@ -17,7 +17,7 @@ class RevisionRepository extends EntityRepository {
 		} else {
 			$yearMonth = $month;
 		}
-		$dates = array("$yearMonth-01", Datetime::endOfMonth($yearMonth));
+		$dates = array("$yearMonth-01", Date::endOfMonth($yearMonth));
 
 		return $this->getByDate($dates, $page, $limit, false);
 	}
