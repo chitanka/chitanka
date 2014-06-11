@@ -8,17 +8,18 @@ class UserPage extends Page {
 	protected $action = 'user';
 	protected $defListLimit = 100;
 	protected $maxListLimit = 400;
+	protected $userpage;
+	protected $filename;
+	protected $username;
 
 	private $contentDir;
 	private $userId;
-	private $username;
 	private $realname;
 	private $email;
 	private $registration;
 	private $touched;
-	private $filename;
-	private $userpage;
 	private $q;
+	/** @var \App\Entity\User */
 	private $shown_user;
 
 	public function __construct($fields) {
