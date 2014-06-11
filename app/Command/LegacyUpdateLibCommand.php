@@ -36,11 +36,14 @@ class LegacyUpdateLibCommand extends Command {
 	private $trans_year;
 	private $type;
 	private $comment;
+	private $comment_edit;
 
 	private $users;
 	private $year2;
 	private $trans_year2;
 	private $subtitle;
+	private $orig_title;
+	private $orig_subtitle;
 	private $labels;
 
 	private $errors;
