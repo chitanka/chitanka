@@ -9,11 +9,11 @@ use Sfblib\SfbConverter;
 
 class DownloadFile {
 
-	static private $_dlDir = 'cache/dl';
-	private $_zipFile = null;
+	private static $dlDir = 'cache/dl';
+	private $zipFile;
 
 	public function __construct() {
-		$this->_zipFile = new ZipFile;
+		$this->zipFile = new ZipFile;
 	}
 
 	/**
@@ -23,7 +23,7 @@ class DownloadFile {
 		return $this->getDlFileForBook($book, 'sfb', 'addBinariesForSfb');
 	}
 
-	protected function addBinariesForSfb($book, $filename) {
+	private function addBinariesForSfb($book, $filename) {
 		if ( ($cover = $book->getCover()) ) {
 			$this->addFileEntry($cover, $filename);
 		}
@@ -101,7 +101,7 @@ class DownloadFile {
 
 		// TODO
 		self::setDlCache($textIds, $zipFilename, $format);
-		self::setDlFile($zipFilename, $this->_zipFile->file());
+		self::setDlFile($zipFilename, $this->zipFile->file());
 
 		return self::getDlFile($zipFilename);
 	}
@@ -124,13 +124,13 @@ class DownloadFile {
 		foreach ($texts as $text) {
 			$dlFile = new DownloadFile;
 			$filename = $dlFile->getDlFileForText($text, $format, $binaryCallback);
-			$this->_zipFile->addNewFileEntry(file_get_contents($filename), basename($filename), 0, false);
+			$this->zipFile->addNewFileEntry(file_get_contents($filename), basename($filename), 0, false);
 		}
 
 		$zipFilename = sprintf('chitanka-info-%d-files-%s-%s.zip', count($texts), uniqid(), $format);
 		// TODO
 		self::setDlCache($textIds, $zipFilename, $format);
-		self::setDlFile($zipFilename, $this->_zipFile->file());
+		self::setDlFile($zipFilename, $this->zipFile->file());
 
 		return self::getDlFile($zipFilename);
 	}
@@ -169,12 +169,12 @@ class DownloadFile {
 
 		// TODO
 		self::setDlCache($textIds, $zipFilename, $format);
-		self::setDlFile($zipFilename, $this->_zipFile->file());
+		self::setDlFile($zipFilename, $this->zipFile->file());
 
 		return self::getDlFile($zipFilename);
 	}
 
-	protected function addEpubEntries($work, $filename) {
+	private function addEpubEntries($work, $filename) {
 		$epubFile = new EpubFile($work);
 
 		$file = $epubFile->getMimetypeFile();
@@ -213,7 +213,7 @@ class DownloadFile {
 	 * @param BaseWork $work
 	 * @param EpubFile $epubFile
 	 */
-	protected function addAnnotationForEpub(BaseWork $work, $epubFile) {
+	private function addAnnotationForEpub(BaseWork $work, $epubFile) {
 		if ( ($file = $epubFile->getAnnotation()) ) {
 			$this->addContentEntry($file['content'], $file['name']);
 			$epubFile->addItem($file['name'], $file['title'], 'pre');
@@ -224,7 +224,7 @@ class DownloadFile {
 	 * @param BaseWork $work
 	 * @param EpubFile $epubFile
 	 */
-	protected function addExtraInfoForEpub(BaseWork $work, $epubFile) {
+	private function addExtraInfoForEpub(BaseWork $work, $epubFile) {
 		if ( ($file = $epubFile->getExtraInfo()) ) {
 			$this->addContentEntry($file['content'], $file['name']);
 			$epubFile->addItem($file['name'], $file['title'], 'post');
@@ -235,7 +235,7 @@ class DownloadFile {
 	 * @param BaseWork $work
 	 * @param EpubFile $epubFile
 	 */
-	protected function addChaptersForEpub(BaseWork $work, $epubFile) {
+	private function addChaptersForEpub(BaseWork $work, $epubFile) {
 		$curObjCount = SfbConverter::getObjectCount();
 		$chapters = $work->getEpubChunks($epubFile->getImagesDir(false));
 		foreach ($chapters as $i => $chapter) {
@@ -254,7 +254,7 @@ class DownloadFile {
 	 * @param BaseWork $work
 	 * @param EpubFile $epubFile
 	 */
-	protected function addCoverForEpub(BaseWork $work, $epubFile) {
+	private function addCoverForEpub(BaseWork $work, $epubFile) {
 		if ( ($cover = $work->getCover(400)) ) {
 			$file = $this->addFileEntry($cover, $epubFile->getCoverFileName());
 			$epubFile->addCover($file);
@@ -269,7 +269,7 @@ class DownloadFile {
 	 * @param BaseWork $work
 	 * @param EpubFile $epubFile
 	 */
-	protected function addBackCoverForEpub(BaseWork $work, $epubFile) {
+	private function addBackCoverForEpub(BaseWork $work, $epubFile) {
 		if ( ($cover = $work->getBackCover(400)) ) {
 			$file = $this->addFileEntry($cover, $epubFile->getBackCoverFileName());
 			$epubFile->addBackCover($file);
@@ -284,7 +284,7 @@ class DownloadFile {
 	 * @param BaseWork $work
 	 * @param EpubFile $epubFile
 	 */
-	protected function addImagesForEpub(BaseWork $work, $epubFile) {
+	private function addImagesForEpub(BaseWork $work, $epubFile) {
 		$imagesDir = $epubFile->getImagesDir();
 
 		$thumbs = array();
@@ -312,12 +312,12 @@ class DownloadFile {
 	 * @param string $cacheKey
 	 * @param bool $compress
 	 */
-	protected function addContentEntry($content, $filename, $cacheKey = null, $compress = true) {
-		$fEntry = $this->_zipFile->newFileEntry($content, $filename, 0, $compress);
+	private function addContentEntry($content, $filename, $cacheKey = null, $compress = true) {
+		$fEntry = $this->zipFile->newFileEntry($content, $filename, 0, $compress);
 		if ($cacheKey) {
 			CacheManager::setDlCache($cacheKey, serialize($fEntry));
 		}
-		$this->_zipFile->addFileEntry($fEntry);
+		$this->zipFile->addFileEntry($fEntry);
 
 		return $filename;
 	}
@@ -327,7 +327,7 @@ class DownloadFile {
 	 * @param string $targetName
 	 * @return string
 	 */
-	protected function addFileEntry($filename, $targetName = null) {
+	private function addFileEntry($filename, $targetName = null) {
 		if ($targetName) {
 			if ($targetName[strlen($targetName)-1] == '/') {
 				$targetName .= basename($filename);
@@ -338,8 +338,8 @@ class DownloadFile {
 			$targetName = basename($filename);
 		}
 
-		$fEntry = $this->_zipFile->newFileEntry(file_get_contents($filename), $targetName);
-		$this->_zipFile->addFileEntry($fEntry);
+		$fEntry = $this->zipFile->newFileEntry(file_get_contents($filename), $targetName);
+		$this->zipFile->addFileEntry($fEntry);
 
 		return $targetName;
 	}
@@ -349,7 +349,7 @@ class DownloadFile {
 	 * @param string $format
 	 * @return string
 	 */
-	static public function getDlCache($textIds, $format = '') {
+	public static function getDlCache($textIds, $format = '') {
 		return self::getDlFileByHash( self::getHashForTextIds($textIds, $format) );
 	}
 
@@ -359,7 +359,7 @@ class DownloadFile {
 	 * @param string $format
 	 * @return string
 	 */
-	static public function setDlCache($textIds, $file, $format = '') {
+	public static function setDlCache($textIds, $file, $format = '') {
 		$db = Setup::db();
 		$pk = self::getHashForTextIds($textIds, $format);
 		$db->insert(DBT_DL_CACHE, array(
@@ -378,7 +378,7 @@ class DownloadFile {
 	/**
 	 * @param string $hash
 	 */
-	static public function getDlFileByHash($hash) {
+	public static function getDlFileByHash($hash) {
 		return Setup::db()->getFields(DBT_DL_CACHE, array("id = $hash"), 'file');
 	}
 
@@ -387,7 +387,7 @@ class DownloadFile {
 	 * @param string $format
 	 * @return string
 	 */
-	static protected function getHashForTextIds($textIds, $format = '') {
+	private static function getHashForTextIds($textIds, $format = '') {
 		if (is_array($textIds)) {
 			$textIds = implode(',', $textIds);
 		}
@@ -398,7 +398,7 @@ class DownloadFile {
 	 * @param string $fname
 	 * @return string
 	 */
-	static public function getDlFile($fname) {
+	public static function getDlFile($fname) {
 		$file = self::getFullDlFileName($fname);
 		if ( file_exists($file) && filesize($file) ) {
 			touch($file);
@@ -411,7 +411,7 @@ class DownloadFile {
 	 * @param string $fname
 	 * @param string $fcontent
 	 */
-	static public function setDlFile($fname, $fcontent) {
+	public static function setDlFile($fname, $fcontent) {
 		return File::myfile_put_contents(self::getFullDlFileName($fname), $fcontent);
 	}
 
@@ -419,65 +419,8 @@ class DownloadFile {
 	 * @param string $filename
 	 * @return string
 	 */
-	static public function getFullDlFileName($filename) {
-		return /*BASEDIR .'/'. */self::$_dlDir .'/'. $filename;
-	}
-
-	/**
-	 * @param int $textId
-	 * @return string
-	 */
-	protected function addSfbToDlFileFromCache($textId) {
-		$fEntry = unserialize( CacheManager::getDlCache($textId), '.sfb' );
-		$this->_zipFile->addFileEntry($fEntry);
-
-		return $fEntry['name'];
-	}
-
-	/**
-	 * @param int $textId
-	 * @return bool
-	 */
-	protected function addSfbToDlFileFromNew($textId) {
-		$mainFileData = $this->getMainFileData($textId);
-		if ( ! $mainFileData ) {
-			return false;
-		}
-		list($this->filename, $this->fPrefix, $this->fSuffix, $fbi) = $mainFileData;
-		$this->addTextFileEntry($textId, '.sfb');
-		if ( $this->withFbi ) {
-			$this->addMiscFileEntry($fbi, $textId, '.fbi');
-		}
-		return true;
-	}
-
-	/**
-	 * @param int $textId
-	 * @param string $filename
-	 */
-	protected function addBinaryFileEntries($textId, $filename) {
-		// add covers
-		if ( $this->withCover ) {
-			foreach (BaseWork::getCovers($textId) as $file) {
-				$ename = BaseWork::renameCover(basename($file), $filename);
-				$fEntry = $this->_zipFile->newFileEntry(file_get_contents($file), $ename);
-				$this->_zipFile->addFileEntry($fEntry);
-			}
-		}
-
-		// add images
-		$dir = File::getContentFilePath('img', $textId);
-		if ( !is_dir($dir) ) { return; }
-		if ($dh = opendir($dir)) {
-			while (($file = readdir($dh)) !== false) {
-				$fullname = "$dir/$file";
-				if ( $file[0] == '.' || $file[0] == '_' ||
-					File::isArchive($file) || is_dir($fullname) ) { continue; }
-				$fEntry = $this->_zipFile->newFileEntry(file_get_contents($fullname), $file);
-				$this->_zipFile->addFileEntry($fEntry);
-			}
-			closedir($dh);
-		}
+	public static function getFullDlFileName($filename) {
+		return /*BASEDIR .'/'. */self::$dlDir .'/'. $filename;
 	}
 
 	/**
