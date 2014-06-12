@@ -23,6 +23,9 @@ class SfbParserSimple {
 	private $handle;
 	private $reqdepth;
 	private $lcnt;
+	private $line;
+	private $lcmd;
+	private $ltext;
 	private $hasNextLine;
 	private $headers;
 	private $fpos;
