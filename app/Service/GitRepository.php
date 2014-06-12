@@ -20,4 +20,15 @@ class GitRepository extends \GitElephant\Repository {
 
 		return $this;
 	}
+
+	/**
+	 * Stage and commit given path to repository.
+	 * @param string $pathToStage Path to stage
+	 * @param string $message     The commit message
+	 * @param string $author      Author of the commit
+	 */
+	public function stageAndCommitWithAuthor($pathToStage, $message, $author) {
+		$this->stage($pathToStage);
+		$this->commitWithAuthor($message, $author);
+	}
 }

@@ -4,6 +4,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class WikiEngine {
 
+	/**
+	 * Convert a text from Markdown into HTML
+	 * @param string $markdownContent
+	 * @return string
+	 */
 	public static function markdownToHtml($markdownContent) {
 		$html = Markdown::defaultTransform($markdownContent);
 		$html = preg_replace_callback('#<p>(<img [^>]+>)</p>#', function($match) {
@@ -17,7 +22,9 @@ class WikiEngine {
 		return $html;
 	}
 
+	/** @var string */
 	private $wikiPath;
+	/** @var GitRepository */
 	private $repo;
 
 	/**
@@ -47,6 +54,7 @@ class WikiEngine {
 
 	/**
 	 * @param string $filename
+	 * @return WikiPage[]
 	 */
 	public function getAncestors($filename) {
 		$ancestors = array();
@@ -62,6 +70,14 @@ class WikiEngine {
 		return $ancestors;
 	}
 
+	/**
+	 *
+	 * @param string $editSummary
+	 * @param string $filename
+	 * @param string $content
+	 * @param string $title
+	 * @param string $author
+	 */
 	public function savePage($editSummary, $filename, $content, $title = null, $author = null) {
 		$fullpath = $this->getFullPath($filename);
 		$title = $title ? trim($title) : $filename;
@@ -72,9 +88,13 @@ class WikiEngine {
 		}
 		file_put_contents($fullpath, $fullContent);
 		$editSummary = '['.$this->sanitizeFileName($filename).'] '.$editSummary;
-		$this->repo()->stage($fullpath)->commitWithAuthor($editSummary, $author);
+		$this->repo()->stageAndCommitWithAuthor($fullpath, $editSummary, $author);
 	}
 
+	/**
+	 * @param string $filename
+     * @return \GitElephant\Objects\Log
+	 */
 	public function getHistory($filename) {
 		$commits = $this->repo()->getLog('master', $this->getFullPath($filename), null);
 		return $commits;
@@ -82,6 +102,7 @@ class WikiEngine {
 
 	/**
 	 * @param string $filename
+	 * @return array
 	 */
 	protected function getPageSections($filename) {
 		$fullpath = $this->getFullPath($filename);
@@ -95,10 +116,18 @@ class WikiEngine {
 		return $sections;
 	}
 
+	/**
+	 * @param string $filename
+	 * @return string
+	 */
 	protected function getFullPath($filename) {
 		return $this->wikiPath .'/'. $this->sanitizeFileName($filename);
 	}
 
+	/**
+	 * @param string $filename
+	 * @return string
+	 */
 	protected function sanitizeFileName($filename) {
 		$sanitizedFilename = strtr(strtolower($filename), array(
 			'_' => '-',
@@ -119,10 +148,15 @@ class WikiEngine {
 
 class WikiPage {
 
+	/** @var string */
 	private $name;
+	/** @var string */
 	private $format = 'md';
+	/** @var string */
 	private $content;
+	/** @var string */
 	private $metadata;
+	/** @var WikiPage[] */
 	private $ancestors = array();
 
 	/**
@@ -141,6 +175,9 @@ class WikiPage {
 		$this->ancestors = $ancestors;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function exists() {
 		return $this->content !== null;
 	}
@@ -149,6 +186,10 @@ class WikiPage {
 		return $this->content;
 	}
 
+	/**
+	 * Get the wiki page content as HTML
+	 * @return string
+	 */
 	public function getContentHtml() {
 		if ($this->format == 'md') {
 			return WikiEngine::markdownToHtml($this->content);
@@ -172,6 +213,9 @@ class WikiPage {
 		return $this->ancestors;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function hasAncestors() {
 		return count($this->ancestors);
 	}
@@ -179,6 +223,7 @@ class WikiPage {
 	/**
 	 * @param string $key
 	 * @param string $default
+	 * @return string
 	 */
 	protected function getMetadata($key, $default = null) {
 		if (preg_match("/$key: (.+)/", $this->metadata, $matches)) {
