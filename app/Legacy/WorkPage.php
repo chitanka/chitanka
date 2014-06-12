@@ -529,42 +529,41 @@ EOS;
 		return $w;
 	}
 
-	private function makeWorkListItem($dbrow, $astable = true) {
+	private function makeWorkListItem($dbrow) {
 		$entry = $this->repo()->find($dbrow['id']);
-		extract($dbrow);
-		$author = strtr($author, array(', '=>','));
+		$author = strtr($dbrow['author'], array(', '=>','));
 		$author = $this->makeAuthorLink($author);
-		$userlink = $this->makeUserLinkWithEmail($username, $email, $allowemail);
-		$info = $this->makeWorkEntryInfo($dbrow, isset($expandinfo) && $expandinfo);
-		$title = "<i>$title</i>";
+		$userlink = $this->makeUserLinkWithEmail($dbrow['username'], $dbrow['email'], $dbrow['allowemail']);
+		$info = $this->makeWorkEntryInfo($dbrow);
+		$title = "<i>$dbrow[title]</i>";
 		$file = '';
-		if ( ! empty($tmpfiles) ) {
-			$file = $this->makeFileLink($tmpfiles);
-		} else if ( ! empty($uplfile) ) {
-			$file = $this->makeFileLink($uplfile);
+		if ( ! empty($dbrow['tmpfiles']) ) {
+			$file = $this->makeFileLink($dbrow['tmpfiles']);
+		} else if ( ! empty($dbrow['uplfile']) ) {
+			$file = $this->makeFileLink($dbrow['uplfile']);
 		}
-		$entryLink = $this->controller->generateUrl('workroom_entry_edit', array('id' => $id));
-		$commentsLink = $num_comments ? sprintf('<a href="%s#fos_comment_thread" title="Коментари"><span class="fa fa-comments-o"></span>%s</a>', $entryLink, $num_comments) : '';
+		$entryLink = $this->controller->generateUrl('workroom_entry_edit', array('id' => $dbrow['id']));
+		$commentsLink = $dbrow['num_comments'] ? sprintf('<a href="%s#fos_comment_thread" title="Коментари"><span class="fa fa-comments-o"></span>%s</a>', $entryLink, $dbrow['num_comments']) : '';
 		$title = sprintf('<a href="%s" title="Към страницата за редактиране">%s</a>', $entryLink, $title);
 		$this->rowclass = $this->nextRowClass($this->rowclass);
-		$st = $progress > 0
-			? $this->makeProgressBar($progress)
-			: $this->makeStatus($status);
-		$extraclass = $this->user->getId() == $user_id ? ' hilite' : '';
-		if ($is_frozen) {
+		$st = $dbrow['progress'] > 0
+			? $this->makeProgressBar($dbrow['progress'])
+			: $this->makeStatus($dbrow['status']);
+		$extraclass = $this->user->getId() == $dbrow['user_id'] ? ' hilite' : '';
+		if ($dbrow['is_frozen']) {
 			$sis_frozen = '<span title="Подготовката е замразена">(замразена)</span>';
 			$extraclass .= ' is_frozen';
 		} else {
 			$sis_frozen = '';
 		}
-		if ( $this->isMultiUser($type) ) {
+		if ( $this->isMultiUser($dbrow['type']) ) {
 			$musers = '';
 			foreach ($entry->getOpenContribs() as $contrib) {
 				$uinfo = $this->makeExtraInfo("{$contrib->getComment()} ({$contrib->getProgress()}%)");
 				$ufile = $contrib->getUplfile() == ''
 					? ''
 					: $this->makeFileLink($contrib->getUplfile(), $contrib->getUser()->getUsername());
-				if ($contrib->getUser()->getId() == $user_id) {
+				if ($contrib->getUser()->getId() == $dbrow['user_id']) {
 					$userlink = "$userlink $uinfo $ufile";
 					continue;
 				}
@@ -578,19 +577,18 @@ EOS;
 			}
 			if ( !empty($musers) ) {
 				$userlink = "<ul class='simplelist'>\n\t<li>$userlink</li>$musers</ul>";
-			} else if ( $status == self::MAX_SCAN_STATUS ) {
+			} else if ( $dbrow['status'] == self::MAX_SCAN_STATUS ) {
 				$userlink .= ' (<strong>очакват се коректори</strong>)';
 			}
 		}
-		$umarker = $this->_getUserTypeMarker($type);
+		$umarker = $this->getUserTypeMarker($dbrow['type']);
 
 		$adminFields = $this->userIsAdmin() ? $this->makeAdminFieldsForTable($dbrow) : '';
 
-		if ($astable) {
-			return <<<EOS
+		return <<<EOS
 
-	<tr class="$this->rowclass$extraclass" id="e$id">
-		<td class="date" title="$date">$ddate</td>
+	<tr class="$this->rowclass$extraclass" id="e$dbrow[id]">
+		<td class="date" title="$dbrow[date]">$dbrow[ddate]</td>
 		$adminFields
 		<td>$umarker</td>
 		<td>$info</td>
@@ -601,18 +599,6 @@ EOS;
 		<td style="min-width: 10em">$st $sis_frozen</td>
 		<td>$userlink</td>
 	</tr>
-EOS;
-		}
-		$time = !isset($showtime) || $showtime ? "Дата: $date<br>" : '';
-		$titlev = !isset($showtitle) || $showtitle ? $title : '';
-		return <<<EOS
-
-		<p>$time
-		$info $titlev<br>
-		<strong>Автор:</strong> $author<br>
-		<strong>Етап:</strong> $st $sis_frozen<br>
-		Подготвя се от $userlink
-		</p>
 EOS;
 	}
 
@@ -631,7 +617,7 @@ EOS;
 HTML;
 	}
 
-	private function _getUserTypeMarker($type) {
+	private function getUserTypeMarker($type) {
 		return "<span class=\"{$this->tabImgs[$type]}\"><span class=\"sr-only\">{$this->tabImgAlts[$type]}</span></span>";
 	}
 
@@ -639,7 +625,7 @@ HTML;
 		return "<span class='{$this->statusClasses[$code]}'></span> {$this->statuses[$code]}";
 	}
 
-	private function makeWorkEntryInfo($dbrow, $expand = false) {
+	private function makeWorkEntryInfo($dbrow) {
 		$lines = array();
 		if ($dbrow['publisher']) {
 			$lines[] = '<b>Издател:</b> ' . $dbrow['publisher'];
@@ -648,15 +634,15 @@ HTML;
 			$lines[] = '<b>Година:</b> ' . $dbrow['pub_year'];
 		}
 		$lines[] = $dbrow['comment'];
-		return $this->makeExtraInfo(implode("\n", $lines), $expand);
+		return $this->makeExtraInfo(implode("\n", $lines));
 	}
 
-	private function makeExtraInfo($info, $expand = false) {
+	private function makeExtraInfo($info) {
 		$info = strtr(trim($info), array(
 			"\n"   => '<br>',
 			"\r"   => '',
 		));
-		if (empty($info) || $expand) {
+		if (empty($info)) {
 			return $info;
 		}
 		$info = String::myhtmlspecialchars($info);
@@ -1289,7 +1275,7 @@ EOS;
 	private function makePageHelp() {
 		$regUrl = $this->controller->generateUrl('register');
 		$ext = $this->user->isAnonymous() ? "е необходимо първо да се <a href=\"$regUrl\">регистрирате</a> (не се притеснявайте, ще ви отнеме най-много 10–20 секунди, колкото и бавно да пишете). След това се върнете на тази страница и" : '';
-		$umarker = $this->_getUserTypeMarker(1);
+		$umarker = $this->getUserTypeMarker(1);
 
 		return <<<EOS
 
