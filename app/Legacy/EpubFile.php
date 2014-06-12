@@ -2,26 +2,33 @@
 
 use App\Util\String;
 use App\Util\File;
-use App\Entity\Text;
+use App\Entity\BaseWork;
 
 class EpubFile {
 
-	protected $mainDir = 'OPS';
-	private
-		$obj,
-		$files = array(),
-		$items = array(
-			'pre' => array(),
-			'main' => array(),
-			'post' => array(),
-		),
-		$curPlayOrder = 0;
+	private $obj;
+	private $files = array();
+	private $items = array(
+		'pre' => array(),
+		'main' => array(),
+		'post' => array(),
+	);
+	private $mainDir = 'OPS';
+	private $curPlayOrder = 0;
+	private $containerFileName;
+	private $contentFileName;
+	private $tocFileName;
+	private $cssFileName;
+	private $titlePageFileName;
+	private $creditsPageFileName;
+	private $imagesDir;
+	private $templateDir;
 
 	/**
-	 * @param Text $text
+	 * @param BaseWork $work
 	 */
-	public function __construct(Text $text) {
-		$this->obj = $text;
+	public function __construct(BaseWork $work) {
+		$this->obj = $work;
 
 		$this->containerFileName = 'container.xml';
 		$this->contentFileName = 'content.opf';
@@ -98,6 +105,7 @@ class EpubFile {
 		));
 
 		$navPoint = $this->curPlayOrder;
+		$order = 0;
 		while (preg_match('/<li level=(\d+)>/', $headers, $matches)) {
 			$order = $this->curPlayOrder + ($matches[1] + 1);
 			$repl = sprintf('<navPoint class="chapter" id="navpoint-%d" playOrder="%d"><navLabel><text>$2</text></navLabel><content src="%s"/>',
