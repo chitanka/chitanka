@@ -52,6 +52,7 @@ class mlDatabase {
 			$row = $this->fetchAssoc($res);
 			if ( !empty($row) ) return $row;
 		} while (true);
+		return array();
 	}
 
 	public function getCount($table, $keys = array()) {

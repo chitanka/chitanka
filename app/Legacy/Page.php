@@ -47,6 +47,7 @@ abstract class Page {
 	/** @var string */
 	protected $logDir;
 
+	protected $lpage = 1;
 	protected $llimit = 0;
 	protected $loffset = 0;
 	protected $maxCaptchaTries = 2;
@@ -56,6 +57,10 @@ abstract class Page {
 	protected $includeUserLinks = true;
 
 	private $templates = array();
+	private $captchaTries;
+	private $captchaQuestion;
+	private $captchaAnswer;
+	private $captchaQuestionT;
 
 	public function __construct(array $fields) {
 		foreach ($fields as $f => $v) {
@@ -266,7 +271,9 @@ abstract class Page {
 			return '';
 		}
 		if ( empty($this->captchaQuestion) ) {
-			extract( $this->db->getRandomRow(DBT_QUESTION) );
+			$row = $this->db->getRandomRow(DBT_QUESTION);
+			$id = $row['id'];
+			$question = $row['question'];
 		} else {
 			$id = $this->captchaQuestion;
 			$question = $this->captchaQuestionT;
