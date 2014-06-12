@@ -44,9 +44,9 @@ BODY;
 
 	public function sendMailByOldWorkEntry(WorkEntry $workEntry) {
 		$sender = array('no-reply@chitanka.info' => 'Ателие (Моята библиотека)');
-		$message = Swift_Message::newInstance('Стар запис — '.$workEntry->getTitle())
-			->setFrom($sender)
-			->setBody($this->createMailBodyByOldWorkEntry($workEntry));
+		$message = Swift_Message::newInstance('Стар запис — '.$workEntry->getTitle());
+		$message->setFrom($sender);
+		$message->setBody($this->createMailBodyByOldWorkEntry($workEntry));
 		$headers = $message->getHeaders();
 		$headers->addMailboxHeader('Reply-To', $sender);
 
