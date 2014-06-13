@@ -171,7 +171,6 @@ class BookController extends Controller {
 		$dlFile = new DownloadFile;
 		switch ($format) {
 			case 'sfb.zip':
-			default:
 				return $this->getWebRoot() . $dlFile->getSfbForBook($book);
 			case 'txt.zip':
 				return $this->getWebRoot() . $dlFile->getTxtForBook($book);
@@ -183,6 +182,7 @@ class BookController extends Controller {
 			case 'pdf':
 				return $this->getWebRoot() . $dlFile->getStaticFileForBook($book, $format);
 		}
+		throw $this->createNotFoundException("Книгата не е налична във формат {$format}.");
 	}
 
 }
