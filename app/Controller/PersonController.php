@@ -1,9 +1,9 @@
 <?php namespace App\Controller;
 
 use App\Pagination\Pager;
-use App\Legacy\Legacy;
 use App\Util\String;
 use App\Entity\Person;
+use App\Service\MediawikiClient;
 
 class PersonController extends Controller {
 
@@ -105,7 +105,8 @@ class PersonController extends Controller {
 			list($prefix, $name) = explode(':', $person->getInfo(), 2);
 			$site = $this->em()->getWikiSiteRepository()->findOneBy(array('code' => $prefix));
 			$url = $site->getUrl($name);
-			$this->view['info'] = Legacy::getMwContent($url, $this->container->get('buzz'));
+			$mwClient = new MediawikiClient($this->container->get('buzz'));
+			$this->view['info'] = $mwClient->fetchContent($url);
 			$this->view['info_intro'] = strtr($site->getIntro(), array(
 				'$1' => $person->getName(),
 				'$2' => $url,

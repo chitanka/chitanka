@@ -1,7 +1,6 @@
 <?php namespace App\Legacy;
 
 use App\Util\Number;
-use Buzz\Browser;
 
 class Legacy {
 
@@ -134,57 +133,6 @@ class Legacy {
 		}
 
 		return CacheManager::setCache($action, $id, $content);
-	}
-
-	/**
-	 * @param string $url
-	 * @param \Buzz\Browser $browser
-	 * @param int $cacheDays
-	 * @return string
-	 */
-	public static function getMwContent($url, Browser $browser, $cacheDays = 7) {
-		$id = md5($url);
-		$action = 'info';
-
-		if ( CacheManager::cacheExists($action, $id, $cacheDays) ) {
-			return CacheManager::getCache($action, $id);
-		}
-
-		try {
-			$response = $browser->get("$url?action=render", array('User-Agent: Mylib (http://chitanka.info)'));
-			if ($response->isOk()) {
-				$content = self::processMwContent($response->getContent(), $url);
-				return CacheManager::setCache($action, $id, $content);
-			}
-		} catch (\RuntimeException $e) {
-			return null;
-		}
-
-		return null;
-	}
-
-	/**
-	 * @param string $content
-	 * @param string $url
-	 * @return string
-	 */
-	static protected function processMwContent($content, $url) {
-		$up = parse_url($url);
-		$server = "$up[scheme]://$up[host]";
-		$content = strtr($content, array(
-			'&nbsp;' => '&#160;',
-			' href="/wiki/' => ' href="'.$server.'/wiki/',
-		));
-		$patterns = array(
-			'/rel="[^"]+"/' => '',
-			// images
-			'| src="(/\w)|' => " src=\"$server$1",
-		);
-		$content = preg_replace(array_keys($patterns), array_values($patterns), $content);
-
-		$content = sprintf('<div class="editsection">[<a href="%s?action=edit" title="Редактиране на статията">±</a>]</div>', $url) . $content;
-
-		return $content;
 	}
 
 	/**

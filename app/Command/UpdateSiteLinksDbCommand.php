@@ -2,8 +2,6 @@
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Doctrine\ORM\EntityManager;
-use App\Legacy\Legacy;
 
 class UpdateSiteLinksDbCommand extends Command {
 
@@ -46,7 +44,8 @@ EOT
 
 	protected function fetchWikiContent(OutputInterface $output) {
 		$output->writeln('Fetching wiki content...');
-		return Legacy::getMwContent('http://wiki.chitanka.info/Links', $this->getContainer()->get('buzz'), 0);
+		$mwClient = new MediawikiClient($this->getContainer()->get('buzz'));
+		return $mwClient->fetchContent('http://wiki.chitanka.info/Links', 0);
 	}
 
 	/**
