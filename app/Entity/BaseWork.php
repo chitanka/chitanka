@@ -209,7 +209,7 @@ abstract class BaseWork extends Entity {
 
 	private $annotation;
 	public function getAnnotation() {
-		return isset($this->annotation) ? $this->annotation : $this->annotation = static::loadAnnotation($this->getId());
+		return isset($this->annotation) ? $this->annotation : $this->annotation = self::loadAnnotation($this->getId());
 	}
 
 	abstract public function setHasAnno($hasAnno);
@@ -253,7 +253,7 @@ abstract class BaseWork extends Entity {
 
 	private $extraInfo;
 	public function getExtraInfo() {
-		return isset($this->extraInfo) ? $this->extraInfo : $this->extraInfo = static::loadExtraInfo($this->getId());
+		return isset($this->extraInfo) ? $this->extraInfo : $this->extraInfo = self::loadExtraInfo($this->getId());
 	}
 
 	public function setExtraInfo($extraInfo) {
