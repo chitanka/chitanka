@@ -708,12 +708,12 @@ class Text extends BaseWork {
 	}
 
 	public function hasTitleNote() {
-		if ( ! is_null( $this->_hasTitleNote ) ) {
-			return $this->_hasTitleNote;
+		if ( ! is_null( $this->hasTitleNote ) ) {
+			return $this->hasTitleNote;
 		}
 
 		$conv = new SfbToHtmlConverter( File::getInternalContentFilePath( 'text', $this->id ) );
-		return $this->_hasTitleNote = $conv->hasTitleNote();
+		return $this->hasTitleNote = $conv->hasTitleNote();
 	}
 
 	public function getOrigTitleAsSfb() {
@@ -943,23 +943,17 @@ EOS;
 			'TITLE' => Char::cyr2lat($this->title),
 			'ID' => $this->id,
 		));
-		$filename = $this->normalizeFileName($filename);
+		$filename = substr(File::cleanFileName($filename), 0, 200);
 
 		return $filename;
 	}
 
 	static public function getMinRating() {
-		if ( is_null( self::$_minRating ) ) {
-			self::$_minRating = min( array_keys( self::$ratings ) );
-		}
-		return self::$_minRating;
+		return self::$minRating ?: self::$minRating = min(array_keys(self::$ratings));
 	}
 
 	static public function getMaxRating() {
-		if ( is_null( self::$_maxRating ) ) {
-			self::$_maxRating = max( array_keys( self::$ratings ) );
-		}
-		return self::$_maxRating;
+		return self::$maxRating ?: self::$maxRating = max(array_keys(self::$ratings));
 	}
 
 	static public function getRatings($id) {

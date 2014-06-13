@@ -396,15 +396,13 @@ class Book extends BaseWork {
 	private $textIds = array();
 	private $textsById = array();
 
-	static protected $annotationDir = 'book-anno';
-	static protected $infoDir = 'book-info';
+	protected static $annotationDir = 'book-anno';
+	protected static $infoDir = 'book-info';
 	protected $covers = array();
 
 	public function getDocId() {
 		return 'http://chitanka.info/book/' . $this->id;
 	}
-
-	//public function getType() { return 'book'; }
 
 	public function getAuthor() {
 		return $this->title_author;
@@ -434,7 +432,7 @@ class Book extends BaseWork {
 		return $slugs;
 	}
 
-	static public function isMainWorkType($type) {
+	public static function isMainWorkType($type) {
 		return ! in_array($type, array('intro', 'outro'/*, 'interview', 'article'*/));
 	}
 
@@ -470,60 +468,6 @@ class Book extends BaseWork {
 		}
 
 		return $this->translators;
-	}
-
-	public function getLangOld() {
-		if ( ! isset($this->lang) ) {
-			$langs = array();
-			foreach ($this->getTextsById() as $text) {
-				if ( ! isset($langs[$text->lang]) ) {
-					$langs[$text->lang] = 0;
-				}
-				$langs[$text->lang]++;
-			}
-
-			arsort($langs);
-			list($this->lang,) = each($langs);
-		}
-
-		return $this->lang;
-	}
-
-	public function getOrigLangOld() {
-		if ( ! isset($this->orig_lang) ) {
-			$langs = array();
-			foreach ($this->getTextsById() as $text) {
-				if ( ! isset($langs[$text->orig_lang]) ) {
-					$langs[$text->orig_lang] = 0;
-				}
-				$langs[$text->orig_lang]++;
-			}
-
-			arsort($langs);
-			list($this->orig_lang,) = each($langs);
-		}
-
-		return $this->orig_lang;
-	}
-
-	public function getYearOld() {
-		if ( ! isset($this->year) ) {
-			$texts = $this->getTextsById();
-			$text = array_shift($texts);
-			$this->year = $text->year;
-		}
-
-		return $this->year;
-	}
-
-	public function getTransYearOld() {
-		if ( ! isset($this->trans_year) ) {
-			$texts = $this->getTextsById();
-			$text = array_shift($texts);
-			$this->trans_year = $text->trans_year;
-		}
-
-		return $this->trans_year;
 	}
 
 	public function withAutohide() {
@@ -563,27 +507,15 @@ class Book extends BaseWork {
 		return is_null($width) ? $this->covers['back'] : File::genThumbnail($this->covers['back'], $width);
 	}
 
-	static protected $exts = array('.jpg');
+	private static $exts = array('.jpg');
 
-	public function initCovers() {
+	private function initCovers() {
 		if (empty($this->covers)) {
 			$this->covers['front'] = $this->covers['back'] = null;
 
 			$covers = self::getCovers($this->id);
-			if ( ! empty($covers)) {
+			if ($covers) {
 				$this->covers['front'] = $covers[0];
-			} else {
-				// there should not be any covers by texts
-				/*foreach ($this->getTextIds() as $textId) {
-					$covers = self::getCovers($textId);
-					if ( ! empty($covers) ) {
-						$this->covers['front'] = $covers[0];
-						break;
-					}
-				}*/
-			}
-
-			if ($this->covers['front']) {
 				$back = preg_replace('/(.+)\.(\w+)$/', '$1-back.$2', $this->covers['front']);
 				if (file_exists($back)) {
 					$this->covers['back'] = $back;
@@ -596,7 +528,7 @@ class Book extends BaseWork {
 	 * @param $id Text or book ID
 	 * @param $defCover Default covers if there aren’t any for $id
 	 */
-	static public function getCovers($id, $defCover = null) {
+	public static function getCovers($id, $defCover = null) {
 		$key = 'book-cover-content';
 		$bases = array(File::getContentFilePath($key, $id));
 		if ( ! empty($defCover)) {
@@ -622,7 +554,7 @@ class Book extends BaseWork {
 		return $covers;
 	}
 
-	static public function renameCover($cover, $newname) {
+	public static function renameCover($cover, $newname) {
 		$rexts = strtr(implode('|', self::$exts), array('.'=>'\.'));
 		return preg_replace("/\d+(-\d+)?($rexts)/", "$newname$1$2", $cover);
 	}
@@ -906,13 +838,9 @@ EOS;
 	# legacy pic stuff
 	##################
 
-	const
-		MIRRORS_FILE = 'MIRRORS',
-		INFO_FILE = 'INFO',
-		THUMB_DIR = 'thumb',
-
-		THUMBS_FILE_TPL = 'thumbs-%d.jpg',
-		MAX_JOINED_THUMBS = 50;
+	const THUMB_DIR = 'thumb';
+	const THUMBS_FILE_TPL = 'thumbs-%d.jpg';
+	const MAX_JOINED_THUMBS = 50;
 
 	private $_files;
 	public function getFiles() {
@@ -922,7 +850,7 @@ EOS;
 
 		$dir = File::getContentFilePath('book-pic', $this->id);
 
-		$ignore = array(self::MIRRORS_FILE, self::THUMB_DIR);
+		$ignore = array(self::THUMB_DIR);
 
 		$files = array();
 		foreach (scandir($dir) as $file) {
@@ -937,62 +865,22 @@ EOS;
 		return $this->_files = $files;
 	}
 
-	// deprecated
-	private function getMirrors() {
-		return array();
-	}
-
-	private $_docRoot;
-	public function getDocRoot($cache = true) {
-		if ( isset($this->_docRoot) && $cache ) {
-			return $this->_docRoot;
-		}
-
-		$mirrors = $this->getMirrors();
-		if ( empty($mirrors) ) {
-			$this->_docRoot = '';
-		} else {
-			shuffle($mirrors);
-			$this->_docRoot = rtrim($mirrors[0], '/') . '/';
-		}
-
-		return $this->_docRoot;
-	}
-
 	private $_imageDir;
 	public function getImageDir() {
-		if ( ! isset($this->_imageDir) ) {
-			$this->_imageDir = File::getContentFilePath('book-pic', $this->id);
-		}
-
-		return $this->_imageDir;
+		return $this->_imageDir ?: $this->_imageDir = File::getContentFilePath('book-pic', $this->id);
 	}
 
 	private $_thumbDir;
 	public function getThumbDir() {
-		if ( ! isset($this->_thumbDir) ) {
-			$this->_thumbDir = $this->getImageDir() .'/'. self::THUMB_DIR;
-		}
-
-		return $this->_thumbDir;
+		return $this->_thumbDir ?: $this->_thumbDir = $this->getImageDir() .'/'. self::THUMB_DIR;
 	}
 
-	private $_webImageDir;
 	public function getWebImageDir() {
-		if ( ! isset($this->_webImageDir) ) {
-			$this->_webImageDir = $this->getDocRoot() . $this->getImageDir();
-		}
-
-		return $this->_webImageDir;
+		return $this->getImageDir();
 	}
 
-	private $_webThumbDir;
 	public function getWebThumbDir() {
-		if ( ! isset($this->_webThumbDir) ) {
-			$this->_webThumbDir = $this->getDocRoot() . $this->getThumbDir();
-		}
-
-		return $this->_webThumbDir;
+		return $this->getThumbDir();
 	}
 
 	public function getThumbFile($currentPage) {
@@ -1050,7 +938,7 @@ EOS;
 //		return $this->id == $otherPic->id;
 //	}
 
-	static public function getTypeList() {
+	public static function getTypeList() {
 		return self::$typeList;
 	}
 

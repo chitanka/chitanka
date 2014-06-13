@@ -9,7 +9,7 @@ abstract class BaseWork extends Entity {
 
 	const TITLE_NEW_LINE = "<br>\n";
 
-	static public $ratings = array(
+	public static $ratings = array(
 		6 => 'Шедьовър',
 		5 => 'Много добро',
 		4 => 'Добро',
@@ -18,12 +18,12 @@ abstract class BaseWork extends Entity {
 		1 => 'Отвратително',
 	);
 
-	static protected $_minRating = null;
-	static protected $_maxRating = null;
-	static protected $annotationDir = 'anno';
-	static protected $infoDir = 'info';
+	protected static $minRating = null;
+	protected static $maxRating = null;
+	protected static $annotationDir = 'anno';
+	protected static $infoDir = 'info';
 
-	protected $_hasTitleNote = null;
+	protected $hasTitleNote = false;
 
 	public function getDocId() {
 		return 'http://chitanka.info';
@@ -33,16 +33,17 @@ abstract class BaseWork extends Entity {
 		return 'work';
 	}
 
-	public function getTitle() {
-		return $this->title;
-	}
+	abstract public function getId();
 
 	/**
 	 * @return string
 	 */
-	public function getSubtitle() {
-		return $this->subtitle;
-	}
+	abstract public function getTitle();
+
+	/**
+	 * @return string
+	 */
+	abstract public function getSubtitle();
 
 	/**
 	 * Return title and subtitle if any
@@ -60,8 +61,10 @@ abstract class BaseWork extends Entity {
 		return $this->getTitle();
 	}
 
-	private $authorIds;
+	/** @return array */
+	abstract public function getAuthors();
 
+	private $authorIds;
 	public function getAuthorIds() {
 		if ( ! isset($this->authorIds)) {
 			$this->authorIds = array();
@@ -96,30 +99,25 @@ abstract class BaseWork extends Entity {
 		return null;
 	}
 
+	/** @return bool */
 	public function isTranslation() {
 		return $this->getLang() != $this->getOrigLang();
 	}
 
-	/**
-	 * @param string $filename
-	 */
-	public function normalizeFileName($filename) {
-		$filename = substr($filename, 0, 200);
-		$filename = File::cleanFileName($filename);
-
-		return $filename;
-	}
-
+	/** @return string */
 	abstract public function getNameForFile();
 
-	public function getContentAsTxt($withBom = true) {
-		return ($withBom ? self::getBom() : '')
-			. self::clearSfbMarkers( $this->getContentAsSfb() );
-	}
+	/** @return string */
+	abstract public function getContentAsSfb();
 
+	/** @return string */
 	abstract public function getContentAsFb2();
 
-	static public function clearSfbMarkers($sfbContent) {
+	public function getContentAsTxt($withBom = true) {
+		return ($withBom ? self::getBom() : '') . self::clearSfbMarkers($this->getContentAsSfb());
+	}
+
+	private static function clearSfbMarkers($sfbContent) {
 		$sfbContent = strtr($sfbContent, array(
 			">\t" => "\t",
 			">>\t" => "\t",
@@ -204,15 +202,17 @@ abstract class BaseWork extends Entity {
 		return $xml;
 	}
 
-	static public function loadAnnotation($id) {
+	private static function loadAnnotation($id) {
 		$file = File::getInternalContentFilePath(static::$annotationDir, $id);
 		return file_exists($file) ? file_get_contents($file) : null;
 	}
 
 	private $annotation;
 	public function getAnnotation() {
-		return isset($this->annotation) ? $this->annotation : $this->annotation = static::loadAnnotation($this->id);
+		return isset($this->annotation) ? $this->annotation : $this->annotation = static::loadAnnotation($this->getId());
 	}
+
+	abstract public function setHasAnno($hasAnno);
 
 	public function setAnnotation($annotation) {
 		$this->annotation = $annotation;
@@ -238,7 +238,7 @@ abstract class BaseWork extends Entity {
 	public function getAnnotationAsXhtml($imgDir = null) {
 		$text = $this->getAnnotation();
 		if ($text) {
-			$converter = $this->_getSfbConverter($text, $imgDir);
+			$converter = $this->getSfbConverter($text, $imgDir);
 			$converter->convert();
 			$text = $converter->getText() . $converter->getNotes(2);
 		}
@@ -246,14 +246,14 @@ abstract class BaseWork extends Entity {
 		return $text;
 	}
 
-	static public function loadExtraInfo($id) {
+	private static function loadExtraInfo($id) {
 		$file = File::getInternalContentFilePath(static::$infoDir, $id);
 		return file_exists($file) ? file_get_contents($file) : null;
 	}
 
 	private $extraInfo;
 	public function getExtraInfo() {
-		return isset($this->extraInfo) ? $this->extraInfo : $this->extraInfo = static::loadExtraInfo($this->id);
+		return isset($this->extraInfo) ? $this->extraInfo : $this->extraInfo = static::loadExtraInfo($this->getId());
 	}
 
 	public function setExtraInfo($extraInfo) {
@@ -271,7 +271,7 @@ abstract class BaseWork extends Entity {
 	 * @param string $dir     Target directory
 	 */
 	private function saveContentInFile($content, $dir) {
-		$file = File::getInternalContentFilePath($dir, $this->id);
+		$file = File::getInternalContentFilePath($dir, $this->getId());
 		$fs = new \Symfony\Component\Filesystem\Filesystem();
 		if ($content) {
 			$fs->dumpFile($file, String::my_replace($content));
@@ -286,7 +286,7 @@ abstract class BaseWork extends Entity {
 	public function getExtraInfoAsXhtml($imgDir = null) {
 		$text = $this->getExtraInfo();
 		if ($text) {
-			$converter = $this->_getSfbConverter($text, $imgDir);
+			$converter = $this->getSfbConverter($text, $imgDir);
 			$converter->convert();
 			$text = $converter->getText() . $converter->getNotes(2);
 		}
@@ -323,7 +323,7 @@ abstract class BaseWork extends Entity {
 		foreach ($headers as $header) {
 			if ($lastpos != $header->getFpos()) {
 				$lastpos = $header->getFpos();
-				$converter = $this->_getSfbConverter($input, $imgDir);
+				$converter = $this->getSfbConverter($input, $imgDir);
 				$converter->setStartPosition($header->getFpos());
 				$converter->setMaxLineCount($header->getLinecnt());
 				$converter->convert();
@@ -335,7 +335,10 @@ abstract class BaseWork extends Entity {
 		return $chapters;
 	}
 
-	protected function _getSfbConverter($file, $imgDir) {
+	/** @return bool */
+	abstract public function isGamebook();
+
+	private function getSfbConverter($file, $imgDir) {
 		$conv = new SfbToHtmlConverter($file, $imgDir);
 		if ($this->isGamebook()) {
 			// recognize section links
@@ -346,17 +349,11 @@ abstract class BaseWork extends Entity {
 	}
 
 	public function hasTitleNote() {
-		return false;
+		return $this->hasTitleNote;
 	}
 
-	static public function getBom($withEncoding = true) {
-		$bom = "\xEF\xBB\xBF"; // Byte order mark for some windows software
-
-		if ($withEncoding) {
-			$bom .= "\t[Kodirane UTF-8]\n\n";
-		}
-
-		return $bom;
+	private static function getBom() {
+		return File::getBom() . "\t[Kodirane UTF-8]\n\n";
 	}
 
 }

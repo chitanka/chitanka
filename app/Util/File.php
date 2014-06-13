@@ -22,6 +22,14 @@ class File {
 		'book-pic' => 'content/book-pic/',
 	);
 
+	/**
+	 * Byte order mark for some windows software
+	 * @return string
+	 */
+	public static function getBom() {
+		return "\xEF\xBB\xBF";
+	}
+
 	public static function mycopy($source, $dest) {
 		if ( is_dir($source) ) {
 			foreach ( scandir($source) as $file ) {
