@@ -7,7 +7,7 @@ class NotSpamValidator extends ConstraintValidator {
 
 	public function validate($value, Constraint $constraint) {
 		if ($this->isSpam($value, $constraint)) {
-			$this->setMessage($constraint->message);
+			$this->context->addViolation($constraint->message);
 			return false;
 		}
 		return true;
