@@ -117,9 +117,7 @@ class FileLineReader {
 		}
 	}
 	public function __destruct() {
-		if ($this->handle) {
-			$this->close();
-		}
+		$this->close();
 	}
 
 	/**
@@ -131,7 +129,10 @@ class FileLineReader {
 	}
 
 	private function eof() {
-		return $this->isGzipped ? gzeof($this->handle) : feof($this->handle);
+		if ($this->handle) {
+			return $this->isGzipped ? gzeof($this->handle) : feof($this->handle);
+		}
+		return null;
 	}
 
 	public function hasMore() {
@@ -148,11 +149,16 @@ class FileLineReader {
 	}
 
 	private function gets() {
-		return $this->isGzipped ? gzgets($this->handle) : fgets($this->handle);
+		if ($this->handle) {
+			return $this->isGzipped ? gzgets($this->handle) : fgets($this->handle);
+		}
+		return null;
 	}
 
 	public function close() {
-		$this->isGzipped ? gzclose($this->handle) : fclose($this->handle);
-		$this->handle = null;
+		if ($this->handle) {
+			$this->isGzipped ? gzclose($this->handle) : fclose($this->handle);
+			$this->handle = null;
+		}
 	}
 }
