@@ -257,16 +257,6 @@ class Text extends BaseWork {
 	private $authors;
 
 	/**
-	 * Comma separated list of author names
-	 */
-	private $authorNames;
-
-	/**
-	 * Comma separated list of author original names
-	 */
-	private $authorOrigNames;
-
-	/**
 	 * @var Person[]
 	 */
 	private $translators;
@@ -334,7 +324,7 @@ class Text extends BaseWork {
 	private $alikes;
 
 	public function __construct($id = null) {
-		$this->getId() = $id;
+		$this->id = $id;
 		$this->textAuthors = new ArrayCollection;
 		$this->textTranslators = new ArrayCollection;
 		$this->authors = new ArrayCollection;
@@ -467,29 +457,28 @@ class Text extends BaseWork {
 		$this->userContribs->removeElement($userContrib);
 	}
 
-	public function addAuthor(Person $author) { $this->authors[] = $author; }
+	public function addAuthor(Person $author) {
+		$this->authors[] = $author;
+	}
 
 	public function getAuthors() {
 		if (!isset($this->authors)) {
-			$this->authors = array();
-			foreach ($this->getTextAuthors() as $author) {
-				if ($author->getPos() >= 0) {
-					$this->authors[] = $author->getPerson();
-				}
-			}
+			$this->authors = array_filter(array_map(function(TextAuthor $author) {
+				return $author->getPos() >= 0 ? $author->getPerson() : null;
+			}, $this->getTextAuthors()->toArray()));
 		}
 		return $this->authors;
 	}
 
-	public function addTranslator(Person $translator) { $this->translators[] = $translator; }
+	public function addTranslator(Person $translator) {
+		$this->translators[] = $translator;
+	}
+
 	public function getTranslators() {
 		if (!isset($this->translators)) {
-			$this->translators = array();
-			foreach ($this->getTextTranslators() as $translator) {
-				if ($translator->getPos() >= 0) {
-					$this->translators[] = $translator->getPerson();
-				}
-			}
+			$this->translators = array_filter(array_map(function(TextTranslator $translator) {
+				return $translator->getPos() >= 0 ? $translator->getPerson() : null;
+			}, $this->getTextTranslators()->toArray()));
 		}
 		return $this->translators;
 	}
@@ -504,6 +493,7 @@ class Text extends BaseWork {
 	public function addTextAuthors(TextAuthor $textAuthor) { $this->addTextAuthor($textAuthor); }
 
 	public function setTextAuthors($textAuthors) { $this->textAuthors = $textAuthors; }
+	/** @return \Doctrine\Common\Collections\ArrayCollection */
 	public function getTextAuthors() { return $this->textAuthors; }
 
 	public function addTextTranslator(TextTranslator $textTranslator) {
@@ -516,6 +506,7 @@ class Text extends BaseWork {
 	public function addTextTranslators(TextTranslator $textTranslator) { $this->addTextTranslator($textTranslator); }
 
 	public function setTextTranslators($textTranslators) { $this->textTranslators = $textTranslators; }
+	/** @return \Doctrine\Common\Collections\ArrayCollection */
 	public function getTextTranslators() { return $this->textTranslators; }
 
 	public function addBook(Book $book) { $this->books[] = $book; }
