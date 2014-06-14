@@ -44,6 +44,8 @@ abstract class Page {
 	protected $controller;
 	/** @var \Symfony\Component\DependencyInjection\Container */
 	protected $container;
+	/** @var \Symfony\Component\HttpFoundation\Request */
+	protected $sfrequest;
 	/** @var string */
 	protected $logDir;
 
@@ -103,10 +105,10 @@ abstract class Page {
 	protected function addMessage($message, $isError = false) {
 		$class = $isError ? 'error' : 'notice';
 
-		if ($this->controller->getRequest()->isXmlHttpRequest()) {
+		if ($this->sfrequest->isXmlHttpRequest()) {
 			header("X-Message-$class: ".rawurlencode($message));
 		} else {
-			$this->controller->get('request')->getSession()->getFlashBag()->set($class, $message);
+			$this->sfrequest->getSession()->getFlashBag()->set($class, $message);
 		}
 	}
 

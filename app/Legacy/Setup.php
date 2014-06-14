@@ -20,7 +20,8 @@ class Setup {
 			'db'         => self::db(),
 			'out'        => self::outputMaker(),
 			'controller' => $controller,
-			'container' => $container,
+			'container'  => $container,
+			'sfrequest'  => $container->get('request'),
 			'user'       => $controller->getUser(),
 			'logDir' => __DIR__ . '/../../var/log',
 		));
