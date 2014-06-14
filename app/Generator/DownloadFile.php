@@ -23,7 +23,7 @@ class DownloadFile {
 		return $this->getDlFileForBook($book, 'sfb', 'addBinariesForSfb');
 	}
 
-	private function addBinariesForSfb($book, $filename) {
+	private function addBinariesForSfb(Book $book, $filename) {
 		if ( ($cover = $book->getCover()) ) {
 			$this->addFileEntry($cover, $filename);
 		}
@@ -186,8 +186,10 @@ class DownloadFile {
 		$file = $epubFile->getCssFile();
 		$this->addContentEntry($file['content'], $file['name']);
 
-		$this->addCoverForEpub($work, $epubFile);
-		$this->addBackCoverForEpub($work, $epubFile);
+		if ($work instanceof Book) {
+			$this->addCoverForEpub($work, $epubFile);
+			$this->addBackCoverForEpub($work, $epubFile);
+		}
 
 		$file = $epubFile->getTitlePageFile();
 		$this->addContentEntry($file['content'], $file['name']);
@@ -249,11 +251,11 @@ class DownloadFile {
 	}
 
 	/**
-	 * @param BaseWork $work
+	 * @param Book $book
 	 * @param EpubFile $epubFile
 	 */
-	private function addCoverForEpub(BaseWork $work, $epubFile) {
-		if ( ($cover = $work->getCover(400)) ) {
+	private function addCoverForEpub(Book $book, EpubFile $epubFile) {
+		if ( ($cover = $book->getCover(400)) ) {
 			$file = $this->addFileEntry($cover, $epubFile->getCoverFileName());
 			$epubFile->addCover($file);
 		}
@@ -264,11 +266,11 @@ class DownloadFile {
 	}
 
 	/**
-	 * @param BaseWork $work
+	 * @param Book $book
 	 * @param EpubFile $epubFile
 	 */
-	private function addBackCoverForEpub(BaseWork $work, $epubFile) {
-		if ( ($cover = $work->getBackCover(400)) ) {
+	private function addBackCoverForEpub(Book $book, EpubFile $epubFile) {
+		if ( ($cover = $book->getBackCover(400)) ) {
 			$file = $this->addFileEntry($cover, $epubFile->getBackCoverFileName());
 			$epubFile->addBackCover($file);
 		}
@@ -282,7 +284,7 @@ class DownloadFile {
 	 * @param BaseWork $work
 	 * @param EpubFile $epubFile
 	 */
-	private function addImagesForEpub(BaseWork $work, $epubFile) {
+	private function addImagesForEpub(BaseWork $work, EpubFile $epubFile) {
 		$imagesDir = $epubFile->getImagesDir();
 
 		$thumbs = array();

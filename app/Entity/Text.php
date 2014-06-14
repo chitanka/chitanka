@@ -239,21 +239,21 @@ class Text extends BaseWork {
 	private $removed_notice;
 
 	/**
-	 * @var ArrayCollection
+	 * @var TextAuthor[]
 	 * @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"pos" = "ASC"})
 	 */
 	private $textAuthors;
 
 	/**
-	 * @var ArrayCollection
+	 * @var TextTranslator[]
 	 * @ORM\OneToMany(targetEntity="TextTranslator", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"pos" = "ASC"})
 	 */
 	private $textTranslators;
 
 	/**
-	 * @var ArrayCollection
+	 * @var Person[]
 	 */
 	private $authors;
 
@@ -268,18 +268,18 @@ class Text extends BaseWork {
 	private $authorOrigNames;
 
 	/**
-	 * @var ArrayCollection
+	 * @var Person[]
 	 */
 	private $translators;
 
 	/**
-	 * @var ArrayCollection
+	 * @var BookText[]
 	 * @ORM\OneToMany(targetEntity="BookText", mappedBy="text")
 	 */
 	private $bookTexts;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	 * @var ArrayCollection
+	 * @var Book[]
 	 * @ORM\ManyToMany(targetEntity="Book", mappedBy="texts")
 	 * @ORM\JoinTable(name="book_text",
 	 *	joinColumns={@ORM\JoinColumn(name="text_id", referencedColumnName="id")},
@@ -289,21 +289,21 @@ class Text extends BaseWork {
 	private $books;
 
 	/**
-	 * @var ArrayCollection
+	 * @var Label[]
 	 * @ORM\ManyToMany(targetEntity="Label", inversedBy="texts")
 	 * @ORM\OrderBy({"name" = "ASC"})
 	 */
 	private $labels;
 
 	/**
-	 * @var ArrayCollection
+	 * @var TextHeader[]
 	 * @ORM\OneToMany(targetEntity="TextHeader", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"nr" = "ASC"})
 	 */
 	private $headers;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	 * @var ArrayCollection
+	 * @var User[]
 	 * @ORM\ManyToMany(targetEntity="User", inversedBy="readTexts")
 	 * @ORM\JoinTable(name="user_text_read",
 	 *	joinColumns={@ORM\JoinColumn(name="text_id")},
@@ -312,19 +312,19 @@ class Text extends BaseWork {
 	private $readers;
 
 	/**
-	 * @var ArrayCollection
+	 * @var UserTextContrib[]
 	 * @ORM\OneToMany(targetEntity="UserTextContrib", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 */
 	private $userContribs;
 
 	/**
-	 * @var ArrayCollection
+	 * @var TextRevision[]
 	 * @ORM\OneToMany(targetEntity="TextRevision", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 */
 	private $revisions;
 
 	/**
-	 * @var ArrayCollection
+	 * @var TextLink[]
 	 * @ORM\OneToMany(targetEntity="TextLink", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 */
 	private $links;
@@ -673,6 +673,12 @@ class Text extends BaseWork {
 		return $this->translatorSlugs;
 	}
 
+	private function getTranslatorNames() {
+		return array_map(function(Person $translator) {
+			return $translator->getName();
+		}, $this->getTranslators());
+	}
+
 	public function getTitleAsSfb() {
 		$title = "|\t" . $this->escapeForSfb($this->title);
 		if ( !empty($this->subtitle) ) {
@@ -685,17 +691,6 @@ class Text extends BaseWork {
 			$title .= '*';
 		}
 		return $title;
-	}
-
-	public function getTitleAsHtml($cnt = 0) {
-		$title = $this->getTitle();
-
-		if ( $this->hasTitleNote() ) {
-			$suffix = SfbConverter::createNoteIdSuffix($cnt, 0);
-			$title .= sprintf('<sup id="ref_%s" class="ref"><a href="#note_%s">[0]</a></sup>', $suffix, $suffix);
-		}
-
-		return "<h1>$title</h1>";
 	}
 
 	/**
@@ -733,11 +728,6 @@ class Text extends BaseWork {
 		$orig_title = ltrim($orig_title, ', ');
 
 		return rtrim("\t$authors\n\t$orig_title");
-	}
-
-	// TODO remove
-	public function getCover($width = null) {
-		return null;
 	}
 
 	public function getImages() {
@@ -807,18 +797,17 @@ class Text extends BaseWork {
 	}
 
 	public function getPlainTranslationInfo() {
-		if ($this->lang == $this->orig_lang) {
+		if (!$this->isTranslation()) {
 			return '';
 		}
+		$lang = Language::langName($this->getOrigLang(), false);
+		if ($lang) {
+			$lang = ' от '.$lang;
+		}
+		$translators = implode(', ', $this->getTranslatorNames()) ?: '[Неизвестен]';
+		$year = $this->getTransYearHuman() ?: '—';
 
-		$lang = Language::langName($this->orig_lang, false);
-		if ( ! empty($lang) ) $lang = ' от '.$lang;
-
-		$translator = empty($this->translator_name) ? '[Неизвестен]' : $this->translator_name;
-		$year = $this->getTransYearHuman();
-		if (empty($year)) $year = '—';
-
-		return sprintf('Превод%s: %s, %s', $lang, $translator, $year);
+		return sprintf('Превод%s: %s, %s', $lang, $translators, $year);
 	}
 
 	public function getPlainSeriesInfo() {

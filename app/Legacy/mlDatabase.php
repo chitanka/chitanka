@@ -11,6 +11,8 @@ class mlDatabase {
 		@var resource
 	*/
 	private $conn;
+	private $logFile;
+	private $errLogFile;
 
 	public function __construct($server, $user, $pass, $dbName) {
 		$this->server = $server;

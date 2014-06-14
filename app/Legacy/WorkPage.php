@@ -1421,12 +1421,13 @@ EOS;
 		return $this->db->exists(self::DB_TABLE, $key);
 	}
 
+	private $tucde;
 	private function thisUserCanDeleteEntry() {
 		if ($this->userIsSupervisor() || empty($this->entryId)) return true;
-		if ( isset($this->_tucde) ) return $this->_tucde;
+		if ( isset($this->tucde) ) return $this->tucde;
 		$key = array('id' => $this->entryId, 'user_id' => $this->user->getId());
 
-		return $this->_tucde = $this->db->exists(self::DB_TABLE, $key);
+		return $this->tucde = $this->db->exists(self::DB_TABLE, $key);
 	}
 
 	private function userCanAddEntry() {

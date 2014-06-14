@@ -46,6 +46,11 @@ abstract class BaseWork extends Entity {
 	abstract public function getSubtitle();
 
 	/**
+	 * @return array
+	 */
+	abstract public function getLabels();
+
+	/**
 	 * Return title and subtitle if any
 	 * @param string $format   Output format: %t1 — title, %t2 — subtitle
 	 * @return string
@@ -61,8 +66,41 @@ abstract class BaseWork extends Entity {
 		return $this->getTitle();
 	}
 
+	/**
+	 * @param int $cnt
+	 * @return string
+	 */
+	public function getTitleAsHtml($cnt = 0) {
+		$title = $this->getTitle();
+
+		if ($this->hasTitleNote()) {
+			$suffix = SfbConverter::createNoteIdSuffix($cnt, 0);
+			$title .= sprintf('<sup id="ref_%s" class="ref"><a href="#note_%s">[0]</a></sup>', $suffix, $suffix);
+		}
+
+		return "<h1>$title</h1>";
+	}
+
 	/** @return array */
 	abstract public function getAuthors();
+
+	/** @return array */
+	abstract public function getTranslators();
+
+	/** @return int */
+	abstract public function getYear();
+
+	/** @return int */
+	abstract public function getTransYear();
+
+	/** @return string */
+	abstract public function getPlainSeriesInfo();
+
+	/** @return string */
+	abstract public function getPlainTranslationInfo();
+
+	/** @return string */
+	abstract public function getAuthorsPlain();
 
 	private $authorIds;
 	public function getAuthorIds() {
@@ -83,20 +121,6 @@ abstract class BaseWork extends Entity {
 
 	public function getOrigLang() {
 		return '';
-	}
-
-	/**
-	 * @param int $width
-	 */
-	public function getCover($width = null) {
-		return null;
-	}
-
-	/**
-	 * @param int $width
-	 */
-	public function getBackCover($width = null) {
-		return null;
 	}
 
 	/** @return bool */
@@ -334,6 +358,12 @@ abstract class BaseWork extends Entity {
 
 		return $chapters;
 	}
+
+	/** @return array */
+	abstract public function getImages();
+
+	/** @return array */
+	abstract public function getThumbImages();
 
 	/** @return bool */
 	abstract public function isGamebook();

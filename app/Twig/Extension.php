@@ -8,10 +8,12 @@ use Sfblib\XmlElement;
 
 class Extension extends \Twig_Extension {
 
+	/** {@inheritdoc} */
 	public function getName() {
 		return 'chitanka';
 	}
 
+	/** {@inheritdoc} */
 	public function getFunctions() {
 		return array(
 			new \Twig_SimpleFunction('anchor_name', array($this, 'getAnchorName')),
@@ -19,6 +21,7 @@ class Extension extends \Twig_Extension {
 		);
 	}
 
+	/** {@inheritdoc} */
 	public function getFilters() {
 		return array(
 			new \Twig_SimpleFilter('rating_class', array($this, 'getRatingClass')),
@@ -46,6 +49,7 @@ class Extension extends \Twig_Extension {
 		);
 	}
 
+	/** {@inheritdoc} */
 	public function getTests() {
 		return array(
 			new \Twig_SimpleTest('url', array($this, 'isUrl')),
@@ -190,26 +194,54 @@ class Extension extends \Twig_Extension {
 		return $this->_xmlElementCreator->getAnchorName($text, $unique);
 	}
 
+	/**
+	 * @param int $id
+	 * @param int $width
+	 * @param string $format
+	 * @return string
+	 */
 	public function getCover($id, $width = 200, $format = 'jpg') {
 		return File::getContentFilePath('book-cover', $id) . ".$width.$format";
 	}
 
+	/**
+	 * @param string $value
+	 * @param string $sep
+	 * @return string
+	 */
 	public function nl2br($value, $sep = '<br>') {
 		return str_replace("\n", $sep."\n", $value);
 	}
 
+	/**
+	 * @param string $value
+	 * @return string
+	 */
 	public function dot2br($value) {
 		return preg_replace('/\. (?=[A-ZА-Я])/u', "<br>\n", $value);
 	}
 
+	/**
+	 * @param string $content
+	 * @return string
+	 */
 	public function formatUserMarkup($content) {
 		return String::prettifyInput(String::escapeInput($content));
 	}
 
+	/**
+	 * @param string $string
+	 * @param string $encoding
+	 * @return string
+	 */
 	public function changeEncoding($string, $encoding) {
 		return iconv('UTF-8', $encoding, $string);
 	}
 
+	/**
+	 * @param string $string
+	 * @return string
+	 */
 	public function getUrlEncode($string) {
 		return urlencode($string);
 	}

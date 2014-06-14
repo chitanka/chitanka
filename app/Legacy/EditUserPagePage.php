@@ -4,8 +4,9 @@ use App\Util\String;
 
 class EditUserPagePage extends UserPage {
 
-	protected
-		$action = 'editUserPage';
+	protected $action = 'editUserPage';
+	private $save;
+	private $preview;
 
 	public function __construct($fields) {
 		parent::__construct($fields);
@@ -47,10 +48,8 @@ class EditUserPagePage extends UserPage {
 	protected function makeEditForm() {
 		$this->title .= ' — Редактиране';
 		$username = $this->out->hiddenField('username', $this->username);
-		$userpage = $this->out->textarea('userpage', '', $this->userpage, 20, 80,
-			0, array('style'=>'width:95%'));
+		$userpage = $this->out->textarea('userpage', '', $this->userpage, 20, 80, 0, array('style'=>'width:95%'));
 
-		$submit1 = $this->out->submitButton('Предварителен преглед', '', 0, 'preview');
 		$submit2 = $this->out->submitButton('Запис', '', 0, 'send');
 
 		return <<<EOS
@@ -60,7 +59,6 @@ class EditUserPagePage extends UserPage {
 	$username
 	<label for="userpage">Съдържание:</label><br>
 	$userpage<br>
-	<!--$submit1-->
 	$submit2
 </div></form>
 EOS;

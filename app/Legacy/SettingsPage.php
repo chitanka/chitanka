@@ -8,6 +8,7 @@ class SettingsPage extends RegisterPage {
 
 	private $allowemail;
 	private $optKeys = array('skin', 'nav', 'css', 'js');
+	private $opts;
 	private $tabindex;
 
 	public function __construct($fields) {
@@ -29,17 +30,23 @@ class SettingsPage extends RegisterPage {
 	}
 
 	protected function processSubmission() {
-		$err = $this->validateInput();
-		if ( !empty($err) ) {
-			$this->addMessage($err, true);
+		if (!$this->verifyCaptchaAnswer() ) {
+			$this->addMessage('Не сте отговорили правилно на въпроса уловка.', true);
+			return $this->makeRegUserForm();
+		}
+		if (!$this->isValidPassword() ) {
+			$this->addMessage('Двете въведени пароли се различават.', true);
+			return $this->makeRegUserForm();
+		}
+		if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+			$this->addMessage('Въведеният адрес за електронна поща е невалиден.', true);
+			return $this->makeRegUserForm();
+		}
+		if ($this->emailExists($this->user->getUsername())) {
 			return $this->makeRegUserForm();
 		}
 
-		if ( $this->emailExists($this->user->getUsername()) ) {
-			return $this->makeRegUserForm();
-		}
-
-		$user = $this->controller->em()->getUserRepository()->find($this->user->getId());
+		$user = $this->controller->em()->merge($this->user);
 		$user->setRealname($this->realname);
 		$user->setEmail($this->email);
 		$user->setAllowemail((int) $this->allowemail);
@@ -59,20 +66,6 @@ class SettingsPage extends RegisterPage {
 		$this->user->updateSession();
 
 		return $this->makeRegUserForm();
-	}
-
-	private function validateInput() {
-		if ( ! $this->verifyCaptchaAnswer() ) {
-			return 'Не сте отговорили правилно на въпроса уловка.';
-		}
-
-		if ( !$this->isValidPassword() ) {
-			return 'Двете въведени пароли се различават.';
-		}
-		if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-			return 'Въведеният адрес за електронна поща е невалиден.';
-		}
-		return '';
 	}
 
 	protected function isValidPassword() {

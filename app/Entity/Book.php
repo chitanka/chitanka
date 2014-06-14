@@ -280,13 +280,13 @@ class Book extends BaseWork {
 		return $this->authors;
 	}
 
-	public function getAuthorsPlain($separator = ', ') {
+	public function getAuthorsPlain() {
 		$authors = array();
 		foreach ($this->getAuthors() as $author) {
 			$authors[] = $author->getName();
 		}
 
-		return implode($separator, $authors);
+		return implode(', ', $authors);
 	}
 
 	public function addAuthor($author) {
