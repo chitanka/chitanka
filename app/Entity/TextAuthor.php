@@ -21,7 +21,7 @@ class TextAuthor extends Entity {
 
 	/**
 	 * @var Person
-	 * @ORM\ManyToOne(targetEntity="Person", inversedBy="textAuthors")
+	 * @ORM\ManyToOne(targetEntity="Person")
 	 */
 	private $person;
 

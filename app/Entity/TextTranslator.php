@@ -21,7 +21,7 @@ class TextTranslator extends Entity {
 
 	/**
 	 * @var Person
-	 * @ORM\ManyToOne(targetEntity="Person", inversedBy="textTranslators")
+	 * @ORM\ManyToOne(targetEntity="Person")
 	 */
 	private $person;
 
