@@ -272,7 +272,7 @@ class CommentPage extends Page {
 EOS;
 	}
 
-	private function makePreview() {
+	public function makePreview() {
 		return '<h2>Предварителен преглед</h2>' .
 			$this->makeComment(array(
 				'content' => $this->comment,
@@ -373,7 +373,6 @@ EOS;
 	 * @param int $limit
 	 * @param int $offset
 	 * @param string $order
-	 * @param bool $showPageLinks
 	 */
 	private function makeAllComments($limit = 0, $offset = 0, $order = null) {
 		$sql = $this->makeSqlQuery($limit, $offset, $order);
@@ -396,7 +395,7 @@ EOS;
 			$params['route'] = 'user_comments';
 			$params['route_params'] = array('username' => $this->username);
 		}
-		$pagelinks = $showPageLinks ? $this->controller->renderView('App::pager.html.twig', $params) : '';
+		$pagelinks = $this->controller->renderView('App::pager.html.twig', $params);
 
 		$c = '';
 		while ($row = $this->db->fetchAssoc($res)) {

@@ -91,7 +91,7 @@ class EpubFile {
 			'DEPTH'      => $this->obj->getMaxHeadersDepth(),
 			'EPUBLISHER' => $this->getPublisher(),
 			'TITLE'      => htmlspecialchars($this->obj->getTitles()),
-			'AUTHOR'     => $this->obj->getAuthorsPlain(),
+			'AUTHOR'     => $this->obj->getAuthorNamesString(),
 			'NAVPOINTS'  => $this->getNavPointTags(),
 		));
 	}
@@ -382,7 +382,7 @@ class EpubFile {
 		}
 
 		return $this->getTemplate($this->titlePageFileName, array(
-			'AUTHOR'          => $this->obj->getAuthorsPlain(),
+			'AUTHOR'          => $this->obj->getAuthorNamesString(),
 			'TITLE'           => str_replace(' — ', '<br/>', htmlspecialchars($this->obj->getTitles())),
 			'SERIES-INFO'     => $series,
 			'TRANSLATOR-INFO' => $translator,

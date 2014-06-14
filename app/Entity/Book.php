@@ -280,7 +280,7 @@ class Book extends BaseWork {
 		return $this->authors;
 	}
 
-	public function getAuthorsPlain() {
+	public function getAuthorNamesString() {
 		$authors = array();
 		foreach ($this->getAuthors() as $author) {
 			$authors[] = $author->getName();
@@ -657,7 +657,7 @@ class Book extends BaseWork {
 		$sfb = '';
 		$prefix = SfbConverter::HEADER . SfbConverter::CMD_DELIM;
 
-		if ('' != $authors = $this->getAuthorsPlain()) {
+		if ('' != $authors = $this->getAuthorNamesString()) {
 			$sfb .= $prefix . $authors . SfbConverter::EOL;
 		}
 

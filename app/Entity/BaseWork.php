@@ -100,7 +100,7 @@ abstract class BaseWork extends Entity {
 	abstract public function getPlainTranslationInfo();
 
 	/** @return string */
-	abstract public function getAuthorsPlain();
+	abstract public function getAuthorNamesString();
 
 	private $authorIds;
 	public function getAuthorIds() {
