@@ -1,10 +1,9 @@
 <?php namespace App\Generator;
 
+use App\Entity\TextRepository;
 use App\Legacy\CacheManager;
-use App\Legacy\ZipFile;
 use App\Util\Char;
 use App\Util\File;
-use App\Entity\TextRepository;
 
 class TextDownloadService {
 

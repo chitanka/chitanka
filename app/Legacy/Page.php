@@ -229,8 +229,8 @@ abstract class Page {
 			return true;
 		}
 		$this->captchaTries++;
-		Legacy::fillOnEmpty($_question, $this->captchaQuestion);
-		Legacy::fillOnEmpty($_answer, $this->captchaAnswer);
+		if (empty($_question)) { $_question = $this->captchaQuestion; }
+		if (empty($_answer)) { $_answer = $this->captchaAnswer; }
 		$res = $this->db->select(DBT_QUESTION, array('id' => $_question));
 		if ( $this->db->numRows($res) == 0 ) { // invalid question
 			return false;

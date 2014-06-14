@@ -43,7 +43,7 @@ class CommentPage extends Page {
 		$this->initPaginationFields();
 	}
 
-	protected function addTextFeedLinks() {
+	private function addTextFeedLinks() {
 		if ( empty($this->work) ) {
 			$url = $this->controller->generateUrl('texts_comments', array('_format' => 'rss'));
 			$title = 'Читателски коментари';
@@ -56,7 +56,7 @@ class CommentPage extends Page {
 	protected function processSubmission() {
 		if ( empty($this->reader) || empty($this->comment) ) {
 			$this->addMessage('Попълнете всички полета!', true);
-			if ($this->controller->getRequest()->isXmlHttpRequest()) {
+			if ($this->sfrequest->isXmlHttpRequest()) {
 				return '';
 			}
 			return $this->buildContent();
@@ -69,7 +69,7 @@ class CommentPage extends Page {
 		if ( $this->request->value('preview') != NULL ) {
 			$this->addMessage('Това е само предварителен преглед. Мнението ви все още не е съхранено.');
 			$response = $this->makeComment();
-			if (!$this->controller->getRequest()->isXmlHttpRequest()) {
+			if (!$this->sfrequest->isXmlHttpRequest()) {
 				$response .= $this->makeForm();
 			}
 			return $response;
@@ -108,7 +108,7 @@ class CommentPage extends Page {
 				Legacy::getFromUrl('http://forum.chitanka.info/chat/post.php', array('m' => $chatMsg));
 			}
 		}
-		if (!$this->controller->getRequest()->isXmlHttpRequest()) {
+		if (!$this->sfrequest->isXmlHttpRequest()) {
 			$this->addMessage('Мнението ви беше получено.');
 			if ( ! $showComment ) {
 				$this->addMessage('Ще бъде показано след преглед от модератор.');
@@ -142,7 +142,7 @@ class CommentPage extends Page {
 			. '</div>';
 	}
 
-	protected function makeComments() {
+	private function makeComments() {
 		$key = $this->wheres[$this->showMode];
 		$key['c.text_id'] = $this->textId;
 		if ( !empty($this->replyto) ) {
@@ -181,11 +181,11 @@ class CommentPage extends Page {
 			. $newcommentlink;
 	}
 
-	protected function makeNewCommentLink() {
+	private function makeNewCommentLink() {
 		return '<p><a href="#postform" onclick="return initReply(0)">Пускане на нов коментар</a> ↓</p>';
 	}
 
-	public function processCommentDbRow($dbrow) {
+	private function processCommentDbRow($dbrow) {
 		$id = $dbrow['id']; $replyto = $dbrow['replyto_id'];
 		$dbrow['nr'] = ++$this->curRowNr;
 		$this->acomments[$id] = $dbrow;
@@ -199,7 +199,7 @@ class CommentPage extends Page {
 		}
 	}
 
-	protected function makeCommentsAsTree($tree, $level = 0, $id = '') {
+	private function makeCommentsAsTree($tree, $level = 0, $id = '') {
 		$this->comments .= "\n<ul id='sublistof$id'>";
 		foreach ($tree as $id => $subtree) {
 			$this->comments .= isset($this->acomments[$id])
@@ -213,23 +213,18 @@ class CommentPage extends Page {
 		$this->comments .= "\n".'</ul>';
 	}
 
-	protected function makeCommentsAsList() {
-		foreach ($this->acomments as $id => $acomment) {
-			$this->comments .= $this->makeComment($acomment);
-		}
-	}
-
 	/**
 	 * @param array $fields Associative array containing following (optional)
 	 *                      elements: rname, content, user_id, time, textId, textTitle, author, edit, showtime
 	 * @return string
 	 */
-	public function makeComment($fields = array()) {
+	private function makeComment($fields = array()) {
 		extract($fields);
-		Legacy::fillOnEmpty($id, 0);
-		Legacy::fillOnEmpty($rname, $this->reader);
-		Legacy::fillOnEmpty($content, $this->comment);
-		Legacy::fillOnEmpty($textId, $this->textId);
+		if ( empty($id) ) { $id = 0; }
+		if ( empty($rname) ) { $rname = $this->reader; }
+		if ( empty($content) ) { $content = $this->comment; }
+		if ( empty($textId) ) { $textId = $this->textId; }
+
 		$firstrow = $secondrow = '';
 		if ( !isset($showtitle) || $showtitle ) { // show per default
 			$rnameview = ! empty($user_id) && $this->includeUserLinks
@@ -277,7 +272,7 @@ class CommentPage extends Page {
 EOS;
 	}
 
-	public function makePreview() {
+	private function makePreview() {
 		return '<h2>Предварителен преглед</h2>' .
 			$this->makeComment(array(
 				'content' => $this->comment,
@@ -285,14 +280,14 @@ EOS;
 			));
 	}
 
-	protected function makeForm() {
+	private function makeForm() {
 		if ( empty($this->work) ) {
 			return '';
 		}
 		return $this->makeEditForm();
 	}
 
-	protected function makeEditForm() {
+	private function makeEditForm() {
 		$textId = $this->out->hiddenField('textId', $this->textId);
 		$chunkId = $this->out->hiddenField('chunkId', $this->chunkId);
 		$replyto = $this->out->hiddenField('replyto', $this->replyto);
@@ -378,9 +373,9 @@ EOS;
 	 * @param int $limit
 	 * @param int $offset
 	 * @param string $order
-	 * @param book $showPageLinks
+	 * @param bool $showPageLinks
 	 */
-	public function makeAllComments($limit = 0, $offset = 0, $order = null, $showPageLinks = true) {
+	private function makeAllComments($limit = 0, $offset = 0, $order = null) {
 		$sql = $this->makeSqlQuery($limit, $offset, $order);
 		$res = $this->db->query($sql);
 		if ($this->db->numRows($res) == 0) {
@@ -421,7 +416,7 @@ EOS;
 	 * @param int $offset
 	 * @param string $order
 	 */
-	public function makeSqlQuery($limit = 0, $offset = 0, $order = null) {
+	private function makeSqlQuery($limit = 0, $offset = 0, $order = null) {
 		if ( is_null($order) ) { $order = $this->sortOrder; }
 		$key = $this->wheres[$this->showMode];
 		if ( ! empty($this->textId) ) {
@@ -461,7 +456,7 @@ EOS;
 		return $this->db->extselectQ($qa);
 	}
 
-	protected function initData() {
+	private function initData() {
 		if ($this->initDone) {
 			return true;
 		}

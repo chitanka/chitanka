@@ -8,7 +8,7 @@ class OutputMaker {
 	private $argSeparator = '&';
 
 	public function textField($name, $id = '', $value = '', $size = 30, $maxlength = 255, $tabindex = null, $title = '', $attrs = array()) {
-		Legacy::fillOnEmpty($id, $name);
+		if (empty($id)) { $id = $name; }
 		$attrs = array(
 			'type' => 'text', 'name' => $name, 'id' => $id,
 			'size' => $size, 'maxlength' => $maxlength,
@@ -18,7 +18,7 @@ class OutputMaker {
 	}
 
 	public function textarea($name, $id = '', $value = '', $rows = 5, $cols = 80, $tabindex = null, $attrs = array()) {
-		Legacy::fillOnEmpty($id, $name);
+		if (empty($id)) { $id = $name; }
 		$attrs = array(
 			'name' => $name, 'id' => $id,
 			'cols' => $cols, 'rows' => $rows, 'tabindex' => $tabindex
@@ -27,7 +27,7 @@ class OutputMaker {
 	}
 
 	public function checkbox($name, $id = '', $checked = false, $label = '', $value = null, $tabindex = null, $attrs = array()) {
-		Legacy::fillOnEmpty($id, $name);
+		if (empty($id)) { $id = $name; }
 		$attrs = array(
 			'type' => 'checkbox', 'name' => $name, 'id' => $id,
 			'value' => $value, 'tabindex' => $tabindex
@@ -49,7 +49,7 @@ class OutputMaker {
 	}
 
 	public function passField($name, $id = '', $value = '', $size = 30, $maxlength = 255, $tabindex = null, $attrs = array()) {
-		Legacy::fillOnEmpty($id, $name);
+		if (empty($id)) { $id = $name; }
 		$attrs = array(
 			'type' => 'password', 'name' => $name, 'id' => $id,
 			'size' => $size, 'maxlength' => $maxlength, 'value' => $value,
@@ -59,7 +59,7 @@ class OutputMaker {
 	}
 
 	public function fileField($name, $id = '', $tabindex = null, $title = '', $attrs = array()) {
-		Legacy::fillOnEmpty($id, $name);
+		if (empty($id)) { $id = $name; }
 		$attrs = array(
 			'type' => 'file', 'name' => $name, 'id' => $id,
 			'title' => $title, 'tabindex' => $tabindex
@@ -104,7 +104,7 @@ class OutputMaker {
 			if ( in_array( $key, $selId) ) $oattrs['selected'] = 'selected';
 			$o .= "\n\t". $this->xmlElement('option', $val, $oattrs);
 		}
-		Legacy::fillOnEmpty($id, $name);
+		if (empty($id)) { $id = $name; }
 		$attrs = array(
 			'name' => $name, 'id' => $id, 'tabindex' => $tabindex
 		) + $attrs;

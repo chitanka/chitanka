@@ -56,7 +56,7 @@ class LabelLog extends Entity {
 	private $labels;
 
 	/**
-	 * @var datetime $time
+	 * @var \DateTime $time
 	 * @ORM\Column(type="datetime")
 	 */
 	private $time;

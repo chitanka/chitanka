@@ -70,16 +70,6 @@ class Legacy {
 		return $ntypes;
 	}
 
-	/**
-	 * @param var $var
-	 * @param mixed $value
-	 */
-	public static function fillOnEmpty(&$var, $value) {
-		if ( empty($var) ) {
-			$var = $value;
-		}
-	}
-
 	public static function getMaxUploadSizeInMiB() {
 		return Number::int_b2m(Number::iniBytes(ini_get('upload_max_filesize')));
 	}

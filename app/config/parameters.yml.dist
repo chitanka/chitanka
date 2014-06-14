@@ -52,8 +52,6 @@ parameters:
     # See “List of Supported Timezones” [http://php.net/manual/en/timezones.php]
     default_timezone: Europe/Sofia
 
-    tmp_dir: /tmp
-
     download_formats: [txt.zip, fb2.zip, epub, sfb.zip]
     download_file: AUTHOR - SERIES - SERNO. TITLE-ID
 

@@ -1,5 +1,6 @@
 <?php namespace App\Command;
 
+use App\Service\MediawikiClient;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

@@ -1,10 +1,12 @@
 <?php namespace App\Generator;
 
-use App\Util\Char;
-use App\Util\File;
 use App\Entity\BaseWork;
 use App\Entity\Book;
 use App\Entity\Text;
+use App\Legacy\CacheManager;
+use App\Legacy\Setup;
+use App\Util\Char;
+use App\Util\File;
 use Sfblib\SfbConverter;
 
 class DownloadFile {

@@ -1,4 +1,4 @@
-<?php namespace App\Legacy;
+<?php namespace App\Generator;
 
 // from phpmyadmin
 

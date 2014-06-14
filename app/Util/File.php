@@ -77,7 +77,7 @@ class File {
 			case 'jpeg': return 'image/jpeg';
 		}
 
-		$finfo = new finfo(FILEINFO_MIME_TYPE);
+		$finfo = new \finfo(FILEINFO_MIME_TYPE);
 		return $finfo->file($file);
 	}
 
@@ -223,7 +223,7 @@ class File {
 		$image = imagecreatefromjpeg($filename);
 		imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 
-		$temp = Setup::setting('tmp_dir').'/thumb-'.uniqid().'-'.basename($filename);
+		$temp = sys_get_temp_dir().'/chitanka-thumb-'.uniqid().'-'.basename($filename);
 		imagejpeg($image_p, $temp, 80);
 
 		return $temp;

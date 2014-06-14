@@ -4,7 +4,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use App\Entity\WorkEntry;
-use App\Service\Notifier;
+use App\Mail\Notifier;
 
 class NotifyUsersForOldWorkEntriesCommand extends Command {
 

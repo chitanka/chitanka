@@ -8,12 +8,19 @@ class BookmarkRepository extends EntityRepository {
 	/**
 	 * @param User $user
 	 * @param int $limit
-	 * @return type
+	 * @return array
 	 */
 	public function getLatestByUser(User $user, $limit = null) {
 		return $this->getByUser($user, 1, $limit, 'e.created_at DESC');
 	}
 
+	/**
+	 * @param User $user
+	 * @param int $page
+	 * @param int $limit
+	 * @param string $orderBys
+	 * @return array
+	 */
 	public function getByUser(User $user, $page = 1, $limit = null, $orderBys = 't.title ASC') {
 		$ids = $this->getIdsByUser($user, $page, $limit, $orderBys);
 
@@ -75,7 +82,7 @@ class BookmarkRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param string $orderBy
+	 * @param string $orderBys
 	 */
 	public function getQueryBuilder($orderBys = null) {
 		return parent::getQueryBuilder($orderBys)
