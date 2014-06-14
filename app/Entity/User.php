@@ -1,11 +1,10 @@
 <?php namespace App\Entity;
 
+use App\Legacy\Legacy;
+use App\Legacy\Setup;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-#use FOS\UserBundle\Entity\User as BaseUser;
-use App\Legacy\Setup;
-use App\Legacy\Legacy;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\UserRepository")
@@ -17,7 +16,7 @@ use App\Legacy\Legacy;
  * )
  * @UniqueEntity(fields="username")
  */
-class User /*extends BaseUser*/ implements UserInterface {
+class User implements UserInterface {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -118,15 +117,6 @@ class User /*extends BaseUser*/ implements UserInterface {
 	 * @ORM\Column(type="string", length=40, unique=true)
 	 */
 	private $token;
-
-	/** FIXME doctrine:schema:create does not allow this relation
-	 * @var Text[]
-	 * @ORM\ManyToMany(targetEntity="Text", mappedBy="readers")
-	 * @ORM\JoinTable(name="user_text_read",
-	 *	joinColumns={@ORM\JoinColumn(name="user_id")},
-	 *	inverseJoinColumns={@ORM\JoinColumn(name="text_id")})
-	 */
-	private $readTexts;
 
 	/**
 	 * @var Bookmark[]
@@ -472,10 +462,6 @@ class User /*extends BaseUser*/ implements UserInterface {
 
 	public function setOption($name, $val) {
 		$this->opts[$name] = $val;
-	}
-
-	public function canExecute($action) {
-		return true;
 	}
 
 	public function isGod() {

@@ -23,9 +23,8 @@ class WorkEntryRepository extends EntityRepository {
 
 	/**
 	 * @param string $title
-	 * @param int $limit
 	 */
-	public function getByTitleOrAuthor($title, $limit = null) {
+	public function getByTitleOrAuthor($title) {
 		return $this->getQueryBuilder()
 			->where('e.deleted_at IS NULL')
 			->andWhere('e.title LIKE ?1 OR e.author LIKE ?1')

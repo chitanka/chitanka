@@ -62,8 +62,7 @@ class mlDatabase {
 	}
 
 	public function select($table, $keys = array(), $fields = array(), $orderby = '', $offset = 0, $limit = 0, $groupby = '') {
-		$q = $this->selectQ($table, $keys, $fields, $orderby, $offset, $limit);
-		return $this->query($q);
+		return $this->query($this->selectQ($table, $keys, $fields, $orderby, $offset, $limit, $groupby));
 	}
 
 	public function selectQ($table, $keys = array(), $fields = array(), $orderby = '', $offset = 0, $limit = 0, $groupby = '') {

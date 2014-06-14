@@ -129,7 +129,7 @@ class CommentPage extends Page {
 					. ')';
 				$this->title .= ' от ' . $this->makeUserLink($this->username);
 			}
-			$this->addRssLink();
+			// a global RSS link should be added to the page
 
 			return $this->makeAllComments($this->llimit, $this->loffset, 'DESC');
 		}
@@ -299,9 +299,6 @@ EOS;
 		$reader = $this->user->isAnonymous()
 			? '<div class="form-group"><label for="reader">Име: </label>' . $this->out->textField('reader', '', $this->reader, 40, 160, null, '', array('class' => 'form-control')) . '</div>'
 			: '';
-		$formreader = $this->user->isAnonymous()
-			? 'this.form.reader.value'
-			: "'".$this->user->getUsername()."'";
 		$comment = $this->out->textarea('commenttext', '', $this->comment, 10, 77,
 			null, array('onkeypress' => 'postform_changed = true', 'class' => 'form-control'));
 		$hideform = !empty($this->comment) || !empty($this->replyto) ? ''

@@ -27,43 +27,40 @@ class TextDownloadService {
 	public function generateFile($ids, $format, $requestedFilename) {
 		switch ($format) {
 			case 'txt.zip':
-				return $this->getTxtZipFile($ids, $format, $requestedFilename);
+				return $this->getTxtZipFile($ids, $requestedFilename);
 			case 'fb2.zip':
-				return $this->getFb2ZipFile($ids, $format, $requestedFilename);
+				return $this->getFb2ZipFile($ids, $requestedFilename);
 			case 'sfb.zip':
-				return $this->getSfbZipFile($ids, $format, $requestedFilename);
+				return $this->getSfbZipFile($ids, $requestedFilename);
 			case 'epub':
-				return $this->getEpubFile($ids, $format, $requestedFilename);
+				return $this->getEpubFile($ids);
 		}
 		return null;
 	}
 
-	public function getTxtZipFile($id, $format, $requestedFilename) {
+	private function getTxtZipFile($id, $requestedFilename) {
 		$this->initZipData($id, $requestedFilename);
 		return $this->createTxtDlFile();
 	}
 
-	public function getSfbZipFile($id, $format, $requestedFilename) {
+	private function getSfbZipFile($id, $requestedFilename) {
 		$this->initZipData($id, $requestedFilename);
 		return $this->createSfbDlFile();
 	}
 
-	public function getFb2ZipFile($id, $format, $requestedFilename) {
+	private function getFb2ZipFile($id, $requestedFilename) {
 		$this->initZipData($id, $requestedFilename);
 		return $this->createFb2DlFile();
 	}
 
-	public function getEpubFile($textId, $format, $requestedFilename) {
-		$file = null;
+	private function getEpubFile($textIds) {
 		$dlFile = new DownloadFile;
-		if ( count($textId) > 1 ) {
-			$file = $dlFile->getEpubForTexts($this->textRepo->findBy(array('id' => $textId)));
-		} else if ( $text = $this->textRepo->find($textId[0]) ) {
-			$file = $dlFile->getEpubForText($text);
+		if (count($textIds) > 1) {
+			return $dlFile->getEpubForTexts($this->textRepo->findBy(array('id' => $textIds)));
 		}
-
-		if ($file) {
-			return $file;
+		$text = $this->textRepo->find($textIds[0]);
+		if ($text) {
+			return $dlFile->getEpubForText($text);
 		}
 		return null;
 	}
@@ -79,8 +76,7 @@ class TextDownloadService {
 		$fEntry = unserialize( CacheManager::getDlCache($textId), '.sfb' );
 		$this->zf->addFileEntry($fEntry);
 		if ( $this->withFbi ) {
-			$this->zf->addFileEntry(
-				unserialize( CacheManager::getDlCache($textId, '.fbi') ) );
+			$this->zf->addFileEntry(unserialize( CacheManager::getDlCache($textId, '.fbi') ) );
 		}
 		$this->filename = $this->rmFEntrySuffix($fEntry['name']);
 		return true;
@@ -100,7 +96,7 @@ class TextDownloadService {
 	}
 
 	private function addSfbToDlFileEnd($textId) {
-		$this->addBinaryFileEntries($textId, $this->filename);
+		$this->addBinaryFileEntries($textId);
 		return true;
 	}
 
@@ -223,7 +219,7 @@ class TextDownloadService {
 		$this->zf->addFileEntry($fEntry);
 	}
 
-	private function addBinaryFileEntries($textId, $filename) {
+	private function addBinaryFileEntries($textId) {
 		// add images
 		$dir = File::getContentFilePath('img', $textId);
 		if ( !is_dir($dir) ) { return; }
@@ -251,8 +247,8 @@ class TextDownloadService {
 		$work = $this->textRepo->find($textId);
 		return array(
 			$this->getFileName($work),
-			$this->getFileDataPrefix($work, $textId),
-			$this->getFileDataSuffix($work, $textId),
+			$this->getFileDataPrefix($work),
+			$this->getFileDataSuffix($work),
 			$this->getTextFileStart() . $work->getFbi()
 		);
 	}
@@ -282,7 +278,7 @@ class TextDownloadService {
 		$this->_fnameCount = array();
 	}
 
-	public function getFileDataPrefix($work, $textId) {
+	public function getFileDataPrefix($work) {
 		$prefix = $this->getTextFileStart()
 			. "|\t" . $work->getAuthorNames() . "\n"
 			. $work->getTitleAsSfb() . "\n\n\n";
@@ -293,7 +289,7 @@ class TextDownloadService {
 		return $prefix;
 	}
 
-	public function getFileDataSuffix(\App\Entity\Text $work, $textId) {
+	public function getFileDataSuffix(\App\Entity\Text $work) {
 		$suffix = "\n"
 			. "I>\n"
 			. $work->getExtraInfoForDownload()

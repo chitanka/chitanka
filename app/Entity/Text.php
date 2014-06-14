@@ -214,11 +214,11 @@ class Text extends BaseWork {
 	 */
 	private $has_anno = false;
 
-	/*
-	 * @var bool
-	 * @ORM\Column(type="boolean")
-	 */
-	private $has_title_note;
+//	/*
+//	 * @var bool
+//	 * @ORM\Column(type="boolean")
+//	 */
+//	private $has_title_note;
 
 	/**
 	 * @var bool
@@ -830,7 +830,7 @@ class Text extends BaseWork {
 	}
 
 	// TODO reimplement if needed
-	public function getNextFromSeries() {
+//	public function getNextFromSeries() {
 //		if ( empty($this->series) ) {
 //			return false;
 //		}
@@ -842,20 +842,19 @@ class Text extends BaseWork {
 //				. " OR (sernr > $this->sernr AND t.id > $this->id)";
 //		}
 //		return self::newFromDB($dbkey);
-	}
+//	}
 
 	// TODO reimplement if needed
-	public function getNextFromBooks() {
-		return null;
+//	public function getNextFromBooks() {
 //		$nextWorks = array();
 //		foreach ($this->books as $id => $book) {
 //			$nextWorks[$id] = $this->getNextFromBook($id);
 //		}
 //		return $nextWorks;
-	}
+//	}
 
 	// TODO reimplement if needed
-	public function getNextFromBook($book) {
+//	public function getNextFromBook($book) {
 //		if ( empty($this->books[$book]) ) {
 //			return false;
 //		}
@@ -864,10 +863,10 @@ class Text extends BaseWork {
 //			return self::newFromId($m[1]);
 //		}
 //		return false;
-	}
+//	}
 
 	// TODO reimplement if needed
-	public function getPrefaceOfBook($book) {
+//	public function getPrefaceOfBook($book) {
 //		if ( empty($this->books[$book]) || $this->type == 'intro' ) {
 //			return false;
 //		}
@@ -875,7 +874,7 @@ class Text extends BaseWork {
 //		$subquery = Setup::db()->selectQ(DBT_BOOK_TEXT, $subkey, 'text_id');
 //		$dbkey = array("t.id IN ($subquery)", 't.type' => 'intro');
 //		return self::newFromDB($dbkey);
-	}
+//	}
 
 	public function getHistoryAndVersion() {
 		$history = array();

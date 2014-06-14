@@ -106,8 +106,8 @@ class WorkPage extends Page {
 		parent::__construct($fields);
 		$this->title = 'Работно ателие';
 
-		$this->tmpDir = 'todo/';
-		$this->absTmpDir = $this->container->getParameter('kernel.root_dir') . '/../web/'.$this->tmpDir;
+		$this->tmpDir = 'todo';
+		$this->absTmpDir = $this->container->getParameter('kernel.root_dir') . "/../web/{$this->tmpDir}";
 
 		$this->subaction = $this->request->value( $this->FF_SUBACTION, '', 1 );
 
@@ -209,7 +209,7 @@ class WorkPage extends Page {
 					$this->addMessage('Повторното съхраняване ще добави вашия запис въпреки горното предупреждение.');
 					$this->bypassExisting = 1;
 
-					return $this->makeWorkList(0, 0, null, false, $key) . $this->makeForm();
+					return $this->makeWorkList(0, 0, false, $key) . $this->makeForm();
 				}
 			}
 		}
@@ -259,7 +259,7 @@ class WorkPage extends Page {
 		if ( $this->handleUpload() && !empty($this->uplfile) ) {
 			$set['uplfile'] = $this->uplfile;
 			$set['tmpfiles'] = $this->makeTmpFilePath(self::rawurlencode($this->uplfile));
-			$set['tfsize'] = Number::int_b2m(filesize($this->absTmpDir . $this->uplfile));
+			$set['tfsize'] = Number::int_b2m(filesize("{$this->absTmpDir}/{$this->uplfile}"));
 		}
 		if ($this->entryId) {
 			$this->controller->em()->getConnection()->update(self::DB_TABLE, $set, array('id' => $this->entryId));
@@ -334,7 +334,7 @@ class WorkPage extends Page {
 		if ( !is_uploaded_file($tmpfile) ) {
 			return false;
 		}
-		$dest = $this->absTmpDir . $this->uplfile;
+		$dest = "{$this->absTmpDir}/{$this->uplfile}";
 		if ( file_exists($dest) ) {
 			rename($dest, $dest .'-'. time());
 		}
@@ -381,7 +381,7 @@ class WorkPage extends Page {
 			}
 			$content .= $this->makeForm();
 		} else {
-			$this->addRssLink();
+			// a global RSS link should be added to the page
 			$content .= $this->getInlineRssLink('workroom_rss') . $this->makeLists();
 		}
 
@@ -427,8 +427,8 @@ class WorkPage extends Page {
 EOS;
 	}
 
-	private function makeWorkList($limit = 0, $offset = 0, $order = null, $showPageLinks = true, $where = array()) {
-		$sql = $this->makeSqlQuery($limit, $offset, $order, $where);
+	private function makeWorkList($limit = 0, $offset = 0, $showPageLinks = true, $where = array()) {
+		$sql = $this->makeSqlQuery($limit, $offset, $where);
 		$results = $this->controller->em()->getConnection()->executeQuery($sql)->fetchAll();
 		if ( empty($results) ) {
 			return '<p class="standalone emptylist"><strong>Няма подготвящи се произведения.</strong></p>';
@@ -481,7 +481,7 @@ $pagelinks
 EOS;
 	}
 
-	private function makeSqlQuery($limit = 0, $offset = 0, $order = null, $where = array()) {
+	private function makeSqlQuery($limit = 0, $offset = 0, $where = array()) {
 		$qa = array(
 			'SELECT' => 'w.*, DATE(date) ddate, u.username, u.email, u.allowemail, num_comments',
 			'FROM' => self::DB_TABLE. ' w',
@@ -955,7 +955,7 @@ JS;
 	private function canShowCorrections() {
 		return strpos($this->btitle, '(корекция)') !== false
 			&& strpos($this->tmpfiles, 'chitanka.info') !== false
-			&& File::isSFB($this->absTmpDir.basename($this->tmpfiles));
+			&& File::isSFB($this->absTmpDir.'/'.basename($this->tmpfiles));
 	}
 
 	private function makeSubmitButton() {
@@ -1159,8 +1159,7 @@ EOS;
 		$subaction = $this->out->hiddenField($this->FF_SUBACTION, $this->subaction);
 		$comment = $this->out->textarea($this->FF_EDIT_COMMENT, '', $comment, 10, 80, null, array('class' => 'form-control'));
 		$progress = $this->out->textField('progress', '', $progress, 2, 3, null, '', array('class' => 'form-control'));
-		$is_frozen = $this->out->checkbox('is_frozen', 'is_frozen_e', $this->is_frozen,
-			'Корекцията е спряна за известно време');
+		$is_frozen = $this->out->checkbox('is_frozen', 'is_frozen_e', $is_frozen, 'Корекцията е спряна за известно време');
 		$file = $this->out->fileField('file', 'file2');
 		$readytogo = $this->userCanMarkAsReady()
 			? $this->out->checkbox('ready', 'ready', false, 'Готово е за добавяне')
@@ -1488,8 +1487,7 @@ EOS;
 		if (preg_match('|https?://|', $file)) {
 			return $file;
 		}
-
-		return $this->container->getParameter('workroom_root').'/'.$this->tmpDir . $file;
+		return $this->container->getParameter('workroom_root')."/{$this->tmpDir}/{$file}";
 	}
 
 	private function makeFileLink($file, $username = '', $filesize = null) {
@@ -1514,9 +1512,9 @@ EOS;
 	}
 
 	private function deleteEntryFiles($entry) {
-		$files = $this->absTmpDir . "$entry-*";
-		$delDir = $this->absTmpDir . 'deleted';
-		`mv $files $delDir`;
+		foreach (glob("{$this->absTmpDir}/{$entry}-*") as $file) {
+			rename($file, "{$this->absTmpDir}/deleted/".basename($file));
+		}
 	}
 
 	private function pretifyComment($text) {

@@ -114,11 +114,6 @@ abstract class Page {
 		$this->inlineJs .= $js . "\n";
 	}
 
-	/** TODO replace */
-	protected function addRssLink() {
-		//$this->addHeadContent('<link rel="alternate" type="application/rss+xml" title="RSS 2.0 — TITLE" href="URL">');
-	}
-
 	protected function getInlineRssLink($route, $data = array()) {
 		return sprintf('<div class="feed-standalone"><a href="%s" title="RSS 2.0 — %s" rel="feed"><span class="fa fa-rss"></span> <span>RSS</span></a></div>', $this->controller->generateUrl($route, $data), $this->title);
 	}
@@ -149,37 +144,26 @@ abstract class Page {
 		return '';
 	}
 
-	protected function makeSimpleTextLink($title, $textId, $chunkId = 1, $linktext = '', $attrs = array(), $data = array(), $params = array()) {
-		$p = array(self::FF_TEXT_ID => $textId);
-		if ($chunkId != 1) {
-			$p[self::FF_CHUNK_ID] = $chunkId;
-		}
-		if ( empty($linktext) ) {
-			$linktext = '<em>'. $title .'</em>';
-		}
-
-		$attrs['class'] = ltrim(@$attrs['class'] . " text text-$textId");
-		$attrs['href'] = $this->controller->generateUrl('text_show_part', $p);
-
-		return $this->out->xmlElement('a', $linktext, $attrs);
+	protected function makeSimpleTextLink($title, $textId) {
+		return $this->out->xmlElement('a', '<em>'. $title .'</em>', array(
+			'class' => "text text-$textId",
+			'href' => $this->controller->generateUrl('text_show_part', array(self::FF_TEXT_ID => $textId)),
+		));
 	}
 
-	protected function makeAuthorLink($name, $sortby='first', $pref='', $suf='', $query=array()) {
+	protected function makeAuthorLink($name) {
 		$name = rtrim($name, ',');
-		if ( empty($name) ) {
+		if (empty($name)) {
 			return '';
 		}
-		settype($query, 'array');
 		$o = '';
-		foreach ( explode(',', $name) as $lname ) {
-			$text = empty($sortby)
-				? 'Произведения от ' . $name
-				: $this->formatPersonName($lname, $sortby);
+		foreach (explode(',', $name) as $lname) {
+			$text = $this->formatPersonName($lname);
 			$lname = str_replace('.', '', $lname);
 			$link = strpos($lname, '/') !== false // contains not allowed chars
 				? $lname
-				: sprintf('<a href="%s">%s</a>', $this->controller->generateUrl('person_show', array('slug' => trim($lname))+$query), $text);
-			$o .= ', ' . $pref . $link . $suf;
+				: sprintf('<a href="%s">%s</a>', $this->controller->generateUrl('person_show', array('slug' => trim($lname))), $text);
+			$o .= ', ' . $link;
 		}
 		return substr($o, 2);
 	}

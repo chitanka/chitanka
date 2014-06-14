@@ -174,7 +174,7 @@ class DownloadFile {
 		return self::getDlFile($zipFilename);
 	}
 
-	private function addEpubEntries($work, $filename) {
+	private function addEpubEntries($work) {
 		$epubFile = new EpubFile($work);
 
 		$file = $epubFile->getMimetypeFile();
@@ -193,8 +193,8 @@ class DownloadFile {
 		$this->addContentEntry($file['content'], $file['name']);
 		$epubFile->addItem($file['name'], $file['title'], 'pre');
 
-		$this->addAnnotationForEpub($work, $epubFile);
-		$this->addExtraInfoForEpub($work, $epubFile);
+		$this->addAnnotationForEpub($epubFile);
+		$this->addExtraInfoForEpub($epubFile);
 		$this->addChaptersForEpub($work, $epubFile);
 		$this->addImagesForEpub($work, $epubFile);
 
@@ -210,10 +210,9 @@ class DownloadFile {
 	}
 
 	/**
-	 * @param BaseWork $work
 	 * @param EpubFile $epubFile
 	 */
-	private function addAnnotationForEpub(BaseWork $work, $epubFile) {
+	private function addAnnotationForEpub($epubFile) {
 		if ( ($file = $epubFile->getAnnotation()) ) {
 			$this->addContentEntry($file['content'], $file['name']);
 			$epubFile->addItem($file['name'], $file['title'], 'pre');
@@ -221,10 +220,9 @@ class DownloadFile {
 	}
 
 	/**
-	 * @param BaseWork $work
 	 * @param EpubFile $epubFile
 	 */
-	private function addExtraInfoForEpub(BaseWork $work, $epubFile) {
+	private function addExtraInfoForEpub($epubFile) {
 		if ( ($file = $epubFile->getExtraInfo()) ) {
 			$this->addContentEntry($file['content'], $file['name']);
 			$epubFile->addItem($file['name'], $file['title'], 'post');

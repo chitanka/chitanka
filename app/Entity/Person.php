@@ -94,17 +94,17 @@ class Person extends Entity {
 	 */
 	private $type;
 
-	/**
-	 * @var TextAuthor[]
-	 * @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="person")
-	 */
-	private $textAuthors;
-
-	/**
-	 * @var TextTranslator[]
-	 * @ORM\OneToMany(targetEntity="TextTranslator", mappedBy="person")
-	 */
-	private $textTranslators;
+//	/**
+//	 * @var TextAuthor[]
+//	 * @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="person")
+//	 */
+//	private $textAuthors;
+//
+//	/**
+//	 * @var TextTranslator[]
+//	 * @ORM\OneToMany(targetEntity="TextTranslator", mappedBy="person")
+//	 */
+//	private $textTranslators;
 
 	/**
 	 * @var Book[]

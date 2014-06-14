@@ -97,14 +97,6 @@ class CacheManager {
 	}
 
 	/**
-	 * @param string $fname
-	 * @return bool
-	 */
-	private static function dlFileExists($fname) {
-		return file_exists(self::$dlDir . $fname);
-	}
-
-	/**
 	 * @param string $action
 	 * @param string $id
 	 * @return string

@@ -33,7 +33,7 @@ class Date {
 			$hours = '';
 		} else {
 			list($ymd, $his) = explode(' ', $isodate);
-			list($h, $i, $s) = explode(':', $his);
+			list($h, $i) = explode(':', $his);
 			$hours = " в $h:$i";
 		}
 

@@ -27,7 +27,7 @@ class MediawikiClient {
 
 		try {
 			/* @var $response \Buzz\Message\Response */
-			$response = $this->browser->get("$url?action=render", array("User-Agent: $this->userAgentString"));
+			$response = $this->browser->get("{$url}?action=render", array("User-Agent: {$this->userAgentString}"));
 			if ($response->isOk()) {
 				$content = $this->processContent($response->getContent(), $url);
 				return CacheManager::setCache($action, $id, $content);

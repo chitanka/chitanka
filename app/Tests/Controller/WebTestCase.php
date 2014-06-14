@@ -23,7 +23,7 @@ abstract class WebTestCase extends BaseTestCase {
 	 */
 	public function requestJson($route, $parameters = array()) {
 		$client = static::createClient();
-		$page = $client->request('GET', "/$route", $parameters);
+		$client->request('GET', "/$route", $parameters);
 
 		return json_decode($client->getResponse()->getContent());
 	}

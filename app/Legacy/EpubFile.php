@@ -167,8 +167,6 @@ class EpubFile {
 	}
 
 	public function getAuthorTags() {
-		$tags = array();
-
 		if ($this->obj->getType() == 'book') {
 			$tags = $this->getBookAuthorTags();
 		} else {

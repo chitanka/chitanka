@@ -16,10 +16,9 @@ class TextService {
 	 * Get similar texts based ot readers count.
 	 * @param Text $text
 	 * @param int $limit   Return up to this limit number of texts
-	 * @param User $reader  Do not return texts marked as read by this reader
+	 * @param User $reader Do not return texts marked as read by this reader
 	 */
 	public function findTextAlikes(Text $text, $limit = 10, User $reader = null) {
-		$alikes = array();
 		$qa = array(
 			'SELECT'   => 'text_id, count(*) readers',
 			'FROM'     => DBT_READER_OF .' r',
