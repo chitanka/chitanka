@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fb23a6030a3a69bc71208d3a31278178",
+    "hash": "451da69372d6b176a0c7a705ebfe063e",
     "packages": [
         {
             "name": "apibot",
@@ -2074,49 +2074,6 @@
             ],
             "description": "This bundle generates code for you",
             "time": "2013-08-21 18:09:35"
-        },
-        {
-            "name": "simplethings/entity-audit-bundle",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/simplethings/EntityAudit.git",
-                "reference": "620fd605293a071ffbe4987cf0678881b52820e7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/simplethings/EntityAudit/zipball/620fd605293a071ffbe4987cf0678881b52820e7",
-                "reference": "620fd605293a071ffbe4987cf0678881b52820e7",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/orm": "~2.1"
-            },
-            "require-dev": {
-                "symfony/framework-bundle": "~2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "SimpleThings\\EntityAudit": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "New BSD"
-            ],
-            "description": "Audit for Doctrine Entities",
-            "keywords": [
-                "Audit",
-                "database",
-                "persistence"
-            ],
-            "time": "2014-06-04 07:02:42"
         },
         {
             "name": "sonata-project/admin-bundle",
@@ -4352,7 +4309,6 @@
         "sonata-project/doctrine-orm-admin-bundle": 20,
         "sonata-project/easy-extends-bundle": 20,
         "sonata-project/intl-bundle": 20,
-        "simplethings/entity-audit-bundle": 20,
         "friendsofsymfony/comment-bundle": 20,
         "chitanka/sfb-converter": 20,
         "apibot": 20,

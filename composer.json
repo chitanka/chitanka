@@ -23,7 +23,6 @@
 		"sonata-project/doctrine-orm-admin-bundle": "2.2.*@dev",
 		"sonata-project/easy-extends-bundle": "dev-master",
 		"sonata-project/intl-bundle": "dev-master",
-		"simplethings/entity-audit-bundle": "dev-master",
 		"friendsofsymfony/comment-bundle": "dev-master",
 		"chitanka/sfb-converter": "dev-master",
 		"apibot": "dev-master",

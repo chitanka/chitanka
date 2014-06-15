@@ -26,7 +26,6 @@ class AppKernel extends Kernel {
 			//new Sonata\CacheBundle\SonataCacheBundle(),
 			new Sonata\jQueryBundle\SonatajQueryBundle(),
 			new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
-			new SimpleThings\EntityAudit\SimpleThingsEntityAuditBundle(),
 			new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 			new JMS\SerializerBundle\JMSSerializerBundle(),
 			new FOS\RestBundle\FOSRestBundle(),
