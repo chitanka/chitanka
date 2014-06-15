@@ -2,7 +2,7 @@ imports:
     - { resource: parameters_default.yml }
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: services.xml }
+    - { resource: services.yml }
 
 framework:
     esi:             { enabled: true }
@@ -27,65 +27,6 @@ framework:
         cookie_httponly: true
     fragments:       ~
     http_method_override: true
-
-services:
-    twig.extension.chitanka:
-        class: App\Twig\Extension
-        tags:
-            - { name: twig.extension }
-    twig.extension.text:
-        class: Twig_Extensions_Extension_Text
-        tags:
-            - { name: twig.extension }
-    twig.extension.debug:
-        class: Twig_Extensions_Extension_Debug
-        tags:
-            - { name: twig.extension }
-
-    request.listener:
-        class: App\Listener\RequestListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-
-    comment.listener:
-        class: App\Listener\CommentListener
-        arguments: ['@mailer', '@app.entity_manager']
-        tags:
-            - { name: kernel.event_listener, event: fos_comment.comment.post_persist, method: onCommentPostPersist }
-            - { name: kernel.event_listener, event: fos_comment.thread.post_persist, method: onThreadPostPersist }
-
-    doctrine.listener:
-        class: App\Listener\DoctrineListener
-        tags:
-            - { name: doctrine.dbal.default_event_listener }
-            #- { name: doctrine.common.event_listener }
-
-    feedback_form:
-        class: App\Form\Type\FeedbackType
-        tags:
-           -  { name: form.type }
-
-    text_rating_form:
-        class: App\Form\Type\TextRatingType
-        tags:
-           -  { name: form.type }
-
-    text_label_form:
-        class: App\Form\Type\TextLabelType
-        tags:
-           -  { name: form.type }
-
-    label_form:
-        class: App\Form\Type\LabelType
-        tags:
-           -  { name: form.type }
-
-    comment_form:
-        class: App\Form\Type\CommentType
-        arguments: [%fos_comment.model.comment.class%]
-        tags:
-           -  { name: form.type }
-
 
 # Twig Configuration
 twig:
