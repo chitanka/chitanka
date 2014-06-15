@@ -18,7 +18,7 @@ class Thread extends BaseThread {
 	protected $id;
 
 	/**
-	 * @ORM\OneToOne(targetEntity="WorkEntry", mappedBy="comment_thread")
+	 * @ORM\OneToOne(targetEntity="WorkEntry", mappedBy="commentThread")
 	 */
 	private $workEntry;
 //	private $person;

@@ -50,8 +50,8 @@ class TextRepository extends EntityRepository {
 		'id',
 		'title',
 		'subtitle',
-		'orig_title',
-		'orig_subtitle',
+		'origTitle',
+		'origSubtitle',
 	);
 
 	/**
@@ -70,10 +70,10 @@ class TextRepository extends EntityRepository {
 			->leftJoin('t.series', 's')
 			->leftJoin('t.labels', 'l')
 			->leftJoin('t.books', 'b')
-			->leftJoin('t.orig_license', 'ol')
-			->leftJoin('t.trans_license', 'tl')
+			->leftJoin('t.origLicense', 'ol')
+			->leftJoin('t.transLicense', 'tl')
 			//->leftJoin('t.headers', 'h') // takes up too much memory by many rows
-			->leftJoin('t.cur_rev', 'r')
+			->leftJoin('t.curRev', 'r')
 			->where('t.id = ?1')->setParameter(1, $id)
 			->getQuery()->getSingleResult();
 	}
@@ -259,7 +259,7 @@ class TextRepository extends EntityRepository {
 	 */
 	public function getByTitles($title, $limit = null) {
 		$q = $this->getQueryBuilder()
-			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.orig_title LIKE ?1')
+			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.origTitle LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($title))
 			->getQuery();
 		if ($limit) {
@@ -294,8 +294,8 @@ class TextRepository extends EntityRepository {
 			->from($this->getEntityName(), 'e')
 			->leftJoin('e.textAuthors', 'a')
 			->leftJoin('a.person', 'ap')
-			->leftJoin('e.orig_license', 'ol')
-			->leftJoin('e.trans_license', 'tl')
+			->leftJoin('e.origLicense', 'ol')
+			->leftJoin('e.transLicense', 'tl')
 			->where('e.series = ?1')->setParameter(1, $series->getId())
 			->addOrderBy('e.sernr, e.title')
 			->getQuery()->getArrayResult();
@@ -322,7 +322,7 @@ class TextRepository extends EntityRepository {
 	}
 
 	public function getRandomId($where = '') {
-		return parent::getRandomId("e.removed_notice IS NULL");
+		return parent::getRandomId("e.removedNotice IS NULL");
 	}
 
 	public function isValidType($type) {

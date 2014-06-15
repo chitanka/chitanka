@@ -55,8 +55,8 @@
 
 	{% include 'App:Text:toc.html.twig' %}
 
-	{% if text.removed_notice is not empty %}
-		<div class="removed-notice">{{ text.removed_notice|raw }}</div>
+	{% if text.removedNotice is not empty %}
+		<div class="removed-notice">{{ text.removedNotice|raw }}</div>
 	{% else %}
 		{% include 'App:Text:content.html.twig' %}
 	{% endif %}

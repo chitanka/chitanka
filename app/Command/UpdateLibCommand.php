@@ -168,14 +168,14 @@ EOT
 					$translators[] = array($this->getObjectId('person', $slug), $transYear);
 				}
 				if (strpos($transYear, '-') !== false) {
-					list($work['trans_year'], $work['trans_year2']) = explode('-', $transYear);
+					list($work['transYear'], $work['transYear2']) = explode('-', $transYear);
 				} else {
-					$work['trans_year'] = $transYear;
+					$work['transYear'] = $transYear;
 				}
 			}
 			$work['translators'] = $translators;
-		} else if ($work['is_new'] && $work['lang'] != $work['orig_lang']) {
-			$work['trans_license'] = 'fc';
+		} else if ($work['is_new'] && $work['lang'] != $work['origLang']) {
+			$work['transLicense'] = 'fc';
 		}
 		if (isset($work['labels'])) {
 			$work['labels'] = explode(',', $work['labels']);
@@ -428,7 +428,7 @@ EOT
 		}
 		if ( ! empty($work['type'])) $set['type'] = $work['type'];
 		if ( ! empty($work['lang'])) $set['lang'] = $work['lang'];
-		if ( ! empty($work['orig_lang'])) $set['orig_lang'] = $work['orig_lang'];
+		if ( ! empty($work['origLang'])) $set['orig_lang'] = $work['origLang'];
 		if (isset($work['text'])) {
 			$size = self::getFileSize($work['text']) / 1000;
 			$set += array(
@@ -439,31 +439,29 @@ EOT
 		if ($work['is_new']) {
 			$set += array(
 				'created_at' => $this->entrydate,
-				'dl_count' => 0,
-				'read_count' => 0,
 				'comment_count' => 0,
 				'rating' => 0,
 				'votes' => 0,
 				'has_anno' => 0,
 				'has_cover' => 0,
 				'is_compilation' => isset($work['tmpl']),
-				'orig_title' => (empty($work['orig_title']) ? '' : self::fixOrigTitle($work['orig_title'])),
+				'orig_title' => (empty($work['origTitle']) ? '' : self::fixOrigTitle($work['origTitle'])),
 			);
 			if (isset($work['ser_nr'])) {
 				$set['sernr'] = $work['ser_nr'];
 			}
 		}
 		if (isset($work['subtitle'])) $set['subtitle'] = String::my_replace($work['subtitle']);
-		if (isset($work['orig_subtitle'])) $set['orig_subtitle'] = self::fixOrigTitle($work['orig_subtitle']);
+		if (isset($work['origSubtitle'])) $set['orig_subtitle'] = self::fixOrigTitle($work['origSubtitle']);
 		if (isset($work['year'])) $set['year'] = $work['year'];
 		if (isset($work['year2'])) $set['year2'] = $work['year2'];
-		if (isset($work['trans_year'])) $set['trans_year'] = $work['trans_year'];
+		if (isset($work['transYear'])) $set['trans_year'] = $work['transYear'];
 		if (isset($work['anno'])) $set['has_anno'] = filesize($work['anno']) ? 1 : 0;
 
 		if (isset($work['series'])) $set['series_id'] = $this->getObjectId('series', $work['series']);
 
-		if (isset($work['orig_license'])) $set['orig_license_id'] = $this->getObjectId('license', $work['orig_license'], 'code');
-		if (isset($work['trans_license'])) $set['trans_license_id'] = $this->getObjectId('license', $work['trans_license'], 'code');
+		if (isset($work['origLicense'])) $set['orig_license_id'] = $this->getObjectId('license', $work['origLicense'], 'code');
+		if (isset($work['transLicense'])) $set['trans_license_id'] = $this->getObjectId('license', $work['transLicense'], 'code');
 
 		if (isset($work['source'])) $set['source'] = $work['source'];
 
@@ -615,9 +613,9 @@ EOT
 				'title' => String::my_replace($book['title']),
 			);
 		}
-		if ( ! empty($book['title_extra'])) $set['title_extra'] = String::my_replace($book['title_extra']);
+		if ( ! empty($book['titleExtra'])) $set['title_extra'] = String::my_replace($book['titleExtra']);
 		if ( ! empty($book['lang'])) $set['lang'] = $book['lang'];
-		if ( ! empty($book['orig_lang'])) $set['orig_lang'] = $book['orig_lang'];
+		if ( ! empty($book['origLang'])) $set['orig_lang'] = $book['origLang'];
 		if ($book['is_new']) {
 			$set += array(
 				'created_at' => $this->entrydate,
@@ -626,13 +624,13 @@ EOT
 			);
 		}
 		if (isset($book['type']))  $set['type'] = $book['type'];
-		if (isset($book['orig_title'])) $set['orig_title'] = self::fixOrigTitle($book['orig_title']);
+		if (isset($book['origTitle'])) $set['orig_title'] = self::fixOrigTitle($book['origTitle']);
 		if (isset($book['seq_nr'])) $set['seqnr'] = $book['seq_nr'];
 		if (isset($book['anno'])) $set['has_anno'] = filesize($book['anno']) ? 1 : 0;
 		if (isset($book['cover'])) $set['has_cover'] = filesize($book['cover']) ? 1 : 0;
 		if (isset($book['subtitle'])) $set['subtitle'] = String::my_replace($book['subtitle']);
 		if (isset($book['year'])) $set['year'] = $book['year'];
-		if (isset($book['trans_year'])) $set['trans_year'] = $book['trans_year'];
+		if (isset($book['transYear'])) $set['trans_year'] = $book['transYear'];
 		if (isset($book['formats'])) $set['formats'] = serialize($book['formats']);
 
 		if (isset($book['sequence'])) $set['sequence_id'] = $this->getObjectId('sequence', $book['sequence']);

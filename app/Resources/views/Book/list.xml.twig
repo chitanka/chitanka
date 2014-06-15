@@ -5,10 +5,10 @@
 		<slug>{{ book.slug }}</slug>
 		<title>{{ book.title }}</title>
 		{% if book.subtitle is defined %}<subtitle>{{ book.subtitle }}</subtitle>{% endif %}
-		{% if book.title_extra is defined %}<title-extra>{{ book.title_extra }}</title-extra>{% endif %}
-		{% if book.orig_title is defined %}<orig-title>{{ book.orig_title }}</orig-title>{% endif %}
+		{% if book.titleExtra is defined %}<title-extra>{{ book.titleExtra }}</title-extra>{% endif %}
+		{% if book.origTitle is defined %}<orig-title>{{ book.origTitle }}</orig-title>{% endif %}
 		<lang>{{ book.lang }}</lang>
-		<orig-lang>{{ book.orig_lang is defined ? book.orig_lang : '' }}</orig-lang>
+		<orig-lang>{{ book.origLang is defined ? book.origLang : '' }}</orig-lang>
 		<year>{{ book.year }}</year>
 		<type>{{ book.type }}</type>
 		{% for person in book.authors %}
@@ -17,7 +17,7 @@
 			</author>
 		{% endfor %}
 		{% if book.sequence is not empty %}
-			<sequence {% if book.seqnr is defined and book.sequence.is_seqnr_visible %} nr="{{ book.seqnr }}"{% endif %}>
+			<sequence {% if book.seqnr is defined and book.sequence.isSeqnrVisible %} nr="{{ book.seqnr }}"{% endif %}>
 				<id>{{ book.sequence.id }}</id>
 				<slug>{{ book.sequence.slug }}</slug>
 				<name>{{ book.sequence.name }}</name>
@@ -28,12 +28,12 @@
 			<id>{{ book.category.id }}</id>
 			<slug>{{ book.category.slug }}</slug>
 			<name>{{ book.category.name }}</name>
-			<nr-of-books>{{ book.category.nr_of_books }}</nr-of-books>
+			<nr-of-books>{{ book.category.nrOfBooks }}</nr-of-books>
 		</category>
-		{% if book.has_anno %}<has-annotation/>{% endif %}
-		{% if book.has_cover %}<has-cover/>{% endif %}
-		<removed-notice>{{ book.removed_notice }}</removed-notice>
-		<created-at>{{ book.created_at.format('Y-m-d') }}</created-at>
+		{% if book.hasAnno %}<has-annotation/>{% endif %}
+		{% if book.hasCover %}<has-cover/>{% endif %}
+		<removed-notice>{{ book.removedNotice }}</removed-notice>
+		<created-at>{{ book.createdAt.format('Y-m-d') }}</created-at>
 	</book>
 {% endfor %}
 </books>

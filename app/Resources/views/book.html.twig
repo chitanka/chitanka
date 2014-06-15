@@ -8,7 +8,7 @@
 				{{ _self.cover(book, 90) }}
 				<i itemprop="name">{{ book.title }}</i>
 			</a>
-				{% if book.has_anno %}
+				{% if book.hasAnno %}
 					<a class="book-clue" data-href="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"><i class="fa fa-info-circle" title="Анотация"></i></a>
 				{% endif %}
 				{% if book.subtitle is not empty %}
@@ -21,13 +21,13 @@
 			<span class="bookauthor" itemprop="author">{{ link.persons_comma(book.authors) }}</span>
 		{% endif %}
 		{% if book.sequence is not empty %}
-			<br><span class="bookseq">{{ link.sequence(book.sequence) }}{% if book.seqnr is not empty and book.sequence.is_seqnr_visible %}, №&nbsp;{{ book.seqnr }}{% endif %}</span>
+			<br><span class="bookseq">{{ link.sequence(book.sequence) }}{% if book.seqnr is not empty and book.sequence.isSeqnrVisible %}, №&nbsp;{{ book.seqnr }}{% endif %}</span>
 		{% endif %}
 		{% if book.category is not empty %}
 			<br><span class="bookcat">{{ link.category(book.category) }}</span>
 		{% endif %}
 		</dd>
-		{% if book.removed_notice is empty %}
+		{% if book.removedNotice is empty %}
 			<dd class="download">{{ _self.download_links(book) }}</dd>
 		{% endif %}
 	</dl>
@@ -60,12 +60,12 @@
 {% endmacro %}
 
 {% macro cover(book, width) %}
-	<img class="cover thumbnail" src="{{ asset(book.has_cover ? cover(book.id, width) : cover(0, width, 'png')) }}" alt="Корица" itemprop="image">
+	<img class="cover thumbnail" src="{{ asset(book.hasCover ? cover(book.id, width) : cover(0, width, 'png')) }}" alt="Корица" itemprop="image">
 {% endmacro %}
 
 {% macro cover_div(book, width) %}
 	<div class="cover thumbnail">
-		{% if book.has_cover %}
+		{% if book.hasCover %}
 			<a href="{{ asset(cover(book.id, 'max')) }}"><img src="{{ asset(cover(book.id, width)) }}" alt="Корица" itemprop="image"></a>
 		{% else %}
 			<img src="{{ asset(cover(0, width, 'png')) }}" alt="Корица" itemprop="image">

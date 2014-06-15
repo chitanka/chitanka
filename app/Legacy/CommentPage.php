@@ -61,6 +61,10 @@ class CommentPage extends Page {
 			}
 			return $this->buildContent();
 		}
+		if (strpos($this->comment, 'bg.shvoong.com') !== false) {
+			$this->addMessage('Спама е забранен.', true);
+			return $this->buildContent();
+		}
 		if ( !empty($this->textId) ) {
 			$this->initData();
 		}

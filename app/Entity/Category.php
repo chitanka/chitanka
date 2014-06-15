@@ -60,7 +60,7 @@ class Category extends Entity {
 	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
-	private $nr_of_books = 0;
+	private $nrOfBooks = 0;
 
 	public function getId() { return $this->id; }
 
@@ -79,10 +79,10 @@ class Category extends Entity {
 	public function setBooks($books) { $this->books = $books; }
 	public function getBooks() { return $this->books; }
 
-	public function setNrOfBooks($nr_of_books) { $this->nr_of_books = $nr_of_books; }
-	public function getNrOfBooks() { return $this->nr_of_books; }
+	public function setNrOfBooks($nrOfBooks) { $this->nrOfBooks = $nrOfBooks; }
+	public function getNrOfBooks() { return $this->nrOfBooks; }
 	public function incNrOfBooks($value = 1) {
-		$this->nr_of_books += $value;
+		$this->nrOfBooks += $value;
 	}
 
 	public function __toString() {

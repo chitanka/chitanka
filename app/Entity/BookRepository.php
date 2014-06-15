@@ -5,7 +5,7 @@
  */
 class BookRepository extends EntityRepository {
 
-	protected $queryableFields = array('id', 'title', 'subtitle', 'orig_title');
+	protected $queryableFields = array('id', 'title', 'subtitle', 'origTitle');
 
 	/**
 	 * Fetch a book with all important relations
@@ -125,7 +125,7 @@ class BookRepository extends EntityRepository {
 	 */
 	public function getByTitles($title, $limit = null) {
 		$q = $this->getQueryBuilder()
-			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.orig_title LIKE ?1')
+			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.origTitle LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($title))
 			->getQuery();
 		if ($limit) {
@@ -186,7 +186,7 @@ class BookRepository extends EntityRepository {
 	 * @return array
 	 */
 	private function getIdsWithMissingCover($page = 1, $limit = null) {
-		$dql = "SELECT b.id FROM {$this->getEntityName()} b WHERE b.has_cover = 0 ORDER BY b.title ASC";
+		$dql = "SELECT b.id FROM {$this->getEntityName()} b WHERE b.hasCover = 0 ORDER BY b.title ASC";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		return $query->getResult('id');
 	}
@@ -195,7 +195,7 @@ class BookRepository extends EntityRepository {
 	 * @return int
 	 */
 	public function getCountWithMissingCover() {
-		$dql = "SELECT COUNT(b.id) FROM {$this->getEntityName()} b WHERE b.has_cover = 0";
+		$dql = "SELECT COUNT(b.id) FROM {$this->getEntityName()} b WHERE b.hasCover = 0";
 		$query = $this->_em->createQuery($dql);
 
 		return $query->getSingleScalarResult();

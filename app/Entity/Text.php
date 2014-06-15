@@ -67,31 +67,31 @@ class Text extends BaseWork {
 	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
-	private $trans_year;
+	private $transYear;
 
 	/**
 	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
-	private $trans_year2;
+	private $transYear2;
 
 	/**
 	 * @var string
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
-	private $orig_title;
+	private $origTitle;
 
 	/**
 	 * @var string
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
-	private $orig_subtitle;
+	private $origSubtitle;
 
 	/**
 	 * @var string
 	 * @ORM\Column(type="string", length=3)
 	 */
-	private $orig_lang;
+	private $origLang;
 
 	/**
 	 * @var int
@@ -109,13 +109,13 @@ class Text extends BaseWork {
 	 * @var License
 	 * @ORM\ManyToOne(targetEntity="License")
 	 */
-	private $orig_license;
+	private $origLicense;
 
 	/**
 	 * @var License
 	 * @ORM\ManyToOne(targetEntity="License")
 	 */
-	private $trans_license;
+	private $transLicense;
 
 	/**
 	 * @var string
@@ -163,7 +163,7 @@ class Text extends BaseWork {
 	 * @var \DateTime
 	 * @ORM\Column(type="date")
 	 */
-	private $created_at;
+	private $createdAt;
 
 	/**
 	 * @var string
@@ -175,25 +175,13 @@ class Text extends BaseWork {
 	 * @var TextRevision
 	 * @ORM\ManyToOne(targetEntity="TextRevision")
 	 */
-	private $cur_rev;
+	private $curRev;
 
 	/**
 	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
-	private $dl_count = 0;
-
-	/**
-	 * @var int
-	 * @ORM\Column(type="integer")
-	 */
-	private $read_count = 0;
-
-	/**
-	 * @var int
-	 * @ORM\Column(type="integer")
-	 */
-	private $comment_count = 0;
+	private $commentCount = 0;
 
 	/**
 	 * @var float
@@ -211,19 +199,19 @@ class Text extends BaseWork {
 	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
-	private $has_anno = false;
+	private $hasAnno = false;
 
 //	/*
 //	 * @var bool
 //	 * @ORM\Column(type="boolean")
 //	 */
-//	private $has_title_note;
+//	private $hasTitleNote;
 
 	/**
 	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
-	private $is_compilation = false;
+	private $isCompilation = false;
 
 	/**
 	 * An extra note about the text
@@ -235,7 +223,7 @@ class Text extends BaseWork {
 	 * A notice if the content is removed
 	 * @ORM\Column(type="text", nullable=true)
 	 */
-	private $removed_notice;
+	private $removedNotice;
 
 	/**
 	 * @var TextAuthor[]
@@ -342,7 +330,7 @@ class Text extends BaseWork {
 		return $this->getTitle();
 	}
 
-	public function getId() { return $this->getId(); }
+	public function getId() { return $this->id; }
 
 	public function setSlug($slug) { $this->slug = String::slugify($slug); }
 	public function getSlug() { return $this->slug; }
@@ -356,25 +344,20 @@ class Text extends BaseWork {
 	public function setLang($lang) { $this->lang = $lang; }
 	public function getLang() { return $this->lang; }
 
-	public function setTransYear($transYear) { $this->trans_year = $transYear; }
-	public function getTransYear() { return $this->trans_year; }
-	public function trans_year() { return $this->trans_year; }
+	public function setTransYear($transYear) { $this->transYear = $transYear; }
+	public function getTransYear() { return $this->transYear; }
 
-	public function setTransYear2($transYear2) { $this->trans_year2 = $transYear2; }
-	public function getTransYear2() { return $this->trans_year2; }
-	public function trans_year2() { return $this->trans_year2; }
+	public function setTransYear2($transYear2) { $this->transYear2 = $transYear2; }
+	public function getTransYear2() { return $this->transYear2; }
 
-	public function setOrigTitle($origTitle) { $this->orig_title = $origTitle; }
-	public function getOrigTitle() { return $this->orig_title; }
-	public function orig_title() { return $this->orig_title; }
+	public function setOrigTitle($origTitle) { $this->origTitle = $origTitle; }
+	public function getOrigTitle() { return $this->origTitle; }
 
-	public function setOrigSubtitle($origSubtitle) { $this->orig_subtitle = $origSubtitle; }
-	public function getOrigSubtitle() { return $this->orig_subtitle; }
-	public function orig_subtitle() { return $this->orig_subtitle; }
+	public function setOrigSubtitle($origSubtitle) { $this->origSubtitle = $origSubtitle; }
+	public function getOrigSubtitle() { return $this->origSubtitle; }
 
-	public function setOrigLang($origLang) { $this->orig_lang = $origLang; }
-	public function getOrigLang() { return $this->orig_lang; }
-	public function orig_lang() { return $this->orig_lang; }
+	public function setOrigLang($origLang) { $this->origLang = $origLang; }
+	public function getOrigLang() { return $this->origLang; }
 
 	public function setYear($year) { $this->year = $year; }
 	public function getYear() { return $this->year; }
@@ -382,18 +365,18 @@ class Text extends BaseWork {
 	public function setYear2($year2) { $this->year2 = $year2; }
 	public function getYear2() { return $this->year2; }
 
-	public function setOrigLicense($origLicense) { $this->orig_license = $origLicense; }
-	public function getOrigLicense() { return $this->orig_license; }
-	public function orig_license() { return $this->orig_license; }
+	public function setOrigLicense($origLicense) { $this->origLicense = $origLicense; }
+	public function getOrigLicense() { return $this->origLicense; }
+
 	public function getOrigLicenseCode() {
-		return $this->orig_license ? $this->orig_license->getCode() : null;
+		return $this->origLicense ? $this->origLicense->getCode() : null;
 	}
 
-	public function setTransLicense($transLicense) { $this->trans_license = $transLicense; }
-	public function getTransLicense() { return $this->trans_license; }
-	public function trans_license() { return $this->trans_license; }
+	public function setTransLicense($transLicense) { $this->transLicense = $transLicense; }
+	public function getTransLicense() { return $this->transLicense; }
+
 	public function getTransLicenseCode() {
-		return $this->trans_license ? $this->trans_license->getCode() : null;
+		return $this->transLicense ? $this->transLicense->getCode() : null;
 	}
 
 	public function setType($type) { $this->type = $type; }
@@ -410,23 +393,17 @@ class Text extends BaseWork {
 	public function setSernr2($sernr2) { $this->sernr2 = $sernr2; }
 	public function getSernr2() { return $this->sernr2; }
 
-	public function setCreatedAt($created_at) { $this->created_at = $created_at; }
-	public function getCreatedAt() { return $this->created_at; }
+	public function setCreatedAt($createdAt) { $this->createdAt = $createdAt; }
+	public function getCreatedAt() { return $this->createdAt; }
 
 	public function setSource($source) { $this->source = $source; }
 	public function getSource() { return $this->source; }
 
-	public function setCurRev($curRev) { $this->cur_rev = $curRev; }
-	public function getCurRev() { return $this->cur_rev; }
+	public function setCurRev($curRev) { $this->curRev = $curRev; }
+	public function getCurRev() { return $this->curRev; }
 
-	public function setDlCount($dlCount) { $this->dl_count = $dlCount; }
-	public function getDlCount() { return $this->dl_count; }
-
-	public function setReadCount($readCount) { $this->read_count = $readCount; }
-	public function getReadCount() { return $this->read_count; }
-
-	public function setCommentCount($commentCount) { $this->comment_count = $commentCount; }
-	public function getCommentCount() { return $this->comment_count; }
+	public function setCommentCount($commentCount) { $this->commentCount = $commentCount; }
+	public function getCommentCount() { return $this->commentCount; }
 
 	public function setRating($rating) { $this->rating = $rating; }
 	public function getRating() { return $this->rating; }
@@ -434,19 +411,19 @@ class Text extends BaseWork {
 	public function setVotes($votes) { $this->votes = $votes; }
 	public function getVotes() { return $this->votes; }
 
-	public function setHasAnno($hasAnno) { $this->has_anno = $hasAnno; }
-	public function getHasAnno() { return $this->has_anno; }
+	public function setHasAnno($hasAnno) { $this->hasAnno = $hasAnno; }
+	public function getHasAnno() { return $this->hasAnno; }
 
-// 	public function setHasTitleNote($hasTitleNote) { $this->has_title_note = $hasTitleNote; }
-// 	public function getHasTitleNote() { return $this->has_title_note; }
+// 	public function setHasTitleNote($hasTitleNote) { $this->hasTitleNote = $hasTitleNote; }
+// 	public function getHasTitleNote() { return $this->hasTitleNote; }
 
-	public function isCompilation() { return $this->is_compilation; }
+	public function isCompilation() { return $this->isCompilation; }
 
 	public function setNote($note) { $this->note = $note; }
 	public function getNote() { return $this->note; }
 
-	public function setRemovedNotice($removed_notice) { $this->removed_notice = $removed_notice; }
-	public function getRemovedNotice() { return $this->removed_notice; }
+	public function setRemovedNotice($removedNotice) { $this->removedNotice = $removedNotice; }
+	public function getRemovedNotice() { return $this->removedNotice; }
 
 	public function getUserContribs() { return $this->userContribs; }
 	public function setUserContribs($userContribs) { $this->userContribs = $userContribs; }
@@ -588,7 +565,7 @@ class Text extends BaseWork {
 	}
 
 	public function getTransYearHuman() {
-		return $this->trans_year . (empty($this->trans_year2) ? '' : '–'.$this->trans_year2);
+		return $this->transYear . (empty($this->transYear2) ? '' : '–'.$this->transYear2);
 	}
 
 	public function getAuthorNameEscaped() {
@@ -604,7 +581,7 @@ class Text extends BaseWork {
 	}
 
 	public function isTranslation() {
-		return $this->lang != $this->orig_lang;
+		return $this->lang != $this->origLang;
 	}
 
 	public function getAuthorNames() {
@@ -678,13 +655,13 @@ class Text extends BaseWork {
 			return '';
 		}
 		$authors = implode(', ', $this->getAuthorOrigNames());
-		$orig_title = $this->orig_title;
-		if ( !empty($this->orig_subtitle) ) {
-			$orig_title .= " ({$this->orig_subtitle})";
+		$origTitle = $this->origTitle;
+		if ( !empty($this->origSubtitle) ) {
+			$origTitle .= " ({$this->origSubtitle})";
 		}
-		$orig_title .= ', '. $this->getYearHuman();
-		$orig_title = ltrim($orig_title, ', ');
-		return rtrim("\t$authors\n\t$orig_title");
+		$origTitle .= ', '. $this->getYearHuman();
+		$origTitle = ltrim($origTitle, ', ');
+		return rtrim("\t$authors\n\t$origTitle");
 	}
 
 	public function getImages() {
@@ -865,7 +842,7 @@ lang          = {$this->getLang()}
 year          = {$this->getYear()}
 orig_license  = {$this->getOrigLicenseCode()}
 orig_title    = {$this->getOrigTitle()}
-orig_subtitle = {$this->getOrigsubtitle()}
+orig_subtitle = {$this->getOrigSubtitle()}
 orig_lang     = {$this->getOrigLang()}
 translators   = $translators
 trans_license = {$this->getTransLicenseCode()}
@@ -916,7 +893,7 @@ EOS;
 		}
 
 		if ($rows) {
-			$isoEntryDate = $this->created_at->format('Y-m-d');
+			$isoEntryDate = $this->createdAt->format('Y-m-d');
 			if ( "$isoEntryDate 24" < $rows[0]['date'] ) {
 				array_unshift($rows, array('date' => $isoEntryDate, 'comment' => 'Добавяне'));
 			}
@@ -1019,7 +996,7 @@ EOS;
 	}
 
 	public function getRawContent($asFileName = false) {
-		if ( ! $this->is_compilation) {
+		if ( ! $this->isCompilation) {
 			if ($asFileName) {
 				return File::getContentFilePath('text', $this->getId());
 			} else {
@@ -1051,7 +1028,7 @@ EOS;
 		return $this->getOrigTitleAsSfb() . "\n\n"
 			. $this->getFullExtraInfo()      . "\n\n"
 			. "\tСвалено от „Моята библиотека“: ".$this->getDocId()."\n"
-			. "\tПоследна корекция: ".Date::humanDate($this->cur_rev->getDate())."\n";
+			. "\tПоследна корекция: ".Date::humanDate($this->curRev->getDate())."\n";
 	}
 
 	public function getContentAsFb2() {
@@ -1086,7 +1063,7 @@ EOS;
 	}
 
 	public function clearHeaders() {
-		$this->clearCollection($this->getHeaders());
+		Entity::clearCollection($this->getHeaders());
 	}
 
 	/**

@@ -40,7 +40,7 @@ class Bookmark extends Entity {
 	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 */
-	private $created_at;
+	private $createdAt;
 
 	public function __construct($fields) {
 		foreach (array('folder', 'text', 'user') as $field) {
@@ -63,10 +63,10 @@ class Bookmark extends Entity {
 	public function getUser() { return $this->user; }
 
 	/**
-	 * @param \DateTime $created_at
+	 * @param \DateTime $createdAt
 	 */
-	public function setCreatedAt($created_at) { $this->created_at = $created_at; }
-	public function getCreatedAt() { return $this->created_at; }
+	public function setCreatedAt($createdAt) { $this->createdAt = $createdAt; }
+	public function getCreatedAt() { return $this->createdAt; }
 
 	/** @ORM\PrePersist */
 	public function preInsert() {

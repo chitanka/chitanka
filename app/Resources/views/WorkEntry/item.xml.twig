@@ -7,6 +7,6 @@
 <progress>{{ entry.progress }}</progress>
 <status>{{ entry.status }}</status>
 <file size="{{ entry.tfsize }}">{{ entry.tmpfiles }}</file>
-<is-frozen>{{ entry.is_frozen }}</is-frozen>
+<is-frozen>{{ entry.isFrozen }}</is-frozen>
 <user>{{ entry.user.username }}</user>
 {% include 'App:WorkContrib:list.xml.twig' with {'contribs': entry.contribs} %}

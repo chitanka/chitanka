@@ -47,7 +47,7 @@ class WorkContrib extends Entity {
 	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
-	private $is_frozen = false;
+	private $isFrozen = false;
 
 	/**
 	 * @var \DateTime
@@ -71,7 +71,7 @@ class WorkContrib extends Entity {
 	 * @var \DateTime
 	 * @ORM\Column(type="datetime", nullable=true)
 	 */
-	private $deleted_at;
+	private $deletedAt;
 
 	public function getId() { return $this->id; }
 
@@ -87,8 +87,8 @@ class WorkContrib extends Entity {
 	public function setProgress($progress) { $this->progress = $progress; }
 	public function getProgress() { return $this->progress; }
 
-	public function setIsFrozen($isFrozen) { $this->is_frozen = $isFrozen; }
-	public function isFrozen() { return $this->is_frozen; }
+	public function setIsFrozen($isFrozen) { $this->isFrozen = $isFrozen; }
+	public function isFrozen() { return $this->isFrozen; }
 
 	public function setDate($date) { $this->date = $date; }
 	public function getDate() { return $this->date; }
@@ -104,10 +104,10 @@ class WorkContrib extends Entity {
 	}
 
 	/**
-	 * @param \DateTime $deleted_at
+	 * @param \DateTime $deletedAt
 	 */
-	public function setDeletedAt($deleted_at) { $this->deleted_at = $deleted_at; }
-	public function isDeleted() { return $this->deleted_at !== null; }
+	public function setDeletedAt($deletedAt) { $this->deletedAt = $deletedAt; }
+	public function isDeleted() { return $this->deletedAt !== null; }
 	public function delete() {
 		$this->setDeletedAt(new \DateTime);
 	}

@@ -4,6 +4,6 @@
 <ul class="superlist fa-ul">
 {% import 'App::text.html.twig' as texttools %}
 {% for read_text in read_texts %}
-	<li class="title t-{{ read_text.text.type }}" title="{{ read_text.created_at|humandate }}">{{ texttools.text_with_author(read_text.text, {'download_links': true}) }}</li>
+	<li class="title t-{{ read_text.text.type }}" title="{{ read_text.createdAt|humandate }}">{{ texttools.text_with_author(read_text.text, {'download_links': true}) }}</li>
 {% endfor %}
 </ul>

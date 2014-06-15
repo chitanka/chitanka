@@ -4,8 +4,8 @@
 	<div class="subheader">{{ book.titleextra|nl2br|raw }}</div>
 {% endif %}
 
-{% if book.removed_notice is not empty %}
-	<div class="removed-notice">{{ book.removed_notice|raw }}</div>
+{% if book.removedNotice is not empty %}
+	<div class="removed-notice">{{ book.removedNotice|raw }}</div>
 {% else %}
 
 	{{ booktools.cover_div(book, 200) }}

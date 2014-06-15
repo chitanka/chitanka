@@ -1,4 +1,4 @@
-{% if text.removed_notice is empty %}
+{% if text.removedNotice is empty %}
 	{% import 'App::text.html.twig' as texttools %}
 	{{ texttools.qrcode(text) }}
 	<div class="text-entity" data-id="{{ text.id }}">

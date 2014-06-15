@@ -24,7 +24,7 @@
 	{% else %}
 		<span class="progress progress-{{ entry.status }}">{{ ('workroom.status.'~entry.status) | trans }}</span>
 	{% endif %}
-	{% if entry.is_frozen %}
+	{% if entry.isFrozen %}
 		<span title="Подготовката е замразена">(замразена)</span>
 	{% endif %}
 </td>

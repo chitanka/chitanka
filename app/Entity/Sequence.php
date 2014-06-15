@@ -43,7 +43,7 @@ class Sequence extends Entity {
 	/**
 	 * @ORM\Column(type="boolean")
 	 */
-	private $is_seqnr_visible = true;
+	private $isSeqnrVisible = true;
 
 	/**
 	 * @var array
@@ -63,9 +63,8 @@ class Sequence extends Entity {
 	public function setPublisher($publisher) { $this->publisher = $publisher; }
 	public function getPublisher() { return $this->publisher; }
 
-	public function setIsSeqnrVisible($is_seqnr_visible) { $this->is_seqnr_visible = $is_seqnr_visible; }
-	public function getIsSeqnrVisible() { return $this->is_seqnr_visible; }
-	public function isSeqnrVisible() { return $this->is_seqnr_visible; }
+	public function setIsSeqnrVisible($isSeqnrVisible) { $this->isSeqnrVisible = $isSeqnrVisible; }
+	public function isSeqnrVisible() { return $this->isSeqnrVisible; }
 
 	public function getBooks() { return $this->books; }
 

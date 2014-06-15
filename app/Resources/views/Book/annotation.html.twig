@@ -2,7 +2,7 @@
 <fieldset id="annotation">
 	<legend>Анотация</legend>
 
-	{% if book.hasanno %}
+	{% if book.hasAnno %}
 		{{ book.annotationhtml(asset('/'))|raw }}
 	{% else %}
 		<p class="standalone"><a href="{{ path('book_suggest_info', {'id': book.id, 'object': 'annotation'}) }}">Предложете анотация на произведението!</a></p>

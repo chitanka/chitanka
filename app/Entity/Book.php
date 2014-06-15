@@ -39,7 +39,7 @@ class Book extends BaseWork {
 	 * @var string
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
-	private $title_author;
+	private $titleAuthor;
 
 	/**
 	 * @var string
@@ -57,13 +57,13 @@ class Book extends BaseWork {
 	 * @var string
 	 * @ORM\Column(type="string", length=1000, nullable=true)
 	 */
-	private $title_extra;
+	private $titleExtra;
 
 	/**
 	 * @var string
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
-	private $orig_title;
+	private $origTitle;
 
 	/**
 	 * @var string
@@ -75,7 +75,7 @@ class Book extends BaseWork {
 	 * @var string
 	 * @ORM\Column(type="string", length=3, nullable=true)
 	 */
-	private $orig_lang;
+	private $origLang;
 
 	/**
 	 * @var int
@@ -87,7 +87,7 @@ class Book extends BaseWork {
 	 * @var int
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
-	private $trans_year;
+	private $transYear;
 
 	/**
 	 * @var string
@@ -124,13 +124,13 @@ class Book extends BaseWork {
 	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
-	private $has_anno;
+	private $hasAnno;
 
 	/**
 	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
-	private $has_cover;
+	private $hasCover;
 
 	/**
 	 * List of formats in which the book is available
@@ -150,7 +150,7 @@ class Book extends BaseWork {
 	 * @var string
 	 * @ORM\Column(type="text", nullable=true)
 	 */
-	private $removed_notice;
+	private $removedNotice;
 
 	/*
 	 * @var ArrayCollection
@@ -191,7 +191,7 @@ class Book extends BaseWork {
 	 * @var \DateTime
 	 * @ORM\Column(type="date")
 	 */
-	private $created_at;
+	private $createdAt;
 
 	public function __construct() {
 		$this->bookAuthors = new ArrayCollection;
@@ -224,8 +224,8 @@ class Book extends BaseWork {
 	public function setSlug($slug) { $this->slug = String::slugify($slug); }
 	public function getSlug() { return $this->slug; }
 
-	public function setTitleAuthor($titleAuthor) { $this->title_author = $titleAuthor; }
-	public function getTitleAuthor() { return $this->title_author; }
+	public function setTitleAuthor($titleAuthor) { $this->titleAuthor = $titleAuthor; }
+	public function getTitleAuthor() { return $this->titleAuthor; }
 
 	public function setTitle($title) { $this->title = $title; }
 	public function getTitle() { return $this->title; }
@@ -233,23 +233,23 @@ class Book extends BaseWork {
 	public function setSubtitle($subtitle) { $this->subtitle = $subtitle; }
 	public function getSubtitle() { return $this->subtitle; }
 
-	public function setTitleExtra($title) { $this->title_extra = $title; }
-	public function getTitleExtra() { return $this->title_extra; }
+	public function setTitleExtra($title) { $this->titleExtra = $title; }
+	public function getTitleExtra() { return $this->titleExtra; }
 
-	public function setOrigTitle($origTitle) { $this->orig_title = $origTitle; }
-	public function getOrigTitle() { return $this->orig_title; }
+	public function setOrigTitle($origTitle) { $this->origTitle = $origTitle; }
+	public function getOrigTitle() { return $this->origTitle; }
 
 	public function setLang($lang) { $this->lang = $lang; }
 	public function getLang() { return $this->lang; }
 
-	public function setOrigLang($origLang) { $this->orig_lang = $origLang; }
-	public function getOrigLang() { return $this->orig_lang; }
+	public function setOrigLang($origLang) { $this->origLang = $origLang; }
+	public function getOrigLang() { return $this->origLang; }
 
 	public function setYear($year) { $this->year = $year; }
 	public function getYear() { return $this->year; }
 
-	public function setTransYear($transYear) { $this->trans_year = $transYear; }
-	public function getTransYear() { return $this->trans_year; }
+	public function setTransYear($transYear) { $this->transYear = $transYear; }
+	public function getTransYear() { return $this->transYear; }
 
 	public function setType($type) { $this->type = $type; }
 	public function getType() { return $this->type; }
@@ -265,8 +265,8 @@ class Book extends BaseWork {
 		$this->revisions[] = $revision;
 	}
 
-	public function setRemovedNotice($removed_notice) { $this->removed_notice = $removed_notice; }
-	public function getRemovedNotice() { return $this->removed_notice; }
+	public function setRemovedNotice($removedNotice) { $this->removedNotice = $removedNotice; }
+	public function getRemovedNotice() { return $this->removedNotice; }
 
 	public function getAuthors() {
 		if (!isset($this->authors)) {
@@ -348,13 +348,13 @@ class Book extends BaseWork {
 	// TODO needed by admin; why?
 	public function addLinks(BookLink $link) { $this->addLink($link); }
 
-	public function setHasAnno($has_anno) { $this->has_anno = $has_anno; }
-	public function getHasAnno() { return $this->has_anno; }
-	public function hasAnno() { return $this->has_anno; }
+	public function setHasAnno($hasAnno) { $this->hasAnno = $hasAnno; }
+	public function getHasAnno() { return $this->hasAnno; }
+	public function hasAnno() { return $this->hasAnno; }
 
-	public function setHasCover($has_cover) { $this->has_cover = $has_cover; }
-	public function getHasCover() { return $this->has_cover; }
-	public function hasCover() { return $this->has_cover; }
+	public function setHasCover($hasCover) { $this->hasCover = $hasCover; }
+	public function getHasCover() { return $this->hasCover; }
+	public function hasCover() { return $this->hasCover; }
 
 	public function setSequence($sequence) { $this->sequence = $sequence; }
 	public function getSequence() { return $this->sequence; }
@@ -371,8 +371,8 @@ class Book extends BaseWork {
 		return $this->category ? $this->category->getSlug() : null;
 	}
 
-	public function setCreatedAt($created_at) { $this->created_at = $created_at; }
-	public function getCreatedAt() { return $this->created_at; }
+	public function setCreatedAt($createdAt) { $this->createdAt = $createdAt; }
+	public function getCreatedAt() { return $this->createdAt; }
 
 	public function getSfbg() {
 		return $this->getLink('SFBG');
@@ -405,7 +405,7 @@ class Book extends BaseWork {
 	}
 
 	public function getAuthor() {
-		return $this->title_author;
+		return $this->titleAuthor;
 	}
 
 	private $mainAuthors;
@@ -733,7 +733,7 @@ class Book extends BaseWork {
 	}
 
 	public function getNameForFile() {
-		return trim("$this->title_author - $this->title - $this->subtitle-$this->id-b", '- ');
+		return trim("$this->titleAuthor - $this->title - $this->subtitle-$this->id-b", '- ');
 	}
 
 	public function getTextIds() {

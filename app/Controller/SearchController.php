@@ -154,7 +154,7 @@ class SearchController extends Controller {
 		}
 
 		if (empty($query['by'])) {
-			$query['by'] = 'title,subtitle,orig_title';
+			$query['by'] = 'title,subtitle,origTitle';
 		}
 		$texts = $this->em()->getTextRepository()->getByQuery($query);
 		if ( ! ($found = count($texts) > 0)) {
@@ -195,7 +195,7 @@ class SearchController extends Controller {
 		}
 
 		if (empty($query['by'])) {
-			$query['by'] = 'title,subtitle,orig_title';
+			$query['by'] = 'title,subtitle,origTitle';
 		}
 		$books = $this->em()->getBookRepository()->getByQuery($query);
 		if ( ! ($found = count($books) > 0)) {

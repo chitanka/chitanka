@@ -96,7 +96,7 @@ class User implements UserInterface {
 	 * @var int
 	 * @ORM\Column(type="smallint")
 	 */
-	private $login_tries = 0;
+	private $loginTries = 0;
 
 	/**
 	 * @var \DateTime
@@ -210,10 +210,10 @@ class User implements UserInterface {
 	/**
 	 * @param int $loginTries
 	 */
-	public function setLoginTries($loginTries) { $this->login_tries = $loginTries; }
-	public function getLoginTries() { return $this->login_tries; }
+	public function setLoginTries($loginTries) { $this->loginTries = $loginTries; }
+	public function getLoginTries() { return $this->loginTries; }
 	public function incLoginTries() {
-		$this->login_tries++;
+		$this->loginTries++;
 	}
 
 	public function setRegistration($registration) { $this->registration = $registration; }
@@ -288,7 +288,7 @@ class User implements UserInterface {
 			'groups' => $this->groups,
 			'news' => $this->news,
 			'opts' => $this->opts,
-			'login_tries' => $this->login_tries,
+			'loginTries' => $this->loginTries,
 			'registration' => $this->registration,
 			'touched' => $this->touched,
 			'token' => $this->token,
@@ -546,7 +546,7 @@ class User implements UserInterface {
 	}
 
 	public function login($remember = false) {
-		// delete a previously generated new password, login_tries
+		// delete a previously generated new password, loginTries
 		$this->setNewpassword(null, false);
 		$this->setLoginTries(0);
 		$this->touch();

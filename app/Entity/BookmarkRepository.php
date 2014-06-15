@@ -11,7 +11,7 @@ class BookmarkRepository extends EntityRepository {
 	 * @return array
 	 */
 	public function getLatestByUser(User $user, $limit = null) {
-		return $this->getByUser($user, 1, $limit, 'e.created_at DESC');
+		return $this->getByUser($user, 1, $limit, 'e.createdAt DESC');
 	}
 
 	/**

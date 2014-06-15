@@ -18,13 +18,13 @@ class WorkEntryAdmin extends Admin {
 			->add('comment')
 			->add('status')
 			->add('progress')
-			->add('is_frozen')
+			->add('isFrozen')
 			->add('tmpfiles')
 			->add('tfsize')
 			->add('uplfile')
-			->add('admin_status')
-			->add('admin_comment')
-			->add('deleted_at')
+			->add('adminStatus')
+			->add('adminComment')
+			->add('deletedAt')
 		;
 	}
 
@@ -52,13 +52,13 @@ class WorkEntryAdmin extends Admin {
 			->add('comment', null, array('required' => false))
 			->add('status')
 			->add('progress')
-			->add('is_frozen', null, array('required' => false))
+			->add('isFrozen', null, array('required' => false))
 			->add('tmpfiles', null, array('required' => false))
 			->add('tfsize', null, array('required' => false))
 			->add('uplfile', null, array('required' => false))
-			->add('admin_status')
-			->add('admin_comment')
-			->add('deleted_at', null, array('required' => false));
+			->add('adminStatus')
+			->add('adminComment')
+			->add('deletedAt', null, array('required' => false));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {
@@ -68,9 +68,9 @@ class WorkEntryAdmin extends Admin {
 //			->add('user')
 			->add('status')
 			->add('progress')
-			->add('is_frozen')
+			->add('isFrozen')
 			->add('type')
-			->add('admin_status')
+			->add('adminStatus')
 //			->add('date')
 			->add('is_deleted', 'doctrine_orm_callback', array(
 				'callback' => function($queryBuilder, $alias, $field, $value) {
@@ -78,7 +78,7 @@ class WorkEntryAdmin extends Admin {
 						return;
 					}
 
-					$queryBuilder->andWhere("$alias.deleted_at IS NOT NULL");
+					$queryBuilder->andWhere("$alias.deletedAt IS NOT NULL");
 				},
 				'field_type' => 'checkbox'
 			))

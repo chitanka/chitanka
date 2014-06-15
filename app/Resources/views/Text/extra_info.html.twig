@@ -1,4 +1,4 @@
-	{% if text.book and text.book.has_cover %}
+	{% if text.book and text.book.hasCover %}
 		{% import 'App::book.html.twig' as booktools %}
 		{{ booktools.cover_div(text.book, 200) }}
 	{% endif %}

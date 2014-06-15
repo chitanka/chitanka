@@ -37,7 +37,7 @@ class BookText extends Entity {
 	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
-	private $share_info = true;
+	private $shareInfo = true;
 
 	public function getId() { return $this->id; }
 
@@ -56,7 +56,7 @@ class BookText extends Entity {
 	/**
 	 * @param bool $shareInfo
 	 */
-	public function setShareInfo($shareInfo) { $this->share_info = $shareInfo; }
-	public function getShareInfo() { return $this->share_info; }
+	public function setShareInfo($shareInfo) { $this->shareInfo = $shareInfo; }
+	public function getShareInfo() { return $this->shareInfo; }
 
 }

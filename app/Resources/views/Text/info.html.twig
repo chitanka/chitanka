@@ -21,21 +21,21 @@
 			</li>
 		{% endif %}
 		<li>
-			{% if text.origlang == text.lang %}
+			{% if text.origLang == text.lang %}
 				<span title="Година на написване или първа публикация">Година</span>: {{ textinfo.year(text) }}
 			{% else %}
-				Оригинално заглавие: <em>{{ textinfo.orig_title(text) }}</em>,
+				Оригинално заглавие: <em>{{ textinfo.origTitle(text) }}</em>,
 				<span title="Година на написване или първа публикация">{{ textinfo.year(text) }}</span>
 			{% endif %}
-			{% if text.origlicense is not empty %}
-				({{ textinfo.license(text.origlicense) }})
+			{% if text.origLicense is not empty %}
+				({{ textinfo.license(text.origLicense) }})
 			{% endif %}
 		</li>
-		{% if text.origlang != text.lang %}
+		{% if text.origLang != text.lang %}
 			<li>
-			Превод от {{ ('lang.'~text.origlang) | trans }}: {{ textinfo.translator(text) }}, {{ textinfo.trans_year(text) }}
-			{% if text.translicense is not empty %}
-				({{ textinfo.license(text.translicense) }})
+			Превод от {{ ('lang.'~text.origlang) | trans }}: {{ textinfo.translator(text) }}, {{ textinfo.transYear(text) }}
+			{% if text.transLicense is not empty %}
+				({{ textinfo.license(text.transLicense) }})
 			{% endif %}
 			</li>
 		{% endif %}

@@ -8,23 +8,23 @@
 	{% endif %}
 {% endmacro %}
 
-{% macro trans_year(text) %}
-	{% if text.trans_year is empty %}
-		<a href="{{ path('suggest_info', {'id': text.id, 'type': 'trans_year'}) }}">????</a>
+{% macro transYear(text) %}
+	{% if text.transYear is empty %}
+		<a href="{{ path('suggest_info', {'id': text.id, 'type': 'transYear'}) }}">????</a>
 	{% else %}
-		<span itemprop="datePublished">{{ text.trans_year }}</span>
+		<span itemprop="datePublished">{{ text.transYear }}</span>
 	{% endif %}
 {% endmacro %}
 
-{% macro orig_title(text) %}
+{% macro origTitle(text) %}
 	{% spaceless %}
-	{% if text.orig_title %}
-		{{ text.orig_title }}
-		{% if text.orig_subtitle %}
-			({{ text.orig_subtitle }})
+	{% if text.origTitle %}
+		{{ text.origTitle }}
+		{% if text.origSubtitle %}
+			({{ text.origSubtitle }})
 		{% endif %}
 	{% else %}
-		[не е въведено; <a href="{{ path('suggest_info', {'id': text.id, 'type': 'orig_title'}) }}">помогнете</a> за добавянето му]
+		[не е въведено; <a href="{{ path('suggest_info', {'id': text.id, 'type': 'origTitle'}) }}">помогнете</a> за добавянето му]
 	{% endif %}
 	{% endspaceless %}
 {% endmacro %}
@@ -86,7 +86,7 @@
 	</dt>
 	<dd class="tauthor" itemprop="author">{{ _self.author_list(text.authors) }}</dd>
 	<!--<dd class="extra">{#{{ _self.text_extra_info(text) }}#}</dd>-->
-	{% if text.removed_notice is empty and options.download_links is defined %}
+	{% if text.removedNotice is empty and options.download_links is defined %}
 		<dd class="download">{{ _self.download_links(text) }}</dd>
 	{% endif %}
 </dl>
@@ -109,7 +109,7 @@
 		{{ link.text(text, options) }}
 	</dt>
 	<dd class="extra">{{ _self.text_extra_info(text) }}</dd>
-	{% if text.removed_notice is empty and options.download_links is defined %}
+	{% if text.removedNotice is empty and options.download_links is defined %}
 		<dd class="download">{{ _self.download_links(text) }}</dd>
 	{% endif %}
 </dl>
@@ -117,8 +117,8 @@
 
 
 {% macro text_extra_info(text) %}
-	{% if text.orig_title is not empty %}
-		<em>{{ text.orig_title }}</em>{% if text.year is not empty %}, {{ _self.text_year(text) }}{% endif %}
+	{% if text.origTitle is not empty %}
+		<em>{{ text.origTitle }}</em>{% if text.year is not empty %}, {{ _self.text_year(text) }}{% endif %}
 	{% elseif text.year is not empty %}
 		{{ _self.text_year(text) }}
 	{% endif %}

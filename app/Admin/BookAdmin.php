@@ -33,20 +33,20 @@ class BookAdmin extends Admin {
 			->add('title')
 			->add('authors')
 			->add('subtitle')
-			->add('title_extra')
-			->add('orig_title')
+			->add('titleExtra')
+			->add('origTitle')
 			->add('lang')
-			->add('orig_lang')
+			->add('origLang')
 			->add('year')
-			//->add('trans_year')
+			//->add('transYear')
 			->add('type')
 			->add('sequence')
 			->add('seqnr')
 			->add('category')
-			->add('removed_notice')
+			->add('removedNotice')
 			->add('texts')
 			->add('links', null, array('label' => 'Site Links'))
-			->add('created_at')
+			->add('createdAt')
 		;
 	}
 
@@ -79,7 +79,7 @@ class BookAdmin extends Admin {
 			->add('slug')
 			->add('title')
 			->add('lang', 'choice', array('choices' => Language::getLangs()))
-			->add('orig_lang', 'choice', array('required' => false, 'choices' => Language::getLangs()))
+			->add('origLang', 'choice', array('required' => false, 'choices' => Language::getLangs()))
 			->add('type', 'choice', array('choices' => Book::getTypeList()))
 			->add('bookAuthors', 'sonata_type_collection', array(
 				'by_reference' => false,
@@ -91,10 +91,10 @@ class BookAdmin extends Admin {
 		$formMapper->with('Extra attributes');
 		$formMapper
 			->add('subtitle', null, array('required' => false))
-			->add('title_extra', null, array('required' => false))
-			->add('orig_title', null, array('required' => false))
+			->add('titleExtra', null, array('required' => false))
+			->add('origTitle', null, array('required' => false))
 			->add('year')
-			//->add('trans_year', null, array('required' => false))
+			//->add('transYear', null, array('required' => false))
 			->add('sequence', null, array('required' => false, 'query_builder' => function ($repo) {
 				return $repo->createQueryBuilder('e')->orderBy('e.name');
 			}))
@@ -136,7 +136,7 @@ class BookAdmin extends Admin {
 				),
 			))
 			->add('revision_comment', 'text', array('required' => false))
-			->add('removed_notice');
+			->add('removedNotice');
 		$formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'fixNewLines'));
 	}
 
@@ -145,8 +145,8 @@ class BookAdmin extends Admin {
 			->add('title')
 			->add('subtitle')
 			->add('type')
-			->add('has_cover')
-			->add('has_anno')
+			->add('hasCover')
+			->add('hasAnno')
 		;
 	}
 

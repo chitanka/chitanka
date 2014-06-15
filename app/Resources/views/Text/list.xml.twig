@@ -5,12 +5,12 @@
 		<slug>{{ text.slug }}</slug>
 		<title>{{ text.title }}</title>
 		{% if text.subtitle is not empty %}<subtitle>{{ text.subtitle }}</subtitle>{% endif %}
-		{% if text.orig_title is not empty %}<orig-title>{{ text.orig_title }}</orig-title>{% endif %}
-		{% if text.orig_subtitle is not empty %}<orig-subtitle>{{ text.orig_subtitle }}</orig-subtitle>{% endif %}
+		{% if text.origTitle is not empty %}<orig-title>{{ text.origTitle }}</orig-title>{% endif %}
+		{% if text.origSubtitle is not empty %}<orig-subtitle>{{ text.origSubtitle }}</orig-subtitle>{% endif %}
 		<lang>{{ text.lang }}</lang>
-		<orig-lang>{{ text.orig_lang is not empty ? text.orig_lang : '' }}</orig-lang>
+		<orig-lang>{{ text.origLang is not empty ? text.origLang : '' }}</orig-lang>
 		{% if text.year is not empty %}<year{% if text.year2 is not empty %} until="{{ text.year2 }}"{% endif %}>{{ text.year }}</year>{% endif %}
-		{% if text.trans_year is not empty %}<trans-year{% if text.trans_year2 is not empty %} until="{{ text.trans_year2 }}"{% endif %}>{{ text.trans_year }}</trans-year>{% endif %}
+		{% if text.transYear is not empty %}<trans-year{% if text.transYear2 is not empty %} until="{{ text.transYear2 }}"{% endif %}>{{ text.transYear }}</trans-year>{% endif %}
 		<type>{{ text.type }}</type>
 		{% for person in text.authors %}
 			<author>
@@ -29,10 +29,10 @@
 		{% endif %}
 		{% if text.source is not empty %}<source>{{ text.source }}</source>{% endif %}
 		<size>{{ text.size }}</size>
-		<comment-count>{{ text.comment_count }}</comment-count>
+		<comment-count>{{ text.commentCount }}</comment-count>
 		<rating votes="{{ text.votes }}">{{ text.rating }}</rating>
-		<removed-notice>{{ text.removed_notice }}</removed-notice>
-		<created-at>{{ text.created_at.format('Y-m-d') }}</created-at>
+		<removed-notice>{{ text.removedNotice }}</removed-notice>
+		<created-at>{{ text.createdAt.format('Y-m-d') }}</created-at>
 	</text>
 {% endfor %}
 </texts>

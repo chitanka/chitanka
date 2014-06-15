@@ -109,7 +109,7 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
-	private $is_frozen = false;
+	private $isFrozen = false;
 
 	/**
 	 * @var string
@@ -135,27 +135,27 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	 * @var \DateTime
 	 * @ORM\Column(type="datetime", nullable=true)
 	 */
-	private $last_notification_date;
+	private $lastNotificationDate;
 
 	/**
 	 * A status managed and seen only from the adminstrator
 	 * @var string
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
-	private $admin_status;
+	private $adminStatus;
 
 	/**
 	 * A comment managed and seen only from the adminstrator
 	 * @var string
 	 * @ORM\Column(type="text", nullable=true)
 	 */
-	private $admin_comment;
+	private $adminComment;
 
 	/**
 	 * @var \DateTime
 	 * @ORM\Column(type="datetime", nullable=true)
 	 */
-	private $deleted_at;
+	private $deletedAt;
 
 	/**
 	 * @var WorkContrib[]
@@ -167,7 +167,7 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	 * @var Thread
 	 * @ORM\OneToOne(targetEntity="Thread", inversedBy="workEntry")
 	 */
-	private $comment_thread;
+	private $commentThread;
 
 	public function __toString() {
 		return $this->getTitle();
@@ -210,8 +210,8 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	public function setProgress($progress) { $this->progress = $progress; }
 	public function getProgress() { return $this->progress; }
 
-	public function setIsFrozen($isFrozen) { $this->is_frozen = $isFrozen; }
-	public function getIsFrozen() { return $this->is_frozen; }
+	public function setIsFrozen($isFrozen) { $this->isFrozen = $isFrozen; }
+	public function getIsFrozen() { return $this->isFrozen; }
 
 	public function setTmpfiles($tmpfiles) { $this->tmpfiles = $tmpfiles; }
 	public function getTmpfiles() { return $this->tmpfiles; }
@@ -225,14 +225,14 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	/**
 	 * @param \DateTime $date
 	 */
-	public function setLastNotificationDate($date) { $this->last_notification_date = $date; }
-	public function getLastNotificationDate() { return $this->last_notification_date; }
+	public function setLastNotificationDate($date) { $this->lastNotificationDate = $date; }
+	public function getLastNotificationDate() { return $this->lastNotificationDate; }
 
-	public function setAdminStatus($admin_status) { $this->admin_status = $admin_status; }
-	public function getAdminStatus() { return $this->admin_status; }
+	public function setAdminStatus($adminStatus) { $this->adminStatus = $adminStatus; }
+	public function getAdminStatus() { return $this->adminStatus; }
 
-	public function setAdminComment($admin_comment) { $this->admin_comment = $admin_comment; }
-	public function getAdminComment() { return $this->admin_comment; }
+	public function setAdminComment($adminComment) { $this->adminComment = $adminComment; }
+	public function getAdminComment() { return $this->adminComment; }
 
 	public function isNotifiedWithin($interval) {
 		if ($this->getLastNotificationDate() === null) {
@@ -242,22 +242,22 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	}
 
 	public function setCommentThread(Thread $thread) {
-		$this->comment_thread = $thread;
+		$this->commentThread = $thread;
 		return $this;
 	}
-	public function getCommentThread() { return $this->comment_thread; }
+	public function getCommentThread() { return $this->commentThread; }
 
-	public function getDeletedAt() { return $this->deleted_at; }
+	public function getDeletedAt() { return $this->deletedAt; }
 
 	/**
-	 * @param \DateTime $deleted_at
+	 * @param \DateTime $deletedAt
 	 */
-	public function setDeletedAt($deleted_at) { $this->deleted_at = $deleted_at; }
+	public function setDeletedAt($deletedAt) { $this->deletedAt = $deletedAt; }
 	public function delete() {
 		$this->setDeletedAt(new \DateTime);
 	}
 	public function isDeleted() {
-		return $this->deleted_at !== null;
+		return $this->deletedAt !== null;
 	}
 
 	public function getContribs() { return $this->contribs; }

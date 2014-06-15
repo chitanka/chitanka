@@ -5,7 +5,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * TODO Usage of book.title_author is deprecated
+ * TODO Usage of book.titleAuthor is deprecated
  */
 class UpdateBookTitleAuthorDbCommand extends Command {
 
@@ -18,7 +18,7 @@ class UpdateBookTitleAuthorDbCommand extends Command {
 
 		$this
 			->setName('db:update-book-title-author')
-			->setDescription('Update legacy field book.title_author')
+			->setDescription('Update legacy field book.titleAuthor')
 			->addOption('dump-sql', null, InputOption::VALUE_NONE, 'Output SQL queries instead of executing them')
 			->setHelp(<<<EOT
 The <info>db:update-book-title-author</info> command updates the legacy field book.title_author.
@@ -42,7 +42,7 @@ EOT
 	 */
 	protected function updateBookTitleAuthor($dumpSql) {
 		$queries = array();
-		$iterableResult = $this->em->createQuery('SELECT b FROM App:Book b WHERE b.title_author IS NULL')->iterate();
+		$iterableResult = $this->em->createQuery('SELECT b FROM App:Book b WHERE b.titleAuthor IS NULL')->iterate();
 		foreach ($iterableResult AS $row) {
 			$book = $row[0];
 			if (count($book->getAuthors()) == 0) {

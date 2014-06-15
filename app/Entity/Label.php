@@ -45,7 +45,7 @@ class Label extends Entity {
 	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
-	private $nr_of_texts = 0;
+	private $nrOfTexts = 0;
 
 	/**
 	 * The children of this label
@@ -72,10 +72,10 @@ class Label extends Entity {
 	public function setParent($parent) { $this->parent = $parent; }
 	public function getParent() { return $this->parent; }
 
-	public function setNrOfTexts($nr_of_texts) { $this->nr_of_texts = $nr_of_texts; }
-	public function getNrOfTexts() { return $this->nr_of_texts; }
+	public function setNrOfTexts($nrOfTexts) { $this->nrOfTexts = $nrOfTexts; }
+	public function getNrOfTexts() { return $this->nrOfTexts; }
 	public function incNrOfTexts($value = 1) {
-		$this->nr_of_texts += $value;
+		$this->nrOfTexts += $value;
 	}
 
 	public function setChildren($children) { $this->children = $children; }

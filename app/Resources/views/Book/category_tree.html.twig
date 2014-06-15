@@ -1,9 +1,9 @@
 <ul>
 {% for category in categories %}
-	{% if (category.children is defined or category.nr_of_books > 0) and (level > 0 or category.parent_id is empty) %}
+	{% if (category.children is defined or category.nrOfBooks > 0) and (level > 0 or category.parent_id is empty) %}
 	<li>
 		<a href="{{ path('books_by_category', {'slug': category.slug}) }}" data-edit="{{ path('admin_category_edit', {'id': category.id}) }}">{{ category.name }}</a>
-		({{ category.nr_of_books }})
+		({{ category.nrOfBooks }})
 		{#
 		{% if has_role("ROLE_ADMIN") %}
 			<a href="{{ path('admin_category_edit', {'id': category.id}) }}" title="Редактиране на категорията" class="edit"><span>редактиране</span></a>

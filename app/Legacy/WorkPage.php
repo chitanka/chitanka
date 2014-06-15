@@ -83,7 +83,7 @@ class WorkPage extends Page {
 	private $pubYear;
 	private $status;
 	private $progress;
-	private $is_frozen;
+	private $isFrozen;
 	private $delete;
 	private $scanuser;
 	private $scanuser_view;
@@ -119,7 +119,7 @@ class WorkPage extends Page {
 		$this->pubYear = $this->request->value('pubYear');
 		$this->status = (int) $this->request->value('entry_status');
 		$this->progress = Number::normInt($this->request->value('progress'), 100, 0);
-		$this->is_frozen = $this->request->checkbox('is_frozen');
+		$this->isFrozen = $this->request->checkbox('isFrozen');
 		$this->delete = $this->request->checkbox('delete');
 		$this->scanuser = (int) $this->request->value('user', $this->user->getId());
 		$this->scanuser_view = $this->request->value('user');
@@ -230,7 +230,7 @@ class WorkPage extends Page {
 			'user_id'=>$this->scanuser,
 			'comment' => $this->pretifyComment($this->comment),
 			'date'=>$this->date,
-			'is_frozen' => $this->is_frozen,
+			'is_frozen' => $this->isFrozen,
 			'status'=>$this->status,
 			'progress' => $this->progress,
 			'tmpfiles' => self::rawurlencode($this->tmpfiles),
@@ -238,8 +238,8 @@ class WorkPage extends Page {
 		);
 		if ($this->userIsAdmin()) {
 			$set += array(
-				'admin_status' => $this->request->value('admin_status'),
-				'admin_comment' => $this->request->value('admin_comment'),
+				'admin_status' => $this->request->value('adminStatus'),
+				'admin_comment' => $this->request->value('adminComment'),
 			);
 		}
 		if ($this->delete && $this->userIsAdmin()) {
@@ -297,7 +297,7 @@ class WorkPage extends Page {
 			'comment' => $this->editComment,
 			'date' => $this->date,
 			'progress' => $this->progress,
-			'is_frozen' => $this->is_frozen,
+			'is_frozen' => $this->isFrozen,
 			'deleted_at = null',
 		);
 		if ($this->request->value('uplfile') != '') {
@@ -551,10 +551,10 @@ EOS;
 			: $this->makeStatus($dbrow['status']);
 		$extraclass = $this->user->getId() == $dbrow['user_id'] ? ' hilite' : '';
 		if ($dbrow['is_frozen']) {
-			$sis_frozen = '<span title="Подготовката е замразена">(замразена)</span>';
+			$sisFrozen = '<span title="Подготовката е замразена">(замразена)</span>';
 			$extraclass .= ' is_frozen';
 		} else {
-			$sis_frozen = '';
+			$sisFrozen = '';
 		}
 		if ( $this->isMultiUser($dbrow['type']) ) {
 			$musers = '';
@@ -596,7 +596,7 @@ EOS;
 		<td>$file</td>
 		<td>$title</td>
 		<td>$author</td>
-		<td style="min-width: 10em">$st $sis_frozen</td>
+		<td style="min-width: 10em">$st $sisFrozen</td>
 		<td>$userlink</td>
 	</tr>
 EOS;
@@ -968,7 +968,7 @@ JS;
 	private function makeSingleUserEditFields() {
 		$status = $this->getStatusSelectField($this->status);
 		$progress = $this->out->textField('progress', '', $this->progress, 2, 3);
-		$is_frozen = $this->out->checkbox('is_frozen', '', $this->is_frozen,
+		$isFrozen = $this->out->checkbox('isFrozen', '', $this->isFrozen,
 			'Подготовката е спряна за известно време');
 		$file = $this->out->fileField('file', '');
 		$maxFileSize = $this->out->makeMaxFileSizeField();
@@ -990,7 +990,7 @@ JS;
 			<select name="entry_status" id="entry_status">$status</select>
 			&#160; или &#160;
 			$progress<label for="progress">%</label><br>
-			$is_frozen
+			$isFrozen
 		</div>
 	</div>
 	<div class="form-group">
@@ -1014,17 +1014,17 @@ EOS;
 		if (empty($this->entry)) {
 			return '';
 		}
-		$status = $this->out->textField('admin_status', '', $this->entry->getAdminStatus(), 30, 255, null, '', array('class' => 'form-control'));
-		$comment = $this->out->textarea('admin_comment', '', $this->entry->getAdminComment(), 3, 80, null, array('class' => 'form-control'));
+		$status = $this->out->textField('adminStatus', '', $this->entry->getAdminStatus(), 30, 255, null, '', array('class' => 'form-control'));
+		$comment = $this->out->textarea('adminComment', '', $this->entry->getAdminComment(), 3, 80, null, array('class' => 'form-control'));
 		return <<<FIELDS
 	<div class="form-group">
-		<label for="admin_status" class="col-sm-2 control-label">Админ.&nbsp;статус:</label>
+		<label for="adminStatus" class="col-sm-2 control-label">Админ.&nbsp;статус:</label>
 		<div class="col-sm-10">
 			$status
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="admin_comment" class="col-sm-2 control-label">Админ.&nbsp;коментар:</label>
+		<label for="adminComment" class="col-sm-2 control-label">Админ.&nbsp;коментар:</label>
 		<div class="col-sm-10">
 			$comment
 		</div>
@@ -1054,7 +1054,7 @@ FIELDS;
 	}
 
 	private function makeMultiScanInput() {
-		$is_frozenLabel = 'Подготовката е спряна за известно време';
+		$isFrozenLabel = 'Подготовката е спряна за известно време';
 		$cstatus = $this->status > self::MAX_SCAN_STATUS
 			? self::MAX_SCAN_STATUS
 			: $this->status;
@@ -1064,11 +1064,11 @@ FIELDS;
 					? $this->getStatusSelectField($this->status)
 					: $this->getStatusSelectField($cstatus, self::MAX_SCAN_STATUS);
 				$status = "<select name='entry_status' id='entry_status'>$status</select>";
-				$is_frozen = $this->out->checkbox('is_frozen', '', $this->is_frozen, $is_frozenLabel);
+				$isFrozen = $this->out->checkbox('isFrozen', '', $this->isFrozen, $isFrozenLabel);
 			} else {
 				$status = $this->statuses[$cstatus]
 					. $this->out->hiddenField('entry_status', $this->status);
-				$is_frozen = '';
+				$isFrozen = '';
 			}
 			$tmpfiles = $this->out->textField('tmpfiles', '', rawurldecode($this->tmpfiles), 50, 255);
 			$tmpfiles .= ' &#160; '.$this->out->label('Размер: ', 'tfsize') .
@@ -1076,7 +1076,7 @@ FIELDS;
 				'<abbr title="Мебибайта">MiB</abbr>';
 		} else {
 			$status = $this->statuses[$cstatus];
-			$is_frozen = $this->is_frozen ? "($is_frozenLabel)" : '';
+			$isFrozen = $this->isFrozen ? "($isFrozenLabel)" : '';
 			$tmpfiles = '';
 		}
 
@@ -1092,7 +1092,7 @@ FIELDS;
 		<label for="entry_status" class="col-sm-2 control-label">Етап:</label>
 		<div class="col-sm-10">
 			$status
-			$is_frozen
+			$isFrozen
 		</div>
 	</div>
 	<div class="form-group">
@@ -1140,7 +1140,7 @@ EOS;
 		$msg = '';
 		if ( empty($this->multidata[$this->user->getId()]) ) {
 			$comment = $progress = $uplfile = $filesize = '';
-			$is_frozen = false;
+			$isFrozen = false;
 			$msg = '<p>Вие също може да се включите в подготовката на текста.</p>';
 		} else {
 			$contrib = $this->multidata[$this->user->getId()];
@@ -1148,7 +1148,7 @@ EOS;
 			$progress = $contrib->getProgress();
 			$uplfile = $contrib->getUplfile();
 			$filesize = $contrib->getFilesize();
-			$is_frozen = $contrib->isFrozen();
+			$isFrozen = $contrib->isFrozen();
 		}
 		$ulink = $this->makeUserLink($this->user->getUsername());
 		$button = $this->makeSubmitButton();
@@ -1159,7 +1159,7 @@ EOS;
 		$subaction = $this->out->hiddenField($this->FF_SUBACTION, $this->subaction);
 		$comment = $this->out->textarea($this->FF_EDIT_COMMENT, '', $comment, 10, 80, null, array('class' => 'form-control'));
 		$progress = $this->out->textField('progress', '', $progress, 2, 3, null, '', array('class' => 'form-control'));
-		$is_frozen = $this->out->checkbox('is_frozen', 'is_frozen_e', $is_frozen, 'Корекцията е спряна за известно време');
+		$isFrozen = $this->out->checkbox('isFrozen', 'isFrozen_e', $isFrozen, 'Корекцията е спряна за известно време');
 		$file = $this->out->fileField('file', 'file2');
 		$readytogo = $this->userCanMarkAsReady()
 			? $this->out->checkbox('ready', 'ready', false, 'Готово е за добавяне')
@@ -1195,7 +1195,7 @@ EOS;
 				$progress
 				<span class="input-group-addon">%</span>
 			</div>
-			$is_frozen
+			$isFrozen
 		</div>
 	</div>
 	<div class="form-group">
@@ -1237,7 +1237,7 @@ EOS;
 			}
 			$progressbar = $this->makeProgressBar($contrib->getProgress());
 			if ($contrib->isFrozen()) {
-				$class .= ' is_frozen';
+				$class .= ' isFrozen';
 				$progressbar .= ' (замразена)';
 			}
 			$deleteForm = $this->controller->renderView('App:Workroom:contrib_delete_form.html.twig', array('contrib' => array('id' => $contrib->getId())));
@@ -1376,7 +1376,7 @@ EOS;
 		$this->date = $entry->getDate()->format('Y-m-d');
 		$this->status = $entry->getStatus();
 		$this->progress = $entry->getProgress();
-		$this->is_frozen = $entry->getIsFrozen();
+		$this->isFrozen = $entry->getIsFrozen();
 		$this->tmpfiles = $entry->getTmpfiles();
 		$this->tfsize = $entry->getTfsize();
 		if ( !$this->thisUserCanDeleteEntry() || $this->request->value('workType', null, 3) === null ) {

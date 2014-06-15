@@ -16,7 +16,7 @@ class SequenceAdmin extends Admin {
 			->add('name')
 			->add('slug')
 			->add('publisher')
-			->add('is_seqnr_visible')
+			->add('isSeqnrVisible')
 			->add('books')
 		;
 	}
@@ -41,7 +41,7 @@ class SequenceAdmin extends Admin {
 			->add('name')
 			->add('slug')
 			->add('publisher', null, array('required' => false))
-			->add('is_seqnr_visible', null, array('required' => false));
+			->add('isSeqnrVisible', null, array('required' => false));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {
@@ -49,7 +49,7 @@ class SequenceAdmin extends Admin {
 			->add('slug')
 			->add('name')
 			->add('publisher')
-			->add('is_seqnr_visible')
+			->add('isSeqnrVisible')
 		;
 	}
 
