@@ -1,13 +1,10 @@
 filter:
     excluded_paths:
         - app/autoload.php
-        - app/bootstrap.php.cache
-        - app/check.php
         - app/Resources/public/bin/*
-        - app/SymfonyRequirements.php
         - bin/*
+        - var/*
         - vendor/*
-        - web/config.php
 
 tools:
     # Similar code detector

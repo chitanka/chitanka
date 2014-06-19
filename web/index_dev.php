@@ -16,7 +16,7 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
 }
 
 $rootDir = __DIR__.'/..';
-require $rootDir.'/app/bootstrap.php.cache';
+require $rootDir.'/var/bootstrap.php.cache';
 Debug::enable();
 
 require $rootDir.'/app/AppKernel.php';

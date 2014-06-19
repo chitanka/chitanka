@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "451da69372d6b176a0c7a705ebfe063e",
+    "hash": "1ea421cd36a4a7b83a515ceeb499bc8a",
     "packages": [
         {
             "name": "apibot",
