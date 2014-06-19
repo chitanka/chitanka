@@ -15,5 +15,6 @@
 *.swp
 .last
 .lock
+/composer.phar
 !.gitignore
 !.gitkeep

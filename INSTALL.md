@@ -6,7 +6,7 @@
 
 Ето какво ще ви е необходимо, за да пуснете софтуера на Моята библиотека — chitanka:
 
- - Уеб сървър: Apache с PHP (версия на PHP >= 5.3.2) или [nginx](http://nginx.org/) с [PHP-FPM](http://php-fpm.org/)
+ - Уеб сървър: Apache с PHP (версия на PHP >= 5.3.3) или [nginx](http://nginx.org/) с [PHP-FPM](http://php-fpm.org/)
  - MySQL сървър (версия >= 4.1)
 
 При Apache трябва да са включени модулите `rewrite` и `expires`.
@@ -22,13 +22,16 @@
 2.1. За разработчици
 ---------------------
 
-Ако желаете да се включите в разработката на системата, ползвайте:
+Най-напред инсталирайте [composer](https://getcomposer.org/download/), ако все още не разполагате с него. Няма значение в коя директория ще сложите изпълнимия му файл composer.phar, но е препоръчително да е в някоя глобална директория, за да може да го използвате и за други проекти. По желание може да преименувате и самия файл, напр. `/usr/local/bin/composer`. Важно е да запомните къде се намира той, за да може да го извиквате след това.
 
-	git clone https://github.com/bmanolov/chitanka.git
+Сега клонирайте хранилището на chitanka:
+
+	git clone https://github.com/chitanka/chitanka.git
 
 Ще получите нова директория chitanka. Нека се казва `/PATH/TO/chitanka`. След това изпълнете в конзолата:
 
-	cd /PATH/TO/chitanka && php bin/composer install
+	cd /PATH/TO/chitanka
+	php /PATH/TO/composer.phar install
 
 Това ще отнеме около десетина минути. В края ще се появи запитване за попълване на определени параметри. В скоби се намира стойността по подразбиране. Засега са важни само тези за базата от данни (database_xxx). За `database_driver` оставете `pdo_mysql`. При другите просто натиснете Enter.
 
@@ -36,7 +39,7 @@
 
 Последващите обновявания на софтуера могат да стават чрез:
 
-	cd /PATH/TO/chitanka && git pull && php bin/composer update
+	cd /PATH/TO/chitanka && git pull && php /PATH/TO/composer.phar update
 
 2.2. За огледало
 ----------------
@@ -57,13 +60,12 @@
 3. Настройка
 ============
 
-Сега е нужно да разрешите на софтуера (сървъра) да пише в следните директории:
-var/cache, var/logs, web/cache
+Сега е нужно да разрешите на софтуера (сървъра) да пише в директориите `var/cache`, `var/log`, `var/spool` и `web/cache`.
 
 Това става най-лесно през командния ред:
 
 	cd /PATH/TO/chitanka
-	chmod -R a+w var/cache var/logs web/cache
+	chmod -R a+w var/cache var/log var/spool web/cache
 
 Ако разполагате и с файла със съдържанието на библиотеката (текстове, изображения), го разархивирайте в директорията /PATH/TO/chitanka/web:
 
@@ -146,11 +148,11 @@ var/cache, var/logs, web/cache
 			include fastcgi_params;
 		}
 
-		location /bundles/lib {
+		location /bundles/app {
 			try_files /cache$request_uri @asset_generator;
 		}
 		location @asset_generator {
-			rewrite ^/(bundles/lib/(css|js))/(.+) /$1/index.php?$1/$3;
+			rewrite ^/(bundles/app/(css|js))/(.+) /$1/index.php?$1/$3;
 		}
 		location /thumb {
 			try_files /cache$request_uri @thumb_generator;
