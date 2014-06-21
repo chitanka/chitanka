@@ -80,7 +80,6 @@ abstract class Controller extends SymfonyController {
 		} else {
 			$controller = $this->getName();
 		}
-		$this->get('request')->setFormat('osd', 'application/opensearchdescription+xml');
 		$globals = $this->getDisplayVariables();
 
 		if ($format == 'opds') {
@@ -95,20 +94,6 @@ abstract class Controller extends SymfonyController {
 			$this->responseAge = 31536000; // an year
 		}
 		$response = $this->render("App:$controller:$action.$format.twig", $this->view + $params + $globals);
-		if ($format == 'opds') {
-			$normalizedContent = $response->getContent();
-			$normalizedContent = strtr($normalizedContent, array(
-				"\t" => ' ',
-				"\n" => ' ',
-			));
-			$normalizedContent = preg_replace('/  +/', ' ', $normalizedContent);
-			$normalizedContent = preg_replace('/> </', ">\n<", $normalizedContent);
-			$normalizedContent = strtr($normalizedContent, array(
-				'> ' => '>',
-				' <' => '<',
-			));
-			$response->setContent($normalizedContent);
-		}
 		$this->setCacheStatusByResponse($response);
 		if ($this->responseStatusCode) {
 			$response->setStatusCode($this->responseStatusCode);
@@ -144,7 +129,7 @@ abstract class Controller extends SymfonyController {
 	 * @param string $fallbackTemplate
 	 */
 	protected function renderLayoutComponent($wikiPage, $fallbackTemplate) {
-		$wikiPagePath = $this->getParameter('content_dir')."/wiki/special/$wikiPage.html";
+		$wikiPagePath = $this->container->getParameter('content_dir')."/wiki/special/$wikiPage.html";
 		if (file_exists($wikiPagePath)) {
 			list(, $content) = explode("\n\n", file_get_contents($wikiPagePath));
 			return $content;
@@ -322,13 +307,6 @@ abstract class Controller extends SymfonyController {
 
 	protected function getWebRoot() {
 		return dirname($this->get('request')->server->get('SCRIPT_NAME'));
-	}
-
-	/**
-	 * @param string $param
-	 */
-	protected function getParameter($param) {
-		return $this->container->getParameter($param);
 	}
 
 }

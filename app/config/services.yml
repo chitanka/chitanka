@@ -231,10 +231,10 @@ services:
         tags:
             - { name: twig.extension }
 
-    request.listener:
-        class: App\Listener\RequestListener
+    app.subscriber:
+        class: App\Listener\Subscriber
         tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+            - { name: kernel.event_subscriber }
 
     comment.listener:
         class: App\Listener\CommentListener

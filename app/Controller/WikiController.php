@@ -51,7 +51,7 @@ class WikiController extends Controller {
 	}
 
 	protected function wikiEngine() {
-		return new WikiEngine($this->getParameter('content_dir').'/wiki');
+		return new WikiEngine($this->container->getParameter('content_dir').'/wiki');
 	}
 
 	private function getFromWiki($url, $ttl = 1) {

@@ -9,100 +9,84 @@ class HistoryController extends Controller {
 	public $textsPerPage = 30;
 
 	public function indexAction() {
-		$this->view = array(
+		return $this->display('index', array(
 			'book_revisions_by_date' => $this->em()->getBookRevisionRepository()->getLatest($this->booksPerPage),
 			'text_revisions_by_date' => $this->em()->getTextRevisionRepository()->getLatest($this->textsPerPage),
-		);
-
-		return $this->display('index');
+		));
 	}
 
 	public function listBooksAction($page, $_format) {
-		$maxPerPage = $this->booksPerPage;
 		$repo = $this->em()->getBookRevisionRepository();
 		switch ($_format) {
 			case 'html':
 			case 'rss':
-				$revisions = $repo->getLatest($maxPerPage, $page);
+				$revisions = $repo->getLatest($this->booksPerPage, $page);
 				$lastOnes = current($revisions);
-				$this->view = array(
+				return $this->display("list_books.$_format", array(
 					'dates' => $this->getDateOptions($repo),
 					'book_revisions_by_date' => $revisions,
 					'last_date' => $lastOnes[0]['date'],
-				);
-				break;
+				));
 			case 'opds':
-				$this->view = array(
-					'book_revisions' => $repo->getByDate(null, $page, $maxPerPage, false),
-					'pager'    => new Pager(array(
+				return $this->display("list_books.$_format", array(
+					'book_revisions' => $repo->getByDate(null, $page, $this->booksPerPage, false),
+					'pager' => new Pager(array(
 						'page'  => $page,
-						'limit' => $maxPerPage,
-						'total' => $maxPerPage * 50
+						'limit' => $this->booksPerPage,
+						'total' => $this->booksPerPage * 50
 					)),
-				);
-				break;
+				));
 		}
-
-		return $this->display("list_books.$_format");
 	}
 
 	public function listBooksByMonthAction($year, $month, $page) {
 		$dates = array("$year-$month-01", Date::endOfMonth("$year-$month"));
-		$limit = $this->booksPerPage;
-
 		$repo = $this->em()->getBookRevisionRepository();
-		$this->view = array(
+
+		return $this->display("list_books_by_month", array(
 			'dates' => $this->getDateOptions($repo),
 			'month' => ltrim($month, '0'),
 			'year' => $year,
-			'book_revisions_by_date' => $repo->getByDate($dates, $page, $limit),
-			'pager'    => new Pager(array(
+			'book_revisions_by_date' => $repo->getByDate($dates, $page, $this->booksPerPage),
+			'pager' => new Pager(array(
 				'page'  => $page,
-				'limit' => $limit,
+				'limit' => $this->booksPerPage,
 				'total' => $repo->countByDate($dates)
 			)),
 			'route_params' => compact('year', 'month'),
-		);
-
-		return $this->display("list_books_by_month");
+		));
 	}
 
 	public function listTextsAction($page, $_format) {
-		$maxPerPage = $this->textsPerPage;
 		$repo = $this->em()->getTextRevisionRepository();
 		switch ($_format) {
 			case 'html':
 			case 'rss':
-				$revisions = $repo->getLatest($maxPerPage, $page);
+				$revisions = $repo->getLatest($this->textsPerPage, $page);
 				$lastOnes = current($revisions);
-				$this->view = array(
+				return $this->display("list_texts.$_format", array(
 					'dates' => $this->getDateOptions($repo),
 					'text_revisions_by_date' => $revisions,
 					'last_date' => $lastOnes[0]['date'],
-				);
-				break;
+				));
 			case 'opds':
-				$this->view = array(
-					'text_revisions' => $repo->getByDate(null, $page, $maxPerPage, false),
+				return $this->display("list_texts.$_format", array(
+					'text_revisions' => $repo->getByDate(null, $page, $this->textsPerPage, false),
 					'pager'    => new Pager(array(
 						'page'  => $page,
-						'limit' => $maxPerPage,
-						'total' => $maxPerPage * 50
+						'limit' => $this->textsPerPage,
+						'total' => $this->textsPerPage * 50
 					)),
-				);
-				break;
+				));
 		}
-
-		return $this->display("list_texts.$_format");
 	}
 
 	public function listTextsByMonthAction($year, $month, $page) {
 		$dates = array("$year-$month-01", Date::endOfMonth("$year-$month"));
-		$limit = $this->textsPerPage;
-
 		$repo = $this->em()->getTextRevisionRepository();
-		$revisions = $repo->getByDate($dates, $page, $limit);
-		$this->view = array(
+		$revisions = $repo->getByDate($dates, $page, $this->textsPerPage);
+
+		return $this->display('list_texts_by_month', array(
 			'dates' => $this->getDateOptions($repo),
 			'month' => ltrim($month, '0'),
 			'year' => $year,
@@ -110,14 +94,12 @@ class HistoryController extends Controller {
 			'texts_by_id' => $this->extractTextsFromRevisionsByDate($revisions),
 			'pager'    => new Pager(array(
 				'page'  => $page,
-				'limit' => $limit,
+				'limit' => $this->textsPerPage,
 				'total' => $repo->countByDate($dates)
 			)),
 			'route' => 'new_texts_by_month',
 			'route_params' => compact('year', 'month'),
-		);
-
-		return $this->display('list_texts_by_month');
+		));
 	}
 
 	private function getDateOptions($repository) {

@@ -315,8 +315,8 @@ class Text extends BaseWork {
 		$this->id = $id;
 		$this->textAuthors = new ArrayCollection;
 		$this->textTranslators = new ArrayCollection;
-		$this->authors = new ArrayCollection;
-		$this->translators = new ArrayCollection;
+		$this->authors = array();
+		$this->translators = array();
 		$this->bookTexts = new ArrayCollection;
 		$this->books = new ArrayCollection;
 		$this->labels = new ArrayCollection;
@@ -486,7 +486,6 @@ class Text extends BaseWork {
 	/** @return \Doctrine\Common\Collections\ArrayCollection */
 	public function getTextTranslators() { return $this->textTranslators; }
 
-	public function addBook(Book $book) { $this->books[] = $book; }
 	public function getBooks() { return $this->books; }
 
 	public function getRevisions() { return $this->revisions; }

@@ -19,7 +19,7 @@ class InfoSuggestionController extends Controller {
 
 		if ($form->handleRequest($request)->isValid()) {
 			$notifier = new Notifier($this->get('mailer'));
-			$notifier->sendPerMail($infoSuggestion, $this->getParameter('work_email'));
+			$notifier->sendPerMail($infoSuggestion, $this->container->getParameter('work_email'));
 			return $this->redirectWithNotice('Съобщението ви беше изпратено.');
 		}
 

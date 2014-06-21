@@ -67,7 +67,7 @@ class SecurityController extends Controller {
 			return false;
 		}
 		$mailer = new UsernameRequestMailer($this->get('mailer'), $this->get('twig'));
-		$mailer->sendUsername($user, $this->getParameter('site_email'));
+		$mailer->sendUsername($user, $this->container->getParameter('site_email'));
 		return $user;
 	}
 
@@ -88,7 +88,7 @@ class SecurityController extends Controller {
 		$userRepo->save($user);
 
 		$mailer = new PasswordRequestMailer($this->get('mailer'), $this->get('twig'));
-		$mailer->sendNewPassword($user, $newPassword, $this->getParameter('site_email'));
+		$mailer->sendNewPassword($user, $newPassword, $this->container->getParameter('site_email'));
 		return $user;
 	}
 }

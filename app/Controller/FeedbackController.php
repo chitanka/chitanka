@@ -9,7 +9,7 @@ class FeedbackController extends Controller {
 
 	public function indexAction(Request $request) {
 		$form = $this->createForm(new FeedbackType, new Feedback());
-		$adminEmail = $this->getParameter('admin_email');
+		$adminEmail = $this->container->getParameter('admin_email');
 
 		if ($request->isMethod('POST') && $form->submit($request)->isValid()) {
 			$notifier = new Notifier($this->get('mailer'));
