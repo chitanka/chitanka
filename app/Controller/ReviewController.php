@@ -9,9 +9,8 @@ class ReviewController extends Controller {
 		if (empty($reviews)) {
 			return $this->displayText('No reviews found');
 		}
-
-		return $this->display('index', array(
+		return array(
 			'reviews' => $reviews,
-		));
+		);
 	}
 }

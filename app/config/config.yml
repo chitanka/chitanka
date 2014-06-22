@@ -32,6 +32,10 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    globals:
+        analytics_snippet: "%analytics_snippet%"
+        script_library: %script_library%
+        global_info_message: %global_info_message%
 
 # Assetic Configuration
 assetic:

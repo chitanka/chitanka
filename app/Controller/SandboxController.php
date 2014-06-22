@@ -1,20 +1,25 @@
 <?php namespace App\Controller;
 
 use Sfblib\SfbToHtmlConverter;
+use Symfony\Component\HttpFoundation\Request;
 
 class SandboxController extends Controller {
-	public function indexAction() {
-		$request = $this->get('request')->request;
-		$image_dir = $request->get('image_dir');
-		$content = $request->get('content');
-		$this->view = compact('image_dir', 'content');
 
+	public function indexAction(Request $request) {
+		$imageDir = $request->get('image_dir');
+		$content = $request->get('content');
+
+		$htmlContent = null;
 		if ($content) {
-			$converter = new SfbToHtmlConverter($content, $image_dir);
-			$this->view['html_content'] = $converter->convert()->getContent();
+			$converter = new SfbToHtmlConverter($content, $imageDir);
+			$htmlContent = $converter->convert()->getContent();
 		}
 
-		return $this->display('index');
+		return array(
+			'image_dir' => $imageDir,
+			'content' => $content,
+			'html_content' => $htmlContent,
+		);
 	}
 
 }

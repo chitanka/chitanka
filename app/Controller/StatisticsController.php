@@ -1,8 +1,9 @@
 <?php namespace App\Controller;
 
 class StatisticsController extends Controller {
+
 	public function indexAction() {
-		$this->view = array(
+		return array(
 			'count' => array(
 				'authors'       => $this->em()->getPersonRepository()->asAuthor()->getCount(),
 				'translators'   => $this->em()->getPersonRepository()->asTranslator()->getCount(),
@@ -19,8 +20,6 @@ class StatisticsController extends Controller {
 			'author_countries'  => $this->getAuthorCountries(),
 			'text_types'        => $this->getTextTypes(),
 		);
-
-		return $this->display('index');
 	}
 
 	private function getAuthorCountries() {

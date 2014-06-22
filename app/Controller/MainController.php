@@ -14,9 +14,7 @@ class MainController extends Controller {
 	const LATEST_FORUM_POSTS_LIMIT = 5;
 
 	public function indexAction() {
-		$this->responseAge = 600;
-
-		return $this->display('index', array(
+		return array(
 			'siteNotices' => $this->em()->getSiteNoticeRepository()->findForFrontPage(),
 			'review' => ReviewService::getReview(true),
 			'foreign_book' => $this->em()->getForeignBookRepository()->getRandom(),
@@ -27,11 +25,12 @@ class MainController extends Controller {
 			'latest_comments' => $this->em()->getTextCommentRepository()->getLatest(self::LATEST_COMMENTS_LIMIT),
 			'latest_liternews' => LiternewsFeed::fetchLatest(self::LATEST_LITERNEWS_LIMIT),
 			'latest_forum_posts' => ForumFeed::fetchLatest(self::LATEST_FORUM_POSTS_LIMIT),
-		));
+			'_cache' => 600,
+		);
 	}
 
-	public function catalogAction($_format) {
-		return $this->display("catalog.$_format");
+	public function catalogAction() {
+		return array();
 	}
 
 	public function redirectAction($route) {

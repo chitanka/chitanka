@@ -2,15 +2,15 @@
 
 use App\Pagination\Pager;
 use App\Entity\Person;
+use Symfony\Component\HttpFoundation\Request;
 
 class AuthorController extends PersonController {
-	public function listByCountryIndexAction($by, $_format) {
-		$this->view = array(
+
+	public function listByCountryIndexAction($by) {
+		return array(
 			'by' => $by,
 			'countries' => $this->getPersonRepository()->getCountryList()
 		);
-
-		return $this->display("list_by_country_index.$_format");
 	}
 
 	public function listByCountryAction($country, $by, $page, $_format) {
@@ -21,7 +21,7 @@ class AuthorController extends PersonController {
 			'by'      => $by,
 			'country' => $country,
 		);
-		$this->view = array(
+		return array(
 			'by'      => $by,
 			'country' => $country,
 			'persons' => $repo->getBy($filters, $page, $limit),
@@ -30,25 +30,20 @@ class AuthorController extends PersonController {
 				'limit' => $limit,
 				'total' => $repo->countBy($filters)
 			)),
-			'route' => $this->getCurrentRoute(),
 			'route_params' => array('country' => $country, 'by' => $by, '_format' => $_format),
 		);
-
-		return $this->display("list_by_country.$_format");
 	}
 
-	public function showBooksAction($slug, $_format) {
+	public function showBooksAction($slug) {
 		$person = $this->tryToFindPerson($slug);
 		if ( ! $person instanceof Person) {
 			return $person;
 		}
 
-		$this->view = array(
+		return array(
 			'person' => $person,
 			'books'  => $this->em()->getBookRepository()->getByAuthor($person),
 		);
-
-		return $this->display("show_books.$_format");
 	}
 
 	public function showTextsAction($slug, $_format) {
@@ -58,16 +53,35 @@ class AuthorController extends PersonController {
 		}
 
 		$groupBySeries = $_format == 'html';
-		$this->view = array(
+		return array(
 			'person' => $person,
 			'texts'  => $this->em()->getTextRepository()->findByAuthor($person, $groupBySeries),
 		);
-
-		return $this->display("show_texts.$_format");
 	}
 
-	protected function prepareViewForShow(Person $person, $format) {
-		$this->prepareViewForShowAuthor($person, $format);
+	public function searchAction(Request $request, $_format) {
+		if ($_format == 'suggest') {
+			$items = $descs = $urls = array();
+			$query = $request->query->get('q');
+			$persons = $this->em()->getPersonRepository()->asAuthor()->getByQuery(array(
+				'text'  => $query,
+				'by'    => 'name',
+				'match' => 'prefix',
+				'limit' => 10,
+			));
+			foreach ($persons as $person) {
+				$items[] = $person['name'];
+				$descs[] = '';
+				$urls[] = $this->generateUrl('author_show', array('slug' => $person['slug']), true);
+			}
+
+			return $this->displayJson(array($query, $items, $descs, $urls));
+		}
+		return array();
+	}
+
+	protected function getShowTemplateParams(Person $person, $format) {
+		return $this->getShowTemplateParamsAuthor($person, $format);
 	}
 
 	protected function getPersonRepository() {

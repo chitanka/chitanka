@@ -1,6 +1,3 @@
-{% extends 'App::layout.html.twig' %}
-
-{% set title = 'Пращане на писмо на потребител' %}
-{% block content %}
+<div class="alert alert-danger">
 	Необходимо е да посочите валидна електронна поща в <a href="{{ path('user_edit', {username: sender.username}) }}">настройките си</a>, за да можете да пращате писма на други потребители.
-{% endblock %}
+</div>

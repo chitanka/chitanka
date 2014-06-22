@@ -18,7 +18,7 @@ class SecurityController extends Controller {
 	}
 
 	public function logoutAction(Request $request) {
-		$this->disableCache();
+		$this->responseAge = 0;
 
 		$user = $this->getUser();
 		if ($user) {
@@ -41,9 +41,9 @@ class SecurityController extends Controller {
 				return $this->redirectWithNotice("На адреса <strong>{$user->getEmail()}</strong> беше изпратено напомнящо писмо. Ако не се сещате и за паролата си, ползвайте функцията „<a href=\"{$this->generateUrl('request_password')}\">Изпращане на нова парола</a>“. Иначе можете спокойно <a href=\"{$this->generateUrl('login')}\">да влезете</a>.");
 			}
 		}
-		return $this->display('request_username', array(
+		return array(
 			'form' => $form->createView(),
-		));
+		);
 	}
 
 	public function requestPasswordAction(Request $request) {
@@ -55,9 +55,9 @@ class SecurityController extends Controller {
 				return $this->redirectWithNotice("Нова парола беше изпратена на електронната поща на <strong>{$user->getUsername()}</strong>. Моля, <a href=\"{$this->generateUrl('login')}\">влезте отново</a>, след като я получите.");
 			}
 		}
-		return $this->display('request_password', array(
+		return array(
 			'form' => $form->createView(),
-		));
+		);
 	}
 
 	private function processUsernameRequest($email) {

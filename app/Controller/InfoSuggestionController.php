@@ -23,10 +23,10 @@ class InfoSuggestionController extends Controller {
 			return $this->redirectWithNotice('Съобщението ви беше изпратено.');
 		}
 
-		return $this->display('index', array(
+		return array(
 			'form' => $form->createView(),
 			'type' => $type,
 			'text' => $text,
-		));
+		);
 	}
 }

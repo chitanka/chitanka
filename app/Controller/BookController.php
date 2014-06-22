@@ -1,46 +1,44 @@
 <?php namespace App\Controller;
 
-use Doctrine\ORM\NoResultException;
 use App\Entity\Book;
 use App\Pagination\Pager;
 use App\Legacy\Setup;
 use App\Generator\DownloadFile;
 use App\Util\String;
+use App\Service\SearchService;
+use Doctrine\ORM\NoResultException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends Controller {
 
 	public function indexAction($_format) {
 		if ($_format == 'html') {
-			$this->view = array(
+			return array(
 				'categories' => $this->em()->getCategoryRepository()->getAllAsTree(),
 			);
 		}
-
-		return $this->display("index.$_format");
+		return array();
 	}
 
 	public function listByCategoryIndexAction($_format) {
 		switch ($_format) {
 			case 'html':
-				$categories = $this->em()->getCategoryRepository()->getAllAsTree();
-				break;
+				return array(
+					'categories' => $this->em()->getCategoryRepository()->getAllAsTree(),
+				);
 			case 'opds':
-				$categories = $this->em()->getCategoryRepository()->getAll();
-				break;
-			default:
-				throw $this->createNotFoundException("Format $_format is not supported");
+				return array(
+					'categories' => $this->em()->getCategoryRepository()->getAll(),
+				);
 		}
-
-		return $this->display("list_by_category_index.$_format", array(
-			'categories' => $categories,
-		));
 	}
 
-	public function listByAlphaIndexAction($_format) {
-		return $this->display("list_by_alpha_index.$_format");
+	public function listByAlphaIndexAction() {
+		return array();
 	}
 
-	public function listByCategoryAction($slug, $page, $_format) {
+	public function listByCategoryAction($slug, $page) {
 		$slug = String::slugify($slug);
 		$bookRepo = $this->em()->getBookRepository();
 		$category = $this->em()->getCategoryRepository()->findBySlug($slug);
@@ -49,7 +47,7 @@ class BookController extends Controller {
 		}
 		$limit = 30;
 
-		$this->view = array(
+		return array(
 			'category' => $category,
 			'parents' => array_reverse($category->getAncestors()),
 			'books' => $bookRepo->getByCategory($category, $page, $limit),
@@ -60,16 +58,14 @@ class BookController extends Controller {
 			)),
 			'route_params' => array('slug' => $slug),
 		);
-
-		return $this->display("list_by_category.$_format");
 	}
 
-	public function listByAlphaAction($letter, $page, $_format) {
+	public function listByAlphaAction($letter, $page) {
 		$bookRepo = $this->em()->getBookRepository();
 		$limit = 30;
 
 		$prefix = $letter == '-' ? null : $letter;
-		$this->view = array(
+		return array(
 			'letter' => $letter,
 			'books' => $bookRepo->getByPrefix($prefix, $page, $limit),
 			'pager'    => new Pager(array(
@@ -79,15 +75,12 @@ class BookController extends Controller {
 			)),
 			'route_params' => array('letter' => $letter),
 		);
-
-		return $this->display("list_by_alpha.$_format");
 	}
 
 	public function listWoCoverAction($page) {
 		$limit = 30;
 		$bookRepo = $this->em()->getBookRepository();
-		$_format = 'html';
-		$this->view = array(
+		return array(
 			'books' => $bookRepo->getWithMissingCover($page, $limit),
 			'pager' => new Pager(array(
 				'page'  => $page,
@@ -95,8 +88,6 @@ class BookController extends Controller {
 				'total' => $this->em()->getBookRepository()->getCountWithMissingCover()
 			)),
 		);
-
-		return $this->display("list_wo_cover.$_format");
 	}
 
 	public function showAction($id, $_format) {
@@ -141,14 +132,51 @@ class BookController extends Controller {
 			default:
 		}
 
-		$this->view = array(
+		return array(
 			'book' => $book,
 			'authors' => $book->getAuthors(),
 			'template' => $book->getTemplateAsXhtml(),
 			'info' => $book->getExtraInfoAsXhtml(),
 		);
+	}
 
-		return $this->display("show.$_format");
+	public function searchAction(Request $request, $_format) {
+		if ($_format == 'osd') {
+			return array();
+		}
+		if ($_format == 'suggest') {
+			$items = $descs = $urls = array();
+			$query = $request->query->get('q');
+			$books = $this->em()->getBookRepository()->getByQuery(array(
+				'text'  => $query,
+				'by'    => 'title',
+				'match' => 'prefix',
+				'limit' => 10,
+			));
+			foreach ($books as $book) {
+				$items[] = $book['title'];
+				$descs[] = '';
+				$urls[] = $this->generateUrl('book_show', array('id' => $book['id']), true);
+			}
+
+			return $this->displayJson(array($query, $items, $descs, $urls));
+		}
+		$searchService = new SearchService($this->em(), $this->get('templating'));
+		if (($query = $searchService->prepareQuery($request, $_format)) instanceof Response) {
+			return $query;
+		}
+
+		if (empty($query['by'])) {
+			$query['by'] = 'title,subtitle,origTitle';
+		}
+		$books = $this->em()->getBookRepository()->getByQuery($query);
+		$found = count($books) > 0;
+		return array(
+			'query' => $query,
+			'books' => $books,
+			'found' => $found,
+			'_status' => !$found ? 404 : null,
+		);
 	}
 
 	public function randomAction() {

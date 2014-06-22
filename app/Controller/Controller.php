@@ -9,25 +9,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 abstract class Controller extends SymfonyController {
 
-	/** The unqualified name of the controller: Main for MainController */
-	protected $name = null;
-
-	/** Data to send to the view */
-	protected $view = array();
-
-	/** The format of the response */
-	protected $responseFormat = 'html';
-
 	/** The max cache time of the response (in seconds) */
 	protected $responseAge = 86400; // 24 hours
-
-	/** The status code of the response */
-	protected $responseStatusCode = null;
-
-	/**
-	* Response headers. Used to overwrite default or add new ones
-	*/
-	protected $responseHeaders = array();
 
 	/** @var \App\Entity\EntityManager */
 	private $em;
@@ -36,11 +19,11 @@ abstract class Controller extends SymfonyController {
 
 	/**
 	 * @param string $page
-	 * @param string $controller
+	 * @param array $params
 	 */
-	protected function legacyPage($page, $controller = ':legacy') {
+	protected function legacyPage($page, array $params = array()) {
 		if (strpos($page, '.') === false) {
-			$format = $this->responseFormat;
+			$format = 'html';
 		} else {
 			list($page, $format) = explode('.', $page);
 		}
@@ -49,79 +32,23 @@ abstract class Controller extends SymfonyController {
 			return $this->urlRedirect($page->redirect);
 		}
 
-		$data = $this->getDisplayVariables() + array('page' => $page);
-		if ($page->inlineJs) {
-			$data['inline_js'] = $page->inlineJs;
-		}
-
-		$response = $this->render("App:$controller.$format.twig", $this->view + $data);
-		$this->setCacheStatusByResponse($response);
-
-		return $response;
-	}
-
-	/**
-	 * Render a given controler action.
-	 * @param string $action  Action name. Can include controller and/or format. Examples:
-	 *                        index - an action name
-	 *                        Main:index - controller and action
-	 *                        Main:catalog.opds - controller, action and format
-	 * @param array $params   Parameters to be sent to te view
-	 * @return Response
-	 */
-	protected function display($action, array $params = array()) {
-		if (strpos($action, '.') === false) {
-			$format = $this->responseFormat;
-		} else {
-			list($action, $format) = explode('.', $action);
-		}
-		if (strpos($action, ':') !== false) {
-			list($controller, $action) = explode(':', $action);
-		} else {
-			$controller = $this->getName();
-		}
-		$globals = $this->getDisplayVariables();
-
-		if ($format == 'opds') {
-			$textsUpdatedAt = $this->em()->getTextRevisionRepository()->getMaxDate();
-			$booksUpdatedAt = $this->em()->getBookRevisionRepository()->getMaxDate();
-			$globals += array(
-				'texts_updated_at' => $textsUpdatedAt,
-				'books_updated_at' => $booksUpdatedAt,
-				'updated_at' => max($textsUpdatedAt, $booksUpdatedAt),
-			);
-		} else if ($format == 'osd') {
-			$this->responseAge = 31536000; // an year
-		}
-		$response = $this->render("App:$controller:$action.$format.twig", $this->view + $params + $globals);
-		$this->setCacheStatusByResponse($response);
-		if ($this->responseStatusCode) {
-			$response->setStatusCode($this->responseStatusCode);
-		}
-
-		return $response;
-	}
-
-	protected function getDisplayVariables() {
-		return array(
-			'navlinks' => $this->renderNavLinks(),
-			'navextra' => array(),
-			'footer_links' => $this->renderFooterLinks(),
-			'current_route' => $this->getCurrentRoute(),
-			'script_library' => $this->container->getParameter('script_library'),
-			'global_info_message' => $this->container->getParameter('global_info_message'),
-			'analytics_snippet' => $this->container->getParameter('analytics_snippet'),
+		$params += $this->getDisplayVariables() + array(
+			'page' => $page,
+			'navlinks' => $this->renderLayoutComponent('sidebar-menu', 'App::navlinks.html.twig'),
+			'footer_links' => $this->renderLayoutComponent('footer-menu', 'App::footer_links.html.twig'),
+			'current_route' => $this->get('request')->attributes->get('_route'),
 			'environment' => $this->container->get('kernel')->getEnvironment(),
 			'ajax' => $this->get('request')->isXmlHttpRequest(),
+			'_controller' => ':legacy',
 		);
-	}
+		if ($page->inlineJs) {
+			$params['inline_js'] = $page->inlineJs;
+		}
 
-	protected function renderNavLinks() {
-		return $this->renderLayoutComponent('sidebar-menu', 'App::navlinks.html.twig');
-	}
+		$response = $this->render("App:{$params['_controller']}.$format.twig", $params);
+		$this->setCacheStatusByResponse($response);
 
-	protected function renderFooterLinks() {
-		return $this->renderLayoutComponent('footer-menu', 'App::footer_links.html.twig');
+		return $response;
 	}
 
 	/**
@@ -135,15 +62,6 @@ abstract class Controller extends SymfonyController {
 			return $content;
 		}
 		return $this->renderView($fallbackTemplate);
-	}
-
-	protected function getStylesheet() {
-		$url = $this->container->getParameter('style_url');
-		if ( ! $url) {
-			return false;
-		}
-
-		return $url . http_build_query($this->getUser()->getSkinPreference());
 	}
 
 	protected function displayText($text, $headers = array()) {
@@ -168,18 +86,6 @@ abstract class Controller extends SymfonyController {
 		return $response;
 	}
 
-	public function getName() {
-		if (is_null($this->name) && preg_match('/([\w]+)Controller$/', get_class($this), $m)) {
-			$this->name = $m[1];
-		}
-
-		return $this->name;
-	}
-
-	protected function getCurrentRoute() {
-		return $this->get('request')->attributes->get('_route');
-	}
-
 	/** @return \App\Entity\EntityManager */
 	public function em() {
 		return $this->em ?: $this->em = $this->container->get('app.entity_manager');
@@ -188,7 +94,6 @@ abstract class Controller extends SymfonyController {
 	private $user;
 	/** @return User */
 	public function getUser() {
-		// TODO remove
 		if ( ! isset($this->user)) {
 			$this->user = User::initUser($this->em()->getUserRepository());
 			if ($this->user->isAuthenticated()) {
@@ -197,7 +102,6 @@ abstract class Controller extends SymfonyController {
 			}
 		}
 		return $this->user;
-		//return $this->get('security.context')->getToken()->getUser();
 	}
 
 	protected function getSavableUser() {
@@ -292,17 +196,6 @@ abstract class Controller extends SymfonyController {
 		}
 
 		return false; // main site
-	}
-
-	protected function enableCache($responseLifetime) {
-		if (is_string($responseLifetime)) {
-			$responseLifetime = strtotime($responseLifetime) - strtotime('now');
-		}
-		$this->responseAge = $responseLifetime;
-	}
-
-	protected function disableCache() {
-		$this->responseAge = 0;
 	}
 
 	protected function getWebRoot() {

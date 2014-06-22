@@ -8,13 +8,12 @@ use Symfony\Component\HttpFoundation\Request;
 class EmailController extends Controller {
 
 	public function newAction(Request $request, $username) {
-		$this->responseAge = 0;
 		$senderUser = $this->getUser();
 		if ($senderUser->isAnonymous()) {
-			return $this->display('stop_anon');
+			return array('message' => 'stop_anon');
 		}
 		if (!$senderUser->hasEmail()) {
-			return $this->display('stop_no_email', array('sender' => $senderUser));
+			return array('message' => 'stop_no_email', 'sender' => $senderUser);
 		}
 
 		$recipientUser = $this->em()->getUserRepository()->findByUsername($username);
@@ -22,7 +21,7 @@ class EmailController extends Controller {
 			throw $this->createNotFoundException("Не съществува потребител с име $username.");
 		}
 		if (!$recipientUser->allowsEmail()) {
-			return $this->display('stop_email_not_allowed', array('recipient' => $recipientUser));
+			return array('message' => 'stop_email_not_allowed', 'recipient' => $recipientUser);
 		}
 
 		$email = new Email($recipientUser, $senderUser);
@@ -34,10 +33,10 @@ class EmailController extends Controller {
 			return $this->redirectWithNotice('Писмото ви беше изпратено.');
 		}
 
-		return $this->display('new', array(
+		return array(
 			'form' => $form->createView(),
 			'sender' => $senderUser,
 			'recipient' => $recipientUser,
-		));
+		);
 	}
 }

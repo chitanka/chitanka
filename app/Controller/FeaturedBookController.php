@@ -2,10 +2,10 @@
 
 class FeaturedBookController extends Controller {
 
-	public function indexAction($_format) {
-		return $this->display("index.$_format", array(
+	public function indexAction() {
+		return array(
 			'books' => $this->em()->getFeaturedBookRepository()->getLatest(100),
-		));
+		);
 	}
 
 	public function bookAction() {

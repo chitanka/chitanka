@@ -307,6 +307,7 @@ class Text extends BaseWork {
 	private $links;
 
 	/**
+	 * @var array
 	 * @ORM\Column(type="array", nullable=true)
 	 */
 	private $alikes;
@@ -526,7 +527,7 @@ class Text extends BaseWork {
 	}
 
 	public function setAlikes($alikes) { $this->alikes = $alikes; }
-	public function getAlikes() { return $this->alikes; }
+	public function getAlikes() { return (array) $this->alikes; }
 
 	private $_book;
 	/**

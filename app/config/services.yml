@@ -231,8 +231,9 @@ services:
         tags:
             - { name: twig.extension }
 
-    app.subscriber:
-        class: App\Listener\Subscriber
+    kernel.listener:
+        class: App\Listener\KernelListener
+        arguments: [@twig, @app.entity_manager, %content_dir%, %use_http_cache%, %kernel.debug%]
         tags:
             - { name: kernel.event_subscriber }
 

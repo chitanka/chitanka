@@ -4,6 +4,7 @@ use App\Pagination\Pager;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller {
+
 	public function personalToolsAction() {
 		$this->responseAge = 0;
 
@@ -30,11 +31,10 @@ class UserController extends Controller {
 
 	public function ratingsAction($username) {
 		$user = $this->em()->getUserRepository()->findByUsername($username);
-		$ratings = $this->em()->getTextRatingRepository()->getByUser($user);
-		return $this->display('ratings', array(
+		return array(
 			'user' => $user,
-			'ratings' => $ratings,
-		));
+			'ratings' => $this->em()->getTextRatingRepository()->getByUser($user),
+		);
 	}
 
 	public function commentsAction($username, $page) {
@@ -49,7 +49,7 @@ class UserController extends Controller {
 		$user = $this->em()->getUserRepository()->findByUsername($username);
 		$repo = $this->em()->getUserTextContribRepository();
 
-		$this->view = array(
+		return array(
 			'user' => $user,
 			'contribs' => $repo->getByUser($user, $page, $limit),
 			'pager'    => new Pager(array(
@@ -60,13 +60,9 @@ class UserController extends Controller {
 			'route' => 'user_contribs',
 			'route_params' => array('username' => $username),
 		);
-
-		return $this->display('contribs');
 	}
 
 	public function readListAction($username, $page) {
-		$this->responseAge = 0;
-
 		if ($this->getUser()->getUsername() != $username) {
 			$user = $this->em()->getUserRepository()->findByToken($username);
 			if (!$user) {
@@ -81,7 +77,7 @@ class UserController extends Controller {
 		$limit = 50;
 		$repo = $this->em()->getUserTextReadRepository();
 
-		$this->view = array(
+		return array(
 			'user' => $user,
 			'is_owner' => $isOwner,
 			'read_texts' => $repo->getByUser($user, $page, $limit),
@@ -92,14 +88,11 @@ class UserController extends Controller {
 			)),
 			'route' => 'user_read_list',
 			'route_params' => array('username' => $username),
+			'_cache' => 0,
 		);
-
-		return $this->display('read_list');
 	}
 
 	public function bookmarksAction($username, $page) {
-		$this->responseAge = 0;
-
 		if ($this->getUser()->getUsername() != $username) {
 			$user = $this->em()->getUserRepository()->findByToken($username);
 			if (!$user) {
@@ -114,7 +107,7 @@ class UserController extends Controller {
 		$limit = 50;
 		$repo = $this->em()->getBookmarkRepository();
 
-		$this->view = array(
+		return array(
 			'user' => $user,
 			'is_owner' => $isOwner,
 			'bookmarks' => $repo->getByUser($user, $page, $limit),
@@ -125,9 +118,8 @@ class UserController extends Controller {
 			)),
 			'route' => 'user_bookmarks',
 			'route_params' => array('username' => $username),
+			'_cache' => 0,
 		);
-
-		return $this->display('bookmarks');
 	}
 
 	/**
@@ -157,23 +149,30 @@ class UserController extends Controller {
 		}
 
 		$styleUrl = '/bundles/app/css/?skin=SKIN&menu=NAV';
-		$this->view['inline_js'] = <<<EOS
-	var nav = "", skin = "";
-	function changeStyleSheet() {
-		setActiveStyleSheet("$styleUrl".replace(/SKIN/, skin).replace(/NAV/, nav));
-	}
-EOS;
-
-		return $this->legacyPage('Settings');
+		return $this->legacyPage('Settings', array(
+			'inline_js' => "
+				var nav = '', skin = '';
+				function changeStyleSheet() {
+					setActiveStyleSheet('$styleUrl'.replace(/SKIN/, skin).replace(/NAV/, nav));
+				}"
+		));
 	}
 
 	public function stylesheetAction() {
-		$this->responseAge = 0;
-
 		return $this->render('App:User:stylesheet.html.twig', array(
 			'stylesheet' => $this->getStylesheet(),
 			'extra_stylesheets' => $this->getUser()->getExtraStylesheets(),
 			'extra_javascripts' => $this->getUser()->getExtraJavascripts(),
 		));
 	}
+
+	private function getStylesheet() {
+		$url = $this->container->getParameter('style_url');
+		if ( ! $url) {
+			return false;
+		}
+
+		return $url . http_build_query($this->getUser()->getSkinPreference());
+	}
+
 }

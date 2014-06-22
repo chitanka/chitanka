@@ -1,5 +1,6 @@
 <?php namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Eko\FeedBundle\Field\Item\ItemField;
@@ -9,7 +10,6 @@ class WorkroomController extends Controller {
 	/** How many entries are allowed in a feed */
 	static private $feedListLimit = 200;
 
-	protected $repository = 'WorkEntry';
 	protected $responseAge = 0;
 
 	public function indexAction($status, $page) {
@@ -21,7 +21,6 @@ class WorkroomController extends Controller {
 
 	public function listAction($_format) {
 		$_REQUEST['vl'] = 'listonly';
-		$this->responseFormat = $_format;
 
 		return $this->legacyPage('Work');
 	}
@@ -63,7 +62,7 @@ class WorkroomController extends Controller {
 		return $this->legacyPage('Work');
 	}
 
-	public function deleteContribAction($id) {
+	public function deleteContribAction(Request $request, $id) {
 		$this->responseAge = 0;
 
 		if (!$this->getUser()->inGroup('workroom-admin')) {
@@ -78,7 +77,7 @@ class WorkroomController extends Controller {
 		$contrib->delete();
 		$this->em()->getWorkContribRepository()->save($contrib);
 
-		if ($this->get('request')->isXmlHttpRequest()) {
+		if ($request->isXmlHttpRequest()) {
 			return $this->displayJson($contrib);
 		}
 
@@ -100,11 +99,4 @@ class WorkroomController extends Controller {
 		return new Response($feed->render('rss'));
 	}
 
-	public function latestAction($limit = 10) {
-		$this->view = array(
-			'entries' => $this->em()->getWorkEntryRepository()->getLatest($limit),
-		);
-
-		return $this->display('WorkEntry:list');
-	}
 }

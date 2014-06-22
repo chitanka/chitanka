@@ -4,22 +4,23 @@ use App\Pagination\Pager;
 use App\Util\String;
 use App\Entity\Person;
 use App\Service\MediawikiClient;
+use App\Service\SearchService;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PersonController extends Controller {
 
-	public function indexAction($_format) {
-		return $this->display("index.$_format");
+	public function indexAction() {
+		return array();
 	}
 
-	public function listByAlphaIndexAction($by, $_format) {
-		$this->view = array(
+	public function listByAlphaIndexAction($by) {
+		return array(
 			'by' => $by,
 		);
-
-		return $this->display("list_by_alpha_index.$_format");
 	}
 
-	public function listByAlphaAction($by, $letter, $page, $_format) {
+	public function listByAlphaAction($by, $letter, $page) {
 		$request = $this->get('request')->query;
 		$country = $request->get('country', '');
 		$limit = 100;
@@ -30,7 +31,7 @@ class PersonController extends Controller {
 			'prefix'  => $letter,
 			'country' => $country,
 		);
-		$this->view = array(
+		return array(
 			'by'      => $by,
 			'letter'  => $letter,
 			'country' => $country,
@@ -40,11 +41,8 @@ class PersonController extends Controller {
 				'limit' => $limit,
 				'total' => $repo->countBy($filters)
 			)),
-			'route' => $this->getCurrentRoute(),
 			'route_params' => array('letter' => $letter, 'by' => $by),
 		);
-
-		return $this->display("list_by_alpha.$_format");
 	}
 
 	public function showAction($slug, $_format) {
@@ -53,24 +51,58 @@ class PersonController extends Controller {
 			return $person;
 		}
 
-		$this->prepareViewForShow($person, $_format);
-		$this->view['person'] = $person;
-		$this->putPersonInfoInView($person);
-
-		return $this->display("show.$_format");
+		return $this->getShowTemplateParams($person, $_format) + array(
+			'person' => $person,
+		) + $this->getShowTemplateInfoParams($person);
 	}
 
-	public function showInfoAction($slug, $_format) {
-		$person = $this->tryToFindPerson($slug);
-		if ( ! $person instanceof Person) {
-			return $person;
+	public function searchAction(Request $request, $_format) {
+		if ($_format == 'osd') {
+			return array();
+		}
+		if ($_format == 'suggest') {
+			$items = $descs = $urls = array();
+			$query = $request->query->get('q');
+			$persons = $this->em()->getPersonRepository()->getByQuery(array(
+				'text'  => $query,
+				'by'    => 'name',
+				'match' => 'prefix',
+				'limit' => 10,
+			));
+			foreach ($persons as $person) {
+				$items[] = $person['name'];
+				$descs[] = '';
+				$urls[] = $this->generateUrl('person_show', array('slug' => $person['slug']), true);
+			}
+
+			return $this->displayJson(array($query, $items, $descs, $urls));
+		}
+		$searchService = new SearchService($this->em(), $this->get('templating'));
+		if (($query = $searchService->prepareQuery($request, $_format)) instanceof Response) {
+			return $query;
 		}
 
-		$this->view = array(
+		if (empty($query['by'])) {
+			$query['by'] = 'name,orig_name,real_name,orig_real_name';
+		}
+		$persons = $this->em()->getPersonRepository()->getByQuery($query);
+		$found = count($persons) > 0;
+		return array(
+			'query'   => $query,
+			'persons' => $persons,
+			'found'   => $found,
+			'_status' => !$found ? 404 : null,
+		);
+	}
+
+	public function showInfoAction($slug) {
+		$person = $this->tryToFindPerson($slug);
+		if (!$person instanceof Person) {
+			return $person;
+		}
+		return array(
 			'person' => $person,
 		);
-
-		return $this->display("show_info.$_format");
 	}
 
 	protected function tryToFindPerson($slug) {
@@ -86,36 +118,41 @@ class PersonController extends Controller {
 		throw $this->createNotFoundException("Няма личност с код $slug.");
 	}
 
-	protected function prepareViewForShow(Person $person, $format) {
-		$this->prepareViewForShowAuthor($person, $format);
-		$this->prepareViewForShowTranslator($person, $format);
+	protected function getShowTemplateParams(Person $person, $format) {
+		return array_merge(
+			$this->getShowTemplateParamsAuthor($person, $format),
+			$this->getShowTemplateParamsTranslator($person, $format)
+		);
 	}
-	protected function prepareViewForShowAuthor(Person $person, $format) {
+	protected function getShowTemplateParamsAuthor(Person $person, $format) {
 		$groupBySeries = $format == 'html';
-		$this->view['texts_as_author'] = $this->em()->getTextRepository()->findByAuthor($person, $groupBySeries);
-		$this->view['books'] = $this->em()->getBookRepository()->getByAuthor($person);
+		return array(
+			'texts_as_author' => $this->em()->getTextRepository()->findByAuthor($person, $groupBySeries),
+			'books' => $this->em()->getBookRepository()->getByAuthor($person),
+		);
 	}
-	protected function prepareViewForShowTranslator(Person $person, $format) {
-		$this->view['texts_as_translator'] = $this->em()->getTextRepository()->findByTranslator($person);
+	protected function getShowTemplateParamsTranslator(Person $person, $format) {
+		return array(
+			'texts_as_translator' => $this->em()->getTextRepository()->findByTranslator($person),
+		);
 	}
 
-	protected function putPersonInfoInView(Person $person) {
-		if ($person->getInfo() != '') {
-			// TODO move this in the entity
-			list($prefix, $name) = explode(':', $person->getInfo(), 2);
-			$site = $this->em()->getWikiSiteRepository()->findOneBy(array('code' => $prefix));
-			$url = $site->getUrl($name);
-			$mwClient = new MediawikiClient($this->container->get('buzz'));
-			$this->view['info'] = $mwClient->fetchContent($url);
-			$this->view['info_intro'] = strtr($site->getIntro(), array(
+	private function getShowTemplateInfoParams(Person $person) {
+		if ($person->getInfo() == '') {
+			return array();
+		}
+		// TODO move this in the entity
+		list($prefix, $name) = explode(':', $person->getInfo(), 2);
+		$site = $this->em()->getWikiSiteRepository()->findOneBy(array('code' => $prefix));
+		$url = $site->getUrl($name);
+		$mwClient = new MediawikiClient($this->container->get('buzz'));
+		return array(
+			'info' => $mwClient->fetchContent($url),
+			'info_intro' => strtr($site->getIntro(), array(
 				'$1' => $person->getName(),
 				'$2' => $url,
-			));
-		}
-	}
-
-	public function suggest($slug) {
-		return $this->legacyPage('Info');
+			)),
+		);
 	}
 
 }

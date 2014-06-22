@@ -1,9 +1,6 @@
 <?php namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Text;
-use App\Entity\TextRating;
 use App\Entity\UserTextRead;
 use App\Form\Type\TextRatingType;
 use App\Form\Type\TextLabelType;
@@ -12,42 +9,45 @@ use App\Pagination\Pager;
 use App\Generator\TextDownloadService;
 use App\Service\TextBookmarkService;
 use App\Service\TextLabelService;
+use App\Service\SearchService;
 use App\Util\String;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TextController extends Controller {
 
 	public function indexAction($_format) {
 		if ($_format == 'html') {
-			$this->view = array(
+			return array(
 				'labels' => $this->em()->getLabelRepository()->getAllAsTree(),
 				'types' => $this->em()->getTextRepository()->getTypes(),
 			);
 		}
 
-		return $this->display("index.$_format");
+		return array();
 	}
 
 	public function listByTypeIndexAction($_format) {
-		return $this->display("list_by_type_index.$_format", array(
+		return array(
 			'types' => $this->em()->getTextRepository()->getTypes()
-		));
+		);
 	}
 
 	public function listByLabelIndexAction($_format) {
-		return $this->display("list_by_label_index.$_format", array(
+		return array(
 			'labels' => $this->em()->getLabelRepository()->getAll()
-		));
+		);
 	}
 
 	public function listByAlphaIndexAction($_format) {
-		return $this->display("list_by_alpha_index.$_format");
+		return array();
 	}
 
 	public function listByTypeAction($type, $page, $_format) {
 		$textRepo = $this->em()->getTextRepository();
 		$limit = 30;
 
-		$this->view = array_merge($this->view, array(
+		return array(
 			'type' => $type,
 			'texts'   => $textRepo->getByType($type, $page, $limit),
 			'pager'    => new Pager(array(
@@ -56,9 +56,7 @@ class TextController extends Controller {
 				'total' => $textRepo->countByType($type)
 			)),
 			'route_params' => array('type' => $type),
-		));
-
-		return $this->display("list_by_type.$_format");
+		);
 	}
 
 	public function listByLabelAction($slug, $page, $_format) {
@@ -72,7 +70,7 @@ class TextController extends Controller {
 		}
 		$labels = $label->getDescendantIdsAndSelf();
 
-		return $this->display("list_by_label.$_format", array(
+		return array(
 			'label' => $label,
 			'parents' => array_reverse($label->getAncestors()),
 			'texts'   => $textRepo->getByLabel($labels, $page, $limit),
@@ -81,9 +79,8 @@ class TextController extends Controller {
 				'limit' => $limit,
 				'total' => $textRepo->countByLabel($labels)
 			)),
-			'route' => $this->getCurrentRoute(),
 			'route_params' => array('slug' => $slug),
-		));
+		);
 	}
 
 	public function listByAlphaAction($letter, $page, $_format) {
@@ -91,7 +88,7 @@ class TextController extends Controller {
 		$limit = 30;
 		$prefix = $letter == '-' ? null : $letter;
 
-		return $this->display("list_by_alpha.$_format", array(
+		return array(
 			'letter' => $letter,
 			'texts' => $textRepo->getByPrefix($prefix, $page, $limit),
 			'pager'    => new Pager(array(
@@ -100,7 +97,7 @@ class TextController extends Controller {
 				'total' => $textRepo->countByPrefix($prefix)
 			)),
 			'route_params' => array('letter' => $letter),
-		));
+		);
 	}
 
 	public function showAction(Request $request, $id, $_format) {
@@ -134,6 +131,45 @@ class TextController extends Controller {
 		throw $this->createNotFoundException("Неизвестен формат: $_format");
 	}
 
+	public function searchAction(Request $request, $_format) {
+		if ($_format == 'osd') {
+			return array();
+		}
+		if ($_format == 'suggest') {
+			$items = $descs = $urls = array();
+			$query = $request->query->get('q');
+			$texts = $this->em()->getTextRepository()->getByQuery(array(
+				'text'  => $query,
+				'by'    => 'title',
+				'match' => 'prefix',
+				'limit' => 10,
+			));
+			foreach ($texts as $text) {
+				$items[] = $text['title'];
+				$descs[] = '';
+				$urls[] = $this->generateUrl('text_show', array('id' => $text['id']), true);
+			}
+
+			return $this->displayJson(array($query, $items, $descs, $urls));
+		}
+		$searchService = new SearchService($this->em(), $this->get('templating'));
+		if (($query = $searchService->prepareQuery($request, $_format)) instanceof Response) {
+			return $query;
+		}
+
+		if (empty($query['by'])) {
+			$query['by'] = 'title,subtitle,origTitle';
+		}
+		$texts = $this->em()->getTextRepository()->getByQuery($query);
+		$found = count($texts) > 0;
+		return array(
+			'query' => $query,
+			'texts' => $texts,
+			'found' => $found,
+			'_status' => !$found ? 404 : null,
+		);
+	}
+
 	private function canRedirectToMirror($format) {
 		return in_array($format, array(
 			'epub',
@@ -154,22 +190,20 @@ class TextController extends Controller {
 	public function showHtml(Text $text, $part = 1) {
 		$nextHeader = $text->getNextHeaderByNr($part);
 		$nextPart = $nextHeader ? $nextHeader->getNr() : 0;
-		$this->view = array(
+		$similarTexts = array();
+		if (empty($nextPart)) {
+			$alikes = $text->getAlikes();
+			$similarTexts = $alikes ? $this->em()->getTextRepository()->getByIds(array_slice($alikes, 0, 30)) : array();
+		}
+		return array(
 			'text' => $text,
 			'authors' => $text->getAuthors(),
 			'part' => $part,
 			'next_part' => $nextPart,
 			'obj_count' => 3, /* after annotation and extra info */
+			'js_extra' => array('text'),
+			'similar_texts' => $similarTexts,
 		);
-
-		if (empty($nextPart)) {
-			$alikes = $text->getAlikes();
-			$this->view['similar_texts'] = $alikes ? $this->em()->getTextRepository()->getByIds(array_slice($alikes, 0, 30)) : array();
-		}
-
-		$this->view['js_extra'][] = 'text';
-
-		return $this->display('show');
 	}
 
 	public function randomAction() {
@@ -181,11 +215,10 @@ class TextController extends Controller {
 	public function similarAction($id) {
 		$text = $this->findText($id);
 		$alikes = $text->getAlikes();
-		$this->view = array(
+		return array(
 			'text' => $text,
 			'similar_texts' => $alikes ? $this->em()->getTextRepository()->getByIds(array_slice($alikes, 0, 30)) : array(),
 		);
-		return $this->display('similar');
 	}
 
 	public function ratingAction(Request $request, $id) {
@@ -211,19 +244,17 @@ class TextController extends Controller {
 		}
 
 		if ($request->isXmlHttpRequest() || $request->isMethod('GET')) {
-			$this->disableCache();
-			return $this->display('rating', array(
+			$this->responseAge = 0;
+			return array(
 				'text' => $text,
 				'form' => $form->createView(),
 				'rating' => $rating,
-			));
+			);
 		}
 		return $this->redirectToText($text);
 	}
 
 	public function newLabelAction(Request $request, $id) {
-		$this->disableCache();
-
 		if (!$this->getUser()->canPutTextLabel()) {
 			throw $this->createAccessDeniedException();
 		}
@@ -236,20 +267,21 @@ class TextController extends Controller {
 			// TODO Form::handleRequest() overwrites the Text object with an id, so we give $text explicitly
 			$service->addTextLabel($textLabel, $text);
 			if ($request->isXmlHttpRequest()) {
-				return $this->display('label_view', array('label' => $textLabel->getLabel()));
+				return array('_template' => 'App:Text:label_view.html.twig', 'label' => $textLabel->getLabel());
 			}
 			return $this->redirectToText($text);
 		}
 
-		return $this->display('new_label', array(
+		return array(
 			'text' => $text,
 			'text_label' => $textLabel,
 			'form' => $form->createView(),
-		));
+			'_cache' => 0,
+		);
 	}
 
 	public function deleteLabelAction(Request $request, $id, $labelId) {
-		$this->disableCache();
+		$this->responseAge = 0;
 
 		if (!$this->getUser()->canPutTextLabel()) {
 			throw $this->createAccessDeniedException();
@@ -267,25 +299,24 @@ class TextController extends Controller {
 
 	public function labelLogAction($id) {
 		$text = $this->findText($id);
-		$log = $this->em()->getTextLabelLogRepository()->getForText($text);
-		return $this->display('label_log', array(
+		return array(
 			'text' => $text,
-			'log' => $log,
-		));
+			'log' => $this->em()->getTextLabelLogRepository()->getForText($text),
+		);
 	}
 
 	public function fullLabelLogAction(Request $request) {
 		$page = $request->get('page', 1);
 		$limit = 30;
 		$repo = $this->em()->getTextLabelLogRepository();
-		return $this->display('label_log', array(
+		return array(
 			'log' => $repo->getAll($page, $limit),
 			'pager' => new Pager(array(
 				'page'  => $page,
 				'limit' => $limit,
 				'total' => $repo->count()
 			)),
-		));
+		);
 	}
 
 	/**
@@ -294,28 +325,27 @@ class TextController extends Controller {
 	 */
 	public function ratingsAction($id) {
 		$text = $this->findText($id);
-		$ratings = $this->em()->getTextRatingRepository()->getByText($text);
-		return $this->display('ratings', array(
+		return array(
 			'text' => $text,
-			'ratings' => $ratings,
-		));
+			'ratings' => $this->em()->getTextRatingRepository()->getByText($text),
+		);
 	}
 
 	public function markReadFormAction($id) {
-		$this->disableCache();
-
 		if ($this->getUser()->isAuthenticated()) {
 			$tr = $this->em()->getUserTextReadRepository()->findOneBy(array('text' => $id, 'user' => $this->getUser()->getId()));
 			if ($tr) {
 				return new Response('Произведението е отбелязано като прочетено.');
 			}
 		}
-
-		return $this->render('App:Text:mark_read_form.html.twig', array('id' => $id));
+		return array(
+			'id' => $id,
+			'_cache' => 0,
+		);
 	}
 
 	public function markReadAction(Request $request, $id) {
-		$this->disableCache();
+		$this->responseAge = 0;
 
 		if ( ! $this->getUser()->isAuthenticated()) {
 			throw $this->createAccessDeniedException();
@@ -331,7 +361,7 @@ class TextController extends Controller {
 	}
 
 	public function addBookmarkAction(Request $request, $id) {
-		$this->disableCache();
+		$this->responseAge = 0;
 
 		if ( ! $this->getUser()->isAuthenticated()) {
 			throw $this->createAccessDeniedException();

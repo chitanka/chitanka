@@ -11,10 +11,11 @@ class FeedbackController extends Controller {
 		$form = $this->createForm(new FeedbackType, new Feedback());
 		$adminEmail = $this->container->getParameter('admin_email');
 
+		$message = null;
 		if ($request->isMethod('POST') && $form->submit($request)->isValid()) {
 			$notifier = new Notifier($this->get('mailer'));
 			$notifier->sendPerMail($form->getData(), $adminEmail);
-			$this->view['message'] = 'Съобщението ви беше изпратено.';
+			$message = 'Съобщението ви беше изпратено.';
 //			if ( empty($this->referer) ) {
 //				return '';
 //			}
@@ -22,10 +23,11 @@ class FeedbackController extends Controller {
 //			return $this->redirect($this->generateUrl('task_success'));
 		}
 
-		$this->view['admin_email'] = key($adminEmail);
-		$this->view['form'] = $form->createView();
-
-		return $this->display('index');
+		return array(
+			'admin_email' => key($adminEmail),
+			'form' => $form->createView(),
+			'message' => $message,
+		);
 	}
 
 }

@@ -1,32 +1,28 @@
 <?php namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use App\Legacy\CacheManager;
 use App\Legacy\Legacy;
 use App\Service\WikiEngine;
+use Symfony\Component\HttpFoundation\Request;
 
 class WikiController extends Controller {
 
-	public function indexAction($page) {
+	public function indexAction(Request $request, $page) {
 		$url = str_replace('$1', ucfirst($page), $this->container->getParameter('wiki_url'));
-		$this->view = array(
+		return array(
 			'page' => $page,
 			'wiki_page' => $url,
-			'contents' => $this->getFromWiki($url)
+			'contents' => $this->getFromWiki($url, $request->query->get('cache', 1)),
 		);
-
-		return $this->display('index');
 	}
 
 	public function showAction($page) {
 		$wiki = $this->wikiEngine();
 		$wikiPage = $wiki->getPage($page);
-		if (!$wikiPage->exists()) {
-			$this->responseStatusCode = 404;
-		}
-		return $this->display('show', array(
+		return array(
 			'page' => $wikiPage,
-		));
+			'_status' => !$wikiPage->exists() ? 404 : null,
+		);
 	}
 
 	public function saveAction(Request $request) {
@@ -44,23 +40,19 @@ class WikiController extends Controller {
 	public function historyAction($page) {
 		$wiki = $this->wikiEngine();
 		$commits = $wiki->getHistory($page);
-		return $this->display('history', array(
+		return array(
 			'page' => $wiki->getPage($page),
 			'commits' => $commits,
-		));
+		);
 	}
 
-	protected function wikiEngine() {
+	private function wikiEngine() {
 		return new WikiEngine($this->container->getParameter('content_dir').'/wiki');
 	}
 
 	private function getFromWiki($url, $ttl = 1) {
 		$id = md5($url);
 		$action = 'wiki';
-
-		if ($this->get('request')->query->get('cache', 1) == 0) {
-			$ttl = 0;
-		}
 
 		if ( CacheManager::cacheExists($action, $id, $ttl) ) {
 			return CacheManager::getCache($action, $id);
