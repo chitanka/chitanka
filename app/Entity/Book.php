@@ -349,11 +349,9 @@ class Book extends BaseWork {
 	public function addLinks(BookLink $link) { $this->addLink($link); }
 
 	public function setHasAnno($hasAnno) { $this->hasAnno = $hasAnno; }
-	public function getHasAnno() { return $this->hasAnno; }
 	public function hasAnno() { return $this->hasAnno; }
 
 	public function setHasCover($hasCover) { $this->hasCover = $hasCover; }
-	public function getHasCover() { return $this->hasCover; }
 	public function hasCover() { return $this->hasCover; }
 
 	public function setSequence($sequence) { $this->sequence = $sequence; }

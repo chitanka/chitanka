@@ -154,7 +154,7 @@ class Text extends BaseWork {
 	private $size;
 
 	/**
-	 * @var int
+	 * @var float
 	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	private $zsize;
@@ -226,14 +226,14 @@ class Text extends BaseWork {
 	private $removedNotice;
 
 	/**
-	 * @var TextAuthor[]
+	 * @var ArrayCollection(<TextAuthor>)
 	 * @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"pos" = "ASC"})
 	 */
 	private $textAuthors;
 
 	/**
-	 * @var TextTranslator[]
+	 * @var ArrayCollection(<TextTranslator>)
 	 * @ORM\OneToMany(targetEntity="TextTranslator", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"pos" = "ASC"})
 	 */
@@ -250,13 +250,13 @@ class Text extends BaseWork {
 	private $translators;
 
 	/**
-	 * @var BookText[]
+	 * @var ArrayCollection(<BookText>)
 	 * @ORM\OneToMany(targetEntity="BookText", mappedBy="text")
 	 */
 	private $bookTexts;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	 * @var Book[]
+	 * @var ArrayCollection(<Book>)
 	 * @ORM\ManyToMany(targetEntity="Book", mappedBy="texts")
 	 * @ORM\JoinTable(name="book_text",
 	 *	joinColumns={@ORM\JoinColumn(name="text_id", referencedColumnName="id")},
@@ -266,21 +266,21 @@ class Text extends BaseWork {
 	private $books;
 
 	/**
-	 * @var Label[]
+	 * @var ArrayCollection(<Label>)
 	 * @ORM\ManyToMany(targetEntity="Label", inversedBy="texts")
 	 * @ORM\OrderBy({"name" = "ASC"})
 	 */
 	private $labels;
 
 	/**
-	 * @var TextHeader[]
+	 * @var ArrayCollection(<TextHeader>)
 	 * @ORM\OneToMany(targetEntity="TextHeader", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"nr" = "ASC"})
 	 */
 	private $headers;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	 * @var User[]
+	 * @var ArrayCollection(<User>)
 	 * @ORM\ManyToMany(targetEntity="User")
 	 * @ORM\JoinTable(name="user_text_read",
 	 *	joinColumns={@ORM\JoinColumn(name="text_id")},
@@ -289,19 +289,19 @@ class Text extends BaseWork {
 	private $readers;
 
 	/**
-	 * @var UserTextContrib[]
+	 * @var ArrayCollection(<UserTextContrib>)
 	 * @ORM\OneToMany(targetEntity="UserTextContrib", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 */
 	private $userContribs;
 
 	/**
-	 * @var TextRevision[]
+	 * @var ArrayCollection(<TextRevision>)
 	 * @ORM\OneToMany(targetEntity="TextRevision", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 */
 	private $revisions;
 
 	/**
-	 * @var TextLink[]
+	 * @var ArrayCollection(<TextLink>)
 	 * @ORM\OneToMany(targetEntity="TextLink", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 */
 	private $links;
@@ -411,8 +411,11 @@ class Text extends BaseWork {
 	public function setVotes($votes) { $this->votes = $votes; }
 	public function getVotes() { return $this->votes; }
 
+	/**
+	 * @param bool $hasAnno
+	 */
 	public function setHasAnno($hasAnno) { $this->hasAnno = $hasAnno; }
-	public function getHasAnno() { return $this->hasAnno; }
+	public function hasAnno() { return $this->hasAnno; }
 
 // 	public function setHasTitleNote($hasTitleNote) { $this->hasTitleNote = $hasTitleNote; }
 // 	public function getHasTitleNote() { return $this->hasTitleNote; }
