@@ -19,7 +19,7 @@ class WorkroomController extends Controller {
 		return $this->legacyPage('Work');
 	}
 
-	public function listAction($_format) {
+	public function listAction() {
 		$_REQUEST['vl'] = 'listonly';
 
 		return $this->legacyPage('Work');

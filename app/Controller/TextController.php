@@ -27,23 +27,23 @@ class TextController extends Controller {
 		return array();
 	}
 
-	public function listByTypeIndexAction($_format) {
+	public function listByTypeIndexAction() {
 		return array(
 			'types' => $this->em()->getTextRepository()->getTypes()
 		);
 	}
 
-	public function listByLabelIndexAction($_format) {
+	public function listByLabelIndexAction() {
 		return array(
 			'labels' => $this->em()->getLabelRepository()->getAll()
 		);
 	}
 
-	public function listByAlphaIndexAction($_format) {
+	public function listByAlphaIndexAction() {
 		return array();
 	}
 
-	public function listByTypeAction($type, $page, $_format) {
+	public function listByTypeAction($type, $page) {
 		$textRepo = $this->em()->getTextRepository();
 		$limit = 30;
 
@@ -59,7 +59,7 @@ class TextController extends Controller {
 		);
 	}
 
-	public function listByLabelAction($slug, $page, $_format) {
+	public function listByLabelAction($slug, $page) {
 		$textRepo = $this->em()->getTextRepository();
 		$limit = 30;
 
@@ -83,7 +83,7 @@ class TextController extends Controller {
 		);
 	}
 
-	public function listByAlphaAction($letter, $page, $_format) {
+	public function listByAlphaAction($letter, $page) {
 		$textRepo = $this->em()->getTextRepository();
 		$limit = 30;
 		$prefix = $letter == '-' ? null : $letter;

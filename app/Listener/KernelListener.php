@@ -31,7 +31,6 @@ class KernelListener implements EventSubscriberInterface {
 	/** @var \Twig_Environment */
 	private $twig;
 	private $em;
-	/** @var array */
 	private $controller;
 	private $contentDir;
 	private $useHttpCache;
@@ -111,7 +110,7 @@ class KernelListener implements EventSubscriberInterface {
 		return array();
 	}
 
-	private function createTemplateReference($controller, Request $request, $engine = 'twig') {
+	private function createTemplateReference(array $controller, Request $request, $engine = 'twig') {
 		$controllerClass = get_class($controller[0]);
 		if (!preg_match('/Controller\\\\(.+)Controller$/', $controllerClass, $matchController)) {
 			throw new \InvalidArgumentException("The '{$controllerClass}' class does not look like a controller class. It must be in a 'Controller' sub-namespace and the class name must end with 'Controller')");

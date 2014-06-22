@@ -2,7 +2,7 @@
 
 class ForeignBookController extends Controller {
 
-	public function indexAction($_format) {
+	public function indexAction() {
 		return array(
 			'books' => $this->em()->getForeignBookRepository()->getLatest(100)
 		);

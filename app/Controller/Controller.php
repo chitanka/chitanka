@@ -32,7 +32,7 @@ abstract class Controller extends SymfonyController {
 			return $this->urlRedirect($page->redirect);
 		}
 
-		$params += $this->getDisplayVariables() + array(
+		$params += array(
 			'page' => $page,
 			'navlinks' => $this->renderLayoutComponent('sidebar-menu', 'App::navlinks.html.twig'),
 			'footer_links' => $this->renderLayoutComponent('footer-menu', 'App::footer_links.html.twig'),
