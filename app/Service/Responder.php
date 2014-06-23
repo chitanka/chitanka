@@ -15,7 +15,6 @@ class Responder {
 	/** @var \Twig_Environment */
 	private $twig;
 	private $em;
-	private $controller;
 	private $contentDir;
 	private $useHttpCache;
 	private $debug;
@@ -40,7 +39,7 @@ class Responder {
 	/**
 	 *
 	 * @param Request $request
-	 * @param array $controller A callable controller action as an array
+	 * @param callable $controller A callable controller action as an array
 	 * @param array $params
 	 * @return Response
 	 */
@@ -61,7 +60,6 @@ class Responder {
 		$response->setContent($this->twig->render($template, $params));
 		if ($params['_cache']) {
 			$response->setSharedMaxAge($params['_cache']);
-			$response->setMaxAge($params['_cache']);
 		}
 		if ($params['_status']) {
 			$response->setStatusCode($params['_status']);
