@@ -30,11 +30,11 @@ class WikiController extends Controller {
 		$wiki = $this->wikiEngine();
 		$user = $this->getUser();
 		$wiki->savePage($input->get('summary'), $input->get('page'), $input->get('content'), $input->get('title'), "{$user->getUsername()} <{$user->getUsername()}@chitanka>");
-		return $this->displayJson(1);
+		return $this->asJson(1);
 	}
 
 	public function previewAction(Request $request) {
-		return $this->displayText(WikiEngine::markdownToHtml($request->request->get('content')));
+		return $this->asText(WikiEngine::markdownToHtml($request->request->get('content')), 'text/html');
 	}
 
 	public function historyAction($page) {

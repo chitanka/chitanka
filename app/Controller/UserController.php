@@ -135,7 +135,7 @@ class UserController extends Controller {
 
 		$texts = $request->get('texts');
 
-		return $this->displayJson(array(
+		return $this->asJson(array(
 			'read' => array_flip($this->em()->getUserTextReadRepository()->getValidTextIds($this->getUser(), $texts)),
 			'favorities' => array_flip($this->em()->getBookmarkRepository()->getValidTextIds($this->getUser(), $texts)),
 		));

@@ -21,7 +21,7 @@ class TranslatorController extends PersonController {
 				$urls[] = $this->generateUrl('translator_show', array('slug' => $person['slug']), true);
 			}
 
-			return $this->displayJson(array($query, $items, $descs, $urls));
+			return $this->asJson(array($query, $items, $descs, $urls));
 		}
 		return array();
 	}

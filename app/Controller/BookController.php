@@ -114,15 +114,15 @@ class BookController extends Controller {
 				return $this->urlRedirect($this->processDownload($book, $_format));
 			case 'txt':
 				Setup::doSetup($this->container);
-				return $this->displayText($book->getContentAsTxt(), array('Content-Type' => 'text/plain'));
+				return $this->asText($book->getContentAsTxt());
 			case 'fb2':
 				Setup::doSetup($this->container);
-				return $this->displayText($book->getContentAsFb2(), array('Content-Type' => 'application/xml'));
+				return $this->asText($book->getContentAsFb2(), 'application/xml');
 			case 'sfb':
 				Setup::doSetup($this->container);
-				return $this->displayText($book->getContentAsSfb(), array('Content-Type' => 'text/plain'));
+				return $this->asText($book->getContentAsSfb());
 			case 'data':
-				return $this->displayText($book->getDataAsPlain(), array('Content-Type' => 'text/plain'));
+				return $this->asText($book->getDataAsPlain());
 			case 'opds':
 				break;
 			case 'pic':
@@ -159,7 +159,7 @@ class BookController extends Controller {
 				$urls[] = $this->generateUrl('book_show', array('id' => $book['id']), true);
 			}
 
-			return $this->displayJson(array($query, $items, $descs, $urls));
+			return $this->asJson(array($query, $items, $descs, $urls));
 		}
 		$searchService = new SearchService($this->em(), $this->get('templating'));
 		if (($query = $searchService->prepareQuery($request, $_format)) instanceof Response) {

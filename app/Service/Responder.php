@@ -45,26 +45,41 @@ class Responder {
 	 */
 	public function createResponse(Request $request, $controller, $params) {
 		$response = new Response();
-		$params += $this->getExtraParamsForFormat($request->getRequestFormat()) + array(
-			'navlinks' => $this->renderLayoutComponent('sidebar-menu', 'App::navlinks.html.twig'),
-			'footer_links' => $this->renderLayoutComponent('footer-menu', 'App::footer_links.html.twig'),
-			'current_route' => $request->attributes->get('_route'),
-			'environment' => $this->debug ? 'dev' : 'prod',
-			'ajax' => $request->isXmlHttpRequest(),
-			'_template' => null,
-			'_status' => null,
+		$params += array(
 			'_cache' => $this->useHttpCache ? 86400/*24 hours*/ : 0,
+			'_status' => null,
+			'_type' => null,
 		);
+		if (isset($params['_content'])) {
+			$content = $params['_content'];
+		} else {
+			$params += $this->getExtraParamsForFormat($request->getRequestFormat()) + $this->createExtraTemplateParams($request);
+			$template = $params['_template'] ?: $this->createTemplateReference($controller, $request)->getLogicalName();
+			$content = $this->twig->render($template, $params);
+		}
 
-		$template = $params['_template'] ?: $this->createTemplateReference($controller, $request)->getLogicalName();
-		$response->setContent($this->twig->render($template, $params));
+		$response->setContent($content);
 		if ($params['_cache']) {
 			$response->setSharedMaxAge($params['_cache']);
 		}
 		if ($params['_status']) {
 			$response->setStatusCode($params['_status']);
 		}
+		if ($params['_type']) {
+			$response->headers->set('Content-Type', $params['_type']);
+		}
 		return $response;
+	}
+
+	private function createExtraTemplateParams(Request $request) {
+		return array(
+			'navlinks' => $this->renderLayoutComponent('sidebar-menu', 'App::navlinks.html.twig'),
+			'footer_links' => $this->renderLayoutComponent('footer-menu', 'App::footer_links.html.twig'),
+			'current_route' => $request->attributes->get('_route'),
+			'environment' => $this->debug ? 'dev' : 'prod',
+			'ajax' => $request->isXmlHttpRequest(),
+			'_template' => null,
+		);
 	}
 
 	private function getExtraParamsForFormat($format) {

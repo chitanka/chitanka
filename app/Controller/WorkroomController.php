@@ -78,7 +78,7 @@ class WorkroomController extends Controller {
 		$this->em()->getWorkContribRepository()->save($contrib);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->displayJson($contrib);
+			return $this->asJson($contrib);
 		}
 
 		return $this->urlRedirect($this->generateUrl('workroom_entry_edit', array('id' => $entry->getId())));

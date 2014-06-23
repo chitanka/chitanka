@@ -117,16 +117,16 @@ class TextController extends Controller {
 				return $this->urlRedirect($this->getWebRoot() . $service->generateFile(explode(',', $id), $_format, $request->get('filename')));
 			case 'fb2':
 				Setup::doSetup($this->container);
-				return $this->displayText($this->findText($id, true)->getContentAsFb2(), array('Content-Type' => 'application/xml'));
+				return $this->asText($this->findText($id, true)->getContentAsFb2(), 'application/xml');
 			case 'fbi':
 				Setup::doSetup($this->container);
-				return $this->displayText($this->findText($id, true)->getFbi(), array('Content-Type' => 'text/plain'));
+				return $this->asText($this->findText($id, true)->getFbi());
 			case 'txt':
-				return $this->displayText($this->findText($id, true)->getContentAsTxt(), array('Content-Type' => 'text/plain'));
+				return $this->asText($this->findText($id, true)->getContentAsTxt());
 			case 'sfb':
-				return $this->displayText($this->findText($id, true)->getContentAsSfb(), array('Content-Type' => 'text/plain'));
+				return $this->asText($this->findText($id, true)->getContentAsSfb());
 			case 'data':
-				return $this->displayText($this->findText($id, true)->getDataAsPlain(), array('Content-Type' => 'text/plain'));
+				return $this->asText($this->findText($id, true)->getDataAsPlain());
 		}
 		throw $this->createNotFoundException("Неизвестен формат: $_format");
 	}
@@ -150,7 +150,7 @@ class TextController extends Controller {
 				$urls[] = $this->generateUrl('text_show', array('id' => $text['id']), true);
 			}
 
-			return $this->displayJson(array($query, $items, $descs, $urls));
+			return $this->asJson(array($query, $items, $descs, $urls));
 		}
 		$searchService = new SearchService($this->em(), $this->get('templating'));
 		if (($query = $searchService->prepareQuery($request, $_format)) instanceof Response) {
@@ -292,7 +292,7 @@ class TextController extends Controller {
 		$service->removeTextLabel($text, $label);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->displayText(1);
+			return $this->asText(1);
 		}
 		return $this->redirectToText($text);
 	}
@@ -355,7 +355,7 @@ class TextController extends Controller {
 		$this->em()->getUserTextReadRepository()->save(new UserTextRead($this->getSavableUser(), $text));
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->displayJson('Произведението е отбелязано като прочетено.');
+			return $this->asJson('Произведението е отбелязано като прочетено.');
 		}
 		return $this->redirectToText($text);
 	}
@@ -375,7 +375,7 @@ class TextController extends Controller {
 			$response = $bookmark
 				? array('addClass' => 'active', 'setTitle' => 'Премахване от Избрани')
 				: array('removeClass' => 'active', 'setTitle' => 'Добавяне в Избрани');
-			return $this->displayJson($response);
+			return $this->asJson($response);
 		}
 		return $this->redirectToText($text);
 	}

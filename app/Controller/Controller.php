@@ -22,11 +22,6 @@ abstract class Controller extends SymfonyController {
 	 * @param array $params
 	 */
 	protected function legacyPage($page, array $params = array()) {
-		if (strpos($page, '.') === false) {
-			$format = 'html';
-		} else {
-			list($page, $format) = explode('.', $page);
-		}
 		$page = Setup::getPage($page, $this, $this->container);
 		if ($page->redirect) {
 			return $this->urlRedirect($page->redirect);
@@ -45,7 +40,7 @@ abstract class Controller extends SymfonyController {
 			$params['inline_js'] = $page->inlineJs;
 		}
 
-		$response = $this->render("App:{$params['_controller']}.$format.twig", $params);
+		$response = $this->render("App:{$params['_controller']}.html.twig", $params);
 		$this->setCacheStatusByResponse($response);
 
 		return $response;
@@ -64,18 +59,15 @@ abstract class Controller extends SymfonyController {
 		return $this->renderView($fallbackTemplate);
 	}
 
-	protected function displayText($text, $headers = array()) {
-		$response = new Response($text);
-		foreach ($headers as $header => $value) {
-			$response->headers->set($header, $value);
-		}
-		$this->setCacheStatusByResponse($response);
-
-		return $response;
+	protected function asText($text, $contentType = 'text/plain') {
+		return array(
+			'_content' => $text,
+			'_type' => $contentType,
+		);
 	}
 
-	protected function displayJson($content, $headers = array()) {
-		return $this->displayText(json_encode($content), $headers);
+	protected function asJson($content) {
+		return $this->asText(json_encode($content));
 	}
 
 	protected function setCacheStatusByResponse(Response $response) {
