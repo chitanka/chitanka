@@ -1,5 +1,6 @@
 <?php namespace App\Command;
 
+use App\Service\TextService;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -45,6 +46,7 @@ EOT
 			$dql .= " AND t.id IN ($texts)";
 		}
 		$iterableResult = $this->em->createQuery($dql)->iterate();
+		$textService = new TextService($this->olddb());
 		foreach ($iterableResult AS $row) {
 			$text = $row[0];
 			if ($text->isCompilation()) {
@@ -53,7 +55,7 @@ EOT
 			} else {
 				$file = $this->webDir($text->getMainContentFile());
 			}
-			$queries = array_merge($queries, $this->buildTextHeadersUpdateQuery($file, $text->getId(), $text->getHeadlevel()));
+			$queries = array_merge($queries, $textService->buildTextHeadersUpdateQuery($file, $text->getId(), $text->getHeadlevel()));
 			$this->em->setFree($text); // free memory
 		}
 

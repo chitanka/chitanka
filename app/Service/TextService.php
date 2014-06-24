@@ -64,6 +64,26 @@ class TextService {
 		return $alikes;
 	}
 
+	public function buildTextHeadersUpdateQuery($file, $textId, $headlevel) {
+		require_once __DIR__ . '/../Legacy/SfbParserSimple.php';
+
+		$data = array();
+		foreach (\App\Legacy\makeDbRows($file, $headlevel) as $row) {
+			$name = $row[2];
+			$name = strtr($name, array('_'=>''));
+			$name = $this->legacyDb->escape(String::my_replace($name));
+			$data[] = array($textId, $row[0], $row[1], $name, $row[3], $row[4]);
+		}
+		$qs = array();
+		$qs[] = $this->legacyDb->deleteQ('text_header', array('text_id' => $textId));
+		if ( !empty($data) ) {
+			$fields = array('text_id', 'nr', 'level', 'name', 'fpos', 'linecnt');
+			$qs[] = $this->legacyDb->multiinsertQ('text_header', $data, $fields);
+		}
+
+		return $qs;
+	}
+
 	/**
 	 * Get similar texts based ot readers count.
 	 * @param Text $text

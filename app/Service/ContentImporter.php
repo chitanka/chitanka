@@ -1,6 +1,7 @@
 <?php namespace App\Service;
 
 use App\Entity\EntityManager;
+use App\Service\TextService;
 use App\Util\File;
 use App\Util\String;
 
@@ -503,6 +504,7 @@ class ContentImporter {
 
 		if ($this->saveFiles) {
 			$path = File::makeContentFilePath($work['id']);
+			$textService = new TextService($this->olddb);
 			if (isset($work['tmpl'])) {
 				File::myfile_put_contents("$this->contentDir/text/$path", String::my_replace($work['tmpl']));
 
@@ -516,14 +518,14 @@ class ContentImporter {
 				$tmpname = 'text.'.uniqid();
 				file_put_contents($tmpname, $fullText);
 				if (isset($work['toc_level'])) {
-					$qs = array_merge($qs, $this->buildTextHeadersUpdateQuery($tmpname, $work['id'], $work['toc_level']));
+					$qs = array_merge($qs, $textService->buildTextHeadersUpdateQuery($tmpname, $work['id'], $work['toc_level']));
 				}
 				unlink($tmpname);
 			} else if (isset($work['text'])) {
 				$entryFile = "$this->contentDir/text/$path";
 				$this->copyTextFile($work['text'], $entryFile);
 				if (isset($work['toc_level'])) {
-					$qs = array_merge($qs, $this->buildTextHeadersUpdateQuery($entryFile, $work['id'], $work['toc_level']));
+					$qs = array_merge($qs, $textService->buildTextHeadersUpdateQuery($entryFile, $work['id'], $work['toc_level']));
 				}
 			}
 			if (isset($work['anno'])) {

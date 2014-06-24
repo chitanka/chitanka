@@ -91,26 +91,6 @@ abstract class Command extends ContainerAwareCommand {
 		$connection->commit();
 	}
 
-	public function buildTextHeadersUpdateQuery($file, $textId, $headlevel) {
-		require_once __DIR__ . '/../Legacy/SfbParserSimple.php';
-
-		$data = array();
-		foreach (\App\Legacy\makeDbRows($file, $headlevel) as $row) {
-			$name = $row[2];
-			$name = strtr($name, array('_'=>''));
-			$name = $this->olddb()->escape(String::my_replace($name));
-			$data[] = array($textId, $row[0], $row[1], $name, $row[3], $row[4]);
-		}
-		$qs = array();
-		$qs[] = $this->olddb()->deleteQ('text_header', array('text_id' => $textId));
-		if ( !empty($data) ) {
-			$fields = array('text_id', 'nr', 'level', 'name', 'fpos', 'linecnt');
-			$qs[] = $this->olddb()->multiinsertQ('text_header', $data, $fields);
-		}
-
-		return $qs;
-	}
-
 	public function printQueries($queries) {
 		echo str_replace('*/;', '*/', implode(";\n", $queries) . ";\n");
 	}
