@@ -71,6 +71,10 @@ class Responder {
 		return $response;
 	}
 
+	/**
+	 * @param Request $request
+	 * @return array
+	 */
 	private function createExtraTemplateParams(Request $request) {
 		return array(
 			'navlinks' => $this->renderLayoutComponent('sidebar-menu', 'App::navlinks.html.twig'),
@@ -82,6 +86,10 @@ class Responder {
 		);
 	}
 
+	/**
+	 * @param string $format
+	 * @return array
+	 */
 	private function getExtraParamsForFormat($format) {
 		switch ($format) {
 			case 'opds':
@@ -100,7 +108,14 @@ class Responder {
 		return array();
 	}
 
-	private function createTemplateReference(array $controller, Request $request, $engine = 'twig') {
+	/**
+	 * @param callable $controller A callable controller action as an array
+	 * @param Request $request
+	 * @param string $engine
+	 * @return TemplateReference
+	 * @throws \InvalidArgumentException
+	 */
+	private function createTemplateReference($controller, Request $request, $engine = 'twig') {
 		$controllerClass = get_class($controller[0]);
 		if (!preg_match('/Controller\\\\(.+)Controller$/', $controllerClass, $matchController)) {
 			throw new \InvalidArgumentException("The '{$controllerClass}' class does not look like a controller class. It must be in a 'Controller' sub-namespace and the class name must end with 'Controller')");
@@ -114,6 +129,7 @@ class Responder {
 	/**
 	 * @param string $wikiPage
 	 * @param string $fallbackTemplate
+	 * @return string
 	 */
 	private function renderLayoutComponent($wikiPage, $fallbackTemplate) {
 		$wikiPagePath = "{$this->contentDir}/wiki/special/{$wikiPage}.html";
