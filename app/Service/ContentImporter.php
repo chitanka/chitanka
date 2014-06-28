@@ -373,14 +373,14 @@ class ContentImporter {
 	}
 
 	private function generateSqlForTextAndCo(array $work, $textContent) {
-		return array_filter(array_merge(
-			(array) $this->generateSqlForText($work),
-			(array) $this->generateSqlForTextRevision($work),
-			(array) $this->generateSqlForTextAuthor($work),
-			(array) $this->generateSqlForTextTranslator($work),
-			(array) $this->generateSqlForTextLabel($work),
-			(array) $this->generateSqlForTextHeaders($work, $textContent),
-			(array) $this->generateSqlForUserTextContrib($work)));
+		return array_merge(
+			$this->generateSqlForText($work),
+			$this->generateSqlForTextRevision($work),
+			$this->generateSqlForTextAuthor($work),
+			$this->generateSqlForTextTranslator($work),
+			$this->generateSqlForTextLabel($work),
+			$this->generateSqlForTextHeaders($work, $textContent),
+			$this->generateSqlForUserTextContrib($work));
 	}
 
 	private function generateSqlForText(array $work) {
@@ -464,17 +464,17 @@ class ContentImporter {
 		}
 
 		if ($work['is_new']) {
-			return $this->olddb->replaceQ(DBT_TEXT, $set);
+			return array($this->olddb->replaceQ(DBT_TEXT, $set));
 		}
 		if (count($set) > 1) {
-			return $this->olddb->updateQ(DBT_TEXT, $set, array('id' => $work['id']));
+			return array($this->olddb->updateQ(DBT_TEXT, $set, array('id' => $work['id'])));
 		}
-		return null;
+		return array();
 	}
 
 	private function generateSqlForTextRevision(array $work) {
 		if (!isset($work['revision'])) {
-			return null;
+			return array();
 		}
 		$set = array(
 			'id' => $work['revision_id'],
@@ -492,7 +492,7 @@ class ContentImporter {
 
 	private function generateSqlForTextAuthor(array $work) {
 		if (empty($work['authors'])) {
-			return null;
+			return array();
 		}
 		$sql = array($this->olddb->deleteQ(DBT_AUTHOR_OF, array('text_id' => $work['id'])));
 		foreach ($work['authors'] as $pos => $author) {
@@ -519,7 +519,7 @@ class ContentImporter {
 
 	private function generateSqlForTextTranslator(array $work) {
 		if (empty($work['translators'])) {
-			return nulll;
+			return array();
 		}
 		$sql = array($this->olddb->deleteQ(DBT_TRANSLATOR_OF, array('text_id' => $work['id'])));
 		foreach ($work['translators'] as $pos => $translator) {
@@ -538,7 +538,7 @@ class ContentImporter {
 
 	private function generateSqlForTextLabel(array $work) {
 		if (empty($work['labels'])) {
-			return null;
+			return array();
 		}
 		$sql = array($this->olddb->deleteQ('text_label', array('text_id' => $work['id'])));
 		foreach ($work['labels'] as $label) {
@@ -552,7 +552,7 @@ class ContentImporter {
 
 	private function generateSqlForUserTextContrib(array $work) {
 		if (!isset($work['text']) || !isset($work['users'])) {
-			return null;
+			return array();
 		}
 		$sql = array();
 		if (isset($work['users_as_new']) && $work['users_as_new']) {
@@ -583,15 +583,16 @@ class ContentImporter {
 
 	private function generateSqlForTextHeaders(array $work, $textContent) {
 		if (!isset($work['toc_level']) || empty($textContent)) {
-			return null;
+			return array();
 		}
 		$textService = new TextService($this->olddb);
 		if (isset($work['tmpl'])) {
-			return $textService->buildTextHeadersUpdateQuery($textContent, $work['id'], $work['toc_level']);
+			return array($textService->buildTextHeadersUpdateQuery($textContent, $work['id'], $work['toc_level']));
 		}
 		if (isset($work['text'])) {
-			return $textService->buildTextHeadersUpdateQuery($textContent, $work['id'], $work['toc_level']);
+			return array($textService->buildTextHeadersUpdateQuery($textContent, $work['id'], $work['toc_level']));
 		}
+		return array();
 	}
 
 	private function saveTextFiles(array $work) {
@@ -630,11 +631,11 @@ class ContentImporter {
 	}
 
 	private function generateSqlForBookAndCo(array $book) {
-		return array_filter(array_merge(
-			(array) $this->generateSqlForBook($book),
-			(array) $this->generateSqlForBookRevision($book),
-			(array) $this->generateSqlForBookAuthors($book),
-			(array) $this->generateSqlForBookTexts($book)));
+		return array_merge(
+			$this->generateSqlForBook($book),
+			$this->generateSqlForBookRevision($book),
+			$this->generateSqlForBookAuthors($book),
+			$this->generateSqlForBookTexts($book));
 	}
 
 	private function generateSqlForBook(array $book) {
@@ -699,17 +700,17 @@ class ContentImporter {
 		}
 
 		if ($book['is_new']) {
-			return $this->olddb->replaceQ(DBT_BOOK, $set);
+			return array($this->olddb->replaceQ(DBT_BOOK, $set));
 		}
 		if (count($set) > 1) {
-			return $this->olddb->updateQ(DBT_BOOK, $set, array('id' => $book['id']));
+			return array($this->olddb->updateQ(DBT_BOOK, $set, array('id' => $book['id'])));
 		}
-		return null;
+		return array();
 	}
 
 	private function generateSqlForBookRevision(array $book) {
 		if (!isset($book['revision'])) {
-			return null;
+			return array();
 		}
 		$set = array(
 			'id' => $book['revision_id'],
@@ -718,12 +719,12 @@ class ContentImporter {
 			'date' => $this->modifDate,
 			'first' => ($book['is_new'] ? 1 : 0),
 		);
-		return $this->olddb->replaceQ('book_revision', $set);
+		return array($this->olddb->replaceQ('book_revision', $set));
 	}
 
 	private function generateSqlForBookAuthors(array $book) {
 		if (empty($book['authors'])) {
-			return null;
+			return array();
 		}
 		$sql = array($this->olddb->deleteQ('book_author', array('book_id' => $book['id'])));
 		foreach ($book['authors'] as $pos => $author) {
@@ -740,7 +741,7 @@ class ContentImporter {
 
 	private function generateSqlForBookTexts(array $book) {
 		if (empty($book['works'])) {
-			return null;
+			return array();
 		}
 		$bookTextRepo = $this->em->getBookTextRepository();
 		$sql = array();
