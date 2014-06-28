@@ -73,10 +73,10 @@ class TextDownloadService {
 	}
 
 	private function addSfbToDlFileFromCache($textId) {
-		$fEntry = unserialize( CacheManager::getDlCache($textId), '.sfb' );
+		$fEntry = unserialize(CacheManager::getDlCache($textId, '.sfb'));
 		$this->zf->addFileEntry($fEntry);
 		if ( $this->withFbi ) {
-			$this->zf->addFileEntry(unserialize( CacheManager::getDlCache($textId, '.fbi') ) );
+			$this->zf->addFileEntry(unserialize(CacheManager::getDlCache($textId, '.fbi')));
 		}
 		$this->filename = $this->rmFEntrySuffix($fEntry['name']);
 		return true;
@@ -106,7 +106,7 @@ class TextDownloadService {
 	}
 
 	private function addFb2ToDlFileFromCache($textId) {
-		$fEntry = unserialize( CacheManager::getDlCache($textId, '.fb2') );
+		$fEntry = unserialize(CacheManager::getDlCache($textId, '.fb2'));
 		$this->zf->addFileEntry($fEntry);
 		$this->filename = $this->rmFEntrySuffix($fEntry['name']);
 		return true;
@@ -128,7 +128,7 @@ class TextDownloadService {
 	}
 
 	private function addTxtToDlFileFromCache($textId) {
-		$fEntry = unserialize( CacheManager::getDlCache($textId, '.txt') );
+		$fEntry = unserialize(CacheManager::getDlCache($textId, '.txt'));
 		$this->zf->addFileEntry($fEntry);
 		$this->filename = $this->rmFEntrySuffix($fEntry['name']);
 		return true;

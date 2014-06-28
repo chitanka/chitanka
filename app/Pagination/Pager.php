@@ -14,7 +14,7 @@ class Pager {
 			}
 		}
 
-		$this->count = ceil($this->total / $this->limit);
+		$this->count = (int) ceil($this->total / $this->limit);
 		if ($this->page > $this->count) {
 			$this->page = $this->count;
 		}
