@@ -1,7 +1,7 @@
 <?php namespace App\Generator;
 
 use App\Entity\Text;
-use App\Util\File;
+use App\Service\ContentService;
 use Sfblib\SfbToHtmlConverter;
 
 class TextHtmlGenerator {
@@ -14,7 +14,7 @@ class TextHtmlGenerator {
 	 * @return string
 	 */
 	public function generateHtml(Text $text, $imgDirPrefix = '', $part = 1, $objCount = 0) {
-		$imgDir = $imgDirPrefix . File::getContentFilePath('img', $text->getId());
+		$imgDir = $imgDirPrefix . ContentService::getContentFilePath('img', $text->getId());
 		$conv = new SfbToHtmlConverter($text->getRawContent(true), $imgDir);
 
 		// TODO do not hardcode it; inject it through parameter

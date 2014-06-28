@@ -1,5 +1,6 @@
 <?php namespace App\Entity;
 
+use App\Service\ContentService;
 use App\Util\File;
 use App\Util\String;
 use Sfblib\SfbConverter;
@@ -227,7 +228,7 @@ abstract class BaseWork extends Entity {
 	}
 
 	private static function loadAnnotation($id) {
-		$file = File::getInternalContentFilePath(static::$annotationDir, $id);
+		$file = ContentService::getInternalContentFilePath(static::$annotationDir, $id);
 		return file_exists($file) ? file_get_contents($file) : null;
 	}
 
@@ -271,7 +272,7 @@ abstract class BaseWork extends Entity {
 	}
 
 	private static function loadExtraInfo($id) {
-		$file = File::getInternalContentFilePath(static::$infoDir, $id);
+		$file = ContentService::getInternalContentFilePath(static::$infoDir, $id);
 		return file_exists($file) ? file_get_contents($file) : null;
 	}
 
@@ -295,7 +296,7 @@ abstract class BaseWork extends Entity {
 	 * @param string $dir     Target directory
 	 */
 	private function saveContentInFile($content, $dir) {
-		$file = File::getInternalContentFilePath($dir, $this->getId());
+		$file = ContentService::getInternalContentFilePath($dir, $this->getId());
 		$fs = new \Symfony\Component\Filesystem\Filesystem();
 		if ($content) {
 			$fs->dumpFile($file, String::my_replace($content));

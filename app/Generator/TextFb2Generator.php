@@ -2,7 +2,7 @@
 
 use App\Entity\Text;
 use App\Entity\Person;
-use App\Util\File;
+use App\Service\ContentService;
 use Sfblib\SfbToFb2Converter;
 
 class TextFb2Generator {
@@ -105,7 +105,7 @@ class TextFb2Generator {
 	);
 
 	public function generateFb2(Text $text) {
-		$converter = new SfbToFb2Converter($text->getContentAsSfb(), File::getInternalContentFilePath('img', $text->getId()));
+		$converter = new SfbToFb2Converter($text->getContentAsSfb(), ContentService::getInternalContentFilePath('img', $text->getId()));
 
 		$converter->setObjectCount(1);
 		$converter->setSubtitle(strtr($text->getSubtitle(), array('\n' => ' — ')));

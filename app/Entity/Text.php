@@ -3,6 +3,7 @@
 use App\Generator\TextFb2Generator;
 use App\Generator\TextFbiGenerator;
 use App\Generator\TextHtmlGenerator;
+use App\Service\ContentService;
 use App\Util\Char;
 use App\Util\Date;
 use App\Util\File;
@@ -649,7 +650,7 @@ class Text extends BaseWork {
 			return $this->hasTitleNote;
 		}
 
-		$conv = new SfbToHtmlConverter( File::getInternalContentFilePath( 'text', $this->getId() ) );
+		$conv = new SfbToHtmlConverter( ContentService::getInternalContentFilePath( 'text', $this->getId() ) );
 		return $this->hasTitleNote = $conv->hasTitleNote();
 	}
 
@@ -668,11 +669,11 @@ class Text extends BaseWork {
 	}
 
 	public function getImages() {
-		return $this->getImagesFromDir(File::getInternalContentFilePath('img', $this->getId()));
+		return $this->getImagesFromDir(ContentService::getInternalContentFilePath('img', $this->getId()));
 	}
 
 	public function getThumbImages() {
-		return $this->getImagesFromDir(File::getInternalContentFilePath('img', $this->getId()) . '/thumb');
+		return $this->getImagesFromDir(ContentService::getInternalContentFilePath('img', $this->getId()) . '/thumb');
 	}
 
 	/**
@@ -713,7 +714,7 @@ class Text extends BaseWork {
 	 * @param string $imgDirPrefix
 	 */
 	protected function _getContentHtml($content, $imgDirPrefix) {
-		$imgDir = $imgDirPrefix . File::getContentFilePath('img', $this->getId());
+		$imgDir = $imgDirPrefix . ContentService::getContentFilePath('img', $this->getId());
 		$conv = new SfbToHtmlConverter($content, $imgDir);
 
 		return $conv->convert()->getContent();
@@ -723,7 +724,7 @@ class Text extends BaseWork {
 		$info = '';
 		foreach ($this->bookTexts as $bookText) {
 			if ($bookText->getShareInfo()) {
-				$file = File::getInternalContentFilePath('book-info', $bookText->getBook()->getId());
+				$file = ContentService::getInternalContentFilePath('book-info', $bookText->getBook()->getId());
 				if ( file_exists($file) ) {
 					$info .= "\n\n" . file_get_contents($file);
 				}
@@ -783,7 +784,7 @@ class Text extends BaseWork {
 //		if ( empty($this->books[$book]) ) {
 //			return false;
 //		}
-//		$bookDescr = File::getContentFile('book', $book);
+//		$bookDescr = ContentService::getContentFile('book', $book);
 //		if ( preg_match('/\{'. $this->getId() . '\}\n\{(\d+)\}/m', $bookDescr, $m) ) {
 //			return self::newFromId($m[1]);
 //		}
@@ -969,7 +970,7 @@ EOS;
 
 	private function moveUploadedContentFile(UploadedFile $file = null) {
 		if ($file) {
-			$filename = File::getContentFilePath('text', $this->getId());
+			$filename = ContentService::getContentFilePath('text', $this->getId());
 			$file->move(dirname($filename), basename($filename));
 		}
 	}
@@ -1001,17 +1002,17 @@ EOS;
 	public function getRawContent($asFileName = false) {
 		if ( ! $this->isCompilation) {
 			if ($asFileName) {
-				return File::getContentFilePath('text', $this->getId());
+				return ContentService::getContentFilePath('text', $this->getId());
 			} else {
-				return File::getContentFile('text', $this->getId());
+				return ContentService::getContentFile('text', $this->getId());
 			}
 		}
 
-		$template = File::getContentFile('text', $this->getId());
+		$template = ContentService::getContentFile('text', $this->getId());
 		if (preg_match_all('/\t\{file:(\d+-.+)\}/', $template, $matches, PREG_SET_ORDER)) {
 			foreach ($matches as $match) {
 				list($row, $filename) = $match;
-				$template = str_replace($row, File::getContentFile('text', $filename), $template);
+				$template = str_replace($row, ContentService::getContentFile('text', $filename), $template);
 			}
 		}
 		// TODO cache the full output
@@ -1073,7 +1074,7 @@ EOS;
 	 * @param string $file
 	 */
 	public function rebuildHeaders($file = null) {
-		if ($file === null) $file = File::getContentFilePath('text', $this->getId());
+		if ($file === null) $file = ContentService::getContentFilePath('text', $this->getId());
 		$headlevel = $this->getHeadlevel();
 
 		$this->clearHeaders();
@@ -1152,7 +1153,7 @@ EOS;
 	}
 
 	public function getMainContentFile() {
-		return File::getContentFilePath('text', $this->getId());
+		return ContentService::getContentFilePath('text', $this->getId());
 	}
 
 }

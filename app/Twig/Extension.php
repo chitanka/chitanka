@@ -1,7 +1,7 @@
 <?php namespace App\Twig;
 
 use App\Entity\Text;
-use App\Util\File;
+use App\Service\ContentService;
 use App\Util\Number;
 use App\Util\String;
 use Sfblib\XmlElement;
@@ -201,7 +201,7 @@ class Extension extends \Twig_Extension {
 	 * @return string
 	 */
 	public function getCover($id, $width = 200, $format = 'jpg') {
-		return File::getContentFilePath('book-cover', $id) . ".$width.$format";
+		return ContentService::getContentFilePath('book-cover', $id) . ".$width.$format";
 	}
 
 	/**

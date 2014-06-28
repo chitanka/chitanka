@@ -1,6 +1,7 @@
 <?php namespace App\Legacy;
 
 use App\Util\File;
+use App\Service\ContentService;
 
 class CacheManager {
 
@@ -114,7 +115,7 @@ class CacheManager {
 	 * @return string
 	 */
 	private static function getDlCachePath($id, $ext = '') {
-		return self::$cacheDir . self::$zipDir . File::makeContentFilePath($id) . $ext;
+		return self::$cacheDir . self::$zipDir . ContentService::makeContentFilePath($id) . $ext;
 	}
 
 	/**

@@ -2,6 +2,7 @@
 
 use App\Entity\TextRepository;
 use App\Legacy\CacheManager;
+use App\Service\ContentService;
 use App\Util\Char;
 use App\Util\File;
 
@@ -220,7 +221,7 @@ class TextDownloadService {
 
 	private function addBinaryFileEntries($textId) {
 		// add images
-		$dir = File::getContentFilePath('img', $textId);
+		$dir = ('img', $textId);
 		if ( !is_dir($dir) ) { return; }
 		if ($dh = opendir($dir)) {
 			while (($file = readdir($dh)) !== false) {
@@ -235,7 +236,7 @@ class TextDownloadService {
 	}
 
 	private function getContentData($textId) {
-		$fname = File::getContentFilePath('text', $textId);
+		$fname = ContentService::getContentFilePath('text', $textId);
 		if ( file_exists($fname) ) {
 			return file_get_contents($fname);
 		}

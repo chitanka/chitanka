@@ -1,9 +1,9 @@
 <?php namespace App\Admin;
 
-use App\Util\Language;
-use App\Util\File;
-use App\Legacy\Legacy;
 use App\Entity\Text;
+use App\Legacy\Legacy;
+use App\Service\ContentService;
+use App\Util\Language;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -160,7 +160,7 @@ class TextAdmin extends Admin {
 			$text = $event->getData();
 			if ($text instanceof Text) {
 				$formMapper->setHelps(array(
-					'content_file' => sprintf('(<a href="/%s">настоящ файл</a>)', File::getContentFilePath('text', $text->getId())),
+					'content_file' => sprintf('(<a href="/%s">настоящ файл</a>)', ContentService::getContentFilePath('text', $text->getId())),
 				));
 			}
 		});

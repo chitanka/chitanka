@@ -1,6 +1,7 @@
 <?php namespace App\Entity;
 
 use App\Generator\BookFb2Generator;
+use App\Service\ContentService;
 use App\Util\Ary;
 use App\Util\File;
 use App\Util\String;
@@ -528,9 +529,9 @@ class Book extends BaseWork {
 	 */
 	public static function getCovers($id, $defCover = null) {
 		$key = 'book-cover-content';
-		$bases = array(File::getContentFilePath($key, $id));
+		$bases = array(ContentService::getContentFilePath($key, $id));
 		if ( ! empty($defCover)) {
-			$bases[] = File::getContentFilePath($key, $defCover);
+			$bases[] = ContentService::getContentFilePath($key, $defCover);
 		}
 		$coverFiles = Ary::cartesianProduct($bases, self::$exts);
 		$covers = array();
@@ -568,7 +569,7 @@ class Book extends BaseWork {
 	public function getLocalImages() {
 		$images = array();
 
-		$dir = File::getInternalContentFilePath('book-img', $this->id);
+		$dir = ContentService::getInternalContentFilePath('book-img', $this->id);
 		foreach (glob("$dir/*") as $img) {
 			$images[] = $img;
 		}
@@ -674,7 +675,7 @@ class Book extends BaseWork {
 
 	public function getAnnotationAsXhtml($imgDir = null) {
 		if ($imgDir === null) {
-			$imgDir = 'IMG_DIR_PREFIX' . File::getContentFilePath('book-img', $this->id);
+			$imgDir = 'IMG_DIR_PREFIX' . ContentService::getContentFilePath('book-img', $this->id);
 		}
 		return parent::getAnnotationAsXhtml($imgDir);
 	}
@@ -812,14 +813,14 @@ EOS;
 
 	public function getDatafiles() {
 		$files = array();
-		$files['book'] = File::getContentFilePath('book', $this->id);
+		$files['book'] = ContentService::getContentFilePath('book', $this->id);
 		if ($this->hasCover()) {
-			$files['book-cover'] = File::getContentFilePath('book-cover', $this->id) . '.max.jpg';
+			$files['book-cover'] = ContentService::getContentFilePath('book-cover', $this->id) . '.max.jpg';
 		}
 		if ($this->hasAnno()) {
-			$files['book-anno'] = File::getContentFilePath('book-anno', $this->id);
+			$files['book-anno'] = ContentService::getContentFilePath('book-anno', $this->id);
 		}
-		$files['book-info'] = File::getContentFilePath('book-info', $this->id);
+		$files['book-info'] = ContentService::getContentFilePath('book-info', $this->id);
 
 		return $files;
 	}
@@ -829,7 +830,7 @@ EOS;
 		if (!in_array($format, array('djvu', 'pdf'))) {
 			throw new \Exception("Format $format is not a valid static format for a book.");
 		}
-		return File::getContentFilePath('book-'.$format, $this->id);
+		return ContentService::getContentFilePath('book-'.$format, $this->id);
 	}
 
 	##################
@@ -846,7 +847,7 @@ EOS;
 			return $this->_files;
 		}
 
-		$dir = File::getContentFilePath('book-pic', $this->id);
+		$dir = ContentService::getContentFilePath('book-pic', $this->id);
 
 		$ignore = array(self::THUMB_DIR);
 
@@ -865,7 +866,7 @@ EOS;
 
 	private $_imageDir;
 	public function getImageDir() {
-		return $this->_imageDir ?: $this->_imageDir = File::getContentFilePath('book-pic', $this->id);
+		return $this->_imageDir ?: $this->_imageDir = ContentService::getContentFilePath('book-pic', $this->id);
 	}
 
 	private $_thumbDir;

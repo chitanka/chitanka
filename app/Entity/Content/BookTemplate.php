@@ -1,8 +1,8 @@
 <?php namespace App\Entity\Content;
 
+use App\Service\ContentService;
 use App\Entity\Book;
 use App\Entity\Text;
-use App\Util\File;
 use Sfblib\SfbConverter;
 use Sfblib\SfbToHtmlConverter;
 
@@ -82,7 +82,7 @@ class BookTemplate {
 		if (empty($matches[3])) {
 			$textContent = $text->getRawContent();
 		} else {
-			$textContent = File::getContentFile('text', $matches[2].$matches[3]);
+			$textContent = ContentService::getContentFile('text', $matches[2].$matches[3]);
 		}
 		if (empty($command)) {
 			return $textContent;
@@ -141,7 +141,7 @@ class BookTemplate {
 			return '';
 		}
 		$template = preg_replace('/\t\{img:[^}]+\}/', '', $template);
-		$imgDir = 'IMG_DIR_PREFIX' . File::getContentFilePath('book-img', $this->book->getId()).'/';
+		$imgDir = 'IMG_DIR_PREFIX' . ContentService::getContentFilePath('book-img', $this->book->getId()).'/';
 		$converter = new SfbToHtmlConverter($template, $imgDir);
 		$content = $converter->convert()->getContent();
 		//$content = preg_replace('|<p>\n\{(\d+)\}\n</p>|', '{$1}', $content);
@@ -156,8 +156,8 @@ class BookTemplate {
 			$headingLevel = $matches[1];
 			$file = $matches[2];
 
-			$imgDir = File::getContentFilePath('book-img', (int) $file) . '/';
-			$converter = new SfbToHtmlConverter(File::getContentFile('text', $file), $imgDir);
+			$imgDir = ContentService::getContentFilePath('book-img', (int) $file) . '/';
+			$converter = new SfbToHtmlConverter(ContentService::getContentFile('text', $file), $imgDir);
 
 			return $converter->convert()->getContent();
 		}, $content);
@@ -175,10 +175,10 @@ class BookTemplate {
 
 	private $content;
 	public function getContent() {
-		return $this->content ?: $this->content = File::getContentFile('book', $this->book->getId());
+		return $this->content ?: $this->content = ContentService::getContentFile('book', $this->book->getId());
 	}
 	public function setContent($content) {
-		file_put_contents(File::getContentFilePath('book', $this->book->getId()), $content);
+		file_put_contents(ContentService::getContentFilePath('book', $this->book->getId()), $content);
 		$this->content = $content;
 		$this->textIds = null;
 	}

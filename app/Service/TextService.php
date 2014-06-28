@@ -64,15 +64,22 @@ class TextService {
 		return $alikes;
 	}
 
-	public function buildTextHeadersUpdateQuery($file, $textId, $headlevel) {
+	public function buildTextHeadersUpdateQuery($fileOrString, $textId, $headlevel) {
 		require_once __DIR__ . '/../Legacy/SfbParserSimple.php';
 
 		$data = array();
+		if (strpos($fileOrString, "\n") !== false) {
+			$file = tempnam();
+			file_put_contents($file, $fileOrString);
+		}
 		foreach (\App\Legacy\makeDbRows($file, $headlevel) as $row) {
 			$name = $row[2];
-			$name = strtr($name, array('_'=>''));
+			$name = strtr($name, array('_' => ''));
 			$name = $this->legacyDb->escape(String::my_replace($name));
 			$data[] = array($textId, $row[0], $row[1], $name, $row[3], $row[4]);
+		}
+		if ($file != $fileOrString) {
+			unlink($file);
 		}
 		$qs = array();
 		$qs[] = $this->legacyDb->deleteQ('text_header', array('text_id' => $textId));
