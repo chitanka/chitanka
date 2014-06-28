@@ -69,7 +69,7 @@ class TextService {
 
 		$data = array();
 		if (strpos($fileOrString, "\n") !== false) {
-			$file = tempnam();
+			$file = tempnam(sys_get_temp_dir(), 'chitanka-text-');
 			file_put_contents($file, $fileOrString);
 		}
 		foreach (\App\Legacy\makeDbRows($file, $headlevel) as $row) {
