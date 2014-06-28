@@ -221,7 +221,7 @@ class TextDownloadService {
 
 	private function addBinaryFileEntries($textId) {
 		// add images
-		$dir = ('img', $textId);
+		$dir = ContentService::getContentFilePath('img', $textId);
 		if ( !is_dir($dir) ) { return; }
 		if ($dh = opendir($dir)) {
 			while (($file = readdir($dh)) !== false) {
