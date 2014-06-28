@@ -109,7 +109,7 @@ class EpubFile {
 		$navPoint = $this->curPlayOrder;
 		$order = 0;
 		while (preg_match('/<li level=(\d+)>/', $headers, $matches)) {
-			$order = $this->curPlayOrder + ($matches[1] + 1);
+			$order = $this->curPlayOrder + ((int) $matches[1] + 1);
 			$repl = sprintf('<navPoint class="chapter" id="navpoint-%d" playOrder="%d"><navLabel><text>$2</text></navLabel><content src="%s"/>',
 				++$navPoint, $order, $this->getItemFileName('$1', false));
 			$headers = preg_replace('/<li level=(\d+)>([^<]+)/', $repl, $headers, 1);

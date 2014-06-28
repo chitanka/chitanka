@@ -1,10 +1,10 @@
 <?php namespace App\Command;
 
+use App\Entity\WorkEntry;
+use App\Mail\WorkroomNotifier;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Entity\WorkEntry;
-use App\Mail\Notifier;
 
 class NotifyUsersForOldWorkEntriesCommand extends Command {
 
@@ -30,7 +30,7 @@ EOT
 		$repo = $this->getEntityManager()->getWorkEntryRepository();
 		$oldEntries = $repo->findOlderThan($this->getThresholdDate($input));
 		$skippedUsers = $this->getSkippedUsers($input);
-		$notifer = new Notifier($this->getContainer()->get('mailer'));
+		$notifer = new WorkroomNotifier($this->getContainer()->get('mailer'));
 		foreach ($oldEntries as $entry) {
 			if ($this->shouldSkipEntry($entry, $skippedUsers)) {
 				continue;
@@ -42,7 +42,7 @@ EOT
 		$output->writeln('/*Done.*/');
 	}
 
-	private function sendNotification(Notifier $notifier, WorkEntry $entry, $stalkInterval) {
+	private function sendNotification(WorkroomNotifier $notifier, WorkEntry $entry, $stalkInterval) {
 		if ($entry->isNotifiedWithin("$stalkInterval days")) {
 			return;
 		}

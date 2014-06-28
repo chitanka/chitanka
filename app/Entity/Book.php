@@ -349,6 +349,7 @@ class Book extends BaseWork {
 	// TODO needed by admin; why?
 	public function addLinks(BookLink $link) { $this->addLink($link); }
 
+	/** @param bool $hasAnno */
 	public function setHasAnno($hasAnno) { $this->hasAnno = $hasAnno; }
 	public function hasAnno() { return $this->hasAnno; }
 
