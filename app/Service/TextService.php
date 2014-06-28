@@ -71,6 +71,8 @@ class TextService {
 		if (strpos($fileOrString, "\n") !== false) {
 			$file = tempnam(sys_get_temp_dir(), 'chitanka-text-');
 			file_put_contents($file, $fileOrString);
+		} else {
+			$file = $fileOrString;
 		}
 		foreach (\App\Legacy\makeDbRows($file, $headlevel) as $row) {
 			$name = $row[2];
