@@ -3,6 +3,7 @@
 use Doctrine\ORM\Mapping as ORM;
 use FOS\CommentBundle\Entity\Comment as BaseComment;
 use FOS\CommentBundle\Model\SignedCommentInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
@@ -30,13 +31,13 @@ class Comment extends BaseComment implements SignedCommentInterface {
 	 * Author of the comment
 	 *
 	 * @ORM\ManyToOne(targetEntity="App\Entity\User")
-	 * @var User
+	 * @var UserInterface
 	 */
 	protected $author;
 
 	protected $cc;
 
-	public function setAuthor(User $author) {
+	public function setAuthor(UserInterface $author) {
 		$this->author = $author;
 	}
 
