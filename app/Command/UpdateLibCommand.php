@@ -18,7 +18,7 @@ class UpdateLibCommand extends Command {
 			->setDescription('Add or update new texts and books')
 			->addArgument('input', InputArgument::REQUIRED, 'Directory with input files or other input directories')
 			->addOption('save', null, InputOption::VALUE_NONE, 'Save generated files in corresponding directories')
-			//->addOption('dump-sql', null, InputOption::VALUE_NONE, 'Output SQL queries instead of executing them')
+			->addOption('dump-sql', null, InputOption::VALUE_NONE, 'Output SQL queries instead of executing them')
 			->setHelp(<<<EOT
 The <info>$this->name</info> command adds or updates texts and books.
 EOT
@@ -30,12 +30,14 @@ EOT
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$saveFiles = $input->getOption('save') === true;
-		//$dumpSql = $input->getOption('dump-sql') === true;
+		$dumpSql = $input->getOption('dump-sql') === true;
 		$contentDir = $this->getContainer()->getParameter('kernel.root_dir').'/../web/content';
 		$importer = new ContentImporter($this->getEntityManager(), $contentDir, $saveFiles, $this->olddb());
 		$queries = $this->conquerTheWorld($importer, $input->getArgument('input'));
 
-		$this->printQueries($queries);
+		if ($dumpSql) {
+			$this->printQueries($queries);
+		}
 
 		$output->writeln('/*Done.*/');
 	}

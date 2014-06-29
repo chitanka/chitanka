@@ -131,14 +131,14 @@ class ContentImporter {
 					$translators[] = array($this->getObjectId('person', $slug), $transYear);
 				}
 				if (strpos($transYear, '-') !== false) {
-					list($work['transYear'], $work['transYear2']) = explode('-', $transYear);
+					list($work['trans_year'], $work['trans_year2']) = explode('-', $transYear);
 				} else {
-					$work['transYear'] = $transYear;
+					$work['trans_year'] = $transYear;
 				}
 			}
 			$work['translators'] = $translators;
-		} else if ($work['is_new'] && $work['lang'] != $work['origLang']) {
-			$work['transLicense'] = 'fc';
+		} else if ($work['is_new'] && $work['lang'] != $work['orig_lang']) {
+			$work['trans_license'] = 'fc';
 		}
 		if (isset($work['labels'])) {
 			$work['labels'] = explode(',', $work['labels']);
@@ -404,8 +404,8 @@ class ContentImporter {
 		if (!empty($work['lang'])) {
 			$set['lang'] = $work['lang'];
 		}
-		if (!empty($work['origLang'])) {
-			$set['orig_lang'] = $work['origLang'];
+		if (!empty($work['orig_lang'])) {
+			$set['orig_lang'] = $work['orig_lang'];
 		}
 		if (isset($work['text'])) {
 			$size = self::getFileSize($work['text']) / 1000;
@@ -423,7 +423,7 @@ class ContentImporter {
 				'has_anno' => 0,
 				'has_cover' => 0,
 				'is_compilation' => isset($work['tmpl']),
-				'orig_title' => (empty($work['origTitle']) ? '' : self::fixOrigTitle($work['origTitle'])),
+				'orig_title' => (empty($work['orig_title']) ? '' : self::fixOrigTitle($work['orig_title'])),
 			);
 			if (isset($work['ser_nr'])) {
 				$set['sernr'] = $work['ser_nr'];
@@ -432,8 +432,8 @@ class ContentImporter {
 		if (isset($work['subtitle'])) {
 			$set['subtitle'] = String::my_replace($work['subtitle']);
 		}
-		if (isset($work['origSubtitle'])) {
-			$set['orig_subtitle'] = self::fixOrigTitle($work['origSubtitle']);
+		if (isset($work['orig_subtitle'])) {
+			$set['orig_subtitle'] = self::fixOrigTitle($work['orig_subtitle']);
 		}
 		if (isset($work['year'])) {
 			$set['year'] = $work['year'];
@@ -441,8 +441,8 @@ class ContentImporter {
 		if (isset($work['year2'])) {
 			$set['year2'] = $work['year2'];
 		}
-		if (isset($work['transYear'])) {
-			$set['trans_year'] = $work['transYear'];
+		if (isset($work['trans_year'])) {
+			$set['trans_year'] = $work['trans_year'];
 		}
 		if (isset($work['anno'])) {
 			$set['has_anno'] = filesize($work['anno']) ? 1 : 0;
@@ -452,11 +452,11 @@ class ContentImporter {
 			$set['series_id'] = $this->getObjectId('series', $work['series']);
 		}
 
-		if (isset($work['origLicense'])) {
-			$set['orig_license_id'] = $this->getObjectId('license', $work['origLicense'], 'code');
+		if (isset($work['orig_license'])) {
+			$set['orig_license_id'] = $this->getObjectId('license', $work['orig_license'], 'code');
 		}
-		if (isset($work['transLicense'])) {
-			$set['trans_license_id'] = $this->getObjectId('license', $work['transLicense'], 'code');
+		if (isset($work['trans_license'])) {
+			$set['trans_license_id'] = $this->getObjectId('license', $work['trans_license'], 'code');
 		}
 
 		if (isset($work['source'])) {
@@ -587,10 +587,10 @@ class ContentImporter {
 		}
 		$textService = new TextService($this->olddb);
 		if (isset($work['tmpl'])) {
-			return array($textService->buildTextHeadersUpdateQuery($textContent, $work['id'], $work['toc_level']));
+			return $textService->buildTextHeadersUpdateQuery($textContent, $work['id'], $work['toc_level']);
 		}
 		if (isset($work['text'])) {
-			return array($textService->buildTextHeadersUpdateQuery($textContent, $work['id'], $work['toc_level']));
+			return $textService->buildTextHeadersUpdateQuery($textContent, $work['id'], $work['toc_level']);
 		}
 		return array();
 	}
@@ -648,14 +648,14 @@ class ContentImporter {
 				'title' => String::my_replace($book['title']),
 			);
 		}
-		if (!empty($book['titleExtra'])) {
-			$set['title_extra'] = String::my_replace($book['titleExtra']);
+		if (!empty($book['title_extra'])) {
+			$set['title_extra'] = String::my_replace($book['title_extra']);
 		}
 		if (!empty($book['lang'])) {
 			$set['lang'] = $book['lang'];
 		}
-		if (!empty($book['origLang'])) {
-			$set['orig_lang'] = $book['origLang'];
+		if (!empty($book['orig_lang'])) {
+			$set['orig_lang'] = $book['orig_lang'];
 		}
 		if ($book['is_new']) {
 			$set += array(
@@ -667,8 +667,8 @@ class ContentImporter {
 		if (isset($book['type'])) {
 			$set['type'] = $book['type'];
 		}
-		if (isset($book['origTitle'])) {
-			$set['orig_title'] = self::fixOrigTitle($book['origTitle']);
+		if (isset($book['orig_title'])) {
+			$set['orig_title'] = self::fixOrigTitle($book['orig_title']);
 		}
 		if (isset($book['seq_nr'])) {
 			$set['seqnr'] = $book['seq_nr'];
@@ -685,8 +685,8 @@ class ContentImporter {
 		if (isset($book['year'])) {
 			$set['year'] = $book['year'];
 		}
-		if (isset($book['transYear'])) {
-			$set['trans_year'] = $book['transYear'];
+		if (isset($book['trans_year'])) {
+			$set['trans_year'] = $book['trans_year'];
 		}
 		if (isset($book['formats'])) {
 			$set['formats'] = serialize($book['formats']);

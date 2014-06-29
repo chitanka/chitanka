@@ -1,5 +1,7 @@
 <?php namespace App\Service;
 
+use App\Util\Ary;
+
 class ContentService {
 
 	private static $contentDirs = array(

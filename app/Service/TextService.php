@@ -83,14 +83,13 @@ class TextService {
 		if ($file != $fileOrString) {
 			unlink($file);
 		}
-		$qs = array();
-		$qs[] = $this->legacyDb->deleteQ('text_header', array('text_id' => $textId));
-		if ( !empty($data) ) {
+		$sql = array($this->legacyDb->deleteQ('text_header', array('text_id' => $textId)));
+		if (!empty($data)) {
 			$fields = array('text_id', 'nr', 'level', 'name', 'fpos', 'linecnt');
-			$qs[] = $this->legacyDb->multiinsertQ('text_header', $data, $fields);
+			$sql[] = $this->legacyDb->multiinsertQ('text_header', $data, $fields);
 		}
 
-		return $qs;
+		return $sql;
 	}
 
 	/**
