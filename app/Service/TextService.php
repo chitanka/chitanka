@@ -3,6 +3,7 @@
 use App\Entity\Text;
 use App\Entity\User;
 use App\Legacy\mlDatabase as LegacyDb;
+use App\Util\String;
 
 class TextService {
 
