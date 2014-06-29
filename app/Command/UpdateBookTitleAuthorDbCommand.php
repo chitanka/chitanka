@@ -14,21 +14,14 @@ class UpdateBookTitleAuthorDbCommand extends Command {
 	private $dumpSql;
 
 	protected function configure() {
-		parent::configure();
-
 		$this
 			->setName('db:update-book-title-author')
 			->setDescription('Update legacy field book.titleAuthor')
 			->addOption('dump-sql', null, InputOption::VALUE_NONE, 'Output SQL queries instead of executing them')
-			->setHelp(<<<EOT
-The <info>db:update-book-title-author</info> command updates the legacy field book.title_author.
-EOT
-		);
+			->setHelp('The <info>%command.name%</info> command updates the legacy field book.title_author.');
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
+	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->em = $this->getEntityManager();
 		$this->output = $output;

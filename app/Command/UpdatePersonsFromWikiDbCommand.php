@@ -10,20 +10,13 @@ class UpdatePersonsFromWikiDbCommand extends Command {
 	private $errors;
 
 	protected function configure() {
-		parent::configure();
-
 		$this
 			->setName('db:update-persons-from-wiki')
 			->setDescription('Update persons from wiki data')
-			->setHelp(<<<EOT
-The <info>db:update-persons-from-wiki</info> command reads data from the wiki and updates or adds new person entries.
-EOT
-		);
+			->setHelp('The <info>%command.name%</info> command reads data from the wiki and updates or adds new person entries.');
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
+	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->output = $output;
 		$this->errors = array();

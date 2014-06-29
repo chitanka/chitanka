@@ -1,56 +1,45 @@
 <?php namespace App\Command;
 
+use App\Legacy\Setup;
+use App\Util\Fb2Validator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Util\Fb2Validator;
-use Doctrine\ORM\EntityManager;
-use App\Entity\Text;
-use App\Entity\Book;
-use App\Legacy\Setup;
 
 class ValidateFb2Command extends Command {
 
-	/** @var EntityManager */
-	private $em;
 	private $output;
 	private $validator;
 
 	protected function configure() {
-		parent::configure();
-
-		$command = 'lib:validate-fb2';
 		$this
-			->setName($command)
+			->setName('lib:validate-fb2')
 			->addArgument('id', InputArgument::IS_ARRAY, 'A text or a book ID or an ID range')
 			->setDescription('Validate FB2 archives of texts and books')
 			->setHelp(<<<EOT
-The <info>$command</info> allows validation of text and book archives.
+The <info>%command.name%</info> allows validation of text and book archives.
 
 Example calls:
 
-	<info>$command</info> text:1
-	<info>$command</info> 1
+	<info>%command.name%</info> text:1
+	<info>%command.name%</info> 1
 		Validate the text with an ID 1
 
-	<info>$command</info> text:1-10
-	<info>$command</info> 1-10
+	<info>%command.name%</info> text:1-10
+	<info>%command.name%</info> 1-10
 		Validates texts with IDs between 1 and 10
 
-	<info>$command</info> book:1-10
+	<info>%command.name%</info> book:1-10
 		Validates books with IDs between 1 and 10
 
-	<info>$command</info> text:1-5 book:1-10
+	<info>%command.name%</info> text:1-5 book:1-10
 		Validates texts with IDs between 1 and 5, and books with IDs between 1 and 10
 EOT
 		);
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
+	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$this->em = $this->getEntityManager();
 		$this->output = $output;
 
 		Setup::doSetup($this->getContainer());

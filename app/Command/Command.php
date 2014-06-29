@@ -4,7 +4,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\ORM\EntityManager;
 use App\Legacy\Setup;
-use App\Util\String;
 
 abstract class Command extends ContainerAwareCommand {
 
@@ -103,14 +102,14 @@ abstract class Command extends ContainerAwareCommand {
 		return __DIR__ . '/../../web/content' . ($file ? "/$file" : '');
 	}
 
-	private $_olddb;
+	private $olddb;
 	/** @return \App\Legacy\mlDatabase */
 	protected function olddb() {
-		if ( ! $this->_olddb) {
+		if (!$this->olddb) {
 			Setup::doSetup($this->getContainer());
-			$this->_olddb = Setup::db();
+			$this->olddb = Setup::db();
 		}
-		return $this->_olddb;
+		return $this->olddb;
 	}
 
 	/**

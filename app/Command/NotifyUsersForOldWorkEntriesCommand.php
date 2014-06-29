@@ -9,23 +9,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 class NotifyUsersForOldWorkEntriesCommand extends Command {
 
 	protected function configure() {
-		parent::configure();
-
 		$this
 			->setName('lib:notify-old-work-entries')
 			->setDescription('Notify all users with too old work entries')
 			->addArgument('age', InputArgument::REQUIRED, 'Threshold age for notification (in months)')
 			->addArgument('stalk-interval', InputArgument::OPTIONAL, 'Number of days between two subsequent notifications. Default: 7', 7)
 			->addArgument('skip-users', InputArgument::OPTIONAL, 'List of users by name which should not get notifications. Format: USERNAME1[,USERNAME2]*')
-			->setHelp(<<<EOT
-Notify all users with too old work entries.
-EOT
-		);
+			->setHelp('Notify all users with too old work entries.');
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
+	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$repo = $this->getEntityManager()->getWorkEntryRepository();
 		$oldEntries = $repo->findOlderThan($this->getThresholdDate($input));

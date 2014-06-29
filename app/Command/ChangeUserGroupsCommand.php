@@ -7,12 +7,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ChangeUserGroupsCommand extends Command {
 
 	protected function configure() {
-		parent::configure();
 		$this->setName('sys:change-user-groups')
 			->setDescription('Change groups for given users')
 			->addArgument('users', InputArgument::REQUIRED, 'Users which groups should be modified (comma separated)')
-			->addArgument('groups', InputArgument::REQUIRED, 'Groups to add or remove (comma separated). Ex.: "+workroom-admin,-admin" adds the user to "workroom-admin" and removes him from "admin"')
-		;
+			->addArgument('groups', InputArgument::REQUIRED, 'Groups to add or remove (comma separated). Ex.: "+workroom-admin,-admin" adds the user to "workroom-admin" and removes him from "admin"');
 	}
 
 	/** @inheritdoc */

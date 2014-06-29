@@ -11,22 +11,15 @@ class GitCommitContentCommand extends Command {
 	private $output;
 
 	protected function configure() {
-		parent::configure();
-
 		$this
 			->setName('git:commit-content')
 			->setDescription('Commit content changes from last X minutes')
 			->addArgument('desc', InputArgument::REQUIRED, 'Brief description of changes')
 			->addOption('from', null, InputOption::VALUE_OPTIONAL, 'Number of last minutes to check for changes', 30)
-			->setHelp(<<<EOT
-The <info>git:commit-content</info> commit the content changes form last minutes in its repository.
-EOT
-		);
+			->setHelp('The <info>%command.name%</info> command commits all recent content changes.');
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
+	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->output = $output;
 		$this->em = $this->getEntityManager();

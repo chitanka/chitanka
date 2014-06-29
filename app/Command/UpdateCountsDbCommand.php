@@ -6,20 +6,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class UpdateCountsDbCommand extends Command {
 
 	protected function configure() {
-		parent::configure();
-
 		$this
 			->setName('db:update-counts')
 			->setDescription('Update some total counts in the database')
-			->setHelp(<<<EOT
-The <info>db:update-counts</info> command updates some total counts in the database. For example number of texts by every label, or number of books by every category.
-EOT
-		);
+			->setHelp('The <info>%command.name%</info> command updates some total counts in the database. For example number of texts by every label, or number of books by every category.');
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
+	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->updateCounts($output, $this->getEntityManager());
 		$output->writeln('Done.');

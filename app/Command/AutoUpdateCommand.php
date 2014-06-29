@@ -13,8 +13,6 @@ class AutoUpdateCommand extends Command {
 	private $output;
 
 	protected function configure() {
-		parent::configure();
-
 		$this
 			->setName('auto-update')
 			->setDescription('Execute an auto-update of the whole system')
@@ -22,10 +20,7 @@ class AutoUpdateCommand extends Command {
 			->addOption('skip-content', null, InputOption::VALUE_NONE, 'Skip content update')
 			->addOption('skip-db', null, InputOption::VALUE_NONE, 'Skip database update')
 			->addOption('skip-src', null, InputOption::VALUE_NONE, 'Skip software update')
-			->setHelp(<<<EOT
-The <info>auto-update</info> updates the whole system - software, database, and content.
-EOT
-		);
+			->setHelp('The <info>%command.name%</info> updates the whole system - software, database, and content.');
 	}
 
 	/**

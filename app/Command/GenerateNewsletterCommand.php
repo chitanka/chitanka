@@ -10,21 +10,14 @@ class GenerateNewsletterCommand extends Command {
 	private $output;
 
 	protected function configure() {
-		parent::configure();
-
 		$this
 			->setName('lib:generate-newsletter')
 			->setDescription('Generate newsletter')
 			->addArgument('month', InputArgument::REQUIRED, 'Month (3 or 2011-3)')
-			->setHelp(<<<EOT
-The <info>lib:generate-newsletter</info> generates the newsletter for a given month.
-EOT
-		);
+			->setHelp('The <info>%command.name%</info> generates the newsletter for a given month.');
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
+	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->input = $input;
 		$this->output = $output;

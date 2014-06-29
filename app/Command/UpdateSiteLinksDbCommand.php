@@ -7,15 +7,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 class UpdateSiteLinksDbCommand extends Command {
 
 	protected function configure() {
-		parent::configure();
-
 		$this
 			->setName('db:update-sites')
 			->setDescription('Update links to external sites')
-			->setHelp(<<<EOT
-The <info>db:update-sites</info> command reads data from the wiki and updates the links to external sites.
-EOT
-		);
+			->setHelp('The <info>%command.name%</info> command reads data from the wiki and updates the links to external sites.');
 	}
 
 	/** {@inheritdoc} */

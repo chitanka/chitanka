@@ -7,9 +7,8 @@ use App\Service\TextService;
 class UpdateTextAlikesCommand extends Command {
 
 	protected function configure() {
-		parent::configure();
-		$this->setName('db:update-text-alikes')
-			->setDescription('Update similar texts (alikes) of texts');
+		$this->setName('db:update-text-alikes');
+		$this->setDescription('Update similar texts (alikes) of texts');
 	}
 
 	/** @inheritdoc */

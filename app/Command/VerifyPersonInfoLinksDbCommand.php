@@ -1,9 +1,9 @@
 <?php namespace App\Command;
 
+use App\Util\HttpAgent;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Util\HttpAgent;
 
 class VerifyPersonInfoLinksDbCommand extends Command {
 
@@ -11,16 +11,11 @@ class VerifyPersonInfoLinksDbCommand extends Command {
 	private $secsBetweenRequests = 5;
 
 	protected function configure() {
-		parent::configure();
-
 		$this
 			->setName('db:verify-person-info-links')
 			->setDescription('Verify the person wiki info links')
 			->addOption('dump-sql', null, InputOption::VALUE_NONE, 'Output SQL queries instead of executing them')
-			->setHelp(<<<EOT
-The <info>db:verify-person-info-links</info> command verifies the existance of the person wiki info links and removes the non-existing ones.
-EOT
-		);
+			->setHelp('The <info>%command.name%</info> command verifies the existance of the person wiki info links and removes the non-existing ones.');
 	}
 
 	/** {@inheritdoc} */
@@ -51,7 +46,7 @@ EOT
 			$site = $siteRepo->findOneBy(array('code' => $prefix));
 			$url = $site->getUrl($name);
 			$this->output->writeln("/* ({$person->getId()}) Checking $url */");
-			if ( ! $httpAgent->urlExists($url)) {
+			if (!$httpAgent->urlExists($url)) {
 				$ids[] = $person->getId();
 				$this->output->writeln("/* {$person->getName()}: $url is a broken link */");
 			}
@@ -66,14 +61,14 @@ EOT
 	 * @param bool $dumpSql
 	 */
 	private function removeInvalidInfoLinksByPersons($personIds, $dumpSql) {
-		$queries = array();
-		if (count($personIds)) {
-			$queries[] = sprintf('UPDATE person SET info = NULL WHERE id IN ('.implode(',', $personIds).')');
-			if ($dumpSql) {
-				$this->printQueries($queries);
-			} else {
-				$this->executeUpdates($queries, $this->getEntityManager()->getConnection());
-			}
+		if (count($personIds) == 0) {
+			return;
+		}
+		$queries = array(sprintf('UPDATE person SET info = NULL WHERE id IN ('.implode(',', $personIds).')'));
+		if ($dumpSql) {
+			$this->printQueries($queries);
+		} else {
+			$this->executeUpdates($queries, $this->getEntityManager()->getConnection());
 		}
 	}
 }

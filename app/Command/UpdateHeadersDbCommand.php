@@ -12,17 +12,12 @@ class UpdateHeadersDbCommand extends Command {
 	private $output;
 
 	protected function configure() {
-		parent::configure();
-
 		$this
 			->setName('db:update-headers')
 			->setDescription('Update text headers in the database')
 			->addArgument('texts', InputArgument::OPTIONAL, 'Texts which headers should be updated (comma separated)')
 			->addOption('dump-sql', null, InputOption::VALUE_NONE, 'Output SQL queries instead of executing them')
-			->setHelp(<<<EOT
-The <info>db:update-headers</info> command updates the text headers in the database.
-EOT
-		);
+			->setHelp('The <info>%command.name%</info> command updates the text headers in the database.');
 	}
 
 	/** {@inheritdoc} */
