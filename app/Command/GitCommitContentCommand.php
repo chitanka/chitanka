@@ -1,8 +1,6 @@
 <?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GitCommitContentCommand extends Command {
@@ -10,13 +8,28 @@ class GitCommitContentCommand extends Command {
 	private $em;
 	private $output;
 
-	protected function configure() {
-		$this
-			->setName('git:commit-content')
-			->setDescription('Commit content changes from last X minutes')
-			->addArgument('desc', InputArgument::REQUIRED, 'Brief description of changes')
-			->addOption('from', null, InputOption::VALUE_OPTIONAL, 'Number of last minutes to check for changes', 30)
-			->setHelp('The <info>%command.name%</info> command commits all recent content changes.');
+	public function getName() {
+		return 'git:commit-content';
+	}
+
+	public function getDescription() {
+		return 'Commit content changes from last X minutes';
+	}
+
+	public function getHelp() {
+		return 'The <info>%command.name%</info> command commits all recent content changes.';
+	}
+
+	protected function getRequiredArguments() {
+		return array(
+			'desc' => 'Brief description of changes',
+		);
+	}
+
+	protected function getOptionalOptions() {
+		return array(
+			'from' => array('Number of last minutes to check for changes', 30),
+		);
 	}
 
 	/** {@inheritdoc} */

@@ -3,7 +3,6 @@
 use App\Legacy\Setup;
 use App\Util\Fb2Validator;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ValidateFb2Command extends Command {
@@ -11,12 +10,16 @@ class ValidateFb2Command extends Command {
 	private $output;
 	private $validator;
 
-	protected function configure() {
-		$this
-			->setName('lib:validate-fb2')
-			->addArgument('id', InputArgument::IS_ARRAY, 'A text or a book ID or an ID range')
-			->setDescription('Validate FB2 archives of texts and books')
-			->setHelp(<<<EOT
+	public function getName() {
+		return 'lib:validate-fb2';
+	}
+
+	public function getDescription() {
+		return 'Validate FB2 archives of texts and books';
+	}
+
+	public function getHelp() {
+		return <<<EOT
 The <info>%command.name%</info> allows validation of text and book archives.
 
 Example calls:
@@ -34,7 +37,12 @@ Example calls:
 
 	<info>%command.name%</info> text:1-5 book:1-10
 		Validates texts with IDs between 1 and 5, and books with IDs between 1 and 10
-EOT
+EOT;
+	}
+
+	protected function getArrayArguments() {
+		return array(
+			'id' => 'A text or a book ID or an ID range',
 		);
 	}
 

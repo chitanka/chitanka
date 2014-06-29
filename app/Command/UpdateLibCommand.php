@@ -2,20 +2,33 @@
 
 use App\Service\ContentImporter;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateLibCommand extends Command {
 
-	protected function configure() {
-		$this
-			->setName('lib:update')
-			->setDescription('Add or update new texts and books')
-			->addArgument('input', InputArgument::REQUIRED, 'Directory with input files or other input directories')
-			->addOption('save', null, InputOption::VALUE_NONE, 'Save generated files in corresponding directories')
-			->addOption('dump-sql', null, InputOption::VALUE_NONE, 'Output SQL queries instead of executing them')
-			->setHelp('The <info>%command.name%</info> command adds or updates texts and books.');
+	public function getName() {
+		return 'lib:update';
+	}
+
+	public function getDescription() {
+		return 'Add or update new texts and books';
+	}
+
+	public function getHelp() {
+		return 'The <info>%command.name%</info> command adds or updates texts and books.';
+	}
+
+	protected function getRequiredArguments() {
+		return array(
+			'input' => 'Directory with input files or other input directories',
+		);
+	}
+
+	protected function getBooleanOptions() {
+		return array(
+			'save' => 'Save generated files in corresponding directories',
+			'dump-sql' => 'Output SQL queries instead of executing them',
+		);
 	}
 
 	/** {@inheritdoc} */

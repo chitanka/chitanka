@@ -1,26 +1,35 @@
 <?php namespace App\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Exception\IOException;
 use App\Service\Mutex;
 use App\Service\FileUpdater;
 use App\Service\SourceUpdater;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Exception\IOException;
 
 class AutoUpdateCommand extends Command {
 
 	private $output;
 
-	protected function configure() {
-		$this
-			->setName('auto-update')
-			->setDescription('Execute an auto-update of the whole system')
-			->addOption('no-wait', null, InputOption::VALUE_NONE, 'Skip waiting time at the beginning. Not recommended for mirror servers.')
-			->addOption('skip-content', null, InputOption::VALUE_NONE, 'Skip content update')
-			->addOption('skip-db', null, InputOption::VALUE_NONE, 'Skip database update')
-			->addOption('skip-src', null, InputOption::VALUE_NONE, 'Skip software update')
-			->setHelp('The <info>%command.name%</info> updates the whole system - software, database, and content.');
+	public function getName() {
+		return 'auto-update';
+	}
+
+	public function getDescription() {
+		return 'Execute an auto-update of the whole system';
+	}
+
+	public function getHelp() {
+		return 'The <info>%command.name%</info> updates the whole system - software, database, and content.';
+	}
+
+	protected function getBooleanOptions() {
+		return array(
+			'no-wait' => 'Skip waiting time at the beginning. Not recommended for mirror servers.',
+			'skip-content' => 'Skip content update',
+			'skip-db' => 'Skip database update',
+			'skip-src' => 'Skip software update',
+		);
 	}
 
 	/**

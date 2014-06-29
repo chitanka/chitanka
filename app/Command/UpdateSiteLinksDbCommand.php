@@ -6,11 +6,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateSiteLinksDbCommand extends Command {
 
-	protected function configure() {
-		$this
-			->setName('db:update-sites')
-			->setDescription('Update links to external sites')
-			->setHelp('The <info>%command.name%</info> command reads data from the wiki and updates the links to external sites.');
+	public function getName() {
+		return 'db:update-sites';
+	}
+
+	public function getDescription() {
+		return 'Update links to external sites';
+	}
+
+	public function getHelp() {
+		return 'The <info>%command.name%</info> command reads data from the wiki and updates the links to external sites.';
 	}
 
 	/** {@inheritdoc} */
@@ -23,7 +28,7 @@ class UpdateSiteLinksDbCommand extends Command {
 	 * @param string $wikiContent
 	 * @param OutputInterface $output
 	 */
-	protected function updateLinks($wikiContent, OutputInterface $output) {
+	private function updateLinks($wikiContent, OutputInterface $output) {
 		$linksData = $this->extractLinkData($wikiContent);
 		if (empty($linksData)) {
 			return;
@@ -38,7 +43,7 @@ class UpdateSiteLinksDbCommand extends Command {
 		}
 	}
 
-	protected function fetchWikiContent(OutputInterface $output) {
+	private function fetchWikiContent(OutputInterface $output) {
 		$output->writeln('Fetching wiki content...');
 		$mwClient = new MediawikiClient($this->getContainer()->get('buzz'));
 		return $mwClient->fetchContent('http://wiki.chitanka.info/Links', 0);
@@ -47,7 +52,7 @@ class UpdateSiteLinksDbCommand extends Command {
 	/**
 	 * @param string $wikiContent
 	 */
-	protected function extractLinkData($wikiContent) {
+	private function extractLinkData($wikiContent) {
 		if (preg_match_all('|class="external text" href="([^"]+)">([^<]+)</a>(.*)|', $wikiContent, $matches, PREG_SET_ORDER)) {
 			return $matches;
 		}

@@ -2,7 +2,6 @@
 
 use App\Util\HttpAgent;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class VerifyPersonInfoLinksDbCommand extends Command {
@@ -10,12 +9,22 @@ class VerifyPersonInfoLinksDbCommand extends Command {
 	private $output;
 	private $secsBetweenRequests = 5;
 
-	protected function configure() {
-		$this
-			->setName('db:verify-person-info-links')
-			->setDescription('Verify the person wiki info links')
-			->addOption('dump-sql', null, InputOption::VALUE_NONE, 'Output SQL queries instead of executing them')
-			->setHelp('The <info>%command.name%</info> command verifies the existance of the person wiki info links and removes the non-existing ones.');
+	public function getName() {
+		return 'db:verify-person-info-links';
+	}
+
+	public function getDescription() {
+		return 'Verify the person wiki info links';
+	}
+
+	public function getHelp() {
+		return 'The <info>%command.name%</info> command verifies the existance of the person wiki info links and removes the non-existing ones.';
+	}
+
+	protected function getBooleanOptions() {
+		return array(
+			'dump-sql' => 'Output SQL queries instead of executing them',
+		);
 	}
 
 	/** {@inheritdoc} */

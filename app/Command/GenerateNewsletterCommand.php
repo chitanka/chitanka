@@ -1,7 +1,6 @@
 <?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateNewsletterCommand extends Command {
@@ -9,12 +8,22 @@ class GenerateNewsletterCommand extends Command {
 	private $input;
 	private $output;
 
-	protected function configure() {
-		$this
-			->setName('lib:generate-newsletter')
-			->setDescription('Generate newsletter')
-			->addArgument('month', InputArgument::REQUIRED, 'Month (3 or 2011-3)')
-			->setHelp('The <info>%command.name%</info> generates the newsletter for a given month.');
+	public function getName() {
+		return 'lib:generate-newsletter';
+	}
+
+	public function getDescription() {
+		return 'Generate newsletter';
+	}
+
+	public function getHelp() {
+		return 'The <info>%command.name%</info> generates the newsletter for a given month.';
+	}
+
+	protected function getRequiredArguments() {
+		return array(
+			'month' => 'Month (3 or 2011-3)',
+		);
 	}
 
 	/** {@inheritdoc} */
@@ -25,10 +34,11 @@ class GenerateNewsletterCommand extends Command {
 	}
 
 	/**
-	*/
-	protected function generateNewsletter($month) {
+	 * @param int $month
+	 */
+	private function generateNewsletter($month) {
 		$this->output->writeln("\n= Книги =\n");
-		$booksByCat = $this->_getBooks($month);
+		$booksByCat = $this->getBooks($month);
 		ksort($booksByCat);
 		foreach ($booksByCat as $cat => $bookRows) {
 			$this->output->writeln("\n== $cat ==\n");
@@ -39,17 +49,16 @@ class GenerateNewsletterCommand extends Command {
 		}
 
 		$this->output->writeln("\n\n= Произведения, невключени в книги =\n");
-		$textRows = $this->_getTexts($month);
+		$textRows = $this->getTexts($month);
 		ksort($textRows);
 		foreach ($textRows as $textRow) {
 			$this->output->writeln($textRow);
 		}
 	}
 
-	private function _getBooks($month) {
+	private function getBooks($month) {
 		$repo = $this->getEntityManager()->getBookRevisionRepository();
 		$booksByCat = array();
-		#foreach ($repo->getByDate(array('2011-07-01', '2011-08-31 23:59'), 1, null, false) as $revision) {
 		foreach ($repo->getByMonth($month) as $revision) {
 			$authors = array();
 			foreach ($revision['book']['authors'] as $author) {
@@ -67,7 +76,7 @@ class GenerateNewsletterCommand extends Command {
 	}
 
 	// TODO fetch only texts w/o books
-	private function _getTexts($month) {
+	private function getTexts($month) {
 		$repo = $this->getEntityManager()->getTextRevisionRepository();
 		$texts = array();
 		#foreach ($repo->getByDate(array('2011-07-01', '2011-08-31 23:59'), 1, null, false) as $revision) {

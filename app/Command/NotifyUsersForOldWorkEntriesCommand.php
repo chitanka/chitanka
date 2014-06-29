@@ -3,19 +3,33 @@
 use App\Entity\WorkEntry;
 use App\Mail\WorkroomNotifier;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class NotifyUsersForOldWorkEntriesCommand extends Command {
 
-	protected function configure() {
-		$this
-			->setName('lib:notify-old-work-entries')
-			->setDescription('Notify all users with too old work entries')
-			->addArgument('age', InputArgument::REQUIRED, 'Threshold age for notification (in months)')
-			->addArgument('stalk-interval', InputArgument::OPTIONAL, 'Number of days between two subsequent notifications. Default: 7', 7)
-			->addArgument('skip-users', InputArgument::OPTIONAL, 'List of users by name which should not get notifications. Format: USERNAME1[,USERNAME2]*')
-			->setHelp('Notify all users with too old work entries.');
+	public function getName() {
+		return 'lib:notify-old-work-entries';
+	}
+
+	public function getDescription() {
+		return 'Notify all users with too old work entries';
+	}
+
+	public function getHelp() {
+		return 'Notify all users with too old work entries.';
+	}
+
+	protected function getRequiredArguments() {
+		return array(
+			'age' => 'Threshold age for notification (in months)',
+		);
+	}
+
+	protected function getOptionalArguments() {
+		return array(
+			'stalk-interval' => array('Number of days between two subsequent notifications. Default: 7', 7),
+			'skipped-users' => array('List of users by name which should not get notifications. Format: USERNAME1[,USERNAME2]*', ''),
+		);
 	}
 
 	/** {@inheritdoc} */
@@ -49,7 +63,7 @@ class NotifyUsersForOldWorkEntriesCommand extends Command {
 	}
 
 	private function getSkippedUsers(InputInterface $input) {
-		return explode(',', $input->getArgument('skip-users'));
+		return explode(',', $input->getArgument('skipped-users'));
 	}
 
 	private function shouldSkipEntry(WorkEntry $entry, array $skippedUsers) {

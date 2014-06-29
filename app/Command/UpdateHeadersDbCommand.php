@@ -2,8 +2,6 @@
 
 use App\Service\TextService;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateHeadersDbCommand extends Command {
@@ -11,13 +9,28 @@ class UpdateHeadersDbCommand extends Command {
 	private $em;
 	private $output;
 
-	protected function configure() {
-		$this
-			->setName('db:update-headers')
-			->setDescription('Update text headers in the database')
-			->addArgument('texts', InputArgument::OPTIONAL, 'Texts which headers should be updated (comma separated)')
-			->addOption('dump-sql', null, InputOption::VALUE_NONE, 'Output SQL queries instead of executing them')
-			->setHelp('The <info>%command.name%</info> command updates the text headers in the database.');
+	public function getName() {
+		return 'db:update-headers';
+	}
+
+	public function getDescription() {
+		return 'Update text headers in the database';
+	}
+
+	public function getHelp() {
+		return 'The <info>%command.name%</info> command updates the text headers in the database.';
+	}
+
+	protected function getOptionalArguments() {
+		return array(
+			'texts' => 'Texts which headers should be updated (comma separated)',
+		);
+	}
+
+	protected function getBooleanOptions() {
+		return array(
+			'dump-sql' => 'Output SQL queries instead of executing them',
+		);
 	}
 
 	/** {@inheritdoc} */
@@ -34,7 +47,7 @@ class UpdateHeadersDbCommand extends Command {
 	 * @param string $texts
 	 * @param bool $dumpSql
 	 */
-	protected function updateHeaders($texts, $dumpSql) {
+	private function updateHeaders($texts, $dumpSql) {
 		$queries = array();
 		$dql = 'SELECT t FROM App:Text t WHERE t.headlevel > 0';
 		if ($texts) {

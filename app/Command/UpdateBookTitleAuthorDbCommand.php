@@ -1,7 +1,6 @@
 <?php namespace App\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -13,12 +12,22 @@ class UpdateBookTitleAuthorDbCommand extends Command {
 	private $output;
 	private $dumpSql;
 
-	protected function configure() {
-		$this
-			->setName('db:update-book-title-author')
-			->setDescription('Update legacy field book.titleAuthor')
-			->addOption('dump-sql', null, InputOption::VALUE_NONE, 'Output SQL queries instead of executing them')
-			->setHelp('The <info>%command.name%</info> command updates the legacy field book.title_author.');
+	public function getName() {
+		return 'db:update-book-title-author';
+	}
+
+	public function getDescription() {
+		return 'Update legacy field book.titleAuthor';
+	}
+
+	public function getHelp() {
+		return 'The <info>%command.name%</info> command updates the legacy field book.title_author.';
+	}
+
+	protected function getBooleanOptions() {
+		return array(
+			'dump-sql' => 'Output SQL queries instead of executing them',
+		);
 	}
 
 	/** {@inheritdoc} */
@@ -33,7 +42,7 @@ class UpdateBookTitleAuthorDbCommand extends Command {
 	/**
 	 * @param bool $dumpSql
 	 */
-	protected function updateBookTitleAuthor($dumpSql) {
+	private function updateBookTitleAuthor($dumpSql) {
 		$queries = array();
 		$iterableResult = $this->em->createQuery('SELECT b FROM App:Book b WHERE b.titleAuthor IS NULL')->iterate();
 		foreach ($iterableResult AS $row) {
