@@ -227,14 +227,14 @@ class Text extends BaseWork {
 	private $removedNotice;
 
 	/**
-	 * @var ArrayCollection(<TextAuthor>)
+	 * @var ArrayCollection|TextAuthor[]
 	 * @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"pos" = "ASC"})
 	 */
 	private $textAuthors;
 
 	/**
-	 * @var ArrayCollection(<TextTranslator>)
+	 * @var ArrayCollection|TextTranslator[]
 	 * @ORM\OneToMany(targetEntity="TextTranslator", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"pos" = "ASC"})
 	 */
@@ -251,13 +251,13 @@ class Text extends BaseWork {
 	private $translators;
 
 	/**
-	 * @var ArrayCollection(<BookText>)
+	 * @var ArrayCollection|BookText[]
 	 * @ORM\OneToMany(targetEntity="BookText", mappedBy="text")
 	 */
 	private $bookTexts;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	 * @var ArrayCollection(<Book>)
+	 * @var ArrayCollection|Book[]
 	 * @ORM\ManyToMany(targetEntity="Book", mappedBy="texts")
 	 * @ORM\JoinTable(name="book_text",
 	 *	joinColumns={@ORM\JoinColumn(name="text_id", referencedColumnName="id")},
@@ -267,21 +267,21 @@ class Text extends BaseWork {
 	private $books;
 
 	/**
-	 * @var ArrayCollection(<Label>)
+	 * @var ArrayCollection|Label[]
 	 * @ORM\ManyToMany(targetEntity="Label", inversedBy="texts")
 	 * @ORM\OrderBy({"name" = "ASC"})
 	 */
 	private $labels;
 
 	/**
-	 * @var ArrayCollection(<TextHeader>)
+	 * @var ArrayCollection|TextHeader[]
 	 * @ORM\OneToMany(targetEntity="TextHeader", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"nr" = "ASC"})
 	 */
 	private $headers;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	 * @var ArrayCollection(<User>)
+	 * @var ArrayCollection|User[]
 	 * @ORM\ManyToMany(targetEntity="User")
 	 * @ORM\JoinTable(name="user_text_read",
 	 *	joinColumns={@ORM\JoinColumn(name="text_id")},
@@ -290,19 +290,19 @@ class Text extends BaseWork {
 	private $readers;
 
 	/**
-	 * @var ArrayCollection(<UserTextContrib>)
+	 * @var ArrayCollection|UserTextContrib[]
 	 * @ORM\OneToMany(targetEntity="UserTextContrib", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 */
 	private $userContribs;
 
 	/**
-	 * @var ArrayCollection(<TextRevision>)
+	 * @var ArrayCollection|TextRevision[]
 	 * @ORM\OneToMany(targetEntity="TextRevision", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 */
 	private $revisions;
 
 	/**
-	 * @var ArrayCollection(<TextLink>)
+	 * @var ArrayCollection|TextLink[]
 	 * @ORM\OneToMany(targetEntity="TextLink", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 */
 	private $links;
