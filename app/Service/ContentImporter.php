@@ -327,7 +327,7 @@ class ContentImporter {
 			$sql = "SELECT id FROM $table WHERE $column = '$query'";
 			$result = $this->em->getConnection()->fetchAssoc($sql);
 			if (empty($result['id'])) {
-				throw new \DomainException("Няма запис за $table.$column = '$query'");
+				throw new \InvalidArgumentException("Няма запис за $table.$column = '$query'");
 			}
 			$this->objectsIds[$table][$query] = $result['id'];
 		}
