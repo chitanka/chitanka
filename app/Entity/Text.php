@@ -95,8 +95,8 @@ class Text extends BaseWork {
 	private $origLang;
 
 	/**
-	 * @var int
-	 * @ORM\Column(type="smallint", nullable=true)
+	 * @var string
+	 * @ORM\Column(type="string", length=10, nullable=true)
 	 */
 	private $year;
 
