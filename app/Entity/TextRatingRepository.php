@@ -23,9 +23,15 @@ class TextRatingRepository extends EntityRepository {
 	 * @return TextRating
 	 */
 	public function getByTextAndUser(Text $text, User $user) {
-		$dql = "SELECT r FROM {$this->getEntityName()} r WHERE r.text = {$text->getId()} AND r.user = {$user->getId()}";
+		if ($user->isAnonymous()) {
+			return new TextRating($text, $user);
+		}
 		try {
-			return $this->_em->createQuery($dql)->setMaxResults(1)->getSingleResult();
+			return $this->createQueryBuilder('r')
+				->where('r.text = :text')->setParameter('text', $text->getId())
+				->where('r.user = :user')->setParameter('user', $user->getId())
+				->setMaxResults(1)
+				->getQuery()->getSingleResult();
 		} catch (NoResultException $e) {
 			return new TextRating($text, $user);
 		}
