@@ -203,6 +203,7 @@ class TextController extends Controller {
 			'obj_count' => 3, /* after annotation and extra info */
 			'js_extra' => array('text'),
 			'similar_texts' => $similarTexts,
+			'_template' => 'App:Text:show.html.twig',
 		);
 	}
 
