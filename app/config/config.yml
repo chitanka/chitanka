@@ -232,7 +232,7 @@ parameters:
         left:  Вляво
 
     user_css:
-        css/onecolumn_frontpage.css: Едноколонна начална страница
-        css/show_filesize.css: Видим размер на произведенията
+        bundles/app/css/onecolumn_frontpage.css: Едноколонна начална страница
+        bundles/app/css/show_filesize.css: Видим размер на произведенията
 
     user_js: []
