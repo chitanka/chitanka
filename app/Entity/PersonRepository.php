@@ -40,6 +40,7 @@ class PersonRepository extends EntityRepository {
 		'in',
 		'ir',
 		'ie',
+		'is',
 		'es',
 		'it',
 		'kz',
