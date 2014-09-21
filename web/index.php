@@ -131,7 +131,7 @@ use Symfony\Component\HttpFoundation\Request;
 // allow generated files (cache, logs) to be world-writable
 umask(0000);
 
-$loader = require $rootDir.'/app/bootstrap.php.cache';
+$loader = require $rootDir.'/var/bootstrap.php.cache';
 
 try {
 	// Use APC for autoloading to improve performance
