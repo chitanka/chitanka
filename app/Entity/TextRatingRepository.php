@@ -28,8 +28,12 @@ class TextRatingRepository extends EntityRepository {
 		}
 		try {
 			return $this->createQueryBuilder('r')
-				->where('r.text = :text')->setParameter('text', $text->getId())
-				->where('r.user = :user')->setParameter('user', $user->getId())
+				->andWhere('r.text = :text')
+				->andWhere('r.user = :user')
+				->setParameters(array(
+					'text' => $text->getId(),
+					'user' => $user->getId(),
+				))
 				->setMaxResults(1)
 				->getQuery()->getSingleResult();
 		} catch (NoResultException $e) {
