@@ -65,6 +65,8 @@ class Sequence extends Entity {
 
 	public function setIsSeqnrVisible($isSeqnrVisible) { $this->isSeqnrVisible = $isSeqnrVisible; }
 	public function isSeqnrVisible() { return $this->isSeqnrVisible; }
+	// TODO needed by sonata admin
+	public function getIsSeqnrVisible() { return $this->isSeqnrVisible; }
 
 	public function getBooks() { return $this->books; }
 
