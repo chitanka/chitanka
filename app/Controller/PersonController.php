@@ -6,7 +6,6 @@ use App\Entity\Person;
 use App\Service\MediawikiClient;
 use App\Service\SearchService;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class PersonController extends Controller {
 
@@ -77,8 +76,9 @@ class PersonController extends Controller {
 
 			return $this->asJson(array($query, $items, $descs, $urls));
 		}
-		$searchService = new SearchService($this->em(), $this->get('templating'));
-		if (($query = $searchService->prepareQuery($request, $_format)) instanceof Response) {
+		$searchService = new SearchService($this->em());
+		$query = $searchService->prepareQuery($request, $_format);
+		if (isset($query['_template'])) {
 			return $query;
 		}
 

@@ -4,7 +4,6 @@ use App\Pagination\Pager;
 use App\Util\String;
 use App\Service\SearchService;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class SequenceController extends Controller {
 
@@ -62,8 +61,9 @@ class SequenceController extends Controller {
 
 			return $this->asJson(array($query, $items, $descs, $urls));
 		}
-		$searchService = new SearchService($this->em(), $this->get('templating'));
-		if (($query = $searchService->prepareQuery($request, $_format)) instanceof Response) {
+		$searchService = new SearchService($this->em());
+		$query = $searchService->prepareQuery($request, $_format);
+		if (isset($query['_template'])) {
 			return $query;
 		}
 

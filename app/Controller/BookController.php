@@ -8,7 +8,6 @@ use App\Util\String;
 use App\Service\SearchService;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends Controller {
 
@@ -161,8 +160,9 @@ class BookController extends Controller {
 
 			return $this->asJson(array($query, $items, $descs, $urls));
 		}
-		$searchService = new SearchService($this->em(), $this->get('templating'));
-		if (($query = $searchService->prepareQuery($request, $_format)) instanceof Response) {
+		$searchService = new SearchService($this->em());
+		$query = $searchService->prepareQuery($request, $_format);
+		if (isset($query['_template'])) {
 			return $query;
 		}
 
