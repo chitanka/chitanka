@@ -3,7 +3,6 @@
 use App\Entity\EntityManager;
 use App\Util\String;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\TwigBundle\TwigEngine;
 
 class SearchService {
 
@@ -11,11 +10,9 @@ class SearchService {
 	private static $maxQueryLength = 60;
 
 	private $em;
-	private $templating;
 
-	public function __construct(EntityManager $em, TwigEngine $templating) {
+	public function __construct(EntityManager $em) {
 		$this->em = $em;
-		$this->templating = $templating;
 	}
 
 	public function prepareQuery(Request $request, $format = 'html') {
@@ -23,10 +20,11 @@ class SearchService {
 		$query = trim($params->get('q'));
 
 		if (empty($query)) {
-			return $this->templating->renderResponse("App:Search:list_top_strings.$format", array(
+			return array(
+				'_template' => "App:Search:list_top_strings.$format.twig",
 				'latest_strings' => $this->em->getSearchStringRepository()->getLatest(30),
 				'top_strings' => $this->em->getSearchStringRepository()->getTop(30),
-			));
+			);
 		}
 
 		$query = String::fixEncoding($query);
@@ -36,9 +34,11 @@ class SearchService {
 			try {
 				$this->validateQueryLength($query);
 			} catch (\InvalidArgumentException $e) {
-				$response = $this->templating->renderResponse("App:Search:message.$format", array('message' => $e->getMessage()));
-				$response->setStatusCode(400);
-				return $response;
+				return array(
+					'_template' => "App:Search:message.$format.twig",
+					'_status' => 400,
+					'message' => $e->getMessage(),
+				);
 			}
 		}
 

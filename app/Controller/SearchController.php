@@ -3,7 +3,6 @@
 use App\Entity\SearchString;
 use App\Service\SearchService;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class SearchController extends Controller {
 
@@ -11,8 +10,9 @@ class SearchController extends Controller {
 		if ($_format == 'osd') {
 			return array();
 		}
-		$searchService = new SearchService($this->em(), $this->get('templating'));
-		if (($query = $searchService->prepareQuery($request, $_format)) instanceof Response) {
+		$searchService = new SearchService($this->em());
+		$query = $searchService->prepareQuery($request, $_format);
+		if (isset($query['_template'])) {
 			return $query;
 		}
 
