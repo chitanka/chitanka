@@ -4,8 +4,10 @@
  *
  */
 class CategoryRepository extends EntityRepository {
-	/** @param string $slug
-/** @return Category */
+	/**
+	 * @param string $slug
+	 * @return Category
+	 */
 	public function findBySlug($slug) {
 		return $this->findOneBy(array('slug' => $slug));
 	}
@@ -20,24 +22,26 @@ class CategoryRepository extends EntityRepository {
 	}
 
 	/**
-	 * RAW_SQL
+	 * @return array
 	 */
 	public function getAll() {
-		$categories = $this->_em->getConnection()->fetchAll('SELECT * FROM category ORDER BY name');
+		$categoryResult = $this->getQueryBuilder()
+			->addSelect('IDENTITY(e.parent) AS parent')
+			->orderBy('e.name')
+			->getQuery()
+			->getArrayResult();
+		foreach ($categoryResult as $k => $row) {
+			$categoryResult[$k] += $row[0];
+			unset($categoryResult[$k][0]);
+		}
 
-		return $categories;
+		return $categoryResult;
 	}
 
 	/**
-	 * RAW_SQL
+	 * TODO move to some utility class
+	 * @return array
 	 */
-	public function getRoots() {
-		$categories = $this->_em->getConnection()->fetchAll('SELECT * FROM category WHERE parent_id IS NULL ORDER BY name');
-
-		return $categories;
-	}
-
-	/** TODO move to some utility class */
 	protected function convertArrayToTree($labels) {
 		$labelsById = array();
 		foreach ($labels as $i => $label) {
@@ -45,8 +49,8 @@ class CategoryRepository extends EntityRepository {
 		}
 
 		foreach ($labels as $i => $label) {
-			if ($label['parent_id']) {
-				$labelsById[$label['parent_id']]['children'][] =& $labels[$i];
+			if ($label['parent']) {
+				$labelsById[$label['parent']]['children'][] =& $labels[$i];
 			}
 		}
 
@@ -55,6 +59,7 @@ class CategoryRepository extends EntityRepository {
 
 	/**
 	 * @param string $name
+	 * @return array
 	 */
 	public function getByNames($name) {
 		return $this->getQueryBuilder()
