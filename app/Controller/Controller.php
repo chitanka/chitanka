@@ -18,11 +18,11 @@ abstract class Controller extends SymfonyController {
 	private $flashes;
 
 	/**
-	 * @param string $page
+	 * @param string $pageName
 	 * @param array $params
 	 */
-	protected function legacyPage($page, array $params = array()) {
-		$page = Setup::getPage($page, $this, $this->container);
+	protected function legacyPage($pageName, array $params = array()) {
+		$page = Setup::getPage($pageName, $this, $this->container);
 		if ($page->redirect) {
 			return $this->urlRedirect($page->redirect);
 		}
