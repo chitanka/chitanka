@@ -10,7 +10,7 @@
 
 {% macro transYear(text) %}
 	{% if text.transYear is empty %}
-		<a href="{{ path('suggest_info', {'id': text.id, 'type': 'transYear'}) }}">????</a>
+		<a href="{{ path('suggest_info', {'id': text.id, 'type': 'trans_year'}) }}">????</a>
 	{% else %}
 		<span itemprop="datePublished">{{ text.transYear }}</span>
 	{% endif %}
@@ -24,7 +24,7 @@
 			({{ text.origSubtitle }})
 		{% endif %}
 	{% else %}
-		[не е въведено; <a href="{{ path('suggest_info', {'id': text.id, 'type': 'origTitle'}) }}">помогнете</a> за добавянето му]
+		[не е въведено; <a href="{{ path('suggest_info', {'id': text.id, 'type': 'orig_title'}) }}">помогнете</a> за добавянето му]
 	{% endif %}
 	{% endspaceless %}
 {% endmacro %}

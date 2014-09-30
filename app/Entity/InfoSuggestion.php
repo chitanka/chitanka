@@ -7,10 +7,10 @@ use App\Mail\MailSource;
 class InfoSuggestion extends MailSource {
 
 	private static $subjects = array(
-		'origTitle' => 'Информация за оригинално заглавие',
+		'orig_title' => 'Информация за оригинално заглавие',
 		'orig_year' => 'Информация за година на написване или първа публикация',
 		'translator' => 'Информация за преводач',
-		'transYear' => 'Информация за година на превод',
+		'trans_year' => 'Информация за година на превод',
 		// TODO enable annotation suggestions for books
 		//'annotation' => 'Предложение за анотация',
 	);
