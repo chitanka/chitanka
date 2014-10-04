@@ -298,7 +298,7 @@ class WorkPage extends Page {
 			'date' => $this->date,
 			'progress' => $this->progress,
 			'is_frozen' => $this->isFrozen,
-			'deleted_at = null',
+			'deleted_at' => null,
 		);
 		if ($this->request->value('uplfile') != '') {
 			$set['uplfile'] = $this->request->value('uplfile');
