@@ -208,10 +208,6 @@ book_comments:
     pattern:        /book/{id}/comments.{_format}
     defaults:       { _controller: App:Book:comments, _format: html }
 
-# book_suggest_info:
-#     pattern:        /book/{id}/suggest/{object}
-#     defaults:       { _controller: App:Book:suggest }
-
 
 # # #   BOOK SEQUENCES   # # #
 
@@ -332,10 +328,6 @@ text_similar:
     pattern:        /text/{id}/similar
     defaults:       { _controller: App:Text:similar }
     requirements:   { _method: get }
-
-text_suggest_info:
-    pattern:        /text/{id}/suggest/{object}
-    defaults:       { _controller: App:Text:suggest }
 
 text_read:
     pattern:        /text/{id}/read
