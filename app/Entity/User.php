@@ -120,7 +120,7 @@ class User implements UserInterface {
 
 	/**
 	 * @var Bookmark[]
-	 * @ORM\OneToMany(targetEntity="Bookmark", mappedBy="user")
+	 * @ORM\OneToMany(targetEntity="Bookmark", mappedBy="user", cascade={"persist"})
 	 */
 	private $bookmarks;
 

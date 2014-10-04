@@ -21,11 +21,11 @@ class TextBookmarkService {
 	/**
 	 *
 	 * @param Text $text
-	 * @param string $folder
+	 * @param string $folderName
 	 * @return Bookmark|null
 	 */
-	public function addBookmark(Text $text, $folder = 'favorities') {
-		$folder = $this->bookmarkFolderRepo->getOrCreateForUser($this->user, $folder);
+	public function addBookmark(Text $text, $folderName = 'favorities') {
+		$folder = $this->bookmarkFolderRepo->getOrCreateForUser($this->user, $folderName);
 		$bookmark = $this->bookmarkRepo->findOneBy(array(
 			'folder' => $folder->getId(),
 			'text' => $text->getId(),
