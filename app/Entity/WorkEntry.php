@@ -260,12 +260,28 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 		return $this->deletedAt !== null;
 	}
 
-	public function getContribs() { return $this->contribs; }
+	public function getAllContribs() {
+		return $this->contribs;
+	}
+
+	/**
+	 * Return all non-deleted contributions
+	 * @return WorkContrib[]
+	 */
+	public function getContribs() {
+		$contribs = array();
+		foreach ($this->contribs as $contrib/*@var $contrib WorkContrib*/) {
+			if (!$contrib->isDeleted()) {
+				$contribs[] = $contrib;
+			}
+		}
+		return $contribs;
+	}
 
 	public function getOpenContribs() {
 		$openContribs = array();
 		foreach ($this->getContribs() as $contrib/*@var $contrib WorkContrib*/) {
-			if ( ! $contrib->isFinished() && ! $contrib->isDeleted()) {
+			if (!$contrib->isFinished()) {
 				$openContribs[] = $contrib;
 			}
 		}

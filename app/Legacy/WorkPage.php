@@ -558,7 +558,7 @@ EOS;
 		}
 		if ( $this->isMultiUser($dbrow['type']) ) {
 			$musers = '';
-			foreach ($entry->getOpenContribs() as $contrib) {
+			foreach ($entry->getContribs() as $contrib) {
 				$uinfo = $this->makeExtraInfo("{$contrib->getComment()} ({$contrib->getProgress()}%)");
 				$ufile = $contrib->getUplfile() == ''
 					? ''
@@ -1383,7 +1383,7 @@ EOS;
 			$this->workType = $entry->getType();
 		}
 		$this->multidata = array();
-		foreach ($entry->getOpenContribs() as $contrib) {
+		foreach ($entry->getContribs() as $contrib) {
 			$this->multidata[$contrib->getUser()->getId()] = $contrib;
 		}
 
