@@ -16,6 +16,13 @@ h1, h2, h3, h4, h5, h6 {
 	line-height: 1.3em;
 	font-weight: normal;
 }
+h2+h2,
+h3+h4,
+h4+h4,
+h5+h5,
+h6+h6 {
+	padding-top: 0;
+}
 h1, hgroup h2 {
 	color: @headerFgColor;
 	background-color: @headerBgColor;
@@ -1121,7 +1128,6 @@ div.poem-middle .subheader {
 	text-indent: 0;
 }
 .subheader {
-	box-shadow: none;
 	background: none;
 	margin: .5em 0 0 0;
 }
