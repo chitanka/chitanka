@@ -72,7 +72,7 @@ class BookTemplate {
 		if (strpos($textContent, SfbConverter::EOL.">") !== false && $textContent[0] !== '>' && strpos($textContent, "\t{img:") !== 0) {
 			$textContent = $command . SfbConverter::CMD_DELIM . SfbConverter::EOL . $textContent;
 		}
-		return $title . str_repeat(SfbConverter::EOL, 2) . $this->replaceSfbHeadings($textContent, $command);
+		return $title . str_repeat(SfbConverter::EOL, 2) . self::replaceSfbHeadings($textContent, $command);
 	}
 
 	/**
@@ -87,10 +87,10 @@ class BookTemplate {
 		if (empty($command)) {
 			return $textContent;
 		}
-		return $this->replaceSfbHeadings($textContent, $command);
+		return self::replaceSfbHeadings($textContent, $command);
 	}
 
-	private $headingRepl = array(
+	private static $headingRepl = array(
 		'>' => array(
 			"\n>" => "\n>>",
 			"\n>>" => "\n>>>",
@@ -129,10 +129,11 @@ class BookTemplate {
 	);
 
 	/**
-	 * @param string|null $content
+	 * @param string $content
+	 * @param string $startHeading
 	 */
-	private function replaceSfbHeadings($content, $startHeading) {
-		return ltrim(strtr("\n".$content, $this->headingRepl[$startHeading]), "\n");
+	public static function replaceSfbHeadings($content, $startHeading) {
+		return ltrim(strtr("\n".$content, self::$headingRepl[$startHeading]), "\n");
 	}
 
 	public function getAsXhtml() {

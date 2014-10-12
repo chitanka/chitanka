@@ -1009,10 +1009,15 @@ EOS;
 		}
 
 		$template = ContentService::getContentFile('text', $this->getId());
-		if (preg_match_all('/\t\{file:(\d+-.+)\}/', $template, $matches, PREG_SET_ORDER)) {
+		if (preg_match_all('/(.*)\t\{file:(\d+-.+)\}/', $template, $matches, PREG_SET_ORDER)) {
 			foreach ($matches as $match) {
-				list($row, $filename) = $match;
-				$template = str_replace($row, ContentService::getContentFile('text', $filename), $template);
+				list($row, $command, $filename) = $match;
+				$content = ContentService::getContentFile('text', $filename);
+				if (strlen($command) > 1) {
+					$normalizedCommand = substr($command, 1);
+					$content = Content\BookTemplate::replaceSfbHeadings($content, $normalizedCommand);
+				}
+				$template = str_replace($row, $content, $template);
 			}
 		}
 		// TODO cache the full output
