@@ -367,7 +367,7 @@ class ContentImporter {
 		$queries = array();
 		foreach ($tables as $table) {
 			$entityName = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
-			$queries[] = "UPDATE next_id SET value=(SELECT max(id)+1 FROM $table) WHERE id LIKE '%Entity\\\\$entityName'";
+			$queries[] = "UPDATE next_id SET value=(SELECT max(id)+1 FROM $table) WHERE id = 'App\\\\Entity\\\\$entityName'";
 		}
 		return $queries;
 	}
