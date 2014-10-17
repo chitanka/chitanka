@@ -40,7 +40,7 @@ class SequenceController extends Controller {
 		);
 	}
 
-	public function sequencesAction(Request $request, $_format) {
+	public function searchAction(Request $request, $_format) {
 		if ($_format == 'osd') {
 			return array();
 		}
