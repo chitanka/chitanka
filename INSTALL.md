@@ -160,7 +160,9 @@
 		location @thumb_generator {
 			rewrite ^/thumb/(.+) /thumb/index.php?$1;
 		}
-
+		location ~* \.(eot|otf|ttf|woff)$ {
+			add_header Access-Control-Allow-Origin *;
+		}
 	}
 
 5.3. Настройка на домейна
