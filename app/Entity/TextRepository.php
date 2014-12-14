@@ -43,6 +43,7 @@ class TextRepository extends EntityRepository {
 		'philosophy',
 		'religion',
 		'historiography',
+		'collection',
 		'other',
 	);
 
