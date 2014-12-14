@@ -9,6 +9,7 @@ use Sfblib\SfbToHtmlConverter;
 class BookTemplate {
 
 	private $book;
+	private $extraFileLinesToInsert = array();
 
 	public function __construct(Book $book) {
 		$this->book = $book;
@@ -37,6 +38,11 @@ class BookTemplate {
 			return $line . SfbConverter::EOL;
 		}
 		list($command, $content) = $lineParts;
+		if ($command && $command[0] === ':') {
+			$lineNumber = substr($command, 1);
+			$this->extraFileLinesToInsert[$lineNumber] = $content;
+			return '';
+		}
 		if ( ! preg_match('/\{(title|text|file):(\d+)(-[^|]+)?(\|(.+))?\}/', $content, $matches)) {
 			return $line . SfbConverter::EOL;
 		}
@@ -76,7 +82,10 @@ class BookTemplate {
 	}
 
 	/**
+	 * @param Text $text
+	 * @param string $command
 	 * @param string[] $matches
+	 * @return string
 	 */
 	private function generateSfbForFileLine(Text $text, $command, $matches) {
 		if (empty($matches[3])) {
@@ -84,10 +93,22 @@ class BookTemplate {
 		} else {
 			$textContent = ContentService::getContentFile('text', $matches[2].$matches[3]);
 		}
-		if (empty($command)) {
-			return $textContent;
+		if (!empty($command)) {
+			$textContent = self::replaceSfbHeadings($textContent, $command);
 		}
-		return self::replaceSfbHeadings($textContent, $command);
+		if ($this->extraFileLinesToInsert) {
+			$textContentWithExtraLines = '';
+			foreach (explode("\n", $textContent) as $idx => $textLine) {
+				$extraIdx = $idx+1; // cause $idx is 0-based
+				if (isset($this->extraFileLinesToInsert[$extraIdx])) {
+					$textContentWithExtraLines .= SfbConverter::CMD_DELIM . $this->extraFileLinesToInsert[$extraIdx] . SfbConverter::EOL;
+				}
+				$textContentWithExtraLines .= $textLine . SfbConverter::EOL;
+			}
+			$textContent = $textContentWithExtraLines;
+			$this->extraFileLinesToInsert = array();
+		}
+		return $textContent;
 	}
 
 	private static $headingRepl = array(
