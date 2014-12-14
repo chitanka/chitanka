@@ -12,20 +12,23 @@ class LabelRepository extends EntityRepository {
 	}
 
 	public function getAll() {
-		return $this->getQueryBuilder()
-			->orderBy('e.name', 'asc')
+		$labelResult = $this->getQueryBuilder()
+			->addSelect('IDENTITY(e.parent) AS parent')
+			->orderBy('e.name')
 			->getQuery()
 			->getArrayResult();
+		foreach ($labelResult as $k => $row) {
+			$labelResult[$k] += $row[0];
+			unset($labelResult[$k][0]);
+		}
+		return $labelResult;
 	}
 
 	/**
-	 * RAW_SQL
+	 * @return array
 	 */
 	public function getAllAsTree() {
-		$labels = $this->_em->getConnection()->fetchAll('SELECT * FROM label ORDER BY name');
-		$labels = $this->convertArrayToTree($labels);
-
-		return $labels;
+		return $this->convertArrayToTree($this->getAll());
 	}
 
 	protected function convertArrayToTree($labels) {
@@ -35,8 +38,8 @@ class LabelRepository extends EntityRepository {
 		}
 
 		foreach ($labels as $i => $label) {
-			if ($label['parent_id']) {
-				$labelsById[$label['parent_id']]['children'][] =& $labels[$i];
+			if ($label['parent']) {
+				$labelsById[$label['parent']]['children'][] =& $labels[$i];
 			}
 		}
 
