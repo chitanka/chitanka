@@ -43,7 +43,7 @@ class String {
 		));
 	}
 
-	static private $allowableTags = array('em', 'strong');
+	private static $allowableTags = array('em', 'strong');
 
 	/**
 	 * @param string $text
@@ -225,7 +225,7 @@ class String {
 		return null;
 	}
 
-	static private function log_error($s, $loud = false) {
+	private static function log_error($s, $loud = false) {
 		if ($loud) {
 			echo $s."\n";
 		}

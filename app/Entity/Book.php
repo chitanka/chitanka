@@ -95,7 +95,7 @@ class Book extends BaseWork {
 	 * @ORM\Column(type="string", length=10)
 	 */
 	private $type;
-	static private $typeList = array(
+	private static $typeList = array(
 		'single' => 'Обикновена книга',
 		'collection' => 'Сборник',
 		'poetry' => 'Стихосбирка',

@@ -1505,7 +1505,7 @@ EOS;
 			$title);
 	}
 
-	static private function rawurlencode($file) {
+	private static function rawurlencode($file) {
 		return strtr(rawurlencode($file), array(
 			'%2F' => '/',
 			'%3A' => ':',

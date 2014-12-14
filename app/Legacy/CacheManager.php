@@ -7,7 +7,7 @@ class CacheManager {
 
 	const ONEDAYSECS = 86400; // 60*60*24
 
-	static private
+	private static
 		$cacheDir  = 'cache/',
 		$dlDir     = 'cache/dl/',
 		$zipDir    = 'zip/';

@@ -71,7 +71,7 @@ class User implements UserInterface {
 	 * @ORM\Column(type="array")
 	 */
 	private $groups = array();
-	static private $groupList = array(
+	private static $groupList = array(
 		'user',
 		'text-label',
 		'workroom-supervisor',
@@ -316,7 +316,7 @@ class User implements UserInterface {
 		}
 	}
 
-	static public $defOptions = array(
+	public static $defOptions = array(
 		'skin' => 'orange',
 		'nav' => 'right', // navigation position
 		'css' => array(),
@@ -340,7 +340,7 @@ class User implements UserInterface {
 	/** Session key for the User object */
 	const U_SESSION = 'user';
 
-	static public function initUser($repo) {
+	public static function initUser($repo) {
 		if ( self::isSetSession() ) {
 			$user = self::newFromSession();
 		} else if ( self::isSetCookie() ) {
@@ -354,16 +354,16 @@ class User implements UserInterface {
 	}
 
 	/** @return bool */
-	static protected function isSetSession() {
+	protected static function isSetSession() {
 		return isset($_SESSION[self::U_SESSION]);
 	}
 
 	/** @return bool */
-	static protected function isSetCookie() {
+	protected static function isSetCookie() {
 		return isset($_COOKIE[self::UID_COOKIE]) && isset($_COOKIE[self::TOKEN_COOKIE]);
 	}
 
-	static protected function newFromArray($data) {
+	protected static function newFromArray($data) {
 		$user = new User;
 		foreach ($data as $field => $value) {
 			$user->$field = $value;
@@ -373,12 +373,12 @@ class User implements UserInterface {
 	}
 
 	/** @return User */
-	static protected function newFromSession() {
+	protected static function newFromSession() {
 		return self::newFromArray($_SESSION[self::U_SESSION]);
 	}
 
 	/** @return User */
-	static protected function newFromCookie($repo) {
+	protected static function newFromCookie($repo) {
 		$user = $repo->find($_COOKIE[self::UID_COOKIE]);
 		if ( $user->validateToken($_COOKIE[self::TOKEN_COOKIE], $user->getPassword()) ) {
 			$user->touch();
@@ -390,7 +390,7 @@ class User implements UserInterface {
 		return new User;
 	}
 
-	static public function randomPassword($passLength = 16) {
+	public static function randomPassword($passLength = 16) {
 		$chars = 'abcdefghijkmnopqrstuvwxyz123456789';
 		$max = strlen($chars) - 1;
 		$password = '';
@@ -407,7 +407,7 @@ class User implements UserInterface {
 		@param string $username
 		@return string|boolean true if the user name is ok, or the invalid character
 	 */
-	static public function isValidUsername($username) {
+	public static function isValidUsername($username) {
 		$forbidden = '/+#"(){}[]<>!?|~*$&%=\\';
 		$len = strlen($forbidden);
 		for ($i=0; $i < $len; $i++) {
@@ -418,22 +418,22 @@ class User implements UserInterface {
 		return true;
 	}
 
-	static public function getDataByName($username) {
+	public static function getDataByName($username) {
 		return self::getData( array('username' => $username) );
 	}
 
-	static public function getDataById($userId) {
+	public static function getDataById($userId) {
 		return self::getData( array('id' => $userId) );
 	}
 
-	static public function getData($dbkey) {
+	public static function getData($dbkey) {
 		$db = Setup::db();
 		$res = $db->select(DBT_USER, $dbkey);
 		if ( $db->numRows($res) ==  0) return array();
 		return $db->fetchAssoc($res);
 	}
 
-	static public function getGroupList() {
+	public static function getGroupList() {
 		return self::$groupList;
 	}
 
@@ -578,11 +578,11 @@ class User implements UserInterface {
 		$_SESSION[self::U_SESSION] = $this->toArray();
 	}
 
-	static public function packOptions( $options ) {
+	public static function packOptions( $options ) {
 		return serialize($options);
 	}
 
-	static public function unpackOptions( $opts_data ) {
+	public static function unpackOptions( $opts_data ) {
 		if ( ! empty($opts_data) ) {
 			return unserialize($opts_data);
 		}

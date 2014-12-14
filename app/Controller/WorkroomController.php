@@ -8,7 +8,7 @@ use Eko\FeedBundle\Field\Item\ItemField;
 class WorkroomController extends Controller {
 
 	/** How many entries are allowed in a feed */
-	static private $feedListLimit = 200;
+	private static $feedListLimit = 200;
 
 	protected $responseAge = 0;
 

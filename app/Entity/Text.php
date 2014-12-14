@@ -554,8 +554,8 @@ class Text extends BaseWork {
 	public function addReader(User $reader) { $this->readers[] = $reader; }
 	public function getReaders() { return $this->readers; }
 
-	static protected $annotationDir = 'text-anno';
-	static protected $infoDir = 'text-info';
+	protected static $annotationDir = 'text-anno';
+	protected static $infoDir = 'text-info';
 
 	public function getDocId() {
 		return 'http://chitanka.info/text/' . $this->getId();

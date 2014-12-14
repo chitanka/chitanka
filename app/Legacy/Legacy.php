@@ -4,7 +4,7 @@ use App\Util\Number;
 
 class Legacy {
 
-	static private $types = array(
+	private static $types = array(
 		// code => array(singular, plural)
 		'anecdote' => array('Анекдот', 'Анекдоти'),
 		'fable' => array('Басня', 'Басни'),

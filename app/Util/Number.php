@@ -9,7 +9,7 @@ class Number {
 		'g' => 30,
 	);
 
-	static public function normInt($val, $max, $min = 1) {
+	public static function normInt($val, $max, $min = 1) {
 		if ($val > $max) {
 			$val = $max;
 		} else if ($val < $min) {
@@ -19,7 +19,7 @@ class Number {
 		return (int) $val;
 	}
 
-	static public function formatNumber($num, $decPl = 2, $decPoint = ',', $tousandDelim = ' ') {
+	public static function formatNumber($num, $decPl = 2, $decPoint = ',', $tousandDelim = ' ') {
 		$result = number_format($num, $decPl, $decPoint, $tousandDelim);
 		if ($decPoint == ',' && $num < 10000) {
 			// bulgarian extra rule: put a $tousandDelim only after 9999
@@ -47,7 +47,7 @@ class Number {
 	 * @param string $val
 	 * @return int
 	 */
-	static public function iniBytes($val) {
+	public static function iniBytes($val) {
 		$val = trim($val);
 		$lastChar = strtolower($val[strlen($val)-1]);
 		if (isset(self::$phpIniSuffixValues[$lastChar])) {
@@ -61,7 +61,7 @@ class Number {
 	 * @param int $bytes
 	 * @return string
 	 */
-	static public function int_b2h($bytes) {
+	public static function int_b2h($bytes) {
 		if ( $bytes < ( 1 << 10 ) ) {
 			return $bytes . ' B';
 		}
@@ -79,7 +79,7 @@ class Number {
 	 * @param int $bytes
 	 * @return int
 	 */
-	static public function int_b2k($bytes) {
+	public static function int_b2k($bytes) {
 		$k = $bytes >> 10; // divide by 2^10 w/o rest
 		return $k > 0 ? $k : 1;
 	}
@@ -88,7 +88,7 @@ class Number {
 	 * @param int $bytes
 	 * @return int
 	 */
-	static public function int_b2m($bytes) {
+	public static function int_b2m($bytes) {
 		$m = $bytes >> 20; // divide by 2^20 w/o rest
 		return $m > 0 ? $m : 1;
 	}
@@ -98,7 +98,7 @@ class Number {
 	 * @param int $bytes
 	 * @return int
 	 */
-	static public function int_b2g($bytes) {
+	public static function int_b2g($bytes) {
 		$m = $bytes >> 30; // divide by 2^30 w/o rest
 		return $m > 0 ? $m : 1;
 	}

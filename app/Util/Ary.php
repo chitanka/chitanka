@@ -8,7 +8,7 @@ class Ary {
 	* @param mixed $defKey Default key
 	* @return mixed $key if it exists as key in $data, otherwise $defKey
 	*/
-	static public function normKey($key, $data, $defKey = '') {
+	public static function normKey($key, $data, $defKey = '') {
 		return array_key_exists($key, $data) ? $key : $defKey;
 	}
 
@@ -17,7 +17,7 @@ class Ary {
 	 * @param string $key
 	 * @param mixed $defVal
 	 */
-	static public function arrVal($arr, $key, $defVal = null) {
+	public static function arrVal($arr, $key, $defVal = null) {
 		return array_key_exists($key, $arr) ? $arr[$key] : $defVal;
 	}
 
@@ -25,7 +25,7 @@ class Ary {
 	 * @param string[] $arr1
 	 * @param string[] $arr2
 	 */
-	static public function cartesianProduct($arr1, $arr2) {
+	public static function cartesianProduct($arr1, $arr2) {
 		$prod = array();
 		foreach ($arr1 as $val1) {
 			foreach ($arr2 as $val2) {

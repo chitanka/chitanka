@@ -3,7 +3,7 @@
 use Doctrine\ORM\NoResultException;
 
 class TextRepository extends EntityRepository {
-	static public $types = array(
+	public static $types = array(
 		'anecdote',
 		'fable',
 		'biography',

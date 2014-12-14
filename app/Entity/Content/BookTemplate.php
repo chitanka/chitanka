@@ -189,7 +189,7 @@ class BookTemplate {
 		return isset($this->textIds) ? $this->textIds : $this->textIds = $this->extractTextIds($this->getContent()) ;
 	}
 
-	static public function extractTextIds($template) {
+	public static function extractTextIds($template) {
 		if (preg_match_all('/\{(file|text):(\d+)/', $template, $matches)) {
 			return $matches[2];
 		}

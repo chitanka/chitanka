@@ -2,7 +2,7 @@
 
 class Char {
 
-	static private
+	private static
 		$cyrUppers = 'А Б В Г Д Е Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ю Я',
 		$cyrLowers = 'а б в г д е ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ю я',
 		$cyrlats = array(
@@ -27,35 +27,35 @@ class Char {
 			'№' => 'No.', '…' => '...', '’' => '\''
 		);
 
-	static public function mystrtolower($s) {
+	public static function mystrtolower($s) {
 		return str_replace(explode(' ', self::$cyrUppers), explode(' ', self::$cyrLowers), $s);
 	}
 
 	/**
 	 * @param string $s
 	 */
-	static public function mystrtoupper($s) {
+	public static function mystrtoupper($s) {
 		return str_replace(explode(' ', self::$cyrLowers), explode(' ', self::$cyrUppers), $s);
 	}
 
-	static public function myucfirst($s) {
+	public static function myucfirst($s) {
 		$ls = '#'. strtr(self::$cyrLowers, array(' ' => ' #'));
 		return str_replace(explode(' ', $ls), explode(' ', self::$cyrUppers), '#'.$s);
 	}
 
-	static public function cyr2lat($s) {
+	public static function cyr2lat($s) {
 		return strtr($s, self::$cyrlats);
 	}
 
-	static public function lat2cyr($s) {
+	public static function lat2cyr($s) {
 		return strtr($s, array_flip(self::$latcyrs));
 	}
 
-	static public function getCyrUppers($asArray = true) {
+	public static function getCyrUppers($asArray = true) {
 		return $asArray ? explode(' ', self::$cyrUppers) : self::$cyrUppers;
 	}
 
-	static public function getCyrLowers($asArray = true) {
+	public static function getCyrLowers($asArray = true) {
 		return $asArray ? explode(' ', self::$cyrLowers) : self::$cyrLowers;
 	}
 
@@ -66,7 +66,7 @@ class Char {
 	 * кодиране, което означава, че кирилицата ще се вижда хем при cp866, хем при MIK.
 	 * Въобще не прави пълно прекодиране между двете кодови таблици.
 	 */
-	static public function cp8662mik($s) {
+	public static function cp8662mik($s) {
 		return strtr($s, array(
 			chr(0xB0) => chr(0xE0),
 			chr(0xB1) => chr(0xE1),
