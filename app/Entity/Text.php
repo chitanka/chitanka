@@ -443,6 +443,7 @@ class Text extends BaseWork {
 		$this->authors[] = $author;
 	}
 
+	/** @return Person[] */
 	public function getAuthors() {
 		if (!isset($this->authors)) {
 			$this->authors = array_filter(array_map(function(TextAuthor $author) {

@@ -190,15 +190,15 @@ class EpubFile {
 	private function getBookAuthorTags(Book $book) {
 		$tags = array();
 		foreach ($book->getMainAuthors() as $author) {
-			$tags[] = self::getCreatorTag($author['name'], 'aut');
+			$tags[] = self::getCreatorTag($author->getName(), 'aut');
 		}
 
 		foreach ($book->getAuthorsBy('intro') as $author) {
-			$tags[] = self::getCreatorTag($author['name'], 'aui');
+			$tags[] = self::getCreatorTag($author->getName(), 'aui');
 		}
 
 		foreach ($book->getAuthorsBy('outro') as $author) {
-			$tags[] = self::getCreatorTag($author['name'], 'aft');
+			$tags[] = self::getCreatorTag($author->getName(), 'aft');
 		}
 
 		return $tags;

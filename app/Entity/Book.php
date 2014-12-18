@@ -409,6 +409,7 @@ class Book extends BaseWork {
 	}
 
 	private $mainAuthors;
+	/** @return Person[] */
 	public function getMainAuthors() {
 		if ( ! isset($this->mainAuthors) ) {
 			$this->mainAuthors = array();
