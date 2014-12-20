@@ -444,7 +444,7 @@ class Book extends BaseWork {
 			foreach ($this->getTextsById() as $text) {
 				if ($text->getType() == $type) {
 					foreach ($text->getAuthors() as $author) {
-						$this->authorsBy[$type][$author['id']] = $author;
+						$this->authorsBy[$type][$author->getId()] = $author;
 					}
 				}
 			}
