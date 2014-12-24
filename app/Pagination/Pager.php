@@ -1,6 +1,6 @@
 <?php namespace App\Pagination;
 
-class Pager {
+class Pager implements \JsonSerializable {
 	private $page = 1;
 	private $limit = 30;
 	private $total = 0;
@@ -10,7 +10,7 @@ class Pager {
 		$fields = array('page', 'limit', 'total');
 		foreach ($fields as $field) {
 			if (isset($options[$field])) {
-				$this->$field = $options[$field];
+				$this->$field = (int) $options[$field];
 			}
 		}
 
@@ -56,7 +56,8 @@ class Pager {
 		$pages = array();
 		$first = 1;
 		$selected = max($this->page, $first);
-		$start = $first; $end = min($first + 2, $this->count);
+		$start = $first;
+		$end = min($first + 2, $this->count);
 		for ($i = $start; $i <= $end; $i++) {
 			$pages[$i] = false;
 		}
@@ -76,6 +77,17 @@ class Pager {
 		$pages[$selected] = true;
 
 		return $pages;
+	}
+
+	public function jsonSerialize() {
+		return array(
+			'page' => $this->page,
+			'countPerPage' => $this->limit,
+			'totalCount' => $this->total,
+			'pageCount' => $this->count,
+			'prevPage' => $this->has_prev() ? $this->prev() : null,
+			'nextPage' => $this->has_next() ? $this->next() : null,
+		);
 	}
 
 }

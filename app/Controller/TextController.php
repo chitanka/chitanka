@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 class TextController extends Controller {
 
 	public function indexAction($_format) {
-		if ($_format == 'html') {
+		if (in_array($_format, ['html', 'json'])) {
 			return array(
 				'labels' => $this->em()->getLabelRepository()->getAllAsTree(),
 				'types' => $this->em()->getTextRepository()->getTypes(),

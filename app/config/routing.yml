@@ -1,3 +1,7 @@
+app:
+    resource: "@App/Controller/"
+    type:     annotation
+
 admin:
     resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
     prefix: /admin
@@ -157,7 +161,7 @@ series_show:
 books:
     pattern:        /books.{_format}
     defaults:       { _controller: App:Book:index, _format: html }
-    requirements:   { _method: get, _format: html|opds }
+    requirements:   { _method: get, _format: html|opds|json }
 
 books_alt:
     pattern:        /book
@@ -177,7 +181,7 @@ books_by_alpha:
 books_by_category:
     pattern:        /books/category/{slug}.{_format}/{page}
     defaults:       { _controller: App:Book:listByCategory, page: 1, _format: html }
-    requirements:   { _method: get, page: \d+, _format: html|opds }
+    requirements:   { _method: get, page: \d+, _format: html|opds|json }
 
 books_wo_cover:
     pattern:        /books/wo-cover/{page}
@@ -207,7 +211,6 @@ book_show:
 book_comments:
     pattern:        /book/{id}/comments.{_format}
     defaults:       { _controller: App:Book:comments, _format: html }
-
 
 # # #   BOOK SEQUENCES   # # #
 
@@ -247,7 +250,7 @@ texts_comments:
 texts:
     pattern:        /texts.{_format}
     defaults:       { _controller: App:Text:index, _format: html }
-    requirements:   { _method: get, _format: html|opds }
+    requirements:   { _method: get, _format: html|opds|json }
 
 texts_alt:
     pattern:        /text
@@ -272,7 +275,7 @@ texts_by_type:
 texts_by_label:
     pattern:        /texts/label/{slug}.{_format}/{page}
     defaults:       { _controller: App:Text:listByLabel, page: 1, _format: html }
-    requirements:   { _method: get, page: \d+, _format: html|opds }
+    requirements:   { _method: get, page: \d+, _format: html|opds|json }
 
 texts_by_alpha_index:
     pattern:        /texts/alpha.{_format}
@@ -369,13 +372,14 @@ statistics:
 
 
 new:
-    pattern:   /new
-    defaults: { _controller: App:History:index }
+    pattern:   /new.{_format}
+    defaults: { _controller: App:History:index, _format: html }
+    requirements:   { _method: get, _format: html|json }
 
 new_books:
     pattern:   /new/books.{_format}/{page}
     defaults: { _controller: App:History:listBooks, page: 1, _format: html }
-    requirements:   { _method: get, page: \d+, _format: html|rss|opds }
+    requirements:   { _method: get, page: \d+, _format: html|rss|opds|json }
 
 new_books_by_month:
     pattern:   /new/books/{year}/{month}.{_format}/{page}
@@ -385,12 +389,12 @@ new_books_by_month:
         year: \d+
         month: \d+
         page: \d+
-        _format: html|opds
+        _format: html|opds|json
 
 new_texts:
     pattern:   /new/texts.{_format}/{page}
     defaults: { _controller: App:History:listTexts, page: 1, _format: html }
-    requirements:   { _method: get, page: \d+, _format: html|rss|opds }
+    requirements:   { _method: get, page: \d+, _format: html|rss|opds|json }
 
 new_texts_by_month:
     pattern:   /new/texts/{year}/{month}.{_format}/{page}
@@ -400,7 +404,7 @@ new_texts_by_month:
         year: \d+
         month: \d+
         page: \d+
-        _format: html|opds
+        _format: html|opds|json
 
 
 email_user:

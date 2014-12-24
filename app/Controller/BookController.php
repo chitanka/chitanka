@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 class BookController extends Controller {
 
 	public function indexAction($_format) {
-		if ($_format == 'html') {
+		if (in_array($_format, ['html', 'json'])) {
 			return array(
 				'categories' => $this->em()->getCategoryRepository()->getAllAsTree(),
 			);

@@ -1,6 +1,6 @@
 <ul>
 {% for category in categories %}
-	{% if (category.children is defined or category.nrOfBooks > 0) and (level > 0 or category.parent is empty) %}
+	{% if (category.children is defined or category.nrOfBooks > 0) %}
 	<li>
 		<a href="{{ path('books_by_category', {'slug': category.slug}) }}" data-edit="{{ path('admin_category_edit', {'id': category.id}) }}">{{ category.name }}</a>
 		({{ category.nrOfBooks }})

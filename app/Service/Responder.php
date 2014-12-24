@@ -3,6 +3,7 @@
 use App\Entity\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 
 class Responder {
@@ -44,6 +45,11 @@ class Responder {
 	 * @return Response
 	 */
 	public function createResponse(Request $request, $controller, $params) {
+		if ($request->getRequestFormat() == 'json') {
+			$jsonResponse = new JsonResponse();
+			$jsonResponse->setData($params);
+			return $jsonResponse;
+		}
 		$response = new Response();
 		$params += array(
 			'_cache' => $this->useHttpCache ? 86400/*24 hours*/ : 0,

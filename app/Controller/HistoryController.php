@@ -28,6 +28,7 @@ class HistoryController extends Controller {
 					'last_date' => $lastOnes[0]['date'],
 				);
 			case 'opds':
+			case 'json':
 				return array(
 					'book_revisions' => $repo->getByDate(null, $page, $this->booksPerPage, false),
 					'pager' => new Pager(array(
@@ -70,6 +71,7 @@ class HistoryController extends Controller {
 					'last_date' => $lastOnes[0]['date'],
 				);
 			case 'opds':
+			case 'json':
 				return array(
 					'text_revisions' => $repo->getByDate(null, $page, $this->textsPerPage, false),
 					'pager'    => new Pager(array(

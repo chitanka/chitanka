@@ -11,7 +11,7 @@ use App\Util\String;
  * @UniqueEntity(fields="slug", message="This slug is already in use.")
  * @UniqueEntity(fields="name")
  */
-class Label extends Entity {
+class Label extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -132,4 +132,14 @@ class Label extends Entity {
 
 		return $ids;
 	}
+
+	public function jsonSerialize() {
+		return array(
+			'id' => $this->id,
+			'slug' => $this->slug,
+			'name' => $this->name,
+			'nrOfTexts' => $this->nrOfTexts,
+		);
+	}
+
 }
