@@ -43,13 +43,13 @@ class TextController extends Controller {
 		return array();
 	}
 
-	public function listByTypeAction($type, $page) {
+	public function listByTypeAction(Request $request, $type, $page) {
 		$textRepo = $this->em()->getTextRepository();
 		$limit = 30;
 
 		return array(
 			'type' => $type,
-			'texts'   => $textRepo->getByType($type, $page, $limit),
+			'texts'   => $textRepo->getByType($type, $page, $limit, $request->query->get('sort')),
 			'pager'    => new Pager(array(
 				'page'  => $page,
 				'limit' => $limit,
@@ -59,7 +59,7 @@ class TextController extends Controller {
 		);
 	}
 
-	public function listByLabelAction($slug, $page) {
+	public function listByLabelAction(Request $request, $slug, $page) {
 		$textRepo = $this->em()->getTextRepository();
 		$limit = 30;
 
@@ -73,7 +73,7 @@ class TextController extends Controller {
 		return array(
 			'label' => $label,
 			'parents' => array_reverse($label->getAncestors()),
-			'texts'   => $textRepo->getByLabel($labels, $page, $limit),
+			'texts'   => $textRepo->getByLabel($labels, $page, $limit, $request->query->get('sort')),
 			'pager'    => new Pager(array(
 				'page'  => $page,
 				'limit' => $limit,
@@ -83,14 +83,14 @@ class TextController extends Controller {
 		);
 	}
 
-	public function listByAlphaAction($letter, $page) {
+	public function listByAlphaAction(Request $request, $letter, $page) {
 		$textRepo = $this->em()->getTextRepository();
 		$limit = 30;
 		$prefix = $letter == '-' ? null : $letter;
 
 		return array(
 			'letter' => $letter,
-			'texts' => $textRepo->getByPrefix($prefix, $page, $limit),
+			'texts' => $textRepo->getByPrefix($prefix, $page, $limit, $request->query->get('sort')),
 			'pager'    => new Pager(array(
 				'page'  => $page,
 				'limit' => $limit,

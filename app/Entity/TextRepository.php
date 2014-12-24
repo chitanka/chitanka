@@ -55,6 +55,14 @@ class TextRepository extends EntityRepository {
 		'origSubtitle',
 	);
 
+	protected $sortableFields = array(
+		'commentCount',
+		'rating',
+		'title',
+		'votes',
+	);
+	protected $defaultSortingField = 'title';
+
 	/**
 	 * @param int $id
 	 * @return Text
@@ -83,25 +91,28 @@ class TextRepository extends EntityRepository {
 	 * @param string $prefix
 	 * @param int $page
 	 * @param int $limit
+	 * @param string $orderBy
 	 */
-	public function getByPrefix($prefix, $page = 1, $limit = null) {
+	public function getByPrefix($prefix, $page = 1, $limit = null, $orderBy = null) {
+		$orderBy = $this->normalizeOrderBy($orderBy);
 		try {
-			$ids = $this->getIdsByPrefix($prefix, $page, $limit);
+			$ids = $this->getIdsByPrefix($prefix, $page, $limit, $orderBy);
 		} catch (NoResultException $e) {
 			return array();
 		}
 
-		return $this->getByIds($ids);
+		return $this->getByIds($ids, $orderBy);
 	}
 
 	/**
 	 * @param string $prefix
 	 * @param int $page
 	 * @param int $limit
+	 * @param string $orderBy
 	 */
-	public function getIdsByPrefix($prefix, $page, $limit) {
+	public function getIdsByPrefix($prefix, $page, $limit, $orderBy) {
 		$where = $prefix ? "WHERE t.title LIKE '$prefix%'" : '';
-		$dql = sprintf('SELECT t.id FROM %s t %s ORDER BY t.title', $this->getEntityName(), $where);
+		$dql = "SELECT t.id FROM {$this->getEntityName()} t $where ORDER BY t.$orderBy";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$ids = $query->getResult('id');
 
@@ -127,25 +138,28 @@ class TextRepository extends EntityRepository {
 	 * @param string $type
 	 * @param int $page
 	 * @param int $limit
+	 * @param string $orderBy
 	 */
-	public function getByType($type, $page = 1, $limit = null) {
+	public function getByType($type, $page = 1, $limit = null, $orderBy = null) {
+		$orderBy = $this->normalizeOrderBy($orderBy);
 		try {
-			$ids = $this->getIdsByType($type, $page, $limit);
+			$ids = $this->getIdsByType($type, $page, $limit, $orderBy);
 		} catch (NoResultException $e) {
 			return array();
 		}
 
-		return $this->getByIds($ids);
+		return $this->getByIds($ids, $orderBy);
 	}
 
 	/**
 	 * @param string $type
 	 * @param int $page
 	 * @param int $limit
+	 * @param string $orderBy
 	 */
-	public function getIdsByType($type, $page, $limit) {
+	protected function getIdsByType($type, $page, $limit, $orderBy) {
 		$where = "WHERE t.type = '$type'";
-		$dql = sprintf('SELECT t.id FROM %s t %s ORDER BY t.title', $this->getEntityName(), $where);
+		$dql = "SELECT t.id FROM {$this->getEntityName()} t $where ORDER BY t.$orderBy";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$ids = $query->getResult('id');
 
@@ -171,24 +185,27 @@ class TextRepository extends EntityRepository {
 	 * @param array $labels
 	 * @param int $page
 	 * @param int $limit
+	 * @param string $orderBy
 	 */
-	public function getByLabel($labels, $page = 1, $limit = null) {
+	public function getByLabel($labels, $page = 1, $limit = null, $orderBy = null) {
+		$orderBy = $this->normalizeOrderBy($orderBy);
 		try {
-			$ids = $this->getIdsByLabel($labels, $page, $limit);
+			$ids = $this->getIdsByLabel($labels, $page, $limit, $orderBy);
 		} catch (NoResultException $e) {
 			return array();
 		}
 
-		return $this->getByIds($ids);
+		return $this->getByIds($ids, $orderBy);
 	}
 
 	/**
 	 * @param array $labels
 	 * @param int $page
 	 * @param int $limit
+	 * @param string $orderBy
 	 */
-	protected function getIdsByLabel($labels, $page, $limit) {
-		$dql = sprintf('SELECT DISTINCT t.id FROM %s t JOIN t.labels l WHERE l.id IN (%s) ORDER BY t.title', $this->getEntityName(), implode(',', $labels));
+	protected function getIdsByLabel($labels, $page, $limit, $orderBy) {
+		$dql = sprintf("SELECT DISTINCT t.id FROM %s t JOIN t.labels l WHERE l.id IN (%s) ORDER BY t.$orderBy", $this->getEntityName(), implode(',', $labels));
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$ids = $query->getResult('id');
 
@@ -247,7 +264,7 @@ class TextRepository extends EntityRepository {
 	 * @return array
 	 */
 	public function getByIds($ids, $orderBy = null) {
-		$texts = $this->getQueryBuilder()
+		$texts = $this->getQueryBuilder($orderBy)
 			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
 			->getQuery()->getArrayResult();
 
@@ -274,15 +291,13 @@ class TextRepository extends EntityRepository {
 	 * @return \Doctrine\ORM\QueryBuilder
 	 */
 	public function getQueryBuilder($orderBys = null) {
-		return $this->_em->createQueryBuilder()
+		return parent::getQueryBuilder($orderBys)
 			->select('e', 'a', 'ap', 't', 'tp', 's')
-			->from($this->getEntityName(), 'e')
 			->leftJoin('e.series', 's')
 			->leftJoin('e.textAuthors', 'a')
 			->leftJoin('a.person', 'ap')
 			->leftJoin('e.textTranslators', 't')
-			->leftJoin('t.person', 'tp')
-			->orderBy('e.title');
+			->leftJoin('t.person', 'tp');
 	}
 
 	/**
@@ -359,4 +374,14 @@ class TextRepository extends EntityRepository {
 		return $textsById;
 	}
 
+	protected function normalizeOrderBy($orderBy) {
+		if ($orderBy === null) {
+			return $this->defaultSortingField;
+		}
+		list($field, $order) = explode(' ', str_replace('-', ' ', $orderBy));
+		if (!in_array($field, $this->sortableFields) || !in_array(strtolower($order), array('asc', 'desc'))) {
+			return $this->defaultSortingField;
+		}
+		return "$field $order";
+	}
 }

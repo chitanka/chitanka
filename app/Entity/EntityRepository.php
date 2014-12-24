@@ -220,6 +220,9 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 				} else {
 					list($field, $order) = explode(' ', ltrim($orderBy));
 				}
+				if (strpos($field, '.') === false) {
+					$field = "e.$field";
+				}
 				$qb->addOrderBy($field, $order);
 			}
 		}
