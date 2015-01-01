@@ -93,7 +93,11 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	 * @return Entity
 	 */
 	public function getRandom($where = null) {
-		return $this->getRandomQuery($where)->getSingleResult();
+		try {
+			return $this->getRandomQuery($where)->getSingleResult();
+		} catch (\Doctrine\ORM\NoResultException $e) {
+			return null;
+		}
 	}
 
 	/**
