@@ -11,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
  * )
  */
 class BookIsbn extends Entity {
+
+	public static function normalizeIsbn($isbn) {
+		return preg_replace('/[^\dX]/', '', $isbn);
+	}
+
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -42,7 +47,7 @@ class BookIsbn extends Entity {
 	public function setBook(Book $book) { $this->book = $book; }
 	public function getBook() { return $this->book; }
 
-	public function setCode($code) { $this->code = $code; }
+	public function setCode($code) { $this->code = self::normalizeIsbn($code); }
 	public function getCode() { return $this->code; }
 
 	public function setAddition($addition) { $this->addition = $addition; }

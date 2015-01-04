@@ -13,11 +13,8 @@ class BookIsbnRepository extends EntityRepository {
 	public function getBookIdsByIsbn($isbn) {
 		return $this->createQueryBuilder('e')
 			->select('IDENTITY(e.book)')
-			->where('e.code = ?1')->setParameter(1, $this->normalizeIsbn($isbn))
+			->where('e.code = ?1')->setParameter(1, BookIsbn::normalizeIsbn($isbn))
 			->getQuery()->getResult('id');
 	}
 
-	private function normalizeIsbn($isbn) {
-		return preg_replace('/[^\dX]/', '', $isbn);
-	}
 }
