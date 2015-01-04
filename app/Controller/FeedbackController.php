@@ -20,7 +20,7 @@ class FeedbackController extends Controller {
 //				return '';
 //			}
 //			"<p>Обратно към предишната страница</p>";
-//			return $this->redirect($this->generateUrl('task_success'));
+//			return $this->redirectToRoute('task_success');
 		}
 
 		return array(

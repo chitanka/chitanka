@@ -29,7 +29,7 @@ class SecurityController extends Controller {
 		$request->getSession()->invalidate();
 		$this->flashes()->addNotice('Излязохте от Моята библиотека.');
 
-		return $this->redirect('homepage');
+		return $this->redirectToRoute('homepage');
 	}
 
 	public function requestUsernameAction(Request $request) {

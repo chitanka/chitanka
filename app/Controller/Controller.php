@@ -109,7 +109,7 @@ abstract class Controller extends SymfonyController {
 	 */
 	protected function redirectWithNotice($notice) {
 		$this->flashes()->addNotice($notice);
-		return $this->redirect('message');
+		return $this->redirectToRoute('message');
 	}
 
 	/** @return \App\Service\FlashService */
@@ -120,27 +120,14 @@ abstract class Controller extends SymfonyController {
 	/**
 	 * Redirects to another route.
 	 *
-	 * It expects a route path parameter.
-	 * By default, the response status code is 301.
-	 *
-	 * If the route empty, the status code will be 410.
-	 * If the permanent path parameter is set, the status code will be 302.
-	 * (copied from Symfony\Bundle\FrameworkBundle\Controller\RedirectController)
-	 *
-	 * @param string  $route     The route pattern to redirect to
-	 * @param bool    $permanent Whether the redirect is permanent or not
+	 * @param string  $route      The route pattern to redirect to
+	 * @param array   $parameters Possible parameters used by the route generation
 	 *
 	 * @return Response A Response instance
 	 */
-	public function redirect($route, $permanent = false) {
-		if (!$route) {
-			return new Response(null, 410);
-		}
-
-		$attributes = $this->container->get('request')->attributes->all();
-		unset($attributes['_route'], $attributes['route'], $attributes['permanent'] );
-
-		return new RedirectResponse($this->container->get('router')->generate($route, $attributes), $permanent ? 301 : 302);
+	public function redirectToRoute($route, array $parameters = []) {
+		$parameters['_format'] = $this->get('request')->getRequestFormat();
+		return $this->redirect($this->generateUrl($route, $parameters));
 	}
 
 	/**

@@ -6,6 +6,6 @@ class MessageController extends Controller {
 		if ($this->flashes()->hasMessages()) {
 			return array();
 		}
-		return $this->redirect('homepage');
+		return $this->redirectToRoute('homepage');
 	}
 }
