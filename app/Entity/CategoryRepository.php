@@ -32,7 +32,9 @@ class CategoryRepository extends EntityRepository {
 			->getArrayResult();
 		foreach ($categoryResult as $k => $row) {
 			$categoryResult[$k] += $row[0];
-			$categoryResult[$k]['parent'] = (int) $categoryResult[$k]['parent'];
+			if ($categoryResult[$k]['parent']) {
+				$categoryResult[$k]['parent'] = (int) $categoryResult[$k]['parent'];
+			}
 			unset($categoryResult[$k][0]);
 		}
 
