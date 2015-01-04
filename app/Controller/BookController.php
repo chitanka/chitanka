@@ -89,6 +89,17 @@ class BookController extends Controller {
 		);
 	}
 
+	public function listByIsbnAction($isbn) {
+		$books = $this->em()->getBookRepository()->getByIsbn($isbn);
+		if (count($books) == 1) {
+			return $this->redirectToRoute('book_show', ['id' => $books[0]['id']]);
+		}
+		return array(
+			'isbn' => $isbn,
+			'books' => $books,
+		);
+	}
+
 	public function showAction($id, $_format) {
 		// FIXME
 		// very big books need too much memory, so give it to them

@@ -188,6 +188,11 @@ books_wo_cover:
     defaults:       { _controller: App:Book:listWoCover, page: 1 }
     requirements:   { _method: get, page: \d+ }
 
+books_by_isbn:
+    pattern:        /books/isbn/{isbn}.{_format}
+    defaults:       { _controller: App:Book:listByIsbn, _format: html }
+    requirements:   { _method: get, _format: html|json }
+
 books_by_alpha_index:
     pattern:        /books/alpha.{_format}
     defaults:       { _controller: App:Book:listByAlphaIndex, _format: html }

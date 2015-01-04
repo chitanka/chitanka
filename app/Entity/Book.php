@@ -189,6 +189,12 @@ class Book extends BaseWork {
 	private $links;
 
 	/**
+	 * @var ArrayCollection
+	 * @ORM\OneToMany(targetEntity="BookIsbn", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
+	 */
+	private $isbns;
+
+	/**
 	 * @var \DateTime
 	 * @ORM\Column(type="date")
 	 */

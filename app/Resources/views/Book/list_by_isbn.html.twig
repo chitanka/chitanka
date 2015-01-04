@@ -1,0 +1,8 @@
+{% extends 'App::layout.html.twig' %}
+
+{% set title = 'Книги с ISBN '~isbn %}
+{% block content %}
+
+	{% include 'App:Book:list.html.twig' %}
+
+{% endblock %}

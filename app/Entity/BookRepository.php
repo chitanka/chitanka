@@ -41,6 +41,17 @@ class BookRepository extends EntityRepository {
 	}
 
 	/**
+	 * Retrieve books by ISBN.
+	 * There may be multiple books for a given ISBN.
+	 * @param string $isbn
+	 * @return array
+	 */
+	public function getByIsbn($isbn) {
+		$ids = $this->getEntityManager()->getRepository('App:BookIsbn')->getBookIdsByIsbn($isbn);
+		return empty($ids) ? [] : $this->getByIds($ids);
+	}
+
+	/**
 	 * @param Category $category
 	 * @param int $page
 	 * @param int $limit
