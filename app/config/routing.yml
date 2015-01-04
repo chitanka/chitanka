@@ -61,7 +61,7 @@ authors_by_country:
 authors_search:
     pattern:        /authors/search.{_format}
     defaults:       { _controller: App:Author:search, _format: html }
-    requirements:   { _method: get, _format: html|xml|suggest|osd }
+    requirements:   { _method: get, _format: html|xml|json|suggest|osd }
 
 author_show:
     pattern:        /author/{slug}.{_format}
@@ -101,7 +101,7 @@ translators_by_alpha:
 translators_search:
     pattern:        /translators/search.{_format}
     defaults:       { _controller: App:Translator:search, _format: html }
-    requirements:   { _method: get, _format: html|xml|suggest|osd }
+    requirements:   { _method: get, _format: html|xml|json|suggest|osd }
 
 translator_show:
     pattern:        /translator/{slug}.{_format}
@@ -112,7 +112,7 @@ translator_show:
 persons_search:
     pattern:        /persons/search.{_format}
     defaults:       { _controller: App:Person:search, _format: html }
-    requirements:   { _method: get, _format: html|xml|suggest|osd }
+    requirements:   { _method: get, _format: html|xml|json|suggest|osd }
 
 person_show:
     pattern:        /person/{slug}.{_format}
@@ -143,7 +143,7 @@ series_alt:
 series_search:
     pattern:        /series/search.{_format}
     defaults:       { _controller: App:Series:search, _format: html }
-    requirements:   { _method: get, _format: html|xml|suggest|osd }
+    requirements:   { _method: get, _format: html|xml|json|suggest|osd }
 
 series_by_alpha:
     pattern:        /series/alpha/{letter}.{_format}/{page}
@@ -171,7 +171,7 @@ books_alt:
 books_search:
     pattern:        /books/search.{_format}
     defaults:       { _controller: App:Book:search, _format: html }
-    requirements:   { _method: get, _format: html|xml|suggest|osd }
+    requirements:   { _method: get, _format: html|xml|json|suggest|osd }
 
 books_by_alpha:
     pattern:        /books/alpha/{letter}.{_format}/{page}
@@ -232,7 +232,7 @@ sequences_alt:
 sequences_search:
     pattern:        /sequences/search.{_format}
     defaults:       { _controller: App:Sequence:search, _format: html }
-    requirements:   { _method: get, _format: html|xml|suggest|osd }
+    requirements:   { _method: get, _format: html|xml|json|suggest|osd }
 
 sequences_by_alpha:
     pattern:        /sequences/alpha/{letter}.{_format}/{page}
@@ -265,7 +265,7 @@ texts_alt:
 texts_search:
     pattern:        /texts/search.{_format}
     defaults:       { _controller: App:Text:search, _format: html }
-    requirements:   { _method: get, _format: html|xml|suggest|osd }
+    requirements:   { _method: get, _format: html|xml|json|suggest|osd }
 
 texts_by_alpha:
     pattern:        /texts/alpha/{letter}.{_format}/{page}
@@ -361,7 +361,7 @@ text_show_part:
 search:
     pattern:      /search.{_format}
     defaults:     { _controller: App:Search:index, _format: html }
-    requirements: { _method: get, _format: html|xml|suggest|osd }
+    requirements: { _method: get, _format: html|xml|json|suggest|osd }
 
 sandbox:
     pattern:   /sandbox
