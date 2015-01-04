@@ -1,5 +1,6 @@
 <?php
 return array(
+	'Addition' => 'Добавка',
 	'Annotation' => 'Анотация',
 	'Answers' => 'Отговори',
 	'Authors' => 'Автори',

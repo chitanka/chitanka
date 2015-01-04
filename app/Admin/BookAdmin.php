@@ -45,6 +45,7 @@ class BookAdmin extends Admin {
 			->add('category')
 			->add('removedNotice')
 			->add('texts')
+			->add('isbns', null, array('label' => 'ISBN'))
 			->add('links', null, array('label' => 'Site Links'))
 			->add('createdAt')
 		;
@@ -102,6 +103,14 @@ class BookAdmin extends Admin {
 			->add('category', null, array('required' => false, 'query_builder' => function ($repo) {
 				return $repo->createQueryBuilder('e')->orderBy('e.name');
 			}))
+			->add('isbns', 'sonata_type_collection', array(
+				'by_reference' => false,
+				'required' => false,
+				'label' => 'ISBN',
+			), array(
+				'edit' => 'inline',
+				'inline' => 'table',
+			))
 			->add('links', 'sonata_type_collection', array(
 				'by_reference' => false,
 				'required' => false,
@@ -151,6 +160,9 @@ class BookAdmin extends Admin {
 	}
 
 	public function preUpdate($book) {
+		foreach ($book->getIsbns() as $isbn) {
+			$isbn->setBook($book);
+		}
 		foreach ($book->getLinks() as $link) {
 			$link->setBook($book);
 		}

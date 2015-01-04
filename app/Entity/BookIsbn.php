@@ -39,7 +39,7 @@ class BookIsbn extends Entity {
 
 	public function getId() { return $this->id; }
 
-	public function setBook($book) { $this->book = $book; }
+	public function setBook(Book $book) { $this->book = $book; }
 	public function getBook() { return $this->book; }
 
 	public function setCode($code) { $this->code = $code; }

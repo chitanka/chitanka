@@ -344,6 +344,15 @@ class Book extends BaseWork {
 		return $this->textsNeedUpdate;
 	}
 
+	public function setIsbns($isbns) { $this->isbns = $isbns; }
+	public function getIsbns() { return $this->isbns; }
+	public function addIsbn(BookIsbn $isbn) {
+		$this->isbns[] = $isbn;
+	}
+	public function removeIsbn(BookIsbn $isbn) {
+		$this->isbns->removeElement($isbn);
+	}
+
 	public function setLinks($links) { $this->links = $links; }
 	public function getLinks() { return $this->links; }
 	public function addLink(BookLink $link) {
