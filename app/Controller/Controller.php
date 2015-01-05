@@ -40,7 +40,7 @@ abstract class Controller extends SymfonyController {
 			$params['inline_js'] = $page->inlineJs;
 		}
 
-		$response = $this->render("App:{$params['_controller']}.html.twig", $params);
+		$response = $this->render("App:{$params['_controller']}.{$this->get('request')->getRequestFormat()}.twig", $params);
 		$this->setCacheStatusByResponse($response);
 
 		return $response;
