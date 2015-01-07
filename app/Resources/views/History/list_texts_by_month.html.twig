@@ -6,7 +6,7 @@
 	{% include 'App:History:texts_list.html.twig' %}
 	{% if texts_by_id|length > 1 %}
 		{% set filename = 'texts-' ~ year ~ '-' ~ month %}
-		{% include 'App:Text:multi_download_form.html.twig' with {'texts': texts_by_id, 'filename': 'texts-'~year~'-'~month} %}
+		{% include 'App:Text:multi_download_form.html.twig' with {'texts': texts_by_id, 'filename': 'texts-'~year~'-'~month~'-'~pager.page} %}
 	{% endif %}
 	{% include 'App::pager.html.twig' %}
 {% endblock %}
