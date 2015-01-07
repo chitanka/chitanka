@@ -18,7 +18,10 @@
 			{% for parent in parents %}
 				<li><a href="{{ path('texts_by_label', {'slug': parent.slug}) }}">{{ parent.name }}</a></li>
 			{% endfor %}
-			<li class="active">{{ subtitle }}</li>
+			<li class="active">
+				{{ subtitle }}
+				<span class="badge">{{ label.nrOfTexts }}</span>
+			</li>
 		</ul>
 
 		<div class="superlist">

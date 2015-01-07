@@ -4,8 +4,6 @@ use App\Legacy\Setup;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use App\Entity\EntityManager;
 
 abstract class Command extends ContainerAwareCommand {
 
@@ -94,69 +92,6 @@ abstract class Command extends ContainerAwareCommand {
 		return $this->getApplication()->getKernel();
 	}
 
-	/**
-	 * @RawSql
-	 */
-	protected function updateTextCountByLabels(OutputInterface $output, EntityManager $em) {
-		$output->writeln('Updating texts count by labels');
-		$update = $this->maintenanceSql('UPDATE label l SET nr_of_texts = (SELECT COUNT(*) FROM text_label WHERE label_id = l.id)');
-		$em->getConnection()->executeUpdate($update);
-	}
-
-	protected function updateTextCountByLabelsParents(OutputInterface $output, EntityManager $em) {
-		$output->writeln('Updating texts count by labels parents');
-		$this->updateCountByParents($em, 'App:Label', 'NrOfTexts');
-	}
-
-	protected function updateBookCountByCategoriesParents(OutputInterface $output, EntityManager $em) {
-		$output->writeln('Updating books count by categories parents');
-		$this->updateCountByParents($em, 'App:Category', 'NrOfBooks');
-	}
-
-	/**
-	 * @param EntityManager $em
-	 * @param string $entity
-	 * @param string $field
-	 */
-	private function updateCountByParents(EntityManager $em, $entity, $field) {
-		$dirty = array();
-		$repo = $em->getRepository($entity);
-		foreach ($repo->findAll() as $item) {
-			if (in_array($item->getId(), $dirty)) {
-				$item = $repo->find($item->getId());
-			}
-			$parent = $item->getParent();
-			if ($parent) {
-				$count = call_user_func(array($item, "get{$field}"));
-				do {
-					call_user_func(array($parent, "inc{$field}"), $count);
-					$em->persist($parent);
-					$dirty[] = $parent->getId();
-				} while (null !== ($parent = $parent->getParent()));
-			}
-		}
-
-		$em->flush();
-	}
-
-	/**
-	 * @RawSql
-	 */
-	protected function updateCommentCountByTexts(OutputInterface $output, EntityManager $em) {
-		$output->writeln('Updating comments count by texts');
-		$update = $this->maintenanceSql('UPDATE text t SET comment_count = (SELECT COUNT(*) FROM text_comment WHERE text_id = t.id)');
-		$em->getConnection()->executeUpdate($update);
-	}
-
-	/**
-	 * @RawSql
-	 */
-	protected function updateBookCountByCategories(OutputInterface $output, EntityManager $em) {
-		$output->writeln('Updating books count by categories');
-		$update = $this->maintenanceSql('UPDATE category c SET nr_of_books = (SELECT COUNT(*) FROM book WHERE category_id = c.id)');
-		$em->getConnection()->executeUpdate($update);
-	}
-
 	protected function executeUpdates($updates, \Doctrine\DBAL\Connection $connection) {
 		$connection->beginTransaction();
 		foreach ($updates as $update) {
@@ -190,7 +125,7 @@ abstract class Command extends ContainerAwareCommand {
 	/**
 	 * @param string $sql
 	 */
-	private function maintenanceSql($sql) {
+	protected function maintenanceSql($sql) {
 		return '/*MAINTENANCESQL*/'.$sql;
 	}
 

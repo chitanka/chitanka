@@ -10,6 +10,7 @@
 			{% if sequence.publisher %}
 				({{ sequence.publisher }})
 			{% endif %}
+			<span class="badge">{{ sequence.nrOfBooks }}</span>
 		</li>
 	</ul>
 	{% include 'App:Book:list.html.twig' %}

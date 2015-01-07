@@ -46,6 +46,13 @@ class Sequence extends Entity {
 	private $isSeqnrVisible = true;
 
 	/**
+	 * Number of books in this sequence
+	 * @var int
+	 * @ORM\Column(type="integer")
+	 */
+	private $nrOfBooks = 0;
+
+	/**
 	 * @var array
 	 * @ORM\OneToMany(targetEntity="Book", mappedBy="sequence")
 	 * @ORM\OrderBy({"seqnr" = "ASC"})
@@ -67,6 +74,12 @@ class Sequence extends Entity {
 	public function isSeqnrVisible() { return $this->isSeqnrVisible; }
 	// TODO needed by sonata admin
 	public function getIsSeqnrVisible() { return $this->isSeqnrVisible; }
+
+	public function setNrOfBooks($nrOfBooks) { $this->nrOfBooks = $nrOfBooks; }
+	public function getNrOfBooks() { return $this->nrOfBooks; }
+	public function incNrOfBooks($value = 1) {
+		$this->nrOfBooks += $value;
+	}
 
 	public function getBooks() { return $this->books; }
 
