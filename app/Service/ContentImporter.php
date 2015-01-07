@@ -421,7 +421,6 @@ class ContentImporter {
 				'rating' => 0,
 				'votes' => 0,
 				'has_anno' => 0,
-				'has_cover' => 0,
 				'is_compilation' => isset($work['tmpl']),
 				'orig_title' => (empty($work['orig_title']) ? '' : self::fixOrigTitle($work['orig_title'])),
 			);
@@ -634,6 +633,7 @@ class ContentImporter {
 		return array_merge(
 			$this->generateSqlForBook($book),
 			$this->generateSqlForBookRevision($book),
+			$this->generateSqlForBookIsbn($book),
 			$this->generateSqlForBookAuthors($book),
 			$this->generateSqlForBookTexts($book));
 	}
@@ -720,6 +720,18 @@ class ContentImporter {
 			'first' => ($book['is_new'] ? 1 : 0),
 		);
 		return array($this->olddb->replaceQ('book_revision', $set));
+	}
+
+	private function generateSqlForBookIsbn(array $book) {
+		if (!isset($book['isbn'])) {
+			return array();
+		}
+		$set = array(
+			'id' => $this->getNextId('book_isbn'),
+			'book_id' => $book['id'],
+			'code' => \App\Entity\BookIsbn::normalizeIsbn($book['isbn']),
+		);
+		return array($this->olddb->replaceQ('book_isbn', $set));
 	}
 
 	private function generateSqlForBookAuthors(array $book) {
