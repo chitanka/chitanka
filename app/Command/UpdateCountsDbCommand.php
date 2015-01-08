@@ -38,13 +38,13 @@ class UpdateCountsDbCommand extends Command {
 	 * @RawSql
 	 */
 	private function updateTextCountByLabels(OutputInterface $output, EntityManager $em) {
-		$output->writeln('Updating texts count by labels');
+		$output->writeln('Updating text counts by labels');
 		$update = $this->maintenanceSql('UPDATE label l SET nr_of_texts = (SELECT COUNT(*) FROM text_label WHERE label_id = l.id)');
 		$em->getConnection()->executeUpdate($update);
 	}
 
 	private function updateTextCountByLabelsParents(OutputInterface $output, EntityManager $em) {
-		$output->writeln('Updating texts count by labels parents');
+		$output->writeln('Updating text counts by labels parents');
 		$this->updateCountByParents($em, 'App:Label', 'NrOfTexts');
 	}
 
@@ -52,7 +52,7 @@ class UpdateCountsDbCommand extends Command {
 	 * @RawSql
 	 */
 	private function updateBookCountBySequences(OutputInterface $output, EntityManager $em) {
-		$output->writeln('Updating books count by sequences');
+		$output->writeln('Updating book counts by sequences');
 		$update = $this->maintenanceSql('UPDATE sequence s SET nr_of_books = (SELECT COUNT(*) FROM book WHERE sequence_id = s.id)');
 		$em->getConnection()->executeUpdate($update);
 	}
@@ -61,13 +61,13 @@ class UpdateCountsDbCommand extends Command {
 	 * @RawSql
 	 */
 	private function updateBookCountByCategories(OutputInterface $output, EntityManager $em) {
-		$output->writeln('Updating books count by categories');
+		$output->writeln('Updating book counts by categories');
 		$update = $this->maintenanceSql('UPDATE category c SET nr_of_books = (SELECT COUNT(*) FROM book WHERE category_id = c.id)');
 		$em->getConnection()->executeUpdate($update);
 	}
 
 	private function updateBookCountByCategoriesParents(OutputInterface $output, EntityManager $em) {
-		$output->writeln('Updating books count by categories parents');
+		$output->writeln('Updating book counts by categories parents');
 		$this->updateCountByParents($em, 'App:Category', 'NrOfBooks');
 	}
 
@@ -75,7 +75,7 @@ class UpdateCountsDbCommand extends Command {
 	 * @RawSql
 	 */
 	private function updateCommentCountByTexts(OutputInterface $output, EntityManager $em) {
-		$output->writeln('Updating comments count by texts');
+		$output->writeln('Updating comment counts by texts');
 		$update = $this->maintenanceSql('UPDATE text t SET comment_count = (SELECT COUNT(*) FROM text_comment WHERE text_id = t.id)');
 		$em->getConnection()->executeUpdate($update);
 	}
