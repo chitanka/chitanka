@@ -287,6 +287,11 @@ function registerGotoTopLink() {
 	});
 }
 
+function activateTabByHash(hash) {
+	var activeTab = $('[href=' + hash + ']:first');
+	activeTab && activeTab.tab('show');
+}
+
 $(function(){
 	$('#user-tools,#search').appendTo('#main-content-wrapper');
 
@@ -307,6 +312,10 @@ $(function(){
 	$(".toc").boxcollapse();
 
 	registerGotoTopLink();
+
+	if (location.hash) {
+		activateTabByHash(location.hash);
+	}
 });
 
 
