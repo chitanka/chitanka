@@ -15,6 +15,20 @@ services:
         factory_method: getRepository
         arguments: [App:Text]
 
+    repository.wiki_site:
+        class: App\Entity\WikiSiteRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [App:WikiSite]
+
+    wiki_reader:
+        class: App\Service\WikiReader
+        arguments: [@mediawiki_client, @repository.wiki_site]
+
+    mediawiki_client:
+        class: App\Service\MediawikiClient
+        arguments: [@buzz]
+
     admin.person:
         class: App\Admin\PersonAdmin
         tags:

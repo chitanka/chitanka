@@ -1,9 +1,9 @@
 {% if person.person is empty %}
-	{% if info is defined %}
-		{% if info_intro %}
-			<p class="intro">{{ info_intro|raw }}</p>
+	{% if wikiPage is defined %}
+		{% if wikiPage.intro %}
+			<p class="intro">{{ wikiPage.intro|raw }}</p>
 		{% endif %}
-		<div class="wikiinfo">{{ info|raw }}</div>
+		<div class="wikiinfo">{{ wikiPage.content|raw }}</div>
 	{% else %}
 		{% if person.orig_name is defined %}
 			<p>Оригинално изписване: {{ person.orig_name }}</p>

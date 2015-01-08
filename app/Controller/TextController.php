@@ -196,7 +196,7 @@ class TextController extends Controller {
 			$alikes = $text->getAlikes();
 			$similarTexts = $alikes ? $this->em()->getTextRepository()->getByIds(array_slice($alikes, 0, 30)) : array();
 		}
-		return array(
+		$vars = array(
 			'text' => $text,
 			'authors' => $text->getAuthors(),
 			'part' => $part,
@@ -206,6 +206,10 @@ class TextController extends Controller {
 			'similar_texts' => $similarTexts,
 			'_template' => 'App:Text:show.html.twig',
 		);
+		if ($text->getArticle()) {
+			$vars['wikiPage'] = $this->container->get('wiki_reader')->fetchPage($text->getArticle());
+		}
+		return $vars;
 	}
 
 	public function randomAction() {

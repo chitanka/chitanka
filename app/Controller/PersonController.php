@@ -141,17 +141,8 @@ class PersonController extends Controller {
 		if ($person->getInfo() == '') {
 			return array();
 		}
-		// TODO move this in the entity
-		list($prefix, $name) = explode(':', $person->getInfo(), 2);
-		$site = $this->em()->getWikiSiteRepository()->findOneBy(array('code' => $prefix));
-		$url = $site->getUrl($name);
-		$mwClient = new MediawikiClient($this->container->get('buzz'));
 		return array(
-			'info' => $mwClient->fetchContent($url),
-			'info_intro' => strtr($site->getIntro(), array(
-				'$1' => $person->getName(),
-				'$2' => $url,
-			)),
+			'wikiPage' => $this->container->get('wiki_reader')->fetchPage($person->getInfo()),
 		);
 	}
 

@@ -221,6 +221,12 @@ class Text extends BaseWork {
 	private $note;
 
 	/**
+	 * @var string
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	private $article;
+
+	/**
 	 * A notice if the content is removed
 	 * @ORM\Column(type="text", nullable=true)
 	 */
@@ -426,6 +432,9 @@ class Text extends BaseWork {
 
 	public function setNote($note) { $this->note = $note; }
 	public function getNote() { return $this->note; }
+
+	public function setArticle($article) { $this->article = $article; }
+	public function getArticle() { return $this->article; }
 
 	public function setRemovedNotice($removedNotice) { $this->removedNotice = $removedNotice; }
 	public function getRemovedNotice() { return $this->removedNotice; }

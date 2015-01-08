@@ -110,6 +110,7 @@ class TextAdmin extends Admin {
 			->add('sernr', null, array('required' => false))
 			->add('sernr2', null, array('required' => false))
 			->add('note')
+			->add('article')
 			->add('links', 'sonata_type_collection', array(
 				'by_reference' => false,
 				'required' => false,
@@ -119,6 +120,9 @@ class TextAdmin extends Admin {
 				'inline' => 'table',
 				'sortable' => 'site_id'
 			));
+		$formMapper->setHelps(array(
+			'article' => $this->trans('help.wiki_article')
+		));
 		$formMapper->with('Textual content');
 		$formMapper
 			->add('annotation', 'textarea', array(

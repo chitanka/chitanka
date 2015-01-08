@@ -33,6 +33,9 @@
 		{% endif %}
 		<li><a href="#text-links" data-toggle="tab"><span class="fa fa-download"></span> Сваляне / Връзки</a></li>
 		<li><a href="{{ path('text_comments', {'id': text.id}) }}" data-target="#text-comments" data-toggle="tab" itemprop="discussionUrl"><span class="fa fa-comments-o"></span> Коментари ({{ text.commentcount }})</a></li>
+		{% if wikiPage is defined %}
+			<li><a href="#article" data-toggle="tab"><span class="fa fa-file-text-o"></span> Статия</a></li>
+		{% endif %}
 	</ul>
 
 	<div class="tab-content clearfix">
@@ -51,6 +54,12 @@
 		<div class="tab-pane text-comments" id="text-comments">
 			<br>
 		</div>
+		{% if wikiPage is defined %}
+			<div class="tab-pane wikiinfo article" id="article">
+				<p class="intro">{{ wikiPage.intro|raw }}</p>
+				<div class="wikiinfo">{{ wikiPage.content|raw }}</div>
+			</div>
+		{% endif %}
 	</div>
 
 	{% include 'App:Text:toc.html.twig' %}

@@ -80,7 +80,7 @@ class PersonAdmin extends Admin {
 			))
 			->add('person', 'sonata_type_model_list', array('required' => false, 'label' => 'Main Person'));
 		$formMapper->setHelps(array(
-			'info' => $this->trans('help.person.info')
+			'info' => $this->trans('help.wiki_article')
 		));
 
 	}
