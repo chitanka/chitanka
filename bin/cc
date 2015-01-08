@@ -1,0 +1,10 @@
+#!/bin/bash
+cd `dirname $0`/..
+sed -i "s/\/\/exitWithMessage('maintenance')/exitWithMessage('maintenance')/" web/index.php
+mv var/cache/prod var/cache/prod_old && mkdir var/cache/prod
+bin/console cache:warmup --env=prod
+bin/console cache:create-cache-class --env=prod
+sudo chown -R www-data. var/cache/prod
+sudo chmod -R g+rw var/cache/prod
+sed -i "s/exitWithMessage('maintenance')/\/\/exitWithMessage('maintenance')/" web/index.php
+rm var/cache/prod_old -rf

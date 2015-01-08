@@ -1,7 +1,8 @@
 /app/config/parameters.yml
 /bin/
-!bin/console
-!bin/update
+!/bin/console
+!/bin/update
+!/bin/cc
 /update/*/
 /var/*/
 /var/
