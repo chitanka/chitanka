@@ -726,12 +726,16 @@ class ContentImporter {
 		if (!isset($book['isbn'])) {
 			return array();
 		}
-		$set = array(
-			'id' => $this->getNextId('book_isbn'),
-			'book_id' => $book['id'],
-			'code' => \App\Entity\BookIsbn::normalizeIsbn($book['isbn']),
-		);
-		return array($this->olddb->replaceQ('book_isbn', $set));
+		$sql = array();
+		foreach (explode(',', $book['isbn']) as $isbn) {
+			$set = array(
+				'id' => $this->getNextId('book_isbn'),
+				'book_id' => $book['id'],
+				'code' => \App\Entity\BookIsbn::normalizeIsbn(trim($isbn)),
+			);
+			$sql[] = $this->olddb->replaceQ('book_isbn', $set);
+		}
+		return $sql;
 	}
 
 	private function generateSqlForBookAuthors(array $book) {
