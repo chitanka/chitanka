@@ -81,6 +81,7 @@ class AutoUpdateCommand extends Command {
 		unlink("$updateDir/db.sql");
 
 		$this->deleteRemovedNoticesIfDisallowed();
+		$this->runCommand('db:update-counts');
 
 		return true;
 	}
