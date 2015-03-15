@@ -46,7 +46,7 @@
 
 За обикновено пускане на огледало на Моята библиотека ползвайте:
 
-	git clone git://gitorious.org/chitanka/chitanka-production.git chitanka
+	git clone https://github.com/chitanka/chitanka-production.git chitanka
 
 Ще получите нова директория chitanka. Нека се казва `/PATH/TO/chitanka`.
 
