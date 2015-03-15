@@ -55,7 +55,9 @@ class CommentListener {
 		$usernames = array_map('trim', explode(',', $comment->getCc()));
 		$users = $this->em->getUserRepository()->findByUsernames($usernames);
 		foreach ($users as $user) {
-			$recipients[$user->getEmail()] = $user->getName();
+			if ($user->canReceiveEmail()) {
+				$recipients[$user->getEmail()] = $user->getName();
+			}
 		}
 		$recipients['chitanka+workroom@gmail.com'] = 'Работно ателие';
 
