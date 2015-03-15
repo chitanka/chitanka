@@ -5,6 +5,8 @@ use App\Util\Date;
 
 class HistoryController extends Controller {
 
+	protected $responseAge = 3600; // 1 hour
+
 	public $booksPerPage = 30;
 	public $textsPerPage = 30;
 
@@ -12,6 +14,7 @@ class HistoryController extends Controller {
 		return array(
 			'book_revisions_by_date' => $this->em()->getBookRevisionRepository()->getLatest($this->booksPerPage),
 			'text_revisions_by_date' => $this->em()->getTextRevisionRepository()->getLatest($this->textsPerPage),
+			'_cache' => $this->responseAge,
 		);
 	}
 
@@ -26,6 +29,7 @@ class HistoryController extends Controller {
 					'dates' => $this->getDateOptions($repo),
 					'book_revisions_by_date' => $revisions,
 					'last_date' => $lastOnes[0]['date'],
+					'_cache' => $this->responseAge,
 				);
 			case 'opds':
 			case 'json':
@@ -36,6 +40,7 @@ class HistoryController extends Controller {
 						'limit' => $this->booksPerPage,
 						'total' => $this->booksPerPage * 50
 					)),
+					'_cache' => $this->responseAge,
 				);
 		}
 	}
@@ -69,6 +74,7 @@ class HistoryController extends Controller {
 					'dates' => $this->getDateOptions($repo),
 					'text_revisions_by_date' => $revisions,
 					'last_date' => $lastOnes[0]['date'],
+					'_cache' => $this->responseAge,
 				);
 			case 'opds':
 			case 'json':
@@ -79,6 +85,7 @@ class HistoryController extends Controller {
 						'limit' => $this->textsPerPage,
 						'total' => $this->textsPerPage * 50
 					)),
+					'_cache' => $this->responseAge,
 				);
 		}
 	}
