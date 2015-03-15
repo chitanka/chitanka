@@ -62,6 +62,12 @@ class User implements UserInterface {
 
 	/**
 	 * @var bool
+	 * @ORM\Column(type="boolean", nullable=true)
+	 */
+	private $isEmailValid;
+
+	/**
+	 * @var bool
 	 * @ORM\Column(type="boolean")
 	 */
 	private $allowemail = false;
@@ -162,12 +168,23 @@ class User implements UserInterface {
 		return $this->getEmail() != '';
 	}
 
+	public function setIsEmailValid($isEmailValid) {
+		$this->isEmailValid = $isEmailValid;
+	}
+	public function isEmailValid() {
+		return $this->isEmailValid;
+	}
+
 	/**
-	 * @param int $allowemail
+	 * @param bool $allowemail
 	 */
 	public function setAllowemail($allowemail) { $this->allowemail = $allowemail; }
 	public function getAllowemail() { return $this->allowemail; }
 	public function allowsEmail() { return $this->allowemail; }
+
+	public function canReceiveEmail() {
+		return $this->isEmailValid() && $this->allowsEmail();
+	}
 
 	public function setGroups($groups) { $this->groups = $groups; }
 	public function getGroups() { return $this->groups; }

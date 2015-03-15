@@ -20,6 +20,9 @@ class EmailController extends Controller {
 		if (!$recipientUser) {
 			throw $this->createNotFoundException("Не съществува потребител с име $username.");
 		}
+		if (!$recipientUser->isEmailValid()) {
+			return array('message' => 'stop_email_not_valid', 'recipient' => $recipientUser);
+		}
 		if (!$recipientUser->allowsEmail()) {
 			return array('message' => 'stop_email_not_allowed', 'recipient' => $recipientUser);
 		}

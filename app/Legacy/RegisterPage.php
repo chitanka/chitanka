@@ -53,8 +53,11 @@ class RegisterPage extends Page {
 		$user->setRealname($this->realname);
 		$user->setPassword($this->password);
 		$user->setEmail($this->email);
-		$user->setAllowemail(1);
-		$user->setNews((int) $this->news);
+		if ($this->email) {
+			$user->setIsEmailValid(true);
+			$user->setAllowemail(true);
+		}
+		$user->setNews((bool) $this->news);
 
 		$this->controller->em()->getUserRepository()->save($user);
 
