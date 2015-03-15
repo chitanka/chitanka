@@ -172,7 +172,7 @@ class User implements UserInterface {
 		$this->isEmailValid = $isEmailValid;
 	}
 	public function isEmailValid() {
-		return $this->isEmailValid;
+		return $this->isEmailValid && $this->hasEmail();
 	}
 
 	/**

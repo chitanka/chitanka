@@ -43,20 +43,22 @@ BODY;
 	}
 
 	public function sendMailByOldWorkEntry(WorkEntry $workEntry) {
-		$sender = array('no-reply@chitanka.info' => 'Ателие (Моята библиотека)');
-		$message = Swift_Message::newInstance('Стар запис — '.$workEntry->getTitle());
-		$message->setFrom($sender);
-		$message->setBody($this->createMailBodyByOldWorkEntry($workEntry));
-		$headers = $message->getHeaders();
-		$headers->addMailboxHeader('Reply-To', $sender);
-
 		$recipient = $workEntry->getUser();
-		try {
-			$message->setTo($recipient->getEmail(), $recipient->getName());
-		} catch (Swift_RfcComplianceException $e) {
-			$this->logError(__METHOD__.": {$e->getMessage()} (recipient: {$recipient->getName()})");
+		if ($recipient->canReceiveEmail()) {
+			$sender = array('no-reply@chitanka.info' => 'Ателие (Моята библиотека)');
+			$message = Swift_Message::newInstance('Стар запис — '.$workEntry->getTitle());
+			$message->setFrom($sender);
+			$message->setBody($this->createMailBodyByOldWorkEntry($workEntry));
+			$headers = $message->getHeaders();
+			$headers->addMailboxHeader('Reply-To', $sender);
+
+			try {
+				$message->setTo($recipient->getEmail(), $recipient->getName());
+			} catch (Swift_RfcComplianceException $e) {
+				$this->logError(__METHOD__.": {$e->getMessage()} (recipient: {$recipient->getName()})");
+			}
+			$this->sendMessage($message);
 		}
-		$this->sendMessage($message);
 
 		foreach ($workEntry->getOpenContribs() as $contrib) {
 			$this->sendMailByOldWorkContrib($contrib);
@@ -64,21 +66,23 @@ BODY;
 	}
 
 	public function sendMailByOldWorkContrib(WorkContrib $contrib) {
-		$workEntry = $contrib->getEntry();
-		$sender = array('no-reply@chitanka.info' => 'Ателие (Моята библиотека)');
-		$message = Swift_Message::newInstance('Стар запис — '.$workEntry->getTitle());
-		$message->setFrom($sender);
-		$message->setBody($this->createMailBodyByOldWorkContrib($contrib));
-		$headers = $message->getHeaders();
-		$headers->addMailboxHeader('Reply-To', $sender);
-
 		$recipient = $contrib->getUser();
-		try {
-			$message->setTo($recipient->getEmail(), $recipient->getName());
-		} catch (Swift_RfcComplianceException $e) {
-			$this->logError(__METHOD__.": {$e->getMessage()} (recipient: {$recipient->getName()})");
+		if ($recipient->canReceiveEmail()) {
+			$workEntry = $contrib->getEntry();
+			$sender = array('no-reply@chitanka.info' => 'Ателие (Моята библиотека)');
+			$message = Swift_Message::newInstance('Стар запис — '.$workEntry->getTitle());
+			$message->setFrom($sender);
+			$message->setBody($this->createMailBodyByOldWorkContrib($contrib));
+			$headers = $message->getHeaders();
+			$headers->addMailboxHeader('Reply-To', $sender);
+
+			try {
+				$message->setTo($recipient->getEmail(), $recipient->getName());
+			} catch (Swift_RfcComplianceException $e) {
+				$this->logError(__METHOD__.": {$e->getMessage()} (recipient: {$recipient->getName()})");
+			}
+			$this->sendMessage($message);
 		}
-		$this->sendMessage($message);
 	}
 
 	private function createMailBodyByOldWorkEntry(WorkEntry $workEntry) {
