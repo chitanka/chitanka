@@ -2,7 +2,9 @@
 {% for category in categories %}
 	<li>
 		<a href="{{ path('books_by_category', {'slug': category.slug}) }}">{{ category.name }}</a>
-		({{ category.nrOfBooks }})
+		{% if category.nrOfBooks > 0 %}
+			<span class="badge">{{ category.nrOfBooks }}</span>
+		{% endif %}
 	</li>
 {% endfor %}
 </ul>

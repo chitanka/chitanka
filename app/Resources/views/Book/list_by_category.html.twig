@@ -8,7 +8,10 @@
 		{% for parent in parents %}
 			<li><a href="{{ path('books_by_category', {'slug': parent.slug}) }}">{{ parent.name }}</a></li>
 		{% endfor %}
-		<li class="active">{{ category.name }}</li>
+		<li class="active">
+			{{ category.name }}
+			<span class="badge">{{ category.nrOfBooks }}</span>
+		</li>
 	</ul>
 
 	{% include 'App:Book:list.html.twig' %}

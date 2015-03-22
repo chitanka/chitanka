@@ -3,7 +3,9 @@
 	{% if level > 0 or category.parent is empty %}
 	<li>
 		<a href="{{ path('books_by_category', {'slug': category.slug}) }}" data-edit="{{ path('admin_category_edit', {'id': category.id}) }}">{{ category.name }}</a>
-		({{ category.nrOfBooks }})
+		{% if category.nrOfBooks > 0 %}
+			<span class="badge">{{ category.nrOfBooks }}</span>
+		{% endif %}
 		{#
 		{% if has_role("ROLE_ADMIN") %}
 			<a href="{{ path('admin_category_edit', {'id': category.id}) }}" title="Редактиране на категорията" class="edit"><span>редактиране</span></a>
