@@ -1,5 +1,6 @@
 <?php namespace App\Generator;
 
+use App\Entity\Text;
 use App\Entity\TextRepository;
 use App\Legacy\CacheManager;
 use App\Service\ContentService;
@@ -278,9 +279,9 @@ class TextDownloadService {
 		$this->_fnameCount = array();
 	}
 
-	public function getFileDataPrefix($work) {
+	public function getFileDataPrefix(Text $work) {
 		$prefix = $this->getTextFileStart()
-			. "|\t" . $work->getAuthorNames() . "\n"
+			. "|\t" . $work->getAuthorNamesString() . "\n"
 			. $work->getTitleAsSfb() . "\n\n\n";
 		$anno = $work->getAnnotation();
 		if ( !empty($anno) ) {
@@ -289,7 +290,7 @@ class TextDownloadService {
 		return $prefix;
 	}
 
-	public function getFileDataSuffix(\App\Entity\Text $work) {
+	public function getFileDataSuffix(Text $work) {
 		$suffix = "\n"
 			. "I>\n"
 			. $work->getExtraInfoForDownload()
