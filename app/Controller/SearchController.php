@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SearchController extends Controller {
 
+	const MAX_RESULTS = 50;
+
 	public function indexAction(Request $request, $_format) {
 		if ($_format == 'osd') {
 			return array();
@@ -17,11 +19,11 @@ class SearchController extends Controller {
 		}
 
 		$lists = array(
-			'persons'      => $this->em()->getPersonRepository()->getByNames($query['text'], 15),
-			'texts'        => $this->em()->getTextRepository()->getByTitles($query['text'], 15),
-			'books'        => $this->em()->getBookRepository()->getByTitleOrIsbn($query['text'], 15),
-			'series'       => $this->em()->getSeriesRepository()->getByNames($query['text'], 15),
-			'sequences'    => $this->em()->getSequenceRepository()->getByNames($query['text'], 15),
+			'persons'      => $this->em()->getPersonRepository()->getByNames($query['text'], self::MAX_RESULTS),
+			'texts'        => $this->em()->getTextRepository()->getByTitles($query['text'], self::MAX_RESULTS),
+			'books'        => $this->em()->getBookRepository()->getByTitleOrIsbn($query['text'], self::MAX_RESULTS),
+			'series'       => $this->em()->getSeriesRepository()->getByNames($query['text'], self::MAX_RESULTS),
+			'sequences'    => $this->em()->getSequenceRepository()->getByNames($query['text'], self::MAX_RESULTS),
 			'work_entries' => $this->em()->getWorkEntryRepository()->getByTitleOrAuthor($query['text']),
 			'labels'       => $this->em()->getLabelRepository()->getByNames($query['text']),
 			'categories'   => $this->em()->getCategoryRepository()->getByNames($query['text']),
