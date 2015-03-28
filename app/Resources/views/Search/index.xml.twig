@@ -2,36 +2,36 @@
 
 {% block body %}
 <results query="{{ query.text }}">
-	{% if persons|length %}
-		{% include 'App:Person:list.xml.twig' %}
+	{% if result.persons|length %}
+		{% include 'App:Person:list.xml.twig' with {persons: result.persons} %}
 	{% endif %}
 
-	{% if texts|length %}
-		{% include 'App:Text:list.xml.twig' %}
+	{% if result.texts|length %}
+		{% include 'App:Text:list.xml.twig' with {texts: result.texts} %}
 	{% endif %}
 
-	{% if books|length %}
-		{% include 'App:Book:list.xml.twig' %}
+	{% if result.books|length %}
+		{% include 'App:Book:list.xml.twig' with {books: result.books} %}
 	{% endif %}
 
-	{% if series|length %}
-		{% include 'App:Series:list.xml.twig' %}
+	{% if result.series|length %}
+		{% include 'App:Series:list.xml.twig' with {series: result.series} %}
 	{% endif %}
 
-	{% if sequences|length %}
-		{% include 'App:Sequence:list.xml.twig' %}
+	{% if result.sequences|length %}
+		{% include 'App:Sequence:list.xml.twig' with {sequences: result.sequences} %}
 	{% endif %}
 
-	{% if labels|length %}
-		{% include 'App:Label:list.xml.twig' %}
+	{% if result.labels|length %}
+		{% include 'App:Label:list.xml.twig' with {labels: result.labels} %}
 	{% endif %}
 
-	{% if categories|length %}
-		{% include 'App:Category:list.xml.twig' %}
+	{% if result.categories|length %}
+		{% include 'App:Category:list.xml.twig' with {categories: result.categories} %}
 	{% endif %}
 
-	{% if work_entries|length %}
-		{% include 'App:WorkEntry:list.xml.twig' with {'entries': work_entries} %}
+	{% if result.work_entries|length %}
+		{% include 'App:WorkEntry:list.xml.twig' with {'entries': result.work_entries} %}
 	{% endif %}
 </results>
 {% endblock %}

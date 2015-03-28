@@ -3,47 +3,47 @@
 {% set title = 'Търсене' ~ (query ? ' на „'~query.text|e~'“' : '') %}
 {% block content %}
 
-	{% if persons|length %}
+	{% if result.persons|length %}
 		<h2>Личности</h2>
-		{% include 'App:Author:list_with_country.html.twig' with {'authors': persons} %}
+		{% include 'App:Author:list_with_country.html.twig' with {authors: result.persons} %}
 	{% endif %}
 
-	{% if texts|length %}
+	{% if result.texts|length %}
 		<h2>Произведения</h2>
-		{% include 'App:Text:list.html.twig' %}
+		{% include 'App:Text:list.html.twig' with {texts: result.texts} %}
 	{% endif %}
 
-	{% if books|length %}
+	{% if result.books|length %}
 		<h2>Книги</h2>
-		{% include 'App:Book:list.html.twig' %}
+		{% include 'App:Book:list.html.twig' with {books: result.books} %}
 	{% endif %}
 
-	{% if series|length %}
+	{% if result.series|length %}
 		<h2>Авторски серии</h2>
-		{% include 'App:Series:list.html.twig' %}
+		{% include 'App:Series:list.html.twig' with {series: result.series} %}
 	{% endif %}
 
-	{% if sequences|length %}
+	{% if result.sequences|length %}
 		<h2>Издателски поредици</h2>
-		{% include 'App:Sequence:list.html.twig' %}
+		{% include 'App:Sequence:list.html.twig' with {sequences: result.sequences} %}
 	{% endif %}
 
-	{% if labels|length %}
+	{% if result.labels|length %}
 		<h2>Етикети</h2>
-		{% include 'App:Text:label_list.html.twig' %}
+		{% include 'App:Text:label_list.html.twig' with {labels: result.labels} %}
 	{% endif %}
 
-	{% if categories|length %}
+	{% if result.categories|length %}
 		<h2>Категории</h2>
-		{% include 'App:Book:category_list.html.twig' %}
+		{% include 'App:Book:category_list.html.twig' with {categories: result.categories} %}
 	{% endif %}
 {#
-	{% if work_entries|length %}
+	{% if result.work_entries|length %}
 		<h2>Работно ателие</h2>
-		{% include 'App:WorkEntry:list.html.twig' with {'entries': work_entries} %}
+		{% include 'App:WorkEntry:list.html.twig' with {entries: result.work_entries} %}
 	{% endif %}
 #}
-	{% if not found %}
+	{% if result.isEmpty %}
 		<p class="no-items">Не открихме нищо за „{{ query.text }}“.</p>
 	{% endif %}
 
