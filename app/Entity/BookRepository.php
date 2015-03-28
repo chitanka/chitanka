@@ -133,6 +133,7 @@ class BookRepository extends EntityRepository {
 	/**
 	 * @param string $title
 	 * @param int $limit
+	 * @return array
 	 */
 	public function getByTitles($title, $limit = null) {
 		$q = $this->getQueryBuilder()
@@ -146,7 +147,30 @@ class BookRepository extends EntityRepository {
 	}
 
 	/**
+	 * @param string $titleOrIsbn
+	 * @param int $limit
+	 * @return array
+	 */
+	public function getByTitleOrIsbn($titleOrIsbn, $limit = null) {
+		$isbn = BookIsbn::normalizeIsbn($titleOrIsbn);
+		if (empty($isbn)) {
+			return $this->getByTitles($titleOrIsbn, $limit);
+		}
+		$q = $this->getQueryBuilder()
+			->leftJoin('e.isbns', 'isbn')
+			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.origTitle LIKE ?1 OR isbn.code = ?2')
+			->setParameter(1, $this->stringForLikeClause($titleOrIsbn))
+			->setParameter(2, $isbn)
+			->getQuery();
+		if ($limit) {
+			$q->setMaxResults($limit);
+		}
+		return WorkSteward::joinPersonKeysForBooks($q->getArrayResult());
+	}
+
+	/**
 	 * @param Person $author
+	 * @return array
 	 */
 	public function getByAuthor($author) {
 		$books = $this->getQueryBuilder('s.name, e.seqnr, e.title')

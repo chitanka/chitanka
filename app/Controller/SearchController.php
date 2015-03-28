@@ -19,7 +19,7 @@ class SearchController extends Controller {
 		$lists = array(
 			'persons'      => $this->em()->getPersonRepository()->getByNames($query['text'], 15),
 			'texts'        => $this->em()->getTextRepository()->getByTitles($query['text'], 15),
-			'books'        => $this->em()->getBookRepository()->getByTitles($query['text'], 15),
+			'books'        => $this->em()->getBookRepository()->getByTitleOrIsbn($query['text'], 15),
 			'series'       => $this->em()->getSeriesRepository()->getByNames($query['text'], 15),
 			'sequences'    => $this->em()->getSequenceRepository()->getByNames($query['text'], 15),
 			'work_entries' => $this->em()->getWorkEntryRepository()->getByTitleOrAuthor($query['text']),
