@@ -5,7 +5,7 @@
 
 	{% if result.persons|length %}
 		<h2>Личности</h2>
-		{% include 'App:Author:list_with_country.html.twig' with {authors: result.persons} %}
+		{% include 'App:Author:list_with_country.html.twig' with {persons: result.persons} %}
 	{% endif %}
 
 	{% if result.texts|length %}
