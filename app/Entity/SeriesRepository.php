@@ -4,13 +4,13 @@
  *
  */
 class SeriesRepository extends EntityRepository {
-	protected $queryableFields = array('id', 'slug', 'name', 'orig_name');
+	protected $queryableFields = ['id', 'slug', 'name', 'orig_name'];
 
 	/**
 	 * @param string $slug
 	 */
 	public function findBySlug($slug) {
-		return $this->findOneBy(array('slug' => $slug));
+		return $this->findOneBy(['slug' => $slug]);
 	}
 
 	/**
@@ -19,7 +19,7 @@ class SeriesRepository extends EntityRepository {
 	public function getByPrefix($prefix, $page = 1, $limit = null) {
 		$ids = $this->getIdsByPrefix($prefix, $page, $limit);
 
-		return empty($ids) ? array() : $this->getByIds($ids);
+		return empty($ids) ? [] : $this->getByIds($ids);
 	}
 
 	/**

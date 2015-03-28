@@ -1,5 +1,5 @@
 <?php
-return array(
+return [
 	'Addition' => 'Добавка',
 	'Annotation' => 'Анотация',
 	'Answers' => 'Отговори',
@@ -195,7 +195,7 @@ return array(
 	'Work Entry List' => 'Подготвяни текстове',
 	'Work Entry Show' => 'Преглед на подготвян текст',
 
-	'admin' => array(
+	'admin' => [
 		'book_site' => 'Библиографични сайтове',
 		'book' => 'Книги',
 		'category' => 'Категории',
@@ -214,8 +214,8 @@ return array(
 		'user' => 'Потребители',
 		'wiki_site' => 'Информационни уики сайтове',
 		'work_entry' => 'Подготвяни текстове',
-	),
-	'help' => array(
+	],
+	'help' => [
 		'booksite.url' => 'BOOKID замества кода на книгата в чуждия сайт',
 		'question.answers' => 'Няколко се разделят със запетаи',
 		'text.sernr2' => 'Втората част при сложен номер на серия („3“ при 2.3)',
@@ -223,6 +223,6 @@ return array(
 		'wikisite.code' => 'Този код се ползва при полето info при личностите',
 		'wikisite.intro' => '$1 замества името на обекта на статията',
 		'wikisite.url' => '$1 замества името (кода) на статията',
-	),
+	],
 	'library_link_action_show' => 'Преглед в библиотеката',
-);
+];

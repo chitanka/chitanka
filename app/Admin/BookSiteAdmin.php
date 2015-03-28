@@ -20,13 +20,13 @@ class BookSiteAdmin extends Admin {
 		$listMapper
 			->addIdentifier('name')
 			->add('url')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -35,9 +35,9 @@ class BookSiteAdmin extends Admin {
 		$formMapper
 			->add('name')
 			->add('url')
-			->setHelps(array(
+			->setHelps([
 				'url' => $this->trans('help.booksite.url')
-			));
+			]);
 
 	}
 

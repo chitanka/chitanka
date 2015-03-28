@@ -10,10 +10,10 @@ class EmailController extends Controller {
 	public function newAction(Request $request, $username) {
 		$senderUser = $this->getUser();
 		if ($senderUser->isAnonymous()) {
-			return array('message' => 'stop_anon');
+			return ['message' => 'stop_anon'];
 		}
 		if (!$senderUser->hasEmail()) {
-			return array('message' => 'stop_no_email', 'sender' => $senderUser);
+			return ['message' => 'stop_no_email', 'sender' => $senderUser];
 		}
 
 		$recipientUser = $this->em()->getUserRepository()->findByUsername($username);
@@ -21,10 +21,10 @@ class EmailController extends Controller {
 			throw $this->createNotFoundException("Не съществува потребител с име $username.");
 		}
 		if (!$recipientUser->isEmailValid()) {
-			return array('message' => 'stop_email_not_valid', 'recipient' => $recipientUser);
+			return ['message' => 'stop_email_not_valid', 'recipient' => $recipientUser];
 		}
 		if (!$recipientUser->allowsEmail()) {
-			return array('message' => 'stop_email_not_allowed', 'recipient' => $recipientUser);
+			return ['message' => 'stop_email_not_allowed', 'recipient' => $recipientUser];
 		}
 
 		$email = new Email($recipientUser, $senderUser);
@@ -36,10 +36,10 @@ class EmailController extends Controller {
 			return $this->redirectWithNotice('Писмото ви беше изпратено.');
 		}
 
-		return array(
+		return [
 			'form' => $form->createView(),
 			'sender' => $senderUser,
 			'recipient' => $recipientUser,
-		);
+		];
 	}
 }

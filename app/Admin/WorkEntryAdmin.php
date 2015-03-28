@@ -32,13 +32,13 @@ class WorkEntryAdmin extends Admin {
 		$listMapper
 			->addIdentifier('title')
 			->add('author')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -47,18 +47,18 @@ class WorkEntryAdmin extends Admin {
 		$formMapper
 			->add('type')
 			->add('title')
-			->add('author', null, array('required' => false))
-			->add('user', 'sonata_type_model_list', array('required' => false))
-			->add('comment', null, array('required' => false))
+			->add('author', null, ['required' => false])
+			->add('user', 'sonata_type_model_list', ['required' => false])
+			->add('comment', null, ['required' => false])
 			->add('status')
 			->add('progress')
-			->add('isFrozen', null, array('required' => false))
-			->add('tmpfiles', null, array('required' => false))
-			->add('tfsize', null, array('required' => false))
-			->add('uplfile', null, array('required' => false))
+			->add('isFrozen', null, ['required' => false])
+			->add('tmpfiles', null, ['required' => false])
+			->add('tfsize', null, ['required' => false])
+			->add('uplfile', null, ['required' => false])
 			->add('adminStatus')
 			->add('adminComment')
-			->add('deletedAt', null, array('required' => false));
+			->add('deletedAt', null, ['required' => false]);
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {
@@ -72,7 +72,7 @@ class WorkEntryAdmin extends Admin {
 			->add('type')
 			->add('adminStatus')
 //			->add('date')
-			->add('is_deleted', 'doctrine_orm_callback', array(
+			->add('is_deleted', 'doctrine_orm_callback', [
 				'callback' => function($queryBuilder, $alias, $field, $value) {
 					if (!$value) {
 						return;
@@ -81,7 +81,7 @@ class WorkEntryAdmin extends Admin {
 					$queryBuilder->andWhere("$alias.deletedAt IS NOT NULL");
 				},
 				'field_type' => 'checkbox'
-			))
+			])
 		;
 	}
 

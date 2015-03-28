@@ -24,12 +24,12 @@ class AutoUpdateCommand extends Command {
 	}
 
 	protected function getBooleanOptions() {
-		return array(
+		return [
 			'no-wait' => 'Skip waiting time at the beginning. Not recommended for mirror servers.',
 			'skip-content' => 'Skip content update',
 			'skip-db' => 'Skip database update',
 			'skip-src' => 'Skip software update',
-		);
+		];
 	}
 
 	/**
@@ -230,7 +230,7 @@ class AutoUpdateCommand extends Command {
 		$browser->setClient($client);
 		$browser->addListener($client);
 
-		return $browser->get($url, array('User-Agent: Mylib (http://chitanka.info)'));
+		return $browser->get($url, ['User-Agent: Mylib (http://chitanka.info)']);
 	}
 
 	/**

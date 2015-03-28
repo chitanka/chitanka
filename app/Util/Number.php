@@ -2,12 +2,12 @@
 
 class Number {
 
-	private static $phpIniSuffixValues = array(
+	private static $phpIniSuffixValues = [
 		// suffix => multiplier as bit shift, e.g. 1k = 1 << 10
 		'k' => 10,
 		'm' => 20,
 		'g' => 30,
-	);
+	];
 
 	public static function normInt($val, $max, $min = 1) {
 		if ($val > $max) {

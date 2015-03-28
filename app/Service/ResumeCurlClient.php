@@ -11,14 +11,14 @@ use Buzz\Message\RequestInterface;
 class ResumeCurlClient extends Curl implements ListenerInterface {
 
 	protected $timeout = 1800;
-	private $headers = array();
+	private $headers = [];
 	private $saveDir;
 	private $saveFile;
 	private $saveFileSuffix = '.part';
 
 	public function preSend(RequestInterface $request) {
-		$this->setOption(CURLOPT_HEADERFUNCTION, array($this, 'acceptHeader'));
-		$this->setOption(CURLOPT_WRITEFUNCTION, array($this, 'acceptChunk'));
+		$this->setOption(CURLOPT_HEADERFUNCTION, [$this, 'acceptHeader']);
+		$this->setOption(CURLOPT_WRITEFUNCTION, [$this, 'acceptChunk']);
 
 		$saveFile = $this->openSaveFile($this->createSaveFileName(basename($request->getResource())));
 		if ($saveFile->getSize()) {
@@ -61,7 +61,7 @@ class ResumeCurlClient extends Curl implements ListenerInterface {
 	private function clearHeadersIfNewResponse() {
 		$len = count($this->headers);
 		if ($len && $this->headers[$len-1] == "") {
-			$this->headers = array();
+			$this->headers = [];
 		}
 	}
 

@@ -25,13 +25,13 @@ class SiteNoticeAdmin extends Admin {
 			->addIdentifier('name')
 			->add('isActive')
 			->add('isForFrontPage')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -40,8 +40,8 @@ class SiteNoticeAdmin extends Admin {
 		$formMapper
 			->add('name')
 			->add('content')
-			->add('isActive', null, array('required' => false))
-			->add('isForFrontPage', null, array('required' => false))
+			->add('isActive', null, ['required' => false])
+			->add('isForFrontPage', null, ['required' => false])
 			->add('style');
 	}
 

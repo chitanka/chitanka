@@ -4,13 +4,13 @@ function makeDbRows($file, $headlev) {
 	$parser = new SfbParserSimple($file, $headlev);
 	$parser->convert();
 
-	$dbRows = array();
+	$dbRows = [];
 	foreach ($parser->headers() as $nr => $hdata) {
 		if (!isset($hdata['titles'])) {
 			continue;
 		}
 		foreach ($hdata['titles'] as $lev => $title) {
-			$dbRows[] = array($nr, $lev, $title, $hdata['fpos'], $hdata['lcnt']);
+			$dbRows[] = [$nr, $lev, $title, $hdata['fpos'], $hdata['lcnt']];
 		}
 	}
 	return $dbRows;
@@ -19,7 +19,7 @@ function makeDbRows($file, $headlev) {
 class SfbParserSimple {
 
 	protected $debug = false;
-	protected $titMarks = array(1=>'>', '>>', '>>>', '>>>>', '>>>>>');
+	protected $titMarks = [1=>'>', '>>', '>>>', '>>>>', '>>>>>'];
 	private $handle;
 	private $reqdepth;
 	private $lcnt;
@@ -36,9 +36,9 @@ class SfbParserSimple {
 		$this->reqdepth = $reqdepth;
 		$this->lcnt = 0;
 		$this->hasNextLine = false;
-		$this->headers = array();
+		$this->headers = [];
 		$this->fpos = 0;
-		$this->curUnknownHead = array(1=>1, 1, 1, 1, 1);
+		$this->curUnknownHead = [1=>1, 1, 1, 1, 1];
 	}
 
 	public function __destruct() {
@@ -56,19 +56,19 @@ class SfbParserSimple {
 	}
 
 	public function headersFlat() {
-		$flatHeaders = array();
+		$flatHeaders = [];
 		foreach ($this->headers() as $nr => $hdata) {
 			if (empty($hdata['titles'])) {
 				continue;
 			}
 			foreach ($hdata['titles'] as $lev => $title) {
-				$flatHeaders[] = array(
+				$flatHeaders[] = [
 					'nr' => $nr,
 					'level' => $lev,
 					'title' => $title,
 					'file_pos' => $hdata['fpos'],
 					'line_count' => $hdata['lcnt'],
-				);
+				];
 			}
 		}
 		return $flatHeaders;
@@ -133,7 +133,7 @@ class SfbParserSimple {
 		if (!preg_match('/ г\.$/', $header)) {
 			$header = rtrim($header, '.');
 		}
-		$this->headers[] = array($level, $header, $fpos, $lcnt);
+		$this->headers[] = [$level, $header, $fpos, $lcnt];
 		$this->hasNextLine = true;
 	}
 
@@ -143,16 +143,16 @@ class SfbParserSimple {
 
 	protected function makeEndHeaders() {
 		$len = count($this->headers);
-		$newheaders = array();
+		$newheaders = [];
 		$prevlev = 100;
 		$curnr = 1;
 		for ($i=0; $i < $len; $i++) {
 			list($lev, $title, $fpos, $cnt) = $this->headers[$i];
 			if ($lev <= $prevlev) {
-				$newheaders[$curnr++] = array(
+				$newheaders[$curnr++] = [
 					'fpos' => $fpos, 'lcnt' => $cnt,
-					'titles' => array($lev => $title)
-				);
+					'titles' => [$lev => $title]
+				];
 			} else {
 				$newheaders[$curnr-1]['titles'][$lev] = $title;
 			}

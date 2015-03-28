@@ -9,7 +9,7 @@ class ReviewService {
 	 * @param bool $random
 	 */
 	public static function getReviews($limit = null, $random = false) {
-		$reviews = array();
+		$reviews = [];
 		$feedUrl = 'http://blog.chitanka.info/section/reviews/feed';
 		$feed = Legacy::getFromUrlOrCache($feedUrl, $days = 0.02);
 		if (empty($feed) || strpos($feed, '<atom') === false) {
@@ -20,14 +20,14 @@ class ReviewService {
 		foreach ($feedTree->xpath('//item') as $item) {
 			$content = $item->children('content', true)->encoded;
 			if (preg_match('|<img src="(.+)" title="„(.+)“ от (.+)"|U', $content, $matches)) {
-				$reviews[] = array(
+				$reviews[] = [
 					'id' => 0,
  					'author' => $matches[3],
 					'title'  => $matches[2],
 					'url'    => $item->link->__toString(),
 					'cover'  => $matches[1],
 					'description' => $item->description,
-				);
+				];
 			}
 		}
 

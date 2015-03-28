@@ -4,7 +4,7 @@ class WorkSteward {
 	public static function joinPersonKeysForWorks($works) {
 		foreach ($works as $k => $work) {
 			if (isset($work['book']) && isset($work['book']['bookAuthors'])) {
-				$authors = array();
+				$authors = [];
 				foreach ($work['book']['bookAuthors'] as $bookAuthor) {
 					if ($bookAuthor['pos'] >= 0) {
 						$authors[] = $bookAuthor['person'];
@@ -13,7 +13,7 @@ class WorkSteward {
 				$works[$k]['book']['authors'] = $authors;
 			}
 			if (isset($work['text']) && isset($work['text']['textAuthors'])) {
-				$authors = array();
+				$authors = [];
 				foreach ($work['text']['textAuthors'] as $textAuthor) {
 					if ($textAuthor['pos'] >= 0) {
 						$authors[] = $textAuthor['person'];
@@ -28,7 +28,7 @@ class WorkSteward {
 	public static function joinPersonKeysForBooks($books) {
 		foreach ($books as $k => $book) {
 			if (isset($book['bookAuthors'])) {
-				$authors = array();
+				$authors = [];
 				foreach ($book['bookAuthors'] as $bookAuthor) {
 					if ($bookAuthor['pos'] >= 0) {
 						$authors[] = $bookAuthor['person'];
@@ -43,7 +43,7 @@ class WorkSteward {
 	public static function joinPersonKeysForTexts($texts) {
 		foreach ($texts as $k => $text) {
 			if (isset($text['textAuthors'])) {
-				$authors = array();
+				$authors = [];
 				foreach ($text['textAuthors'] as $textAuthor) {
 					if ($textAuthor['pos'] >= 0) {
 						$authors[] = $textAuthor['person'];
@@ -52,7 +52,7 @@ class WorkSteward {
 				$texts[$k]['authors'] = $authors;
 			}
 			if (isset($text['textTranslators'])) {
-				$translators = array();
+				$translators = [];
 				foreach ($text['textTranslators'] as $textTranslator) {
 					if ($textTranslator['pos'] >= 0) {
 						$translators[] = $textTranslator['person'];

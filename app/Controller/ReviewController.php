@@ -9,8 +9,8 @@ class ReviewController extends Controller {
 		if (empty($reviews)) {
 			return $this->asText('No reviews found');
 		}
-		return array(
+		return [
 			'reviews' => $reviews,
-		);
+		];
 	}
 }

@@ -24,7 +24,7 @@ class Less_Cache{
 	 * @param boolean $use_cache Set to false to regenerate the css file
 	 * @return string Name of the css file
 	 */
-	public static function Get( $less_files, $parser_options = array(), $use_cache = true ){
+	public static function Get( $less_files, $parser_options = [], $use_cache = true ){
 
 
 		//check $cache_dir
@@ -91,11 +91,11 @@ class Less_Cache{
 	 * @param array $parser_options Array of compiler options
 	 * @return string Name of the css file
 	 */
-	public static function Regen( $less_files, $parser_options = array() ){
+	public static function Regen( $less_files, $parser_options = [] ){
 		return self::Get( $less_files, $parser_options, false );
 	}
 
-	public static function Cache( &$less_files, $parser_options = array() ){
+	public static function Cache( &$less_files, $parser_options = [] ){
 
 
 		// get less.php if it exists
@@ -132,7 +132,7 @@ class Less_Cache{
 	private static function CompiledName( $files ){
 
 		//save the file list
-		$temp = array(Less_Version::cache_version);
+		$temp = [Less_Version::cache_version];
 		foreach($files as $file){
 			$temp[] = filemtime($file)."\t".filesize($file)."\t".$file;
 		}

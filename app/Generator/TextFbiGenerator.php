@@ -11,12 +11,12 @@ class TextFbiGenerator {
 	 * @return string
 	 */
 	public function generateFbiForText(Text $text) {
-		return $this->clearFbi(implode("\n", array(
+		return $this->clearFbi(implode("\n", [
 			$this->genFbiMain($text),
 			$this->genFbiOriginal($text),
 			$this->genFbiDocument($text),
 			$this->genFbiEdition(),
-		)));
+		]));
 	}
 
 	private function genFbiMain(Text $text) {
@@ -96,9 +96,9 @@ EOS;
 	 * @param string $fbi
 	 */
 	private function clearFbi($fbi) {
-		return strtr($fbi, array(
+		return strtr($fbi, [
 			"\n\n|" => "\n|",
-		));
+		]);
 	}
 
 	private function genFbiMainAuthors(Text $text) {
@@ -112,7 +112,7 @@ EOS;
 	private function genFbiMainTitle(Text $text) {
 		$fbi = $text->getTitle();
 		if ($text->getSubtitle() != '') {
-			$subtitle = strtr($text->getSubtitle(), array(Text::TITLE_NEW_LINE => ', '));
+			$subtitle = strtr($text->getSubtitle(), [Text::TITLE_NEW_LINE => ', ']);
 			$fbi .= ' (' . trim($subtitle, '()') . ')';
 		}
 		return $fbi;

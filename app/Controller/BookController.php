@@ -13,28 +13,28 @@ class BookController extends Controller {
 
 	public function indexAction($_format) {
 		if (in_array($_format, ['html', 'json'])) {
-			return array(
+			return [
 				'categories' => $this->em()->getCategoryRepository()->getAllAsTree(),
-			);
+			];
 		}
-		return array();
+		return [];
 	}
 
 	public function listByCategoryIndexAction($_format) {
 		switch ($_format) {
 			case 'html':
-				return array(
+				return [
 					'categories' => $this->em()->getCategoryRepository()->getAllAsTree(),
-				);
+				];
 			case 'opds':
-				return array(
+				return [
 					'categories' => $this->em()->getCategoryRepository()->getAll(),
-				);
+				];
 		}
 	}
 
 	public function listByAlphaIndexAction() {
-		return array();
+		return [];
 	}
 
 	public function listByCategoryAction($slug, $page) {
@@ -46,17 +46,17 @@ class BookController extends Controller {
 		}
 		$limit = 30;
 
-		return array(
+		return [
 			'category' => $category,
 			'parents' => array_reverse($category->getAncestors()),
 			'books' => $bookRepo->getByCategory($category, $page, $limit),
-			'pager'    => new Pager(array(
+			'pager'    => new Pager([
 				'page'  => $page,
 				'limit' => $limit,
 				'total' => $category->getNrOfBooks()
-			)),
-			'route_params' => array('slug' => $slug),
-		);
+			]),
+			'route_params' => ['slug' => $slug],
+		];
 	}
 
 	public function listByAlphaAction($letter, $page) {
@@ -64,29 +64,29 @@ class BookController extends Controller {
 		$limit = 30;
 
 		$prefix = $letter == '-' ? null : $letter;
-		return array(
+		return [
 			'letter' => $letter,
 			'books' => $bookRepo->getByPrefix($prefix, $page, $limit),
-			'pager'    => new Pager(array(
+			'pager'    => new Pager([
 				'page'  => $page,
 				'limit' => $limit,
 				'total' => $bookRepo->countByPrefix($prefix)
-			)),
-			'route_params' => array('letter' => $letter),
-		);
+			]),
+			'route_params' => ['letter' => $letter],
+		];
 	}
 
 	public function listWoCoverAction($page) {
 		$limit = 30;
 		$bookRepo = $this->em()->getBookRepository();
-		return array(
+		return [
 			'books' => $bookRepo->getWithMissingCover($page, $limit),
-			'pager' => new Pager(array(
+			'pager' => new Pager([
 				'page'  => $page,
 				'limit' => $limit,
 				'total' => $this->em()->getBookRepository()->getCountWithMissingCover()
-			)),
-		);
+			]),
+		];
 	}
 
 	public function listByIsbnAction($isbn) {
@@ -94,10 +94,10 @@ class BookController extends Controller {
 		if (count($books) == 1) {
 			return $this->redirectToRoute('book_show', ['id' => $books[0]['id']]);
 		}
-		return array(
+		return [
 			'isbn' => $isbn,
 			'books' => $books,
-		);
+		];
 	}
 
 	public function showAction($id, $_format) {
@@ -142,34 +142,34 @@ class BookController extends Controller {
 			default:
 		}
 
-		return array(
+		return [
 			'book' => $book,
 			'authors' => $book->getAuthors(),
 			'template' => $book->getTemplateAsXhtml(),
 			'info' => $book->getExtraInfoAsXhtml(),
-		);
+		];
 	}
 
 	public function searchAction(Request $request, $_format) {
 		if ($_format == 'osd') {
-			return array();
+			return [];
 		}
 		if ($_format == 'suggest') {
-			$items = $descs = $urls = array();
+			$items = $descs = $urls = [];
 			$query = $request->query->get('q');
-			$books = $this->em()->getBookRepository()->getByQuery(array(
+			$books = $this->em()->getBookRepository()->getByQuery([
 				'text'  => $query,
 				'by'    => 'title',
 				'match' => 'prefix',
 				'limit' => 10,
-			));
+			]);
 			foreach ($books as $book) {
 				$items[] = $book['title'];
 				$descs[] = '';
-				$urls[] = $this->generateUrl('book_show', array('id' => $book['id']), true);
+				$urls[] = $this->generateUrl('book_show', ['id' => $book['id']], true);
 			}
 
-			return $this->asJson(array($query, $items, $descs, $urls));
+			return $this->asJson([$query, $items, $descs, $urls]);
 		}
 		$searchService = new SearchService($this->em());
 		$query = $searchService->prepareQuery($request, $_format);
@@ -182,18 +182,18 @@ class BookController extends Controller {
 		}
 		$books = $this->em()->getBookRepository()->getByQuery($query);
 		$found = count($books) > 0;
-		return array(
+		return [
 			'query' => $query,
 			'books' => $books,
 			'found' => $found,
 			'_status' => !$found ? 404 : null,
-		);
+		];
 	}
 
 	public function randomAction() {
 		$id = $this->em()->getBookRepository()->getRandomId();
 
-		return $this->urlRedirect($this->generateUrl('book_show', array('id' => $id)));
+		return $this->urlRedirect($this->generateUrl('book_show', ['id' => $id]));
 	}
 
 	/**

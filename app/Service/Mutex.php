@@ -15,7 +15,7 @@ class Mutex {
 			return false;
 		}
 		if (touch($this->getLockFile())) {
-			register_shutdown_function(array($this, 'releaseLock'));
+			register_shutdown_function([$this, 'releaseLock']);
 		}
 		return true;
 	}

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 class SequenceController extends Controller {
 
 	public function indexAction() {
-		return array();
+		return [];
 	}
 
 	public function listByAlphaAction($letter, $page) {
@@ -16,16 +16,16 @@ class SequenceController extends Controller {
 		$limit = 50;
 
 		$prefix = $letter == '-' ? null : $letter;
-		return array(
+		return [
 			'letter' => $letter,
 			'sequences' => $repo->getByPrefix($prefix, $page, $limit),
-			'pager'    => new Pager(array(
+			'pager'    => new Pager([
 				'page'  => $page,
 				'limit' => $limit,
 				'total' => $repo->countByPrefix($prefix)
-			)),
-			'route_params' => array('letter' => $letter),
-		);
+			]),
+			'route_params' => ['letter' => $letter],
+		];
 	}
 
 	public function showAction($slug) {
@@ -34,32 +34,32 @@ class SequenceController extends Controller {
 		if ($sequence === null) {
 			throw $this->createNotFoundException("Няма поредица с код $slug.");
 		}
-		return array(
+		return [
 			'sequence' => $sequence,
 			'books'  => $this->em()->getBookRepository()->getBySequence($sequence),
-		);
+		];
 	}
 
 	public function searchAction(Request $request, $_format) {
 		if ($_format == 'osd') {
-			return array();
+			return [];
 		}
 		if ($_format == 'suggest') {
-			$items = $descs = $urls = array();
+			$items = $descs = $urls = [];
 			$query = $request->query->get('q');
-			$sequences = $this->em()->getSequenceRepository()->getByQuery(array(
+			$sequences = $this->em()->getSequenceRepository()->getByQuery([
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
 				'limit' => 10,
-			));
+			]);
 			foreach ($sequences as $sequence) {
 				$items[] = $sequence['name'];
 				$descs[] = '';
-				$urls[] = $this->generateUrl('sequence_show', array('slug' => $sequence['slug']), true);
+				$urls[] = $this->generateUrl('sequence_show', ['slug' => $sequence['slug']], true);
 			}
 
-			return $this->asJson(array($query, $items, $descs, $urls));
+			return $this->asJson([$query, $items, $descs, $urls]);
 		}
 		$searchService = new SearchService($this->em());
 		$query = $searchService->prepareQuery($request, $_format);
@@ -72,11 +72,11 @@ class SequenceController extends Controller {
 		}
 		$sequences = $this->em()->getSequenceRepository()->getByQuery($query);
 		$found = count($sequences) > 0;
-		return array(
+		return [
 			'query'     => $query,
 			'sequences' => $sequences,
 			'found'     => $found,
 			'_status' => !$found ? 404 : null,
-		);
+		];
 	}
 }

@@ -12,7 +12,7 @@ class WorkroomNotifier extends Notifier {
 		if (empty($recipients)) {
 			return;
 		}
-		$sender = array('NO_REPLY_I_REPEAT_NO_REPLY@chitanka.info' => $comment->getAuthorName().' (Моята библиотека)');
+		$sender = ['NO_REPLY_I_REPEAT_NO_REPLY@chitanka.info' => $comment->getAuthorName().' (Моята библиотека)'];
 		$message = Swift_Message::newInstance('Коментар в ателието — '.$workEntry->getTitle());
 		$message->setFrom($sender);
 		$message->setBody($this->createMailBodyByNewWorkroomComment($comment, $workEntry));
@@ -45,7 +45,7 @@ BODY;
 	public function sendMailByOldWorkEntry(WorkEntry $workEntry) {
 		$recipient = $workEntry->getUser();
 		if ($recipient->canReceiveEmail()) {
-			$sender = array('no-reply@chitanka.info' => 'Ателие (Моята библиотека)');
+			$sender = ['no-reply@chitanka.info' => 'Ателие (Моята библиотека)'];
 			$message = Swift_Message::newInstance('Стар запис — '.$workEntry->getTitle());
 			$message->setFrom($sender);
 			$message->setBody($this->createMailBodyByOldWorkEntry($workEntry));
@@ -69,7 +69,7 @@ BODY;
 		$recipient = $contrib->getUser();
 		if ($recipient->canReceiveEmail()) {
 			$workEntry = $contrib->getEntry();
-			$sender = array('no-reply@chitanka.info' => 'Ателие (Моята библиотека)');
+			$sender = ['no-reply@chitanka.info' => 'Ателие (Моята библиотека)'];
 			$message = Swift_Message::newInstance('Стар запис — '.$workEntry->getTitle());
 			$message->setFrom($sender);
 			$message->setBody($this->createMailBodyByOldWorkContrib($contrib));

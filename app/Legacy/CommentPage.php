@@ -11,10 +11,10 @@ class CommentPage extends Page {
 	protected
 		$action = 'comment',
 		$sortOrder = 'ASC',
-		$wheres = array(
-			-1 => array('`is_shown`' => 0), // only hidden comments
-			1 => array('`is_shown`' => 1), // only visible comments
-			0 => '1'), // all comments
+		$wheres = [
+			-1 => ['`is_shown`' => 0], // only hidden comments
+			1 => ['`is_shown`' => 1], // only visible comments
+			0 => '1'], // all comments
 		$defListLimit = 20,
 		$maxListLimit = 100,
 		$maxCaptchaTries = 5,
@@ -45,10 +45,10 @@ class CommentPage extends Page {
 
 	private function addTextFeedLinks() {
 		if ( empty($this->work) ) {
-			$url = $this->controller->generateUrl('texts_comments', array('_format' => 'rss'));
+			$url = $this->controller->generateUrl('texts_comments', ['_format' => 'rss']);
 			$title = 'Читателски коментари';
 		} else {
-			$url = $this->controller->generateUrl('text_comments', array('id' => $this->textId, '_format' => 'rss'));
+			$url = $this->controller->generateUrl('text_comments', ['id' => $this->textId, '_format' => 'rss']);
 			$title = 'Читателски коментари за „' . strip_tags($this->work->getTitle()) . '“';
 		}
 	}
@@ -109,7 +109,7 @@ class CommentPage extends Page {
 			// TODO rewrite
 			if (!preg_match('/^(127|192)/', $comment->getIp())) {
 				$chatMsg = sprintf('Нов [url=http://chitanka.info/text/%d/comments#e%d]читателски коментар[/url] от [b]%s[/b] за „%s“', $this->textId, $comment->getId(), $this->reader, $this->work->getTitle());
-				Legacy::getFromUrl('http://forum.chitanka.info/chat/post.php', array('m' => $chatMsg));
+				Legacy::getFromUrl('http://forum.chitanka.info/chat/post.php', ['m' => $chatMsg]);
 			}
 		}
 		if (!$this->sfrequest->isXmlHttpRequest()) {
@@ -128,7 +128,7 @@ class CommentPage extends Page {
 			if ( !empty($this->username) ) {
 				$this->wheres[$this->showMode][] = 'c.user_id IN ('
 					. $this->db->selectQ(DBT_USER,
-						array('username' => $this->username),
+						['username' => $this->username],
 						'id')
 					. ')';
 				$this->title .= ' от ' . $this->makeUserLink($this->username);
@@ -152,18 +152,18 @@ class CommentPage extends Page {
 		if ( !empty($this->replyto) ) {
 			$key['c.id'] = $this->replyto;
 		}
-		$qa = array(
+		$qa = [
 			'SELECT' => 'c.*, tr.rating, tr.date ratingdate',
 			'FROM' => DBT_COMMENT .' c',
-			'LEFT JOIN' => array(
+			'LEFT JOIN' => [
 				DBT_TEXT_RATING .' tr' => 'tr.text_id = c.text_id AND tr.user_id = c.user_id',
-			),
+			],
 			'WHERE' => $key,
 			'ORDER BY' => "`time` $this->sortOrder",
-		);
+		];
 		$sql = $this->db->extselectQ($qa);
 		$this->comments = '';
-		$this->acomments = $this->acommentsTree = $this->acommentsTmp = array();
+		$this->acomments = $this->acommentsTree = $this->acommentsTmp = [];
 		$this->curRowNr = 0;
 		$results = $this->controller->em()->getConnection()->executeQuery($sql)->fetchAll();
 		foreach ($results as $result) {
@@ -194,7 +194,7 @@ class CommentPage extends Page {
 		$dbrow['nr'] = ++$this->curRowNr;
 		$this->acomments[$id] = $dbrow;
 		if ( !isset($this->acommentsTmp[$id]) ) {
-			$this->acommentsTmp[$id] = array();
+			$this->acommentsTmp[$id] = [];
 		}
 		if ( empty($replyto) || !array_key_exists($replyto, $this->acommentsTmp) ) {
 			$this->acommentsTree[$id] = & $this->acommentsTmp[$id];
@@ -222,7 +222,7 @@ class CommentPage extends Page {
 	 *                      elements: rname, content, user_id, time, textId, textTitle, author, edit, showtime
 	 * @return string
 	 */
-	private function makeComment($fields = array()) {
+	private function makeComment($fields = []) {
 		extract($fields);
 		if ( empty($id) ) { $id = 0; }
 		if ( empty($rname) ) { $rname = $this->reader; }
@@ -244,14 +244,14 @@ class CommentPage extends Page {
 			if ( !empty($textId) ) {
 				$links = '';
 				if ($this->includeCommentForm) {
-					$links .= sprintf('<li><a href="%s#e%s" title="Отговор на коментара" onclick="return initReply(%d)"><span class="fa fa-reply"></span><span class="sr-only">Отговор</span></a></li>', $this->controller->generateUrl('text_comments', array('id' => $textId, 'replyto' => $id)), $id, $id);
+					$links .= sprintf('<li><a href="%s#e%s" title="Отговор на коментара" onclick="return initReply(%d)"><span class="fa fa-reply"></span><span class="sr-only">Отговор</span></a></li>', $this->controller->generateUrl('text_comments', ['id' => $textId, 'replyto' => $id]), $id, $id);
 				}
 				if ( empty($this->textId) ) {
-					$links .= sprintf('<li><a href="%s" title="Всички коментари за произведението"><span class="fa fa-comments"></span><span class="sr-only">Всички коментари</span></a></li>', $this->controller->generateUrl('text_comments', array('id' => $textId)));
+					$links .= sprintf('<li><a href="%s" title="Всички коментари за произведението"><span class="fa fa-comments"></span><span class="sr-only">Всички коментари</span></a></li>', $this->controller->generateUrl('text_comments', ['id' => $textId]));
 				}
 				if ($this->user->inGroup('admin')) {
-					$links .= sprintf('<li><a href="%s" title="Редактиране на коментара"><span class="fa fa-edit"></span><span class="sr-only">Редактиране</span></a></li>', $this->controller->generateUrl('admin_text_comment_edit', array('id' => $id)));
-					$links .= sprintf('<li><form action="%s" method="post" class="image-form delete-form"><button type="submit" title="Изтриване на коментара"><span class="fa fa-trash-o"></span><span class="sr-only">Изтриване</span></button></form></li>', $this->controller->generateUrl('admin_text_comment_delete', array('id' => $id)));
+					$links .= sprintf('<li><a href="%s" title="Редактиране на коментара"><span class="fa fa-edit"></span><span class="sr-only">Редактиране</span></a></li>', $this->controller->generateUrl('admin_text_comment_edit', ['id' => $id]));
+					$links .= sprintf('<li><form action="%s" method="post" class="image-form delete-form"><button type="submit" title="Изтриване на коментара"><span class="fa fa-trash-o"></span><span class="sr-only">Изтриване</span></button></form></li>', $this->controller->generateUrl('admin_text_comment_delete', ['id' => $id]));
 				}
 				$acts = "<ul class='menu' style='float:right'>$links</ul>";
 			}
@@ -278,10 +278,10 @@ EOS;
 
 	public function makePreview() {
 		return '<h2>Предварителен преглед</h2>' .
-			$this->makeComment(array(
+			$this->makeComment([
 				'content' => $this->comment,
 				'rname' => $this->reader
-			));
+			]);
 	}
 
 	private function makeForm() {
@@ -296,10 +296,10 @@ EOS;
 		$chunkId = $this->out->hiddenField('chunkId', $this->chunkId);
 		$replyto = $this->out->hiddenField('replyto', $this->replyto);
 		$reader = $this->user->isAnonymous()
-			? '<div class="form-group"><label for="reader">Име: </label>' . $this->out->textField('reader', '', $this->reader, 40, 160, null, '', array('class' => 'form-control')) . '</div>'
+			? '<div class="form-group"><label for="reader">Име: </label>' . $this->out->textField('reader', '', $this->reader, 40, 160, null, '', ['class' => 'form-control']) . '</div>'
 			: '';
 		$comment = $this->out->textarea('commenttext', '', $this->comment, 10, 77,
-			null, array('onkeypress' => 'postform_changed = true', 'class' => 'form-control'));
+			null, ['onkeypress' => 'postform_changed = true', 'class' => 'form-control']);
 		$hideform = !empty($this->comment) || !empty($this->replyto) ? ''
 			: '$("#postform").hide();';
 
@@ -337,7 +337,7 @@ JS;
 		$allowHelp = empty(String::$allowableTags) ? ''
 			: '<dl class="instruct"><dt>Разрешени са следните етикети</dt><dd><ul><li>&lt;'.implode('&gt;</li><li>&lt;', String::$allowableTags).'&gt;</li></ul></dd></dl>';
 
-		$postUrl = $this->controller->generateUrl('text_comments', array('id' => $this->textId));
+		$postUrl = $this->controller->generateUrl('text_comments', ['id' => $this->textId]);
 		return <<<EOS
 
 <form action="$postUrl" method="post" id="postform" class="form-horizontal">
@@ -385,19 +385,19 @@ EOS;
 			return '';
 		}
 
-		$params = array(
-			'pager'    => new Pager(array(
+		$params = [
+			'pager'    => new Pager([
 				'page'  => $this->lpage,
 				'limit' => $this->llimit,
 				'total' => $this->db->getCount(DBT_COMMENT . ' c', $this->wheres[$this->showMode]),
-			)),
+			]),
 			'route' => 'texts_comments',
 			'current_route' => 'texts_comments',
-			'route_params' => array(),
-		);
+			'route_params' => [],
+		];
 		if ( ! empty($this->username)) {
 			$params['route'] = 'user_comments';
-			$params['route_params'] = array('username' => $this->username);
+			$params['route_params'] = ['username' => $this->username];
 		}
 		$pagelinks = $this->controller->renderView('App::pager.html.twig', $params);
 
@@ -408,7 +408,7 @@ EOS;
 		}
 
 		$rssLink = empty($this->username)
-			? $this->getInlineRssLink('texts_comments', array('_format' => 'rss'))
+			? $this->getInlineRssLink('texts_comments', ['_format' => 'rss'])
 			: '';
 
 		return $rssLink . $pagelinks . $c . $pagelinks;
@@ -424,37 +424,37 @@ EOS;
 		$key = $this->wheres[$this->showMode];
 		if ( ! empty($this->textId) ) {
 			$key['c.text_id'] = $this->textId;
-			$title = $this->db->getFields(DBT_TEXT, array('id' => $this->textId), 'title');
+			$title = $this->db->getFields(DBT_TEXT, ['id' => $this->textId], 'title');
 			$this->title .= ' за „'.$title.'“';
 		}
-		$qa = array(
+		$qa = [
 			'SELECT' => 'c.id',
 			'FROM' => DBT_COMMENT .' c',
 			'WHERE' => $key,
 			'ORDER BY' => "`time` $order",
-			'LIMIT' => array($offset, $limit)
-		);
+			'LIMIT' => [$offset, $limit]
+		];
 		$res = $this->db->extselect($qa);
-		$ids = array();
+		$ids = [];
 		while ($row = $this->db->fetchRow($res)) {
 			$ids[] = $row[0];
 		}
 
-		$qa = array(
+		$qa = [
 			'SELECT' => 'c.*, t.id textId, t.title textTitle,
 				GROUP_CONCAT(DISTINCT a.name ORDER BY aof.pos SEPARATOR ", ") author,
 				tr.rating, tr.date ratingdate',
 			'FROM' => DBT_COMMENT .' c',
-			'LEFT JOIN' => array(
+			'LEFT JOIN' => [
 				DBT_TEXT .' t' => 'c.text_id = t.id',
 				DBT_AUTHOR_OF .' aof' => 't.id = aof.text_id',
 				DBT_PERSON .' a' => 'aof.person_id = a.id',
 				DBT_TEXT_RATING .' tr' => 'tr.text_id = t.id AND tr.user_id = c.user_id',
-			),
-			'WHERE' => empty($ids) ? array('FALSE') : array('c.id IN ('.implode(',', $ids).')'),
+			],
+			'WHERE' => empty($ids) ? ['FALSE'] : ['c.id IN ('.implode(',', $ids).')'],
 			'GROUP BY' => 'c.id',
 			'ORDER BY' => "`time` $order",
-		);
+		];
 
 		return $this->db->extselectQ($qa);
 	}

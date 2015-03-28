@@ -25,13 +25,13 @@ class LicenseAdmin extends Admin {
 			->addIdentifier('code')
 			->add('name')
 			->add('free')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 

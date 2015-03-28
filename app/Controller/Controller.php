@@ -21,13 +21,13 @@ abstract class Controller extends SymfonyController {
 	 * @param string $pageName
 	 * @param array $params
 	 */
-	protected function legacyPage($pageName, array $params = array()) {
+	protected function legacyPage($pageName, array $params = []) {
 		$page = Setup::getPage($pageName, $this, $this->container);
 		if ($page->redirect) {
 			return $this->urlRedirect($page->redirect);
 		}
 
-		$params += array(
+		$params += [
 			'page' => $page,
 			'navlinks' => $this->renderLayoutComponent('sidebar-menu', 'App::navlinks.html.twig'),
 			'footer_links' => $this->renderLayoutComponent('footer-menu', 'App::footer_links.html.twig'),
@@ -35,7 +35,7 @@ abstract class Controller extends SymfonyController {
 			'environment' => $this->container->get('kernel')->getEnvironment(),
 			'ajax' => $this->get('request')->isXmlHttpRequest(),
 			'_controller' => ':legacy',
-		);
+		];
 		if ($page->inlineJs) {
 			$params['inline_js'] = $page->inlineJs;
 		}
@@ -60,10 +60,10 @@ abstract class Controller extends SymfonyController {
 	}
 
 	protected function asText($text, $contentType = 'text/plain') {
-		return array(
+		return [
 			'_content' => $text,
 			'_type' => $contentType,
-		);
+		];
 	}
 
 	protected function asJson($content) {

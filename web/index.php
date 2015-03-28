@@ -35,10 +35,10 @@ class Cache {
 			return null;
 		}
 		$this->log("=== HIT");
-		return array(
+		return [
 			'data' => $this->file->read(),
 			'ttl' => $ttl,
-		);
+		];
 	}
 	/**
 	 * Set cache content with a given time to live.

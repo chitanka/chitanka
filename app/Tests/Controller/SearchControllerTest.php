@@ -5,7 +5,7 @@ class SearchControllerTest extends WebTestCase {
 	 * @group html
 	 */
 	public function testIndex() {
-		$page = $this->request('search', array('q' => 'test'));
+		$page = $this->request('search', ['q' => 'test']);
 
 		$this->assertHtmlPageIs($page, 'search');
 		$this->assertCount(1, $page->filter('h1'));
@@ -15,7 +15,7 @@ class SearchControllerTest extends WebTestCase {
 	 * @group html
 	 */
 	public function testNonEmptySearch() {
-		$page = $this->request('search', array('q' => 'фантастика'));
+		$page = $this->request('search', ['q' => 'фантастика']);
 
 		$this->assertCount(0, $page->filter('.no-items'), 'There should not be “empty” message');
 	}
@@ -24,7 +24,7 @@ class SearchControllerTest extends WebTestCase {
 	 * @group html
 	 */
 	public function testEmptySearch() {
-		$page = $this->request('search', array('q' => 'testingemptysearch'));
+		$page = $this->request('search', ['q' => 'testingemptysearch']);
 
 		$this->assertCount(1, $page->filter('.no-items'), 'There should be an “empty” message');
 	}
@@ -34,7 +34,7 @@ class SearchControllerTest extends WebTestCase {
 	 */
 	public function testIndexInXml() {
 		$query = 'Фантастика';
-		$page = $this->request('search.xml', array('q' => $query));
+		$page = $this->request('search.xml', ['q' => $query]);
 
 		$this->assertXmlSearchPageIsFor($page, $query);
 		$this->assertCount(1, $page->filter('results'));
@@ -56,7 +56,7 @@ class SearchControllerTest extends WebTestCase {
 	 */
 	public function testPersonsByNameInXml() {
 		$query = 'Николай Теллалов';
-		$page = $this->request('persons/search.xml', array('q' => $query));
+		$page = $this->request('persons/search.xml', ['q' => $query]);
 
 		$this->assertXmlSearchPageIsFor($page, $query);
 		$this->assertCount(1, $page->filter('persons'));
@@ -67,7 +67,7 @@ class SearchControllerTest extends WebTestCase {
 	 */
 	public function testTextsByTitleInXml() {
 		$query = 'Да пробудиш драконче…';
-		$page = $this->request('texts/search.xml', array('q' => $query));
+		$page = $this->request('texts/search.xml', ['q' => $query]);
 
 		$this->assertXmlSearchPageIsFor($page, $query);
 		$this->assertCount(1, $page->filter('texts'));
@@ -78,7 +78,7 @@ class SearchControllerTest extends WebTestCase {
 	 */
 	public function testBooksByTitleInXml() {
 		$query = 'Да пробудиш драконче…';
-		$page = $this->request('books/search.xml', array('q' => $query));
+		$page = $this->request('books/search.xml', ['q' => $query]);
 
 		$this->assertXmlSearchPageIsFor($page, $query);
 		$this->assertCount(1, $page->filter('books'));
@@ -89,7 +89,7 @@ class SearchControllerTest extends WebTestCase {
 	 */
 	public function testSeriesByNameInXml() {
 		$query = 'Драконче';
-		$page = $this->request('series/search.xml', array('q' => $query));
+		$page = $this->request('series/search.xml', ['q' => $query]);
 
 		$this->assertXmlSearchPageIsFor($page, $query);
 		$this->assertCount(1, $page->filter('series'));
@@ -100,7 +100,7 @@ class SearchControllerTest extends WebTestCase {
 	 */
 	public function testSequencesByNameInXml() {
 		$query = 'Хрониките на Амбър';
-		$page = $this->request('sequences/search.xml', array('q' => $query));
+		$page = $this->request('sequences/search.xml', ['q' => $query]);
 
 		$this->assertXmlSearchPageIsFor($page, $query);
 		$this->assertCount(1, $page->filter('sequences'));
@@ -183,7 +183,7 @@ class SearchControllerTest extends WebTestCase {
 	 */
 	public function testPersonsSuggest() {
 		$query = 'А';
-		$page = $this->requestJson('persons/search.suggest', array('q' => $query));
+		$page = $this->requestJson('persons/search.suggest', ['q' => $query]);
 
 		$this->assertSuggestSearchPageIsFor($page, $query);
 	}
@@ -193,7 +193,7 @@ class SearchControllerTest extends WebTestCase {
 	 */
 	public function testAuthorsSuggest() {
 		$query = 'А';
-		$page = $this->requestJson('authors/search.suggest', array('q' => $query));
+		$page = $this->requestJson('authors/search.suggest', ['q' => $query]);
 
 		$this->assertSuggestSearchPageIsFor($page, $query);
 	}
@@ -203,7 +203,7 @@ class SearchControllerTest extends WebTestCase {
 	 */
 	public function testTranslatorsSuggest() {
 		$query = 'А';
-		$page = $this->requestJson('translators/search.suggest', array('q' => $query));
+		$page = $this->requestJson('translators/search.suggest', ['q' => $query]);
 
 		$this->assertSuggestSearchPageIsFor($page, $query);
 	}
@@ -213,7 +213,7 @@ class SearchControllerTest extends WebTestCase {
 	 */
 	public function testBooksSuggest() {
 		$query = 'А';
-		$page = $this->requestJson('books/search.suggest', array('q' => $query));
+		$page = $this->requestJson('books/search.suggest', ['q' => $query]);
 
 		$this->assertSuggestSearchPageIsFor($page, $query);
 	}
@@ -223,7 +223,7 @@ class SearchControllerTest extends WebTestCase {
 	 */
 	public function testTextsSuggest() {
 		$query = 'А';
-		$page = $this->requestJson('texts/search.suggest', array('q' => $query));
+		$page = $this->requestJson('texts/search.suggest', ['q' => $query]);
 
 		$this->assertSuggestSearchPageIsFor($page, $query);
 	}
@@ -233,7 +233,7 @@ class SearchControllerTest extends WebTestCase {
 	 */
 	public function testSeriesSuggest() {
 		$query = 'А';
-		$page = $this->requestJson('series/search.suggest', array('q' => $query));
+		$page = $this->requestJson('series/search.suggest', ['q' => $query]);
 
 		$this->assertSuggestSearchPageIsFor($page, $query);
 	}
@@ -243,7 +243,7 @@ class SearchControllerTest extends WebTestCase {
 	 */
 	public function testSequencesSuggest() {
 		$query = 'А';
-		$page = $this->requestJson('sequences/search.suggest', array('q' => $query));
+		$page = $this->requestJson('sequences/search.suggest', ['q' => $query]);
 
 		$this->assertSuggestSearchPageIsFor($page, $query);
 	}

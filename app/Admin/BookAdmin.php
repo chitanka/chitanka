@@ -45,28 +45,28 @@ class BookAdmin extends Admin {
 			->add('category')
 			->add('removedNotice')
 			->add('texts')
-			->add('isbns', null, array('label' => 'ISBN'))
-			->add('links', null, array('label' => 'Site Links'))
+			->add('isbns', null, ['label' => 'ISBN'])
+			->add('links', null, ['label' => 'Site Links'])
 			->add('createdAt')
 		;
 	}
 
 	protected function configureListFields(ListMapper $listMapper) {
 		$listMapper
-			->add('url', 'string', array('template' => 'App:BookAdmin:list_url.html.twig'))
+			->add('url', 'string', ['template' => 'App:BookAdmin:list_url.html.twig'])
 			->add('slug')
 			->addIdentifier('title')
 			->add('id')
 			->add('type')
-			->add('sfbg', 'string', array('template' => 'App:BookAdmin:list_sfbg.html.twig'))
-			->add('puk', 'string', array('template' => 'App:BookAdmin:list_puk.html.twig'))
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('sfbg', 'string', ['template' => 'App:BookAdmin:list_sfbg.html.twig'])
+			->add('puk', 'string', ['template' => 'App:BookAdmin:list_puk.html.twig'])
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -79,74 +79,74 @@ class BookAdmin extends Admin {
 		$formMapper
 			->add('slug')
 			->add('title')
-			->add('lang', 'choice', array('choices' => Language::getLangs()))
-			->add('origLang', 'choice', array('required' => false, 'choices' => Language::getLangs()))
-			->add('type', 'choice', array('choices' => Book::getTypeList()))
-			->add('bookAuthors', 'sonata_type_collection', array(
+			->add('lang', 'choice', ['choices' => Language::getLangs()])
+			->add('origLang', 'choice', ['required' => false, 'choices' => Language::getLangs()])
+			->add('type', 'choice', ['choices' => Book::getTypeList()])
+			->add('bookAuthors', 'sonata_type_collection', [
 				'by_reference' => false,
 				'required' => false,
-			), array(
+			], [
 				'edit' => 'inline',
 				'inline' => 'table',
-			));
+			]);
 		$formMapper->with('Extra attributes');
 		$formMapper
-			->add('subtitle', null, array('required' => false))
-			->add('titleExtra', null, array('required' => false))
-			->add('origTitle', null, array('required' => false))
+			->add('subtitle', null, ['required' => false])
+			->add('titleExtra', null, ['required' => false])
+			->add('origTitle', null, ['required' => false])
 			->add('year')
 			//->add('transYear', null, array('required' => false))
-			->add('sequence', null, array('required' => false, 'query_builder' => function ($repo) {
+			->add('sequence', null, ['required' => false, 'query_builder' => function ($repo) {
 				return $repo->createQueryBuilder('e')->orderBy('e.name');
-			}))
-			->add('seqnr', null, array('required' => false))
-			->add('category', null, array('required' => false, 'query_builder' => function ($repo) {
+			}])
+			->add('seqnr', null, ['required' => false])
+			->add('category', null, ['required' => false, 'query_builder' => function ($repo) {
 				return $repo->createQueryBuilder('e')->orderBy('e.name');
-			}))
-			->add('isbns', 'sonata_type_collection', array(
+			}])
+			->add('isbns', 'sonata_type_collection', [
 				'by_reference' => false,
 				'required' => false,
 				'label' => 'ISBN',
-			), array(
+			], [
 				'edit' => 'inline',
 				'inline' => 'table',
-			))
-			->add('links', 'sonata_type_collection', array(
+			])
+			->add('links', 'sonata_type_collection', [
 				'by_reference' => false,
 				'required' => false,
 				'label' => 'Site Links',
-			), array(
+			], [
 				'edit' => 'inline',
 				'inline' => 'table',
 				'sortable' => 'site_id'
-			));
+			]);
 		$formMapper->with('Textual content');
 		$formMapper
-			->add('raw_template', 'textarea', array(
+			->add('raw_template', 'textarea', [
 				'label' => 'Template',
 				'required' => false,
 				'trim' => false,
-				'attr' => array(
+				'attr' => [
 					'class' => 'span12',
-				),
-			))
-			->add('annotation', 'textarea', array(
+				],
+			])
+			->add('annotation', 'textarea', [
 				'required' => false,
 				'trim' => false,
-				'attr' => array(
+				'attr' => [
 					'class' => 'span12',
-				),
-			))
-			->add('extra_info', 'textarea', array(
+				],
+			])
+			->add('extra_info', 'textarea', [
 				'required' => false,
 				'trim' => false,
-				'attr' => array(
+				'attr' => [
 					'class' => 'span12',
-				),
-			))
-			->add('revision_comment', 'text', array('required' => false))
+				],
+			])
+			->add('revision_comment', 'text', ['required' => false])
 			->add('removedNotice');
-		$formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'fixNewLines'));
+		$formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'fixNewLines']);
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

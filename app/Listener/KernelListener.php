@@ -14,12 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 class KernelListener implements EventSubscriberInterface {
 
 	public static function getSubscribedEvents() {
-		return array(
+		return [
 			KernelEvents::REQUEST => 'onKernelRequest',
 			KernelEvents::RESPONSE => 'onKernelResponse',
 			KernelEvents::CONTROLLER => 'onKernelController',
 			KernelEvents::VIEW => 'onKernelView',
-		);
+		];
 	}
 
 	private $responder;

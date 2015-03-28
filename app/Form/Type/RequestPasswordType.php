@@ -7,9 +7,9 @@ class RequestPasswordType extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
-			->add('username', 'text', array(
+			->add('username', 'text', [
 				'required' => false,
-			))
+			])
 			->add('save', 'submit');
 	}
 

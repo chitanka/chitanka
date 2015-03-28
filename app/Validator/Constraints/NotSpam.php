@@ -8,9 +8,9 @@ use Symfony\Component\Validator\Constraint;
 class NotSpam extends Constraint {
 	public $message = 'notspam';
 	public $urlLimit = 2;
-	public $stopWords = array(
+	public $stopWords = [
 		'CASH & CARRY',
 		'НЕ ОТВЕЧАЙТЕ НА ЭТО ПИСЬМО',
 		' еба ',
-	);
+	];
 }

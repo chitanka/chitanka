@@ -22,7 +22,7 @@ class Fb2Validator {
 	}
 
 	public function getErrors() {
-		$errors = array();
+		$errors = [];
 		foreach (libxml_get_errors() as $error) {
 			$errors[] = $this->formatError($error);
 		}
@@ -32,11 +32,11 @@ class Fb2Validator {
 	}
 
 	private function formatError($error) {
-		$titles = array(
+		$titles = [
 			LIBXML_ERR_WARNING	=> "Warning",
 			LIBXML_ERR_ERROR	=> "Error",
 			LIBXML_ERR_FATAL	=> "Fatal error",
-		);
+		];
 		return <<<MSG
 
 {$titles[$error->level]} {$error->code}:

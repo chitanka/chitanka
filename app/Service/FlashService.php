@@ -39,7 +39,7 @@ class FlashService {
 	 * @return bool
 	 */
 	public function hasMessages() {
-		return $this->bag->peekAll() !== array();
+		return $this->bag->peekAll() !== [];
 	}
 
 }

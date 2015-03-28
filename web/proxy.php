@@ -1,17 +1,17 @@
 <?php
-$allowedDomains = array(
+$allowedDomains = [
 	'sfbg.us', 'www.sfbg.us',
-);
+];
 
 if (isset($_GET['url'])) {
 	$url = urlencode($_GET['url']);
-	$url = strtr($url, array(
+	$url = strtr($url, [
 		'%3A' => ':',
 		'%2F' => '/',
 		'%3F' => '?',
 		'%3D' => '=',
 		'%26' => '&',
-	));
+	]);
 
 	if (strpos($url, 'http://') !== 0) {
 		die('not an http address');

@@ -4,49 +4,49 @@ use App\Util\Number;
 
 class Legacy {
 
-	private static $types = array(
+	private static $types = [
 		// code => array(singular, plural)
-		'anecdote' => array('Анекдот', 'Анекдоти'),
-		'fable' => array('Басня', 'Басни'),
-		'biography' => array('Биография', 'Биографии'),
-		'dialogue' => array('Диалог', 'Диалози'),
-		'docu' => array('Документалистика', 'Документалистика'),
-		'essay' => array('Есе', 'Есета'),
-		'interview' => array('Интервю', 'Интервюта'),
-		'gamebook' => array('Книга игра', 'Книги игри'),
-		'memo' => array('Мемоари/спомени', 'Мемоари/спомени'),
-		'science' => array('Научен текст', 'Научни текстове'),
-		'popscience' => array('Научнопопулярен текст', 'Научнопопулярни текстове'),
-		'novelette' => array('Новела', 'Новели'),
-		'ocherk' => array('Очерк', 'Очерци'),
-		'shortstory' => array('Разказ', 'Разкази'),
-		'review' => array('Рецензия', 'Рецензии'),
-		'novel' => array('Роман', 'Романи'),
-		'play' => array('Пиеса', 'Пиеси'),
-		'letter' => array('Писмо', 'Писма'),
-		'poetry' => array('Поезия', 'Поезия'),
-		'poem' => array('Поема', 'Поеми'),
-		'novella' => array('Повест', 'Повести'),
-		'outro' => array('Послеслов', 'Послеслови'),
-		'intro' => array('Предговор', 'Предговори'),
-		'tale' => array('Приказка', 'Приказки'),
-		'pritcha' => array('Притча', 'Притчи'),
-		'travelnotes' => array('Пътепис', 'Пътеписи'),
-		'speech' => array('Реч', 'Речи'),
-		'article' => array('Статия', 'Статии'),
-		'prosepoetry' => array('Лирика в проза', 'Лирика в проза'),
-		'screenplay' => array('Сценарий', 'Сценарии'),
-		'textbook' => array('Учебник', 'Учебници'),
-		'feuilleton' => array('Фейлетон', 'Фейлетони'),
-		'haiku' => array('Хайку', 'Хайку'),
-		'jure' => array('Юридически текст', 'Юридически текстове'),
-		'critique' => array('Литературна критика', 'Литературна критика'),
-		'philosophy' => array('Философски текст', 'Философски текст'),
-		'religion' => array('Религиозен текст', 'Религиозен текст'),
-		'historiography' => array('Историография', 'Историография'),
-		'collection' => array('Сборник', 'Сборник'),
-		'other' => array('Разни', 'Разни'),
-	);
+		'anecdote' => ['Анекдот', 'Анекдоти'],
+		'fable' => ['Басня', 'Басни'],
+		'biography' => ['Биография', 'Биографии'],
+		'dialogue' => ['Диалог', 'Диалози'],
+		'docu' => ['Документалистика', 'Документалистика'],
+		'essay' => ['Есе', 'Есета'],
+		'interview' => ['Интервю', 'Интервюта'],
+		'gamebook' => ['Книга игра', 'Книги игри'],
+		'memo' => ['Мемоари/спомени', 'Мемоари/спомени'],
+		'science' => ['Научен текст', 'Научни текстове'],
+		'popscience' => ['Научнопопулярен текст', 'Научнопопулярни текстове'],
+		'novelette' => ['Новела', 'Новели'],
+		'ocherk' => ['Очерк', 'Очерци'],
+		'shortstory' => ['Разказ', 'Разкази'],
+		'review' => ['Рецензия', 'Рецензии'],
+		'novel' => ['Роман', 'Романи'],
+		'play' => ['Пиеса', 'Пиеси'],
+		'letter' => ['Писмо', 'Писма'],
+		'poetry' => ['Поезия', 'Поезия'],
+		'poem' => ['Поема', 'Поеми'],
+		'novella' => ['Повест', 'Повести'],
+		'outro' => ['Послеслов', 'Послеслови'],
+		'intro' => ['Предговор', 'Предговори'],
+		'tale' => ['Приказка', 'Приказки'],
+		'pritcha' => ['Притча', 'Притчи'],
+		'travelnotes' => ['Пътепис', 'Пътеписи'],
+		'speech' => ['Реч', 'Речи'],
+		'article' => ['Статия', 'Статии'],
+		'prosepoetry' => ['Лирика в проза', 'Лирика в проза'],
+		'screenplay' => ['Сценарий', 'Сценарии'],
+		'textbook' => ['Учебник', 'Учебници'],
+		'feuilleton' => ['Фейлетон', 'Фейлетони'],
+		'haiku' => ['Хайку', 'Хайку'],
+		'jure' => ['Юридически текст', 'Юридически текстове'],
+		'critique' => ['Литературна критика', 'Литературна критика'],
+		'philosophy' => ['Философски текст', 'Философски текст'],
+		'religion' => ['Религиозен текст', 'Религиозен текст'],
+		'historiography' => ['Историография', 'Историография'],
+		'collection' => ['Сборник', 'Сборник'],
+		'other' => ['Разни', 'Разни'],
+	];
 
 	/**
 	 * @param string $code
@@ -63,7 +63,7 @@ class Legacy {
 	 * @return array
 	 */
 	public static function workTypes($singular = true) {
-		$ntypes = array();
+		$ntypes = [];
 		foreach (self::$types as $code => $name) {
 			$ntypes[$code] = $singular ? self::$types[$code][0] : self::$types[$code][1];
 		}
@@ -79,10 +79,10 @@ class Legacy {
 	 * @param array $postData
 	 * @return string
 	 */
-	public static function getFromUrl($url, array $postData = array()) {
+	public static function getFromUrl($url, array $postData = []) {
 		$ch = curl_init();
 
-		$options = array(
+		$options = [
 			CURLOPT_URL            => $url,
 			CURLOPT_RETURNTRANSFER => true,    // return content
 			CURLOPT_HEADER         => false,   // don't return headers
@@ -90,7 +90,7 @@ class Legacy {
 			CURLOPT_TIMEOUT        => 60,      // timeout on response
 			CURLOPT_USERAGENT      => 'Mylib (http://chitanka.info)',
 			CURLOPT_FOLLOWLOCATION => true,
-		);
+		];
 		if ( ! empty($postData)) {
 			$options[CURLOPT_POST] = true;
 			$options[CURLOPT_POSTFIELDS] = $postData;

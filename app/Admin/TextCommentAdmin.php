@@ -31,13 +31,13 @@ class TextCommentAdmin extends Admin {
 			->add('rname')
 			->add('time')
 			->add('is_shown')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -46,7 +46,7 @@ class TextCommentAdmin extends Admin {
 		$formMapper
 			->add('rname')
 			->add('content')
-			->add('is_shown', null, array('required' => false));
+			->add('is_shown', null, ['required' => false]);
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

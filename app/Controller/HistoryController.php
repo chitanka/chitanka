@@ -11,11 +11,11 @@ class HistoryController extends Controller {
 	public $textsPerPage = 30;
 
 	public function indexAction() {
-		return array(
+		return [
 			'book_revisions_by_date' => $this->em()->getBookRevisionRepository()->getLatest($this->booksPerPage),
 			'text_revisions_by_date' => $this->em()->getTextRevisionRepository()->getLatest($this->textsPerPage),
 			'_cache' => $this->responseAge,
-		);
+		];
 	}
 
 	public function listBooksAction($page, $_format) {
@@ -25,42 +25,42 @@ class HistoryController extends Controller {
 			case 'rss':
 				$revisions = $repo->getLatest($this->booksPerPage, $page);
 				$lastOnes = current($revisions);
-				return array(
+				return [
 					'dates' => $this->getDateOptions($repo),
 					'book_revisions_by_date' => $revisions,
 					'last_date' => $lastOnes[0]['date'],
 					'_cache' => $this->responseAge,
-				);
+				];
 			case 'opds':
 			case 'json':
-				return array(
+				return [
 					'book_revisions' => $repo->getByDate(null, $page, $this->booksPerPage, false),
-					'pager' => new Pager(array(
+					'pager' => new Pager([
 						'page'  => $page,
 						'limit' => $this->booksPerPage,
 						'total' => $this->booksPerPage * 50
-					)),
+					]),
 					'_cache' => $this->responseAge,
-				);
+				];
 		}
 	}
 
 	public function listBooksByMonthAction($year, $month, $page) {
-		$dates = array("$year-$month-01", Date::endOfMonth("$year-$month"));
+		$dates = ["$year-$month-01", Date::endOfMonth("$year-$month")];
 		$repo = $this->em()->getBookRevisionRepository();
 
-		return array(
+		return [
 			'dates' => $this->getDateOptions($repo),
 			'month' => ltrim($month, '0'),
 			'year' => $year,
 			'book_revisions_by_date' => $repo->getByDate($dates, $page, $this->booksPerPage),
-			'pager' => new Pager(array(
+			'pager' => new Pager([
 				'page'  => $page,
 				'limit' => $this->booksPerPage,
 				'total' => $repo->countByDate($dates)
-			)),
+			]),
 			'route_params' => compact('year', 'month'),
-		);
+		];
 	}
 
 	public function listTextsAction($page, $_format) {
@@ -70,49 +70,49 @@ class HistoryController extends Controller {
 			case 'rss':
 				$revisions = $repo->getLatest($this->textsPerPage, $page);
 				$lastOnes = current($revisions);
-				return array(
+				return [
 					'dates' => $this->getDateOptions($repo),
 					'text_revisions_by_date' => $revisions,
 					'last_date' => $lastOnes[0]['date'],
 					'_cache' => $this->responseAge,
-				);
+				];
 			case 'opds':
 			case 'json':
-				return array(
+				return [
 					'text_revisions' => $repo->getByDate(null, $page, $this->textsPerPage, false),
-					'pager'    => new Pager(array(
+					'pager'    => new Pager([
 						'page'  => $page,
 						'limit' => $this->textsPerPage,
 						'total' => $this->textsPerPage * 50
-					)),
+					]),
 					'_cache' => $this->responseAge,
-				);
+				];
 		}
 	}
 
 	public function listTextsByMonthAction($year, $month, $page) {
-		$dates = array("$year-$month-01", Date::endOfMonth("$year-$month"));
+		$dates = ["$year-$month-01", Date::endOfMonth("$year-$month")];
 		$repo = $this->em()->getTextRevisionRepository();
 		$revisions = $repo->getByDate($dates, $page, $this->textsPerPage);
 
-		return array(
+		return [
 			'dates' => $this->getDateOptions($repo),
 			'month' => ltrim($month, '0'),
 			'year' => $year,
 			'text_revisions_by_date' => $revisions,
 			'texts_by_id' => $this->extractTextsFromRevisionsByDate($revisions),
-			'pager'    => new Pager(array(
+			'pager'    => new Pager([
 				'page'  => $page,
 				'limit' => $this->textsPerPage,
 				'total' => $repo->countByDate($dates)
-			)),
+			]),
 			'route' => 'new_texts_by_month',
 			'route_params' => compact('year', 'month'),
-		);
+		];
 	}
 
 	private function getDateOptions($repository) {
-		$dates = array();
+		$dates = [];
 		foreach ($repository->getMonths() as $data) {
 			$ym = $data['month'];
 			list($y, $m) = explode('-', $ym);
@@ -126,7 +126,7 @@ class HistoryController extends Controller {
 	}
 
 	private function extractTextsFromRevisionsByDate($revisionsByDate) {
-		$texts = array();
+		$texts = [];
 		foreach ($revisionsByDate as $revisions) {
 			foreach ($revisions as $revision) {
 				$texts[$revision['text']['id']] = $revision['text'];

@@ -95,13 +95,13 @@ class Book extends BaseWork {
 	 * @ORM\Column(type="string", length=10)
 	 */
 	private $type;
-	private static $typeList = array(
+	private static $typeList = [
 		'single' => 'Обикновена книга',
 		'collection' => 'Сборник',
 		'poetry' => 'Стихосбирка',
 		'anthology' => 'Антология',
 		'magazine' => 'Списание',
-	);
+	];
 
 	/**
 	 * @var Sequence
@@ -138,7 +138,7 @@ class Book extends BaseWork {
 	 * @var array
 	 * @ORM\Column(type="array")
 	 */
-	private $formats = array();
+	private $formats = [];
 
 	/**
 	 * @var ArrayCollection
@@ -277,7 +277,7 @@ class Book extends BaseWork {
 
 	public function getAuthors() {
 		if (!isset($this->authors)) {
-			$this->authors = array();
+			$this->authors = [];
 			foreach ($this->getBookAuthors() as $author) {
 				if ($author->getPos() >= 0) {
 					$this->authors[] = $author->getPerson();
@@ -288,7 +288,7 @@ class Book extends BaseWork {
 	}
 
 	public function getAuthorNamesString() {
-		$authors = array();
+		$authors = [];
 		foreach ($this->getAuthors() as $author) {
 			$authors[] = $author->getName();
 		}
@@ -408,12 +408,12 @@ class Book extends BaseWork {
 		return null;
 	}
 
-	private $textIds = array();
-	private $textsById = array();
+	private $textIds = [];
+	private $textsById = [];
 
 	protected static $annotationDir = 'book-anno';
 	protected static $infoDir = 'book-info';
-	protected $covers = array();
+	protected $covers = [];
 
 	public function getDocId() {
 		return 'http://chitanka.info/book/' . $this->id;
@@ -427,7 +427,7 @@ class Book extends BaseWork {
 	/** @return Person[] */
 	public function getMainAuthors() {
 		if ( ! isset($this->mainAuthors) ) {
-			$this->mainAuthors = array();
+			$this->mainAuthors = [];
 			foreach ($this->getTextsById() as $text) {
 				if ( self::isMainWorkType($text->getType()) ) {
 					foreach ($text->getAuthors() as $author) {
@@ -441,7 +441,7 @@ class Book extends BaseWork {
 	}
 
 	public function getAuthorSlugs() {
-		$slugs = array();
+		$slugs = [];
 		foreach ($this->getAuthors() as $author/*@var $author Person*/) {
 			$slugs[] = $author->getSlug();
 		}
@@ -449,13 +449,13 @@ class Book extends BaseWork {
 	}
 
 	public static function isMainWorkType($type) {
-		return ! in_array($type, array('intro', 'outro'/*, 'interview', 'article'*/));
+		return ! in_array($type, ['intro', 'outro'/*, 'interview', 'article'*/]);
 	}
 
-	private $authorsBy = array();
+	private $authorsBy = [];
 	public function getAuthorsBy($type) {
 		if ( ! isset($this->authorsBy[$type]) ) {
-			$this->authorsBy[$type] = array();
+			$this->authorsBy[$type] = [];
 			foreach ($this->getTextsById() as $text) {
 				if ($text->getType() == $type) {
 					foreach ($text->getAuthors() as $author) {
@@ -471,8 +471,8 @@ class Book extends BaseWork {
 	private $translators;
 	public function getTranslators() {
 		if ( ! isset($this->translators) ) {
-			$this->translators = array();
-			$seen = array();
+			$this->translators = [];
+			$seen = [];
 			foreach ($this->getTexts() as $text) {
 				foreach ($text->getTranslators() as $translator) {
 					if ( ! in_array($translator->getId(), $seen) ) {
@@ -523,7 +523,7 @@ class Book extends BaseWork {
 		return is_null($width) ? $this->covers['back'] : File::genThumbnail($this->covers['back'], $width);
 	}
 
-	private static $exts = array('.jpg');
+	private static $exts = ['.jpg'];
 
 	private function initCovers() {
 		if (empty($this->covers)) {
@@ -546,18 +546,18 @@ class Book extends BaseWork {
 	 */
 	public static function getCovers($id, $defCover = null) {
 		$key = 'book-cover-content';
-		$bases = array(ContentService::getContentFilePath($key, $id));
+		$bases = [ContentService::getContentFilePath($key, $id)];
 		if ( ! empty($defCover)) {
 			$bases[] = ContentService::getContentFilePath($key, $defCover);
 		}
 		$coverFiles = Ary::cartesianProduct($bases, self::$exts);
-		$covers = array();
+		$covers = [];
 		foreach ($coverFiles as $file) {
 			if (file_exists($file)) {
 				$covers[] = $file;
 				// search for more images of the form “ID-DIGIT.EXT”
 				for ($i = 2; /* infinity */; $i++) {
-					$efile = strtr($file, array('.' => "-$i."));
+					$efile = strtr($file, ['.' => "-$i."]);
 					if (file_exists($efile)) {
 						$covers[] = $efile;
 					} else {
@@ -571,7 +571,7 @@ class Book extends BaseWork {
 	}
 
 	public static function renameCover($cover, $newname) {
-		$rexts = strtr(implode('|', self::$exts), array('.'=>'\.'));
+		$rexts = strtr(implode('|', self::$exts), ['.'=>'\.']);
 		return preg_replace("/\d+(-\d+)?($rexts)/", "$newname$1$2", $cover);
 	}
 
@@ -584,7 +584,7 @@ class Book extends BaseWork {
 	}
 
 	public function getLocalImages() {
-		$images = array();
+		$images = [];
 
 		$dir = ContentService::getInternalContentFilePath('book-img', $this->id);
 		foreach (glob("$dir/*") as $img) {
@@ -595,7 +595,7 @@ class Book extends BaseWork {
 	}
 
 	public function getTextImages() {
-		$images = array();
+		$images = [];
 
 		foreach ($this->getTexts() as $text) {
 			$images = array_merge($images, $text->getImages());
@@ -605,7 +605,7 @@ class Book extends BaseWork {
 	}
 
 	public function getTextThumbImages() {
-		$images = array();
+		$images = [];
 
 		foreach ($this->getTexts() as $text) {
 			$images = array_merge($images, $text->getThumbImages());
@@ -615,7 +615,7 @@ class Book extends BaseWork {
 	}
 
 	public function getLabels() {
-		$labels = array();
+		$labels = [];
 
 		foreach ($this->getTexts() as $text) {
 			foreach ($text->getLabels() as $label) {
@@ -659,7 +659,7 @@ class Book extends BaseWork {
 	 */
 	public function getBookAuthorIfNotInTitle($text) {
 		$bookAuthorsIds = $this->getAuthorIds();
-		$authors = array();
+		$authors = [];
 		foreach ($text->getAuthors() as $author) {
 			if ( ! in_array($author->getId(), $bookAuthorsIds)) {
 				$authors[] = $author;
@@ -720,7 +720,7 @@ class Book extends BaseWork {
 		}
 
 		require_once __DIR__ . '/../Legacy/SfbParserSimple.php';
-		$this->_headers = array();
+		$this->_headers = [];
 		foreach (\App\Legacy\makeDbRows($this->getMainBodyAsSfbFile(), 4) as $row) {
 			$header = new TextHeader;
 			$header->setNr($row[0]);
@@ -799,7 +799,7 @@ class Book extends BaseWork {
 	}
 
 	public function getPlainTranslationInfo() {
-		$info = array();
+		$info = [];
 		foreach ($this->getTranslators() as $translator) {
 			$info[] = $translator->getName();
 		}
@@ -829,7 +829,7 @@ EOS;
 	}
 
 	public function getDatafiles() {
-		$files = array();
+		$files = [];
 		$files['book'] = ContentService::getContentFilePath('book', $this->id);
 		if ($this->hasCover()) {
 			$files['book-cover'] = ContentService::getContentFilePath('book-cover', $this->id) . '.max.jpg';
@@ -844,7 +844,7 @@ EOS;
 	public function setDatafiles($f) {} // dummy for sonata admin
 
 	public function getStaticFile($format) {
-		if (!in_array($format, array('djvu', 'pdf'))) {
+		if (!in_array($format, ['djvu', 'pdf'])) {
 			throw new \Exception("Format $format is not a valid static format for a book.");
 		}
 		return ContentService::getContentFilePath('book-'.$format, $this->id);
@@ -866,9 +866,9 @@ EOS;
 
 		$dir = ContentService::getContentFilePath('book-pic', $this->id);
 
-		$ignore = array(self::THUMB_DIR);
+		$ignore = [self::THUMB_DIR];
 
-		$files = array();
+		$files = [];
 		foreach (scandir($dir) as $file) {
 			if ( $file[0] == '.' || in_array($file, $ignore) ) {
 				continue;

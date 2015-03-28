@@ -144,7 +144,7 @@ class DownloadFile {
 	 * @return string File name
 	 */
 	public function getDlFileForText(Text $text, $format, $binaryCallback = null) {
-		$textIds = array($text->getId());
+		$textIds = [$text->getId()];
 
 		if ( ($dlCache = self::getDlCache($textIds, $format)) ) {
 			if ( ($dlFile = self::getDlFile($dlCache)) ) {
@@ -289,7 +289,7 @@ class DownloadFile {
 	private function addImagesForEpub(BaseWork $work, EpubFile $epubFile) {
 		$imagesDir = $epubFile->getImagesDir();
 
-		$thumbs = array();
+		$thumbs = [];
 		foreach ($work->getThumbImages() as $i => $image) {
 			$file = $this->addFileEntry($image, "$imagesDir/thumb/");
 			$epubFile->addFile("image-thumb-$i", $file);
@@ -364,15 +364,15 @@ class DownloadFile {
 	public static function setDlCache($textIds, $file, $format = '') {
 		$db = Setup::db();
 		$pk = self::getHashForTextIds($textIds, $format);
-		$db->insert(DBT_DL_CACHE, array(
+		$db->insert(DBT_DL_CACHE, [
 			"id = $pk",
 			'file' => $file,
-		), true, false);
+		], true, false);
 		foreach ( (array) $textIds as $textId ) {
-			$db->insert(DBT_DL_CACHE_TEXT, array(
+			$db->insert(DBT_DL_CACHE_TEXT, [
 				"dc_id = $pk",
 				'text_id' => $textId,
-			), true);
+			], true);
 		}
 		return $file;
 	}
@@ -381,7 +381,7 @@ class DownloadFile {
 	 * @param string $hash
 	 */
 	public static function getDlFileByHash($hash) {
-		return Setup::db()->getFields(DBT_DL_CACHE, array("id = $hash"), 'file');
+		return Setup::db()->getFields(DBT_DL_CACHE, ["id = $hash"], 'file');
 	}
 
 	/**

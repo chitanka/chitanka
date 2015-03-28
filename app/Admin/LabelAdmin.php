@@ -24,13 +24,13 @@ class LabelAdmin extends Admin {
 		$listMapper
 			->addIdentifier('name')
 			->add('slug')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -39,9 +39,9 @@ class LabelAdmin extends Admin {
 		$formMapper
 			->add('name')
 			->add('slug')
-			->add('parent', null, array('required' => false, 'query_builder' => function ($repo) {
+			->add('parent', null, ['required' => false, 'query_builder' => function ($repo) {
 				return $repo->createQueryBuilder('e')->orderBy('e.name');
-			}));
+			}]);
 
 	}
 

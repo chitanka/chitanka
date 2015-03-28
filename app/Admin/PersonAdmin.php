@@ -29,11 +29,11 @@ class PersonAdmin extends Admin {
 			->add('is_author')
 			->add('is_translator')
 			->add('info')
-			->add('series', null, array('label' => 'Series plural'));
+			->add('series', null, ['label' => 'Series plural']);
 		$showMapper->with($this->trans('Main Person'));
 		$showMapper
 			->add('type')
-			->add('person', null, array('label' => 'Main Person'));
+			->add('person', null, ['label' => 'Main Person']);
 	}
 
 	protected function configureListFields(ListMapper $listMapper) {
@@ -42,46 +42,46 @@ class PersonAdmin extends Admin {
 			->add('slug')
 			->add('orig_name')
 
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$countryList = array();
+		$countryList = [];
 		foreach ($this->repository->getCountryList() as $countryCode) {
 			$countryList[$countryCode] = "country.$countryCode";
 		}
 		$formMapper->with('General attributes');
 		$formMapper
-			->add('slug', null, array('required' => false))
+			->add('slug', null, ['required' => false])
 			->add('name')
-			->add('orig_name', null, array('required' => false))
-			->add('real_name', null, array('required' => false))
-			->add('oreal_name', null, array('required' => false))
-			->add('country', 'choice', array(
+			->add('orig_name', null, ['required' => false])
+			->add('real_name', null, ['required' => false])
+			->add('oreal_name', null, ['required' => false])
+			->add('country', 'choice', [
 				'choices' => $countryList,
-			))
-			->add('is_author', null, array('required' => false))
-			->add('is_translator', null, array('required' => false))
-			->add('info', null, array('required' => false));
+			])
+			->add('is_author', null, ['required' => false])
+			->add('is_translator', null, ['required' => false])
+			->add('info', null, ['required' => false]);
 		$formMapper->with('Main Person');
 		$formMapper
-			->add('type', 'choice', array(
+			->add('type', 'choice', [
 				'choices' => $this->repository->getTypeList(),
 				//'expanded' => true,
 				'required' => false,
 				'label' => 'Person Type',
-			))
-			->add('person', 'sonata_type_model_list', array('required' => false, 'label' => 'Main Person'));
-		$formMapper->setHelps(array(
+			])
+			->add('person', 'sonata_type_model_list', ['required' => false, 'label' => 'Main Person']);
+		$formMapper->setHelps([
 			'info' => $this->trans('help.wiki_article')
-		));
+		]);
 
 	}
 

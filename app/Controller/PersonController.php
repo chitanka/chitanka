@@ -10,13 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 class PersonController extends Controller {
 
 	public function indexAction() {
-		return array();
+		return [];
 	}
 
 	public function listByAlphaIndexAction($by) {
-		return array(
+		return [
 			'by' => $by,
-		);
+		];
 	}
 
 	public function listByAlphaAction($by, $letter, $page) {
@@ -25,23 +25,23 @@ class PersonController extends Controller {
 		$limit = 100;
 
 		$repo = $this->em()->getPersonRepository();
-		$filters = array(
+		$filters = [
 			'by'      => $by,
 			'prefix'  => $letter,
 			'country' => $country,
-		);
-		return array(
+		];
+		return [
 			'by'      => $by,
 			'letter'  => $letter,
 			'country' => $country,
 			'persons' => $repo->getBy($filters, $page, $limit),
-			'pager'    => new Pager(array(
+			'pager'    => new Pager([
 				'page'  => $page,
 				'limit' => $limit,
 				'total' => $repo->countBy($filters)
-			)),
-			'route_params' => array('letter' => $letter, 'by' => $by),
-		);
+			]),
+			'route_params' => ['letter' => $letter, 'by' => $by],
+		];
 	}
 
 	public function showAction($slug, $_format) {
@@ -50,31 +50,31 @@ class PersonController extends Controller {
 			return $person;
 		}
 
-		return $this->getShowTemplateParams($person, $_format) + array(
+		return $this->getShowTemplateParams($person, $_format) + [
 			'person' => $person,
-		) + $this->getShowTemplateInfoParams($person);
+		] + $this->getShowTemplateInfoParams($person);
 	}
 
 	public function searchAction(Request $request, $_format) {
 		if ($_format == 'osd') {
-			return array();
+			return [];
 		}
 		if ($_format == 'suggest') {
-			$items = $descs = $urls = array();
+			$items = $descs = $urls = [];
 			$query = $request->query->get('q');
-			$persons = $this->em()->getPersonRepository()->getByQuery(array(
+			$persons = $this->em()->getPersonRepository()->getByQuery([
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
 				'limit' => 10,
-			));
+			]);
 			foreach ($persons as $person) {
 				$items[] = $person['name'];
 				$descs[] = '';
-				$urls[] = $this->generateUrl('person_show', array('slug' => $person['slug']), true);
+				$urls[] = $this->generateUrl('person_show', ['slug' => $person['slug']], true);
 			}
 
-			return $this->asJson(array($query, $items, $descs, $urls));
+			return $this->asJson([$query, $items, $descs, $urls]);
 		}
 		$searchService = new SearchService($this->em());
 		$query = $searchService->prepareQuery($request, $_format);
@@ -87,12 +87,12 @@ class PersonController extends Controller {
 		}
 		$persons = $this->em()->getPersonRepository()->getByQuery($query);
 		$found = count($persons) > 0;
-		return array(
+		return [
 			'query'   => $query,
 			'persons' => $persons,
 			'found'   => $found,
 			'_status' => !$found ? 404 : null,
-		);
+		];
 	}
 
 	public function showInfoAction($slug) {
@@ -100,9 +100,9 @@ class PersonController extends Controller {
 		if (!$person instanceof Person) {
 			return $person;
 		}
-		return array(
+		return [
 			'person' => $person,
-		);
+		];
 	}
 
 	protected function tryToFindPerson($slug) {
@@ -111,9 +111,9 @@ class PersonController extends Controller {
 			return $person;
 		}
 
-		$person = $this->em()->getPersonRepository()->findOneBy(array('name' => $slug));
+		$person = $this->em()->getPersonRepository()->findOneBy(['name' => $slug]);
 		if ($person) {
-			return $this->urlRedirect($this->generateUrl('person_show', array('slug' => $person->getSlug())), true);
+			return $this->urlRedirect($this->generateUrl('person_show', ['slug' => $person->getSlug()]), true);
 		}
 		throw $this->createNotFoundException("Няма личност с код $slug.");
 	}
@@ -126,24 +126,24 @@ class PersonController extends Controller {
 	}
 	protected function getShowTemplateParamsAuthor(Person $person, $format) {
 		$groupBySeries = $format == 'html';
-		return array(
+		return [
 			'texts_as_author' => $this->em()->getTextRepository()->findByAuthor($person, $groupBySeries),
 			'books' => $this->em()->getBookRepository()->getByAuthor($person),
-		);
+		];
 	}
 	protected function getShowTemplateParamsTranslator(Person $person, $format) {
-		return array(
+		return [
 			'texts_as_translator' => $this->em()->getTextRepository()->findByTranslator($person),
-		);
+		];
 	}
 
 	private function getShowTemplateInfoParams(Person $person) {
 		if ($person->getInfo() == '') {
-			return array();
+			return [];
 		}
-		return array(
+		return [
 			'wikiPage' => $this->container->get('wiki_reader')->fetchPage($person->getInfo()),
-		);
+		];
 	}
 
 }

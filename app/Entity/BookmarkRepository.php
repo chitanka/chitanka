@@ -24,7 +24,7 @@ class BookmarkRepository extends EntityRepository {
 	public function getByUser(User $user, $page = 1, $limit = null, $orderBys = 't.title ASC') {
 		$ids = $this->getIdsByUser($user, $page, $limit, $orderBys);
 
-		return empty($ids) ? array() : $this->getByIds($ids, $orderBys);
+		return empty($ids) ? [] : $this->getByIds($ids, $orderBys);
 	}
 
 	/**
@@ -64,7 +64,7 @@ class BookmarkRepository extends EntityRepository {
 		}
 
 		if (empty($textIds)) {
-			return array();
+			return [];
 		}
 
 		$sql = sprintf('SELECT text_id FROM %s WHERE user_id = %d AND text_id IN (%s)', $this->getClassMetadata()->getTableName(), $user->getId(), $textIds);

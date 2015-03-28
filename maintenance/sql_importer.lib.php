@@ -45,7 +45,7 @@ class SqlFileProcessor {
 	 */
 	public function walkThruQueries($callback = null) {
 		$reader = new FileLineReader($this->filename);
-		$queries = array();
+		$queries = [];
 		if ($callback === null) {
 			$callback = function($query) use ($queries) {
 				$queries[] = $query;

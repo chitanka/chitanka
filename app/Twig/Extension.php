@@ -15,45 +15,45 @@ class Extension extends \Twig_Extension {
 
 	/** {@inheritdoc} */
 	public function getFunctions() {
-		return array(
-			new \Twig_SimpleFunction('anchor_name', array($this, 'getAnchorName')),
-			new \Twig_SimpleFunction('cover', array($this, 'getCover')),
-		);
+		return [
+			new \Twig_SimpleFunction('anchor_name', [$this, 'getAnchorName']),
+			new \Twig_SimpleFunction('cover', [$this, 'getCover']),
+		];
 	}
 
 	/** {@inheritdoc} */
 	public function getFilters() {
-		return array(
-			new \Twig_SimpleFilter('rating_class', array($this, 'getRatingClass')),
-			new \Twig_SimpleFilter('rating_format', array($this, 'formatRating')),
-			new \Twig_SimpleFilter('name_format', array($this, 'formatPersonName')),
+		return [
+			new \Twig_SimpleFilter('rating_class', [$this, 'getRatingClass']),
+			new \Twig_SimpleFilter('rating_format', [$this, 'formatRating']),
+			new \Twig_SimpleFilter('name_format', [$this, 'formatPersonName']),
 			new \Twig_SimpleFilter('acronym', 'App\Util\String::createAcronym'),
-			new \Twig_SimpleFilter('first_char', array($this, 'getFirstChar')),
-			new \Twig_SimpleFilter('email', array($this, 'obfuscateEmail')),
-			new \Twig_SimpleFilter('doctitle', array($this, 'getDocTitle')),
-			new \Twig_SimpleFilter('lower', array($this, 'strtolower')),
+			new \Twig_SimpleFilter('first_char', [$this, 'getFirstChar']),
+			new \Twig_SimpleFilter('email', [$this, 'obfuscateEmail']),
+			new \Twig_SimpleFilter('doctitle', [$this, 'getDocTitle']),
+			new \Twig_SimpleFilter('lower', [$this, 'strtolower']),
 			new \Twig_SimpleFilter('json', 'json_encode'),
-			new \Twig_SimpleFilter('repeat', array($this, 'repeatString')),
-			new \Twig_SimpleFilter('join_lists', array($this, 'joinLists')),
+			new \Twig_SimpleFilter('repeat', [$this, 'repeatString']),
+			new \Twig_SimpleFilter('join_lists', [$this, 'joinLists']),
 			new \Twig_SimpleFilter('humandate', 'App\Util\Date::humanDate'),
-			new \Twig_SimpleFilter('nl2br', array($this, 'nl2br'), array('pre_escape' => 'html', 'is_safe' => array('html'))),
-			new \Twig_SimpleFilter('dot2br', array($this, 'dot2br')),
-			new \Twig_SimpleFilter('user_markup', array($this, 'formatUserMarkup')),
+			new \Twig_SimpleFilter('nl2br', [$this, 'nl2br'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
+			new \Twig_SimpleFilter('dot2br', [$this, 'dot2br']),
+			new \Twig_SimpleFilter('user_markup', [$this, 'formatUserMarkup']),
 			new \Twig_SimpleFilter('striptags', 'strip_tags'),
-			new \Twig_SimpleFilter('domain', array($this, 'getDomain')),
-			new \Twig_SimpleFilter('link', array($this, 'formatLinks')),
-			new \Twig_SimpleFilter('encoding', array($this, 'changeEncoding')),
-			new \Twig_SimpleFilter('urlencode', array($this, 'getUrlEncode')),
-			new \Twig_SimpleFilter('qrcode', array($this, 'getQrCode')),
-			new \Twig_SimpleFilter('put_text_in_template', array($this, 'putTextInBookTemplate')),
-		);
+			new \Twig_SimpleFilter('domain', [$this, 'getDomain']),
+			new \Twig_SimpleFilter('link', [$this, 'formatLinks']),
+			new \Twig_SimpleFilter('encoding', [$this, 'changeEncoding']),
+			new \Twig_SimpleFilter('urlencode', [$this, 'getUrlEncode']),
+			new \Twig_SimpleFilter('qrcode', [$this, 'getQrCode']),
+			new \Twig_SimpleFilter('put_text_in_template', [$this, 'putTextInBookTemplate']),
+		];
 	}
 
 	/** {@inheritdoc} */
 	public function getTests() {
-		return array(
-			new \Twig_SimpleTest('url', array($this, 'isUrl')),
-		);
+		return [
+			new \Twig_SimpleTest('url', [$this, 'isUrl']),
+		];
 	}
 
 	/**
@@ -124,7 +124,7 @@ class Extension extends \Twig_Extension {
 	 * @return string
 	 */
 	public function obfuscateEmail($email) {
-		return strtr($email, array('@' => '&#160;<span title="при сървъра">(при)</span>&#160;'));
+		return strtr($email, ['@' => '&#160;<span title="при сървъра">(при)</span>&#160;']);
 	}
 
 	/**
@@ -133,10 +133,10 @@ class Extension extends \Twig_Extension {
 	 */
 	public function getDocTitle($title) {
 		$title = preg_replace('/\s\s+/', ' ', $title);
-		$title = strtr($title, array(
+		$title = strtr($title, [
 			'<br>' => ' — ',
 			'&amp;' => '&', // will be escaped afterwards by Twig
-		));
+		]);
 		$title = trim(strip_tags($title));
 
 		return $title;
@@ -270,10 +270,10 @@ class Extension extends \Twig_Extension {
 	 * @return string
 	 */
 	public function formatLinks($text) {
-		$patterns = array(
+		$patterns = [
 			'/\[\[(.+)\|(.+)\]\]/Us' => '<a href="$1">$2</a>',
 			'|(?<!")https?://\S+[^,.\s]|e' => "'<a href=\"$0\">'.\$this->getDomain('$0', '$2').'</a>'",
-		);
+		];
 		return preg_replace(array_keys($patterns), array_values($patterns), $text);
 	}
 

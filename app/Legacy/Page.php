@@ -58,7 +58,7 @@ abstract class Page {
 
 	protected $includeUserLinks = true;
 
-	private $templates = array();
+	private $templates = [];
 	private $captchaTries;
 	private $captchaQuestion;
 	private $captchaAnswer;
@@ -116,7 +116,7 @@ abstract class Page {
 		$this->inlineJs .= $js . "\n";
 	}
 
-	protected function getInlineRssLink($route, $data = array()) {
+	protected function getInlineRssLink($route, $data = []) {
 		return sprintf('<div class="feed-standalone"><a href="%s" title="RSS 2.0 — %s" rel="feed"><span class="fa fa-rss"></span> <span>RSS</span></a></div>', $this->controller->generateUrl($route, $data), $this->title);
 	}
 
@@ -147,10 +147,10 @@ abstract class Page {
 	}
 
 	protected function makeSimpleTextLink($title, $textId) {
-		return $this->out->xmlElement('a', '<em>'. $title .'</em>', array(
+		return $this->out->xmlElement('a', '<em>'. $title .'</em>', [
 			'class' => "text text-$textId",
-			'href' => $this->controller->generateUrl('text_show_part', array(self::FF_TEXT_ID => $textId)),
-		));
+			'href' => $this->controller->generateUrl('text_show_part', [self::FF_TEXT_ID => $textId]),
+		]);
 	}
 
 	protected function makeAuthorLink($name) {
@@ -164,7 +164,7 @@ abstract class Page {
 			$lname = str_replace('.', '', $lname);
 			$link = strpos($lname, '/') !== false // contains not allowed chars
 				? $lname
-				: sprintf('<a href="%s">%s</a>', $this->controller->generateUrl('person_show', array('slug' => trim($lname))), $text);
+				: sprintf('<a href="%s">%s</a>', $this->controller->generateUrl('person_show', ['slug' => trim($lname)]), $text);
 			$o .= ', ' . $link;
 		}
 		return substr($o, 2);
@@ -176,7 +176,7 @@ abstract class Page {
 				return ' от '.$text['author'];
 			}
 		} else {
-			$authors = array();
+			$authors = [];
 			foreach ($text->getAuthors() as $author) {
 				if (is_array($author)) {
 					$slug = $author['slug'];
@@ -185,7 +185,7 @@ abstract class Page {
 					$slug = $author->getSlug();
 					$name = $author->getName();
 				}
-				$authors[] = sprintf('<a href="%s">%s</a>', $this->controller->generateUrl('person_show', array('slug' => $slug)), $name);
+				$authors[] = sprintf('<a href="%s">%s</a>', $this->controller->generateUrl('person_show', ['slug' => $slug]), $name);
 			}
 			if (! empty($authors)) {
 				return ' от '. implode(', ', $authors);
@@ -196,14 +196,14 @@ abstract class Page {
 	}
 
 	protected function makeUserLink($name) {
-		return sprintf('<a href="%s" class="user" title="Към личната страница на %s">%s</a>', $this->controller->generateUrl('user_show', array('username' => $name)), $name, $name);
+		return sprintf('<a href="%s" class="user" title="Към личната страница на %s">%s</a>', $this->controller->generateUrl('user_show', ['username' => $name]), $name, $name);
 	}
 
 	protected function makeUserLinkWithEmail($username, $email, $allowemail) {
 		$mlink = '';
 		if ( ! empty($email) && $allowemail) {
 			$mlink = sprintf('<a href="%s" title="Пращане на писмо на %s"><span class="fa fa-envelope-o"></span><span class="sr-only">Е-поща</span></a>',
-				$this->controller->generateUrl('email_user', array('username' => $username)),
+				$this->controller->generateUrl('email_user', ['username' => $username]),
 				String::myhtmlentities($username));
 		}
 		return $this->makeUserLink($username) .' '. $mlink;
@@ -231,7 +231,7 @@ abstract class Page {
 		$this->captchaTries++;
 		if (empty($_question)) { $_question = $this->captchaQuestion; }
 		if (empty($_answer)) { $_answer = $this->captchaAnswer; }
-		$res = $this->db->select(DBT_QUESTION, array('id' => $_question));
+		$res = $this->db->select(DBT_QUESTION, ['id' => $_question]);
 		if ( $this->db->numRows($res) == 0 ) { // invalid question
 			return false;
 		}
@@ -268,7 +268,7 @@ abstract class Page {
 		$qt = $this->out->hiddenField(self::FF_CQUESTION_T, $question);
 		$tr = $this->out->hiddenField(self::FF_CTRIES, $this->captchaTries);
 		$q = '<label for="'.self::FF_CANSWER.'" class="control-label">'.$question.'</label>';
-		$answer = $this->out->textField(self::FF_CANSWER, '', $this->captchaAnswer, 30, 60, 0, '', array('class' => 'form-control'));
+		$answer = $this->out->textField(self::FF_CANSWER, '', $this->captchaAnswer, 30, 60, 0, '', ['class' => 'form-control']);
 
 		return '<div>' . $qid . $qt . $tr . $q .' '. $answer . '</div>';
 	}

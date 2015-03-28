@@ -14,7 +14,7 @@ class RegisterPage extends Page {
 	protected $email;
 	protected $news;
 
-	private $invalidReferers = array('login', 'logout', 'register', 'sendNewPassword');
+	private $invalidReferers = ['login', 'logout', 'register', 'sendNewPassword'];
 	private $attempt;
 
 	public function __construct($fields) {
@@ -71,7 +71,7 @@ class RegisterPage extends Page {
 			return 'Не сте отговорили правилно на въпроса уловка.';
 		}
 
-		foreach (array('username', 'password', 'passwordRe') as $nonEmptyField) {
+		foreach (['username', 'password', 'passwordRe'] as $nonEmptyField) {
 			if ( empty($this->$nonEmptyField) ) {
 				return 'Не сте попълнили всички полета.';
 			}
@@ -94,7 +94,7 @@ class RegisterPage extends Page {
 	}
 
 	private function userExists() {
-		$key = array('username' => $this->username);
+		$key = ['username' => $this->username];
 		if ( $this->db->exists(DBT_USER, $key) ) {
 			$this->addMessage("Името <strong>$this->username</strong> вече е заето.", true);
 			return true;
@@ -107,9 +107,9 @@ class RegisterPage extends Page {
 			return false;
 		}
 
-		$emailKey = array('email' => $this->email);
+		$emailKey = ['email' => $this->email];
 		if ( !is_null($notUsername) ) {
-			$emailKey['username'] = array('!=', $notUsername);
+			$emailKey['username'] = ['!=', $notUsername];
 		}
 		if ( $this->db->exists(DBT_USER, $emailKey) ) {
 			$this->addMessage("Пощенският адрес <strong>{$this->email}</strong> вече се ползва от друг потребител.", true);

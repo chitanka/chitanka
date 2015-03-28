@@ -7,9 +7,9 @@ class RequestUsernameType extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
-			->add('email', 'text', array(
+			->add('email', 'text', [
 				'required' => false,
-			))
+			])
 			->add('save', 'submit');
 	}
 

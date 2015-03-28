@@ -14,7 +14,7 @@ abstract class MailSource {
 	abstract public function getBody();
 
 	public function getSender() {
-		return array($this->getSenderEmail() => $this->getSenderName());
+		return [$this->getSenderEmail() => $this->getSenderName()];
 	}
 
 	/**

@@ -47,7 +47,7 @@ class WikiEngine {
 			$metadata = '';
 			$content = null;
 		}
-		$ancestors = $withAncestors ? $this->getAncestors($filename) : array();
+		$ancestors = $withAncestors ? $this->getAncestors($filename) : [];
 		$page = new WikiPage($filename, $content, $metadata, $ancestors);
 		return $page;
 	}
@@ -57,7 +57,7 @@ class WikiEngine {
 	 * @return WikiPage[]
 	 */
 	public function getAncestors($filename) {
-		$ancestors = array();
+		$ancestors = [];
 		if (strpos($filename, '/') !== false) {
 			$ancestorNames = explode('/', $filename);
 			array_pop($ancestorNames);
@@ -129,9 +129,9 @@ class WikiEngine {
 	 * @return string
 	 */
 	protected function sanitizeFileName($filename) {
-		$sanitizedFilename = strtr(strtolower($filename), array(
+		$sanitizedFilename = strtr(strtolower($filename), [
 			'_' => '-',
-		));
+		]);
 		$sanitizedFilename = preg_replace('#[^a-z\d/.-]#', '', $sanitizedFilename);
 		$sanitizedFilename = ltrim($sanitizedFilename, '/.');
 		if (strpos($sanitizedFilename, '.') === false) {
@@ -157,7 +157,7 @@ class WikiPage {
 	/** @var string */
 	private $metadata;
 	/** @var WikiPage[] */
-	private $ancestors = array();
+	private $ancestors = [];
 
 	/**
 	 * @param string $name

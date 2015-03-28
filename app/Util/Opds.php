@@ -4,16 +4,16 @@ class Opds {
 
 	public static function normalizeContent($content) {
 		$normalizedContent = $content;
-		$normalizedContent = strtr($normalizedContent, array(
+		$normalizedContent = strtr($normalizedContent, [
 			"\t" => ' ',
 			"\n" => ' ',
-		));
+		]);
 		$normalizedContent = preg_replace('/  +/', ' ', $normalizedContent);
 		$normalizedContent = preg_replace('/> </', ">\n<", $normalizedContent);
-		$normalizedContent = strtr($normalizedContent, array(
+		$normalizedContent = strtr($normalizedContent, [
 			'> ' => '>',
 			' <' => '<',
-		));
+		]);
 		return $normalizedContent;
 	}
 }

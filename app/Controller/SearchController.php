@@ -10,7 +10,7 @@ class SearchController extends Controller {
 
 	public function indexAction(Request $request, $_format) {
 		if ($_format == 'osd') {
-			return array();
+			return [];
 		}
 		$searchService = new SearchService($this->em());
 		$query = $searchService->prepareQuery($request, $_format);
@@ -18,7 +18,7 @@ class SearchController extends Controller {
 			return $query;
 		}
 
-		$lists = array(
+		$lists = [
 			'persons'      => $this->em()->getPersonRepository()->getByNames($query['text'], self::MAX_RESULTS),
 			'texts'        => $this->em()->getTextRepository()->getByTitles($query['text'], self::MAX_RESULTS),
 			'books'        => $this->em()->getBookRepository()->getByTitleOrIsbn($query['text'], self::MAX_RESULTS),
@@ -27,7 +27,7 @@ class SearchController extends Controller {
 			'work_entries' => $this->em()->getWorkEntryRepository()->getByTitleOrAuthor($query['text']),
 			'labels'       => $this->em()->getLabelRepository()->getByNames($query['text']),
 			'categories'   => $this->em()->getCategoryRepository()->getByNames($query['text']),
-		);
+		];
 
 		$found = array_sum(array_map('count', $lists)) > 0;
 
@@ -35,11 +35,11 @@ class SearchController extends Controller {
 			$this->logSearch($query['text']);
 		}
 
-		return array(
+		return [
 			'query' => $query,
 			'found' => $found,
 			'_status' => !$found ? 404 : null,
-		) + $lists;
+		] + $lists;
 	}
 
 	/**

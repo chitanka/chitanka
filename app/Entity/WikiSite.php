@@ -56,7 +56,7 @@ class WikiSite extends Entity {
 			return $this->url;
 		}
 
-		return strtr($this->url, array('$1' => urlencode(strtr($page, ' ', '_'))));
+		return strtr($this->url, ['$1' => urlencode(strtr($page, ' ', '_'))]);
 	}
 
 	public function setIntro($intro) { $this->intro = $intro; }

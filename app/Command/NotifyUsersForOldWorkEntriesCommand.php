@@ -20,16 +20,16 @@ class NotifyUsersForOldWorkEntriesCommand extends Command {
 	}
 
 	protected function getRequiredArguments() {
-		return array(
+		return [
 			'age' => 'Threshold age for notification (in months)',
-		);
+		];
 	}
 
 	protected function getOptionalArguments() {
-		return array(
-			'stalk-interval' => array('Number of days between two subsequent notifications. Default: 7', 7),
-			'skipped-users' => array('List of users by name which should not get notifications. Format: USERNAME1[,USERNAME2]*', ''),
-		);
+		return [
+			'stalk-interval' => ['Number of days between two subsequent notifications. Default: 7', 7],
+			'skipped-users' => ['List of users by name which should not get notifications. Format: USERNAME1[,USERNAME2]*', ''],
+		];
 	}
 
 	/** {@inheritdoc} */

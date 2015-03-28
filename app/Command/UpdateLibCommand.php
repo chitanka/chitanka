@@ -19,16 +19,16 @@ class UpdateLibCommand extends Command {
 	}
 
 	protected function getRequiredArguments() {
-		return array(
+		return [
 			'input' => 'Directory with input files or other input directories',
-		);
+		];
 	}
 
 	protected function getBooleanOptions() {
-		return array(
+		return [
 			'save' => 'Save generated files in corresponding directories',
 			'dump-sql' => 'Output SQL queries instead of executing them',
-		);
+		];
 	}
 
 	/** {@inheritdoc} */
@@ -47,7 +47,7 @@ class UpdateLibCommand extends Command {
 	}
 
 	private function conquerTheWorld(ContentImporter $importer, $inputDir) {
-		$queries = array();
+		$queries = [];
 		$dir = $inputDir;
 		if (count(glob("$dir/*.data")) == 0) {
 			foreach (glob("$dir/*", GLOB_ONLYDIR) as $dir) {

@@ -11,7 +11,7 @@ abstract class WebTestCase extends BaseTestCase {
 	 * @param array $parameters
 	 * @return Crawler
 	 */
-	public function request($route, $parameters = array()) {
+	public function request($route, $parameters = []) {
 		$client = static::createClient();
 
 		return $client->request('GET', "/$route", $parameters);
@@ -21,7 +21,7 @@ abstract class WebTestCase extends BaseTestCase {
 	 * @param string $route
 	 * @param array $parameters
 	 */
-	public function requestJson($route, $parameters = array()) {
+	public function requestJson($route, $parameters = []) {
 		$client = static::createClient();
 		$client->request('GET', "/$route", $parameters);
 

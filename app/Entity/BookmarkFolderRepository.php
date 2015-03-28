@@ -11,7 +11,7 @@ class BookmarkFolderRepository extends EntityRepository {
 	 * @param string $folderName
 	 */
 	public function getOrCreateForUser($user, $folderSlug, $folderName = '') {
-		$folder = $this->findOneBy(array('slug' => $folderSlug, 'user' => $user->getId()));
+		$folder = $this->findOneBy(['slug' => $folderSlug, 'user' => $user->getId()]);
 		if ( ! $folder) {
 			$folder = new BookmarkFolder;
 			$folder->setSlug($folderSlug);

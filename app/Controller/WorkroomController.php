@@ -81,7 +81,7 @@ class WorkroomController extends Controller {
 			return $this->asJson($contrib);
 		}
 
-		return $this->urlRedirect($this->generateUrl('workroom_entry_edit', array('id' => $entry->getId())));
+		return $this->urlRedirect($this->generateUrl('workroom_entry_edit', ['id' => $entry->getId()]));
 	}
 
 	/**

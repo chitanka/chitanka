@@ -15,7 +15,7 @@ class Setup {
 		self::doSetup($container);
 
 		$class = 'App\Legacy\\'.$name.'Page';
-		$page = new $class(array(
+		$page = new $class([
 			'request'    => self::request(),
 			'db'         => self::db(),
 			'out'        => self::outputMaker(),
@@ -24,7 +24,7 @@ class Setup {
 			'sfrequest'  => $container->get('request'),
 			'user'       => $controller->getUser(),
 			'logDir' => __DIR__ . '/../../var/log',
-		));
+		]);
 
 		if ($execute) {
 			$page->execute();

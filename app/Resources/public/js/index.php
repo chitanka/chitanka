@@ -31,7 +31,7 @@ function createCombiFile($query, $combiName) {
 	global $webdir;
 
 	$fileExt = '.js';
-	$query = strtr($query, array($fileExt => ''));
+	$query = strtr($query, [$fileExt => '']);
 
 	$out = '';
 	foreach (explode(',', $query) as $name) {
@@ -59,6 +59,6 @@ function createCombiFile($query, $combiName) {
 
 function sanitizeInput($input) {
 	$input = preg_replace('#[^/a-zA-Z\d,._-]#', '', $input);
-	$input = strtr($input, array('..' => '.'));
+	$input = strtr($input, ['..' => '.']);
 	return $input;
 }

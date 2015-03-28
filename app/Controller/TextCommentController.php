@@ -5,9 +5,9 @@ class TextCommentController extends Controller {
 	public function indexAction($page, $_format) {
 		if ($_format == 'rss') {
 			$limit = 10;
-			return array(
+			return [
 				'comments' => $this->em()->getTextCommentRepository()->getLatest($limit),
-			);
+			];
 		}
 
 		$_REQUEST['page'] = $page;
@@ -21,10 +21,10 @@ class TextCommentController extends Controller {
 
 		$_REQUEST['id'] = $id;
 
-		return $this->legacyPage('Comment', array(
+		return $this->legacyPage('Comment', [
 			'text' => $text,
 			'_controller' => 'TextComment:text_comments',
-		));
+		]);
 	}
 
 }

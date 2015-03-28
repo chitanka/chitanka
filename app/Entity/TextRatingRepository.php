@@ -6,14 +6,14 @@ use Doctrine\ORM\NoResultException;
  *
  */
 class TextRatingRepository extends EntityRepository {
-	public static $ratings = array(
+	public static $ratings = [
 		6 => '6 — Шедьовър',
 		5 => '5 — Много добро',
 		4 => '4 — Добро',
 		3 => '3 — Посредствено',
 		2 => '2 — Лошо',
 		1 => '1 — Отвратително',
-	);
+	];
 
 	/**
 	 * Get user rating for a given text.
@@ -30,10 +30,10 @@ class TextRatingRepository extends EntityRepository {
 			return $this->createQueryBuilder('r')
 				->andWhere('r.text = :text')
 				->andWhere('r.user = :user')
-				->setParameters(array(
+				->setParameters([
 					'text' => $text->getId(),
 					'user' => $user->getId(),
-				))
+				])
 				->setMaxResults(1)
 				->getQuery()->getSingleResult();
 		} catch (NoResultException $e) {

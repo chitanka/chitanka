@@ -9,7 +9,7 @@ use Sfblib\SfbToHtmlConverter;
 class BookTemplate {
 
 	private $book;
-	private $extraFileLinesToInsert = array();
+	private $extraFileLinesToInsert = [];
 
 	public function __construct(Book $book) {
 		$this->book = $book;
@@ -62,7 +62,7 @@ class BookTemplate {
 		if ( ! empty($authors) ) {
 			$authors = $command . SfbConverter::CMD_DELIM . $authors . SfbConverter::EOL;
 		}
-		return $authors . strtr($text->getTitleAsSfb(), array(SfbConverter::HEADER => $command));
+		return $authors . strtr($text->getTitleAsSfb(), [SfbConverter::HEADER => $command]);
 	}
 
 	/**
@@ -106,48 +106,48 @@ class BookTemplate {
 				$textContentWithExtraLines .= $textLine . SfbConverter::EOL;
 			}
 			$textContent = $textContentWithExtraLines;
-			$this->extraFileLinesToInsert = array();
+			$this->extraFileLinesToInsert = [];
 		}
 		return $textContent;
 	}
 
-	private static $headingRepl = array(
-		'>' => array(
+	private static $headingRepl = [
+		'>' => [
 			"\n>" => "\n>>",
 			"\n>>" => "\n>>>",
 			"\n>>>" => "\n>>>>",
 			"\n>>>>" => "\n>>>>>",
 			"\n>>>>>" => "\n#",
-		),
-		'>>' => array(
+		],
+		'>>' => [
 			"\n>" => "\n>>>",
 			"\n>>" => "\n>>>>",
 			"\n>>>" => "\n>>>>>",
 			"\n>>>>" => "\n#",
 			"\n>>>>>" => "\n#",
-		),
-		'>>>' => array(
+		],
+		'>>>' => [
 			"\n>" => "\n>>>>",
 			"\n>>" => "\n>>>>>",
 			"\n>>>" => "\n#",
 			"\n>>>>" => "\n#",
 			"\n>>>>>" => "\n#",
-		),
-		'>>>>' => array(
+		],
+		'>>>>' => [
 			"\n>" => "\n>>>>>",
 			"\n>>" => "\n#",
 			"\n>>>" => "\n#",
 			"\n>>>>" => "\n#",
 			"\n>>>>>" => "\n#",
-		),
-		'>>>>>' => array(
+		],
+		'>>>>>' => [
 			"\n>" => "\n#",
 			"\n>>" => "\n#",
 			"\n>>>" => "\n#",
 			"\n>>>>" => "\n#",
 			"\n>>>>>" => "\n#",
-		),
-	);
+		],
+	];
 
 	/**
 	 * @param string $content
@@ -171,7 +171,7 @@ class BookTemplate {
 		$content = preg_replace('#<h(\d)>([^{].+)</h\d>#', '<h$1 class="inline-text">$2</h$1>', $content);
 		// remove comments
 		$content = preg_replace('/&lt;!--.+--&gt;/U', '', $content);
-		$content = strtr($content, array("<p>\n----\n</p>" => '<hr/>'));
+		$content = strtr($content, ["<p>\n----\n</p>" => '<hr/>']);
 		$content = preg_replace_callback('#<h(\d)>\{file:(.+)\}</h\d>#', function($matches) {
 			return ''; // disable
 
@@ -214,12 +214,12 @@ class BookTemplate {
 		if (preg_match_all('/\{(file|text):(\d+)/', $template, $matches)) {
 			return $matches[2];
 		}
-		return array();
+		return [];
 	}
 
 	private function clearSpecialBookSyntax($template) {
-		return strtr($template, array(
+		return strtr($template, [
 			"\t<!--AUTOHIDE-->\n" => '',
-		));
+		]);
 	}
 }

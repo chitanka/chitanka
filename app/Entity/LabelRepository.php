@@ -8,7 +8,7 @@ class LabelRepository extends EntityRepository {
 	 * @param string $slug
 	 */
 	public function findBySlug($slug) {
-		return $this->findOneBy(array('slug' => $slug));
+		return $this->findOneBy(['slug' => $slug]);
 	}
 
 	public function getAll() {
@@ -32,7 +32,7 @@ class LabelRepository extends EntityRepository {
 	}
 
 	protected function convertArrayToTree($labels) {
-		$labelsById = array();
+		$labelsById = [];
 		foreach ($labels as $i => $label) {
 			$labelsById[ $label['id'] ] =& $labels[$i];
 		}

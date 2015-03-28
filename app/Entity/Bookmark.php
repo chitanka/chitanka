@@ -43,7 +43,7 @@ class Bookmark extends Entity {
 	private $createdAt;
 
 	public function __construct($fields) {
-		foreach (array('folder', 'text', 'user') as $field) {
+		foreach (['folder', 'text', 'user'] as $field) {
 			if (isset($fields[$field])) {
 				$setter = 'set' . ucfirst($field);
 				$this->$setter($fields[$field]);

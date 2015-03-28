@@ -18,7 +18,7 @@ class AppKernel extends Kernel {
 	}
 
 	protected function getBundlesForProduction() {
-		return array_merge($this->getCoreBundles(), array(
+		return array_merge($this->getCoreBundles(), [
 			//new FOS\UserBundle\FOSUserBundle(),
 			new Sonata\CoreBundle\SonataCoreBundle(),
 			new Sonata\AdminBundle\SonataAdminBundle(),
@@ -33,11 +33,11 @@ class AppKernel extends Kernel {
 			new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
 			new Eko\FeedBundle\EkoFeedBundle(),
 			new App\App(),
-		));
+		]);
 	}
 
 	protected function getCoreBundles() {
-		return array(
+		return [
 			new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
 			new Symfony\Bundle\SecurityBundle\SecurityBundle(),
 			new Symfony\Bundle\TwigBundle\TwigBundle(),
@@ -46,13 +46,13 @@ class AppKernel extends Kernel {
 			new Symfony\Bundle\AsseticBundle\AsseticBundle(),
 			new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
 			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-		);
+		];
 	}
 
 	protected function getBundlesForDevelopment() {
-		return array_merge($this->getBundlesForProduction(), array(
+		return array_merge($this->getBundlesForProduction(), [
 			new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle(),
-		));
+		]);
 	}
 
 	/** {@inheritdoc} */

@@ -25,13 +25,13 @@ class SequenceAdmin extends Admin {
 		$listMapper
 			->addIdentifier('name')
 			->add('slug')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -40,8 +40,8 @@ class SequenceAdmin extends Admin {
 		$formMapper
 			->add('name')
 			->add('slug')
-			->add('publisher', null, array('required' => false))
-			->add('isSeqnrVisible', null, array('required' => false));
+			->add('publisher', null, ['required' => false])
+			->add('isSeqnrVisible', null, ['required' => false]);
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

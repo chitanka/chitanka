@@ -21,13 +21,13 @@ class TextAuthorAdmin extends Admin {
 			->add('text')
 			->add('person')
 			->add('year')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -35,7 +35,7 @@ class TextAuthorAdmin extends Admin {
 		$formMapper->with('General attributes');
 		$formMapper
 			//->add('text')
-			->add('person', 'sonata_type_model_list', array('required' => false))
+			->add('person', 'sonata_type_model_list', ['required' => false])
 			->add('pos')
 			->add('year');
 	}

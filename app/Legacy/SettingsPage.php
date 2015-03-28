@@ -7,7 +7,7 @@ class SettingsPage extends RegisterPage {
 	protected $action = 'settings';
 
 	private $allowemail;
-	private $optKeys = array('skin', 'nav', 'css', 'js');
+	private $optKeys = ['skin', 'nav', 'css', 'js'];
 	private $opts;
 	private $tabindex;
 
@@ -92,10 +92,10 @@ class SettingsPage extends RegisterPage {
 
 	private function makeRegUserForm() {
 		$username = '<span id="username" class="form-control">'.$this->user->getUsername()."</span>";
-		$password = $this->out->passField('password', '', '', 25, 40, $this->tabindex++, array('class' => 'form-control'));
-		$passwordRe = $this->out->passField('passwordRe', '', '', 25, 40, $this->tabindex++, array('class' => 'form-control'));
-		$realname = $this->out->textField('realname', '', $this->realname, 25, 60, $this->tabindex++, '', array('class' => 'form-control'));
-		$email = $this->out->textField('email', '', $this->email, 25, 60, $this->tabindex++, '', array('class' => 'form-control'));
+		$password = $this->out->passField('password', '', '', 25, 40, $this->tabindex++, ['class' => 'form-control']);
+		$passwordRe = $this->out->passField('passwordRe', '', '', 25, 40, $this->tabindex++, ['class' => 'form-control']);
+		$realname = $this->out->textField('realname', '', $this->realname, 25, 60, $this->tabindex++, '', ['class' => 'form-control']);
+		$email = $this->out->textField('email', '', $this->email, 25, 60, $this->tabindex++, '', ['class' => 'form-control']);
 		$allowemail = $this->out->checkbox('allowemail', '', $this->allowemail, '', null, $this->tabindex++);
 		$common = $this->makeCommonInput();
 		$customInput = $this->makeCustomInput();
@@ -156,7 +156,7 @@ class SettingsPage extends RegisterPage {
 
 	<div class="form-group">
 		<div class="col-sm-offset-4 col-sm-8">
-			{$this->out->submitButton('Запис', '', $this->tabindex++, false, array('class' => 'btn btn-primary'))}
+			{$this->out->submitButton('Запис', '', $this->tabindex++, false, ['class' => 'btn btn-primary'])}
 		</div>
 	</div>
 </form>
@@ -186,13 +186,13 @@ EOS;
 	private function makeSkinInput($tabindex) {
 		return $this->out->selectBox('skin', '', $this->container->getParameter('skins'),
 			$this->opts['skin'], $tabindex,
-			array('class' => 'form-control', 'onchange' => 'skin=this.value; changeStyleSheet()'));
+			['class' => 'form-control', 'onchange' => 'skin=this.value; changeStyleSheet()']);
 	}
 
 	private function makeNavPosInput($tabindex) {
 		return $this->out->selectBox('nav', '', $this->container->getParameter('navpos'),
 			$this->opts['nav'], $tabindex,
-			array('class' => 'form-control', 'onchange' => 'nav=this.value; changeStyleSheet()'));
+			['class' => 'form-control', 'onchange' => 'nav=this.value; changeStyleSheet()']);
 	}
 
 	private function makeCustomInput() {

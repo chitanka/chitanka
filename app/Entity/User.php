@@ -76,15 +76,15 @@ class User implements UserInterface {
 	 * @var array
 	 * @ORM\Column(type="array")
 	 */
-	private $groups = array();
-	private static $groupList = array(
+	private $groups = [];
+	private static $groupList = [
 		'user',
 		'text-label',
 		'workroom-supervisor',
 		'workroom-admin',
 		'admin',
 		'god',
-	);
+	];
 
 	/**
 	 * @var bool
@@ -96,7 +96,7 @@ class User implements UserInterface {
 	 * @var array
 	 * @ORM\Column(type="array")
 	 */
-	private $opts = array();
+	private $opts = [];
 
 	/**
 	 * @var int
@@ -251,11 +251,11 @@ class User implements UserInterface {
 	public function addBookmark($bookmark) { $this->bookmarks[] = $bookmark; }
 
 	public function getExtraStylesheets() {
-		return isset($this->opts['css']) ? $this->opts['css'] : array();
+		return isset($this->opts['css']) ? $this->opts['css'] : [];
 	}
 
 	public function getExtraJavascripts() {
-		return isset($this->opts['js']) ? $this->opts['js'] : array();
+		return isset($this->opts['js']) ? $this->opts['js'] : [];
 	}
 
 	public function __toString() {
@@ -293,7 +293,7 @@ class User implements UserInterface {
 	}
 
 	public function toArray() {
-		return array(
+		return [
 			'id' => $this->id,
 			'username' => $this->username,
 			'realname' => $this->realname,
@@ -309,7 +309,7 @@ class User implements UserInterface {
 			'registration' => $this->registration,
 			'touched' => $this->touched,
 			'token' => $this->token,
-		);
+		];
 	}
 
 	/** @ORM\PrePersist */
@@ -333,19 +333,19 @@ class User implements UserInterface {
 		}
 	}
 
-	public static $defOptions = array(
+	public static $defOptions = [
 		'skin' => 'orange',
 		'nav' => 'right', // navigation position
-		'css' => array(),
-		'js' => array(),
+		'css' => [],
+		'js' => [],
 		'news' => false, // receive montly newsletter
 		'allowemail' => true, // allow email from other users
 		'dlformat' => 'txt.zip', // default format for batch downloading
-	);
+	];
 
 	protected
-		$rights = array(), $options = array(),
-		$dlTexts = array(),
+		$rights = [], $options = [],
+		$dlTexts = [],
 		$isHuman = false;
 
 	/** Cookie name for the user ID */
@@ -436,17 +436,17 @@ class User implements UserInterface {
 	}
 
 	public static function getDataByName($username) {
-		return self::getData( array('username' => $username) );
+		return self::getData( ['username' => $username] );
 	}
 
 	public static function getDataById($userId) {
-		return self::getData( array('id' => $userId) );
+		return self::getData( ['id' => $userId] );
 	}
 
 	public static function getData($dbkey) {
 		$db = Setup::db();
 		$res = $db->select(DBT_USER, $dbkey);
-		if ( $db->numRows($res) ==  0) return array();
+		if ( $db->numRows($res) ==  0) return [];
 		return $db->fetchAssoc($res);
 	}
 
@@ -604,13 +604,13 @@ class User implements UserInterface {
 			return unserialize($opts_data);
 		}
 
-		return array();
+		return [];
 	}
 
 	public function getSkinPreference() {
-		return array(
+		return [
 			'skin' => $this->option('skin', 'orange'),
 			'menu' => $this->option('nav', 'right'),
-		);
+		];
 	}
 }

@@ -49,10 +49,10 @@ class FeedCleaner {
 	 * @return string
 	 */
 	public static function removeExtraClosingTags($content) {
-		return strtr($content, array(
+		return strtr($content, [
 			'</img>' => '',
 			'</br>' => '',
-		));
+		]);
 	}
 
 	/**
@@ -60,13 +60,13 @@ class FeedCleaner {
 	 * @return string
 	 */
 	public static function cleanupPhpbbContent($content) {
-		$cleanContent = strtr($content, array(
+		$cleanContent = strtr($content, [
 			'&u=' => '&amp;u=', // user link
 			'</span>' => '',
 			"<br />\n<li>" => '</li><li>',
 			"<br />\n</ul>" => '</li></ul>',
 			' target="_blank"' => '',
-		));
+		]);
 		$cleanContent = preg_replace('|<span[^>]+>|', '', $cleanContent);
 		return $cleanContent;
 	}

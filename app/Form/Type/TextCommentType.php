@@ -13,9 +13,9 @@ class TextCommentType extends AbstractType {
 	}
 
 	public function getDefaultOptions(array $options) {
-		return array(
+		return [
 			'data_class' => 'App\Entity\TextComment',
-		);
+		];
 	}
 
 	public function getName() {

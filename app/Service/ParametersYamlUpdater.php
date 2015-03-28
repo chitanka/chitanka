@@ -21,7 +21,7 @@ class ParametersYamlUpdater {
 		if ( ! preg_match_all('/^    (\w[^:]+):(.*)/m', $yaml, $matches, PREG_SET_ORDER)) {
 			return $yaml;
 		}
-		$replacements = array();
+		$replacements = [];
 		foreach ($matches as $match) {
 			$replacements['/^(    '. preg_quote(trim($match[1])) .':).+/m'] = '$1' . str_replace('$', '\$', $match[2]);
 		}

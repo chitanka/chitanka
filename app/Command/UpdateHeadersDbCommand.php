@@ -22,15 +22,15 @@ class UpdateHeadersDbCommand extends Command {
 	}
 
 	protected function getOptionalArguments() {
-		return array(
+		return [
 			'texts' => 'Texts which headers should be updated (comma separated)',
-		);
+		];
 	}
 
 	protected function getBooleanOptions() {
-		return array(
+		return [
 			'dump-sql' => 'Output SQL queries instead of executing them',
-		);
+		];
 	}
 
 	/** {@inheritdoc} */
@@ -48,7 +48,7 @@ class UpdateHeadersDbCommand extends Command {
 	 * @param bool $dumpSql
 	 */
 	private function updateHeaders($texts, $dumpSql) {
-		$queries = array();
+		$queries = [];
 		$dql = 'SELECT t FROM App:Text t WHERE t.headlevel > 0';
 		if ($texts) {
 			$dql .= " AND t.id IN ($texts)";

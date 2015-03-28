@@ -21,17 +21,17 @@ class FeaturedBookAdmin extends Admin {
 
 	protected function configureListFields(ListMapper $listMapper) {
 		$listMapper
-			->add('cover', 'string', array('template' => 'App:FeaturedBookAdmin:list_cover.html.twig'))
+			->add('cover', 'string', ['template' => 'App:FeaturedBookAdmin:list_cover.html.twig'])
 			->addIdentifier('title')
 			->add('author')
-			->add('url', 'string', array('template' => 'App:FeaturedBookAdmin:list_url.html.twig'))
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('url', 'string', ['template' => 'App:FeaturedBookAdmin:list_url.html.twig'])
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 

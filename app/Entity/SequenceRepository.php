@@ -4,13 +4,13 @@
  *
  */
 class SequenceRepository extends EntityRepository {
-	protected $queryableFields = array('id', 'slug', 'name', 'publisher');
+	protected $queryableFields = ['id', 'slug', 'name', 'publisher'];
 
 	/**
 	 * @param string $slug
 	 */
 	public function findBySlug($slug) {
-		return $this->findOneBy(array('slug' => $slug));
+		return $this->findOneBy(['slug' => $slug]);
 	}
 
 	/**

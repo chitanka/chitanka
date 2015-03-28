@@ -20,11 +20,11 @@ class SearchService {
 		$query = trim($params->get('q'));
 
 		if (empty($query)) {
-			return array(
+			return [
 				'_template' => "App:Search:list_top_strings.$format.twig",
 				'latest_strings' => $this->em->getSearchStringRepository()->getLatest(30),
 				'top_strings' => $this->em->getSearchStringRepository()->getTop(30),
-			);
+			];
 		}
 
 		$query = String::fixEncoding($query);
@@ -34,19 +34,19 @@ class SearchService {
 			try {
 				$this->validateQueryLength($query);
 			} catch (\InvalidArgumentException $e) {
-				return array(
+				return [
 					'_template' => "App:Search:message.$format.twig",
 					'_status' => 400,
 					'message' => $e->getMessage(),
-				);
+				];
 			}
 		}
 
-		return array(
+		return [
 			'text'  => $query,
 			'by'    => $request->get('by'),
 			'match' => $matchType,
-		);
+		];
 	}
 
 	/**

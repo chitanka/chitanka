@@ -38,7 +38,7 @@ class Email extends MailSource {
 	}
 
 	public function getRecipient() {
-		return array($this->recipientUser->getEmail() => $this->recipientUser->getUsername());
+		return [$this->recipientUser->getEmail() => $this->recipientUser->getUsername()];
 	}
 
 	public function getBody() {

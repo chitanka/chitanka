@@ -3,7 +3,7 @@
 use Doctrine\ORM\NoResultException;
 
 class TextRepository extends EntityRepository {
-	public static $types = array(
+	public static $types = [
 		'anecdote',
 		'fable',
 		'biography',
@@ -45,22 +45,22 @@ class TextRepository extends EntityRepository {
 		'historiography',
 		'collection',
 		'other',
-	);
+	];
 
-	protected $queryableFields = array(
+	protected $queryableFields = [
 		'id',
 		'title',
 		'subtitle',
 		'origTitle',
 		'origSubtitle',
-	);
+	];
 
-	protected $sortableFields = array(
+	protected $sortableFields = [
 		'commentCount',
 		'rating',
 		'title',
 		'votes',
-	);
+	];
 	protected $defaultSortingField = 'title';
 
 	/**
@@ -98,7 +98,7 @@ class TextRepository extends EntityRepository {
 		try {
 			$ids = $this->getIdsByPrefix($prefix, $page, $limit, $orderBy);
 		} catch (NoResultException $e) {
-			return array();
+			return [];
 		}
 
 		return $this->getByIds($ids, $orderBy);
@@ -145,7 +145,7 @@ class TextRepository extends EntityRepository {
 		try {
 			$ids = $this->getIdsByType($type, $page, $limit, $orderBy);
 		} catch (NoResultException $e) {
-			return array();
+			return [];
 		}
 
 		return $this->getByIds($ids, $orderBy);
@@ -192,7 +192,7 @@ class TextRepository extends EntityRepository {
 		try {
 			$ids = $this->getIdsByLabel($labels, $page, $limit, $orderBy);
 		} catch (NoResultException $e) {
-			return array();
+			return [];
 		}
 
 		return $this->getByIds($ids, $orderBy);
@@ -220,7 +220,7 @@ class TextRepository extends EntityRepository {
 	 * RAW_SQL
 	 */
 	public function countByLabel($labels) {
-		return $this->_em->getConnection()->fetchColumn(sprintf('SELECT COUNT(DISTINCT tl.text_id) FROM text_label tl WHERE tl.label_id IN (%s)', implode(',', $labels)), array(), 0);
+		return $this->_em->getConnection()->fetchColumn(sprintf('SELECT COUNT(DISTINCT tl.text_id) FROM text_label tl WHERE tl.label_id IN (%s)', implode(',', $labels)), [], 0);
 	}
 
 	/**
@@ -350,7 +350,7 @@ class TextRepository extends EntityRepository {
 	}
 
 	protected function groupTexts($texts, $groupBySeries = true) {
-		$bySeries = $byType = array();
+		$bySeries = $byType = [];
 
 		foreach ($texts as $text) {
 			if ($groupBySeries && $text['series']) {
@@ -366,7 +366,7 @@ class TextRepository extends EntityRepository {
 	}
 
 	protected function putIdAsKey($texts) {
-		$textsById = array();
+		$textsById = [];
 		foreach ($texts as $text) {
 			$textsById[$text['id']] = $text;
 		}
@@ -379,7 +379,7 @@ class TextRepository extends EntityRepository {
 			return $this->defaultSortingField;
 		}
 		list($field, $order) = explode(' ', str_replace('-', ' ', $orderBy));
-		if (!in_array($field, $this->sortableFields) || !in_array(strtolower($order), array('asc', 'desc'))) {
+		if (!in_array($field, $this->sortableFields) || !in_array(strtolower($order), ['asc', 'desc'])) {
 			return $this->defaultSortingField;
 		}
 		return "$field $order";

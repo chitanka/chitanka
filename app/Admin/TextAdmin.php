@@ -51,7 +51,7 @@ class TextAdmin extends Admin {
 			//->add('readers')
 			->add('userContribs')
 			->add('revisions')
-			->add('links', null, array('label' => 'Site Links'))
+			->add('links', null, ['label' => 'Site Links'])
 			->add('createdAt')
 		;
 	}
@@ -61,13 +61,13 @@ class TextAdmin extends Admin {
 			->addIdentifier('title')
 			->add('slug')
 
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -76,96 +76,96 @@ class TextAdmin extends Admin {
 		$formMapper
 			->add('slug')
 			->add('title')
-			->add('lang', 'choice', array('choices' => Language::getLangs()))
-			->add('origLang', 'choice', array('choices' => Language::getLangs()))
-			->add('type', 'choice', array('choices' => array('' => '') + Legacy::workTypes()))
-			->add('textAuthors', 'sonata_type_collection', array(
+			->add('lang', 'choice', ['choices' => Language::getLangs()])
+			->add('origLang', 'choice', ['choices' => Language::getLangs()])
+			->add('type', 'choice', ['choices' => ['' => ''] + Legacy::workTypes()])
+			->add('textAuthors', 'sonata_type_collection', [
 				'by_reference' => false,
 				'required' => false,
-			), array(
+			], [
 				'edit' => 'inline',
 				'inline' => 'table',
 				'sortable' => 'pos',
-			))
-			->add('textTranslators', 'sonata_type_collection', array(
+			])
+			->add('textTranslators', 'sonata_type_collection', [
 				'by_reference' => false,
 				'required' => false,
-			), array(
+			], [
 				'edit' => 'inline',
 				'inline' => 'table',
 				'sortable' => 'pos',
-			));
+			]);
 		$formMapper->with('Extra attributes');
 		$formMapper
-			->add('subtitle', null, array('required' => false))
-			->add('origTitle', null, array('required' => false))
-			->add('origSubtitle', null, array('required' => false))
-			->add('year', null, array('required' => false))
-			->add('year2', null, array('required' => false))
-			->add('transYear', null, array('required' => false))
-			->add('transYear2', null, array('required' => false))
-			->add('origLicense', null, array('required' => false))
-			->add('transLicense', null, array('required' => false))
-			->add('series', 'sonata_type_model_list', array('required' => false))
-			->add('sernr', null, array('required' => false))
-			->add('sernr2', null, array('required' => false))
+			->add('subtitle', null, ['required' => false])
+			->add('origTitle', null, ['required' => false])
+			->add('origSubtitle', null, ['required' => false])
+			->add('year', null, ['required' => false])
+			->add('year2', null, ['required' => false])
+			->add('transYear', null, ['required' => false])
+			->add('transYear2', null, ['required' => false])
+			->add('origLicense', null, ['required' => false])
+			->add('transLicense', null, ['required' => false])
+			->add('series', 'sonata_type_model_list', ['required' => false])
+			->add('sernr', null, ['required' => false])
+			->add('sernr2', null, ['required' => false])
 			->add('note')
 			->add('article')
-			->add('links', 'sonata_type_collection', array(
+			->add('links', 'sonata_type_collection', [
 				'by_reference' => false,
 				'required' => false,
 				'label' => 'Site Links',
-			), array(
+			], [
 				'edit' => 'inline',
 				'inline' => 'table',
 				'sortable' => 'site_id'
-			));
-		$formMapper->setHelps(array(
+			]);
+		$formMapper->setHelps([
 			'article' => $this->trans('help.wiki_article')
-		));
+		]);
 		$formMapper->with('Textual content');
 		$formMapper
-			->add('annotation', 'textarea', array(
+			->add('annotation', 'textarea', [
 				'required' => false,
 				'trim' => false,
-				'attr' => array(
+				'attr' => [
 					'class' => 'span12',
-				),
-			))
-			->add('extra_info', 'textarea', array(
+				],
+			])
+			->add('extra_info', 'textarea', [
 				'required' => false,
 				'trim' => false,
-				'attr' => array(
+				'attr' => [
 					'class' => 'span12',
-				),
-			))
-			->add('content_file', 'file', array('required' => false))
-			->add('headlevel', null, array('required' => false))
-			->add('revision_comment', 'text', array('required' => false))
-			->add('source', null, array('required' => false))
+				],
+			])
+			->add('content_file', 'file', ['required' => false])
+			->add('headlevel', null, ['required' => false])
+			->add('revision_comment', 'text', ['required' => false])
+			->add('source', null, ['required' => false])
 			->add('removedNotice');
 		$formMapper->with('Contributions');
 		$formMapper
-			->add('userContribs', 'sonata_type_collection', array(
+			->add('userContribs', 'sonata_type_collection', [
 				'by_reference' => false,
 				'required' => false,
-			), array(
+			], [
 				'edit' => 'inline',
 				//'inline' => 'table',
 				'sortable' => 'date',
-			));
-		$formMapper->setHelps(array(
+			]);
+		$formMapper->setHelps([
 			'sernr2' => $this->trans('help.text.sernr2'),
-		));
+		]);
 
 		$builder = $formMapper->getFormBuilder();
-		$builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'fixNewLines'));
+		$builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'fixNewLines']);
 		$builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($formMapper) {
 			$text = $event->getData();
 			if ($text instanceof Text) {
-				$formMapper->setHelps(array(
+				$formMapper->setHelps([
 					'content_file' => sprintf('(<a href="/%s">настоящ файл</a>)', ContentService::getContentFilePath('text', $text->getId())),
-				));
+				]);
 			}
 		});
 	}

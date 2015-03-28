@@ -19,7 +19,7 @@ class TextDownloadService {
 	private $work;
 	private $withFbi;
 	// track here how many times a filename occurs
-	private $_fnameCount = array();
+	private $_fnameCount = [];
 
 	public function __construct(TextRepository $textRepo) {
 		$this->textRepo = $textRepo;
@@ -57,7 +57,7 @@ class TextDownloadService {
 	private function getEpubFile($textIds) {
 		$dlFile = new DownloadFile;
 		if (count($textIds) > 1) {
-			return $dlFile->getEpubForTexts($this->textRepo->findBy(array('id' => $textIds)));
+			return $dlFile->getEpubForTexts($this->textRepo->findBy(['id' => $textIds]));
 		}
 		$text = $this->textRepo->find($textIds[0]);
 		if ($text) {
@@ -246,12 +246,12 @@ class TextDownloadService {
 
 	private function getMainFileData($textId) {
 		$work = $this->textRepo->find($textId);
-		return array(
+		return [
 			$this->getFileName($work),
 			$this->getFileDataPrefix($work),
 			$this->getFileDataSuffix($work),
 			$this->getTextFileStart() . $work->getFbi()
-		);
+		];
 	}
 
 	public function getFileName($work = null) {
@@ -276,7 +276,7 @@ class TextDownloadService {
 		if ($requestedFilename) {
 			$this->zipFileName = "chitanka-$requestedFilename";
 		}
-		$this->_fnameCount = array();
+		$this->_fnameCount = [];
 	}
 
 	public function getFileDataPrefix(Text $work) {

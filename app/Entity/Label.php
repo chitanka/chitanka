@@ -101,7 +101,7 @@ class Label extends Entity implements \JsonSerializable {
 	 * @return Label[]
 	 */
 	public function getAncestors() {
-		$ancestors = array();
+		$ancestors = [];
 		$label = $this;
 		while (null !== ($parent = $label->getParent())) {
 			$ancestors[] = $parent;
@@ -115,7 +115,7 @@ class Label extends Entity implements \JsonSerializable {
 	 * @return array Array of IDs
 	 */
 	public function getDescendantIdsAndSelf() {
-		return array_merge(array($this->getId()), $this->getDescendantIds());
+		return array_merge([$this->getId()], $this->getDescendantIds());
 	}
 
 	/**
@@ -124,7 +124,7 @@ class Label extends Entity implements \JsonSerializable {
 	 * @return array Array of IDs
 	 */
 	public function getDescendantIds() {
-		$ids = array();
+		$ids = [];
 		foreach ($this->getChildren() as $label) {
 			$ids[] = $label->getId();
 			$ids = array_merge($ids, $label->getDescendantIds());
@@ -134,12 +134,12 @@ class Label extends Entity implements \JsonSerializable {
 	}
 
 	public function jsonSerialize() {
-		return array(
+		return [
 			'id' => $this->id,
 			'slug' => $this->slug,
 			'name' => $this->name,
 			'nrOfTexts' => $this->nrOfTexts,
-		);
+		];
 	}
 
 }

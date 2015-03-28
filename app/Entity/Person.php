@@ -180,7 +180,7 @@ class Person extends Entity {
 	}
 
 	public function getRole() {
-		$roles = array();
+		$roles = [];
 		if ($this->is_author) $roles[] = 'author';
 		if ($this->is_translator) $roles[] = 'translator';
 

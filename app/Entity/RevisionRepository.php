@@ -17,7 +17,7 @@ class RevisionRepository extends EntityRepository {
 		} else {
 			$yearMonth = $month;
 		}
-		$dates = array("$yearMonth-01", Date::endOfMonth($yearMonth));
+		$dates = ["$yearMonth-01", Date::endOfMonth($yearMonth)];
 
 		return $this->getByDate($dates, $page, $limit, false);
 	}
@@ -26,7 +26,7 @@ class RevisionRepository extends EntityRepository {
 		$ids = $this->getIdsByDate($date, $page, $limit);
 
 		if (empty($ids)) {
-			return array();
+			return [];
 		}
 
 		$revs = $this->getByIds($ids, 'r.date DESC, r.id DESC');
@@ -107,7 +107,7 @@ class RevisionRepository extends EntityRepository {
 	}
 
 	public function groupRevisionsByDay($revisions) {
-		$grouped = array();
+		$grouped = [];
 		foreach ($revisions as $revision) {
 			$month = $revision['date']->format('Y-m-d');
 			$grouped[$month][] = $revision;

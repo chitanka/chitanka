@@ -26,20 +26,20 @@ class TextBookmarkService {
 	 */
 	public function addBookmark(Text $text, $folderName = 'favorities') {
 		$folder = $this->bookmarkFolderRepo->getOrCreateForUser($this->user, $folderName);
-		$bookmark = $this->bookmarkRepo->findOneBy(array(
+		$bookmark = $this->bookmarkRepo->findOneBy([
 			'folder' => $folder->getId(),
 			'text' => $text->getId(),
 			'user' => $this->user->getId(),
-		));
+		]);
 		if ($bookmark) { // an existing bookmark, remove it
 			$this->bookmarkRepo->delete($bookmark);
 			return null;
 		}
-		$newBookmark = new Bookmark(array(
+		$newBookmark = new Bookmark([
 			'folder' => $folder,
 			'text' => $text,
 			'user' => $this->user,
-		));
+		]);
 		$this->user->addBookmark($newBookmark);
 
 		$this->bookmarkFolderRepo->save($folder);

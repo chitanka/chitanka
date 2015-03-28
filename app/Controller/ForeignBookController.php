@@ -3,9 +3,9 @@
 class ForeignBookController extends Controller {
 
 	public function indexAction() {
-		return array(
+		return [
 			'books' => $this->em()->getForeignBookRepository()->getLatest(100)
-		);
+		];
 	}
 
 }

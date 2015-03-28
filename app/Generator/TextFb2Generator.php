@@ -7,7 +7,7 @@ use Sfblib\SfbToFb2Converter;
 
 class TextFb2Generator {
 
-	private $labelsToGenres = array(
+	private $labelsToGenres = [
 		'Алтернативна история' => 'sf_history',
 		'Антиутопия' => 'sf_social',
 		'Антична литература' => 'antique_ant',
@@ -22,7 +22,7 @@ class TextFb2Generator {
 		'Дамска проза (чиклит)' => 'love_contemporary',
 		'Даоизъм' => 'religion',
 		'Детска литература' => 'child_prose',
-		'Документална литература' => array('sci_history', 'nonfiction'),
+		'Документална литература' => ['sci_history', 'nonfiction'],
 		'Древен Египет' => 'sci_history',
 		'Древен Рим' => 'sci_history',
 		'Древна Гърция' => 'sci_history',
@@ -47,15 +47,15 @@ class TextFb2Generator {
 		'Мемоари' => 'prose_history',
 		'Мистика' => 'sf_horror',
 		'Митология' => 'sci_culture',
-		'Модернизъм' => array('sci_culture', 'design'),
+		'Модернизъм' => ['sci_culture', 'design'],
 		'Морска тематика' => 'adv_maritime',
-		'Музика' => array('sci_culture', 'design'),
-		'Народно творчество' => array('sci_culture', 'design'),
+		'Музика' => ['sci_culture', 'design'],
+		'Народно творчество' => ['sci_culture', 'design'],
 		'Научна фантастика' => 'sf',
 		'Научнопопулярна литература' => 'science',
 		'Окултизъм' => 'religion',
 		'Организирана престъпност' => 'det_political',
-		'Паралелни вселени' => array('sf', 'sf_epic', 'sf_heroic'),
+		'Паралелни вселени' => ['sf', 'sf_epic', 'sf_heroic'],
 		'Политология' => 'sci_politics',
 		'Полусвободна литература' => 'home',
 		'Постапокалипсис' => 'sf_history',
@@ -63,19 +63,19 @@ class TextFb2Generator {
 		'Психология' => 'sci_psychology',
 		'Психофактор' => 'sci_philosophy',
 		'Пътешествия' => 'adv_geo',
-		'Реализъм' => array('sci_culture', 'design'),
+		'Реализъм' => ['sci_culture', 'design'],
 		'Религия' => 'religion_rel',
 		'Ренесанс' => 'sci_history',
 		'Рицарски роман' => 'adv_history',
 		'Робинзониада' => 'sf_heroic',
-		'Родителство' => array('home_health', 'home'),
-		'Романтизъм' => array('sci_culture', 'design'),
+		'Родителство' => ['home_health', 'home'],
+		'Романтизъм' => ['sci_culture', 'design'],
 		'Руска класика' => 'prose_rus_classic',
 		'Сатанизъм' => 'religion',
 		'Сатира' => 'humor',
 		'Световна класика' => 'prose_classic',
 		'Секс' => 'home_sex',
-		'Символизъм' => array('sci_culture', 'design'),
+		'Символизъм' => ['sci_culture', 'design'],
 		'Средновековие' => 'antique',
 		'Средновековна литература' => 'antique_european',
 		'Старобългарска литература' => 'antique',
@@ -102,13 +102,13 @@ class TextFb2Generator {
 //		'type poetry' => 'poetry',
 //		'type poetry+Детска литература' => 'child_verse',
 //		'type tale+Детска литература' => 'child_tale',
-	);
+	];
 
 	public function generateFb2(Text $text) {
 		$converter = new SfbToFb2Converter($text->getContentAsSfb(), ContentService::getInternalContentFilePath('img', $text->getId()));
 
 		$converter->setObjectCount(1);
-		$converter->setSubtitle(strtr($text->getSubtitle(), array('\n' => ' — ')));
+		$converter->setSubtitle(strtr($text->getSubtitle(), ['\n' => ' — ']));
 		$converter->setGenre($this->getGenres($text));
 		$converter->setKeywords($this->getKeywords($text));
 		$converter->setTextDate($text->getYear());
@@ -141,7 +141,7 @@ class TextFb2Generator {
 	}
 
 	public function getGenres(Text $text) {
-		$genres = array();
+		$genres = [];
 		$labels = $text->getLabelsNames();
 		foreach ($labels as $label) {
 			if (array_key_exists($label, $this->labelsToGenres)) {

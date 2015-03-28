@@ -19,13 +19,13 @@ class SeriesAuthorAdmin extends Admin {
 		$listMapper
 			->add('series')
 			->add('person')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -33,7 +33,7 @@ class SeriesAuthorAdmin extends Admin {
 		$formMapper->with('General attributes');
 		$formMapper
 			//->add('series')
-			->add('person', 'sonata_type_model_list', array('required' => false));
+			->add('person', 'sonata_type_model_list', ['required' => false]);
 	}
 
 }

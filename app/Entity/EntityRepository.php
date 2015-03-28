@@ -2,7 +2,7 @@
 
 abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 
-	protected $queryableFields = array();
+	protected $queryableFields = [];
 
 	/**
 	 * Save an entity into the database.
@@ -47,7 +47,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	 * @throws \Doctrine\DBAL\DBALException
 	 * @see \Doctrine\DBAL\Connection::executeUpdate
 	 */
-	public function execute($query, array $params = array(), array $types = array()) {
+	public function execute($query, array $params = [], array $types = []) {
 		return $this->getEntityManager()->getConnection()->executeUpdate($query, $params, $types);
 	}
 
@@ -134,7 +134,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	 */
 	public function findByIds(array $ids) {
 		if (empty($ids)) {
-			return array();
+			return [];
 		}
 		return $this->getQueryBuilder()
 			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
@@ -148,7 +148,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	 */
 	public function getByIds($ids, $orderBy = null) {
 		if (empty($ids)) {
-			return array();
+			return [];
 		}
 
 		return $this->getQueryBuilder($orderBy)
@@ -162,7 +162,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	 */
 	public function getByQuery($params) {
 		if (empty($params['text']) || empty($params['by'])) {
-			return array();
+			return [];
 		}
 
 		switch ($params['match']) {
@@ -183,14 +183,14 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 				$param = "%$params[text]%";
 				break;
 		}
-		$tests = array();
+		$tests = [];
 		foreach (explode(',', $params['by']) as $field) {
 			if (in_array($field, $this->queryableFields)) {
 				$tests[] = "e.$field $op ?1";
 			}
 		}
 		if (empty($tests)) {
-			return array();
+			return [];
 		}
 
 		$query = $this->getQueryBuilder()

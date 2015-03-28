@@ -95,7 +95,7 @@ class Category extends Entity implements \JsonSerializable {
 	 * @return Category[]
 	 */
 	public function getAncestors() {
-		$ancestors = array();
+		$ancestors = [];
 		$category = $this;
 		while (null !== ($parent = $category->getParent())) {
 			$ancestors[] = $parent;
@@ -106,7 +106,7 @@ class Category extends Entity implements \JsonSerializable {
 	}
 
 	public function getDescendantIdsAndSelf() {
-		return array_merge(array($this->getId()), $this->getDescendantIds());
+		return array_merge([$this->getId()], $this->getDescendantIds());
 	}
 
 	/**
@@ -115,7 +115,7 @@ class Category extends Entity implements \JsonSerializable {
 	 * @return array Array of IDs
 	 */
 	public function getDescendantIds() {
-		$ids = array();
+		$ids = [];
 		foreach ($this->getChildren() as $category) {
 			$ids[] = $category->getId();
 			$ids = array_merge($ids, $category->getDescendantIds());
@@ -125,12 +125,12 @@ class Category extends Entity implements \JsonSerializable {
 	}
 
 	public function jsonSerialize() {
-		return array(
+		return [
 			'id' => $this->id,
 			'slug' => $this->slug,
 			'name' => $this->name,
 			'nrOfBooks' => $this->nrOfBooks,
-		);
+		];
 	}
 
 }

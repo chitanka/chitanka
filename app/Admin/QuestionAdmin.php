@@ -20,13 +20,13 @@ class QuestionAdmin extends Admin {
 		$listMapper
 			->addIdentifier('question')
 			->add('answers')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -35,9 +35,9 @@ class QuestionAdmin extends Admin {
 		$formMapper
 			->add('question')
 			->add('answers')
-			->setHelps(array(
+			->setHelps([
 				'answers' => $this->trans('help.question.answers'),
-			));
+			]);
 
 	}
 

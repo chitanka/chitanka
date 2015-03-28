@@ -8,9 +8,9 @@ class UserController extends Controller {
 	public function personalToolsAction() {
 		$this->responseAge = 0;
 
-		return $this->render('App:User:personal_tools.html.twig', array(
+		return $this->render('App:User:personal_tools.html.twig', [
 			'_user' => $this->getUser()
-		));
+		]);
 	}
 
 	public function showAction($username) {
@@ -31,10 +31,10 @@ class UserController extends Controller {
 
 	public function ratingsAction($username) {
 		$user = $this->em()->getUserRepository()->findByUsername($username);
-		return array(
+		return [
 			'user' => $user,
 			'ratings' => $this->em()->getTextRatingRepository()->getByUser($user),
-		);
+		];
 	}
 
 	public function commentsAction($username, $page) {
@@ -49,17 +49,17 @@ class UserController extends Controller {
 		$user = $this->em()->getUserRepository()->findByUsername($username);
 		$repo = $this->em()->getUserTextContribRepository();
 
-		return array(
+		return [
 			'user' => $user,
 			'contribs' => $repo->getByUser($user, $page, $limit),
-			'pager'    => new Pager(array(
+			'pager'    => new Pager([
 				'page'  => $page,
 				'limit' => $limit,
 				'total' => $repo->countByUser($user)
-			)),
+			]),
 			'route' => 'user_contribs',
-			'route_params' => array('username' => $username),
-		);
+			'route_params' => ['username' => $username],
+		];
 	}
 
 	public function readListAction($username, $page) {
@@ -77,19 +77,19 @@ class UserController extends Controller {
 		$limit = 50;
 		$repo = $this->em()->getUserTextReadRepository();
 
-		return array(
+		return [
 			'user' => $user,
 			'is_owner' => $isOwner,
 			'read_texts' => $repo->getByUser($user, $page, $limit),
-			'pager'    => new Pager(array(
+			'pager'    => new Pager([
 				'page'  => $page,
 				'limit' => $limit,
 				'total' => $repo->countByUser($user)
-			)),
+			]),
 			'route' => 'user_read_list',
-			'route_params' => array('username' => $username),
+			'route_params' => ['username' => $username],
 			'_cache' => 0,
-		);
+		];
 	}
 
 	public function bookmarksAction($username, $page) {
@@ -107,19 +107,19 @@ class UserController extends Controller {
 		$limit = 50;
 		$repo = $this->em()->getBookmarkRepository();
 
-		return array(
+		return [
 			'user' => $user,
 			'is_owner' => $isOwner,
 			'bookmarks' => $repo->getByUser($user, $page, $limit),
-			'pager'    => new Pager(array(
+			'pager'    => new Pager([
 				'page'  => $page,
 				'limit' => $limit,
 				'total' => $repo->countByUser($user)
-			)),
+			]),
 			'route' => 'user_bookmarks',
-			'route_params' => array('username' => $username),
+			'route_params' => ['username' => $username],
 			'_cache' => 0,
-		);
+		];
 	}
 
 	/**
@@ -135,10 +135,10 @@ class UserController extends Controller {
 
 		$texts = $request->get('texts');
 
-		return $this->asJson(array(
+		return $this->asJson([
 			'read' => array_flip($this->em()->getUserTextReadRepository()->getValidTextIds($this->getUser(), $texts)),
 			'favorities' => array_flip($this->em()->getBookmarkRepository()->getValidTextIds($this->getUser(), $texts)),
-		));
+		]);
 	}
 
 	public function editAction($username) {
@@ -149,21 +149,21 @@ class UserController extends Controller {
 		}
 
 		$styleUrl = '/bundles/app/css/?skin=SKIN&menu=NAV';
-		return $this->legacyPage('Settings', array(
+		return $this->legacyPage('Settings', [
 			'inline_js' => "
 				var nav = '', skin = '';
 				function changeStyleSheet() {
 					setActiveStyleSheet('$styleUrl'.replace(/SKIN/, skin).replace(/NAV/, nav));
 				}"
-		));
+		]);
 	}
 
 	public function stylesheetAction() {
-		return $this->render('App:User:stylesheet.html.twig', array(
+		return $this->render('App:User:stylesheet.html.twig', [
 			'stylesheet' => $this->getStylesheet(),
 			'extra_stylesheets' => $this->getUser()->getExtraStylesheets(),
 			'extra_javascripts' => $this->getUser()->getExtraJavascripts(),
-		));
+		]);
 	}
 
 	private function getStylesheet() {

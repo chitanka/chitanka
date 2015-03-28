@@ -4,7 +4,7 @@ use App\Util\Ary;
 
 class ContentService {
 
-	private static $contentDirs = array(
+	private static $contentDirs = [
 		'text' => 'content/text/',
 		'text-info' => 'content/text-info/',
 		'text-anno' => 'content/text-anno/',
@@ -22,7 +22,7 @@ class ContentService {
 		'book-djvu' => 'content/book-djvu/',
 		'book-pdf' => 'content/book-pdf/',
 		'book-pic' => 'content/book-pic/',
-	);
+	];
 
 	/**
 	 * @param string $key

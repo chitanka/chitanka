@@ -14,7 +14,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface {
 	 * @return User
 	 */
 	public function findByUsername($username) {
-		return $this->findOneBy(array('username' => $username));
+		return $this->findOneBy(['username' => $username]);
 	}
 
 	/**
@@ -22,7 +22,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface {
 	 * @return User[]
 	 */
 	public function findByUsernames(array $usernames) {
-		return $this->findBy(array('username' => $usernames));
+		return $this->findBy(['username' => $usernames]);
 	}
 
 	/**
@@ -30,7 +30,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface {
 	 * @return User
 	 */
 	public function findByToken($token) {
-		return $this->findOneBy(array('token' => $token));
+		return $this->findOneBy(['token' => $token]);
 	}
 
 	/**
@@ -38,7 +38,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface {
 	 * @return User
 	 */
 	public function findByEmail($email) {
-		return $this->findOneBy(array('email' => $email));
+		return $this->findOneBy(['email' => $email]);
 	}
 
 	/** {@inheritdoc} */

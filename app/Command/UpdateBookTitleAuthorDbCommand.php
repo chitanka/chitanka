@@ -25,9 +25,9 @@ class UpdateBookTitleAuthorDbCommand extends Command {
 	}
 
 	protected function getBooleanOptions() {
-		return array(
+		return [
 			'dump-sql' => 'Output SQL queries instead of executing them',
-		);
+		];
 	}
 
 	/** {@inheritdoc} */
@@ -43,14 +43,14 @@ class UpdateBookTitleAuthorDbCommand extends Command {
 	 * @param bool $dumpSql
 	 */
 	private function updateBookTitleAuthor($dumpSql) {
-		$queries = array();
+		$queries = [];
 		$iterableResult = $this->em->createQuery('SELECT b FROM App:Book b WHERE b.titleAuthor IS NULL')->iterate();
 		foreach ($iterableResult AS $row) {
 			$book = $row[0];
 			if (count($book->getAuthors()) == 0) {
 				continue;
 			}
-			$authorNames = array();
+			$authorNames = [];
 			foreach ($book->getAuthors() as $author) {
 				$authorNames[] = $author->getName();
 			}

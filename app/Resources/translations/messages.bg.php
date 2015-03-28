@@ -1,6 +1,6 @@
 <?php
-return array(
-	'lang' => array(
+return [
+	'lang' => [
 		'-' => 'неизвестен език',
 		'mul' => 'многоезично',
 		'sq' => 'албански',
@@ -45,9 +45,9 @@ return array(
 		'cs' => 'чешки',
 		'sv' => 'шведски',
 		'jp' => 'японски',
-	),
+	],
 
-	'country' => array(
+	'country' => [
 		'-' => '(Непосочена)',
 		'none' => '(Непосочена)',
 		'au' => 'Австралия',
@@ -134,9 +134,9 @@ return array(
 		'za' => 'Южноафриканска република',
 		'jm' => 'Ямайка',
 		'jp' => 'Япония',
-	),
+	],
 
-	'text.type.singular' => array(
+	'text.type.singular' => [
 		'anecdote' => 'Анекдот',
 		'fable' => 'Басня',
 		'biography' => 'Биография',
@@ -178,9 +178,9 @@ return array(
 		'historiography' => 'Историография',
 		'collection' => 'Сборник',
 		'other' => 'Разни',
-	),
+	],
 
-	'text.type.plular' => array(
+	'text.type.plular' => [
 		'anecdote' => 'Анекдоти',
 		'fable' => 'Басни',
 		'biography' => 'Биографии',
@@ -222,9 +222,9 @@ return array(
 		'historiography' => 'Историография',
 		'collection' => 'Сборник',
 		'other' => 'Разни',
-	),
+	],
 
-	'text.type.singular.article' => array(
+	'text.type.singular.article' => [
 		'anecdote' => 'анекдота',
 		'fable' => 'баснята',
 		'biography' => 'биографията',
@@ -266,9 +266,9 @@ return array(
 		'historiography' => 'текстът',
 		'collection' => 'творбата',
 		'other' => 'творбата',
-	),
+	],
 
-	'text.type.plular.article' => array(
+	'text.type.plular.article' => [
 		'anecdote' => 'анекдотите',
 		'fable' => 'басните',
 		'biography' => 'биографиите',
@@ -310,13 +310,13 @@ return array(
 		'historiography' => 'текстовете',
 		'collection' => 'творбите',
 		'other' => 'творбите',
-	),
+	],
 
-	'pic.type' => array(
+	'pic.type' => [
 		'magazine' => 'Списание',
-	),
+	],
 
-	'month' => array(
+	'month' => [
 		1 => 'януари',
 		'февруари',
 		'март',
@@ -329,39 +329,39 @@ return array(
 		'октомври',
 		'ноември',
 		'декември'
-	),
+	],
 
 	'authors' => 'Автори',
-	'authors.by' => array(
+	'authors.by' => [
 		'first-name' => 'Автори',
 		'last-name' => 'Автори по фамилия',
-		'country' => array(
+		'country' => [
 			'first-name' => 'Автори по държава',
 			'last-name' => 'Автори по държава (по фамилия)',
-		),
-	),
+		],
+	],
 
 	'translators' => 'Преводачи',
-	'translators.by' => array(
+	'translators.by' => [
 		'first-name' => 'Преводачи',
 		'last-name' => 'Преводачи по фамилия',
-	),
+	],
 
-	'person.alt' => array(
+	'person.alt' => [
 		'p' => '%current% е псевдоним на %target%.',
 		'r' => '%current% е истинското име на %target%.',
 		'a' => '%current% е алтернативно изписване за %target%.',
-	),
+	],
 
-	'wiki.title' => array(
+	'wiki.title' => [
 		'about' => 'За Моята библиотека',
 		'rules' => 'Правила за използване на Моята библиотека',
 		'blacklist' => 'Черен списък',
 		'links' => 'Връзки',
 		'torrents' => 'Торенти',
-	),
+	],
 
-	'workroom.status' => array(
+	'workroom.status' => [
 		0 => 'Планира се',
 		1 => 'Сканира се',
 		2 => 'За корекция',
@@ -370,17 +370,17 @@ return array(
 		5 => 'Чака проверка',
 		6 => 'Проверен',
 		7 => 'За добавяне',
-	),
-	'workroom.type' => array(
+	],
+	'workroom.type' => [
 		0 => 'сам',
 		1 => 'екип',
-	),
+	],
 
-	'person.role' => array(
+	'person.role' => [
 		'' => '(незнаен)',
 		'author' => 'автор',
 		'author,translator' => 'автор и преводач',
 		'translator' => 'преводач',
-	),
+	],
 
-);
+];

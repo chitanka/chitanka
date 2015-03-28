@@ -7,7 +7,7 @@ class Pager implements \JsonSerializable {
 	private $count = 0;
 
 	public function __construct($options) {
-		$fields = array('page', 'limit', 'total');
+		$fields = ['page', 'limit', 'total'];
 		foreach ($fields as $field) {
 			if (isset($options[$field])) {
 				$this->$field = (int) $options[$field];
@@ -53,7 +53,7 @@ class Pager implements \JsonSerializable {
 	}
 
 	public function pages() {
-		$pages = array();
+		$pages = [];
 		$first = 1;
 		$selected = max($this->page, $first);
 		$start = $first;
@@ -80,14 +80,14 @@ class Pager implements \JsonSerializable {
 	}
 
 	public function jsonSerialize() {
-		return array(
+		return [
 			'page' => $this->page,
 			'countPerPage' => $this->limit,
 			'totalCount' => $this->total,
 			'pageCount' => $this->count,
 			'prevPage' => $this->has_prev() ? $this->prev() : null,
 			'nextPage' => $this->has_next() ? $this->next() : null,
-		);
+		];
 	}
 
 }

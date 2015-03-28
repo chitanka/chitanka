@@ -22,13 +22,13 @@ class WikiSiteAdmin extends Admin {
 		$listMapper
 			->addIdentifier('name')
 			->add('url')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -38,12 +38,12 @@ class WikiSiteAdmin extends Admin {
 			->add('code')
 			->add('name')
 			->add('url')
-			->add('intro', null, array('required' => false))
-			->setHelps(array(
+			->add('intro', null, ['required' => false])
+			->setHelps([
 				'code' => $this->trans('help.wikisite.code'),
 				'url' => $this->trans('help.wikisite.url'),
 				'intro' => $this->trans('help.wikisite.intro'),
-			));
+			]);
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

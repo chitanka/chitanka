@@ -1,7 +1,7 @@
 <?php namespace App\Util;
 
 class Language {
-	private static $langs = array(
+	private static $langs = [
 		'' => '(Неизвестен)',
 		'sq' => 'Албански',
 		'en' => 'Английски',
@@ -45,7 +45,7 @@ class Language {
 		'sv' => 'Шведски',
 		'jp' => 'Японски',
 		'mul' => '(Многоезично)',
-	);
+	];
 
 	public static function getLangs() {
 		return self::$langs;

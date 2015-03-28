@@ -3,8 +3,8 @@
 class StatisticsController extends Controller {
 
 	public function indexAction() {
-		return array(
-			'count' => array(
+		return [
+			'count' => [
 				'authors'       => $this->em()->getPersonRepository()->asAuthor()->getCount(),
 				'translators'   => $this->em()->getPersonRepository()->asTranslator()->getCount(),
 				'texts'         => $this->em()->getTextRepository()->getCount(),
@@ -16,10 +16,10 @@ class StatisticsController extends Controller {
 				'categories'    => $this->em()->getCategoryRepository()->getCount(),
 				'text_comments' => $this->em()->getTextCommentRepository()->getCount('e.is_shown = 1'),
 				'users'         => $this->em()->getUserRepository()->getCount(),
-			),
+			],
 			'author_countries'  => $this->getAuthorCountries(),
 			'text_types'        => $this->getTextTypes(),
-		);
+		];
 	}
 
 	private function getAuthorCountries() {

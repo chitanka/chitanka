@@ -41,9 +41,9 @@ EOT;
 	}
 
 	protected function getArrayArguments() {
-		return array(
+		return [
 			'id' => 'A text or a book ID or an ID range',
-		);
+		];
 	}
 
 	/** {@inheritdoc} */
@@ -58,10 +58,10 @@ EOT;
 	}
 
 	private function parseInputIds($inputIds) {
-		$ids = array(
-			'text' => array(),
-			'book' => array(),
-		);
+		$ids = [
+			'text' => [],
+			'book' => [],
+		];
 		foreach ($inputIds as $inputId) {
 			if (strpos($inputId, ':') === false) {
 				$inputId = 'text:'.$inputId;

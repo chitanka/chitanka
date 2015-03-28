@@ -86,7 +86,7 @@ class UpdateCountsDbCommand extends Command {
 	 * @param string $field
 	 */
 	private function updateCountByParents(EntityManager $em, $entity, $field) {
-		$dirty = array();
+		$dirty = [];
 		$repo = $em->getRepository($entity);
 		foreach ($repo->findAll() as $item) {
 			if (in_array($item->getId(), $dirty)) {
@@ -94,9 +94,9 @@ class UpdateCountsDbCommand extends Command {
 			}
 			$parent = $item->getParent();
 			if ($parent) {
-				$count = call_user_func(array($item, "get{$field}"));
+				$count = call_user_func([$item, "get{$field}"]);
 				do {
-					call_user_func(array($parent, "inc{$field}"), $count);
+					call_user_func([$parent, "inc{$field}"], $count);
 					$em->persist($parent);
 					$dirty[] = $parent->getId();
 				} while (null !== ($parent = $parent->getParent()));

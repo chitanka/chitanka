@@ -14,10 +14,10 @@ class ChangeUserGroupsCommand extends Command {
 	}
 
 	protected function getRequiredArguments() {
-		return array(
+		return [
 			'users' => 'Users which groups should be modified (comma separated)',
 			'groups' => 'Groups to add or remove (comma separated). Ex.: "+workroom-admin,-admin" adds the user to "workroom-admin" and removes him from "admin"',
-		);
+		];
 	}
 
 	/** @inheritdoc */
@@ -54,7 +54,7 @@ class ChangeUserGroupsCommand extends Command {
 	 * @return array Array with two subarrays - groups for additions and groups for removal
 	 */
 	private function readGroups(InputInterface $input) {
-		$groupsToAdd = $groupsToRemove = array();
+		$groupsToAdd = $groupsToRemove = [];
 		foreach (array_map('trim', explode(',', $input->getArgument('groups'))) as $groupIdent) {
 			switch ($groupIdent[0]) {
 				case '-':
@@ -67,6 +67,6 @@ class ChangeUserGroupsCommand extends Command {
 					$groupsToAdd[] = $groupIdent;
 			}
 		}
-		return array($groupsToAdd, $groupsToRemove);
+		return [$groupsToAdd, $groupsToRemove];
 	}
 }

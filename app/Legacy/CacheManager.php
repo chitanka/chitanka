@@ -135,15 +135,15 @@ class CacheManager {
 	public static function setDl($textIds, $file, $format = '') {
 		$db = Setup::db();
 		$pk = self::getHashForTextIds($textIds, $format);
-		$db->insert(DBT_DL_CACHE, array(
+		$db->insert(DBT_DL_CACHE, [
 			"id = $pk",
 			'file' => $file,
-		), true, false);
+		], true, false);
 		foreach ( (array) $textIds as $textId ) {
-			$db->insert(DBT_DL_CACHE_TEXT, array(
+			$db->insert(DBT_DL_CACHE_TEXT, [
 				"dc_id = $pk",
 				'text_id' => $textId,
-			), true, false);
+			], true, false);
 		}
 		return $file;
 	}
@@ -153,13 +153,13 @@ class CacheManager {
 	 */
 	public static function clearDl($textIds) {
 		$db = Setup::db();
-		$dctKey = array(
-			'text_id' => is_array($textIds) ? array('IN', $textIds) : $textIds
-		);
+		$dctKey = [
+			'text_id' => is_array($textIds) ? ['IN', $textIds] : $textIds
+		];
 		$hashes = $db->getFieldsMulti(DBT_DL_CACHE_TEXT, $dctKey, 'dc_id');
 		if ( ! empty($hashes) ) {
-			$db->delete(DBT_DL_CACHE, array('id' => array('IN', $hashes)));
-			$db->delete(DBT_DL_CACHE_TEXT, array('dc_id' => array('IN', $hashes)));
+			$db->delete(DBT_DL_CACHE, ['id' => ['IN', $hashes]]);
+			$db->delete(DBT_DL_CACHE_TEXT, ['dc_id' => ['IN', $hashes]]);
 		}
 	}
 
@@ -167,7 +167,7 @@ class CacheManager {
 	 * @param string $hash
 	 */
 	public static function getDlFileByHash($hash) {
-		return Setup::db()->getFields(DBT_DL_CACHE, array("id = $hash"), 'file');
+		return Setup::db()->getFields(DBT_DL_CACHE, ["id = $hash"], 'file');
 	}
 
 	/**

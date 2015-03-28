@@ -14,7 +14,7 @@ class MainController extends Controller {
 	const LATEST_FORUM_POSTS_LIMIT = 5;
 
 	public function indexAction() {
-		return array(
+		return [
 			'siteNotices' => $this->em()->getSiteNoticeRepository()->findForFrontPage(),
 			'review' => ReviewService::getReview(true),
 			'foreign_book' => $this->em()->getForeignBookRepository()->getRandom(),
@@ -26,11 +26,11 @@ class MainController extends Controller {
 			'latest_liternews' => LiternewsFeed::fetchLatest(self::LATEST_LITERNEWS_LIMIT),
 			'latest_forum_posts' => ForumFeed::fetchLatest(self::LATEST_FORUM_POSTS_LIMIT),
 			'_cache' => 600,
-		);
+		];
 	}
 
 	public function catalogAction() {
-		return array();
+		return [];
 	}
 
 	public function redirectAction($route) {
@@ -38,9 +38,9 @@ class MainController extends Controller {
 	}
 
 	public function siteboxAction() {
-		return $this->render('App:Main:sitebox.html.twig', array(
+		return $this->render('App:Main:sitebox.html.twig', [
 			'site' => $this->em()->getSiteRepository()->getRandom()
-		));
+		]);
 	}
 
 }

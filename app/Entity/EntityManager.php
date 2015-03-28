@@ -126,7 +126,7 @@ class EntityManager {
 	 * @return mixed
 	 */
 	public function __call($name, $arguments) {
-		return call_user_func_array(array($this->em, $name), $arguments);
+		return call_user_func_array([$this->em, $name], $arguments);
 	}
 
 	private function configureEntityManager(DoctrineEntityManager $em) {

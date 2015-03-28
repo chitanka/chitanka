@@ -14,11 +14,11 @@ class BookTemplateTest extends TestCase {
 	{file:789}
 TPL;
 		$ids = BookTemplate::extractTextIds($template);
-		$expectedIds = array(
+		$expectedIds = [
 			'123',
 			'456',
 			'789',
-		);
+		];
 		$this->assertEquals($expectedIds, $ids);
 	}
 

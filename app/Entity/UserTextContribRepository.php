@@ -23,7 +23,7 @@ class UserTextContribRepository extends EntityRepository {
 	public function getByUser(User $user, $page = 1, $limit = null) {
 		$ids = $this->getIdsByUser($user, $page, $limit);
 
-		return empty($ids) ? array() : $this->getByIds($ids);
+		return empty($ids) ? [] : $this->getByIds($ids);
 	}
 
 	/**

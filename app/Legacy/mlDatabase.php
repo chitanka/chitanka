@@ -24,7 +24,7 @@ class mlDatabase {
 		$this->errLogFile = __DIR__."/../../var/log/db-error-$date";
 	}
 
-	public function exists($table, $keys = array()) {
+	public function exists($table, $keys = []) {
 		return $this->getCount($table, $keys) > 0;
 	}
 
@@ -39,7 +39,7 @@ class mlDatabase {
 
 	public function getFieldsMulti($table, $dbkey, $fields) {
 		$res = $this->select($table, $dbkey, $fields);
-		$data = array();
+		$data = [];
 		while ( $row = $this->fetchRow($res) ) {
 			$data[] = count($row) > 1 ? $row : $row[0];
 		}
@@ -47,27 +47,27 @@ class mlDatabase {
 	}
 
 	public function getRandomRow($table) {
-		$res = $this->select($table, array(), array('MIN(id)', 'MAX(id)'));
+		$res = $this->select($table, [], ['MIN(id)', 'MAX(id)']);
 		list($min, $max) = $this->fetchRow($res);
 		do {
-			$res = $this->select($table, array('id' => rand($min, $max)));
+			$res = $this->select($table, ['id' => rand($min, $max)]);
 			$row = $this->fetchAssoc($res);
 			if ( !empty($row) ) return $row;
 		} while (true);
-		return array();
+		return [];
 	}
 
-	public function getCount($table, $keys = array()) {
+	public function getCount($table, $keys = []) {
 		$res = $this->select($table, $keys, 'COUNT(*)');
 		list($count) = mysql_fetch_row($res);
 		return (int) $count;
 	}
 
-	public function select($table, $keys = array(), $fields = array(), $orderby = '', $offset = 0, $limit = 0, $groupby = '') {
+	public function select($table, $keys = [], $fields = [], $orderby = '', $offset = 0, $limit = 0, $groupby = '') {
 		return $this->query($this->selectQ($table, $keys, $fields, $orderby, $offset, $limit, $groupby));
 	}
 
-	public function selectQ($table, $keys = array(), $fields = array(), $orderby = '', $offset = 0, $limit = 0, $groupby = '') {
+	public function selectQ($table, $keys = [], $fields = [], $orderby = '', $offset = 0, $limit = 0, $groupby = '') {
 		settype($fields, 'array');
 		$sel = empty($fields) ? '*' : implode(', ', $fields);
 		$sorder = empty($orderby) ? '' : ' ORDER BY '.$orderby;
@@ -100,7 +100,7 @@ class mlDatabase {
 		if ( isset($qparts['WHERE']) ) {
 			$q .= $this->makeWhereClause($qparts['WHERE']);
 		}
-		foreach ( array('GROUP BY', 'ORDER BY') as $key ) {
+		foreach ( ['GROUP BY', 'ORDER BY'] as $key ) {
 			if ( isset($qparts[$key]) ) {
 				$q .= " $key $qparts[$key]";
 			}
@@ -162,7 +162,7 @@ class mlDatabase {
 		if ( empty($data) ) { return ''; }
 		if ( empty($keys) ) { return $this->insertQ($table, $data, true); }
 		if ( !is_array($keys) ) {
-			$keys = array('id' => $keys);
+			$keys = ['id' => $keys];
 		}
 		return 'UPDATE '. $table . $this->makeSetClause($data) .
 			$this->makeWhereClause($keys);
@@ -179,7 +179,7 @@ class mlDatabase {
 
 	public function deleteQ($table, $keys, $limit = 0) {
 		if ( empty($keys) ) { return ''; }
-		if ( !is_array($keys) ) $keys = array('id' => $keys);
+		if ( !is_array($keys) ) $keys = ['id' => $keys];
 		$q = 'DELETE FROM '. $table . $this->makeWhereClause($keys);
 		if ( !empty($limit) ) $q .= " LIMIT $limit";
 		return $q;
@@ -188,7 +188,7 @@ class mlDatabase {
 	private function makeSetClause($data, $putKeyword = true) {
 		if ( empty($data) ) { return ''; }
 		$keyword = $putKeyword ? ' SET ' : '';
-		$cl = array();
+		$cl = [];
 		foreach ($data as $field => $value) {
 			if ($value === null) {
 				continue;
@@ -224,7 +224,7 @@ class mlDatabase {
 			return $putKeyword ? ' WHERE 1' : '';
 		}
 		$cl = $putKeyword ? ' WHERE ' : '';
-		$whs = array();
+		$whs = [];
 		foreach ($keys as $field => $rawval) {
 			if ( is_numeric($field) ) { // take the value as is
 				$field = $rel = '';
@@ -239,7 +239,7 @@ class mlDatabase {
 					list($rel, $val) = $rawval;
 					if (($rel == 'IN' || $rel == 'NOT IN') && is_array($val)) {
 						// set relation — build an SQL set
-						$cb = array($this, 'normalizeValue');
+						$cb = [$this, 'normalizeValue'];
 						$val = '('. implode(', ', array_map($cb, $val)) .')';
 					} else {
 						$val = $this->normalizeValue($val);

@@ -22,9 +22,9 @@ class VerifyPersonInfoLinksDbCommand extends Command {
 	}
 
 	protected function getBooleanOptions() {
-		return array(
+		return [
 			'dump-sql' => 'Output SQL queries instead of executing them',
-		);
+		];
 	}
 
 	/** {@inheritdoc} */
@@ -48,11 +48,11 @@ class VerifyPersonInfoLinksDbCommand extends Command {
 		$siteRepo = $this->getEntityManager()->getWikiSiteRepository();
 		$httpAgent = new HttpAgent;
 
-		$ids = array();
+		$ids = [];
 		foreach ($iterableResult AS $i => $row) {
 			$person = $row[0];
 			list($prefix, $name) = explode(':', $person->getInfo(), 2);
-			$site = $siteRepo->findOneBy(array('code' => $prefix));
+			$site = $siteRepo->findOneBy(['code' => $prefix]);
 			$url = $site->getUrl($name);
 			$this->output->writeln("/* ({$person->getId()}) Checking $url */");
 			if (!$httpAgent->urlExists($url)) {
@@ -73,7 +73,7 @@ class VerifyPersonInfoLinksDbCommand extends Command {
 		if (count($personIds) == 0) {
 			return;
 		}
-		$queries = array(sprintf('UPDATE person SET info = NULL WHERE id IN ('.implode(',', $personIds).')'));
+		$queries = [sprintf('UPDATE person SET info = NULL WHERE id IN ('.implode(',', $personIds).')')];
 		if ($dumpSql) {
 			$this->printQueries($queries);
 		} else {

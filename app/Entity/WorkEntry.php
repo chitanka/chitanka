@@ -24,7 +24,7 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	const STATUS_6 = 6;
 	const STATUS_7 = 7;
 
-	private static $statuses = array(
+	private static $statuses = [
 		self::STATUS_0 => 'Планира се',
 		self::STATUS_1 => 'Сканира се',
 		self::STATUS_2 => 'За корекция',
@@ -33,7 +33,7 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 		self::STATUS_5 => 'Чака проверка',
 		self::STATUS_6 => 'Проверен',
 		self::STATUS_7 => 'За добавяне',
-	);
+	];
 
 	/**
 	 * @ORM\Column(type="integer")
@@ -269,7 +269,7 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	 * @return WorkContrib[]
 	 */
 	public function getContribs() {
-		$contribs = array();
+		$contribs = [];
 		foreach ($this->contribs as $contrib/*@var $contrib WorkContrib*/) {
 			if (!$contrib->isDeleted()) {
 				$contribs[] = $contrib;
@@ -279,7 +279,7 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	}
 
 	public function getOpenContribs() {
-		$openContribs = array();
+		$openContribs = [];
 		foreach ($this->getContribs() as $contrib/*@var $contrib WorkContrib*/) {
 			if (!$contrib->isFinished()) {
 				$openContribs[] = $contrib;
@@ -290,7 +290,7 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 
 	/** {@inheritdoc} */
 	public function getFeedItemTitle() {
-		return implode(' — ', array_filter(array($this->getTitle(), $this->getAuthor())));
+		return implode(' — ', array_filter([$this->getTitle(), $this->getAuthor()]));
 	}
 
 	/** {@inheritdoc} */
@@ -321,7 +321,7 @@ DESC;
 
 	/** {@inheritdoc} */
 	public function getFeedItemRouteParameters() {
-		return array('id' => $this->getId());
+		return ['id' => $this->getId()];
 	}
 
 	/** {@inheritdoc} */

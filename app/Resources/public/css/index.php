@@ -16,14 +16,14 @@ function compileStyleFiles($cacheDir, $skin, $menuPos) {
 		mkdir($cacheDir, 0777, true);
 	}
 	Less_Cache::$cache_dir = $cacheDir;
-	$lessFiles = array(
+	$lessFiles = [
 		// \n needed for Less.php to recognize this as LESS code
 		'menu' => "@menu-position: '$menuPos';\n",
 		"$skin.less" => '',
-	);
-	$parserOptions = array(
+	];
+	$parserOptions = [
 		'compress' => true,
-	);
+	];
 	$cssFile = Less_Cache::Get($lessFiles, $parserOptions);
 	return $cssFile ? $cacheDir .'/'. $cssFile : null;
 }
@@ -36,7 +36,7 @@ function sendCssFile($cssFile) {
 	readfile($cssFile);
 }
 
-$skins = array(
+$skins = [
 	'orange',
 	'blackwhite',
 	'blue',
@@ -45,11 +45,11 @@ $skins = array(
 	'phoenix',
 	'pink',
 	'purple',
-);
-$positions = array(
+];
+$positions = [
 	'right',
 	'left',
-);
+];
 
 $thisDir = dirname(__FILE__);
 $cacheDir = strpos($thisDir, '/bundles/') === false

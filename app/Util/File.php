@@ -65,7 +65,7 @@ class File {
 	 * @param string $file
 	 */
 	public static function isArchive($file) {
-		$exts = array('zip', 'tgz', 'tar.gz', 'bz2', 'tar.bz2');
+		$exts = ['zip', 'tgz', 'tar.gz', 'bz2', 'tar.bz2'];
 		foreach ($exts as $ext) {
 			if ( strpos($file, '.'.$ext) !== false ) {
 				return true;
@@ -93,10 +93,10 @@ class File {
 		$fname = preg_replace('/  +/', ' ', $fname);
 		$fname = str_replace('- -', '-', $fname); // from empty entities
 		$fname = trim($fname, '.- ');
-		$fname = strtr($fname, array(
+		$fname = strtr($fname, [
 			' .' => '', // from empty series number
 			' '  => '_',
-		));
+		]);
 
 		return $fname;
 	}

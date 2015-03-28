@@ -6,7 +6,7 @@
 class SiteNoticeRepository extends EntityRepository {
 
 	public function findForFrontPage() {
-		return $this->findBy(array('isForFrontPage' => true));
+		return $this->findBy(['isForFrontPage' => true]);
 	}
 
 	public function getGlobalRandom() {

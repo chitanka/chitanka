@@ -43,7 +43,7 @@ class BookFb2Generator {
 	}
 
 	private function getGenresForFb2(Book $book) {
-		$genres = array();
+		$genres = [];
 		$textGenerator = new TextFb2Generator();
 		foreach ($book->getTexts() as $text) {
 			$genres = array_merge($genres, $textGenerator->getGenres($text));

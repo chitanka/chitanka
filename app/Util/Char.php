@@ -5,7 +5,7 @@ class Char {
 	private static
 		$cyrUppers = 'А Б В Г Д Е Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ю Я',
 		$cyrLowers = 'а б в г д е ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ю я',
-		$cyrlats = array(
+		$cyrlats = [
 			'щ' => 'sht', 'ш' => 'sh', 'ю' => 'ju', 'я' => 'ja', 'ч' => 'ch',
 			'ц' => 'ts',
 			'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'д' => 'd',
@@ -25,7 +25,7 @@ class Char {
 			'„' => ',,', '“' => '"', '«' => '<', '»' => '>',
 			' — ' => ' - ', '–' => '-',
 			'№' => 'No.', '…' => '...', '’' => '\''
-		);
+		];
 
 	public static function mystrtolower($s) {
 		return str_replace(explode(' ', self::$cyrUppers), explode(' ', self::$cyrLowers), $s);
@@ -39,7 +39,7 @@ class Char {
 	}
 
 	public static function myucfirst($s) {
-		$ls = '#'. strtr(self::$cyrLowers, array(' ' => ' #'));
+		$ls = '#'. strtr(self::$cyrLowers, [' ' => ' #']);
 		return str_replace(explode(' ', $ls), explode(' ', self::$cyrUppers), '#'.$s);
 	}
 
@@ -67,7 +67,7 @@ class Char {
 	 * Въобще не прави пълно прекодиране между двете кодови таблици.
 	 */
 	public static function cp8662mik($s) {
-		return strtr($s, array(
+		return strtr($s, [
 			chr(0xB0) => chr(0xE0),
 			chr(0xB1) => chr(0xE1),
 			chr(0xB2) => chr(0xE2),
@@ -84,7 +84,7 @@ class Char {
 			chr(0xBD) => chr(0xED),
 			chr(0xBE) => chr(0xEE),
 			chr(0xBF) => chr(0xEF)
-			)
+			]
 		);
 	}
 }

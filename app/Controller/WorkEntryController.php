@@ -3,8 +3,8 @@
 class WorkEntryController extends Controller {
 
 	public function latestAction($limit = 10) {
-		return array(
+		return [
 			'entries' => $this->em()->getWorkEntryRepository()->getLatest($limit),
-		);
+		];
 	}
 }

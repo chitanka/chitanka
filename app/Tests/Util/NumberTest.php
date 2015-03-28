@@ -13,10 +13,10 @@ class NumberTest extends TestCase {
 	}
 
 	public function iniBytesProvider() {
-		return array(
-			array('20K', 20480),
-			array('20M', 20971520),
-			array('1G', 1073741824),
-		);
+		return [
+			['20K', 20480],
+			['20M', 20971520],
+			['1G', 1073741824],
+		];
 	}
 }

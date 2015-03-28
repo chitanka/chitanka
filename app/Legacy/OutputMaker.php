@@ -7,31 +7,31 @@ class OutputMaker {
 
 	private $argSeparator = '&';
 
-	public function textField($name, $id = '', $value = '', $size = 30, $maxlength = 255, $tabindex = null, $title = '', $attrs = array()) {
+	public function textField($name, $id = '', $value = '', $size = 30, $maxlength = 255, $tabindex = null, $title = '', $attrs = []) {
 		if (empty($id)) { $id = $name; }
-		$attrs = array(
+		$attrs = [
 			'type' => 'text', 'name' => $name, 'id' => $id,
 			'size' => $size, 'maxlength' => $maxlength,
 			'value' => $value, 'title' => $title, 'tabindex' => $tabindex
-		) + $attrs;
+		] + $attrs;
 		return $this->xmlElement('input', null, $attrs);
 	}
 
-	public function textarea($name, $id = '', $value = '', $rows = 5, $cols = 80, $tabindex = null, $attrs = array()) {
+	public function textarea($name, $id = '', $value = '', $rows = 5, $cols = 80, $tabindex = null, $attrs = []) {
 		if (empty($id)) { $id = $name; }
-		$attrs = array(
+		$attrs = [
 			'name' => $name, 'id' => $id,
 			'cols' => $cols, 'rows' => $rows, 'tabindex' => $tabindex
-		) + $attrs;
+		] + $attrs;
 		return $this->xmlElement('textarea', String::myhtmlentities($value), $attrs);
 	}
 
-	public function checkbox($name, $id = '', $checked = false, $label = '', $value = null, $tabindex = null, $attrs = array()) {
+	public function checkbox($name, $id = '', $checked = false, $label = '', $value = null, $tabindex = null, $attrs = []) {
 		if (empty($id)) { $id = $name; }
-		$attrs = array(
+		$attrs = [
 			'type' => 'checkbox', 'name' => $name, 'id' => $id,
 			'value' => $value, 'tabindex' => $tabindex
-		) + $attrs;
+		] + $attrs;
 		if ($checked) { $attrs['checked'] = 'checked'; }
 		if ( !empty($label) ) {
 			$label = $this->label($label, $id);
@@ -44,26 +44,26 @@ class OutputMaker {
 	 * @param string $value
 	 */
 	public function hiddenField($name, $value = '') {
-		$attrs = array('type' => 'hidden', 'name' => $name, 'value' => $value);
+		$attrs = ['type' => 'hidden', 'name' => $name, 'value' => $value];
 		return $this->xmlElement('input', null, $attrs);
 	}
 
-	public function passField($name, $id = '', $value = '', $size = 30, $maxlength = 255, $tabindex = null, $attrs = array()) {
+	public function passField($name, $id = '', $value = '', $size = 30, $maxlength = 255, $tabindex = null, $attrs = []) {
 		if (empty($id)) { $id = $name; }
-		$attrs = array(
+		$attrs = [
 			'type' => 'password', 'name' => $name, 'id' => $id,
 			'size' => $size, 'maxlength' => $maxlength, 'value' => $value,
 			'tabindex' => $tabindex
-		) + $attrs;
+		] + $attrs;
 		return $this->xmlElement('input', null, $attrs);
 	}
 
-	public function fileField($name, $id = '', $tabindex = null, $title = '', $attrs = array()) {
+	public function fileField($name, $id = '', $tabindex = null, $title = '', $attrs = []) {
 		if (empty($id)) { $id = $name; }
-		$attrs = array(
+		$attrs = [
 			'type' => 'file', 'name' => $name, 'id' => $id,
 			'title' => $title, 'tabindex' => $tabindex
-		) + $attrs;
+		] + $attrs;
 		return $this->xmlElement('input', null, $attrs);
 	}
 
@@ -71,11 +71,11 @@ class OutputMaker {
 		return $this->hiddenField('MAX_FILE_SIZE', Number::iniBytes(ini_get('upload_max_filesize')));
 	}
 
-	public function submitButton($value, $title = '', $tabindex = null, $putname = true, $attrs = array()) {
-		$attrs = array(
+	public function submitButton($value, $title = '', $tabindex = null, $putname = true, $attrs = []) {
+		$attrs = [
 			'type' => 'submit', 'value' => $value, 'title' => $title,
 			'tabindex' => $tabindex
-		) + $attrs;
+		] + $attrs;
 		if ( is_string($putname) ) {
 			$attrs['name'] = $putname;
 		} else if ($putname) {
@@ -84,7 +84,7 @@ class OutputMaker {
 		return $this->xmlElement('input', null, $attrs);
 	}
 
-	public function selectBox($name, $id = '', $opts = array(), $selId = 0, $tabindex = null, $attrs = array()) {
+	public function selectBox($name, $id = '', $opts = [], $selId = 0, $tabindex = null, $attrs = []) {
 		$o = '';
 		if ( ! is_array( $selId ) ) {
 			$selId = (array) $selId; // threat it as a multiple-select box
@@ -100,18 +100,18 @@ class OutputMaker {
 				$val = $opt;
 				$title = '';
 			}
-			$oattrs = array('value' => $key, 'title' => $title);
+			$oattrs = ['value' => $key, 'title' => $title];
 			if ( in_array( $key, $selId) ) $oattrs['selected'] = 'selected';
 			$o .= "\n\t". $this->xmlElement('option', $val, $oattrs);
 		}
 		if (empty($id)) { $id = $name; }
-		$attrs = array(
+		$attrs = [
 			'name' => $name, 'id' => $id, 'tabindex' => $tabindex
-		) + $attrs;
+		] + $attrs;
 		return $this->xmlElement('select', $o, $attrs);
 	}
 
-	public function link($url, $text = '', $title = '', $attrs = array(), $args = array()) {
+	public function link($url, $text = '', $title = '', $attrs = [], $args = []) {
 		if ($text === '') $text = $url;
 		return $this->link_raw($url, String::myhtmlspecialchars($text), $title, $attrs, $args);
 	}
@@ -124,15 +124,15 @@ class OutputMaker {
 	 * @param array $args
 	 * @return string
 	 */
-	public function link_raw($url, $text, $title = '', array $attrs = array(), array $args = array()) {
-		$q = array();
+	public function link_raw($url, $text, $title = '', array $attrs = [], array $args = []) {
+		$q = [];
 		foreach ($args as $field => $value) {
 			$q[] = $field . Request::PARAM_SEPARATOR . $value;
 		}
 		if ( !empty($q) ) {
 			$url .= implode($this->argSeparator, $q);
 		}
-		$attrs = array( 'href' => $url ) + $attrs;
+		$attrs = [ 'href' => $url ] + $attrs;
 		if ( ! empty( $title ) ) $attrs['title'] = $title;
 		return $this->xmlElement('a', $text, $attrs);
 	}
@@ -140,10 +140,10 @@ class OutputMaker {
 	/**
 	 * @param string $text
 	 */
-	public function label($text, $for, $title = '', $attrs = array()) {
-		$attrs = array(
+	public function label($text, $for, $title = '', $attrs = []) {
+		$attrs = [
 			'for' => $for, 'title' => $title
-		) + $attrs;
+		] + $attrs;
 		return $this->xmlElement('label', $text, $attrs);
 	}
 
@@ -153,7 +153,7 @@ class OutputMaker {
 	 * @param array $attrs
 	 * @param bool $doEscape
 	 */
-	public function xmlElement($name, $content = '', $attrs = array(), $doEscape = true) {
+	public function xmlElement($name, $content = '', $attrs = [], $doEscape = true) {
 		$end = is_null($content) ? ' />' : ">$content</$name>";
 		return '<'.$name . $this->makeAttribs($attrs, $doEscape) . $end;
 	}

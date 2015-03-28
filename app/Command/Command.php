@@ -37,7 +37,7 @@ abstract class Command extends ContainerAwareCommand {
 	 * @return array
 	 */
 	protected function getRequiredArguments() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -47,7 +47,7 @@ abstract class Command extends ContainerAwareCommand {
 	 * @return array
 	 */
 	protected function getOptionalArguments() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -57,7 +57,7 @@ abstract class Command extends ContainerAwareCommand {
 	 * @return array
 	 */
 	protected function getArrayArguments() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -67,7 +67,7 @@ abstract class Command extends ContainerAwareCommand {
 	 * @return array
 	 */
 	protected function getBooleanOptions() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -77,7 +77,7 @@ abstract class Command extends ContainerAwareCommand {
 	 * @return array
 	 */
 	protected function getOptionalOptions() {
-		return array();
+		return [];
 	}
 
 	/**

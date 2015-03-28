@@ -30,7 +30,7 @@ class EditUserPagePage extends UserPage {
 		file_put_contents($this->filename, $this->userpage);
 		$this->setDefaultTitle();
 
-		$this->redirect = $this->controller->generateUrl('user_show', array('username' => $this->username));
+		$this->redirect = $this->controller->generateUrl('user_show', ['username' => $this->username]);
 
 		return $this->makeEditOwnPageLink() . $this->makeHTML();
 	}
@@ -48,7 +48,7 @@ class EditUserPagePage extends UserPage {
 	protected function makeEditForm() {
 		$this->title .= ' — Редактиране';
 		$username = $this->out->hiddenField('username', $this->username);
-		$userpage = $this->out->textarea('userpage', '', $this->userpage, 20, 80, 0, array('style'=>'width:95%'));
+		$userpage = $this->out->textarea('userpage', '', $this->userpage, 20, 80, 0, ['style'=>'width:95%']);
 
 		$submit2 = $this->out->submitButton('Запис', '', 0, 'send');
 

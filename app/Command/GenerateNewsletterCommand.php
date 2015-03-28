@@ -21,9 +21,9 @@ class GenerateNewsletterCommand extends Command {
 	}
 
 	protected function getRequiredArguments() {
-		return array(
+		return [
 			'month' => 'Month (3 or 2011-3)',
-		);
+		];
 	}
 
 	/** {@inheritdoc} */
@@ -58,9 +58,9 @@ class GenerateNewsletterCommand extends Command {
 
 	private function getBooks($month) {
 		$repo = $this->getEntityManager()->getBookRevisionRepository();
-		$booksByCat = array();
+		$booksByCat = [];
 		foreach ($repo->getByMonth($month) as $revision) {
-			$authors = array();
+			$authors = [];
 			foreach ($revision['book']['authors'] as $author) {
 				$authors[] = $author['name'];
 			}
@@ -78,10 +78,10 @@ class GenerateNewsletterCommand extends Command {
 	// TODO fetch only texts w/o books
 	private function getTexts($month) {
 		$repo = $this->getEntityManager()->getTextRevisionRepository();
-		$texts = array();
+		$texts = [];
 		#foreach ($repo->getByDate(array('2011-07-01', '2011-08-31 23:59'), 1, null, false) as $revision) {
 		foreach ($repo->getByMonth($month) as $revision) {
-			$authors = array();
+			$authors = [];
 			foreach ($revision['text']['authors'] as $author) {
 				$authors[] = $author['name'];
 			}

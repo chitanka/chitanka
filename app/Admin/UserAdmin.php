@@ -30,13 +30,13 @@ class UserAdmin extends Admin {
 			->add('email')
 			->add('registration')
 			->add('touched')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -46,14 +46,14 @@ class UserAdmin extends Admin {
 			->add('username')
 			//->add('password')
 			->add('realname')
-			->add('email', null, array('required' => false))
+			->add('email', null, ['required' => false])
 			->add('allowemail')
-			->add('groups', 'choice', array(
+			->add('groups', 'choice', [
 				'required' => false,
 				'choices' => array_combine(User::getGroupList(), User::getGroupList()),
 				'multiple' => true,
 				//'expanded' => true,
-			))
+			])
 			->add('news')
 			//->add('opts')
 			->add('token');

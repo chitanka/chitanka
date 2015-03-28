@@ -2,10 +2,10 @@
 
 class Date {
 
-	private static $months = array(
+	private static $months = [
 		1 => 'Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни',
 		'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'
-	);
+	];
 
 	public static function endOfMonth($month) {
 		list($y, $m) = explode('-', $month);

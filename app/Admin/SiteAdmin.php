@@ -21,13 +21,13 @@ class SiteAdmin extends Admin {
 		$listMapper
 			->addIdentifier('name')
 			->add('url')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -36,7 +36,7 @@ class SiteAdmin extends Admin {
 		$formMapper
 			->add('name')
 			->add('url')
-			->add('description', null, array('required' => false));
+			->add('description', null, ['required' => false]);
 
 	}
 

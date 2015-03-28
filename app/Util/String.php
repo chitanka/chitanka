@@ -23,7 +23,7 @@ class String {
 	 * @return string
 	 */
 	public static function prepareStringForPreg($string) {
-		return strtr($string, array(
+		return strtr($string, [
 			// in a regexp a backslash can be escaped with four backslashes - \\\\
 			'\\' => '\\\\\\\\',
 			'^' => '\^',
@@ -40,10 +40,10 @@ class String {
 			'{' => '\{',
 			'}' => '\}',
 			'-' => '\-',
-		));
+		]);
 	}
 
-	private static $allowableTags = array('em', 'strong');
+	private static $allowableTags = ['em', 'strong'];
 
 	/**
 	 * @param string $text
@@ -51,7 +51,7 @@ class String {
 	 */
 	public static function escapeInput($text) {
 		$text = self::myhtmlentities($text);
-		$repl = array();
+		$repl = [];
 		foreach (self::$allowableTags as $allowable) {
 			$repl["&lt;$allowable&gt;"] = "<$allowable>";
 			$repl["&lt;/$allowable&gt;"] = "</$allowable>";
@@ -92,13 +92,13 @@ class String {
 	 * @return string
 	 */
 	public static function prettifyInput($text) {
-		$patterns = array(
+		$patterns = [
 			// link in brackets
 			'!(?<=[\s>])\((http://[^]\s,<]+)\)!e' => "'(<a href=\"$1\" title=\"'.urldecode('$1').'\">'.urldecode('$1').'</a>)'",
 			'!(?<=[\s>])(http://[^]\s,<]+)!e' => "'<a href=\"$1\" title=\"'.urldecode('$1').'\">'.urldecode('$1').'</a>'",
 			'/\n([^\n]*)/' => "<p>$1</p>\n",
 			'!\[url=([^]]+)\]([^]]+)\[/url\]!' => '<a href="$1">$2</a>',
-		);
+		];
 		$text = preg_replace(array_keys($patterns), array_values($patterns), "\n$text");
 
 		return $text;
@@ -112,13 +112,13 @@ class String {
 		preg_match('/([^,]+) ([^,]+)(, .+)?/', $name, $m);
 
 		if ( ! isset($m[2]) ) {
-			return array('firstname' => $name);
+			return ['firstname' => $name];
 		}
 
-		return array(
+		return [
 			'firstname' => $m[1] . (@$m[3]),
 			'lastname' => $m[2]
-		);
+		];
 	}
 
 	/**
@@ -141,9 +141,9 @@ class String {
 	 * @return string
 	 */
 	public static function slugify($name, $maxlength = 60) {
-		$name = strtr($name, array(
+		$name = strtr($name, [
 			'²' => '2', '°' => 'deg',
-		));
+		]);
 		$name = Char::cyr2lat($name);
 		$name = self::removeDiacritics($name);
 		$name = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $name);
@@ -174,7 +174,7 @@ class String {
 	 * @return string
 	 */
 	public static function my_replace($cont) {
-		$chars = array("\r" => '',
+		$chars = ["\r" => '',
 			'„' => '"', '“' => '"', '”' => '"', '«' => '"', '»' => '"', '&quot;' => '"',
 			'&bdquo;' => '"', '&ldquo;' => '"', '&rdquo;' => '"', '&laquo;' => '"',
 			'&raquo;' => '"', '&#132;' => '"', '&#147;' => '"', '&#148;' => '"',
@@ -182,14 +182,14 @@ class String {
 			"'" => '’', '...' => '…',
 			'</p>' => '', '</P>' => '',
 			'<p>' => "\n\t", '<P>' => "\n\t",
-		);
-		$reg_chars = array(
+		];
+		$reg_chars = [
 			'/(\s|&nbsp;)(-|–|­){1,2}(\s)/' => '$1—$3', # mdash
 			'/([\s(][\d,.]*)-([\d,.]+[\s)])/' => '$1–$2', # ndash между цифри
 			'/(\d)x(\d)/' => '$1×$2', # знак за умножение
 			'/\n +/' => "\n\t", # абзаци
 			'/(?<!\n)\n\t\* \* \*\n(?!\n)/' => "\n\n\t* * *\n\n",
-		);
+		];
 
 		$cont = preg_replace('/([\s(]\d+ *)-( *\d+[\s),.])/', '$1–$2', "\n".$cont);
 		$cont = str_replace(array_keys($chars), array_values($chars), $cont);
@@ -205,7 +205,7 @@ class String {
 				break;
 			}
 			$cont = preg_replace_callback($qreg, function($matches) {
-				return '„'. strtr($matches[1], array('„'=>'«', '“'=>'»', '«'=>'„', '»'=>'“')) .'“';
+				return '„'. strtr($matches[1], ['„'=>'«', '“'=>'»', '«'=>'„', '»'=>'“']) .'“';
 			}, $cont);
 		}
 

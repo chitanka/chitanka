@@ -60,8 +60,8 @@ class UserPage extends Page {
 	}
 
 	protected function userExists() {
-		$key = array('username' => $this->username);
-		$sel = array('id userId', 'username', 'realname', 'email', 'registration', 'touched');
+		$key = ['username' => $this->username];
+		$sel = ['id userId', 'username', 'realname', 'email', 'registration', 'touched'];
 		$res = $this->db->select(DBT_USER, $key, $sel);
 		$data = $this->db->fetchAssoc($res);
 		if ( empty($data) ) {
@@ -94,11 +94,11 @@ class UserPage extends Page {
 
 	protected function makePublicUserDataView() {
 		$rcount = sprintf('<a href="%s">%s</a>',
-			$this->controller->generateUrl('user_ratings', array('username' => $this->username)),
+			$this->controller->generateUrl('user_ratings', ['username' => $this->username]),
 			$this->getRatingCount()
 		);
 		$ccount = sprintf('<a href="%s">%s</a>',
-			$this->controller->generateUrl('user_comments', array('username' => $this->username)),
+			$this->controller->generateUrl('user_comments', ['username' => $this->username]),
 			$this->getCommentCount()
 		);
 
@@ -149,12 +149,12 @@ EOS;
 		}
 		$h = '<h2>Сканирани или обработени текстове</h2>';
 
-		return $h . $this->controller->renderView('App:User:contribs_list.html.twig', array(
+		return $h . $this->controller->renderView('App:User:contribs_list.html.twig', [
 			'user' => $this->shown_user,
 			'contribs' => $repo->getLatestByUser($this->shown_user, 20),
 			'count' => $count
-		))
-		. sprintf('<p>Общо: <a href="%s">%d</a></p>', $this->controller->generateUrl('user_contribs', array('username' => $this->shown_user->getUsername())), $count);
+		])
+		. sprintf('<p>Общо: <a href="%s">%d</a></p>', $this->controller->generateUrl('user_contribs', ['username' => $this->shown_user->getUsername()]), $count);
 	}
 
 	protected function makeReadList() {
@@ -165,12 +165,12 @@ EOS;
 		}
 		$h = '<h2>Последни прочетени произведения</h2>';
 
-		return $h . $this->controller->renderView('App:User:read_texts_list.html.twig', array(
+		return $h . $this->controller->renderView('App:User:read_texts_list.html.twig', [
 			'user' => $this->shown_user,
 			'is_owner' => true,
 			'read_texts' => $repo->getLatestByUser($this->shown_user, 20),
-		))
-		. sprintf('<p class="more"><a href="%s">Всички</a></p>', $this->controller->generateUrl('user_read_list', array('username' => $this->shown_user->getUsername())));
+		])
+		. sprintf('<p class="more"><a href="%s">Всички</a></p>', $this->controller->generateUrl('user_read_list', ['username' => $this->shown_user->getUsername()]));
 	}
 
 	protected function makeBookmarksList() {
@@ -181,12 +181,12 @@ EOS;
 		}
 		$h = '<h2>Последни избрани произведения</h2>';
 
-		return $h . $this->controller->renderView('App:User:bookmarks_list.html.twig', array(
+		return $h . $this->controller->renderView('App:User:bookmarks_list.html.twig', [
 			'user' => $this->shown_user,
 			'is_owner' => true,
 			'bookmarks' => $repo->getLatestByUser($this->shown_user, 20),
-		))
-		. sprintf('<p class="more"><a href="%s">Всички</a></p>', $this->controller->generateUrl('user_bookmarks', array('username' => $this->shown_user->getUsername())));
+		])
+		. sprintf('<p class="more"><a href="%s">Всички</a></p>', $this->controller->generateUrl('user_bookmarks', ['username' => $this->shown_user->getUsername()]));
 	}
 
 	protected function makeCurrentContribList() {
@@ -212,7 +212,7 @@ EOS;
 	}
 
 	protected function getDbKey($field = 'user_id') {
-		return array($field => $this->userId);
+		return [$field => $this->userId];
 	}
 
 	protected function makeEditOwnPageLink() {
@@ -220,7 +220,7 @@ EOS;
 			return '';
 		}
 
-		$link = $this->controller->generateUrl('user_page_edit', array('username' => $this->username));
+		$link = $this->controller->generateUrl('user_page_edit', ['username' => $this->username]);
 
 		return "<p style='font-size:small; text-align:right'>[<a href=\"$link\" title=\"Редактиране на личната страница\">редактиране</a>]</p>";
 	}
@@ -231,9 +231,9 @@ EOS;
 
 	protected function getListDbKey() {
 		if ( !empty($this->q) ) {
-			return array('username' => array('>=', $this->q));
+			return ['username' => ['>=', $this->q]];
 		}
-		return array();
+		return [];
 	}
 
 }

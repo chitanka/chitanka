@@ -6,9 +6,9 @@
 class PersonRepository extends EntityRepository {
 	protected $asAuthor = false;
 	protected $asTranslator = false;
-	protected $queryableFields = array('id', 'slug', 'name', 'orig_name', 'real_name', 'oreal_name');
+	protected $queryableFields = ['id', 'slug', 'name', 'orig_name', 'real_name', 'oreal_name'];
 
-	private $countryList = array(
+	private $countryList = [
 		'-',
 		'au',
 		'at',
@@ -93,13 +93,13 @@ class PersonRepository extends EntityRepository {
 		'za',
 		'jm',
 		'jp',
-	);
+	];
 
-	private $typeList = array(
+	private $typeList = [
 		'p' => 'Псевдоним',
 		'r' => 'Истинско име',
 		'a' => 'Алтернативно изписване',
-	);
+	];
 
 	public function getCountryList() {
 		return $this->countryList;
@@ -113,7 +113,7 @@ class PersonRepository extends EntityRepository {
 	 * @param string $slug
 	 */
 	public function findBySlug($slug) {
-		return $this->findOneBy(array('slug' => $slug));
+		return $this->findOneBy(['slug' => $slug]);
 	}
 
 	/**
@@ -130,7 +130,7 @@ class PersonRepository extends EntityRepository {
 	}
 
 	public function getBySlug($slug) {
-		return $this->findOneBy(array('slug' => $slug));
+		return $this->findOneBy(['slug' => $slug]);
 	}
 
 	public function getQueryBy($filters) {

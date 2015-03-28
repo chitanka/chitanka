@@ -24,7 +24,7 @@ class UpdatePersonsFromWikiDbCommand extends Command {
 	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->output = $output;
-		$this->errors = array();
+		$this->errors = [];
 		$this->processWikiPage('Работно ателие/Нови автори');
 		$output->writeln('Done.');
 	}
@@ -98,7 +98,7 @@ class UpdatePersonsFromWikiDbCommand extends Command {
 			error_reporting(E_WARNING);
 			require_once $this->getContainer()->getParameter('kernel.root_dir') . '/../vendor/apibot/apibot.php';
 			// $logins comes from vendor/apibot/logins.php
-			$this->wikiBot = new \Apibot($logins['chitanka'], array('dump_mode' => 0));
+			$this->wikiBot = new \Apibot($logins['chitanka'], ['dump_mode' => 0]);
 		}
 		return $this->wikiBot;
 	}
@@ -108,7 +108,7 @@ class UpdatePersonsFromWikiDbCommand extends Command {
 	 */
 	private function getPersonsDataFromWikiContent($wikiContent) {
 		$templates = $this->getPersonTemplatesFromWikiContent($wikiContent);
-		$persons = array();
+		$persons = [];
 		foreach ($templates as $template) {
 			$persons[] = $this->getPersonDataFromWikiContent($template);
 		}
@@ -117,7 +117,7 @@ class UpdatePersonsFromWikiDbCommand extends Command {
 
 	private function getPersonDataFromWikiContent($template) {
 		$wikiVars = $this->getPersonVarsFromWikiContent($template);
-		return array(
+		return [
 			'slug'       => @$wikiVars['идентификатор'],
 			'name'       => @$wikiVars['име'],
 			'orig_name'  => @$wikiVars['оригинално име'],
@@ -125,11 +125,11 @@ class UpdatePersonsFromWikiDbCommand extends Command {
 			'oreal_name' => @$wikiVars['оригинално истинско име'],
 			'country'    => @$wikiVars['държава'],
 			'info'       => str_replace('_', ' ', @$wikiVars['уики']),
-		);
+		];
 	}
 
 	private function getPersonVarsFromWikiContent($template) {
-		$wikiVars = array();
+		$wikiVars = [];
 		foreach (explode("\n", trim($template)) as $row) {
 			list($wikiVar, $value) = explode('=', ltrim($row, '| '));
 			$wikiVars[trim($wikiVar)] = trim($value);
@@ -145,6 +145,6 @@ class UpdatePersonsFromWikiDbCommand extends Command {
 			return $matches[1];
 		}
 
-		return array();
+		return [];
 	}
 }

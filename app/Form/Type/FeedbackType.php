@@ -10,18 +10,18 @@ class FeedbackType extends AbstractType {
 			->add('referer', 'hidden')
 			->add('comment', 'textarea')
 			->add('subject')
-			->add('name', 'text', array(
+			->add('name', 'text', [
 				'required' => false,
-			))
-			->add('email', 'email', array(
+			])
+			->add('email', 'email', [
 				'required' => false,
-			));
+			]);
 	}
 
 	public function getDefaultOptions(array $options) {
-		return array(
+		return [
 			'data_class' => 'App\Entity\Feedback',
-		);
+		];
 	}
 
 	public function getName() {

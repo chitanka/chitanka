@@ -13,9 +13,9 @@ class EmailType extends AbstractType {
 	}
 
 	public function getDefaultOptions(array $options) {
-		return array(
+		return [
 			'data_class' => 'App\Entity\Email',
-		);
+		];
 	}
 
 	public function getName() {

@@ -323,8 +323,8 @@ class Text extends BaseWork {
 		$this->id = $id;
 		$this->textAuthors = new ArrayCollection;
 		$this->textTranslators = new ArrayCollection;
-		$this->authors = array();
-		$this->translators = array();
+		$this->authors = [];
+		$this->translators = [];
 		$this->bookTexts = new ArrayCollection;
 		$this->books = new ArrayCollection;
 		$this->labels = new ArrayCollection;
@@ -635,10 +635,10 @@ class Text extends BaseWork {
 	public function getTitleAsSfb() {
 		$title = "|\t" . $this->escapeForSfb($this->title);
 		if ( !empty($this->subtitle) ) {
-			$title .= "\n|\t" . strtr($this->escapeForSfb($this->subtitle), array(
+			$title .= "\n|\t" . strtr($this->escapeForSfb($this->subtitle), [
 				self::TITLE_NEW_LINE => "\n|\t",
 				'\n' => "\n|\t",
-			));
+			]);
 		}
 		if ( $this->hasTitleNote() ) {
 			$title .= '*';
@@ -650,9 +650,9 @@ class Text extends BaseWork {
 	 * @param string $string
 	 */
 	private function escapeForSfb($string) {
-		return strtr($string, array(
+		return strtr($string, [
 			'*' => '\*',
-		));
+		]);
 	}
 
 	public function hasTitleNote() {
@@ -690,7 +690,7 @@ class Text extends BaseWork {
 	 * @param string $dir
 	 */
 	public function getImagesFromDir($dir) {
-		$images = array();
+		$images = [];
 
 		if (is_dir($dir) && ($dh = opendir($dir)) ) {
 			while (($file = readdir($dh)) !== false) {
@@ -813,7 +813,7 @@ class Text extends BaseWork {
 //	}
 
 	public function getHistoryAndVersion() {
-		$history = array();
+		$history = [];
 		$historyRows = $this->getHistoryInfo();
 		$verNo = 1;
 		$ver = '0';
@@ -822,7 +822,7 @@ class Text extends BaseWork {
 			$history[] = "$ver ($data[date]) — $data[comment]";
 		}
 
-		return array($history, $ver);
+		return [$history, $ver];
 	}
 
 	public function getFbi() {
@@ -835,14 +835,14 @@ class Text extends BaseWork {
 		$translators = implode($this->getTranslatorSlugs());
 		$labels = implode($this->getLabelSlugs());
 
-		$contributors = array();
+		$contributors = [];
 		foreach ($this->getUserContribs() as $userContrib/*@var $userContrib UserTextContrib*/) {
-			$contributors[] = implode(',', array(
+			$contributors[] = implode(',', [
 				$userContrib->getUsername(),
 				$userContrib->getPercent(),
 				'"'.$userContrib->getComment().'"',
 				$userContrib->getHumandate(),
-			));
+			]);
 		}
 		$contributors = implode(';', $contributors);
 
@@ -871,13 +871,13 @@ EOS;
 	}
 
 	public function getNameForFile() {
-		$filename = strtr(Setup::setting('download_file'), array(
+		$filename = strtr(Setup::setting('download_file'), [
 			'AUTHOR' => $this->getAuthorNameEscaped(),
 			'SERIES' => empty($this->series) ? '' : String::createAcronym(Char::cyr2lat($this->series->getName())),
 			'SERNO' => empty($this->sernr) ? '' : $this->sernr,
 			'TITLE' => Char::cyr2lat($this->title),
 			'ID' => $this->getId(),
-		));
+		]);
 		$filename = substr(File::cleanFileName($filename), 0, 200);
 
 		return $filename;
@@ -893,14 +893,14 @@ EOS;
 
 	public static function getRatings($id) {
 		return Setup::db()->getFields(DBT_TEXT,
-			array('id' => $id),
-			array('rating', 'votes'));
+			['id' => $id],
+			['rating', 'votes']);
 	}
 
 	public function getHistoryInfo() {
 		$db = Setup::db();
-		$res = $db->select(DBT_EDIT_HISTORY, array('text_id' => $this->getId()), '*', 'date ASC');
-		$rows = array();
+		$res = $db->select(DBT_EDIT_HISTORY, ['text_id' => $this->getId()], '*', 'date ASC');
+		$rows = [];
 
 		while ( $row = $db->fetchAssoc($res) ) {
 			$rows[] = $row;
@@ -909,7 +909,7 @@ EOS;
 		if ($rows) {
 			$isoEntryDate = $this->createdAt->format('Y-m-d');
 			if ( "$isoEntryDate 24" < $rows[0]['date'] ) {
-				array_unshift($rows, array('date' => $isoEntryDate, 'comment' => 'Добавяне'));
+				array_unshift($rows, ['date' => $isoEntryDate, 'comment' => 'Добавяне']);
 			}
 		}
 
@@ -1056,7 +1056,7 @@ EOS;
 	}
 
 	public function getLabelsNames() {
-		$names = array();
+		$names = [];
 		foreach ($this->getLabels() as $label) {
 			$names[] = $label->getName();
 		}
@@ -1064,7 +1064,7 @@ EOS;
 	}
 
 	public function getLabelSlugs() {
-		$slugs = array();
+		$slugs = [];
 		foreach ($this->getLabels() as $label) {
 			$slugs[] = $label->getSlug();
 		}

@@ -9,20 +9,20 @@ class WikiController extends Controller {
 
 	public function indexAction(Request $request, $page) {
 		$url = str_replace('$1', ucfirst($page), $this->container->getParameter('wiki_url'));
-		return array(
+		return [
 			'page' => $page,
 			'wiki_page' => $url,
 			'contents' => $this->getFromWiki($url, $request->query->get('cache', 1)),
-		);
+		];
 	}
 
 	public function showAction($page) {
 		$wiki = $this->wikiEngine();
 		$wikiPage = $wiki->getPage($page);
-		return array(
+		return [
 			'page' => $wikiPage,
 			'_status' => !$wikiPage->exists() ? 404 : null,
-		);
+		];
 	}
 
 	public function saveAction(Request $request) {
@@ -40,10 +40,10 @@ class WikiController extends Controller {
 	public function historyAction($page) {
 		$wiki = $this->wikiEngine();
 		$commits = $wiki->getHistory($page);
-		return array(
+		return [
 			'page' => $wiki->getPage($page),
 			'commits' => $commits,
-		);
+		];
 	}
 
 	private function wikiEngine() {

@@ -8,10 +8,10 @@ use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 
 class Responder {
 
-	public static $customResponseFormats = array(
+	public static $customResponseFormats = [
 		'osd' => 'application/opensearchdescription+xml',
 		'suggest' => 'application/x-suggestions+json',
-	);
+	];
 
 	/** @var \Twig_Environment */
 	private $twig;
@@ -51,11 +51,11 @@ class Responder {
 			return $jsonResponse;
 		}
 		$response = new Response();
-		$params += array(
+		$params += [
 			'_cache' => $this->useHttpCache ? 86400/*24 hours*/ : 0,
 			'_status' => null,
 			'_type' => null,
-		);
+		];
 		if (isset($params['_content'])) {
 			$content = $params['_content'];
 		} else {
@@ -82,14 +82,14 @@ class Responder {
 	 * @return array
 	 */
 	private function createExtraTemplateParams(Request $request) {
-		return array(
+		return [
 			'navlinks' => $this->renderLayoutComponent('sidebar-menu', 'App::navlinks.html.twig'),
 			'footer_links' => $this->renderLayoutComponent('footer-menu', 'App::footer_links.html.twig'),
 			'current_route' => $request->attributes->get('_route'),
 			'environment' => $this->debug ? 'dev' : 'prod',
 			'ajax' => $request->isXmlHttpRequest(),
 			'_template' => null,
-		);
+		];
 	}
 
 	/**
@@ -101,17 +101,17 @@ class Responder {
 			case 'opds':
 				$textsUpdatedAt = $this->em->getTextRevisionRepository()->getMaxDate();
 				$booksUpdatedAt = $this->em->getBookRevisionRepository()->getMaxDate();
-				return array(
+				return [
 					'texts_updated_at' => $textsUpdatedAt,
 					'books_updated_at' => $booksUpdatedAt,
 					'updated_at' => max($textsUpdatedAt, $booksUpdatedAt),
-				);
+				];
 			case 'osd':
-				return array(
+				return [
 					'_cache' => 31536000, // an year
-				);
+				];
 		}
-		return array();
+		return [];
 	}
 
 	/**

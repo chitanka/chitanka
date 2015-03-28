@@ -21,15 +21,15 @@ class GitCommitContentCommand extends Command {
 	}
 
 	protected function getRequiredArguments() {
-		return array(
+		return [
 			'desc' => 'Brief description of changes',
-		);
+		];
 	}
 
 	protected function getOptionalOptions() {
-		return array(
-			'from' => array('Number of last minutes to check for changes', 30),
-		);
+		return [
+			'from' => ['Number of last minutes to check for changes', 30],
+		];
 	}
 
 	/** {@inheritdoc} */

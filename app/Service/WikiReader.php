@@ -19,10 +19,10 @@ class WikiReader {
 		$url = $site->getUrl($pageName);
 		$page = new WikiPage($pageName);
 		$page->content = $this->mwClient->fetchContent($url);
-		$page->intro = strtr($site->getIntro(), array(
+		$page->intro = strtr($site->getIntro(), [
 			'$1' => $pageName,
 			'$2' => $url,
-		));
+		]);
 		return $page;
 	}
 }

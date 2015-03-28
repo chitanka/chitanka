@@ -8,7 +8,7 @@ class Request {
 
 	private $cookiePath = '/';
 	private $cookieExp;
-	private $params = array();
+	private $params = [];
 
 	public function __construct() {
 		/** Timelife for cookies */

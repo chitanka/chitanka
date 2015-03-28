@@ -23,11 +23,11 @@ class FeedbackController extends Controller {
 //			return $this->redirectToRoute('task_success');
 		}
 
-		return array(
+		return [
 			'admin_email' => key($adminEmail),
 			'form' => $form->createView(),
 			'message' => $message,
-		);
+		];
 	}
 
 }

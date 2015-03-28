@@ -51,7 +51,7 @@ class CommentListener {
 	 * @return string
 	 */
 	private function loadExtraRecipientsForWorkEntryComment(Comment $comment) {
-		$recipients = array();
+		$recipients = [];
 		$usernames = array_map('trim', explode(',', $comment->getCc()));
 		$users = $this->em->getUserRepository()->findByUsernames($usernames);
 		foreach ($users as $user) {

@@ -15,11 +15,11 @@ class SandboxController extends Controller {
 			$htmlContent = $converter->convert()->getContent();
 		}
 
-		return array(
+		return [
 			'image_dir' => $imageDir,
 			'content' => $content,
 			'html_content' => $htmlContent,
-		);
+		];
 	}
 
 }

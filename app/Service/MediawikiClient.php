@@ -27,7 +27,7 @@ class MediawikiClient {
 
 		try {
 			/* @var $response \Buzz\Message\Response */
-			$response = $this->browser->get("{$url}?action=render", array("User-Agent: {$this->userAgentString}"));
+			$response = $this->browser->get("{$url}?action=render", ["User-Agent: {$this->userAgentString}"]);
 			if ($response->isOk()) {
 				$content = $this->processContent($response->getContent(), $url);
 				return CacheManager::setCache($action, $id, $content);
@@ -47,15 +47,15 @@ class MediawikiClient {
 	private function processContent($content, $url) {
 		$up = parse_url($url);
 		$server = "$up[scheme]://$up[host]";
-		$content = strtr($content, array(
+		$content = strtr($content, [
 			'&nbsp;' => '&#160;',
 			' href="/wiki/' => ' href="'.$server.'/wiki/',
-		));
-		$patterns = array(
+		]);
+		$patterns = [
 			'/rel="[^"]+"/' => '',
 			// images
 			'| src="(/\w)|' => " src=\"$server$1",
-		);
+		];
 		$content = preg_replace(array_keys($patterns), array_values($patterns), $content);
 
 		$content = sprintf('<div class="editsection">[<a href="%s?action=edit" title="Редактиране на статията">±</a>]</div>', $url) . $content;

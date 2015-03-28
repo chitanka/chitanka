@@ -10,14 +10,14 @@ abstract class BaseWork extends Entity {
 
 	const TITLE_NEW_LINE = "<br>\n";
 
-	public static $ratings = array(
+	public static $ratings = [
 		6 => 'Шедьовър',
 		5 => 'Много добро',
 		4 => 'Добро',
 		3 => 'Посредствено',
 		2 => 'Лошо',
 		1 => 'Отвратително',
-	);
+	];
 
 	protected static $minRating = null;
 	protected static $maxRating = null;
@@ -58,10 +58,10 @@ abstract class BaseWork extends Entity {
 	 */
 	public function getTitles($format = '%t1 — %t2') {
 		if ( ($subtitle = $this->getSubtitle()) ) {
-			return strtr($format, array(
+			return strtr($format, [
 				'%t1' => $this->getTitle(),
 				'%t2' => $subtitle,
-			));
+			]);
 		}
 
 		return $this->getTitle();
@@ -106,7 +106,7 @@ abstract class BaseWork extends Entity {
 	private $authorIds;
 	public function getAuthorIds() {
 		if ( ! isset($this->authorIds)) {
-			$this->authorIds = array();
+			$this->authorIds = [];
 			foreach ($this->getAuthors() as $author) {
 				$this->authorIds[] = $author->getId();
 			}
@@ -143,7 +143,7 @@ abstract class BaseWork extends Entity {
 	}
 
 	private static function clearSfbMarkers($sfbContent) {
-		$sfbContent = strtr($sfbContent, array(
+		$sfbContent = strtr($sfbContent, [
 			">\t" => "\t",
 			">>\t" => "\t",
 			">>>\t" => "\t",
@@ -170,11 +170,11 @@ abstract class BaseWork extends Entity {
 			"@\t" => "\t",
 			'{s}' => '', '{/s}' => '',
 			'{e}' => '', '{/e}' => '',
-		));
+		]);
 
-		$sfbContent = strtr($sfbContent, array(
+		$sfbContent = strtr($sfbContent, [
 			"\n" => "\r\n",
-		));
+		]);
 
 		$sfbContent = preg_replace('/M>\t.+/', '', $sfbContent);
 
@@ -193,7 +193,7 @@ abstract class BaseWork extends Entity {
 	}
 
 	public function getHeaders() {
-		return array();
+		return [];
 	}
 
 	public function getHeadersAsNestedXml($allowEmpty = true) {
@@ -320,7 +320,7 @@ abstract class BaseWork extends Entity {
 	}
 
 	public function getHistoryInfo() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -333,7 +333,7 @@ abstract class BaseWork extends Entity {
 	 * @param string $imgDir Image directory
 	 */
 	protected function getEpubChunksFrom($input, $imgDir) {
-		$chapters = array();
+		$chapters = [];
 
 		$headers = $this->getHeaders();
 		if (count($headers) == 0) {
@@ -341,7 +341,7 @@ abstract class BaseWork extends Entity {
 			$header->setName('Основен текст');
 			$header->setFpos(0);
 			$header->setLinecnt(1000000);
-			$headers = array($header);
+			$headers = [$header];
 		}
 
 		$lastpos = -1;
@@ -353,7 +353,7 @@ abstract class BaseWork extends Entity {
 				$converter->setMaxLineCount($header->getLinecnt());
 				$converter->convert();
 				$text = $converter->getText() . $converter->getNotes(2);
-				$chapters[] = array('title' => $header->getName(), 'text'  => $text);
+				$chapters[] = ['title' => $header->getName(), 'text'  => $text];
 			}
 		}
 

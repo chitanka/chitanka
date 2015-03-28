@@ -63,8 +63,8 @@ class ContentImporter {
 
 		$this->contentDir = $contentDir;
 		$this->saveFiles = $saveFiles;
-		$this->works = $this->books = array();
-		$this->errors = array();
+		$this->works = $this->books = [];
+		$this->errors = [];
 
 		$this->fs = new Filesystem();
 
@@ -75,7 +75,7 @@ class ContentImporter {
 		$workFiles = self::sortDataFiles(glob("$dir/work.*.data"));
 		$bookFiles = self::sortDataFiles(glob("$dir/book.*.data"));
 
-		$queries = array();
+		$queries = [];
 		foreach ($workFiles as $workFile) {
 			$workData = $this->processWorkFiles($workFile);
 			$textContent = null;
@@ -97,7 +97,7 @@ class ContentImporter {
 	}
 
 	private function processWorkFiles($dataFile) {
-		$work = array();
+		$work = [];
 		foreach (file($dataFile) as $line) {
 			$work += self::extractVarFromLineData($line);
 		}
@@ -111,7 +111,7 @@ class ContentImporter {
 			$work['subtitle'] = trim($work['subtitle'], '()');
 		}
 		if (isset($work['authors'])) {
-			$authors = array();
+			$authors = [];
 			foreach (explode(',', $work['authors']) as $slug) {
 				$authors[] = $this->getObjectId('person', $slug);
 			}
@@ -121,14 +121,14 @@ class ContentImporter {
 			list($work['year'], $work['year2']) = explode('-', $work['year']);
 		}
 		if (isset($work['translators'])) {
-			$translators = array();
+			$translators = [];
 			foreach (explode(';', $work['translators']) as $slugYear) {
 				list($slug, $transYear) = explode(',', $slugYear);
 				if ($transYear == '?') {
 					$transYear = null;
 				}
 				if ($slug != '?') {
-					$translators[] = array($this->getObjectId('person', $slug), $transYear);
+					$translators[] = [$this->getObjectId('person', $slug), $transYear];
 				}
 				if (strpos($transYear, '-') !== false) {
 					list($work['trans_year'], $work['trans_year2']) = explode('-', $transYear);
@@ -148,7 +148,7 @@ class ContentImporter {
 				$work['users_as_new'] = true;
 				$work['users'] = substr($work['users'], 1);
 			}
-			$users = array();
+			$users = [];
 			foreach (explode(';', $work['users']) as $userContrib) {
 				// username, percent, comment, date
 				$parts = str_getcsv($userContrib, ',');
@@ -181,7 +181,7 @@ class ContentImporter {
 		if (file_exists($file = str_replace('.data', '.info', $dataFile))) {
 			$work['info'] = $file;
 		}
-		if (file_exists($dir = strtr($dataFile, array('work.' => '', '.data' => ''))) && is_dir($dir)) {
+		if (file_exists($dir = strtr($dataFile, ['work.' => '', '.data' => ''])) && is_dir($dir)) {
 			$work['img'] = $dir;
 		}
 
@@ -189,7 +189,7 @@ class ContentImporter {
 	}
 
 	private function processBookFiles($dataFile) {
-		$book = array();
+		$book = [];
 		foreach (file($dataFile) as $line) {
 			$book += self::extractVarFromLineData($line);
 		}
@@ -203,7 +203,7 @@ class ContentImporter {
 			$book['subtitle'] = trim($book['subtitle'], '()');
 		}
 		if (isset($book['authors'])) {
-			$authors = array();
+			$authors = [];
 			foreach (explode(',', $book['authors']) as $slug) {
 				$authors[] = $this->getObjectId('person', $slug);
 			}
@@ -221,7 +221,7 @@ class ContentImporter {
 		if (file_exists($file = str_replace('.data', '.covr.jpg', $dataFile))) {
 			$book['cover'] = $file;
 		}
-		if (file_exists($dir = strtr($dataFile, array('.data' => ''))) && is_dir($dir)) {
+		if (file_exists($dir = strtr($dataFile, ['.data' => ''])) && is_dir($dir)) {
 			$book['img'] = $dir;
 		}
 		if (file_exists($file = str_replace('.data', '.djvu', $dataFile))) {
@@ -233,7 +233,7 @@ class ContentImporter {
 		if (isset($book['formats'])) {
 			$book['formats'] = array_map('trim', explode(',', $book['formats']));
 		} else if ($book['is_new']) {
-			$book['formats'] = array();
+			$book['formats'] = [];
 			if (!empty($book['works'])) {
 				$book['formats'][] = 'sfb';
 			}
@@ -254,16 +254,16 @@ class ContentImporter {
 		$var = trim(array_shift($parts));
 		$value = trim(implode($separator, $parts));
 		if ($value === '') {
-			return array();
+			return [];
 		}
 		if ($value == '-' || $value == '?') {
 			$value = null;
 		}
-		return array($var => $value);
+		return [$var => $value];
 	}
 
 	private static function sortDataFiles($files) {
-		$sorted = array();
+		$sorted = [];
 		foreach ($files as $file) {
 			if (preg_match('/\.(\d+)\.data/', $file, $matches)) {
 				$sorted[$matches[1]] = $file;
@@ -276,29 +276,29 @@ class ContentImporter {
 
 	private static function getBookTemplate($file, $works) {
 		$bookTmpl = file_get_contents($file);
-		$bookWorks = array();
+		$bookWorks = [];
 		if (preg_match_all('/\{(file|text):(\d+)/', $bookTmpl, $m)) {
 			// already existing in the database works included in this book
 			foreach ($m[2] as $oldWork) {
-				$bookWorks[] = array('id' => $oldWork, 'is_new' => false);
+				$bookWorks[] = ['id' => $oldWork, 'is_new' => false];
 			}
 		}
 		foreach ($works as $packetId => $work) {
 			if (strpos($bookTmpl, ":$packetId") !== false) {
-				$bookTmpl = strtr($bookTmpl, array(
+				$bookTmpl = strtr($bookTmpl, [
 					":$packetId}" => ":$work[id]}",
 					":$packetId-" => ":$work[id]-",
 					":$packetId|" => ":$work[id]|",
-				));
+				]);
 				$bookWorks[] = $work;
 			}
 		}
 
-		return array($bookTmpl, $bookWorks);
+		return [$bookTmpl, $bookWorks];
 	}
 
 	private static function prepareWorkTemplate($work) {
-		$files = array();
+		$files = [];
 		$template = file_get_contents($work['tmpl']);
 		if (preg_match_all('/\{(text|file):-\d+(-.+)\}/', $template, $matches)) {
 			foreach ($matches[2] as $match) {
@@ -312,7 +312,7 @@ class ContentImporter {
 		return $work;
 	}
 
-	private $objectsIds = array();
+	private $objectsIds = [];
 
 	/**
 	 * @param string $table
@@ -335,11 +335,11 @@ class ContentImporter {
 		return $this->objectsIds[$table][$query];
 	}
 
-	private $curIds = array();
-	private $ids = array(
-		'text' => array(),
-		'book' => array(),
-	);
+	private $curIds = [];
+	private $ids = [
+		'text' => [],
+		'book' => [],
+	];
 	private function getNextId($table) {
 		if (isset($this->ids[$table]) && count($this->ids[$table])) {
 			return array_shift($this->ids[$table]);
@@ -355,7 +355,7 @@ class ContentImporter {
 	}
 
 	public function getNextIdUpdateQueries() {
-		$tables = array(
+		$tables = [
 			'text_revision',
 			'book_revision',
 			'text_translator',
@@ -363,8 +363,8 @@ class ContentImporter {
 			'book_author',
 			'book_text',
 			'series_author',
-		);
-		$queries = array();
+		];
+		$queries = [];
 		foreach ($tables as $table) {
 			$entityName = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 			$queries[] = "UPDATE next_id SET value=(SELECT max(id)+1 FROM $table) WHERE id = 'App\\\\Entity\\\\$entityName'";
@@ -384,14 +384,14 @@ class ContentImporter {
 	}
 
 	private function generateSqlForText(array $work) {
-		$set = array(
+		$set = [
 			'id' => $work['id'],
-		);
+		];
 		if (isset($work['title'])) {
-			$set += array(
+			$set += [
 				'slug' => (isset($work['slug']) ? String::slugify($work['slug']) : String::slugify($work['title'])),
 				'title' => String::my_replace($work['title']),
-			);
+			];
 		}
 		if (isset($work['toc_level'])) {
 			$set['headlevel'] = $work['toc_level'];
@@ -409,13 +409,13 @@ class ContentImporter {
 		}
 		if (isset($work['text'])) {
 			$size = self::getFileSize($work['text']) / 1000;
-			$set += array(
+			$set += [
 				'size' => $size,
 				'zsize' => ($size / 3.5),
-			);
+			];
 		}
 		if ($work['is_new']) {
-			$set += array(
+			$set += [
 				'created_at' => $this->entrydate,
 				'comment_count' => 0,
 				'rating' => 0,
@@ -423,7 +423,7 @@ class ContentImporter {
 				'has_anno' => 0,
 				'is_compilation' => isset($work['tmpl']),
 				'orig_title' => (empty($work['orig_title']) ? '' : self::fixOrigTitle($work['orig_title'])),
-			);
+			];
 			if (isset($work['ser_nr'])) {
 				$set['sernr'] = $work['ser_nr'];
 			}
@@ -463,53 +463,53 @@ class ContentImporter {
 		}
 
 		if ($work['is_new']) {
-			return array($this->olddb->replaceQ(DBT_TEXT, $set));
+			return [$this->olddb->replaceQ(DBT_TEXT, $set)];
 		}
 		if (count($set) > 1) {
-			return array($this->olddb->updateQ(DBT_TEXT, $set, array('id' => $work['id'])));
+			return [$this->olddb->updateQ(DBT_TEXT, $set, ['id' => $work['id']])];
 		}
-		return array();
+		return [];
 	}
 
 	private function generateSqlForTextRevision(array $work) {
 		if (!isset($work['revision'])) {
-			return array();
+			return [];
 		}
-		$set = array(
+		$set = [
 			'id' => $work['revision_id'],
 			'text_id' => $work['id'],
 			'user_id' => 1,
 			'comment' => $work['revision'],
 			'date' => $this->modifDate,
 			'first' => ($work['is_new'] ? 1 : 0),
-		);
-		return array(
+		];
+		return [
 			$this->olddb->replaceQ(DBT_EDIT_HISTORY, $set),
-			$this->olddb->updateQ(DBT_TEXT, array('cur_rev_id' => $work['revision_id']), array('id' => $work['id'])),
-		);
+			$this->olddb->updateQ(DBT_TEXT, ['cur_rev_id' => $work['revision_id']], ['id' => $work['id']]),
+		];
 	}
 
 	private function generateSqlForTextAuthor(array $work) {
 		if (empty($work['authors'])) {
-			return array();
+			return [];
 		}
-		$sql = array($this->olddb->deleteQ(DBT_AUTHOR_OF, array('text_id' => $work['id'])));
+		$sql = [$this->olddb->deleteQ(DBT_AUTHOR_OF, ['text_id' => $work['id']])];
 		foreach ($work['authors'] as $pos => $author) {
-			$set = array(
+			$set = [
 				'id' => $this->getNextId(DBT_AUTHOR_OF),
 				'person_id' => $author,
 				'text_id' => $work['id'],
 				'pos' => $pos,
-			);
+			];
 			$sql[] = $this->olddb->insertQ(DBT_AUTHOR_OF, $set, false, false);
 		}
 		if (isset($set['series_id'])) {
 			foreach ($work['authors'] as $pos => $author) {
-				$set = array(
+				$set = [
 					'id' => $this->getNextId(DBT_SER_AUTHOR_OF),
 					'person_id' => $author,
 					'series_id' => $set['series_id'],
-				);
+				];
 				$sql[] = $this->olddb->insertQ(DBT_SER_AUTHOR_OF, $set, true, false);
 			}
 		}
@@ -518,18 +518,18 @@ class ContentImporter {
 
 	private function generateSqlForTextTranslator(array $work) {
 		if (empty($work['translators'])) {
-			return array();
+			return [];
 		}
-		$sql = array($this->olddb->deleteQ(DBT_TRANSLATOR_OF, array('text_id' => $work['id'])));
+		$sql = [$this->olddb->deleteQ(DBT_TRANSLATOR_OF, ['text_id' => $work['id']])];
 		foreach ($work['translators'] as $pos => $translator) {
 			list($personId, $transYear) = $translator;
-			$set = array(
+			$set = [
 				'id' => $this->getNextId(DBT_TRANSLATOR_OF),
 				'person_id' => $personId,
 				'text_id' => $work['id'],
 				'pos' => $pos,
 				'year' => $transYear,
-			);
+			];
 			$sql[] = $this->olddb->insertQ(DBT_TRANSLATOR_OF, $set, false, false);
 		}
 		return $sql;
@@ -537,30 +537,30 @@ class ContentImporter {
 
 	private function generateSqlForTextLabel(array $work) {
 		if (empty($work['labels'])) {
-			return array();
+			return [];
 		}
-		$sql = array($this->olddb->deleteQ('text_label', array('text_id' => $work['id'])));
+		$sql = [$this->olddb->deleteQ('text_label', ['text_id' => $work['id']])];
 		foreach ($work['labels'] as $label) {
-			$sql[] = $this->olddb->insertQ('text_label', array(
+			$sql[] = $this->olddb->insertQ('text_label', [
 				'label_id' => $this->getObjectId('label', $label),
 				'text_id' => $work['id']
-			));
+			]);
 		}
 		return $sql;
 	}
 
 	private function generateSqlForUserTextContrib(array $work) {
 		if (!isset($work['text']) || !isset($work['users'])) {
-			return array();
+			return [];
 		}
-		$sql = array();
+		$sql = [];
 		if (isset($work['users_as_new']) && $work['users_as_new']) {
-			$sql[] = $this->olddb->deleteQ(DBT_USER_TEXT, array('text_id' => $work['id']));
+			$sql[] = $this->olddb->deleteQ(DBT_USER_TEXT, ['text_id' => $work['id']]);
 		}
 		foreach ($work['users'] as $user) {
 			list($username, $percent, $comment, $date, $userId) = $user;
 			$size = self::getFileSize($work['text']) / 1000;
-			$set = array(
+			$set = [
 				'id' => $this->getNextId(DBT_USER_TEXT),
 				'text_id' => $work['id'],
 				'size' => ($percent/100 * $size),
@@ -568,7 +568,7 @@ class ContentImporter {
 				'comment' => $comment,
 				'date' => $this->modifDate,
 				'humandate' => $date,
-			);
+			];
 			if ($userId) {
 				$set['user_id'] = $userId;
 			}
@@ -582,7 +582,7 @@ class ContentImporter {
 
 	private function generateSqlForTextHeaders(array $work, $textContent) {
 		if (!isset($work['toc_level']) || empty($textContent)) {
-			return array();
+			return [];
 		}
 		$textService = new TextService($this->olddb);
 		if (isset($work['tmpl'])) {
@@ -591,7 +591,7 @@ class ContentImporter {
 		if (isset($work['text'])) {
 			return $textService->buildTextHeadersUpdateQuery($textContent, $work['id'], $work['toc_level']);
 		}
-		return array();
+		return [];
 	}
 
 	private function saveTextFiles(array $work) {
@@ -639,14 +639,14 @@ class ContentImporter {
 	}
 
 	private function generateSqlForBook(array $book) {
-		$set = array(
+		$set = [
 			'id' => $book['id'],
-		);
+		];
 		if (isset($book['title'])) {
-			$set += array(
+			$set += [
 				'slug' => (isset($book['slug']) ? String::slugify($book['slug']) : String::slugify($book['title'])),
 				'title' => String::my_replace($book['title']),
-			);
+			];
 		}
 		if (!empty($book['title_extra'])) {
 			$set['title_extra'] = String::my_replace($book['title_extra']);
@@ -658,11 +658,11 @@ class ContentImporter {
 			$set['orig_lang'] = $book['orig_lang'];
 		}
 		if ($book['is_new']) {
-			$set += array(
+			$set += [
 				'created_at' => $this->entrydate,
 				'has_anno' => 0,
 				'has_cover' => 0,
-			);
+			];
 		}
 		if (isset($book['type'])) {
 			$set['type'] = $book['type'];
@@ -700,39 +700,39 @@ class ContentImporter {
 		}
 
 		if ($book['is_new']) {
-			return array($this->olddb->replaceQ(DBT_BOOK, $set));
+			return [$this->olddb->replaceQ(DBT_BOOK, $set)];
 		}
 		if (count($set) > 1) {
-			return array($this->olddb->updateQ(DBT_BOOK, $set, array('id' => $book['id'])));
+			return [$this->olddb->updateQ(DBT_BOOK, $set, ['id' => $book['id']])];
 		}
-		return array();
+		return [];
 	}
 
 	private function generateSqlForBookRevision(array $book) {
 		if (!isset($book['revision'])) {
-			return array();
+			return [];
 		}
-		$set = array(
+		$set = [
 			'id' => $book['revision_id'],
 			'book_id' => $book['id'],
 			'comment' => $book['revision'],
 			'date' => $this->modifDate,
 			'first' => ($book['is_new'] ? 1 : 0),
-		);
-		return array($this->olddb->replaceQ('book_revision', $set));
+		];
+		return [$this->olddb->replaceQ('book_revision', $set)];
 	}
 
 	private function generateSqlForBookIsbn(array $book) {
 		if (!isset($book['isbn'])) {
-			return array();
+			return [];
 		}
-		$sql = array();
+		$sql = [];
 		foreach (explode(',', $book['isbn']) as $isbn) {
-			$set = array(
+			$set = [
 				'id' => $this->getNextId('book_isbn'),
 				'book_id' => $book['id'],
 				'code' => \App\Entity\BookIsbn::normalizeIsbn(trim($isbn)),
-			);
+			];
 			$sql[] = $this->olddb->replaceQ('book_isbn', $set);
 		}
 		return $sql;
@@ -740,15 +740,15 @@ class ContentImporter {
 
 	private function generateSqlForBookAuthors(array $book) {
 		if (empty($book['authors'])) {
-			return array();
+			return [];
 		}
-		$sql = array($this->olddb->deleteQ('book_author', array('book_id' => $book['id'])));
+		$sql = [$this->olddb->deleteQ('book_author', ['book_id' => $book['id']])];
 		foreach ($book['authors'] as $pos => $author) {
-			$set = array(
+			$set = [
 				'id' => $this->getNextId('book_author'),
 				'person_id' => $author,
 				'book_id' => $book['id'],
-			);
+			];
 			$sql[] = $this->olddb->insertQ('book_author', $set, false, false);
 		}
 		$sql[] = $this->buildBookTitleAuthorQuery($book['id']);
@@ -757,32 +757,32 @@ class ContentImporter {
 
 	private function generateSqlForBookTexts(array $book) {
 		if (empty($book['works'])) {
-			return array();
+			return [];
 		}
 		$bookTextRepo = $this->em->getBookTextRepository();
-		$sql = array();
+		$sql = [];
 		foreach ($book['works'] as $work) {
 			$key = 'book_text'.$book['id'].'_'.$work['id'];
 			if ($book['is_new'] || $work['is_new']) {
-				$set = array(
+				$set = [
 					'id' => $this->getNextId('book_text'),
 					'book_id' => $book['id'],
 					'text_id' => $work['id'],
 					'share_info' => (int) $work['is_new'],
-				);
+				];
 				$sql[$key] = $this->olddb->insertQ('book_text', $set, false, false);
 			} else {
-				$relationExists = $bookTextRepo->findOneBy(array(
+				$relationExists = $bookTextRepo->findOneBy([
 					'book' => $book['id'],
 					'text' => $work['id'],
-				));
+				]);
 				if (!$relationExists) {
-					$set = array(
+					$set = [
 						'id' => $this->getNextId('book_text'),
 						'book_id' => $book['id'],
 						'text_id' => $work['id'],
 						'share_info' => 0,
-					);
+					];
 					$sql[$key] = $this->olddb->insertQ('book_text', $set, false, false);
 				}
 			}
@@ -887,8 +887,8 @@ QUERY
 	}
 
 	private static function fixOrigTitle($title) {
-		return strtr($title, array(
+		return strtr($title, [
 			'\'' => '’',
-		));
+		]);
 	}
 }

@@ -26,7 +26,7 @@ class Ary {
 	 * @param string[] $arr2
 	 */
 	public static function cartesianProduct($arr1, $arr2) {
-		$prod = array();
+		$prod = [];
 		foreach ($arr1 as $val1) {
 			foreach ($arr2 as $val2) {
 				$prod[] = $val1 . $val2;

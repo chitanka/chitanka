@@ -23,13 +23,13 @@ class TextLinkAdmin extends Admin {
 			->add('text')
 			->add('site')
 			->addIdentifier('code')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 

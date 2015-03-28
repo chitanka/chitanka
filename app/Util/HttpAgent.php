@@ -3,7 +3,7 @@
 class HttpAgent {
 	public function urlExists($url) {
 		$c = curl_init();
-		curl_setopt_array($c, array(
+		curl_setopt_array($c, [
 			CURLOPT_URL             => $url,
 			CURLOPT_RETURNTRANSFER  => true,
 			CURLOPT_CUSTOMREQUEST   => 'HEAD',
@@ -11,7 +11,7 @@ class HttpAgent {
 			// Wikimedia requires a proper user-agent string
 			// http://mediawiki.org/wiki/API:Quick_start_guide#Identifying_your_client
 			CURLOPT_USERAGENT       => 'User-Agent: PHP (chitanka.info link checker, http://chitanka.info/feedback)',
-		));
+		]);
 		$res = curl_exec($c);
 		curl_close($c);
 

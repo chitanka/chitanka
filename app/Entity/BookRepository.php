@@ -5,7 +5,7 @@
  */
 class BookRepository extends EntityRepository {
 
-	protected $queryableFields = array('id', 'title', 'subtitle', 'origTitle');
+	protected $queryableFields = ['id', 'title', 'subtitle', 'origTitle'];
 
 	/**
 	 * Fetch a book with all important relations
@@ -37,7 +37,7 @@ class BookRepository extends EntityRepository {
 	public function getByCategory($category, $page = 1, $limit = null) {
 		$ids = $this->getIdsByCategory($category, $page, $limit);
 
-		return empty($ids) ? array() : $this->getByIds($ids);
+		return empty($ids) ? [] : $this->getByIds($ids);
 	}
 
 	/**
@@ -71,7 +71,7 @@ class BookRepository extends EntityRepository {
 	public function getBySequence($sequence, $page = 1, $limit = null) {
 		$ids = $this->getIdsBySequence($sequence, $page, $limit);
 
-		return empty($ids) ? array() : $this->getByIds($ids, 'e.seqnr, e.title');
+		return empty($ids) ? [] : $this->getByIds($ids, 'e.seqnr, e.title');
 	}
 
 	/**
@@ -94,7 +94,7 @@ class BookRepository extends EntityRepository {
 	public function getByPrefix($prefix, $page = 1, $limit = null) {
 		$ids = $this->getIdsByPrefix($prefix, $page, $limit);
 
-		return empty($ids) ? array() : $this->getByIds($ids);
+		return empty($ids) ? [] : $this->getByIds($ids);
 	}
 
 	/**
@@ -207,7 +207,7 @@ class BookRepository extends EntityRepository {
 	 */
 	public function getWithMissingCover($page = 1, $limit = null) {
 		$ids = $this->getIdsWithMissingCover($page, $limit);
-		return empty($ids) ? array() : $this->getByIds($ids);
+		return empty($ids) ? [] : $this->getByIds($ids);
 	}
 
 	/**

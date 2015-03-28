@@ -26,13 +26,13 @@ class SeriesAdmin extends Admin {
 		$listMapper
 			->addIdentifier('name')
 			->add('slug')
-			->add('_action', 'actions', array(
-				'actions' => array(
-					'view' => array(),
-					'edit' => array(),
-					'delete' => array(),
-				)
-			))
+			->add('_action', 'actions', [
+				'actions' => [
+					'view' => [],
+					'edit' => [],
+					'delete' => [],
+				]
+			])
 		;
 	}
 
@@ -41,14 +41,14 @@ class SeriesAdmin extends Admin {
 		$formMapper
 			->add('slug')
 			->add('name')
-			->add('orig_name', null, array('required' => false))
-			->add('seriesAuthors', 'sonata_type_collection', array(
+			->add('orig_name', null, ['required' => false])
+			->add('seriesAuthors', 'sonata_type_collection', [
 				'by_reference' => false,
 				'required' => false,
-			), array(
+			], [
 				'edit' => 'inline',
 				'inline' => 'table',
-			));
+			]);
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

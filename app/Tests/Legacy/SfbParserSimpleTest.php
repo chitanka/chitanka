@@ -9,22 +9,22 @@ class SfbParserSimpleTest extends TestCase {
 		$headlevel = 1;
 		$parser = new SfbParserSimple($this->createTestFile(), $headlevel);
 		$parser->convert();
-		$expectedHeaders = array(
-			array(
+		$expectedHeaders = [
+			[
 				'nr' => 1,
 				'level' => 1,
 				'title' => 'Глава 1. Началото',
 				'file_pos' => 0,
 				'line_count' => 9,
-			),
-			array(
+			],
+			[
 				'nr' => 2,
 				'level' => 1,
 				'title' => 'Глава 2',
 				'file_pos' => 75,
 				'line_count' => 1,
-			),
-		);
+			],
+		];
 		$this->assertEquals($expectedHeaders, $parser->headersFlat());
 	}
 
@@ -32,36 +32,36 @@ class SfbParserSimpleTest extends TestCase {
 		$headlevel = 2;
 		$parser = new SfbParserSimple($this->createTestFile(), $headlevel);
 		$parser->convert();
-		$expectedHeaders = array(
-			array(
+		$expectedHeaders = [
+			[
 				'nr' => 1,
 				'level' => 1,
 				'title' => 'Глава 1. Началото',
 				'file_pos' => 0,
 				'line_count' => 6,
-			),
-			array(
+			],
+			[
 				'nr' => 1,
 				'level' => 2,
 				'title' => 'Част 1',
 				'file_pos' => 0,
 				'line_count' => 6,
-			),
-			array(
+			],
+			[
 				'nr' => 2,
 				'level' => 2,
 				'title' => 'Част 2',
 				'file_pos' => 55,
 				'line_count' => 3,
-			),
-			array(
+			],
+			[
 				'nr' => 3,
 				'level' => 1,
 				'title' => 'Глава 2',
 				'file_pos' => 75,
 				'line_count' => 1,
-			),
-		);
+			],
+		];
 		$this->assertEquals($expectedHeaders, $parser->headersFlat());
 	}
 
