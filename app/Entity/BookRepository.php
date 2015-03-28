@@ -139,10 +139,8 @@ class BookRepository extends EntityRepository {
 		$q = $this->getQueryBuilder()
 			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.origTitle LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($title))
+			->setMaxResults($limit)
 			->getQuery();
-		if ($limit) {
-			$q->setMaxResults($limit);
-		}
 		return WorkSteward::joinPersonKeysForBooks($q->getArrayResult());
 	}
 
@@ -159,12 +157,9 @@ class BookRepository extends EntityRepository {
 		$q = $this->getQueryBuilder()
 			->leftJoin('e.isbns', 'isbn')
 			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.origTitle LIKE ?1 OR isbn.code = ?2')
-			->setParameter(1, $this->stringForLikeClause($titleOrIsbn))
-			->setParameter(2, $isbn)
+			->setParameters([1 => $this->stringForLikeClause($titleOrIsbn), 2 => $isbn])
+			->setMaxResults($limit)
 			->getQuery();
-		if ($limit) {
-			$q->setMaxResults($limit);
-		}
 		return WorkSteward::joinPersonKeysForBooks($q->getArrayResult());
 	}
 
