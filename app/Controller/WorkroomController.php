@@ -86,7 +86,7 @@ class WorkroomController extends Controller {
 
 	/**
 	 * @param int $limit
-	 * @Cache(maxage="60", public=true)
+	 * Cache(maxage="60", public=true) - disabled
 	 */
 	public function rssAction($limit) {
 		$entries = $this->em()->getWorkEntryRepository()->findLatest(min($limit, self::$feedListLimit));
