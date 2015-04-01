@@ -282,7 +282,7 @@ class Text extends BaseWork {
 	/**
 	 * @var ArrayCollection|TextHeader[]
 	 * @ORM\OneToMany(targetEntity="TextHeader", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
-	 * @ORM\OrderBy({"nr" = "ASC"})
+	 * @ORM\OrderBy({"nr" = "ASC", "level" = "ASC"})
 	 */
 	private $headers;
 
