@@ -47,6 +47,9 @@
 			{% for label in text.labels %}
 				<li>
 					{{ link.label(label) }}
+					{% if label.description is not empty %}
+						<span class="popover-trigger" data-content="{{ label.description }}"><span class="fa fa-info-circle"></span></span>
+					{% endif %}
 					{% include 'App:Text:label_delete_form.html.twig' with {'label': label} %}
 				</li>
 			{% else %}

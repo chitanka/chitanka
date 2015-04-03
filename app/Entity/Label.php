@@ -35,6 +35,12 @@ class Label extends Entity implements \JsonSerializable {
 	private $name = '';
 
 	/**
+	 * @var string
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $description = '';
+
+	/**
 	 * @var Label
 	 * @ORM\ManyToOne(targetEntity="Label", inversedBy="children")
 	 */
@@ -68,6 +74,9 @@ class Label extends Entity implements \JsonSerializable {
 
 	public function setName($name) { $this->name = $name; }
 	public function getName() { return $this->name; }
+
+	public function setDescription($description) { $this->description = $description; }
+	public function getDescription() { return $this->description; }
 
 	public function setParent($parent) { $this->parent = $parent; }
 	public function getParent() { return $this->parent; }
@@ -138,6 +147,7 @@ class Label extends Entity implements \JsonSerializable {
 			'id' => $this->id,
 			'slug' => $this->slug,
 			'name' => $this->name,
+			'description' => $this->description,
 			'nrOfTexts' => $this->nrOfTexts,
 		];
 	}

@@ -2,6 +2,9 @@
 {% for label in labels %}
 	<li>
 		<a href="{{ path('texts_by_label', {'slug': label.slug}) }}">{{ label.name }}</a>
+		{% if label.description is not empty %}
+			<span class="popover-trigger" data-content="{{ label.description }}"><span class="fa fa-info-circle"></span></span>
+		{% endif %}
 		{% if label.nrOfTexts > 0 %}
 			<span class="badge">{{ label.nrOfTexts }}</span>
 		{% endif %}

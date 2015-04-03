@@ -13,6 +13,7 @@ class LabelAdmin extends Admin {
 		$showMapper
 			->add('name')
 			->add('slug')
+			->add('description')
 			->add('parent')
 			->add('nrOfTexts')
 			->add('children')
@@ -39,6 +40,7 @@ class LabelAdmin extends Admin {
 		$formMapper
 			->add('name')
 			->add('slug')
+			->add('description')
 			->add('parent', null, ['required' => false, 'query_builder' => function ($repo) {
 				return $repo->createQueryBuilder('e')->orderBy('e.name');
 			}]);
