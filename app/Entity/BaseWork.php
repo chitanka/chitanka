@@ -301,7 +301,8 @@ abstract class BaseWork extends Entity {
 		if ($content) {
 			$fs->dumpFile($file, String::my_replace($content));
 		} else if (file_exists($file) && is_file($file)) {
-			unlink($file);
+		        // disable until a nasty deletion bug is resolved
+			//unlink($file);
 		}
 	}
 
