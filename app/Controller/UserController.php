@@ -148,12 +148,12 @@ class UserController extends Controller {
 			throw $this->createAccessDeniedException();
 		}
 
-		$styleUrl = '/css/?skin=SKIN&menu=NAV';
+		$styleUrl = $this->container->getParameter('style_url') . 'skin=SKIN&menu=NAV';
 		return $this->legacyPage('Settings', [
 			'inline_js' => "
-				var nav = '', skin = '';
-				function changeStyleSheet() {
-					setActiveStyleSheet('$styleUrl'.replace(/SKIN/, skin).replace(/NAV/, nav));
+				function changeStyleSheet(skin, nav) {
+					var url = '$styleUrl'.replace(/SKIN/, skin).replace(/NAV/, nav);
+					setActiveStyleSheet(url);
 				}"
 		]);
 	}

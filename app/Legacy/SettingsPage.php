@@ -186,13 +186,13 @@ EOS;
 	private function makeSkinInput($tabindex) {
 		return $this->out->selectBox('skin', '', $this->container->getParameter('skins'),
 			$this->opts['skin'], $tabindex,
-			['class' => 'form-control', 'onchange' => 'skin=this.value; changeStyleSheet()']);
+			['class' => 'form-control', 'onchange' => 'changeStyleSheet(this.value, this.form.nav.value)']);
 	}
 
 	private function makeNavPosInput($tabindex) {
 		return $this->out->selectBox('nav', '', $this->container->getParameter('navpos'),
 			$this->opts['nav'], $tabindex,
-			['class' => 'form-control', 'onchange' => 'nav=this.value; changeStyleSheet()']);
+			['class' => 'form-control', 'onchange' => 'changeStyleSheet(this.form.skin.value, this.value)']);
 	}
 
 	private function makeCustomInput() {
