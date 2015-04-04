@@ -153,7 +153,7 @@ class UserController extends Controller {
 			'inline_js' => "
 				function changeStyleSheet(skin, nav) {
 					var url = '$styleUrl'.replace(/SKIN/, skin).replace(/NAV/, nav);
-					setActiveStyleSheet(url);
+					$('<link rel=\"stylesheet\" type=\"text/css\" href=\"'+url+'\">').appendTo('head');
 				}"
 		]);
 	}

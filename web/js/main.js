@@ -319,12 +319,6 @@ $(function(){
 });
 
 
-/** Set new active style sheet */
-function setActiveStyleSheet(styleSheet) {
-	$("#activeStyleSheet").attr("href", styleSheet);
-}
-
-
 /**
 	Initialise table sorter on all tables marked as sortable.
 	@param table Optional table selector
