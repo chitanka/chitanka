@@ -46,7 +46,7 @@ jQuery(function($) {
 			alert("Не ви е разрешено да редактирате страници в уикито на библиотеката.");
 			return false;
 		}
-		var scripts = "{{ asset('bundles/app/js/'~ scripts|join(',')|replace({'/': '--'}) ~'.js') }}";
+		var scripts = "{{ asset('js/'~ scripts|join(',')|replace({'/': '--'}) ~'.js') }}";
 		var editorOptions = {
 			page: "{{ page.name }}",
 			format: "{{ page.format }}",

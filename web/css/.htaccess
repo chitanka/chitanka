@@ -1,0 +1,18 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^.*$ - [NC,L]
+
+RewriteCond %{REQUEST_METHOD} GET
+RewriteCond %{DOCUMENT_ROOT}/cache%{REQUEST_URI} -f
+RewriteRule ^ /cache%{REQUEST_URI} [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^(.*)$ index.php?TEST-%{DOCUMENT_ROOT}/cache%{REQUEST_URI} [QSA,L]
+RewriteRule ^(.*)$ index.php?$1 [QSA,L]
+
+<FilesMatch "\.(ttf|otf|eot|woff)$">
+	<IfModule mod_headers.c>
+		Header set Access-Control-Allow-Origin "*"
+	</IfModule>
+</FilesMatch>

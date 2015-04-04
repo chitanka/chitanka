@@ -51,11 +51,8 @@ $positions = [
 	'left',
 ];
 
-$thisDir = dirname(__FILE__);
-$cacheDir = strpos($thisDir, '/bundles/') === false
-	? $thisDir.'/../../../../var/cache/less'
-	: $thisDir.'/../../../cache/less';
-require $thisDir."/../bin/Less.php";
+$cacheDir = __DIR__.'/../../var/cache/less';
+require __DIR__."/../bin/Less.php";
 ini_set('memory_limit', '128M');
 $cssFile = compileStyleFiles($cacheDir, get('skin', $skins), get('menu', $positions));
 if ($cssFile) {

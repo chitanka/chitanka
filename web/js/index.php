@@ -9,10 +9,7 @@
  */
 
 $query = sanitizeInput($_SERVER['QUERY_STRING']);
-$curdir = dirname(__FILE__);
-$webdir = strpos($curdir, '/bundles/') === false
-	? "$curdir/../../../../web"
-	: "$curdir/../../..";
+$webdir = __DIR__.'/..';
 $path = "$webdir/cache";
 $combiFile = $path . sanitizeInput($_SERVER['REQUEST_URI']);
 
