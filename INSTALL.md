@@ -148,18 +148,14 @@
 			include fastcgi_params;
 		}
 
-		location /bundles/app {
+		location ~ /(css|js|thumb) {
+			expires 1y;
 			try_files /cache$request_uri @asset_generator;
 		}
 		location @asset_generator {
-			rewrite ^/(bundles/app/(css|js))/(.+) /$1/index.php?$1/$3;
+			rewrite ^/(css|js|thumb)/(.+) /$1/index.php?$2;
 		}
-		location /thumb {
-			try_files /cache$request_uri @thumb_generator;
-		}
-		location @thumb_generator {
-			rewrite ^/thumb/(.+) /thumb/index.php?$1;
-		}
+
 		location ~* \.(eot|otf|ttf|woff)$ {
 			add_header Access-Control-Allow-Origin *;
 		}
