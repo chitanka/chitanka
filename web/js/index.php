@@ -10,18 +10,17 @@
 
 $query = sanitizeInput($_SERVER['QUERY_STRING']);
 $webdir = __DIR__.'/..';
-$path = "$webdir/cache";
-$combiFile = $path . sanitizeInput($_SERVER['REQUEST_URI']);
+$path = "$webdir/cache/js";
+$combiFile = "$path/$query";
 
 if (!file_exists($combiFile)) {
 	createCombiFile($query, $combiFile);
 }
 
 header('Content-Type: application/x-javascript; charset=UTF-8');
-header('Expires: Sun, 17-Jan-2038 19:14:07 GMT');
-header('Cache-Control: max-age=315360000'); // 10 years
+header('Expires: '.gmdate('r', strtotime('+1 year')));
+header('Cache-Control: max-age=31536000'); // 1 year
 header('Last-Modified: Sun, 01 Jan 2001 00:00:01 GMT');
-
 readfile($combiFile);
 
 function createCombiFile($query, $combiName) {
