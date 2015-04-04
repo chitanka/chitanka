@@ -909,7 +909,7 @@ CORRECTIONS;
 		}
 		$user = $this->controller->em()->getUserRepository()->find($this->scanuser);
 		$threadUrl = $this->controller->generateUrl('fos_comment_post_threads');
-		$commentJs = $this->container->getParameter('assets_base_urls') . '/bundles/app/js/comments.js';
+		$commentJs = $this->container->getParameter('assets_base_urls') . '/js/comments.js';
 		return <<<JS
 var fos_comment_thread_id = 'WorkEntry:$entry';
 

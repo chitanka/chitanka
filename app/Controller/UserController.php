@@ -148,7 +148,7 @@ class UserController extends Controller {
 			throw $this->createAccessDeniedException();
 		}
 
-		$styleUrl = '/bundles/app/css/?skin=SKIN&menu=NAV';
+		$styleUrl = '/css/?skin=SKIN&menu=NAV';
 		return $this->legacyPage('Settings', [
 			'inline_js' => "
 				var nav = '', skin = '';
