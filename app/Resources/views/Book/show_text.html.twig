@@ -8,14 +8,18 @@
 	<div class="removed-notice">{{ book.removedNotice|raw }}</div>
 {% else %}
 
-	{{ booktools.cover_div(book, 200) }}
-	{% if book.hasAnno %}
-		<div class="text-content book-anno">
-			{{ book.annotationAsXhtml|replace({'IMG_DIR_PREFIX': asset('/')})|raw }}
+	<div class="media book-media" itemscope itemtype="http://schema.org/Book">
+		<div class="media-left">
+			{{ booktools.cover_div(book, 250) }}
 		</div>
-	{% endif %}
-
-	<div style="clear:both"><br></div>
+		<div class="media-body">
+			{% if book.hasAnno %}
+				<div class="text-content book-anno">
+					{{ book.annotationAsXhtml|replace({'IMG_DIR_PREFIX': asset('/')})|raw }}
+				</div>
+			{% endif %}
+		</div>
+	</div>
 
 	<ul class="nav nav-tabs book-tabs">
 		{% if template != "" %}
