@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f13736c723143e31708a092b094aa29c",
+    "hash": "6fafa4c7cf2c1e5d68f7bcba8a6db1fd",
     "packages": [
         {
             "name": "apibot",
@@ -877,16 +877,16 @@
         },
         {
             "name": "fortawesome/font-awesome",
-            "version": "v4.0.3",
+            "version": "v4.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FortAwesome/Font-Awesome.git",
-                "reference": "0373b63c16d7aa31b6715c3f81a98a2ffb9f40a6"
+                "reference": "41b9ed01103e6820c3cb043ba7ddab30ecd3f4c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/0373b63c16d7aa31b6715c3f81a98a2ffb9f40a6",
-                "reference": "0373b63c16d7aa31b6715c3f81a98a2ffb9f40a6",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/41b9ed01103e6820c3cb043ba7ddab30ecd3f4c0",
+                "reference": "41b9ed01103e6820c3cb043ba7ddab30ecd3f4c0",
                 "shasum": ""
             },
             "require-dev": {
@@ -912,7 +912,7 @@
                     "role": "Developer"
                 }
             ],
-            "description": "The iconic font designed for Bootstrap",
+            "description": "The iconic font and CSS framework",
             "homepage": "http://fontawesome.io/",
             "keywords": [
                 "FontAwesome",
@@ -921,7 +921,7 @@
                 "font",
                 "icon"
             ],
-            "time": "2013-11-05 12:35:21"
+            "time": "2015-01-22 18:09:42"
         },
         {
             "name": "friendsofsymfony/comment-bundle",
