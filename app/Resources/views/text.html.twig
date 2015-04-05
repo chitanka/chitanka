@@ -42,13 +42,13 @@
 	{% endspaceless %}
 {% endmacro %}
 
-{% macro license(license) -%}
+{% macro license(license) %}{% spaceless %}
 	{% if license.uri is empty %}
 		{{ license.fullname }}
 	{% else %}
 		<a href="{{ license.uri }}" rel="license">{{ license.fullname }}</a>
 	{% endif %}
-{%- endmacro %}
+{% endspaceless %}{% endmacro %}
 
 {% macro rating(text) %}
 	<span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">

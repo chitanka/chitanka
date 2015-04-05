@@ -1,48 +1,61 @@
 {% import 'App::text.html.twig' as textinfo %}
 {% import 'App::link.html.twig' as link %}
 <div class="text-entity" data-id="{{ text.id }}">
-	<ul>
+	<dl class="dl-horizontal">
 		{% if text.series.slug is defined %}
-			<li>
-			Серия: {{ link.series(text.series) }}
+			<dt>Серия</dt>
+			<dd>
+			{{ link.series(text.series) }}
 			{% if text.sernr %}
 				({{ text.sernr }})
 			{% endif %}
-			</li>
+			</dd>
 		{% endif %}
 		{% if text.books|length %}
-			<li>
+			<dt>
 			{% if text.books|length == 1 %}
 				Включено в книгата
 			{% elseif text.books|length > 1 %}
 				Включено в книгите:
 			{% endif %}
+			</dt>
+			<dd>
 			{% include 'App:Book:list.html.twig' with {'books': text.books} %}
-			</li>
+			</dd>
 		{% endif %}
-		<li>
-			{% if text.origLang == text.lang %}
-				<span title="Година на написване или първа публикация">Година</span>: {{ textinfo.year(text) }}
-			{% else %}
-				Оригинално заглавие: <em>{{ textinfo.origTitle(text) }}</em>,
+			<dt>
+				{% if text.origLang != text.lang %}
+					Оригинално заглавие
+				{% else %}
+					<span title="Година на написване или първа публикация">Година</span>
+				{% endif %}
+			</dt>
+			<dd>
+				{% if text.origLang != text.lang %}
+					<em>{{ textinfo.origTitle(text) }}</em>,
+				{% endif %}
 				<span title="Година на написване или първа публикация">{{ textinfo.year(text) }}</span>
-			{% endif %}
 			{% if text.origLicense is not empty %}
 				({{ textinfo.license(text.origLicense) }})
 			{% endif %}
-		</li>
+			</dd>
+
 		{% if text.origLang != text.lang %}
-			<li>
-			Превод от {{ ('lang.'~text.origlang) | trans }}: {{ textinfo.translator(text) }}, {{ textinfo.transYear(text) }}
+			<dt>Превод от {{ ('lang.'~text.origlang) | trans }}</dt>
+			<dd>
+			{{ textinfo.translator(text) }}, {{ textinfo.transYear(text) }}
 			{% if text.transLicense is not empty %}
 				({{ textinfo.license(text.transLicense) }})
 			{% endif %}
-			</li>
+			</dd>
 		{% endif %}
-		<li>
-		Форма: <a href="{{ path('texts_by_type', {'type': text.type}) }}">{{ ('text.type.singular.'~text.type) | trans }}</a></li>
-		<li>
-			<a href="{{ path('text_label_log', {id: text.id}) }}">Етикети</a>:
+		<dt>Форма<dt>
+		<dd><a href="{{ path('texts_by_type', {'type': text.type}) }}">{{ ('text.type.singular.'~text.type) | trans }}</a></dd>
+
+		<dt>
+			<a href="{{ path('text_label_log', {id: text.id}) }}">Етикети</a>
+		</dt>
+		<dd>
 			<ul class="simplelist with-actions">
 			{% for label in text.labels %}
 				<li>
@@ -57,9 +70,12 @@
 			{% endfor %}
 			</ul>
 			<a href="{{ path('text_label_new', {'id': text.id}) }}" class="action-new" title="Добавяне на етикет"><span class="fa fa-plus"></span></a>
-		</li>
-		<li>Оценка: {{ textinfo.rating_expanded(text) }}</li>
-	</ul>
+		</dd>
+
+		<dt>Оценка</dt>
+		<dd>{{ textinfo.rating_expanded(text) }}</dd>
+	</dl>
+
 	<ul class="user-actions">
 		<li>Вашата оценка:
 			{{ render_esi(controller('App:Text:rating', {'id': text.id})) }}

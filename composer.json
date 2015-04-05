@@ -26,7 +26,7 @@
 		"friendsofsymfony/comment-bundle": "dev-master",
 		"chitanka/sfb-converter": "dev-master",
 		"apibot": "dev-master",
-		"twbs/bootstrap": "3.0.*",
+		"twbs/bootstrap": "3.3.*",
 		"oyejorge/less.php": "1.7.*@dev",
 		"fortawesome/font-awesome": "v4.0.3",
 		"michelf/php-markdown": "1.4.0",

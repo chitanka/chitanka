@@ -3,24 +3,24 @@
 		{{ booktools.cover_div(text.book, 200) }}
 	{% endif %}
 
-	<ul class="list-unstyled">
+	<dl>
 	{% for contrib in text.userContribs %}
 		{% if contrib.comment %}
-		<li>
-			{{ contrib.comment }}:
+			<dt>{{ contrib.comment }}</dt>
+			<dd>
 			{% if contrib.user %}
 				<a href="{{ path('user_show', {'username': contrib.username}) }}" class="user">{{ contrib.username }}</a>
 			{% else %}
 				{{ contrib.username }}
 			{% endif %}
 			{% if contrib.humandate is not empty %}({{ contrib.humandate }}){% endif %}
-		</li>
+			</dd>
 		{% endif %}
 	{% endfor %}
 	{% if text.source is not empty %}
-		<li>Източник: {{ text.source|link|raw }}</li>
+		<dt>Източник</dt><dd>{{ text.source|link|raw }}</dd>
 	{% endif %}
-	</ul>
+	</dl>
 	<div class="text-content">
 		{{ text.fullExtraInfoForHtml(asset('/'))|raw }}
 	</div>

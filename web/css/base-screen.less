@@ -104,6 +104,14 @@ dt {
 dd {
 	margin-left: 1.5em;
 }
+.dl-horizontal {
+	dt {
+		width: 13em;
+	}
+	dd {
+		margin-left: 14em;
+	}
+}
 em em {
 	font-weight: bold;
 }
@@ -444,7 +452,7 @@ option[selected=selected],
 	top: @contentMarginTop;
 	width: 50%;
 	border: none;
-	.form-group {
+	.form-group, .input-group {
 		width: 100%;
 	}
 	.form-control {
@@ -474,9 +482,6 @@ option[selected=selected],
 		padding: 0;
 		height: 1%;
 		overflow: hidden;
-		&:hover {
-			background-image: linear-gradient(to bottom, @tocBgColor, @footerBgColor 35%, @footerBgColor 65%, @tocBgColor);
-		}
 	}
 	dt, dd {
 		margin: 0;
@@ -499,9 +504,6 @@ option[selected=selected],
 dd.tauthor {
 	width: 25em;
 	max-width: 40%;
-}
-dd.extra {
-	/*display: none;*/
 }
 dd.download {
 	float: right;
@@ -543,18 +545,18 @@ dd.country {
 }
 
 .booklist {
-	dt {
-		float: none;
-		width: 50em;
-		max-width: 80%;
-	}
-	.cover {
-		float: left;
-		margin-right: 1em;
-		min-height: 90px;
+	.book-media {
+		height: 14em;
+		margin-top: 0;
 	}
 	.booklink {
 		font-weight: bold;
+	}
+	.media-body div {
+		margin-top: .3em;
+	}
+	.popover {
+		min-width: 50em;
 	}
 }
 .book-clue {
@@ -817,6 +819,11 @@ ul.superlist {
 	position: relative;
 	padding-left: 20px;
 	background-repeat: no-repeat;
+	&.btn {
+		background-position: center center;
+		width: 3em;
+		height: 2.5em;
+	}
 }
 .dl-txt { background-image: data-uri('../images/formats/txt.png'); }
 .dl-fb2 { background-image: data-uri('../images/formats/fb2.png'); }
@@ -851,15 +858,6 @@ ul.superlist {
 	.bookmark-form {
 		display: none;
 	}
-}
-.superlist .action {
-	opacity: 0.05;
-}
-.superlist li:hover .action,
-.superlist li:focus .action,
-.superlist .action.active,
-.superlist .action:focus {
-	opacity: 1;
 }
 
 // менюта, обикновено чрез списъци
@@ -1197,14 +1195,15 @@ div.poem-middle .subheader {
 .book-section:first-child {
 	margin-top: 1.5em;
 }
-// text or book covers
-.cover {
-	float: left;
-	margin-right: 1em;
-}
-.text-extra-info .cover {
-	float: right;
-	margin: 0 0 1em 1em;
+.text-extra-info {
+	// book covers
+	.cover {
+		float: right;
+		margin: 0 0 1em 1em;
+	}
+	dl {
+		margin-left: 2em;
+	}
 }
 .post {
 	clear: both;

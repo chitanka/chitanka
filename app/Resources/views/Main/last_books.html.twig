@@ -1,6 +1,6 @@
 {% import 'App::book.html.twig' as booktools %}
-<ul class="superlist booklist">
+<div class="booklist">
 {% for revision in book_revisions %}
-	<li>{{ booktools.book(revision.book) }}</li>
+	{{ booktools.book(revision.book) }}
 {% endfor %}
-</ul>
+</div>

@@ -1,62 +1,63 @@
 {% macro book(book) %}
 	{% import 'App::link.html.twig' as link %}
-	<dl itemscope itemtype="http://schema.org/Book">
-		<dt>
+	<div class="media book-media" itemscope itemtype="http://schema.org/Book">
+		<div class="media-left media-middle">
+			{{ _self.cover(book, 90) }}
+		</div>
+		<div class="media-body">
 			<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}"
 				class="booklink"
 				data-edit="{{ path('admin_book_edit', {'id': book.id}) }}">
-				{{ _self.cover(book, 90) }}
 				<i itemprop="name">{{ book.title }}</i>
 			</a>
-				{% if book.hasAnno %}
-					<a class="book-clue" data-href="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"><i class="fa fa-info-circle" title="Анотация"></i></a>
-				{% endif %}
-				{% if book.subtitle is not empty %}
-					<br>
-					<span itemprop="alternativeHeadline">{{ book.subtitle|replace({'\\n': '<br>'})|raw }}</span>
-				{% endif %}
-		</dt>
-		<dd>
-		{% if book.authors|length %}
-			<span class="bookauthor" itemprop="author">{{ link.persons_comma(book.authors) }}</span>
-		{% endif %}
-		{% if book.sequence is not empty %}
-			<br><span class="bookseq">{{ link.sequence(book.sequence) }}{% if book.seqnr is not empty and book.sequence.isSeqnrVisible %}, №&nbsp;{{ book.seqnr }}{% endif %}</span>
-		{% endif %}
-		{% if book.category is not empty %}
-			<br><span class="bookcat">{{ link.category(book.category) }}</span>
-		{% endif %}
-		</dd>
-		{% if book.removedNotice is empty %}
-			<dd class="download">{{ _self.download_links(book) }}</dd>
-		{% endif %}
-	</dl>
+			{% if book.hasAnno %}
+				<a class="book-clue" data-href="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"><i class="fa fa-info-circle" title="Анотация"></i></a>
+			{% endif %}
+			{% if book.subtitle is not empty %}
+				<div itemprop="alternativeHeadline">{{ book.subtitle|replace({'\\n': '<br>'})|raw }}</div>
+			{% endif %}
+
+			{% if book.authors|length %}
+				<div class="bookauthor" itemprop="author">{{ link.persons_comma(book.authors) }}</div>
+			{% endif %}
+			{% if book.sequence is not empty %}
+				<div class="bookseq">{{ link.sequence(book.sequence) }}{% if book.seqnr is not empty and book.sequence.isSeqnrVisible %}, №&nbsp;{{ book.seqnr }}{% endif %}</div>
+			{% endif %}
+			{% if book.category is not empty %}
+				<div class="bookcat">{{ link.category(book.category) }}</div>
+			{% endif %}
+
+			{% if book.removedNotice is empty %}
+				<div class="download-links">{{ _self.download_links(book) }}</div>
+			{% endif %}
+		</div>
+	</div>
 {% endmacro %}
 
 {% macro download_link(book, format, title) %}
 	{% spaceless %}
-	<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug, '_format': format}) }}" title="{{title|default('Сваляне във формат '~format)}}" class="dl dl-{{ format|replace({'.zip': ''}) }} action"><span>{{ format }}</span></a>
+	<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug, '_format': format}) }}" title="{{title|default('Сваляне във формат '~format)}}" class="btn btn-default dl dl-{{ format|replace({'.zip': ''}) }} action"><span class="sr-only">{{ format }}</span></a>
 	{% endspaceless %}
 {% endmacro %}
 
-{% macro download_links(book, class) %}
-	<ul class="{{ class|default('dl-list') }}">
+{% macro download_links(book) %}
+	<div class="btn-group" role="group">
 		{% if "sfb" in book.formats %}
-			<li>{{ _self.download_link(book, "fb2.zip") }}</li>
-			<li>{{ _self.download_link(book, "epub") }}</li>
-			<li>{{ _self.download_link(book, "txt.zip") }}</li>
-			<li>{{ _self.download_link(book, "sfb.zip") }}</li>
+			{{ _self.download_link(book, "fb2.zip") }}
+			{{ _self.download_link(book, "epub") }}
+			{{ _self.download_link(book, "txt.zip") }}
+			{{ _self.download_link(book, "sfb.zip") }}
 		{% endif %}
 		{% if "djvu" in book.formats %}
-			<li>{{ _self.download_link(book, "djvu") }}</li>
+			{{ _self.download_link(book, "djvu") }}
 		{% endif %}
 		{% if "pdf" in book.formats %}
-			<li>{{ _self.download_link(book, "pdf") }}</li>
+			{{ _self.download_link(book, "pdf") }}
 		{% endif %}
 		{% if "pic" in book.formats %}
-			<li>{{ _self.download_link(book, "pic", "Преглед в галерия") }}</li>
+			{{ _self.download_link(book, "pic", "Преглед в галерия") }}
 		{% endif %}
-	</ul>
+	</div>
 {% endmacro %}
 
 {% macro cover(book, width) %}

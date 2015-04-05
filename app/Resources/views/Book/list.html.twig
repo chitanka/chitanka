@@ -1,12 +1,12 @@
 {% import 'App::book.html.twig' as booktools %}
 
-<ul class="superlist booklist">
 {% for book in books %}
-	<li>{{ booktools.book(book) }}</li>
+	<div class="col-sm-6">
+		{{ booktools.book(book) }}
+	</div>
 {% else %}
-	<li class="no-items">
+	<div class="no-items">
 		{% import 'App::helper.html.twig' as helper %}
 		{{ helper.not_found('Няма намерени книги.') }}
-	</li>
+	</div>
 {% endfor %}
-</ul>
