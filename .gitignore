@@ -12,7 +12,7 @@
 /web/tor/
 /web/todo/
 /web/bundles/
-*.min.js
+/web/js/*.min.js
 *.swp
 .last
 .lock
