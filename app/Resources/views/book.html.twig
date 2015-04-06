@@ -61,11 +61,13 @@
 {% endmacro %}
 
 {% macro cover(book, width) %}
-	<img class="cover thumbnail" src="{{ asset(book.hasCover ? cover(book.id, width) : cover(0, width, 'png')) }}" alt="Корица" itemprop="image" width="{{ width }}">
+	<div class="cover thumbnail" style="width: {{ width + 10 }}px">
+		<img src="{{ asset(book.hasCover ? cover(book.id, width) : cover(0, width, 'png')) }}" alt="Корица" itemprop="image" width="{{ width }}">
+	</div>
 {% endmacro %}
 
 {% macro cover_div(book, width) %}
-	<div class="cover thumbnail">
+	<div class="cover thumbnail" style="width: {{ width + 10 }}px">
 		{% if book.hasCover %}
 			<a href="{{ asset(cover(book.id, 'max')) }}"><img src="{{ asset(cover(book.id, width)) }}" alt="Корица" itemprop="image" width="{{ width }}"></a>
 		{% else %}
