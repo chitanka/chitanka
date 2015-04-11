@@ -363,6 +363,7 @@ class ContentImporter {
 			'book_author',
 			'book_text',
 			'series_author',
+			'user_text_contrib',
 		];
 		$queries = [];
 		foreach ($tables as $table) {
