@@ -8,8 +8,8 @@
 	<div class="removed-notice">{{ book.removedNotice|raw }}</div>
 {% else %}
 
-	<div class="media book-media" itemscope itemtype="http://schema.org/Book">
-		<div class="media-left">
+	<div class="media book-media book-media-single" itemscope itemtype="http://schema.org/Book">
+		<div class="pull-left">
 			{{ booktools.cover_div(book, 250) }}
 		</div>
 		<div class="media-body">
