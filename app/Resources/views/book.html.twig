@@ -1,7 +1,7 @@
 {% macro book(book) %}
 	{% import 'App::link.html.twig' as link %}
 	<div class="media book-media" itemscope itemtype="http://schema.org/Book">
-		<div class="media-left media-middle">
+		<div class="media-left">
 			{{ _self.cover(book, 90) }}
 		</div>
 		<div class="media-body">
@@ -62,16 +62,16 @@
 
 {% macro cover(book, width) %}
 	<div class="cover thumbnail" style="width: {{ width + 10 }}px">
-		<img src="{{ asset(book.hasCover ? cover(book.id, width) : cover(0, width, 'png')) }}" alt="Корица" itemprop="image" width="{{ width }}">
+		<img class="media-object" src="{{ asset(book.hasCover ? cover(book.id, width) : cover(0, width, 'png')) }}" alt="Корица" itemprop="image" width="{{ width }}">
 	</div>
 {% endmacro %}
 
 {% macro cover_div(book, width) %}
 	<div class="cover thumbnail" style="width: {{ width + 10 }}px">
 		{% if book.hasCover %}
-			<a href="{{ asset(cover(book.id, 'max')) }}"><img src="{{ asset(cover(book.id, width)) }}" alt="Корица" itemprop="image" width="{{ width }}"></a>
+			<a href="{{ asset(cover(book.id, 'max')) }}"><img class="media-object" src="{{ asset(cover(book.id, width)) }}" alt="Корица" itemprop="image" width="{{ width }}"></a>
 		{% else %}
-			<img src="{{ asset(cover(0, width, 'png')) }}" alt="Корица" itemprop="image" width="{{ width }}">
+			<img class="media-object" src="{{ asset(cover(0, width, 'png')) }}" alt="Корица" itemprop="image" width="{{ width }}">
 		{% endif %}
 	</div>
 {% endmacro %}
