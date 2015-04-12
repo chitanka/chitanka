@@ -562,6 +562,21 @@ dd.country {
 .book-media-single .media-body {
 	min-width: 20em;
 }
+.cover {
+	position: relative;
+	.download-links {
+		opacity: .2;
+		position: absolute;
+		right: 1em;
+		bottom: 1em;
+	}
+	&:hover .download-links {
+		opacity: 1;
+	}
+	.btn:hover {
+		background-color: @mainBgColor;
+	}
+}
 .book-clue {
 	margin-left: .3em;
 	font-size: 110%;
