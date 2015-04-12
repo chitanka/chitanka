@@ -1,6 +1,8 @@
 {% extends 'App::layout.html.twig' %}
 
-{% set title = '<a class="selflink" data-edit="' ~ path('admin_series_edit', {'id': series.id}) ~'">'~ series.name ~'</a>' %}
+{% set title %}
+	<a class="selflink" itemprop="name" data-edit="{{ path('admin_series_edit', {id: series.id}) }}">{{ series.name }}</a>
+{% endset %}
 {% set subtitle = 'серия' %}
 {% block content %}
 	{% import 'App::text.html.twig' as text_lister %}
