@@ -3,6 +3,8 @@
 class MessageController extends Controller {
 
 	public function indexAction() {
+		$this->responseAge = 0;
+
 		if ($this->flashes()->hasMessages()) {
 			return [];
 		}
