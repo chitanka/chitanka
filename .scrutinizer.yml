@@ -1,10 +1,10 @@
 filter:
     excluded_paths:
         - app/autoload.php
-        - app/Resources/public/bin/*
         - bin/*
         - var/*
         - vendor/*
+        - web/bin/*
 
 tools:
     # Similar code detector
