@@ -1,8 +1,10 @@
 {% import 'App::book.html.twig' as booktools %}
 
 {% for book in books %}
-	<div class="col-md-6 col-book">
-		{{ booktools.book(book) }}
+	<div class="booklist">
+		<div class="col-md-6 col-book">
+			{{ booktools.book(book) }}
+		</div>
 	</div>
 {% else %}
 	<div class="no-items">
