@@ -113,7 +113,7 @@
 	$(".liternewsbox article, .insidenews article").each(function(){
 		adjustHeight(this, 450);
 	});
-	$("button.expander").live("click", function(){
+	$(".page-content").on("click", "button.expander", function(){
 		$(this).prev().removeClass("collapsed").css(showCss).end().remove();
 	});
 })();
