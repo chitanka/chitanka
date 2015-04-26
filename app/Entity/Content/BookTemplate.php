@@ -74,7 +74,11 @@ class BookTemplate {
 		} else {
 			$title = $this->generateSfbForTitleLine($text, $command);
 		}
-		$textContent = $text->getRawContent();
+		if (empty($matches[3])) {
+			$textContent = $text->getRawContent();
+		} else {
+			$textContent = ContentService::getContentFile('text', $matches[2].$matches[3]);
+		}
 		if (strpos($textContent, SfbConverter::EOL.">") !== false && $textContent[0] !== '>' && strpos($textContent, "\t{img:") !== 0) {
 			$textContent = $command . SfbConverter::CMD_DELIM . SfbConverter::EOL . $textContent;
 		}
