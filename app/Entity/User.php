@@ -161,7 +161,12 @@ class User implements UserInterface {
 	public function setAlgorithm($algorithm) { $this->algorithm = $algorithm; }
 	public function getAlgorithm() { return $this->algorithm; }
 
-	public function setEmail($email) { $this->email = $email; }
+	public function setEmail($email) {
+		if ($email != $this->email) {
+			$this->setIsEmailValid(null);
+		}
+		$this->email = $email;
+	}
 	public function getEmail() { return $this->email; }
 
 	public function hasEmail() {
@@ -301,6 +306,7 @@ class User implements UserInterface {
 			'algorithm' => $this->algorithm,
 			'newpassword' => $this->newpassword,
 			'email' => $this->email,
+			'isEmailValid' => $this->isEmailValid,
 			'allowemail' => $this->allowemail,
 			'groups' => $this->groups,
 			'news' => $this->news,
