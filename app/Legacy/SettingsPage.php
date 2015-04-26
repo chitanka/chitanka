@@ -38,7 +38,7 @@ class SettingsPage extends RegisterPage {
 			$this->addMessage('Двете въведени пароли се различават.', true);
 			return $this->makeRegUserForm();
 		}
-		if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+		if ($this->email && !filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
 			$this->addMessage('Въведеният адрес за електронна поща е невалиден.', true);
 			return $this->makeRegUserForm();
 		}
