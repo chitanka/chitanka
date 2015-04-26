@@ -11,6 +11,9 @@ class BookTemplate {
 	private $book;
 	private $extraFileLinesToInsert = [];
 
+	/**
+	 * @param Book $book
+	 */
 	public function __construct(Book $book) {
 		$this->book = $book;
 	}
@@ -28,6 +31,10 @@ class BookTemplate {
 		return $this->sfb;
 	}
 
+	/**
+	 * @param string $line
+	 * @return string
+	 */
 	private function generateSfbForLine($line) {
 		$line = rtrim($line, "\t");
 		if (empty($line)) {
@@ -57,6 +64,11 @@ class BookTemplate {
 		}
 	}
 
+	/**
+	 * @param Text $text
+	 * @param string $command
+	 * @return string
+	 */
 	private function generateSfbForTitleLine(Text $text, $command) {
 		$authors = implode(', ', $this->book->getBookAuthorIfNotInTitle($text));
 		if ( ! empty($authors) ) {
@@ -66,7 +78,10 @@ class BookTemplate {
 	}
 
 	/**
+	 * @param Text $text
+	 * @param string $command
 	 * @param string[] $matches
+	 * @return string
 	 */
 	private function generateSfbForTextLine(Text $text, $command, $matches) {
 		if (isset($matches[5])) {
@@ -214,6 +229,10 @@ class BookTemplate {
 		return isset($this->textIds) ? $this->textIds : $this->textIds = $this->extractTextIds($this->getContent()) ;
 	}
 
+	/**
+	 * @param string $template
+	 * @return array
+	 */
 	public static function extractTextIds($template) {
 		if (preg_match_all('/\{(file|text):(\d+)/', $template, $matches)) {
 			return $matches[2];
@@ -221,6 +240,10 @@ class BookTemplate {
 		return [];
 	}
 
+	/**
+	 * @param string $template
+	 * @return string
+	 */
 	private function clearSpecialBookSyntax($template) {
 		return strtr($template, [
 			"\t<!--AUTOHIDE-->\n" => '',
