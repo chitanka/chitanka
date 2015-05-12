@@ -25,6 +25,7 @@ class PersonRepository extends EntityRepository {
 		'bg',
 		'gb',
 		've',
+		'byz',
 		'gt',
 		'de',
 		'gr',
