@@ -9,7 +9,7 @@ jQuery.scrollTo = function(elemOrPos, time) {
 	}
 
 	//console.log("scrolling to " + pos);
-	$("html").animate({scrollTop: pos}, time);
+	$("html,body").animate({scrollTop: pos}, time);
 };
 
 var _togShowText = "показване";
