@@ -238,6 +238,6 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	 * @param string $s
 	 */
 	protected function stringForLikeClause($s) {
-		return "%".str_replace(' ', '% ', $s)."%";
+		return "%".str_replace(' ', '%', $s)."%";
 	}
 }
