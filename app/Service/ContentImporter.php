@@ -184,6 +184,9 @@ class ContentImporter {
 		if (file_exists($dir = strtr($dataFile, ['work.' => '', '.data' => ''])) && is_dir($dir)) {
 			$work['img'] = $dir;
 		}
+		if (!isset($work['toc_level'])) {
+			$work['toc_level'] = self::guessTocLevel(file_get_contents($work['text']));
+		}
 
 		return $this->works[$packetId] = $work;
 	}
@@ -396,8 +399,6 @@ class ContentImporter {
 		}
 		if (isset($work['toc_level'])) {
 			$set['headlevel'] = $work['toc_level'];
-		} else if (isset($work['text'])) {
-			$set['headlevel'] = $work['toc_level'] = self::guessTocLevel(file_get_contents($work['text']));
 		}
 		if (!empty($work['type'])) {
 			$set['type'] = $work['type'];
