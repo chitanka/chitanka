@@ -67,7 +67,7 @@ class GitCommitContentCommand extends Command {
 		$this->output->writeln('');
 		$this->output->writeln('===> Entering ' . basename($directory));
 		chdir($directory);
-		if (strpos(shell_exec('git status'), 'nothing to commit') !== false) {
+		if (strpos(shell_exec('LC_ALL=C git status'), 'nothing to commit') !== false) {
 			$this->output->writeln('Nothing to commit');
 			return;
 		}
