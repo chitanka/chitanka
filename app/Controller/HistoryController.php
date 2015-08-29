@@ -7,8 +7,8 @@ class HistoryController extends Controller {
 
 	protected $responseAge = 3600; // 1 hour
 
-	public $booksPerPage = 30;
-	public $textsPerPage = 30;
+	public $booksPerPage = 50;
+	public $textsPerPage = 50;
 
 	public function indexAction() {
 		return [
