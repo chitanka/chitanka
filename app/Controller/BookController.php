@@ -101,10 +101,6 @@ class BookController extends Controller {
 	}
 
 	public function showAction($id, $_format) {
-		// FIXME
-		// very big books need too much memory, so give it to them
-		ini_set('memory_limit', '128M');
-
 		list($id) = explode('-', $id); // remove optional slug
 		try {
 			$book = $this->em()->getBookRepository()->get($id);
