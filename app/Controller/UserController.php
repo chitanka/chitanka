@@ -40,7 +40,7 @@ class UserController extends Controller {
 				['username' => $username]
 			));
 		} else {
-		    $userpage = file_exists($filename) ? file_get_contents($filename) : '';
+			$userpage = file_exists($filename) ? file_get_contents($filename) : '';
 		}
 
 		return [
