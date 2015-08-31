@@ -1,0 +1,14 @@
+{% extends 'App::layout.html.twig' %}
+
+{% set title = 'Лична страница на ' ~ user.username ~ ' — Редактиране' %}
+{% block content %}
+	<p>За въвеждане на съдържанието се ползва <a href="http://wiki.chitanka.info/SFB">форматът SFB</a> — същият формат, в който са съхранени текстовете на библиотеката.</p>
+	<form action="" method="post">
+		<div>
+			<input type="hidden" name="username" value="{{user.username}}">
+			<label for="userpage">Съдържание:</label><br>
+			<textarea name="userpage" style="width: 95%;" rows="24">{{userpage}}</textarea><br>
+			<button type="submit">Запис</button>
+		</div>
+	</form>
+{% endblock %}
