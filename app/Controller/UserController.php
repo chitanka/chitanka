@@ -21,12 +21,32 @@ class UserController extends Controller {
 		return $this->legacyPage('User');
 	}
 
-	public function pageAction($username) {
+	public function pageAction(Request $request, $username) {
 		$this->responseAge = 0;
 
-		$_REQUEST['username'] = $username;
+		if ($this->getUser()->getUsername() != $username) {
+			throw $this->createAccessDeniedException();
+		}
 
-		return $this->legacyPage('EditUserPage');
+		$user = $this->em()->getUserRepository()->findByUsername($username);
+		$filename = $this->container->getParameter('kernel.root_dir') .
+					'/../web/content/user' .'/'. $user->getId();
+
+		if ($request->isMethod('POST')) {
+			$userpage = $request->request->get("userpage");
+			file_put_contents($filename, $userpage);
+			return $this->urlRedirect($this->generateUrl(
+				'user_show',
+				['username' => $username]
+			));
+		} else {
+		    $userpage = file_exists($filename) ? file_get_contents($filename) : '';
+		}
+
+		return [
+			'user' => $user,
+			'userpage' => $userpage
+		];
 	}
 
 	public function ratingsAction($username) {
