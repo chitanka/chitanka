@@ -25,7 +25,6 @@
 		"sonata-project/intl-bundle": "dev-master",
 		"friendsofsymfony/comment-bundle": "dev-master",
 		"chitanka/sfb-converter": "dev-master",
-		"apibot": "dev-master",
 		"twbs/bootstrap": "3.3.*",
 		"oyejorge/less.php": "1.7.*@dev",
 		"fortawesome/font-awesome": "v4.3.0",
@@ -37,20 +36,6 @@
 		"sensio/generator-bundle": "~2.3",
 		"phpunit/phpunit": "4.1.*"
 	},
-	"repositories": [
-		{
-			"type": "package",
-			"package": {
-				"name": "apibot",
-				"version": "master",
-				"source": {
-					"url": "git://gitorious.org/apibot/apibot.git",
-					"type": "git",
-					"reference": "0.32"
-				}
-			}
-		}
-	],
 	"scripts": {
 		"post-install-cmd": [
 			"Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
