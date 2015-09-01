@@ -7,17 +7,6 @@
     "hash": "6fafa4c7cf2c1e5d68f7bcba8a6db1fd",
     "packages": [
         {
-            "name": "apibot",
-            "version": "master",
-            "source": {
-                "type": "git",
-                "url": "git://gitorious.org/apibot/apibot.git",
-                "reference": "0.32"
-            },
-            "type": "library",
-            "time": "2012-03-04 10:23:52"
-        },
-        {
             "name": "chitanka/sfb-converter",
             "version": "dev-master",
             "source": {
@@ -4472,7 +4461,6 @@
         "sonata-project/intl-bundle": 20,
         "friendsofsymfony/comment-bundle": 20,
         "chitanka/sfb-converter": 20,
-        "apibot": 20,
         "oyejorge/less.php": 20
     },
     "prefer-stable": false,
