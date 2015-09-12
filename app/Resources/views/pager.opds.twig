@@ -1,4 +1,4 @@
-{% if pager.show %}
+{% if pager is defined and pager.show %}
 	{% if pager.has_prev %}
 		<link rel="prev" type="application/atom+xml" href="{{ path(route|default(current_route), route_params|default({})|merge({'page': pager.prev, '_format': 'opds'})) }}" title="Предишна страница"/>
 	{% endif %}

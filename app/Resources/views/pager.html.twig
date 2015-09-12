@@ -1,7 +1,7 @@
-{% if pager.show %}
+{% if pager is defined and pager.show %}
 	{% set route = route|default(current_route) %}
 	{% set route_params = route_params|default({}) %}
-	<div class="text-center">
+	<nav class="text-center">
 	<ul class="pagination">
 		{% if pager.has_prev %}
 			<li class="prev"><a href="{{ path(route, route_params|merge({'page': pager.prev})) }}">Предишна</a></li>
@@ -21,5 +21,5 @@
 			<li class="next"><a href="{{ path(route, route_params|merge({'page': pager.next})) }}">Следваща</a></li>
 		{% endif %}
 	</ul>
-	</div>
+	</nav>
 {% endif %}

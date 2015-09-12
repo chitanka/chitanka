@@ -20,6 +20,11 @@ class HistoryController extends Controller {
 
 	public function listBooksAction($page, $_format) {
 		$repo = $this->em()->getBookRevisionRepository();
+		$pager = new Pager([
+			'page'  => $page,
+			'limit' => $this->booksPerPage,
+			'total' => $this->booksPerPage * 50
+		]);
 		switch ($_format) {
 			case 'html':
 			case 'rss':
@@ -28,6 +33,7 @@ class HistoryController extends Controller {
 				return [
 					'dates' => $this->getDateOptions($repo),
 					'book_revisions_by_date' => $revisions,
+					'pager' => $pager,
 					'last_date' => $lastOnes[0]['date'],
 					'_cache' => $this->responseAge,
 				];
@@ -35,11 +41,7 @@ class HistoryController extends Controller {
 			case 'json':
 				return [
 					'book_revisions' => $repo->getByDate(null, $page, $this->booksPerPage, false),
-					'pager' => new Pager([
-						'page'  => $page,
-						'limit' => $this->booksPerPage,
-						'total' => $this->booksPerPage * 50
-					]),
+					'pager' => $pager,
 					'_cache' => $this->responseAge,
 				];
 		}
@@ -65,6 +67,11 @@ class HistoryController extends Controller {
 
 	public function listTextsAction($page, $_format) {
 		$repo = $this->em()->getTextRevisionRepository();
+		$pager = new Pager([
+			'page'  => $page,
+			'limit' => $this->textsPerPage,
+			'total' => $this->textsPerPage * 50
+		]);
 		switch ($_format) {
 			case 'html':
 			case 'rss':
@@ -73,6 +80,7 @@ class HistoryController extends Controller {
 				return [
 					'dates' => $this->getDateOptions($repo),
 					'text_revisions_by_date' => $revisions,
+					'pager' => $pager,
 					'last_date' => $lastOnes[0]['date'],
 					'_cache' => $this->responseAge,
 				];
@@ -80,11 +88,7 @@ class HistoryController extends Controller {
 			case 'json':
 				return [
 					'text_revisions' => $repo->getByDate(null, $page, $this->textsPerPage, false),
-					'pager'    => new Pager([
-						'page'  => $page,
-						'limit' => $this->textsPerPage,
-						'total' => $this->textsPerPage * 50
-					]),
+					'pager' => $pager,
 					'_cache' => $this->responseAge,
 				];
 		}
