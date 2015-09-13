@@ -1,6 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Pagination\Pager;
+use App\Service\UserService;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller {
@@ -29,23 +30,19 @@ class UserController extends Controller {
 		}
 
 		$user = $this->em()->getUserRepository()->findByUsername($username);
-		$filename = $this->container->getParameter('kernel.root_dir') .
-					'/../web/content/user' .'/'. $user->getId();
+		$userService = new UserService($user, $this->container);
 
 		if ($request->isMethod('POST')) {
-			$userpage = $request->request->get("userpage");
-			file_put_contents($filename, $userpage);
+			$userService->saveUserPageContent($request->request->get("userpage"));
 			return $this->urlRedirect($this->generateUrl(
 				'user_show',
 				['username' => $username]
 			));
-		} else {
-			$userpage = file_exists($filename) ? file_get_contents($filename) : '';
 		}
 
 		return [
 			'user' => $user,
-			'userpage' => $userpage
+			'userpage' => $userService->getUserPageContent()
 		];
 	}
 
