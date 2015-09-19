@@ -43,6 +43,10 @@ class FeedCleaner {
 		}, $content);
 	}
 
+	public static function removeSocialFooterLinks($content) {
+		return preg_replace('#<img alt="" border="0" src=".+feeds\.wordpress\.com/.+">#U', '', $content);
+	}
+
 	/**
 	 *
 	 * @param string $content

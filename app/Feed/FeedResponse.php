@@ -69,6 +69,7 @@ class FeedResponse {
 		$newContent = $content;
 		$newContent = FeedCleaner::removeScriptContent($newContent);
 		$newContent = FeedCleaner::removeImageBeacons($newContent);
+		$newContent = FeedCleaner::removeSocialFooterLinks($newContent);
 		$newContent = FeedCleaner::removeExtraClosingTags($newContent);
 		return $newContent;
 	}

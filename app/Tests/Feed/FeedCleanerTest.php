@@ -39,4 +39,11 @@ HTML;
 		$this->assertContains('normalimage', $cleanedHtml);
 	}
 
+	public function testRemoveSocialFooterLinks() {
+		$html = '<a href="https://test">test</a> <a href="http://feeds.wordpress.com/1.0/godelicious/test/" rel="nofollow"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/delicious/test/"></a> <a href="http://feeds.wordpress.com/1.0/gofacebook/test/" rel="nofollow"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/facebook/test/"></a>';
+		$cleanedHtml = FeedCleaner::removeSocialFooterLinks($html);
+		echo ($cleanedHtml);
+		$this->assertNotContains('<img', $cleanedHtml);
+	}
+
 }
