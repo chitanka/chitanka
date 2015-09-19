@@ -94,14 +94,19 @@ class String {
 			'/\n([^\n]*)/' => "<p>$1</p>\n",
 			'!\[url=([^]]+)\]([^]]+)\[/url\]!' => '<a href="$1">$2</a>',
 		];
+		$patternsWithCallbacks = [
+			// link in brackets
+			'!(?<=[\s>])\((http://[^]\s,<]+)\)!' => function($m) {
+				return '(<a href="'.$m[1].'" title="'.urldecode($m[1]).'">'.urldecode($m[1]).'</a>)';
+			},
+			'!(?<=[\s>])(http://[^]\s,<]+)!' => function($m) {
+				return '<a href="'.$m[1].'" title="'.urldecode($m[1]).'">'.urldecode($m[1]).'</a>';
+			},
+		];
 		$text = "\n$text";
-		// link in brackets
-		$text = preg_replace_callback('!(?<=[\s>])\((http://[^]\s,<]+)\)!', function($m) {
-			return '(<a href="'.$m[1].'" title="'.urldecode($m[1]).'">'.urldecode($m[1]).'</a>)';
-		}, $text);
-		$text = preg_replace_callback('!(?<=[\s>])(http://[^]\s,<]+)!', function($m) {
-			return '<a href="'.$m[1].'" title="'.urldecode($m[1]).'">'.urldecode($m[1]).'</a>';
-		}, $text);
+		foreach ($patternsWithCallbacks as $pattern => $callback) {
+			$text = preg_replace_callback($pattern, $callback, $text);
+		}
 		$text = preg_replace(array_keys($patterns), array_values($patterns), $text);
 
 		return $text;
