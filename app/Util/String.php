@@ -1,7 +1,5 @@
 <?php namespace App\Util;
 
-use App\Legacy\Legacy;
-
 class String {
 
 	/**
@@ -93,13 +91,18 @@ class String {
 	 */
 	public static function prettifyInput($text) {
 		$patterns = [
-			// link in brackets
-			'!(?<=[\s>])\((http://[^]\s,<]+)\)!e' => "'(<a href=\"$1\" title=\"'.urldecode('$1').'\">'.urldecode('$1').'</a>)'",
-			'!(?<=[\s>])(http://[^]\s,<]+)!e' => "'<a href=\"$1\" title=\"'.urldecode('$1').'\">'.urldecode('$1').'</a>'",
 			'/\n([^\n]*)/' => "<p>$1</p>\n",
 			'!\[url=([^]]+)\]([^]]+)\[/url\]!' => '<a href="$1">$2</a>',
 		];
-		$text = preg_replace(array_keys($patterns), array_values($patterns), "\n$text");
+		$text = "\n$text";
+		// link in brackets
+		$text = preg_replace_callback('!(?<=[\s>])\((http://[^]\s,<]+)\)!', function($m) {
+			return '(<a href="'.$m[1].'" title="'.urldecode($m[1]).'">'.urldecode($m[1]).'</a>)';
+		}, $text);
+		$text = preg_replace_callback('!(?<=[\s>])(http://[^]\s,<]+)!', function($m) {
+			return '<a href="'.$m[1].'" title="'.urldecode($m[1]).'">'.urldecode($m[1]).'</a>';
+		}, $text);
+		$text = preg_replace(array_keys($patterns), array_values($patterns), $text);
 
 		return $text;
 	}
