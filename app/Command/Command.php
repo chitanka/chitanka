@@ -105,11 +105,11 @@ abstract class Command extends ContainerAwareCommand {
 	}
 
 	public function webDir($file = null) {
-		return __DIR__ . '/../../web' . ($file ? "/$file" : '');
+		return realpath(__DIR__ . '/../../web' . ($file ? "/$file" : ''));
 	}
 
 	public function contentDir($file = null) {
-		return __DIR__ . '/../../web/content' . ($file ? "/$file" : '');
+		return realpath($this->getContainer()->getParameter('content_dir') . ($file ? "/$file" : ''));
 	}
 
 	private $olddb;

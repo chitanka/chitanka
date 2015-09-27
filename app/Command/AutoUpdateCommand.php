@@ -1,7 +1,6 @@
 <?php namespace App\Command;
 
 use App\Service\Mutex;
-use App\Service\FileUpdater;
 use App\Service\SourceUpdater;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -37,7 +36,6 @@ class AutoUpdateCommand extends Command {
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->output = $output;
-
 		$container = $this->getContainer();
 		$rootDir = $container->getParameter('kernel.root_dir').'/..';
 		$updateDir = "$rootDir/update";
@@ -50,10 +48,10 @@ class AutoUpdateCommand extends Command {
 			sleep(rand(0, 30));
 		}
 		if ($input->getOption('skip-src') === false) {
-			$this->executeSrcUpdate($container->getParameter('update_src_url'), "$updateDir/src", $rootDir);
+			$this->executeSrcUpdate($rootDir, $container->getParameter('git.path'));
 		}
 		if ($input->getOption('skip-content') === false) {
-			$this->executeContentUpdate($container->getParameter('update_content_url'), "$updateDir/content", $this->contentDir());
+			$this->executeContentUpdate($this->contentDir(), $container->getParameter('content_urls'), $container->getParameter('git.path'));
 		}
 		if ($input->getOption('skip-db') === false) {
 			$this->executeDbUpdate($container->getParameter('update_db_url'), "$updateDir/db");
@@ -113,38 +111,42 @@ class AutoUpdateCommand extends Command {
 	}
 
 	/**
-	 * @param string $fetchUrl
-	 * @param string $updateDir
 	 * @param string $contentDir
+	 * @param array $contentUrls
+	 * @param string $git Path to git executable
 	 * @return boolean
 	 */
-	private function executeContentUpdate($fetchUrl, $updateDir, $contentDir) {
-		$zip = $this->fetchUpdate($fetchUrl, $updateDir, time());
-		if ( ! $zip) {
-			return false;
+	private function executeContentUpdate($contentDir, $contentUrls, $git) {
+		if (file_exists("$contentDir/text/.git")) {
+			foreach (glob("$contentDir/*", GLOB_ONLYDIR) as $dir) {
+				chdir($dir);
+				shell_exec("$git pull");
+			}
+		} else {
+			$fs = new \Symfony\Component\Filesystem\Filesystem;
+			foreach ($contentUrls as $subDir => $contentUrl) {
+				$targetDir = "$contentDir/$subDir";
+				$fs->remove($targetDir);
+				shell_exec("$git clone $contentUrl $targetDir");
+			}
 		}
-		$updater = new FileUpdater($contentDir, $updateDir);
-		$updater->extractArchive($zip);
 		return true;
 	}
 
 	/**
-	 * @param string $fetchUrl
-	 * @param string $updateDir
 	 * @param string $rootDir
+	 * @param string $git Path to git executable
 	 * @return boolean
 	 */
-	private function executeSrcUpdate($fetchUrl, $updateDir, $rootDir) {
-		$zip = $this->fetchUpdate($fetchUrl, $updateDir, time());
-		if ( ! $zip) {
+	private function executeSrcUpdate($rootDir, $git) {
+		$response = shell_exec("cd $rootDir; LC_ALL=C $git pull");
+		if (strpos($response, 'up-to-date') !== false) {
 			return false;
 		}
-		$updater = new SourceUpdater($rootDir, $updateDir);
+		$updater = new SourceUpdater($rootDir);
 		$updater->lockFrontController();
-		$updater->extractArchive($zip);
 		$this->clearAppCache();
 		$updater->unlockFrontController();
-
 		return true;
 	}
 

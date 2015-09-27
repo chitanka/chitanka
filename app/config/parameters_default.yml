@@ -2,5 +2,22 @@ parameters:
     global_info_message: Това е огледало на <a href="http://chitanka.info">Моята библиотека</a>.
     analytics_snippet: ~
     dev.web_profiler_toolbar: false
+    git.path: /usr/bin/git
     content_dir: %kernel.root_dir%/../web/content
-    web_content_dir: content
+    content_web_dir: content # not used at the moment
+    content_urls:
+        book: https://github.com/chitanka/content-book.git
+        book-anno: https://github.com/chitanka/content-book-anno.git
+        book-cover: https://github.com/chitanka/content-book-cover.git
+        book-djvu: https://github.com/chitanka/content-book-djvu.git
+        book-img: https://github.com/chitanka/content-book-img.git
+        book-info: https://github.com/chitanka/content-book-info.git
+        book-pdf: https://github.com/chitanka/content-book-pdf.git
+        book-pic: https://github.com/chitanka/content-book-pic.git
+        img: https://github.com/chitanka/content-img.git
+        misc: https://github.com/chitanka/content-misc.git
+        text: https://github.com/chitanka/content-text.git
+        text-anno: https://github.com/chitanka/content-text-anno.git
+        text-info: https://github.com/chitanka/content-text-info.git
+        user: https://github.com/chitanka/content-user.git
+        wiki: https://github.com/chitanka/content-wiki.git

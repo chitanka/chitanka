@@ -1,6 +1,15 @@
 <?php namespace App\Service;
 
-class SourceUpdater extends FileUpdater {
+class SourceUpdater {
+
+	protected $rootDir;
+
+	/**
+	 * @param string $rootDir
+	 */
+	public function __construct($rootDir) {
+		$this->rootDir = $rootDir;
+	}
 
 	public function lockFrontController() {
 		$lockedContent = str_replace("//".$this->lockMethodCall(), $this->lockMethodCall(), file_get_contents($this->frontControllerName()));
@@ -15,13 +24,6 @@ class SourceUpdater extends FileUpdater {
 		}
 		$unlockedContent = str_replace($this->lockMethodCall(), "//".$this->lockMethodCall(), $contents);
 		file_put_contents($this->frontControllerName(), $unlockedContent);
-	}
-
-	protected function onAfterExtract(\ZipArchive $zip, $extractDir) {
-		if ($zip->locateName('app/config/parameters.yml.dist') !== false) {
-			$yamlUpdater = new ParametersYamlUpdater;
-			$yamlUpdater->update("$extractDir/app/config/parameters.yml.dist", "$this->rootDir/app/config/parameters.yml");
-		}
 	}
 
 	/**
