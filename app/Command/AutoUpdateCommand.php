@@ -127,7 +127,7 @@ class AutoUpdateCommand extends Command {
 			foreach ($contentUrls as $subDir => $contentUrl) {
 				$targetDir = "$contentDir/$subDir";
 				$fs->remove($targetDir);
-				shell_exec("$git clone $contentUrl $targetDir");
+				shell_exec("$git clone --depth=1 $contentUrl $targetDir");
 			}
 		}
 		return true;
