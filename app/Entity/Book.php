@@ -699,13 +699,10 @@ class Book extends BaseWork {
 
 	public function getInfoAsSfb() {
 		return SfbConverter::INFO_S . SfbConverter::EOL
-			. SfbConverter::CMD_DELIM . $this->getOriginMarker() . SfbConverter::EOL
+			. SfbConverter::CMD_DELIM . "\$id = {$this->getId()}" . SfbConverter::EOL
+			. SfbConverter::CMD_DELIM . "\$source = Моята библиотека" . SfbConverter::EOL
 			. rtrim($this->getExtraInfo()) . SfbConverter::EOL
 			. SfbConverter::INFO_E . SfbConverter::EOL;
-	}
-
-	public function getOriginMarker() {
-		return sprintf('Свалено от „Моята библиотека“: %s', $this->getDocId());
 	}
 
 	public function getContentAsFb2() {

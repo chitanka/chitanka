@@ -300,8 +300,7 @@ class TextDownloadService {
 	}
 
 	public static function getTextFileStart() {
-		return "\xEF\xBB\xBF" . // Byte order mark for some windows software
-			"\t[Kodirane UTF-8]\n\n";
+		return "\xEF\xBB\xBF";
 	}
 
 	private function rmFEntrySuffix($fEntryName) {

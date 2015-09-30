@@ -385,7 +385,7 @@ abstract class BaseWork extends Entity {
 	}
 
 	private static function getBom() {
-		return File::getBom() . "\t[Kodirane UTF-8]\n\n";
+		return File::getBom();
 	}
 
 }

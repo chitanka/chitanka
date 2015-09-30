@@ -664,20 +664,6 @@ class Text extends BaseWork {
 		return $this->hasTitleNote = $conv->hasTitleNote();
 	}
 
-	private function getOrigTitleAsSfb() {
-		if (!$this->isTranslation()) {
-			return '';
-		}
-		$authors = implode(', ', $this->getAuthorOrigNames());
-		$origTitle = $this->origTitle;
-		if ( !empty($this->origSubtitle) ) {
-			$origTitle .= " ({$this->origSubtitle})";
-		}
-		$origTitle .= ', '. $this->getYearHuman();
-		$origTitle = ltrim($origTitle, ', ');
-		return rtrim("\t$authors\n\t$origTitle");
-	}
-
 	public function getImages() {
 		return $this->getImagesFromDir(ContentService::getInternalContentFilePath('img', $this->getId()));
 	}
@@ -1044,10 +1030,13 @@ EOS;
 	}
 
 	public function getExtraInfoForDownload() {
-		return $this->getOrigTitleAsSfb() . "\n\n"
-			. $this->getFullExtraInfo()      . "\n\n"
-			. "\tСвалено от „Моята библиотека“: ".$this->getDocId()."\n"
-			. "\tПоследна корекция: ".Date::humanDate($this->curRev->getDate())."\n";
+		$info = "\t\$source = Моята библиотека\n"
+			. "\t\$id = {$this->getId()}\n";
+		foreach ($this->getBooks() as $book) {
+			$info .= "\t\$book_id = {$book->getId()}\n";
+		}
+		$info .= "\n" . $this->getFullExtraInfo();
+		return $info;
 	}
 
 	public function getContentAsFb2() {
