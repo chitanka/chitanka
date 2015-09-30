@@ -58,6 +58,7 @@ class PersonRepository extends EntityRepository {
 		'mq',
 		'mx',
 		'md',
+		'ng',
 		'ni',
 		'nz',
 		'no',
