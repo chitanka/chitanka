@@ -51,7 +51,7 @@ class AutoUpdateCommand extends Command {
 			$this->executeSrcUpdate($rootDir, $container->getParameter('git.path'));
 		}
 		if ($input->getOption('skip-content') === false) {
-			$this->executeContentUpdate($this->contentDir(), $container->getParameter('content_urls'), $container->getParameter('git.path'));
+			$this->executeContentUpdate($this->contentDir(), $container->getParameter('content_urls'), $container->getParameter('git.path'), $container->getParameter('rsync.path'));
 		}
 		if ($input->getOption('skip-db') === false) {
 			$this->executeDbUpdate($container->getParameter('update_db_url'), "$updateDir/db");
@@ -102,9 +102,7 @@ class AutoUpdateCommand extends Command {
 	}
 
 	private function deleteRemovedNoticesIfDisallowed() {
-		$c = $this->getContainer();
-		$param = 'allow_removed_notice';
-		if ($c->hasParameter($param) && $c->getParameter($param) === false) {
+		if ($this->getContainer()->getParameter('allow_removed_notice') === false) {
 			$this->getEntityManager()->getTextRepository()->execute('UPDATE text SET removed_notice = NULL');
 			$this->getEntityManager()->getBookRepository()->execute('UPDATE book SET removed_notice = NULL');
 		}
@@ -114,22 +112,24 @@ class AutoUpdateCommand extends Command {
 	 * @param string $contentDir
 	 * @param array $contentUrls
 	 * @param string $git Path to git executable
+	 * @param string $rsync Path to rync executable
 	 * @return boolean
 	 */
-	private function executeContentUpdate($contentDir, $contentUrls, $git) {
-		if (file_exists("$contentDir/text/.git")) {
-			foreach (glob("$contentDir/*", GLOB_ONLYDIR) as $dir) {
-				chdir($dir);
-				shell_exec("$git pull");
-			}
-		} else {
-			$fs = new \Symfony\Component\Filesystem\Filesystem;
-			foreach ($contentUrls as $subDir => $contentUrl) {
-				$targetDir = "$contentDir/$subDir";
-				$fs->remove($targetDir);
-				shell_exec("$git clone --depth=1 $contentUrl $targetDir");
-			}
-		}
+	private function executeContentUpdate($contentDir, $contentUrls, $git, $rsync) {
+		shell_exec("$rsync -avz --delete rsync.chitanka.info::content/ $contentDir");
+//		if (file_exists("$contentDir/text/.git")) {
+//			foreach (glob("$contentDir/*", GLOB_ONLYDIR) as $dir) {
+//				chdir($dir);
+//				shell_exec("$git pull");
+//			}
+//		} else {
+//			$fs = new \Symfony\Component\Filesystem\Filesystem;
+//			foreach ($contentUrls as $subDir => $contentUrl) {
+//				$targetDir = "$contentDir/$subDir";
+//				$fs->remove($targetDir);
+//				shell_exec("$git clone --depth=1 $contentUrl $targetDir");
+//			}
+//		}
 		return true;
 	}
 

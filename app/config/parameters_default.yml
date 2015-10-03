@@ -1,8 +1,11 @@
 parameters:
     global_info_message: Това е огледало на <a href="http://chitanka.info">Моята библиотека</a>.
     analytics_snippet: ~
+    allow_removed_notice: true
     dev.web_profiler_toolbar: false
     git.path: /usr/bin/git
+    rsync.path: /usr/bin/rsync
+    rsync.url: rsync.chitanka.info::content
     content_dir: %kernel.root_dir%/../web/content
     content_web_dir: content # not used at the moment
     content_urls:
