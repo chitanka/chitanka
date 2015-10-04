@@ -80,6 +80,7 @@ class User implements UserInterface {
 	private static $groupList = [
 		'user',
 		'text-label',
+		'edit-wiki',
 		'workroom-supervisor',
 		'workroom-admin',
 		'admin',
