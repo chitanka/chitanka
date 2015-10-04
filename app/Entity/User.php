@@ -203,6 +203,10 @@ class User implements UserInterface {
 		$this->groups = array_diff($this->groups, $groupsToRemove);
 	}
 
+	public function removeGroup($groupToRemove) {
+		$this->removeGroups([$groupToRemove]);
+	}
+
 	/**
 	 * @param string $groups
 	 */

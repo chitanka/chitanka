@@ -303,7 +303,7 @@ texts_label_log:
     requirements:   { _method: get }
 
 text_label_new:
-    pattern:        /text/{id}/label/new
+    pattern:        /text/{id}/label/new/group/{group}
     defaults:       { _controller: App:Text:newLabel }
 text_label_delete:
     pattern:        /text/{id}/label/{labelId}

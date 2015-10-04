@@ -142,6 +142,11 @@ return [
 		'jp' => 'Япония',
 	],
 
+	'labels' => [
+		'genre' => 'Жанр',
+		'characteristic' => 'Характеристика',
+	],
+
 	'text.type.singular' => [
 		'anecdote' => 'Анекдот',
 		'fable' => 'Басня',

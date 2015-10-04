@@ -52,12 +52,13 @@
 		<dt>Форма<dt>
 		<dd><a href="{{ path('texts_by_type', {'type': text.type}) }}">{{ ('text.type.singular.'~text.type) | trans }}</a></dd>
 
+		{% for labelGroup in text.availableLabels %}
 		<dt>
-			<a href="{{ path('text_label_log', {id: text.id}) }}">Етикети</a>
+			<a href="{{ path('text_label_log', {id: text.id}) }}">{{ ('labels.'~labelGroup)|trans }}</a>
 		</dt>
 		<dd>
 			<ul class="simplelist with-actions">
-			{% for label in text.labels %}
+			{% for label in text.labelsByGroup(labelGroup) %}
 				<li>
 					{{ link.label(label) }}
 					{% if label.description is not empty %}
@@ -69,8 +70,9 @@
 				<li class="no-items">Няма</li>
 			{% endfor %}
 			</ul>
-			<a href="{{ path('text_label_new', {'id': text.id}) }}" class="action-new" title="Добавяне на етикет"><span class="fa fa-plus"></span></a>
+			<a href="{{ path('text_label_new', {id: text.id, group: labelGroup}) }}" class="action-new" title="Добавяне на етикет"><span class="fa fa-plus"></span></a>
 		</dd>
+		{% endfor %}
 
 		<dt>Оценка</dt>
 		<dd>{{ textinfo.rating_expanded(text) }}</dd>

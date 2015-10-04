@@ -1,5 +1,6 @@
 <?php namespace App\Admin;
 
+use App\Entity\Label;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -13,6 +14,7 @@ class LabelAdmin extends Admin {
 		$showMapper
 			->add('name')
 			->add('slug')
+			->add('group')
 			->add('description')
 			->add('parent')
 			->add('nrOfTexts')
@@ -25,6 +27,7 @@ class LabelAdmin extends Admin {
 		$listMapper
 			->addIdentifier('name')
 			->add('slug')
+			->add('group')
 			->add('_action', 'actions', [
 				'actions' => [
 					'view' => [],
@@ -40,6 +43,7 @@ class LabelAdmin extends Admin {
 		$formMapper
 			->add('name')
 			->add('slug')
+			->add('group', 'choice', ['choices' => Label::GROUPS])
 			->add('description')
 			->add('parent', null, ['required' => false, 'query_builder' => function ($repo) {
 				return $repo->createQueryBuilder('e')->orderBy('e.name');
@@ -51,6 +55,7 @@ class LabelAdmin extends Admin {
 		$datagrid
 			->add('slug')
 			->add('name')
+			->add('group')
 		;
 	}
 

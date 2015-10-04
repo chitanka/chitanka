@@ -12,6 +12,15 @@ use App\Util\String;
  * @UniqueEntity(fields="name")
  */
 class Label extends Entity implements \JsonSerializable {
+
+	const GROUP_GENRE = 'genre';
+	const GROUP_CHARACTERISTIC = 'characteristic';
+
+	const GROUPS = [
+		self::GROUP_GENRE,
+		self::GROUP_CHARACTERISTIC,
+	];
+
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -33,6 +42,12 @@ class Label extends Entity implements \JsonSerializable {
 	 * @Assert\NotBlank
 	 */
 	private $name = '';
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="string", length=20)
+	 */
+	private $group;
 
 	/**
 	 * @var string
@@ -74,6 +89,9 @@ class Label extends Entity implements \JsonSerializable {
 
 	public function setName($name) { $this->name = $name; }
 	public function getName() { return $this->name; }
+
+	public function setGroup($group) { $this->group = $group; }
+	public function getGroup() { return $this->group; }
 
 	public function setDescription($description) { $this->description = $description; }
 	public function getDescription() { return $this->description; }

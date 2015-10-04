@@ -561,6 +561,21 @@ class Text extends BaseWork {
 	public function addLabel(Label $label) { $this->labels[] = $label; }
 	public function getLabels() { return $this->labels; }
 
+	public function getLabelsByGroup($group = null) {
+		$labelsByGroup = [];
+		foreach ($this->getLabels() as $label) {
+			$labelsByGroup[$label->getGroup()][] = $label;
+		}
+		if ($group === null) {
+			return $labelsByGroup;
+		}
+		return isset($labelsByGroup[$group]) ? $labelsByGroup[$group] : [];
+	}
+
+	public function getAvailableLabels() {
+		return Label::GROUPS;
+	}
+
 	public function addReader(User $reader) { $this->readers[] = $reader; }
 	public function getReaders() { return $this->readers; }
 

@@ -2,7 +2,7 @@
 
 {% set title = 'Добавяне на етикет' %}
 {% block content %}
-{{ form_start(form, { action: path('text_label_new', {'id': text.id}), attr: {class: 'new-form form-inline'} }) }}
+{{ form_start(form, { action: path('text_label_new', {id: text.id, group: group}), attr: {class: 'new-form form-inline'} }) }}
 	{{ form_errors(form) }}
 	<div class="form-group">
 		{{ form_label(form.label, ' ') }}

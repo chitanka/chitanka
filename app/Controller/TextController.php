@@ -267,13 +267,18 @@ class TextController extends Controller {
 		$text = $this->findText($id);
 		$service = new TextLabelService($this->em()->getTextLabelLogRepository(), $this->getSavableUser());
 		$textLabel = $service->newTextLabel($text);
-		$form = $this->createForm(new TextLabelType, $textLabel);
+		$group = $request->get('group');
+		$form = $this->createForm(new TextLabelType($group), $textLabel);
 
 		if ($form->handleRequest($request)->isValid()) {
 			// TODO Form::handleRequest() overwrites the Text object with an id, so we give $text explicitly
 			$service->addTextLabel($textLabel, $text);
 			if ($request->isXmlHttpRequest()) {
-				return ['_template' => 'App:Text:label_view.html.twig', 'label' => $textLabel->getLabel()];
+				return [
+					'_template' => 'App:Text:label_view.html.twig',
+					'text' => $text,
+					'label' => $textLabel->getLabel(),
+				];
 			}
 			return $this->redirectToText($text);
 		}
@@ -281,6 +286,7 @@ class TextController extends Controller {
 		return [
 			'text' => $text,
 			'text_label' => $textLabel,
+			'group' => $group,
 			'form' => $form->createView(),
 			'_cache' => 0,
 		];
