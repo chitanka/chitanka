@@ -16,10 +16,12 @@ class Label extends Entity implements \JsonSerializable {
 	const GROUP_GENRE = 'genre';
 	const GROUP_CHARACTERISTIC = 'characteristic';
 
-	const GROUPS = [
-		self::GROUP_GENRE,
-		self::GROUP_CHARACTERISTIC,
-	];
+	public static function getAvailableGroups() {
+		return [
+			self::GROUP_GENRE,
+			self::GROUP_CHARACTERISTIC,
+		];
+	}
 
 	/**
 	 * @ORM\Column(type="integer")

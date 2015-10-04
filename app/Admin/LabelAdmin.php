@@ -43,7 +43,7 @@ class LabelAdmin extends Admin {
 		$formMapper
 			->add('name')
 			->add('slug')
-			->add('group', 'choice', ['choices' => Label::GROUPS])
+			->add('group', 'choice', ['choices' => Label::getAvailableGroups()])
 			->add('description')
 			->add('parent', null, ['required' => false, 'query_builder' => function ($repo) {
 				return $repo->createQueryBuilder('e')->orderBy('e.name');

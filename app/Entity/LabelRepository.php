@@ -32,7 +32,7 @@ class LabelRepository extends EntityRepository {
 	 */
 	public function getAllAsTree() {
 		$labels = [];
-		foreach (Label::GROUPS as $group) {
+		foreach (Label::getAvailableGroups() as $group) {
 			$labels[$group] = $this->convertArrayToTree($this->getAll($group));
 		}
 		return $labels;

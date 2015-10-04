@@ -573,7 +573,7 @@ class Text extends BaseWork {
 	}
 
 	public function getAvailableLabels() {
-		return Label::GROUPS;
+		return Label::getAvailableGroups();
 	}
 
 	public function addReader(User $reader) { $this->readers[] = $reader; }
