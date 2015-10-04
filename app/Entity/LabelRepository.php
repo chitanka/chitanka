@@ -11,12 +11,14 @@ class LabelRepository extends EntityRepository {
 		return $this->findOneBy(['slug' => $slug]);
 	}
 
-	public function getAll() {
-		$labelResult = $this->getQueryBuilder()
+	public function getAll($group = null) {
+		$qb = $this->getQueryBuilder()
 			->addSelect('IDENTITY(e.parent) AS parent')
-			->orderBy('e.name')
-			->getQuery()
-			->getArrayResult();
+			->orderBy('e.name');
+		if ($group) {
+			$qb->where('e.group = ?1')->setParameter(1, $group);
+		}
+		$labelResult = $qb->getQuery()->getArrayResult();
 		foreach ($labelResult as $k => $row) {
 			$labelResult[$k] += $row[0];
 			unset($labelResult[$k][0]);
@@ -25,10 +27,15 @@ class LabelRepository extends EntityRepository {
 	}
 
 	/**
+	 * Return all labels by group and ordered as a tree
 	 * @return array
 	 */
 	public function getAllAsTree() {
-		return $this->convertArrayToTree($this->getAll());
+		$labels = [];
+		foreach (Label::GROUPS as $group) {
+			$labels[$group] = $this->convertArrayToTree($this->getAll($group));
+		}
+		return $labels;
 	}
 
 	protected function convertArrayToTree($labels) {

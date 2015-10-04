@@ -9,8 +9,10 @@
 	<h2>По азбучен ред</h2>
 	{% include 'App:Text:navigation.html.twig' with {'letter': ''} %}
 
-	<h2>По етикет</h2>
-	{% include 'App:Text:label_tree.html.twig' %}
+	{% for labelGroup, labelsInGroup in labels %}
+		<h2>{{ ('labels.'~labelGroup)|trans }}</h2>
+		{% include 'App:Text:label_tree.html.twig' with {labels: labelsInGroup} %}
+	{% endfor %}
 
 	<h2>По форма</h2>
 	{% include 'App:Text:type_list.html.twig' %}
