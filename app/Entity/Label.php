@@ -47,7 +47,7 @@ class Label extends Entity implements \JsonSerializable {
 
 	/**
 	 * @var string
-	 * @ORM\Column(type="string", length=20)
+	 * @ORM\Column(name="`group`", type="string", length=20)
 	 */
 	private $group;
 
