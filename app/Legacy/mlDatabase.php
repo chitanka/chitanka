@@ -8,7 +8,7 @@ class mlDatabase {
 	private $dbName;
 	/**
 		Connection to the database
-		@var resource
+		@var mysqli
 	*/
 	private $conn;
 	private $logFile;
@@ -268,7 +268,7 @@ class mlDatabase {
 
 	public function escape($string) {
 		if ( !isset($this->conn) ) { $this->connect(); }
-		return mysqli_real_escape_string($this->conn, $string);
+		return $this->conn->escape_string($string);
 	}
 
 	/**
@@ -280,11 +280,11 @@ class mlDatabase {
 	public function query($query, $useBuffer = true) {
 		if ( !isset($this->conn) ) { $this->connect(); }
 		$res = $useBuffer
-			? mysqli_query($this->conn, $query)
-			: mysqli_query($this->conn, $query, MYSQLI_USE_RESULT);
+			? $this->conn->query($query)
+			: $this->conn->query($query, MYSQLI_USE_RESULT);
 		if ( !$res ) {
-			$errno = mysqli_errno($this->conn);
-			$error = mysqli_error($this->conn);
+			$errno = $this->conn->errno;
+			$error = $this->conn->error;
 			$this->log("Error $errno: $error\nQuery: $query\n", true);
 			throw new \Exception("A database query made a boo boo. Check the log.");
 		}
@@ -327,9 +327,8 @@ class mlDatabase {
 	}
 
 	private function connect() {
-		$this->conn = mysqli_connect($this->server,  $this->user,  $this->pass);
-		mysqli_query($this->conn, "USE " . $this->dbName);
-		mysqli_query($this->conn, "SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
+		$this->conn = new \mysqli($this->server,  $this->user,  $this->pass, $this->dbName);
+		$this->conn->query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
 	}
 
 	private function log($msg, $isError = true) {
