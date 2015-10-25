@@ -3,10 +3,10 @@
 class MessageController extends Controller {
 
 	public function indexAction() {
-		$this->responseAge = 0;
-
 		if ($this->flashes()->hasMessages()) {
-			return [];
+			return [
+				'_cache' => 0,
+			];
 		}
 		return $this->redirectToRoute('homepage');
 	}
