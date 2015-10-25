@@ -59,7 +59,7 @@ class mlDatabase {
 
 	public function getCount($table, $keys = []) {
 		$res = $this->select($table, $keys, 'COUNT(*)');
-		list($count) = mysql_fetch_row($res);
+		list($count) = mysqli_fetch_row($res);
 		return (int) $count;
 	}
 
@@ -268,7 +268,7 @@ class mlDatabase {
 
 	public function escape($string) {
 		if ( !isset($this->conn) ) { $this->connect(); }
-		return mysql_real_escape_string($string, $this->conn);
+		return mysqli_real_escape_string($this->conn, $string);
 	}
 
 	/**
@@ -280,11 +280,11 @@ class mlDatabase {
 	public function query($query, $useBuffer = true) {
 		if ( !isset($this->conn) ) { $this->connect(); }
 		$res = $useBuffer
-			? mysql_query($query, $this->conn)
-			: mysql_unbuffered_query($query, $this->conn);
+			? mysqli_query($this->conn, $query)
+			: mysqli_query($this->conn, $query, MYSQLI_USE_RESULT);
 		if ( !$res ) {
-			$errno = mysql_errno();
-			$error = mysql_error();
+			$errno = ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_errno($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false));
+			$error = ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
 			$this->log("Error $errno: $error\nQuery: $query\n", true);
 			throw new \Exception("A database query made a boo boo. Check the log.");
 		}
@@ -296,7 +296,7 @@ class mlDatabase {
 	 * @return array Associative array
 	 */
 	public function fetchAssoc($result) {
-		return mysql_fetch_assoc($result);
+		return mysqli_fetch_assoc($result);
 	}
 
 	/**
@@ -304,7 +304,7 @@ class mlDatabase {
 	 * @return array
 	 */
 	public function fetchRow($result) {
-		return mysql_fetch_row($result);
+		return mysqli_fetch_row($result);
 	}
 
 	/**
@@ -312,7 +312,7 @@ class mlDatabase {
 	 * @return int
 	 */
 	public function numRows($result) {
-		return mysql_num_rows($result);
+		return mysqli_num_rows($result);
 	}
 
 	/**
@@ -322,14 +322,14 @@ class mlDatabase {
 	 */
 	public function autoIncrementId($tableName) {
 		$res = $this->query('SHOW TABLE STATUS LIKE "'.$tableName.'"');
-		$row = mysql_fetch_assoc($res);
+		$row = mysqli_fetch_assoc($res);
 		return $row['Auto_increment'];
 	}
 
 	private function connect() {
-		$this->conn = mysql_connect($this->server, $this->user, $this->pass, true);
-		mysql_select_db($this->dbName, $this->conn);
-		mysql_query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'", $this->conn);
+		$this->conn = ($GLOBALS["___mysqli_ston"] = mysqli_connect($this->server,  $this->user,  $this->pass));
+		mysqli_query($this->conn, "USE " . $this->dbName);
+		mysqli_query($this->conn, "SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
 	}
 
 	private function log($msg, $isError = true) {
