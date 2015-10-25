@@ -18,9 +18,9 @@ class Cache {
 	private $debug = false;
 	private $logFile;
 
-	public function __construct($requestUri, $cacheDir, $logDir = '') {
+	public function __construct($requestUri, $cacheDir, $logDir = '', $compressCache = true) {
 		$hash = md5($requestUri);
-		$this->file = new CacheFile("$cacheDir/$hash[0]/$hash[1]/$hash[2]/$hash");
+		$this->file = new CacheFile("$cacheDir/$hash[0]/$hash[1]/$hash[2]/$hash", $compressCache);
 		$this->request = $requestUri;
 		$this->logFile = "$logDir/cache.log";
 	}
@@ -65,9 +65,11 @@ class Cache {
 }
 class CacheFile {
 	private $name;
+	private $compressed = true;
 
-	public function __construct($name) {
+	public function __construct($name, $compresed = true) {
 		$this->name = $name;
+		$this->compressed = $compresed;
 	}
 	public function exists() {
 		return file_exists($this->name);
@@ -81,7 +83,8 @@ class CacheFile {
 		if ( ! file_exists($dir = dirname($this->name))) {
 			mkdir($dir, 0777, true);
 		}
-		file_put_contents($this->name, gzdeflate(ltrim($content)));
+		$content = ltrim($content);
+		file_put_contents($this->name, $this->compressed ? gzdeflate($content) : $content);
 		$this->setTtl($ttl);
 	}
 	public function read() {
@@ -109,11 +112,12 @@ class CacheFile {
 }
 
 if (isCacheable()) {
-	$requestUri = $_SERVER['REQUEST_URI'];
-	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+	$requestUri = filter_input(INPUT_SERVER, 'REQUEST_URI');
+	if (filter_input(INPUT_SERVER, 'HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest') {
 		$requestUri .= '.ajax';
 	}
-	$cache = new Cache($requestUri, "$rootDir/var/cache/simple_http_cache", "$rootDir/var/logs");
+	$compressCache = !filter_input(INPUT_SERVER, 'CACHE_NOCOMPRESS');
+	$cache = new Cache($requestUri, "$rootDir/var/cache/simple_http_cache", "$rootDir/var/logs", $compressCache);
 	if (null !== ($cachedContent = $cache->get())) {
 		header("Cache-Control: public, max-age=".$cachedContent['ttl']);
 		echo $cachedContent['data'];
