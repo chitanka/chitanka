@@ -283,8 +283,8 @@ class mlDatabase {
 			? mysqli_query($this->conn, $query)
 			: mysqli_query($this->conn, $query, MYSQLI_USE_RESULT);
 		if ( !$res ) {
-			$errno = ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_errno($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false));
-			$error = ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
+			$errno = mysqli_errno($this->conn);
+			$error = mysqli_error($this->conn);
 			$this->log("Error $errno: $error\nQuery: $query\n", true);
 			throw new \Exception("A database query made a boo boo. Check the log.");
 		}
@@ -327,7 +327,7 @@ class mlDatabase {
 	}
 
 	private function connect() {
-		$this->conn = ($GLOBALS["___mysqli_ston"] = mysqli_connect($this->server,  $this->user,  $this->pass));
+		$this->conn = mysqli_connect($this->server,  $this->user,  $this->pass);
 		mysqli_query($this->conn, "USE " . $this->dbName);
 		mysqli_query($this->conn, "SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
 	}
