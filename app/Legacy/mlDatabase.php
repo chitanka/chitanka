@@ -8,7 +8,7 @@ class mlDatabase {
 	private $dbName;
 	/**
 		Connection to the database
-		@var mysqli
+		@var \mysqli
 	*/
 	private $conn;
 	private $logFile;
