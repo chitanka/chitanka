@@ -18,8 +18,6 @@ class SecurityController extends Controller {
 	}
 
 	public function logoutAction(Request $request) {
-		$this->responseAge = 0;
-
 		$user = $this->getUser();
 		if ($user) {
 			$user->eraseCredentials();

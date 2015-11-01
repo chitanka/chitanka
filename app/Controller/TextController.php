@@ -250,11 +250,11 @@ class TextController extends Controller {
 		}
 
 		if ($request->isXmlHttpRequest() || $request->isMethod('GET')) {
-			$this->responseAge = 0;
 			return [
 				'text' => $text,
 				'form' => $form->createView(),
 				'rating' => $rating,
+				'_cache' => 0,
 			];
 		}
 		return $this->redirectToText($text);

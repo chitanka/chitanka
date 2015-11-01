@@ -7,10 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 class UserController extends Controller {
 
 	public function personalToolsAction() {
-		$this->responseAge = 0;
-
 		return $this->render('App:User:personal_tools.html.twig', [
-			'_user' => $this->getUser()
+			'_user' => $this->getUser(),
+			'_cache' => 0,
 		]);
 	}
 
@@ -23,8 +22,6 @@ class UserController extends Controller {
 	}
 
 	public function pageAction(Request $request, $username) {
-		$this->responseAge = 0;
-
 		if ($this->getUser()->getUsername() != $username) {
 			throw $this->createAccessDeniedException();
 		}
@@ -42,7 +39,8 @@ class UserController extends Controller {
 
 		return [
 			'user' => $user,
-			'userpage' => $userService->getUserPageContent()
+			'userpage' => $userService->getUserPageContent(),
+			'_cache' => 0,
 		];
 	}
 
@@ -144,8 +142,6 @@ class UserController extends Controller {
 	 * i.e. the user has bookmarked it or read it
 	 */
 	public function specialTextsAction(Request $request) {
-		$this->responseAge = 0;
-
 		if ($this->getUser()->isAnonymous()) {
 			throw $this->createAccessDeniedException();
 		}
@@ -155,6 +151,7 @@ class UserController extends Controller {
 		return $this->asJson([
 			'read' => array_flip($this->em()->getUserTextReadRepository()->getValidTextIds($this->getUser(), $texts)),
 			'favorities' => array_flip($this->em()->getBookmarkRepository()->getValidTextIds($this->getUser(), $texts)),
+			'_cache' => 0,
 		]);
 	}
 

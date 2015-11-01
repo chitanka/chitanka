@@ -63,8 +63,6 @@ class WorkroomController extends Controller {
 	}
 
 	public function deleteContribAction(Request $request, $id) {
-		$this->responseAge = 0;
-
 		if (!$this->getUser()->inGroup('workroom-admin')) {
 			throw $this->createAccessDeniedException('Нямате достатъчни права за това действие.');
 		}
