@@ -71,6 +71,7 @@ class FeedResponse {
 		$newContent = FeedCleaner::removeImageBeacons($newContent);
 		$newContent = FeedCleaner::removeSocialFooterLinks($newContent);
 		$newContent = FeedCleaner::removeExtraClosingTags($newContent);
+		$newContent = FeedCleaner::relativizeUrlProtocol($newContent);
 		return $newContent;
 	}
 

@@ -74,4 +74,10 @@ class FeedCleaner {
 		$cleanContent = preg_replace('|<span[^>]+>|', '', $cleanContent);
 		return $cleanContent;
 	}
+
+	public function relativizeUrlProtocol($content) {
+		$content = str_replace('http://', '//', $content);
+		return $content;
+	}
+
 }
