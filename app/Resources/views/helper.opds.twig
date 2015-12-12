@@ -2,7 +2,7 @@
 urn:x-chitanka:{{ route }}{% if params is not empty %}:{{ params|join('-')|url_encode }}{% endif %}
 {% endmacro %}
 
-{% macro url(route, params) %}{{ url(route, params|default({})|merge({'_format': 'opds'})) }}{% endmacro %}
+{% macro url(route, params) %}{{ url(route, params|default({})|merge({'_format': 'opds'}), true) }}{% endmacro %}
 
 {% macro path(route, params) %}{{ path(route, params|default({})|merge({'_format': 'opds'})) }}{% endmacro %}
 
@@ -36,7 +36,7 @@ urn:x-chitanka:{{ route }}{% if params is not empty %}:{{ params|join('-')|url_e
 		{% endif %}
 		<entry>
 			<title>{{ text }}</title>
-			{% set url = url(route, params) %}
+			{% set url = url(route, params, true) %}
 			{{ _self.id(url) }}
 			{{ _self.link(url) }}
 			<content type="text">{{ letter == '-' ? 'Всички' : 'Започващи с „'~letter~'“' }}</content>

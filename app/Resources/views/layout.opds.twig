@@ -20,7 +20,7 @@
 {% block head %}
 	{{ helper.id(link_self) }}
 	{{ helper.updated(updated_at) }}
-	<link rel="start" href="{{ url('catalog', {'_format': 'opds'}) }}" type="application/atom+xml; profile=opds-catalog; kind=navigation"/>
+	<link rel="start" href="{{ url('catalog', {'_format': 'opds'}, true) }}" type="application/atom+xml; profile=opds-catalog; kind=navigation"/>
 	<link rel="self" href="{{ link_self }}" type="application/atom+xml; profile=opds-catalog; kind=navigation"/>
 	{% if link_up is defined %}
 		<link rel="up" href="{{ link_up }}" type="application/atom+xml; profile=opds-catalog; kind=navigation"/>
@@ -28,6 +28,6 @@
 
 	<author>
 		<name>Моята библиотека</name>
-		<uri>{{ url('homepage') }}</uri>
+		<uri>{{ url('homepage', [], true) }}</uri>
 	</author>
 {% endblock %}
