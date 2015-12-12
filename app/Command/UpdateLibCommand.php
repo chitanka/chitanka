@@ -48,16 +48,18 @@ class UpdateLibCommand extends Command {
 
 	private function conquerTheWorld(ContentImporter $importer, $inputDir) {
 		$queries = [];
+		$queries[] = 'SET NAMES utf8';
+		$queries[] = 'START TRANSACTION';
 		$dir = $inputDir;
 		if (count(glob("$dir/*.data")) == 0) {
 			foreach (glob("$dir/*", GLOB_ONLYDIR) as $dir) {
 				$queries = array_merge($queries, $importer->processPacket($dir));
 			}
 		} else {
-			$queries = $importer->processPacket($dir);
+			$queries = array_merge($queries, $importer->processPacket($dir));
 		}
-		array_unshift($queries, 'SET NAMES utf8');
 		$queries = array_merge($queries, $importer->getNextIdUpdateQueries());
+		$queries[] = 'COMMIT';
 
 		return $queries;
 	}
