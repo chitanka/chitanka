@@ -142,6 +142,16 @@ return [
 		'jp' => 'Япония',
 	],
 
+	'dashboard' => [
+		'authors' => 'Автори',
+		'translators' => 'Преводачи',
+		'books' => 'Книги',
+		'texts' => 'Творби',
+		'series' => 'Серии',
+		'new' => 'Ново',
+		'workroom' => 'Ателие',
+	],
+
 	'labels' => [
 		'genre' => 'Жанр',
 		'characteristic' => 'Характеристика',

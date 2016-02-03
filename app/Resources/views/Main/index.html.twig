@@ -18,80 +18,97 @@
 
 	<div class="dashboard">
 		<ul>
-			<li class="dashboard-author"><span class="light-flash"></span><a href="{{ path('authors') }}"><span class="fa fa-users"></span><br>Автори</a></li>
-			<li class="dashboard-translator"><span class="light-flash"></span><a href="{{ path('translators') }}"><span class="fa fa-edit"></span><br>Преводачи</a></li>
-			<li class="dashboard-book"><span class="light-flash"></span><a href="{{ path('books') }}"><span class="fa fa-book"></span><br>Книги</a></li>
-			<li class="dashboard-title"><span class="light-flash"></span><a href="{{ path('texts') }}"><span class="fa fa-folder-open"></span><br>Творби</a></li>
-			<li class="dashboard-series"><span class="light-flash"></span><a href="{{ path('series') }}"><span class="fa fa-sitemap"></span><br>Серии</a></li>
-			<li class="dashboard-history"><span class="light-flash"></span><a href="{{ path('new') }}"><span class="fa fa-calendar"></span><br>Ново</a></li>
-			<li class="dashboard-workroom"><span class="light-flash"></span><a href="{{ path('workroom') }}"><span class="fa fa-table"></span><br>Ателие</a></li>
+			{% for itemRoute, itemOptions in dashboard %}
+				<li class="dashboard-{{ itemRoute }}"><span class="light-flash"></span><a href="{{ path(itemRoute) }}"><span class="fa fa-{{ itemOptions.icon }}"></span><br>{{ ('dashboard.'~itemRoute)|trans }}</a></li>
+			{% endfor %}
 		</ul>
 	</div>
 
 	<div class="special-books">
-		{% if review is not empty %}
+		{% if review is defined and review is not empty %}
 			<section id="mp-review" class="box box3 bookbox">
 				<h2><a href="{{ path('reviews') }}">Открийте</a></h2>
 				{% include 'App:FeaturedBook:book.html.twig' with {book: review} %}
 			</section>
 		{% endif %}
-		<section id="mp-foreign-book" class="box box3 bookbox">
-			<h2><a href="{{ path('foreign_books') }}">Купете си</a></h2>
-			{% include 'App:ForeignBook:book.html.twig' with {book: foreign_book} %}
-		</section>
+		{% if foreign_book is defined and foreign_book is not empty %}
+			<section id="mp-foreign-book" class="box box3 bookbox">
+				<h2><a href="{{ path('foreign_books') }}">Купете си</a></h2>
+				{% include 'App:ForeignBook:book.html.twig' with {book: foreign_book} %}
+			</section>
+		{% endif %}
+		{% if featured_book is defined and featured_book is not empty %}
 		<section id="mp-featured-book" class="box box3 bookbox">
 			<h2><a href="{{ path('featured_books') }}">Прочетете</a></h2>
 			{% include 'App:FeaturedBook:book.html.twig' with {book: featured_book} %}
 		</section>
-	</div>
-	<div class="separator"></div>
-
-	<section id="mp-new-books" class="box box2">
-		<h2><a href="{{ path('new_books') }}">Нови книги</a></h2>
-		<div class="well">
-			{% include 'App:Main:last_books.html.twig' with {book_revisions: latest_books} %}
-			<div class="more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
-		</div>
-	</section>
-	<section id="mp-new-texts" class="box box2 textbox">
-		<h2><a href="{{ path('new_texts') }}">Нови произведения</a></h2>
-		<div class="well">
-			{% include 'App:Main:last_texts.html.twig' with {text_revisions: latest_texts} %}
-			<div class="more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
-		</div>
-	</section>
-	<div class="separator"></div>
-
-	<section id="mp-liternews" class="box liternewsbox">
-		<h2><a href="http://planet.chitanka.info/">От литературните блогове</a></h2>
-		{% if not latest_liternews.empty %}
-			{{ latest_liternews|raw }}
-		{% else %}
-			<p class="error">Неуспех при вземането на последните литературни новини.</p>
 		{% endif %}
-	</section>
+	</div>
 
-	<section id="mp-search" class="box box3">
-		<h2><a href="{{ path('search') }}">Потърсено</a></h2>
-		<div class="well">
-			{% include 'App:Search:top_strings.html.twig' with {strings: latest_searches} %}
-		</div>
-	</section>
 	<div class="separator"></div>
 
-	<section id="mp-reader-comments" class="box box2 commentbox">
-		<h2><a href="{{ path('texts_comments') }}">Читателите казват</a></h2>
-		{% include 'App:TextComment:latest_comments.html.twig' with {comments: latest_comments} %}
-	</section>
+	{% if books is defined %}
+		<section id="mp-new-books" class="box box2">
+			<h2><a href="{{ path('new_books') }}">Нови книги</a></h2>
+			<div class="well">
+				{% include 'App:Main:last_books.html.twig' with {book_revisions: books} %}
+				<div class="more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
+			</div>
+		</section>
+	{% endif %}
+	{% if texts is defined %}
+		<section id="mp-new-texts" class="box box2 textbox">
+			<h2><a href="{{ path('new_texts') }}">Нови произведения</a></h2>
+			<div class="well">
+				{% include 'App:Main:last_texts.html.twig' with {text_revisions: texts} %}
+				<div class="more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
+			</div>
+		</section>
+	{% endif %}
+
+	<div class="separator"></div>
+
+	{% if liter_posts is defined %}
+		<section id="mp-liternews" class="box liternewsbox">
+			<h2><a href="http://planet.chitanka.info/">От литературните блогове</a></h2>
+			{% if not liter_posts.empty %}
+				{{ liter_posts|raw }}
+			{% else %}
+				<p class="error">Неуспех при вземането на последните литературни новини.</p>
+			{% endif %}
+		</section>
+	{% endif %}
+
+	{% if liter_posts is defined %}
+		<section id="mp-search" class="box box3">
+			<h2><a href="{{ path('search') }}">Потърсено</a></h2>
+			<div class="well">
+				{% include 'App:Search:top_strings.html.twig' with {strings: searches} %}
+			</div>
+		</section>
+	{% endif %}
+
+	<div class="separator"></div>
+
+	{% if comments is defined %}
+		<section id="mp-reader-comments" class="box box2 commentbox">
+			<h2><a href="{{ path('texts_comments') }}">Читателите казват</a></h2>
+			{% include 'App:TextComment:latest_comments.html.twig' with {comments: comments} %}
+		</section>
+	{% endif %}
+	{% if forum_posts is defined %}
 	<section id="mp-forum-posts" class="box box2 forumbox">
 		<h2><a href="http://forum.chitanka.info">От форума</a></h2>
-		{% if not latest_forum_posts.empty %}
-			{{ latest_forum_posts|raw }}
+		{% if not forum_posts.empty %}
+			{{ forum_posts|raw }}
 		{% else %}
 			<p class="error">Неуспех при вземането на последните форумни съобщения.</p>
 		{% endif %}
 	</section>
+	{% endif %}
+
 	<div class="separator"></div>
+
 {% endblock %}
 {% block inline_js %}
 (function(){

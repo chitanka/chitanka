@@ -24,3 +24,28 @@ parameters:
         text-info: https://github.com/chitanka/content-text-info.git
         user: https://github.com/chitanka/content-user.git
         wiki: https://github.com/chitanka/content-wiki.git
+    main.dashboard:
+        authors:
+            icon: users
+        translators:
+            icon: edit
+        books:
+            icon: book
+        texts:
+            icon: folder-open
+        series:
+            icon: sitemap
+        new:
+            icon: calendar
+        workroom:
+            icon: table
+    main.sections:
+        - review
+        - foreign_book
+        - featured_book
+        - books
+        - texts
+        - liter_posts
+        - searches
+        - comments
+        - forum_posts
