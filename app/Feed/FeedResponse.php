@@ -42,7 +42,9 @@ class FeedResponse {
 	 * @return FeedResponse
 	 */
 	public function limitArticles($limit) {
-		preg_match_all('|<article.+</article>|Ums', $this->content, $matches);
+		if (!preg_match_all('|<article.+</article>|Ums', $this->content, $matches)) {
+			return $this;
+		}
 		$newContent = '';
 		for ($i = 0; $i < $limit; $i++) {
 			$newContent .= $matches[0][$i];
