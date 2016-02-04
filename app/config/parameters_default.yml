@@ -78,6 +78,14 @@ parameters:
         user: https://github.com/chitanka/content-user.git
         wiki: https://github.com/chitanka/content-wiki.git
 
+    project_links:
+        http://chitanka.local: Библиотека
+        http://forum.chitanka.info: Форум
+        http://wiki.workroom.chitanka.info: Читалие
+        http://rechnik.chitanka.info: Речник
+        http://gramofonche.chitanka.info: Грамофонче
+        http://tools.chitanka.info: Инструменти
+
     main.dashboard:
         authors:
             icon: users

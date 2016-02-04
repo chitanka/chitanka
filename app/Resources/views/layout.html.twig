@@ -55,7 +55,9 @@
 		</div>
 	{% endif %}
 
-	{% include 'App::projects_toolbar.html.twig' %}
+	{% if project_links is defined and project_links is not empty %}
+		{% include 'App::projects_toolbar.html.twig' %}
+	{% endif %}
 
 	<div id="content-wrapper" class="clearfix p_{{ current_route }}">
 
