@@ -224,7 +224,9 @@ class WorkPage extends Page {
 			$id = $this->entryId;
 			$entry = $this->repo()->find($this->entryId);
 		}
-		$entry->setAvailableAt($this->availableAt);
+		if ($this->availableAt) {
+			$entry->setAvailableAt($this->availableAt);
+		}
 		$set = [
 			'id' => $id,
 			'type' => in_array($this->status, [WorkEntry::STATUS_4]) ? 1 : $this->workType,
