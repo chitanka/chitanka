@@ -600,11 +600,12 @@ EOS;
 		$umarker = $this->getUserTypeMarker($dbrow['type']);
 
 		$adminFields = $this->userIsAdmin() ? $this->makeAdminFieldsForTable($dbrow) : '';
+		$humanDate = (new \DateTime($dbrow['ddate']))->format('d.m.Y');
 
 		return <<<EOS
 
 	<tr class="$this->rowclass$extraclass" id="e$dbrow[id]">
-		<td class="date" title="$dbrow[date]">$dbrow[ddate]</td>
+		<td class="date" title="$dbrow[date]">$humanDate</td>
 		$adminFields
 		<td>$umarker</td>
 		<td>$info</td>
