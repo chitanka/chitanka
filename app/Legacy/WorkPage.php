@@ -182,8 +182,11 @@ class WorkPage extends Page {
 
 	private function updateMainUserData() {
 		if ( empty($this->btitle) ) {
-			$this->addMessage('Не сте посочили заглавие на произведението.', true);
-
+			$this->addMessage('Не сте посочили заглавие.', true);
+			return $this->makeForm();
+		}
+		if ( empty($this->pubYear) ) {
+			$this->addMessage('Не сте посочили година на издаване.', true);
 			return $this->makeForm();
 		}
 		$this->btitle = String::my_replace($this->btitle);
