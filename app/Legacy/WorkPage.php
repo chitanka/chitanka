@@ -1305,6 +1305,7 @@ EOS;
 		$regUrl = $this->controller->generateUrl('register');
 		$ext = $this->user->isAnonymous() ? "е необходимо първо да се <a href=\"$regUrl\">регистрирате</a> (не се притеснявайте, ще ви отнеме най-много 10–20 секунди, колкото и бавно да пишете). След това се върнете на тази страница и" : '';
 		$umarker = $this->getUserTypeMarker(1);
+		$banYearThreshold = $this->container->getParameter('workroom_ban_year_threshold');
 
 		return <<<EOS
 
@@ -1316,7 +1317,7 @@ EOS;
 		<span class="fa fa-warning"></span>
 	</div>
 	<div class="media-body">
-		Разрешено е да се добавят само книги, издадени на български преди 2013 г. Изключение се прави за онези текстове, които са пратени от авторите си, както и за фен-преводи.
+		Разрешено е да се добавят само книги, издадени на български преди $banYearThreshold г. Изключение се прави за онези текстове, които са пратени от авторите си, както и за фен-преводи.
 	</div>
 </div>
 EOS;

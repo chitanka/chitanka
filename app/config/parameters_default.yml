@@ -47,6 +47,7 @@ parameters:
     workroom_remote: false
     workroom_root: ~
     workroom_url: http://workroom.chitanka.info
+    workroom_ban_year_threshold: 2100
 
     wiki_url: http://wiki.chitanka.info/$1
 
