@@ -3,7 +3,6 @@
 use App\Pagination\Pager;
 use App\Util\String;
 use App\Entity\Person;
-use App\Service\MediawikiClient;
 use App\Service\SearchService;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -138,7 +137,7 @@ class PersonController extends Controller {
 	}
 
 	private function getShowTemplateInfoParams(Person $person) {
-		if ($person->getInfo() == '') {
+		if ($person->getInfo() == '' || !$this->container->getParameter('allow_remote_wiki_article')) {
 			return [];
 		}
 		return [
