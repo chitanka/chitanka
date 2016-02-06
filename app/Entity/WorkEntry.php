@@ -1,5 +1,6 @@
 <?php namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Eko\FeedBundle\Item\Writer\RoutedItemInterface;
 
@@ -88,7 +89,7 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	private $comment;
 
 	/**
-	 * @var \DateTime
+	 * @var DateTime
 	 * @ORM\Column(type="datetime")
 	 */
 	private $date;
@@ -112,6 +113,13 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	private $isFrozen = false;
 
 	/**
+	 * If set, the entry files will be available for the public at the given date.
+	 * @var DateTime
+	 * @ORM\Column(type="date")
+	 */
+	private $availableAt;
+
+	/**
 	 * @var string
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
@@ -132,7 +140,7 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	/**
 	 * Every user gets an automatic e-mail if his entry reaches some predefined
 	 * period without updates. Here we track the date of the most recent notification.
-	 * @var \DateTime
+	 * @var DateTime
 	 * @ORM\Column(type="datetime", nullable=true)
 	 */
 	private $lastNotificationDate;
@@ -152,7 +160,7 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	private $adminComment;
 
 	/**
-	 * @var \DateTime
+	 * @var DateTime
 	 * @ORM\Column(type="datetime", nullable=true)
 	 */
 	private $deletedAt;
@@ -213,6 +221,31 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	public function setIsFrozen($isFrozen) { $this->isFrozen = $isFrozen; }
 	public function getIsFrozen() { return $this->isFrozen; }
 
+	public function getAvailableAt($format = null) {
+		if ($format !== null && $this->availableAt instanceof DateTime) {
+			return $this->availableAt->format($format);
+		}
+		return $this->availableAt;
+	}
+	public function setAvailableAt($availableAt) {
+		if (!$availableAt instanceof DateTime) {
+			if (is_numeric($availableAt)) {
+				$availableAt .= '-01-01';
+			}
+			$availableAt = new DateTime($availableAt);
+		}
+		$this->availableAt = $availableAt;
+	}
+
+	public function isAvailable($date = null) {
+		if ($date === null) {
+			$date = new DateTime();
+		} else if (!$date instanceof DateTime) {
+			$date = new DateTime($date);
+		}
+		return $this->getAvailableAt() <= $date;
+	}
+
 	public function setTmpfiles($tmpfiles) { $this->tmpfiles = $tmpfiles; }
 	public function getTmpfiles() { return $this->tmpfiles; }
 
@@ -223,7 +256,7 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	public function getUplfile() { return $this->uplfile; }
 
 	/**
-	 * @param \DateTime $date
+	 * @param DateTime $date
 	 */
 	public function setLastNotificationDate($date) { $this->lastNotificationDate = $date; }
 	public function getLastNotificationDate() { return $this->lastNotificationDate; }
@@ -238,7 +271,7 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 		if ($this->getLastNotificationDate() === null) {
 			return false;
 		}
-		return $this->getLastNotificationDate() > new \DateTime("-$interval");
+		return $this->getLastNotificationDate() > new DateTime("-$interval");
 	}
 
 	public function setCommentThread(Thread $thread) {
@@ -250,11 +283,11 @@ class WorkEntry extends Entity implements RoutedItemInterface {
 	public function getDeletedAt() { return $this->deletedAt; }
 
 	/**
-	 * @param \DateTime $deletedAt
+	 * @param DateTime $deletedAt
 	 */
 	public function setDeletedAt($deletedAt) { $this->deletedAt = $deletedAt; }
 	public function delete() {
-		$this->setDeletedAt(new \DateTime);
+		$this->setDeletedAt(new DateTime);
 	}
 	public function isDeleted() {
 		return $this->deletedAt !== null;
