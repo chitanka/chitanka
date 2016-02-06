@@ -286,9 +286,6 @@ h2 a:visited {
 	border: none;
 	border-radius: @border-radius-base @border-radius-base 0 0;
 	font-size: 1em;
-}
-#navigation h3,
-.tab.selected {
 	color: @navTitleFgColor;
 	background-color: @navTitleBgColor;
 	font-weight: bold;
@@ -314,19 +311,10 @@ h2 a:visited {
 #navigation .navbody .textmenu li:last-child {
 	border-radius: 0 0 @border-radius-base @border-radius-base;
 }
-#navigation .selected,
 option[selected=selected],
 .hilite {
-	border: solid @headerBordColor;
-	border-width: thin 0;
-	color: @headerFgColor;
-	background-color: @headerBgColor;
-	font-weight: bold;
-	font-size: 95%;
-}
-#navigation .selected a {
-	color: @headerFgColor;
-	background-color: @headerBgColor;
+	color:@toolbarFgColor !important;
+	background-color: @toolbarBgColor !important;
 }
 
 #menu-helpers li:before {
@@ -360,8 +348,7 @@ option[selected=selected],
 	height: 100%;
 	background: data-uri("@{logoImg}") no-repeat center;
 }
-.navbody a,
-.tab a {
+.navbody a {
 	display: block;
 	color: @navLinkFgColor;
 	background-color: inherit;
@@ -625,9 +612,6 @@ li img {
 .zoom:before {
 	content: "\F002"; // fa-search
 	font-family: FontAwesome;
-}
-.is_frozen {
-	opacity: .6;
 }
 
 // Типове текстове
@@ -1296,7 +1280,6 @@ span.image-title {
 }
 
 .date {
-	font-family: monospace;
 	white-space: nowrap;
 }
 
