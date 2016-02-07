@@ -11,7 +11,7 @@
 
 	{% for labelGroup, labelsInGroup in labels %}
 		<h2>{{ ('labels.'~labelGroup)|trans }}</h2>
-		{% include 'App:Text:label_tree.html.twig' with {labels: labelsInGroup} %}
+		{% include 'App:Text:label_tree.html.twig' with {labels: labelsInGroup, level: 0} %}
 	{% endfor %}
 
 	<h2>По форма</h2>
