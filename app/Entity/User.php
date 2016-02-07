@@ -193,7 +193,7 @@ class User implements UserInterface {
 	}
 
 	public function setGroups($groups) { $this->groups = $groups; }
-	public function getGroups() { return $this->groups; }
+	public function getGroups() { return array_values($this->groups); }
 	public function addGroup($group) { $this->groups[] = $group; }
 
 	public function addGroups($groupsToAdd) {
