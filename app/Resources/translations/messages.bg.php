@@ -366,6 +366,10 @@ return [
 	'translators.by' => [
 		'first-name' => 'Преводачи',
 		'last-name' => 'Преводачи по фамилия',
+		'country' => [
+			'first-name' => 'Преводачи по държава',
+			'last-name' => 'Преводачи по държава (по фамилия)',
+		],
 	],
 
 	'person.alt' => [

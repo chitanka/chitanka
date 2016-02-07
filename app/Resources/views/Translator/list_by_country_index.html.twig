@@ -1,0 +1,12 @@
+{% extends 'App::layout.html.twig' %}
+
+{% set title = ('translators.by.country.'~by)|trans %}
+{% block content %}
+
+<ul>
+	{% for country in countries %}
+		<li><a href="{{ path('translators_by_country', {'country': country, 'by': by}) }}">{{ ('country.'~country)|trans }}</a></li>
+	{% endfor %}
+</ul>
+
+{% endblock %}

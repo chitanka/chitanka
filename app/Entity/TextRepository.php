@@ -330,11 +330,13 @@ class TextRepository extends EntityRepository {
 	}
 
 	public function getCountsByType() {
-		return $this->_em->createQueryBuilder()
+		$counts = $this->_em->createQueryBuilder()
 			->select('e.type', 'COUNT(e.id)')
 			->from($this->getEntityName(), 'e')
 			->groupBy('e.type')
 			->getQuery()->getResult('key_value');
+		arsort($counts);
+		return $counts;
 	}
 
 	public function getRandomId($where = '') {

@@ -185,10 +185,12 @@ class PersonRepository extends EntityRepository {
 	}
 
 	public function getCountsByCountry() {
-		return $this->getCountQueryBuilder()
+		$counts = $this->getCountQueryBuilder()
 			->select('e.country', 'COUNT(e.id)')
 			->groupBy('e.country')
 			->getQuery()->getResult('key_value');
+		arsort($counts);
+		return $counts;
 	}
 
 	/**

@@ -10,4 +10,13 @@
 	<div class="last-name text-center">
 		{{ navi.person_last_letter_links('authors_by_alpha', (by == 'last-name' ? letter : '')) }}
 	</div>
+	<h2>Държава</h2>
+	<ul>
+	{% for country, count in countries %}
+		<li>
+			<a href="{{ path('authors_by_country', {'country': country}) }}">{{ ('country.'~country) | trans }}</a>
+			<span class="badge">{{ count }}</span>
+		</li>
+	{% endfor %}
+	</ul>
 {% endif %}

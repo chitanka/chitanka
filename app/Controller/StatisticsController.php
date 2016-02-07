@@ -17,20 +17,9 @@ class StatisticsController extends Controller {
 				'text_comments' => $this->em()->getTextCommentRepository()->getCount('e.is_shown = 1'),
 				'users'         => $this->em()->getUserRepository()->getCount(),
 			],
-			'author_countries'  => $this->getAuthorCountries(),
-			'text_types'        => $this->getTextTypes(),
+			'author_countries'  => $this->em()->getPersonRepository()->asAuthor()->getCountsByCountry(),
+			'text_types'        => $this->em()->getTextRepository()->getCountsByType(),
 		];
 	}
 
-	private function getAuthorCountries() {
-		$authors = $this->em()->getPersonRepository()->asAuthor()->getCountsByCountry();
-		arsort($authors);
-		return $authors;
-	}
-
-	private function getTextTypes() {
-		$texts = $this->em()->getTextRepository()->getCountsByType();
-		arsort($texts);
-		return $texts;
-	}
 }

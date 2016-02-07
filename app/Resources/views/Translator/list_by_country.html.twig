@@ -1,0 +1,9 @@
+{% extends 'App::layout.html.twig' %}
+
+{% set title = ('translators.by.country.'~by)|trans ~ ': ' ~ ('country.'~country)|trans %}
+{% block content %}
+
+	{% include 'App:Translator:list.html.twig' %}
+	{% include 'App::pager.html.twig' %}
+
+{% endblock %}

@@ -9,7 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 class PersonController extends Controller {
 
 	public function indexAction() {
-		return [];
+		return [
+			'countries' => $this->getPersonRepository()->getCountsByCountry(),
+		];
 	}
 
 	public function listByAlphaIndexAction($by) {
@@ -40,6 +42,34 @@ class PersonController extends Controller {
 				'total' => $repo->countBy($filters)
 			]),
 			'route_params' => ['letter' => $letter, 'by' => $by],
+		];
+	}
+
+	public function listByCountryIndexAction($by) {
+		return [
+			'by' => $by,
+			'countries' => $this->getPersonRepository()->getCountryList()
+		];
+	}
+
+	public function listByCountryAction($country, $by, $page, $_format) {
+		$limit = 100;
+
+		$repo = $this->getPersonRepository();
+		$filters = [
+			'by'      => $by,
+			'country' => $country,
+		];
+		return [
+			'by'      => $by,
+			'country' => $country,
+			'persons' => $repo->getBy($filters, $page, $limit),
+			'pager'    => new Pager([
+				'page'  => $page,
+				'limit' => $limit,
+				'total' => $repo->countBy($filters)
+			]),
+			'route_params' => ['country' => $country, 'by' => $by, '_format' => $_format],
 		];
 	}
 

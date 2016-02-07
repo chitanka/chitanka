@@ -98,6 +98,15 @@ translators_by_alpha:
     defaults:       { _controller: App:Translator:listByAlpha, page: 1, _format: html }
     requirements:   { _method: get, by: first-name|last-name, page: \d+, _format: html|opds }
 
+translators_by_country_index:
+    pattern:        /translators/country/{by}.{_format}
+    defaults:       { _controller: App:Translator:listByCountryIndex, by: first-name, _format: html }
+    requirements:   { _method: get, by: first-name|last-name, _format: html|opds }
+translators_by_country:
+    pattern:        /translators/country/{country}/{by}.{_format}/{page}
+    defaults:       { _controller: App:Translator:listByCountry, by: first-name, page: 1, _format: html }
+    requirements:   { _method: get, by: first-name|last-name, page: \d+, _format: html|opds }
+
 translators_search:
     pattern:        /translators/search.{_format}
     defaults:       { _controller: App:Translator:search, _format: html }
