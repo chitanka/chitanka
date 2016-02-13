@@ -1,20 +1,9 @@
 <?php namespace App\Controller;
 
-use App\Legacy\CacheManager;
-use App\Legacy\Legacy;
 use App\Service\WikiEngine;
 use Symfony\Component\HttpFoundation\Request;
 
 class WikiController extends Controller {
-
-	public function indexAction(Request $request, $page) {
-		$url = str_replace('$1', ucfirst($page), $this->container->getParameter('wiki_url'));
-		return [
-			'page' => $page,
-			'wiki_page' => $url,
-			'contents' => $this->getFromWiki($url, $request->query->get('cache', 1)),
-		];
-	}
 
 	public function showAction($page) {
 		$wiki = $this->wikiEngine();
@@ -48,22 +37,6 @@ class WikiController extends Controller {
 
 	private function wikiEngine() {
 		return new WikiEngine($this->container->getParameter('content_dir').'/wiki');
-	}
-
-	private function getFromWiki($url, $ttl = 1) {
-		$id = md5($url);
-		$action = 'wiki';
-
-		if ( CacheManager::cacheExists($action, $id, $ttl) ) {
-			return CacheManager::getCache($action, $id);
-		}
-
-		$content = Legacy::getFromUrl("$url?action=render");
-		if ( empty($content) ) {
-			return '';
-		}
-
-		return CacheManager::setCache($action, $id, $content);
 	}
 
 }
