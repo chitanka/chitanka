@@ -35,7 +35,7 @@
 			<div class="book-content superlist tab-pane" id="book-content">
 				{% import 'App::text.html.twig' as texttools %}
 				{# TODO refactor and improve this template expansion #}
-				{% set options = {'title': 'TEXT_TITLE'} %}
+				{% set options = {'title': 'TEXT_TITLE', 'download_links': true} %}
 				{% for text in book.texts %}
 					{% set template = template|put_text_in_template(text, (book.isFromSameAuthor(text) ? texttools.text(text, options) : texttools.text_with_author(text, options))) %}
 				{% endfor %}
