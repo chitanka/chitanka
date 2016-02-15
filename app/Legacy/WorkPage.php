@@ -554,13 +554,12 @@ EOS;
 			} else if ( ! empty($dbrow['uplfile']) ) {
 				$file = $this->makeFileLink($dbrow['uplfile']);
 			}
+		} else {
+			$file = '<span class="fa fa-ban" title="Дата на достъп: '.$entry->getAvailableAt('d.m.Y').'"></span>';
 		}
 		$entryLink = $this->controller->generateUrl('workroom_entry_edit', ['id' => $dbrow['id']]);
 		$commentsLink = $dbrow['num_comments'] ? sprintf('<a href="%s#fos_comment_thread" title="Коментари"><span class="fa fa-comments-o"></span>%s</a>', $entryLink, $dbrow['num_comments']) : '';
 		$title = sprintf('<a href="%s" title="Към страницата за преглед">%s</a>', $entryLink, $title);
-		if (!$entry->isAvailable()) {
-			$title = '<span class="fa fa-ban" title="Дата на достъп: '.$entry->getAvailableAt('d.m.Y').'"></span> ' . $title;
-		}
 		$this->rowclass = $this->nextRowClass($this->rowclass);
 		$st = $dbrow['progress'] > 0
 			? $this->makeProgressBar($dbrow['progress'])
