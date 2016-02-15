@@ -380,7 +380,11 @@ class TextRepository extends EntityRepository {
 		if ($orderBy === null) {
 			return $this->defaultSortingField;
 		}
-		list($field, $order) = explode(' ', str_replace('-', ' ', $orderBy));
+		$orderByParts = explode(' ', str_replace('-', ' ', $orderBy));
+		if (count($orderByParts) == 1) {
+			$orderByParts[] = 'asc';
+		}
+		list($field, $order) = $orderByParts;
 		if (!in_array($field, $this->sortableFields) || !in_array(strtolower($order), ['asc', 'desc'])) {
 			return $this->defaultSortingField;
 		}
