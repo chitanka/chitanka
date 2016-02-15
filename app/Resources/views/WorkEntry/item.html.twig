@@ -8,7 +8,9 @@
 	{% endif %}
 </td>
 <td>
-	{% if entry.tmpfiles %}
+	{% if entry.availableAt %}
+		<span class="fa fa-ban" title="Дата на достъп: {{ entry.availableAt.format('d.m.Y') }}"></span>
+	{% elseif entry.tmpfiles %}
 		<a href="{{ entry.tmpfiles }}" class="save"><span>Файл</span></a>
 	{% endif %}
 </td>

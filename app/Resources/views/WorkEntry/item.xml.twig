@@ -6,7 +6,11 @@
 <comment>{{ entry.comment }}</comment>
 <progress>{{ entry.progress }}</progress>
 <status>{{ entry.status }}</status>
-<file size="{{ entry.tfsize }}">{{ entry.tmpfiles }}</file>
+{% if entry.availableAt %}
+	<access-date>{{ entry.availableAt|date('c') }}</access-date>
+{% elseif entry.tmpfiles %}
+	<file size="{{ entry.tfsize }}">{{ entry.tmpfiles }}</file>
+{% endif %}
 <is-frozen>{{ entry.isFrozen }}</is-frozen>
 <user>{{ entry.user.username }}</user>
 {% include 'App:WorkContrib:list.xml.twig' with {'contribs': entry.contribs} %}
