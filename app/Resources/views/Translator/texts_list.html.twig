@@ -6,4 +6,4 @@
 			{{ ('text.type.plular.'~series.name) | trans }}
 		{% endif %}
 	</h2>
-	{{ text_lister.text_list_with_author(texts) }}
+	{{ text_lister.text_list_with_author(texts, {'download_links': true}) }}
