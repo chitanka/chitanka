@@ -33,22 +33,22 @@ class BookRepository extends EntityRepository {
 	 * @param Category $category
 	 * @param int $page
 	 * @param int $limit
+	 * @return Book[]
 	 */
-	public function getByCategory($category, $page = 1, $limit = null) {
+	public function findByCategory($category, $page = 1, $limit = null) {
 		$ids = $this->getIdsByCategory($category, $page, $limit);
-
-		return empty($ids) ? [] : $this->getByIds($ids);
+		return empty($ids) ? [] : $this->findByIds($ids);
 	}
 
 	/**
 	 * Retrieve books by ISBN.
 	 * There may be multiple books for a given ISBN.
 	 * @param string $isbn
-	 * @return array
+	 * @return Book[]
 	 */
-	public function getByIsbn($isbn) {
+	public function findByIsbn($isbn) {
 		$ids = $this->getEntityManager()->getRepository('App:BookIsbn')->getBookIdsByIsbn($isbn);
-		return empty($ids) ? [] : $this->getByIds($ids);
+		return empty($ids) ? [] : $this->findByIds($ids);
 	}
 
 	/**
@@ -67,11 +67,11 @@ class BookRepository extends EntityRepository {
 	 * @param Sequence $sequence
 	 * @param int $page
 	 * @param int $limit
+	 * @return Book[]
 	 */
-	public function getBySequence($sequence, $page = 1, $limit = null) {
+	public function findBySequence($sequence, $page = 1, $limit = null) {
 		$ids = $this->getIdsBySequence($sequence, $page, $limit);
-
-		return empty($ids) ? [] : $this->getByIds($ids, 'e.seqnr, e.title');
+		return empty($ids) ? [] : $this->findByIds($ids, 'e.seqnr, e.title');
 	}
 
 	/**
@@ -91,10 +91,10 @@ class BookRepository extends EntityRepository {
 	 * @param int $page
 	 * @param int $limit
 	 */
-	public function getByPrefix($prefix, $page = 1, $limit = null) {
+	public function findByPrefix($prefix, $page = 1, $limit = null) {
 		$ids = $this->getIdsByPrefix($prefix, $page, $limit);
 
-		return empty($ids) ? [] : $this->getByIds($ids);
+		return empty($ids) ? [] : $this->findByIds($ids);
 	}
 
 	/**
@@ -108,14 +108,6 @@ class BookRepository extends EntityRepository {
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 
 		return $query->getResult('id');
-	}
-
-	/**
-	 * @param array $ids
-	 * @param string $orderBy
-	 */
-	public function getByIds($ids, $orderBy = null) {
-		return WorkSteward::joinPersonKeysForBooks(parent::getByIds($ids, $orderBy));
 	}
 
 	/**
@@ -133,54 +125,48 @@ class BookRepository extends EntityRepository {
 	/**
 	 * @param string $title
 	 * @param int $limit
-	 * @return array
+	 * @return Book[]
 	 */
-	public function getByTitles($title, $limit = null) {
-		$q = $this->getQueryBuilder()
+	public function findByTitles($title, $limit = null) {
+		$books = $this->getQueryBuilder()
 			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.origTitle LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($title))
 			->setMaxResults($limit)
-			->getQuery();
-		return WorkSteward::joinPersonKeysForBooks($q->getArrayResult());
+			->getQuery()
+			->getResult();
+		return $books;
 	}
 
 	/**
 	 * @param string $titleOrIsbn
 	 * @param int $limit
-	 * @return array
+	 * @return Book[]
 	 */
-	public function getByTitleOrIsbn($titleOrIsbn, $limit = null) {
+	public function findByTitleOrIsbn($titleOrIsbn, $limit = null) {
 		$isbn = BookIsbn::normalizeIsbn($titleOrIsbn);
 		if (empty($isbn)) {
-			return $this->getByTitles($titleOrIsbn, $limit);
+			return $this->findByTitles($titleOrIsbn, $limit);
 		}
-		$q = $this->getQueryBuilder()
+		$books = $this->getQueryBuilder()
 			->leftJoin('e.isbns', 'isbn')
 			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.origTitle LIKE ?1 OR isbn.code = ?2')
 			->setParameters([1 => $this->stringForLikeClause($titleOrIsbn), 2 => $isbn])
 			->setMaxResults($limit)
-			->getQuery();
-		return WorkSteward::joinPersonKeysForBooks($q->getArrayResult());
+			->getQuery()
+			->getResult();
+		return $books;
 	}
 
 	/**
 	 * @param Person $author
-	 * @return array
+	 * @return Book[]
 	 */
-	public function getByAuthor($author) {
+	public function findByAuthor($author) {
 		$books = $this->getQueryBuilder('s.name, e.seqnr, e.title')
 			->andWhere('ap.id = ?1')->setParameter(1, $author->getId())
 			->getQuery()
-			->getArrayResult();
-		return WorkSteward::joinPersonKeysForBooks($books);
-	}
-
-	/**
-	 * @param array $params
-	 * @return array
-	 */
-	public function getByQuery($params) {
-		return WorkSteward::joinPersonKeysForBooks(parent::getByQuery($params));
+			->getResult();
+		return $books;
 	}
 
 	/**
@@ -203,11 +189,11 @@ class BookRepository extends EntityRepository {
 	/**
 	 * @param int $page
 	 * @param int $limit
-	 * @return array
+	 * @return Book[]
 	 */
-	public function getWithMissingCover($page = 1, $limit = null) {
+	public function findWithMissingCover($page = 1, $limit = null) {
 		$ids = $this->getIdsWithMissingCover($page, $limit);
-		return empty($ids) ? [] : $this->getByIds($ids);
+		return empty($ids) ? [] : $this->findByIds($ids);
 	}
 
 	/**

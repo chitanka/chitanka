@@ -49,7 +49,7 @@ class BookController extends Controller {
 		return [
 			'category' => $category,
 			'parents' => array_reverse($category->getAncestors()),
-			'books' => $bookRepo->getByCategory($category, $page, $limit),
+			'books' => $bookRepo->findByCategory($category, $page, $limit),
 			'pager'    => new Pager([
 				'page'  => $page,
 				'limit' => $limit,
@@ -66,7 +66,7 @@ class BookController extends Controller {
 		$prefix = $letter == '-' ? null : $letter;
 		return [
 			'letter' => $letter,
-			'books' => $bookRepo->getByPrefix($prefix, $page, $limit),
+			'books' => $bookRepo->findByPrefix($prefix, $page, $limit),
 			'pager'    => new Pager([
 				'page'  => $page,
 				'limit' => $limit,
@@ -80,7 +80,7 @@ class BookController extends Controller {
 		$limit = 30;
 		$bookRepo = $this->em()->getBookRepository();
 		return [
-			'books' => $bookRepo->getWithMissingCover($page, $limit),
+			'books' => $bookRepo->findWithMissingCover($page, $limit),
 			'pager' => new Pager([
 				'page'  => $page,
 				'limit' => $limit,
@@ -90,9 +90,9 @@ class BookController extends Controller {
 	}
 
 	public function listByIsbnAction($isbn) {
-		$books = $this->em()->getBookRepository()->getByIsbn($isbn);
+		$books = $this->em()->getBookRepository()->findByIsbn($isbn);
 		if (count($books) == 1) {
-			return $this->redirectToRoute('book_show', ['id' => $books[0]['id']]);
+			return $this->redirectToRoute('book_show', ['id' => $books[0]->getId()]);
 		}
 		return [
 			'isbn' => $isbn,
@@ -153,16 +153,16 @@ class BookController extends Controller {
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = [];
 			$query = $request->query->get('q');
-			$books = $this->em()->getBookRepository()->getByQuery([
+			$books = $this->em()->getBookRepository()->findByQuery([
 				'text'  => $query,
 				'by'    => 'title',
 				'match' => 'prefix',
 				'limit' => 10,
 			]);
 			foreach ($books as $book) {
-				$items[] = $book['title'];
+				$items[] = $book->getTitle();
 				$descs[] = '';
-				$urls[] = $this->generateUrl('book_show', ['id' => $book['id']], true);
+				$urls[] = $this->generateUrl('book_show', ['id' => $book->getId()], true);
 			}
 
 			return $this->asJson([$query, $items, $descs, $urls]);
@@ -176,7 +176,7 @@ class BookController extends Controller {
 		if (empty($query['by'])) {
 			$query['by'] = 'title,subtitle,origTitle';
 		}
-		$books = $this->em()->getBookRepository()->getByQuery($query);
+		$books = $this->em()->getBookRepository()->findByQuery($query);
 		$found = count($books) > 0;
 		return [
 			'query' => $query,

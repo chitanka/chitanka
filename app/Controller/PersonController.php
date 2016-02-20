@@ -157,7 +157,7 @@ class PersonController extends Controller {
 		$groupBySeries = $format == 'html';
 		return [
 			'texts_as_author' => $this->em()->getTextRepository()->findByAuthor($person, $groupBySeries),
-			'books' => $this->em()->getBookRepository()->getByAuthor($person),
+			'books' => $this->em()->getBookRepository()->findByAuthor($person),
 		];
 	}
 	protected function getShowTemplateParamsTranslator(Person $person, $format) {

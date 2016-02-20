@@ -34,7 +34,7 @@ class HistoryController extends Controller {
 					'dates' => $this->getDateOptions($repo),
 					'book_revisions_by_date' => $revisions,
 					'pager' => $pager,
-					'last_date' => $lastOnes[0]['date'],
+					'last_date' => $lastOnes[0]->getDate(),
 					'_cache' => $this->responseAge,
 				];
 			case 'opds':
@@ -81,7 +81,7 @@ class HistoryController extends Controller {
 					'dates' => $this->getDateOptions($repo),
 					'text_revisions_by_date' => $revisions,
 					'pager' => $pager,
-					'last_date' => $lastOnes[0]['date'],
+					'last_date' => $lastOnes[0]->getDate(),
 					'_cache' => $this->responseAge,
 				];
 			case 'opds':
@@ -133,7 +133,7 @@ class HistoryController extends Controller {
 		$texts = [];
 		foreach ($revisionsByDate as $revisions) {
 			foreach ($revisions as $revision) {
-				$texts[$revision['text']['id']] = $revision['text'];
+				$texts[$revision->getText()->getId()] = $revision->getText();
 			}
 		}
 

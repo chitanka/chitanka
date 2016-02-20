@@ -14,7 +14,7 @@ class AuthorController extends PersonController {
 
 		return [
 			'person' => $person,
-			'books'  => $this->em()->getBookRepository()->getByAuthor($person),
+			'books'  => $this->em()->getBookRepository()->findByAuthor($person),
 		];
 	}
 

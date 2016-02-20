@@ -57,14 +57,14 @@ class RevisionRepository extends EntityRepository {
 	}
 
 	/**
+	 * @param array $ids
 	 * @param string $orderBy
 	 */
 	public function getByIds($ids, $orderBy = null) {
 		$texts = $this->getQueryBuilder($orderBy)
 			->andWhere(sprintf('r.id IN (%s)', implode(',', $ids)))
-			->getQuery()->getArrayResult();
-
-		return WorkSteward::joinPersonKeysForWorks($texts);
+			->getQuery()->getResult();
+		return $texts;
 	}
 
 	/**
@@ -109,7 +109,7 @@ class RevisionRepository extends EntityRepository {
 	public function groupRevisionsByDay($revisions) {
 		$grouped = [];
 		foreach ($revisions as $revision) {
-			$month = $revision['date']->format('Y-m-d');
+			$month = $revision->getDate()->format('Y-m-d');
 			$grouped[$month][] = $revision;
 		}
 

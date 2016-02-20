@@ -130,13 +130,14 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	/**
 	 *
 	 * @param array $ids
+	 * @param string $orderBy
 	 * @return Entity[]
 	 */
-	public function findByIds(array $ids) {
+	public function findByIds(array $ids, $orderBy = null) {
 		if (empty($ids)) {
 			return [];
 		}
-		return $this->getQueryBuilder()
+		return $this->getQueryBuilder($orderBy)
 			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
 			->getQuery()->getResult();
 	}
@@ -158,11 +159,33 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 
 	/**
 	 * @param array $params
+	 * @return Entity
+	 */
+	public function findByQuery($params) {
+		if ($query = $this->query($params)) {
+			return $query->getResult();
+		}
+		return [];
+	}
+
+	/**
+	 * @param array $params
 	 * @return array
 	 */
 	public function getByQuery($params) {
+		if ($query = $this->query($params)) {
+			return $query->getArrayResult();
+		}
+		return [];
+	}
+
+	/**
+	 * @param array $params
+	 * @return array
+	 */
+	private function query($params) {
 		if (empty($params['text']) || empty($params['by'])) {
-			return [];
+			return null;
 		}
 
 		switch ($params['match']) {
@@ -190,7 +213,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 			}
 		}
 		if (empty($tests)) {
-			return [];
+			return null;
 		}
 
 		$query = $this->getQueryBuilder()
@@ -199,8 +222,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 		if (isset($params['limit'])) {
 			$query->setMaxResults($params['limit']);
 		}
-
-		return $query->getArrayResult();
+		return $query;
 	}
 
 	public function getQueryableFields() {

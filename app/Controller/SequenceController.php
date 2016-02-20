@@ -36,7 +36,7 @@ class SequenceController extends Controller {
 		}
 		return [
 			'sequence' => $sequence,
-			'books'  => $this->em()->getBookRepository()->getBySequence($sequence),
+			'books'  => $this->em()->getBookRepository()->findBySequence($sequence),
 		];
 	}
 
