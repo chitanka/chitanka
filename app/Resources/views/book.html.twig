@@ -11,7 +11,7 @@
 				<i itemprop="name">{{ book.title }}</i>
 			</a>
 			{% if book.hasAnno %}
-				<a class="book-clue" data-href="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"><i class="fa fa-info-circle" title="Анотация"></i></a>
+				<span class="popover-trigger" data-content="{{ book.annotationAsXhtml|replace({'IMG_DIR_PREFIX': asset('/')}) }}"><span class="fa fa-info-circle"></span></span>
 			{% endif %}
 			{% if book.subtitle is not empty %}
 				<div itemprop="alternativeHeadline">{{ book.subtitle|replace({'\\n': '<br>'})|raw }}</div>
