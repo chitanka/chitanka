@@ -60,17 +60,18 @@ class GenerateNewsletterCommand extends Command {
 		$repo = $this->getEntityManager()->getBookRevisionRepository();
 		$booksByCat = [];
 		foreach ($repo->getByMonth($month) as $revision) {
+			$book = $revision->getBook();
 			$authors = [];
-			foreach ($revision['book']['authors'] as $author) {
-				$authors[] = $author['name'];
+			foreach ($book->getAuthors() as $author) {
+				$authors[] = $author->getName();
 			}
-			$bookKey = $revision['book']['title'] . $revision['book']['subtitle'];
-			$cat = $revision['book']['category']['name'];
+			$bookKey = $book->getTitle() . $book->getSubtitle();
+			$cat = $book->getCategory()->getName();
 			$booksByCat[$cat][$bookKey] = sprintf('* „%s“%s%s — http://chitanka.info/book/%d',
-				$revision['book']['title'],
-				($revision['book']['subtitle'] ? " ({$revision['book']['subtitle']})" : ''),
+				$book->getTitle(),
+				($book->getSubtitle() ? " ({$book->getSubtitle()})" : ''),
 				($authors ? ' от ' . implode(', ', $authors) : ''),
-				$revision['book']['id']);
+				$book->getId());
 		}
 		return $booksByCat;
 	}
@@ -81,16 +82,17 @@ class GenerateNewsletterCommand extends Command {
 		$texts = [];
 		#foreach ($repo->getByDate(array('2011-07-01', '2011-08-31 23:59'), 1, null, false) as $revision) {
 		foreach ($repo->getByMonth($month) as $revision) {
+			$text = $revision->getText();
 			$authors = [];
-			foreach ($revision['text']['authors'] as $author) {
-				$authors[] = $author['name'];
+			foreach ($text->getAuthors() as $author) {
+				$authors[] = $author->getName();
 			}
-			$key = $revision['text']['title'] . $revision['text']['subtitle'];
+			$key = $text->getTitle() . $text->getSubtitle();
 			$texts[$key] = sprintf('* „%s“%s%s — http://chitanka.info/text/%d',
-				$revision['text']['title'],
-				($revision['text']['subtitle'] ? " ({$revision['text']['subtitle']})" : ''),
+				$text->getTitle(),
+				($text->getSubtitle() ? " ({$text->getSubtitle()})" : ''),
 				($authors ? ' от ' . implode(', ', $authors) : ''),
-				$revision['text']['id']);
+				$text->getId());
 		}
 		return $texts;
 	}
