@@ -9,7 +9,7 @@
  - Уеб сървър: Apache с PHP (версия на PHP >= 5.4) или [nginx](http://nginx.org/) с [PHP-FPM](http://php-fpm.org/)
  - MySQL сървър (версия >= 4.1)
 
-При Apache трябва да са включени модулите `rewrite` и `expires`.
+При Apache трябва да са включени модулите `rewrite`, `expires` и `headers`.
 
 При PHP са нужни разширенията `gd`, `curl`, `xsl` и `intl`.
 
