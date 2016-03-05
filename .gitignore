@@ -7,7 +7,7 @@
 /var/*/
 /var/
 /vendor/
-/web/content
+/web/content/*
 /web/cache/
 /web/tor/
 /web/todo/
