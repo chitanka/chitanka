@@ -55,6 +55,7 @@ parameters:
 
     global_info_message: Това е огледало на <a href="http://chitanka.info">Моята библиотека</a>.
     analytics_snippet: ~
+    allow_user_registration: false
     allow_removed_notice: true
     allow_remote_wiki_article: true
     dev.web_profiler_toolbar: false

@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 class UserController extends Controller {
 
 	public function personalToolsAction() {
+		if (!$this->container->getParameter('allow_user_registration')) {
+			return $this->asText('');
+		}
 		return $this->render('App:User:personal_tools.html.twig', [
 			'_user' => $this->getUser(),
 			'_cache' => 0,

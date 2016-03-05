@@ -10,10 +10,16 @@ use Symfony\Component\HttpFoundation\Request;
 class SecurityController extends Controller {
 
 	public function loginAction() {
+		if (!$this->container->getParameter('allow_user_registration')) {
+			throw $this->createAccessDeniedException();
+		}
 		return $this->legacyPage('Login');
 	}
 
 	public function registerAction() {
+		if (!$this->container->getParameter('allow_user_registration')) {
+			throw $this->createAccessDeniedException();
+		}
 		return $this->legacyPage('Register');
 	}
 
