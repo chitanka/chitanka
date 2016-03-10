@@ -8,4 +8,13 @@
 {% endblock %}
 {% block content %}
 	{% include 'App:Author:navigation.html.twig' with {'by': '', 'letter': ''} %}
+	<h2>Държава</h2>
+	<ul>
+		{% for country, count in countries %}
+			<li>
+				<a href="{{ path('authors_by_country', {'country': country}) }}">{{ ('country.'~country) | trans }}</a>
+				<span class="badge">{{ count }}</span>
+			</li>
+		{% endfor %}
+	</ul>
 {% endblock %}
