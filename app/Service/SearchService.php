@@ -108,7 +108,7 @@ class SearchResult {
 	public $nbResults;
 
 	public function __construct(array $lists) {
-		$this->nbResults = array_sum(array_map('count', $lists)) > 0;
+		$this->nbResults = array_sum(array_map('count', $lists));
 		foreach ($lists as $entity => $list) {
 			$this->$entity = $list;
 		}
