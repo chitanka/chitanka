@@ -25,7 +25,7 @@ class PersonController extends Controller {
 		$country = $request->get('country', '');
 		$limit = 100;
 
-		$repo = $this->em()->getPersonRepository();
+		$repo = $this->getPersonRepository();
 		$filters = [
 			'by'      => $by,
 			'prefix'  => $letter,
@@ -164,6 +164,10 @@ class PersonController extends Controller {
 		return [
 			'texts_as_translator' => $this->em()->getTextRepository()->findByTranslator($person),
 		];
+	}
+
+	protected function getPersonRepository() {
+		return $this->em()->getPersonRepository()->asAuthor();
 	}
 
 	private function getShowTemplateInfoParams(Person $person) {
