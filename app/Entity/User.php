@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @UniqueEntity(fields="username")
  */
-class User implements UserInterface {
+class User implements UserInterface, \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -624,4 +624,11 @@ class User implements UserInterface {
 			'menu' => $this->option('nav', 'right'),
 		];
 	}
+
+	public function jsonSerialize() {
+		return [
+			'username' => $this->getUsername(),
+		];
+	}
+
 }

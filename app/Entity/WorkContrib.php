@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="user_idx", columns={"user_id"})}
 * )
 */
-class WorkContrib extends Entity {
+class WorkContrib extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -110,5 +110,24 @@ class WorkContrib extends Entity {
 	public function isDeleted() { return $this->deletedAt !== null; }
 	public function delete() {
 		$this->setDeletedAt(new \DateTime);
+	}
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'user' => $this->getUser(),
+			'comment' => $this->getComment(),
+			'progress' => $this->getProgress(),
+			'isFrozen' => $this->isFrozen(),
+			'date' => $this->getDate(),
+			'file' => $this->getUplfile(),
+			'filesize' => $this->getFilesize(),
+			'deletedAt' => $this->deletedAt,
+		];
 	}
 }

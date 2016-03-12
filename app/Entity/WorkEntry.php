@@ -14,7 +14,7 @@ use Eko\FeedBundle\Item\Writer\RoutedItemInterface;
 *		@ORM\Index(name="date_idx", columns={"date"})}
 * )
 */
-class WorkEntry extends Entity implements RoutedItemInterface {
+class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable {
 
 	const STATUS_0 = 0;
 	const STATUS_1 = 1;
@@ -368,5 +368,37 @@ DESC;
 
 	public function getFeedItemGuid() {
 		return "chitanka-work-entry-{$this->getId()}-{$this->getStatus()}-{$this->getProgress()}";
+	}
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		$fields = [
+			'id' => $this->getId(),
+			'type' => $this->getType(),
+			'title' => $this->getTitle(),
+			'author' => $this->getAuthor(),
+			'publisher' => $this->getPublisher(),
+			'pubYear' => $this->getPubYear(),
+			'user' => $this->getUser(),
+			'comment' => $this->getComment(),
+			'date' => $this->getDate(),
+			'status' => $this->getStatus(),
+			'progress' => $this->getProgress(),
+			'isFrozen' => $this->getIsFrozen(),
+			'availableAt' => $this->getAvailableAt(),
+			'deletedAt' => $this->getDeletedAt(),
+			'contribs' => $this->getContribs(),
+		];
+		if ($this->isAvailable()) {
+			$fields += [
+				'file' => $this->getTmpfiles(),
+				'filesize' => $this->getTfsize(),
+			];
+		}
+		return $fields;
 	}
 }

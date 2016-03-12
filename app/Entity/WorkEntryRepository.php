@@ -23,6 +23,7 @@ class WorkEntryRepository extends EntityRepository {
 
 	/**
 	 * @param string $title
+	 * @return WorkEntry[]
 	 */
 	public function getByTitleOrAuthor($title) {
 		return $this->getQueryBuilder()
@@ -30,7 +31,7 @@ class WorkEntryRepository extends EntityRepository {
 			->andWhere('e.title LIKE ?1 OR e.author LIKE ?1')
 			->setParameter(1, "%$title%")
 			->getQuery()
-			->getArrayResult();
+			->getResult();
 	}
 
 	/**
