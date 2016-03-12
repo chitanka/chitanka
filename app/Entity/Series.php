@@ -13,7 +13,7 @@ use App\Util\String;
  * )
  * @UniqueEntity(fields="slug", message="This slug is already in use.")
  */
-class Series extends Entity {
+class Series extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -83,5 +83,20 @@ class Series extends Entity {
 
 	public function __toString() {
 		return $this->name;
+	}
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'slug' => $this->getSlug(),
+			'name' => $this->getName(),
+			'origName' => $this->getOrigName(),
+			'authors' => $this->getAuthors(),
+		];
 	}
 }

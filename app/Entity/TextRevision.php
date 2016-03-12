@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 *		@ORM\Index(name="date_idx", columns={"date"})}
 * )
 */
-class TextRevision extends Entity {
+class TextRevision extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -75,5 +75,19 @@ class TextRevision extends Entity {
 
 	public function __toString() {
 		return sprintf('%s (%s, %s)', $this->getComment(), $this->getUser(), $this->getDate()->format('Y-m-d H:i:s'));
+	}
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'comment' => $this->getComment(),
+			'date' => $this->getDate(),
+			'isFirst' => $this->getFirst(),
+		];
 	}
 }

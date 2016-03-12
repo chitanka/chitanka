@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity(repositoryClass="App\Entity\ForeignBookRepository")
 * @ORM\Table(name="foreign_book")
 */
-class ForeignBook extends Entity {
+class ForeignBook extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -73,5 +73,22 @@ class ForeignBook extends Entity {
 
 	public function __toString() {
 		return $this->title;
+	}
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'title' => $this->getTitle(),
+			'author' => $this->getAuthor(),
+			'url' => $this->getUrl(),
+			'cover' => $this->getCover(),
+			'description' => $this->getDescription(),
+			'isFree' => $this->getIsFree(),
+		];
 	}
 }

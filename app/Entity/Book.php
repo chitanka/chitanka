@@ -20,7 +20,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 *		@ORM\Index(name="orig_title_idx", columns={"orig_title"})}
 * )
 */
-class Book extends BaseWork {
+class Book extends BaseWork implements \JsonSerializable {
 
 	/**
 	 * @ORM\Column(type="integer")
@@ -964,4 +964,34 @@ EOS;
 		$this->revisionComment = $comment;
 	}
 
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'slug' => $this->getSlug(),
+			'titleAuthor' => $this->getTitleAuthor(),
+			'title' => $this->getTitle(),
+			'subtitle' => $this->getSubtitle(),
+			'titleExtra' => $this->getTitleExtra(),
+			'origTitle' => $this->getOrigTitle(),
+			'lang' => $this->getLang(),
+			'origLang' => $this->getOrigLang(),
+			'year' => $this->getYear(),
+			'transYear' => $this->getTransYear(),
+			'type' => $this->getType(),
+			'sequence' => $this->getSequence(),
+			'sequenceNr' => $this->getSeqnr(),
+			'category' => $this->getCategory(),
+			'hasAnnotation' => $this->hasAnno(),
+			'hasCover' => $this->hasCover(),
+			'formats' => $this->getFormats(),
+			'removedNotice' => $this->getRemovedNotice(),
+			'authors' => $this->getAuthors(),
+			'translators' => $this->getTranslators(),
+		];
+	}
 }

@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @UniqueEntity(fields="url")
  */
-class Site extends Entity {
+class Site extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -53,5 +53,19 @@ class Site extends Entity {
 
 	public function __toString() {
 		return $this->name;
+	}
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'name' => $this->getName(),
+			'url' => $this->getUrl(),
+			'description' => $this->getDescription(),
+		];
 	}
 }

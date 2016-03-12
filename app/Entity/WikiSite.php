@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(fields="code")
  * @UniqueEntity(fields="name")
  */
-class WikiSite extends Entity {
+class WikiSite extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -64,5 +64,20 @@ class WikiSite extends Entity {
 
 	public function __toString() {
 		return $this->name;
+	}
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'code' => $this->getCode(),
+			'name' => $this->getName(),
+			'url' => $this->getUrl(),
+			'intro' => $this->getIntro(),
+		];
 	}
 }

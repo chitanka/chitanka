@@ -130,8 +130,8 @@ class EntityManager {
 	}
 
 	private function configureEntityManager(DoctrineEntityManager $em) {
-		$em->getConfiguration()->addCustomHydrationMode('id', 'App\Hydration\IdHydrator');
-		$em->getConfiguration()->addCustomHydrationMode('key_value', 'App\Hydration\KeyValueHydrator');
+		$em->getConfiguration()->addCustomHydrationMode('id', \App\Hydration\IdHydrator::class);
+		$em->getConfiguration()->addCustomHydrationMode('key_value', \App\Hydration\KeyValueHydrator::class);
 		return $em;
 	}
 }

@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *      @ORM\Index(name="orig_lang_idx", columns={"orig_lang"})}
  * )
  */
-class Text extends BaseWork {
+class Text extends BaseWork implements  \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -1175,4 +1175,44 @@ EOS;
 		return ContentService::getContentFilePath('text', $this->getId());
 	}
 
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'slug' => $this->getSlug(),
+			'title' => $this->getTitle(),
+			'subtitle' => $this->getSubtitle(),
+			'lang' => $this->getLang(),
+			'transYear' => $this->getTransYear(),
+			'transYear2' => $this->getTransYear2(),
+			'origTitle' => $this->getOrigTitle(),
+			'origSubtitle' => $this->getOrigSubtitle(),
+			'origLang' => $this->getOrigLang(),
+			'year' => $this->getYear(),
+			'year2' => $this->getYear2(),
+			'origLicense' => $this->getOrigLicense(),
+			'transLicense' => $this->getTransLicense(),
+			'type' => $this->getType(),
+			'series' => $this->getSeries(),
+			'sernr' => $this->getSernr(),
+			'sernr2' => $this->getSernr2(),
+			'headlevel' => $this->getHeadlevel(),
+			'createdAt' => $this->getCreatedAt(),
+			'source' => $this->getSource(),
+			'commentCount' => $this->getCommentCount(),
+			'rating' => $this->getRating(),
+			'votes' => $this->getVotes(),
+			'hasAnno' => $this->hasAnno(),
+			'isCompilation' => $this->isCompilation(),
+			'note' => $this->getNote(),
+			'article' => $this->getArticle(),
+			'removedNotice' => $this->getRemovedNotice(),
+			'authors' => $this->getAuthors(),
+			'translators' => $this->getTranslators(),
+		];
+	}
 }

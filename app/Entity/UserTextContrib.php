@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *		@ORM\Index(name="date_idx", columns={"date"})}
  * )
  */
-class UserTextContrib extends Entity {
+class UserTextContrib extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -104,6 +104,23 @@ class UserTextContrib extends Entity {
 
 	public function __toString() {
 		return sprintf('%s: %s (%s, %s%%)', $this->getComment(), $this->getUser(), $this->getHumandate(), $this->getPercent());
+	}
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'username' => $this->getUsername(),
+			'size' => $this->getSize(),
+			'percent' => $this->getPercent(),
+			'comment' => $this->getComment(),
+			'date' => $this->getDate(),
+			'humandate' => $this->getHumandate(),
+		];
 	}
 
 	/** @ORM\PrePersist */

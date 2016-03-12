@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *   @ORM\Index(columns={"is_for_front_page"})}
  * )
  */
-class SiteNotice extends Entity {
+class SiteNotice extends Entity implements \JsonSerializable {
 
 	/**
 	 * @ORM\Column(type="integer")
@@ -64,5 +64,21 @@ class SiteNotice extends Entity {
 
 	public function __toString() {
 		return $this->getName();
+	}
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'name' => $this->getName(),
+			'content' => $this->getContent(),
+			'isActive' => $this->isActive(),
+			'isForFrontPage' => $this->isForFrontPage(),
+			'style' => $this->getStyle(),
+		];
 	}
 }

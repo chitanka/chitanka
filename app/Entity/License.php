@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="license")
  * @UniqueEntity(fields="code")
  */
-class License extends Entity {
+class License extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -172,5 +172,22 @@ class License extends Entity {
 
 	public function __toString() {
 		return $this->name;
+	}
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'code' => $this->getCode(),
+			'name' => $this->getName(),
+			'fullname' => $this->getFullname(),
+			'isFree' => $this->getFree(),
+			'isCopyright' => $this->getCopyright(),
+			'uri' => $this->getUri(),
+		];
 	}
 }

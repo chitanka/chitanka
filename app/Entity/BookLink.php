@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 *	uniqueConstraints={@ORM\UniqueConstraint(name="book_site_uniq", columns={"book_id", "site_id"})}
 * )
 */
-class BookLink extends Entity {
+class BookLink extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -56,4 +56,16 @@ class BookLink extends Entity {
 		return $this->getSite() .' ('.$this->code.')';
 	}
 
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'code' => $this->getCode(),
+			'url' => $this->getUrl(),
+		];
+	}
 }

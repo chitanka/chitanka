@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Entity\TextHeaderRepository")
  * @ORM\Table(name="text_header")
  */
-class TextHeader extends Entity {
+class TextHeader extends Entity implements \JsonSerializable {
 	/**
 	 * @var int
 	 * @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue
@@ -74,5 +74,21 @@ class TextHeader extends Entity {
 
 	public function __toString() {
 		return str_repeat('—', $this->getLevel()-1) .' '. $this->getName();
+	}
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'nr' => $this->getNr(),
+			'level' => $this->getLevel(),
+			'name' => $this->getName(),
+			'filePosition' => $this->getFpos(),
+			'lineCount' => $this->getLinecnt(),
+		];
 	}
 }

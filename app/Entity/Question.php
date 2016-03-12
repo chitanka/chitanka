@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Entity
 * @ORM\Table(name="question")
 */
-class Question extends Entity {
+class Question extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -74,5 +74,18 @@ class Question extends Entity {
 
 	public function __toString() {
 		return $this->question;
+	}
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'question' => $this->getQuestion(),
+			'answers' => $this->getAnswers(),
+		];
 	}
 }

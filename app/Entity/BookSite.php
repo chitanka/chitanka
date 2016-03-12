@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="book_site")
  * @UniqueEntity(fields="name")
  */
-class BookSite extends Entity {
+class BookSite extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -40,4 +40,17 @@ class BookSite extends Entity {
 
 	public function setUrl($url) { $this->url = $url; }
 	public function getUrl() { return $this->url; }
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'name' => $this->getName(),
+			'url' => $this->getUrl(),
+		];
+	}
 }

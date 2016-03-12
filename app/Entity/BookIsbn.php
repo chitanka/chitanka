@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     }
  * )
  */
-class BookIsbn extends Entity {
+class BookIsbn extends Entity implements \JsonSerializable {
 
 	public static function normalizeIsbn($isbn) {
 		return preg_replace('/[^\dX]/', '', $isbn);
@@ -57,4 +57,16 @@ class BookIsbn extends Entity {
 		return $this->getCode();
 	}
 
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'code' => $this->getCode(),
+			'addition' => $this->getAddition(),
+		];
+	}
 }
