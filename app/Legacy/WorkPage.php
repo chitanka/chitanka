@@ -455,11 +455,7 @@ EOS;
 			if ($this->searchQuery) $params[$this->FF_LQUERY] = $this->searchQuery;
 			if ($this->scanuser_view) $params['user'] = $this->scanuser_view;
 			$pagelinks = $this->controller->renderView('App::pager.html.twig', [
-				'pager'    => new Pager([
-					'page'  => $this->lpage,
-					'limit' => $this->llimit,
-					'total' => $this->db->getCount(self::DB_TABLE, $this->makeSqlWhere('', $where)),
-				]),
+				'pager'    => new Pager($this->lpage, $this->db->getCount(self::DB_TABLE, $this->makeSqlWhere('', $where)), $this->llimit),
 				'current_route' => 'workroom',
 				'route_params' => $params,
 			]);

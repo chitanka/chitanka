@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class BookController extends Controller {
 
+	const PAGE_COUNT_DEFAULT = 30;
+	const PAGE_COUNT_LIMIT = 300;
+
 	public function indexAction($_format) {
 		if (in_array($_format, ['html', 'json'])) {
 			return [
@@ -37,55 +40,41 @@ class BookController extends Controller {
 		return [];
 	}
 
-	public function listByCategoryAction($slug, $page) {
+	public function listByCategoryAction(Request $request, $slug, $page) {
 		$slug = String::slugify($slug);
 		$bookRepo = $this->em()->getBookRepository();
 		$category = $this->em()->getCategoryRepository()->findBySlug($slug);
 		if ($category === null) {
 			throw $this->createNotFoundException("Няма категория с код $slug.");
 		}
-		$limit = 30;
-
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		return [
 			'category' => $category,
 			'parents' => array_reverse($category->getAncestors()),
 			'books' => $bookRepo->findByCategory($category, $page, $limit),
-			'pager'    => new Pager([
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $category->getNrOfBooks()
-			]),
+			'pager'    => new Pager($page, $category->getNrOfBooks(), $limit),
 			'route_params' => ['slug' => $slug],
 		];
 	}
 
-	public function listByAlphaAction($letter, $page) {
+	public function listByAlphaAction(Request $request, $letter, $page) {
 		$bookRepo = $this->em()->getBookRepository();
-		$limit = 30;
-
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$prefix = $letter == '-' ? null : $letter;
 		return [
 			'letter' => $letter,
 			'books' => $bookRepo->findByPrefix($prefix, $page, $limit),
-			'pager'    => new Pager([
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $bookRepo->countByPrefix($prefix)
-			]),
+			'pager'    => new Pager($page, $bookRepo->countByPrefix($prefix), $limit),
 			'route_params' => ['letter' => $letter],
 		];
 	}
 
-	public function listWoCoverAction($page) {
-		$limit = 30;
+	public function listWoCoverAction(Request $request, $page) {
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$bookRepo = $this->em()->getBookRepository();
 		return [
 			'books' => $bookRepo->findWithMissingCover($page, $limit),
-			'pager' => new Pager([
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $this->em()->getBookRepository()->getCountWithMissingCover()
-			]),
+			'pager' => new Pager($page, $bookRepo->getCountWithMissingCover(), $limit),
 		];
 	}
 

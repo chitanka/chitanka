@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TextController extends Controller {
 
+	const PAGE_COUNT_DEFAULT = 50;
+	const PAGE_COUNT_LIMIT = 500;
+
 	public function indexAction($_format) {
 		if (in_array($_format, ['html', 'json'])) {
 			return [
@@ -45,24 +48,18 @@ class TextController extends Controller {
 
 	public function listByTypeAction(Request $request, $type, $page) {
 		$textRepo = $this->em()->getTextRepository();
-		$limit = 30;
-
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		return [
 			'type' => $type,
 			'texts'   => $textRepo->getByType($type, $page, $limit, $request->query->get('sort')),
-			'pager'    => new Pager([
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $textRepo->countByType($type)
-			]),
+			'pager'    => new Pager($page, $textRepo->countByType($type), $limit),
 			'route_params' => ['type' => $type],
 		];
 	}
 
 	public function listByLabelAction(Request $request, $slug, $page) {
 		$textRepo = $this->em()->getTextRepository();
-		$limit = 30;
-
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$slug = String::slugify($slug);
 		$label = $this->em()->getLabelRepository()->findBySlug($slug);
 		if ($label === null) {
@@ -74,28 +71,19 @@ class TextController extends Controller {
 			'label' => $label,
 			'parents' => array_reverse($label->getAncestors()),
 			'texts'   => $textRepo->getByLabel($labels, $page, $limit, $request->query->get('sort')),
-			'pager'    => new Pager([
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $textRepo->countByLabel($labels)
-			]),
+			'pager'    => new Pager($page, $textRepo->countByLabel($labels), $limit),
 			'route_params' => ['slug' => $slug],
 		];
 	}
 
 	public function listByAlphaAction(Request $request, $letter, $page) {
 		$textRepo = $this->em()->getTextRepository();
-		$limit = 30;
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$prefix = $letter == '-' ? null : $letter;
-
 		return [
 			'letter' => $letter,
 			'texts' => $textRepo->getByPrefix($prefix, $page, $limit, $request->query->get('sort')),
-			'pager'    => new Pager([
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $textRepo->countByPrefix($prefix)
-			]),
+			'pager'    => new Pager($page, $textRepo->countByPrefix($prefix), $limit),
 			'route_params' => ['letter' => $letter],
 		];
 	}
@@ -319,15 +307,11 @@ class TextController extends Controller {
 
 	public function fullLabelLogAction(Request $request) {
 		$page = $request->get('page', 1);
-		$limit = 30;
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$repo = $this->em()->getTextLabelLogRepository();
 		return [
 			'log' => $repo->getAll($page, $limit),
-			'pager' => new Pager([
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $repo->count()
-			]),
+			'pager' => new Pager($page, $repo->count(), $limit),
 		];
 	}
 

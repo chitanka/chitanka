@@ -1,22 +1,20 @@
 <?php namespace App\Pagination;
 
 class Pager implements \JsonSerializable {
+
 	private $page = 1;
-	private $limit = 30;
 	private $total = 0;
-	private $count = 0;
+	private $limit = 30;
+	private $pageCount = 0;
 
-	public function __construct($options) {
-		$fields = ['page', 'limit', 'total'];
-		foreach ($fields as $field) {
-			if (isset($options[$field])) {
-				$this->$field = (int) $options[$field];
-			}
-		}
+	public function __construct($page, $total, $limit) {
+		$this->page = (int) max($page, 1);
+		$this->total = (int) max($total, 0);
+		$this->limit = (int) max($limit, 1);
 
-		$this->count = (int) ceil($this->total / $this->limit);
-		if ($this->page > $this->count) {
-			$this->page = $this->count;
+		$this->pageCount = (int) ceil($this->total / $this->limit);
+		if ($this->page > $this->pageCount) {
+			$this->page = $this->pageCount;
 		}
 	}
 
@@ -25,7 +23,7 @@ class Pager implements \JsonSerializable {
 	}
 
 	public function count() {
-		return $this->count;
+		return $this->pageCount;
 	}
 
 	public function total() {
@@ -33,7 +31,7 @@ class Pager implements \JsonSerializable {
 	}
 
 	public function show() {
-		return $this->count > 1;
+		return $this->pageCount > 1;
 	}
 
 	public function has_prev() {
@@ -45,11 +43,11 @@ class Pager implements \JsonSerializable {
 	}
 
 	public function next() {
-		return min($this->page + 1, $this->count);
+		return min($this->page + 1, $this->pageCount);
 	}
 
 	public function has_next() {
-		return $this->page < $this->count;
+		return $this->page < $this->pageCount;
 	}
 
 	public function pages() {
@@ -57,19 +55,19 @@ class Pager implements \JsonSerializable {
 		$first = 1;
 		$selected = max($this->page, $first);
 		$start = $first;
-		$end = min($first + 2, $this->count);
+		$end = min($first + 2, $this->pageCount);
 		for ($i = $start; $i <= $end; $i++) {
 			$pages[$i] = false;
 		}
 
 		$start = max($first, $selected - 2);
-		$end = min($selected + 2, $this->count);
+		$end = min($selected + 2, $this->pageCount);
 		for ($i = $start; $i <= $end; $i++) {
 			$pages[$i] = false;
 		}
 
-		$start = max($first, $this->count - 2);
-		$end = $this->count;
+		$start = max($first, $this->pageCount - 2);
+		$end = $this->pageCount;
 		for ($i = $start; $i <= $end; $i++) {
 			$pages[$i] = false;
 		}
@@ -84,7 +82,7 @@ class Pager implements \JsonSerializable {
 			'page' => $this->page,
 			'countPerPage' => $this->limit,
 			'totalCount' => $this->total,
-			'pageCount' => $this->count,
+			'pageCount' => $this->pageCount,
 			'prevPage' => $this->has_prev() ? $this->prev() : null,
 			'nextPage' => $this->has_next() ? $this->next() : null,
 		];

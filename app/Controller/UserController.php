@@ -6,6 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller {
 
+	const PAGE_COUNT_DEFAULT = 50;
+	const PAGE_COUNT_LIMIT = 500;
+
 	public function personalToolsAction() {
 		if (!$this->container->getParameter('allow_user_registration')) {
 			return $this->asText('');
@@ -62,25 +65,20 @@ class UserController extends Controller {
 		return $this->legacyPage('Comment');
 	}
 
-	public function contribsAction($username, $page) {
-		$limit = 50;
+	public function contribsAction(Request $request, $username, $page) {
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$user = $this->em()->getUserRepository()->findByUsername($username);
 		$repo = $this->em()->getUserTextContribRepository();
-
 		return [
 			'user' => $user,
 			'contribs' => $repo->getByUser($user, $page, $limit),
-			'pager'    => new Pager([
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $repo->countByUser($user)
-			]),
+			'pager'    => new Pager($page, $repo->countByUser($user), $limit),
 			'route' => 'user_contribs',
 			'route_params' => ['username' => $username],
 		];
 	}
 
-	public function readListAction($username, $page) {
+	public function readListAction(Request $request, $username, $page) {
 		if ($this->getUser()->getUsername() != $username) {
 			$user = $this->em()->getUserRepository()->findByToken($username);
 			if (!$user) {
@@ -92,25 +90,21 @@ class UserController extends Controller {
 			$isOwner = true;
 		}
 
-		$limit = 50;
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$repo = $this->em()->getUserTextReadRepository();
 
 		return [
 			'user' => $user,
 			'is_owner' => $isOwner,
 			'read_texts' => $repo->getByUser($user, $page, $limit),
-			'pager'    => new Pager([
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $repo->countByUser($user)
-			]),
+			'pager'    => new Pager($page, $repo->countByUser($user), $limit),
 			'route' => 'user_read_list',
 			'route_params' => ['username' => $username],
 			'_cache' => 0,
 		];
 	}
 
-	public function bookmarksAction($username, $page) {
+	public function bookmarksAction(Request $request, $username, $page) {
 		if ($this->getUser()->getUsername() != $username) {
 			$user = $this->em()->getUserRepository()->findByToken($username);
 			if (!$user) {
@@ -122,18 +116,14 @@ class UserController extends Controller {
 			$isOwner = true;
 		}
 
-		$limit = 50;
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$repo = $this->em()->getBookmarkRepository();
 
 		return [
 			'user' => $user,
 			'is_owner' => $isOwner,
 			'bookmarks' => $repo->getByUser($user, $page, $limit),
-			'pager'    => new Pager([
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $repo->countByUser($user)
-			]),
+			'pager'    => new Pager($page, $repo->countByUser($user), $limit),
 			'route' => 'user_bookmarks',
 			'route_params' => ['username' => $username],
 			'_cache' => 0,

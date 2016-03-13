@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PersonController extends Controller {
 
+	const PAGE_COUNT_DEFAULT = 100;
+	const PAGE_COUNT_LIMIT = 1000;
+
 	public function indexAction() {
 		return [
 			'countries' => $this->getPersonRepository()->getCountsByCountry(),
@@ -20,10 +23,9 @@ class PersonController extends Controller {
 		];
 	}
 
-	public function listByAlphaAction($by, $letter, $page) {
-		$request = $this->get('request')->query;
-		$country = $request->get('country', '');
-		$limit = 100;
+	public function listByAlphaAction(Request $request, $by, $letter, $page) {
+		$country = $request->query->get('country', '');
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 
 		$repo = $this->getPersonRepository();
 		$filters = [
@@ -36,11 +38,7 @@ class PersonController extends Controller {
 			'letter'  => $letter,
 			'country' => $country,
 			'persons' => $repo->getBy($filters, $page, $limit),
-			'pager'    => new Pager([
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $repo->countBy($filters)
-			]),
+			'pager'    => new Pager($page, $repo->countBy($filters), $limit),
 			'route_params' => ['letter' => $letter, 'by' => $by],
 		];
 	}
@@ -52,9 +50,8 @@ class PersonController extends Controller {
 		];
 	}
 
-	public function listByCountryAction($country, $by, $page, $_format) {
-		$limit = 100;
-
+	public function listByCountryAction(Request $request, $country, $by, $page, $_format) {
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$repo = $this->getPersonRepository();
 		$filters = [
 			'by'      => $by,
@@ -64,11 +61,7 @@ class PersonController extends Controller {
 			'by'      => $by,
 			'country' => $country,
 			'persons' => $repo->getBy($filters, $page, $limit),
-			'pager'    => new Pager([
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $repo->countBy($filters)
-			]),
+			'pager'    => new Pager($page, $repo->countBy($filters), $limit),
 			'route_params' => ['country' => $country, 'by' => $by, '_format' => $_format],
 		];
 	}

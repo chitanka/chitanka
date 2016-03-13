@@ -7,23 +7,22 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SequenceController extends Controller {
 
+	const PAGE_COUNT_DEFAULT = 100;
+	const PAGE_COUNT_LIMIT = 1000;
+
 	public function indexAction() {
 		return [];
 	}
 
-	public function listByAlphaAction($letter, $page) {
+	public function listByAlphaAction(Request $request, $letter, $page) {
 		$repo = $this->em()->getSequenceRepository();
-		$limit = 50;
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 
 		$prefix = $letter == '-' ? null : $letter;
 		return [
 			'letter' => $letter,
 			'sequences' => $repo->getByPrefix($prefix, $page, $limit),
-			'pager'    => new Pager([
-				'page'  => $page,
-				'limit' => $limit,
-				'total' => $repo->countByPrefix($prefix)
-			]),
+			'pager'    => new Pager($page, $repo->countByPrefix($prefix), $limit),
 			'route_params' => ['letter' => $letter],
 		];
 	}
