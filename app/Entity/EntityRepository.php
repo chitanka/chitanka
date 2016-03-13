@@ -181,13 +181,14 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 
 	/**
 	 * @param array $params
-	 * @return array
+	 * @return \Doctrine\ORM\Query
 	 */
 	private function query($params) {
 		if (empty($params['text']) || empty($params['by'])) {
 			return null;
 		}
 
+		$params += ['match' => '*'];
 		switch ($params['match']) {
 			case 'exact':
 				$op = '=';

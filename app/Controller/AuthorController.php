@@ -32,19 +32,27 @@ class AuthorController extends PersonController {
 	}
 
 	public function searchAction(Request $request, $_format) {
+		$query = $request->query->get('q');
+		if ($_format == 'json') {
+			$persons = $this->em()->getPersonRepository()->asAuthor()->findByQuery([
+				'text'  => $query,
+				'by'    => 'name,orig_name',
+				'limit' => static::PAGE_COUNT_LIMIT,
+			]);
+			return $persons;
+		}
 		if ($_format == 'suggest') {
-			$items = $descs = $urls = [];
-			$query = $request->query->get('q');
-			$persons = $this->em()->getPersonRepository()->asAuthor()->getByQuery([
+			$persons = $this->em()->getPersonRepository()->asAuthor()->findByQuery([
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
-				'limit' => 10,
+				'limit' => static::PAGE_COUNT_LIMIT,
 			]);
+			$items = $descs = $urls = [];
 			foreach ($persons as $person) {
-				$items[] = $person['name'];
+				$items[] = $person->getName();
 				$descs[] = '';
-				$urls[] = $this->generateUrl('author_show', ['slug' => $person['slug']], true);
+				$urls[] = $this->generateUrl('author_show', ['slug' => $person->getSlug()], true);
 			}
 
 			return $this->asJson([$query, $items, $descs, $urls]);
