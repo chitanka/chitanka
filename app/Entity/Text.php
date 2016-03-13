@@ -1175,6 +1175,11 @@ EOS;
 		return ContentService::getContentFilePath('text', $this->getId());
 	}
 
+	public function getOutputFormats() {
+		$outputFormats = ['fb2.zip', 'epub', 'txt.zip', 'sfb.zip'];
+		return $outputFormats;
+	}
+
 	/**
 	 * Specify data which should be serialized to JSON
 	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -1210,6 +1215,7 @@ EOS;
 			'isCompilation' => $this->isCompilation(),
 			'note' => $this->getNote(),
 			'article' => $this->getArticle(),
+			'formats' => $this->getOutputFormats(),
 			'removedNotice' => $this->getRemovedNotice(),
 			'authors' => $this->getAuthors(),
 			'translators' => $this->getTranslators(),

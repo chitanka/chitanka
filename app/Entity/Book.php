@@ -847,6 +847,19 @@ EOS;
 		return ContentService::getContentFilePath('book-'.$format, $this->id);
 	}
 
+	public function getOutputFormats() {
+		$outputFormats = [];
+		if (in_array('sfb', $this->getFormats())) {
+			$outputFormats = array_merge($outputFormats, ['fb2.zip', 'epub', 'txt.zip', 'sfb.zip']);
+		}
+		foreach (['djvu', 'pdf', 'pic'] as $format) {
+			if (in_array($format, $this->getFormats())) {
+				$outputFormats[] = $format;
+			}
+		}
+		return $outputFormats;
+	}
+
 	##################
 	# legacy pic stuff
 	##################
@@ -989,10 +1002,11 @@ EOS;
 			'hasAnnotation' => $this->hasAnno(),
 			'hasCover' => $this->hasCover(),
 			'cover' => ($this->hasCover() ? ContentService::getCover($this->getId(), 600) : null),
-			'formats' => $this->getFormats(),
+			'formats' => $this->getOutputFormats(),
 			'removedNotice' => $this->getRemovedNotice(),
 			'authors' => $this->getAuthors(),
 			'translators' => $this->getTranslators(),
+			'annotation' => $this->getAnnotation(),
 		];
 	}
 }

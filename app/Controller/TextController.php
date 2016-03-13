@@ -115,6 +115,8 @@ class TextController extends Controller {
 				return $this->asText($this->findText($id, true)->getContentAsSfb());
 			case 'data':
 				return $this->asText($this->findText($id, true)->getDataAsPlain());
+			case 'json':
+				return ['text' => $this->findText($id, true)];
 		}
 		throw $this->createNotFoundException("Неизвестен формат: $_format");
 	}
