@@ -988,6 +988,7 @@ EOS;
 			'category' => $this->getCategory(),
 			'hasAnnotation' => $this->hasAnno(),
 			'hasCover' => $this->hasCover(),
+			'cover' => ($this->hasCover() ? ContentService::getCover($this->getId(), 600) : null),
 			'formats' => $this->getFormats(),
 			'removedNotice' => $this->getRemovedNotice(),
 			'authors' => $this->getAuthors(),

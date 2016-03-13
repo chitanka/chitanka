@@ -201,7 +201,7 @@ class Extension extends \Twig_Extension {
 	 * @return string
 	 */
 	public function getCover($id, $width = 200, $format = 'jpg') {
-		return ContentService::getContentFilePath('book-cover', $id) . ".$width.$format";
+		return ContentService::getCover($id, $width, $format);
 	}
 
 	/**

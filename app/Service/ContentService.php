@@ -79,4 +79,8 @@ class ContentService {
 
 		return $path;
 	}
+
+	public static function getCover($id, $width = 200, $format = 'jpg') {
+		return self::getContentFilePath('book-cover', $id) . ".$width.$format";
+	}
 }
