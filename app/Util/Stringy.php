@@ -1,6 +1,6 @@
 <?php namespace App\Util;
 
-class String {
+class Stringy {
 
 	/**
 	 * Truncate a string to a given length

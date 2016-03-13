@@ -8,7 +8,7 @@ use App\Util\Char;
 use App\Util\Date;
 use App\Util\File;
 use App\Util\Language;
-use App\Util\String;
+use App\Util\Stringy;
 use App\Legacy\Setup;
 use App\Legacy\SfbParserSimple;
 use Doctrine\ORM\Mapping as ORM;
@@ -340,7 +340,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 
 	public function getId() { return $this->id; }
 
-	public function setSlug($slug) { $this->slug = String::slugify($slug); }
+	public function setSlug($slug) { $this->slug = Stringy::slugify($slug); }
 	public function getSlug() { return $this->slug; }
 
 	public function setTitle($title) { $this->title = $title; }
@@ -600,7 +600,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 	public function getAuthorNameEscaped() {
 		$origNames = implode(', ', $this->getAuthorOrigNames());
 		if (preg_match('/[a-z]/', $origNames)) {
-			return String::removeDiacritics(Char::cyr2lat($origNames));
+			return Stringy::removeDiacritics(Char::cyr2lat($origNames));
 		}
 		return Char::cyr2lat($this->getAuthorNamesString());
 	}
@@ -874,7 +874,7 @@ EOS;
 	public function getNameForFile() {
 		$filename = strtr(Setup::setting('download_file'), [
 			'AUTHOR' => $this->getAuthorNameEscaped(),
-			'SERIES' => empty($this->series) ? '' : String::createAcronym(Char::cyr2lat($this->series->getName())),
+			'SERIES' => empty($this->series) ? '' : Stringy::createAcronym(Char::cyr2lat($this->series->getName())),
 			'SERNO' => empty($this->sernr) ? '' : $this->sernr,
 			'TITLE' => Char::cyr2lat($this->title),
 			'ID' => $this->getId(),

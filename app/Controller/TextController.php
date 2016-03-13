@@ -10,7 +10,7 @@ use App\Generator\TextDownloadService;
 use App\Service\TextBookmarkService;
 use App\Service\TextLabelService;
 use App\Service\SearchService;
-use App\Util\String;
+use App\Util\Stringy;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -60,7 +60,7 @@ class TextController extends Controller {
 	public function listByLabelAction(Request $request, $slug, $page) {
 		$textRepo = $this->em()->getTextRepository();
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
-		$slug = String::slugify($slug);
+		$slug = Stringy::slugify($slug);
 		$label = $this->em()->getLabelRepository()->findBySlug($slug);
 		if ($label === null) {
 			throw $this->createNotFoundException("Няма етикет с код $slug.");

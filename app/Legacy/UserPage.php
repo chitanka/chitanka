@@ -1,6 +1,6 @@
 <?php namespace App\Legacy;
 
-use App\Util\String;
+use App\Util\Stringy;
 use Sfblib\SfbToHtmlConverter;
 
 class UserPage extends Page {
@@ -65,7 +65,7 @@ class UserPage extends Page {
 		$res = $this->db->select(DBT_USER, $key, $sel);
 		$data = $this->db->fetchAssoc($res);
 		if ( empty($data) ) {
-			$this->addMessage('Няма потребител с име <strong>' .String::myhtmlspecialchars($this->username) . '</strong>.', true);
+			$this->addMessage('Няма потребител с име <strong>' .Stringy::myhtmlspecialchars($this->username) . '</strong>.', true);
 			$this->userId = 0;
 			$this->userpage = '';
 			return false;

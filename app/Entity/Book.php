@@ -4,7 +4,7 @@ use App\Generator\BookFb2Generator;
 use App\Service\ContentService;
 use App\Util\Ary;
 use App\Util\File;
-use App\Util\String;
+use App\Util\Stringy;
 use Sfblib\SfbConverter;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -228,7 +228,7 @@ class Book extends BaseWork implements \JsonSerializable {
 
 	public function getId() { return $this->id; }
 
-	public function setSlug($slug) { $this->slug = String::slugify($slug); }
+	public function setSlug($slug) { $this->slug = Stringy::slugify($slug); }
 	public function getSlug() { return $this->slug; }
 
 	public function setTitleAuthor($titleAuthor) { $this->titleAuthor = $titleAuthor; }

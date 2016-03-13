@@ -2,7 +2,7 @@
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use App\Util\String;
+use App\Util\Stringy;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\PersonRepository")
@@ -121,7 +121,7 @@ class Person extends Entity implements \JsonSerializable {
 
 	public function getId() { return $this->id; }
 
-	public function setSlug($slug) { $this->slug = String::slugify($slug); }
+	public function setSlug($slug) { $this->slug = Stringy::slugify($slug); }
 	public function getSlug() { return $this->slug; }
 
 	public function setName($name) {

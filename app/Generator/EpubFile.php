@@ -1,6 +1,6 @@
 <?php namespace App\Generator;
 
-use App\Util\String;
+use App\Util\Stringy;
 use App\Util\File;
 use App\Entity\BaseWork;
 use App\Entity\Book;
@@ -210,7 +210,7 @@ class EpubFile {
 	 */
 	private static function getCreatorTag($name, $role) {
 		return sprintf('<dc:creator opf:file-as="%s" opf:role="%s">%s</dc:creator>',
-			String::getMachinePersonName($name), $role, $name);
+			Stringy::getMachinePersonName($name), $role, $name);
 	}
 
 	/**
@@ -219,7 +219,7 @@ class EpubFile {
 	 */
 	private static function getContributorTag($name, $role) {
 		return sprintf('<dc:contributor opf:file-as="%s" opf:role="%s">%s</dc:contributor>',
-			String::getMachinePersonName($name), $role, $name);
+			Stringy::getMachinePersonName($name), $role, $name);
 	}
 
 	private function getSubjectTags() {

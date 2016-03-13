@@ -1,7 +1,7 @@
 <?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Util\String;
+use App\Util\Stringy;
 
 /**
 * @ORM\Entity(repositoryClass="App\Entity\BookmarkFolderRepository")
@@ -50,7 +50,7 @@ class BookmarkFolder extends Entity {
 	/**
 	 * @param string $slug
 	 */
-	public function setSlug($slug) { $this->slug = String::slugify($slug); }
+	public function setSlug($slug) { $this->slug = Stringy::slugify($slug); }
 	public function getSlug() { return $this->slug; }
 
 	/**

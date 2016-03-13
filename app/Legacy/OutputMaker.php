@@ -1,7 +1,7 @@
 <?php namespace App\Legacy;
 
 use App\Util\Number;
-use App\Util\String;
+use App\Util\Stringy;
 
 class OutputMaker {
 
@@ -23,7 +23,7 @@ class OutputMaker {
 			'name' => $name, 'id' => $id,
 			'cols' => $cols, 'rows' => $rows, 'tabindex' => $tabindex
 		] + $attrs;
-		return $this->xmlElement('textarea', String::myhtmlentities($value), $attrs);
+		return $this->xmlElement('textarea', Stringy::myhtmlentities($value), $attrs);
 	}
 
 	public function checkbox($name, $id = '', $checked = false, $label = '', $value = null, $tabindex = null, $attrs = []) {
@@ -113,7 +113,7 @@ class OutputMaker {
 
 	public function link($url, $text = '', $title = '', $attrs = [], $args = []) {
 		if ($text === '') $text = $url;
-		return $this->link_raw($url, String::myhtmlspecialchars($text), $title, $attrs, $args);
+		return $this->link_raw($url, Stringy::myhtmlspecialchars($text), $title, $attrs, $args);
 	}
 
 	/**
@@ -173,7 +173,7 @@ class OutputMaker {
 
 		$value = strip_tags($value);
 		return ' '. $attrib .'="'
-			. ( $doEscape ? String::myhtmlspecialchars($value) : $value )
+			. ( $doEscape ? Stringy::myhtmlspecialchars($value) : $value )
 			.'"';
 	}
 

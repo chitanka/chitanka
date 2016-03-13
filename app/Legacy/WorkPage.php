@@ -1,6 +1,6 @@
 <?php namespace App\Legacy;
 
-use App\Util\String;
+use App\Util\Stringy;
 use App\Util\Number;
 use App\Util\Char;
 use App\Util\File;
@@ -189,7 +189,7 @@ class WorkPage extends Page {
 			$this->addMessage('Не сте посочили година на издаване.', true);
 			return $this->makeForm();
 		}
-		$this->btitle = String::my_replace($this->btitle);
+		$this->btitle = Stringy::my_replace($this->btitle);
 
 		if ($this->entryId == 0) { // check if this text exists in the library
 			$this->scanuser_view = 0;
@@ -660,7 +660,7 @@ HTML;
 		if (empty($info)) {
 			return $info;
 		}
-		$info = String::myhtmlspecialchars($info);
+		$info = Stringy::myhtmlspecialchars($info);
 
 		return '<span class="popover-trigger" data-content="'.$info.'"><span class="fa fa-info-circle"></span><span class="sr-only">Инфо</span></span>';
 	}
@@ -999,7 +999,7 @@ JS;
 				'<abbr title="Мебибайта">MiB</abbr>';
 
 		$flink = $this->tmpfiles == self::DEF_TMPFILE ? ''
-			: $this->out->link( $this->makeTmpFilePath($this->tmpfiles), String::limitLength($this->tmpfiles)) .
+			: $this->out->link( $this->makeTmpFilePath($this->tmpfiles), Stringy::limitLength($this->tmpfiles)) .
 			($this->tfsize > 0 ? " ($this->tfsize&#160;MiB)" : '');
 
 		return <<<EOS
@@ -1106,7 +1106,7 @@ FIELDS;
 		}
 
 		$flink = $this->tmpfiles == self::DEF_TMPFILE ? ''
-			: $this->out->link( $this->makeTmpFilePath($this->tmpfiles), String::limitLength($this->tmpfiles)) .
+			: $this->out->link( $this->makeTmpFilePath($this->tmpfiles), Stringy::limitLength($this->tmpfiles)) .
 			($this->tfsize > 0 ? " ($this->tfsize&#160;MiB)" : '');
 		$file = $this->out->fileField('file', '');
 		$maxFileSize = $this->out->makeMaxFileSizeField();
@@ -1552,7 +1552,7 @@ EOS;
 	}
 
 	private function pretifyComment($text) {
-		return String::my_replace($text);
+		return Stringy::my_replace($text);
 	}
 
 	/** @return \App\Entity\WorkEntryRepository */

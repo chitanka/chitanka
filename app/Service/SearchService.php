@@ -2,7 +2,7 @@
 
 use App\Entity\EntityManager;
 use App\Entity\SearchString;
-use App\Util\String;
+use App\Util\Stringy;
 use Symfony\Component\HttpFoundation\Request;
 
 class SearchService {
@@ -34,7 +34,7 @@ class SearchService {
 			];
 		}
 
-		$query = String::fixEncoding($query);
+		$query = Stringy::fixEncoding($query);
 
 		$matchType = $params->get('match');
 		if ($matchType != 'exact') {

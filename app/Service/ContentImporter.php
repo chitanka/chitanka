@@ -4,7 +4,7 @@ use App\Entity\EntityManager;
 use App\Service\ContentService;
 use App\Service\TextService;
 use App\Util\File;
-use App\Util\String;
+use App\Util\Stringy;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ContentImporter {
@@ -324,7 +324,7 @@ class ContentImporter {
 	 */
 	private function getObjectId($table, $query, $column = 'slug') {
 		if ($column == 'slug') {
-			$query = String::slugify($query);
+			$query = Stringy::slugify($query);
 		}
 		if (!isset($this->objectsIds[$table][$query])) {
 			$sql = "SELECT id FROM $table WHERE $column = '$query'";
@@ -393,8 +393,8 @@ class ContentImporter {
 		];
 		if (isset($work['title'])) {
 			$set += [
-				'slug' => (isset($work['slug']) ? String::slugify($work['slug']) : String::slugify($work['title'])),
-				'title' => String::my_replace($work['title']),
+				'slug' => (isset($work['slug']) ? Stringy::slugify($work['slug']) : Stringy::slugify($work['title'])),
+				'title' => Stringy::my_replace($work['title']),
 			];
 		}
 		if (isset($work['toc_level'])) {
@@ -431,7 +431,7 @@ class ContentImporter {
 			}
 		}
 		if (isset($work['subtitle'])) {
-			$set['subtitle'] = String::my_replace($work['subtitle']);
+			$set['subtitle'] = Stringy::my_replace($work['subtitle']);
 		}
 		if (isset($work['orig_subtitle'])) {
 			$set['orig_subtitle'] = self::fixOrigTitle($work['orig_subtitle']);
@@ -600,13 +600,13 @@ class ContentImporter {
 		$path = ContentService::makeContentFilePath($work['id']);
 		$fullTextContent = '';
 		if (isset($work['tmpl'])) {
-			$this->fs->dumpFile("$this->contentDir/text/$path", String::my_replace($work['tmpl']));
+			$this->fs->dumpFile("$this->contentDir/text/$path", Stringy::my_replace($work['tmpl']));
 
 			$fullTextContent = $work['tmpl'];
 			foreach ($work['text'] as $key => $textFile) {
 				$entryFile = dirname("$this->contentDir/text/$path") . "/$key";
 				$this->copyTextFile($textFile, $entryFile);
-				$fullTextContent = str_replace("\t{file:$key}", String::my_replace(file_get_contents($textFile)), $fullTextContent);
+				$fullTextContent = str_replace("\t{file:$key}", Stringy::my_replace(file_get_contents($textFile)), $fullTextContent);
 			}
 		} else if (isset($work['text'])) {
 			$entryFile = "$this->contentDir/text/$path";
@@ -646,12 +646,12 @@ class ContentImporter {
 		];
 		if (isset($book['title'])) {
 			$set += [
-				'slug' => (isset($book['slug']) ? String::slugify($book['slug']) : String::slugify($book['title'])),
-				'title' => String::my_replace($book['title']),
+				'slug' => (isset($book['slug']) ? Stringy::slugify($book['slug']) : Stringy::slugify($book['title'])),
+				'title' => Stringy::my_replace($book['title']),
 			];
 		}
 		if (!empty($book['title_extra'])) {
-			$set['title_extra'] = String::my_replace($book['title_extra']);
+			$set['title_extra'] = Stringy::my_replace($book['title_extra']);
 		}
 		if (!empty($book['lang'])) {
 			$set['lang'] = $book['lang'];
@@ -682,7 +682,7 @@ class ContentImporter {
 			$set['has_cover'] = filesize($book['cover']) ? 1 : 0;
 		}
 		if (isset($book['subtitle'])) {
-			$set['subtitle'] = String::my_replace($book['subtitle']);
+			$set['subtitle'] = Stringy::my_replace($book['subtitle']);
 		}
 		if (isset($book['year'])) {
 			$set['year'] = $book['year'];
@@ -795,7 +795,7 @@ class ContentImporter {
 	private function saveBookFiles(array $book) {
 		$path = ContentService::makeContentFilePath($book['id']);
 		if (isset($book['tmpl'])) {
-			$this->fs->dumpFile("$this->contentDir/book/$path", String::my_replace($book['tmpl']));
+			$this->fs->dumpFile("$this->contentDir/book/$path", Stringy::my_replace($book['tmpl']));
 		}
 		if (isset($book['anno'])) {
 			$this->copyTextFile($book['anno'], "$this->contentDir/book-anno/$path");
@@ -839,7 +839,7 @@ QUERY
 		}
 		$contents = file_get_contents($source);
 		if ($replaceChars) {
-			$enhancedContents = String::my_replace($contents);
+			$enhancedContents = Stringy::my_replace($contents);
 			if (empty($enhancedContents)) {
 				//$output->writeln(sprintf('<error>CharReplace failed by %s</error>', $source));
 			} else {

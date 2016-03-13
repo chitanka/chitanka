@@ -1,7 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Pagination\Pager;
-use App\Util\String;
+use App\Util\Stringy;
 use App\Service\SearchService;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -28,7 +28,7 @@ class SequenceController extends Controller {
 	}
 
 	public function showAction($slug) {
-		$slug = String::slugify($slug);
+		$slug = Stringy::slugify($slug);
 		$sequence = $this->em()->getSequenceRepository()->findBySlug($slug);
 		if ($sequence === null) {
 			throw $this->createNotFoundException("Няма поредица с код $slug.");

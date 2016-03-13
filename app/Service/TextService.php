@@ -3,7 +3,7 @@
 use App\Entity\Text;
 use App\Entity\User;
 use App\Legacy\mlDatabase as LegacyDb;
-use App\Util\String;
+use App\Util\Stringy;
 
 class TextService {
 
@@ -78,7 +78,7 @@ class TextService {
 		foreach (\App\Legacy\makeDbRows($file, $headlevel) as $row) {
 			$name = $row[2];
 			$name = strtr($name, ['_' => '']);
-			$name = $this->legacyDb->escape(String::my_replace($name));
+			$name = $this->legacyDb->escape(Stringy::my_replace($name));
 			$data[] = [$textId, $row[0], $row[1], $name, $row[3], $row[4]];
 		}
 		if ($file != $fileOrString) {

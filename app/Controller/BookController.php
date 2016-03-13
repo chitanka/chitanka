@@ -4,7 +4,7 @@ use App\Entity\Book;
 use App\Pagination\Pager;
 use App\Legacy\Setup;
 use App\Generator\DownloadFile;
-use App\Util\String;
+use App\Util\Stringy;
 use App\Service\SearchService;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +41,7 @@ class BookController extends Controller {
 	}
 
 	public function listByCategoryAction(Request $request, $slug, $page) {
-		$slug = String::slugify($slug);
+		$slug = Stringy::slugify($slug);
 		$bookRepo = $this->em()->getBookRepository();
 		$category = $this->em()->getCategoryRepository()->findBySlug($slug);
 		if ($category === null) {

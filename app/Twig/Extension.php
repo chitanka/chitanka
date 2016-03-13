@@ -3,7 +3,7 @@
 use App\Entity\Text;
 use App\Service\ContentService;
 use App\Util\Number;
-use App\Util\String;
+use App\Util\Stringy;
 use Sfblib\XmlElement;
 
 class Extension extends \Twig_Extension {
@@ -27,7 +27,7 @@ class Extension extends \Twig_Extension {
 			new \Twig_SimpleFilter('rating_class', [$this, 'getRatingClass']),
 			new \Twig_SimpleFilter('rating_format', [$this, 'formatRating']),
 			new \Twig_SimpleFilter('name_format', [$this, 'formatPersonName']),
-			new \Twig_SimpleFilter('acronym', 'App\Util\String::createAcronym'),
+			new \Twig_SimpleFilter('acronym', 'App\Util\Stringy::createAcronym'),
 			new \Twig_SimpleFilter('first_char', [$this, 'getFirstChar']),
 			new \Twig_SimpleFilter('email', [$this, 'obfuscateEmail']),
 			new \Twig_SimpleFilter('doctitle', [$this, 'getDocTitle']),
@@ -226,7 +226,7 @@ class Extension extends \Twig_Extension {
 	 * @return string
 	 */
 	public function formatUserMarkup($content) {
-		return String::prettifyInput(String::escapeInput($content));
+		return Stringy::prettifyInput(Stringy::escapeInput($content));
 	}
 
 	/**

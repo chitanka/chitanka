@@ -1,7 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Pagination\Pager;
-use App\Util\String;
+use App\Util\Stringy;
 use App\Entity\Person;
 use App\Service\SearchService;
 use Symfony\Component\HttpFoundation\Request;
@@ -128,7 +128,7 @@ class PersonController extends Controller {
 	}
 
 	protected function tryToFindPerson($slug) {
-		$person = $this->em()->getPersonRepository()->findBySlug(String::slugify($slug));
+		$person = $this->em()->getPersonRepository()->findBySlug(Stringy::slugify($slug));
 		if ($person) {
 			return $person;
 		}

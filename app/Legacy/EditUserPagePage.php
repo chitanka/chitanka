@@ -1,6 +1,6 @@
 <?php namespace App\Legacy;
 
-use App\Util\String;
+use App\Util\Stringy;
 
 class EditUserPagePage extends UserPage {
 
@@ -19,7 +19,7 @@ class EditUserPagePage extends UserPage {
 			return;
 		}
 
-		$this->userpage = String::my_replace($this->userpage);
+		$this->userpage = Stringy::my_replace($this->userpage);
 		if ( isset($this->preview) ) {
 			$html = $this->makeHTML();
 			$this->addMessage('Това е само предварителен преглед. Страницата все още не е съхранена.');

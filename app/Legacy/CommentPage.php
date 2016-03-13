@@ -1,7 +1,7 @@
 <?php namespace App\Legacy;
 
 use App\Util\Date;
-use App\Util\String;
+use App\Util\Stringy;
 use App\Entity\Text;
 use App\Entity\TextComment;
 use App\Pagination\Pager;
@@ -69,7 +69,7 @@ class CommentPage extends Page {
 			$this->initData();
 		}
 
-		$this->comment = String::my_replace($this->comment);
+		$this->comment = Stringy::my_replace($this->comment);
 		if ( $this->request->value('preview') != NULL ) {
 			$this->addMessage('Това е само предварителен преглед. Мнението ви все още не е съхранено.');
 			$response = $this->makeComment();
@@ -261,7 +261,7 @@ class CommentPage extends Page {
 				: ', оценка: <span title="Дадена на '.Date::humanDate($ratingdate).'">' . $rating . ' от ' . Text::getMaxRating() . '</span>';
 			$secondrow = "<div class='secondrow'>$acts<strong>$nr$rnameview</strong>$timev$ratingview</div><hr>";
 		}
-		$content = String::prettifyInput(String::escapeInput($content));
+		$content = Stringy::prettifyInput(Stringy::escapeInput($content));
 
 		return <<<EOS
 
@@ -334,8 +334,8 @@ JS;
 		if ($question) {
 			$question = '<div class="form-group">' . $question . '</div>';
 		}
-		$allowHelp = empty(String::$allowableTags) ? ''
-			: '<dl class="instruct"><dt>Разрешени са следните етикети</dt><dd><ul><li>&lt;'.implode('&gt;</li><li>&lt;', String::$allowableTags).'&gt;</li></ul></dd></dl>';
+		$allowHelp = empty(Stringy::$allowableTags) ? ''
+			: '<dl class="instruct"><dt>Разрешени са следните етикети</dt><dd><ul><li>&lt;'.implode('&gt;</li><li>&lt;', Stringy::$allowableTags).'&gt;</li></ul></dd></dl>';
 
 		$postUrl = $this->controller->generateUrl('text_comments', ['id' => $this->textId]);
 		return <<<EOS

@@ -88,7 +88,7 @@ class File {
 	public static function cleanFileName($fname, $woDiac = true) {
 		$fname = preg_replace('![^a-zA-Z0-9_. -]!u', '', $fname);
 		if ( $woDiac ) {
-			$fname = String::removeDiacritics($fname);
+			$fname = Stringy::removeDiacritics($fname);
 		}
 		$fname = preg_replace('/  +/', ' ', $fname);
 		$fname = str_replace('- -', '-', $fname); // from empty entities

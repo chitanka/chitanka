@@ -2,7 +2,7 @@
 
 use App\Service\ContentService;
 use App\Util\File;
-use App\Util\String;
+use App\Util\Stringy;
 use Sfblib\SfbConverter;
 use Sfblib\SfbToHtmlConverter;
 
@@ -299,7 +299,7 @@ abstract class BaseWork extends Entity {
 		$file = ContentService::getInternalContentFilePath($dir, $this->getId());
 		$fs = new \Symfony\Component\Filesystem\Filesystem();
 		if ($content) {
-			$fs->dumpFile($file, String::my_replace($content));
+			$fs->dumpFile($file, Stringy::my_replace($content));
 		} else if (file_exists($file) && is_file($file)) {
 		        // disable until a nasty deletion bug is resolved
 			//unlink($file);
