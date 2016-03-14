@@ -386,11 +386,7 @@ EOS;
 		}
 
 		$params = [
-			'pager'    => new Pager([
-				'page'  => $this->lpage,
-				'limit' => $this->llimit,
-				'total' => $this->db->getCount(DBT_COMMENT . ' c', $this->wheres[$this->showMode]),
-			]),
+			'pager'    => new Pager($this->lpage, $this->db->getCount(DBT_COMMENT . ' c', $this->wheres[$this->showMode]), $this->llimit),
 			'route' => 'texts_comments',
 			'current_route' => 'texts_comments',
 			'route_params' => [],
