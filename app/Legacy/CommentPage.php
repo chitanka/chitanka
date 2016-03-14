@@ -235,7 +235,7 @@ class CommentPage extends Page {
 				? $this->makeUserLink($rname)
 				: $rname;
 			$timev = !isset($showtime) || $showtime // show per default
-				? ' <small>('. Date::humanDate(@$time) .')</small>' : '';
+				? ' <small>('. Date::humanDate($fields['time']) .')</small>' : '';
 			$firstrow = empty($textId) || empty($textTitle) ? ''
 				: '<p class="firstrow">'.
 					$this->makeSimpleTextLink($textTitle, $textId) .
@@ -255,10 +255,10 @@ class CommentPage extends Page {
 				}
 				$acts = "<ul class='menu' style='float:right'>$links</ul>";
 			}
-			$nr = $this->putNr ? $nr.'. ' : '';
+			$nr = $this->putNr ? $fields['nr'].'. ' : '';
 			$ratingview = empty($rating)
 				? ''
-				: ', оценка: <span title="Дадена на '.Date::humanDate($ratingdate).'">' . $rating . ' от ' . Text::getMaxRating() . '</span>';
+				: ', оценка: <span title="Дадена на '.Date::humanDate($fields['ratingdate']).'">' . $rating . ' от ' . Text::getMaxRating() . '</span>';
 			$secondrow = "<div class='secondrow'>$acts<strong>$nr$rnameview</strong>$timev$ratingview</div><hr>";
 		}
 		$content = Stringy::prettifyInput(Stringy::escapeInput($content));

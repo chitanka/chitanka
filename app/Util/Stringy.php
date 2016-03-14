@@ -41,7 +41,7 @@ class Stringy {
 		]);
 	}
 
-	private static $allowableTags = ['em', 'strong'];
+	public static $allowableTags = ['em', 'strong'];
 
 	/**
 	 * @param string $text
