@@ -37,7 +37,7 @@ class SecurityController extends Controller {
 	}
 
 	public function requestUsernameAction(Request $request) {
-		$form = $this->createForm(new RequestUsernameType());
+		$form = $this->createForm(RequestUsernameType::class);
 
 		if ($form->handleRequest($request)->isValid()) {
 			$data = $form->getData();
@@ -51,7 +51,7 @@ class SecurityController extends Controller {
 	}
 
 	public function requestPasswordAction(Request $request) {
-		$form = $this->createForm(new RequestPasswordType());
+		$form = $this->createForm(RequestPasswordType::class);
 
 		if ($form->handleRequest($request)->isValid()) {
 			$data = $form->getData();

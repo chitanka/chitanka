@@ -25,6 +25,8 @@ return [
 	'Free' => 'Свободен?',
 	'Fullname' => 'Пълно име',
 	'General attributes' => 'Основни данни',
+	'Group' => 'Група',
+	'Groups' => 'Групи',
 	'Has Anno' => 'С анотация',
 	'Has Cover' => 'С корица',
 	'Headers' => 'Заглавия',

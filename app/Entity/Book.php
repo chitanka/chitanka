@@ -95,13 +95,6 @@ class Book extends BaseWork implements \JsonSerializable {
 	 * @ORM\Column(type="string", length=10)
 	 */
 	private $type;
-	private static $typeList = [
-		'single' => 'Обикновена книга',
-		'collection' => 'Сборник',
-		'poetry' => 'Стихосбирка',
-		'anthology' => 'Антология',
-		'magazine' => 'Списание',
-	];
 
 	/**
 	 * @var Sequence
@@ -963,10 +956,6 @@ EOS;
 //	public function sameAs($otherPic) {
 //		return $this->id == $otherPic->id;
 //	}
-
-	public static function getTypeList() {
-		return self::$typeList;
-	}
 
 	private $revisionComment;
 	public function getRevisionComment() {

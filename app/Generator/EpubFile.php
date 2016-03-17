@@ -1,10 +1,10 @@
 <?php namespace App\Generator;
 
-use App\Util\Stringy;
-use App\Util\File;
 use App\Entity\BaseWork;
 use App\Entity\Book;
 use App\Entity\Text;
+use App\Util\File;
+use App\Util\Stringy;
 
 class EpubFile {
 

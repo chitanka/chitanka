@@ -2,36 +2,33 @@
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityRepository;
 
 class TextLabelType extends AbstractType {
 
-	private $group;
-
-	public function __construct($group) {
-		$this->group = $group;
-	}
-
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder
-			->add('text', 'hidden', [
+			->add('text', HiddenType::class, [
 				'data' => $options['data']->getText()->getId(),
 				'mapped' => false,
 			])
-			->add('label', 'entity', [
+			->add('label', EntityType::class, [
 				'class' => 'App:Label',
-				'query_builder' => function (EntityRepository $repo) {
+				'query_builder' => function (EntityRepository $repo) use ($options) {
 					return $repo->createQueryBuilder('l')
-						->where('l.group = ?1')->setParameter(1, $this->group)
+						->where('l.group = ?1')->setParameter(1, $options['group'])
 						->orderBy('l.name');
 				}
 			]);
 	}
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver) {
+	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults([
-			'data_class' => 'App\Entity\TextLabel',
+			'data_class' => \App\Entity\TextLabel::class,
+			'group' => null,
 		]);
 	}
 

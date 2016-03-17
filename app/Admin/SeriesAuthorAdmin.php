@@ -30,10 +30,10 @@ class SeriesAuthorAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$formMapper->with('General attributes');
-		$formMapper
+		$formMapper->with('General attributes')
 			//->add('series')
-			->add('person', 'sonata_type_model_list', ['required' => false]);
+			->add('person', 'sonata_type_model_list', ['required' => false])
+			->end();
 	}
 
 }

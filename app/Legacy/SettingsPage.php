@@ -100,7 +100,7 @@ class SettingsPage extends RegisterPage {
 		$common = $this->makeCommonInput();
 		$customInput = $this->makeCustomInput();
 		$news = $this->out->checkbox('news', '', $this->news, '', null, $this->tabindex++);
-		$historyLink = $this->controller->generateUrl('new');
+		$historyLink = $this->controller->generateUrlForLegacyCode('new');
 
 		return <<<EOS
 

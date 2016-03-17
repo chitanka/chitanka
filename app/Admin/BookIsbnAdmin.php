@@ -32,11 +32,10 @@ class BookIsbnAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$formMapper->with('General attributes');
-		$formMapper
+		$formMapper->with('General attributes')
 			->add('code')
 			->add('addition')
-		;
+			->end();
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

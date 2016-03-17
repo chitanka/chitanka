@@ -1,5 +1,6 @@
 <?php namespace App\Admin;
 
+use App\Service\Translation;
 use Sonata\AdminBundle\Admin\Admin as BaseAdmin;
 use Symfony\Component\Form\FormEvent;
 
@@ -15,5 +16,9 @@ abstract class Admin extends BaseAdmin {
 			}
 		}
 		$event->setData($data);
+	}
+
+	protected function getTranslation() {
+		return new Translation();
 	}
 }

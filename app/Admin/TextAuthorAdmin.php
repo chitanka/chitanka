@@ -32,12 +32,12 @@ class TextAuthorAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$formMapper->with('General attributes');
-		$formMapper
+		$formMapper->with('General attributes')
 			//->add('text')
 			->add('person', 'sonata_type_model_list', ['required' => false])
 			->add('pos')
-			->add('year');
+			->add('year')
+			->end();
 	}
 
 }

@@ -10,23 +10,28 @@ framework:
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
-        strict_requirements: %kernel.debug%
-    form:            true
+        strict_requirements: ~
+    form:            ~
     csrf_protection: false
     validation:      { enable_annotations: true }
+    #serializer:      { enable_annotations: true }
     templating:
         engines: ['twig']
-        assets_base_urls: %assets_base_urls%
-        #assets_version: SomeVersionScheme
     default_locale:  %locale%
+    trusted_hosts:   ~
     trusted_proxies: ~
     session:
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id:  session.handler.native_file
 #        lifetime:  3600
         name:      CHITANKASESSID
         save_path: null
+        save_path: "%kernel.root_dir%/../var/sessions/%kernel.environment%"
         cookie_httponly: true
     fragments:       ~
     http_method_override: true
+    assets:
+        base_path: %assets_base_urls%
 
 # Twig Configuration
 twig:
@@ -91,7 +96,7 @@ sensio_framework_extra:
 
 
 sonata_admin:
-    title:      Администрация на Моята библиотека
+    title:      Администрация
     #title_logo:
     templates:
         # default global templates

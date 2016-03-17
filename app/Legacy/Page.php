@@ -117,7 +117,7 @@ abstract class Page {
 	}
 
 	protected function getInlineRssLink($route, $data = []) {
-		return sprintf('<div class="feed-standalone"><a href="%s" title="RSS 2.0 — %s" rel="feed"><span class="fa fa-rss"></span> <span>RSS</span></a></div>', $this->controller->generateUrl($route, $data), $this->title);
+		return sprintf('<div class="feed-standalone"><a href="%s" title="RSS 2.0 — %s" rel="feed"><span class="fa fa-rss"></span> <span>RSS</span></a></div>', $this->controller->generateUrlForLegacyCode($route, $data), $this->title);
 	}
 
 	/**
@@ -149,7 +149,7 @@ abstract class Page {
 	protected function makeSimpleTextLink($title, $textId) {
 		return $this->out->xmlElement('a', '<em>'. $title .'</em>', [
 			'class' => "text text-$textId",
-			'href' => $this->controller->generateUrl('text_show_part', [self::FF_TEXT_ID => $textId]),
+			'href' => $this->controller->generateUrlForLegacyCode('text_show_part', [self::FF_TEXT_ID => $textId]),
 		]);
 	}
 
@@ -164,7 +164,7 @@ abstract class Page {
 			$lname = str_replace('.', '', $lname);
 			$link = strpos($lname, '/') !== false // contains not allowed chars
 				? $lname
-				: sprintf('<a href="%s">%s</a>', $this->controller->generateUrl('person_show', ['slug' => trim($lname)]), $text);
+				: sprintf('<a href="%s">%s</a>', $this->controller->generateUrlForLegacyCode('person_show', ['slug' => trim($lname)]), $text);
 			$o .= ', ' . $link;
 		}
 		return substr($o, 2);
@@ -185,7 +185,7 @@ abstract class Page {
 					$slug = $author->getSlug();
 					$name = $author->getName();
 				}
-				$authors[] = sprintf('<a href="%s">%s</a>', $this->controller->generateUrl('person_show', ['slug' => $slug]), $name);
+				$authors[] = sprintf('<a href="%s">%s</a>', $this->controller->generateUrlForLegacyCode('person_show', ['slug' => $slug]), $name);
 			}
 			if (! empty($authors)) {
 				return ' от '. implode(', ', $authors);
@@ -196,14 +196,14 @@ abstract class Page {
 	}
 
 	protected function makeUserLink($name) {
-		return sprintf('<a href="%s" class="user" title="Към личната страница на %s">%s</a>', $this->controller->generateUrl('user_show', ['username' => $name]), $name, $name);
+		return sprintf('<a href="%s" class="user" title="Към личната страница на %s">%s</a>', $this->controller->generateUrlForLegacyCode('user_show', ['username' => $name]), $name, $name);
 	}
 
 	protected function makeUserLinkWithEmail($username, $email, $allowemail) {
 		$mlink = '';
 		if ( ! empty($email) && $allowemail) {
 			$mlink = sprintf('<a href="%s" title="Пращане на писмо на %s"><span class="fa fa-envelope-o"></span><span class="sr-only">Е-поща</span></a>',
-				$this->controller->generateUrl('email_user', ['username' => $username]),
+				$this->controller->generateUrlForLegacyCode('email_user', ['username' => $username]),
 				Stringy::myhtmlentities($username));
 		}
 		return $this->makeUserLink($username) .' '. $mlink;

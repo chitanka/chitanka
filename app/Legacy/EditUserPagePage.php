@@ -30,7 +30,7 @@ class EditUserPagePage extends UserPage {
 		file_put_contents($this->filename, $this->userpage);
 		$this->setDefaultTitle();
 
-		$this->redirect = $this->controller->generateUrl('user_show', ['username' => $this->username]);
+		$this->redirect = $this->controller->generateUrlForLegacyCode('user_show', ['username' => $this->username]);
 
 		return $this->makeEditOwnPageLink() . $this->makeHTML();
 	}

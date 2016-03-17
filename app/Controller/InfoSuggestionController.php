@@ -15,7 +15,7 @@ class InfoSuggestionController extends Controller {
 		} catch (\InvalidArgumentException $e) {
 			throw $this->createNotFoundException();
 		}
-		$form = $this->createForm(new InfoSuggestionType(), $infoSuggestion);
+		$form = $this->createForm(InfoSuggestionType::class, $infoSuggestion);
 
 		if ($form->handleRequest($request)->isValid()) {
 			$notifier = new Notifier($this->get('mailer'));

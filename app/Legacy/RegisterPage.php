@@ -113,7 +113,7 @@ class RegisterPage extends Page {
 		}
 		if ( $this->db->exists(DBT_USER, $emailKey) ) {
 			$this->addMessage("Пощенският адрес <strong>{$this->email}</strong> вече се ползва от друг потребител.", true);
-			$this->addMessage("Ако сте забравили потребителското си име, можете <a href=\"{$this->controller->generateUrl('request_username')}\">да поискате напомняне за него</a>.");
+			$this->addMessage("Ако сте забравили потребителското си име, можете <a href=\"{$this->controller->generateUrlForLegacyCode('request_username')}\">да поискате напомняне за него</a>.");
 			return true;
 		}
 
@@ -122,7 +122,7 @@ class RegisterPage extends Page {
 
 	protected function buildContent() {
 		return <<<EOS
-<p>Ако вече сте се регистрирали, няма нужда да го правите още веднъж. Можете направо да <a href="{$this->controller->generateUrl('login')}" class="btn btn-default">влезете</a>.</p>
+<p>Ако вече сте се регистрирали, няма нужда да го правите още веднъж. Можете направо да <a href="{$this->controller->generateUrlForLegacyCode('login')}" class="btn btn-default">влезете</a>.</p>
 <ul class="fa-ul">
 <li><span class="fa-li fa fa-user"></span> Позволено е използването на кирилица, когато въвеждате потребителското си име.</li>
 <li><span class="fa-li fa fa-key"></span> Като парола се опитайте да изберете нещо, което за вас да е лесно запомнящо се, а за останалите — невъзможно за разгадаване.</li>
@@ -148,7 +148,7 @@ class RegisterPage extends Page {
 	padding-top: 0;
 }
 </style>
-<form action="{$this->controller->generateUrl('register')}" method="post" class="form-horizontal form-register" role="form">
+<form action="{$this->controller->generateUrlForLegacyCode('register')}" method="post" class="form-horizontal form-register" role="form">
 		{$this->out->hiddenField('returnto', $this->returnto)}
 		{$this->out->hiddenField('attempt', $this->attempt)}
 	<div class="input-group">
@@ -177,7 +177,7 @@ class RegisterPage extends Page {
 				<input type="checkbox" name="news"> Получаване на месечен бюлетин
 			</label>
 		</div>
-		<div class="help-block">Алтернативен начин да следите новото в библиотеката предлага страницата <a href="{$this->controller->generateUrl('new')}">Новодобавено</a>.</div>
+		<div class="help-block">Алтернативен начин да следите новото в библиотеката предлага страницата <a href="{$this->controller->generateUrlForLegacyCode('new')}">Новодобавено</a>.</div>
 	</div>
 	<div class="form-group">
 		{$this->makeCaptchaQuestion()}

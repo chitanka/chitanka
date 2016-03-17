@@ -10,7 +10,7 @@
 	{% include 'App:Text:navigation.html.twig' with {'letter': ''} %}
 
 	{% for labelGroup, labelsInGroup in labels %}
-		<h2>{{ ('labels.'~labelGroup)|trans }}</h2>
+		<h2>{{ ('label.group.'~labelGroup)|trans }}</h2>
 		{% include 'App:Text:label_tree.html.twig' with {labels: labelsInGroup, level: 0} %}
 	{% endfor %}
 

@@ -31,14 +31,13 @@ class QuestionAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$formMapper->with('General attributes');
-		$formMapper
+		$formMapper->with('General attributes')
 			->add('question')
 			->add('answers')
+			->end()
 			->setHelps([
 				'answers' => $this->trans('help.question.answers'),
 			]);
-
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

@@ -32,12 +32,11 @@ class SiteAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$formMapper->with('General attributes');
-		$formMapper
+		$formMapper->with('General attributes')
 			->add('name')
 			->add('url')
-			->add('description', null, ['required' => false]);
-
+			->add('description', null, ['required' => false])
+			->end();
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

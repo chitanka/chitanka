@@ -28,7 +28,7 @@ class EmailController extends Controller {
 		}
 
 		$email = new Email($recipientUser, $senderUser);
-		$form = $this->createForm(new EmailType(), $email);
+		$form = $this->createForm(EmailType::class, $email);
 
 		if ($form->handleRequest($request)->isValid()) {
 			$notifier = new Notifier($this->get('mailer'));

@@ -43,8 +43,7 @@ class WorkEntryAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$formMapper->with('General attributes');
-		$formMapper
+		$formMapper->with('General attributes')
 			->add('type')
 			->add('title')
 			->add('author', null, ['required' => false])
@@ -58,7 +57,8 @@ class WorkEntryAdmin extends Admin {
 			->add('uplfile', null, ['required' => false])
 			->add('adminStatus')
 			->add('adminComment')
-			->add('deletedAt', null, ['required' => false]);
+			->add('deletedAt', null, ['required' => false])
+			->end();
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

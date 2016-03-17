@@ -37,8 +37,7 @@ class SeriesAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$formMapper->with('General attributes');
-		$formMapper
+		$formMapper->with('General attributes')
 			->add('slug')
 			->add('name')
 			->add('orig_name', null, ['required' => false])
@@ -48,7 +47,8 @@ class SeriesAdmin extends Admin {
 			], [
 				'edit' => 'inline',
 				'inline' => 'table',
-			]);
+			])
+			->end();
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

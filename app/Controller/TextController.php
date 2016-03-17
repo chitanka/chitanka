@@ -222,12 +222,13 @@ class TextController extends Controller {
 
 		$user = $this->em()->merge($this->getUser());
 		$rating = $this->em()->getTextRatingRepository()->getByTextAndUser($text, $user);
-		$form = $this->createForm(new TextRatingType, $rating);
+		$form = $this->createForm(TextRatingType::class, $rating);
 
 		// TODO replace with DoctrineListener
 		$oldRating = $rating->getRating();
 
-		if ($request->isMethod('POST') && $user->isAuthenticated() && $form->submit($request)->isValid()) {
+		$form->handleRequest($request);
+		if ($user->isAuthenticated() && $form->isValid()) {
 			// TODO replace with DoctrineListener
 			$text->updateAvgRating($rating->getRating(), $oldRating);
 			$this->em()->getTextRepository()->save($text);
@@ -258,7 +259,7 @@ class TextController extends Controller {
 		$service = new TextLabelService($this->em()->getTextLabelLogRepository(), $this->getSavableUser());
 		$textLabel = $service->newTextLabel($text);
 		$group = $request->get('group');
-		$form = $this->createForm(new TextLabelType($group), $textLabel);
+		$form = $this->createForm(TextLabelType::class, $textLabel, ['group' => $group]);
 
 		if ($form->handleRequest($request)->isValid()) {
 			// TODO Form::handleRequest() overwrites the Text object with an id, so we give $text explicitly

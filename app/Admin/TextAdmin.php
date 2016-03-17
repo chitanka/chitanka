@@ -72,13 +72,13 @@ class TextAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$formMapper->with('General attributes');
-		$formMapper
+		$translation = $this->getTranslation();
+		$formMapper->tab('General attributes')->with('')
 			->add('slug')
 			->add('title')
-			->add('lang', 'choice', ['choices' => Language::getLangs()])
-			->add('origLang', 'choice', ['choices' => Language::getLangs()])
-			->add('type', 'choice', ['choices' => ['' => ''] + Legacy::workTypes()])
+			->add('lang', 'choice', ['choices' => $translation->getLanguageChoices()])
+			->add('origLang', 'choice', ['choices' => $translation->getLanguageChoices()])
+			->add('type', 'choice', ['choices' => $translation->getTextTypeChoices()])
 			->add('textAuthors', 'sonata_type_collection', [
 				'by_reference' => false,
 				'required' => false,
@@ -94,9 +94,9 @@ class TextAdmin extends Admin {
 				'edit' => 'inline',
 				'inline' => 'table',
 				'sortable' => 'pos',
-			]);
-		$formMapper->with('Extra attributes');
-		$formMapper
+			])
+			->end()->end();
+		$formMapper->tab('Extra attributes')->with('')
 			->add('subtitle', null, ['required' => false])
 			->add('origTitle', null, ['required' => false])
 			->add('origSubtitle', null, ['required' => false])
@@ -119,12 +119,12 @@ class TextAdmin extends Admin {
 				'edit' => 'inline',
 				'inline' => 'table',
 				'sortable' => 'site_id'
-			]);
+			])
+			->end()->end();
 		$formMapper->setHelps([
 			'article' => $this->trans('help.wiki_article')
 		]);
-		$formMapper->with('Textual content');
-		$formMapper
+		$formMapper->tab('Textual content')->with('')
 			->add('annotation', 'textarea', [
 				'required' => false,
 				'trim' => false,
@@ -143,9 +143,9 @@ class TextAdmin extends Admin {
 			->add('headlevel', null, ['required' => false])
 			->add('revision_comment', 'text', ['required' => false])
 			->add('source', null, ['required' => false])
-			->add('removedNotice');
-		$formMapper->with('Contributions');
-		$formMapper
+			->add('removedNotice')
+			->end()->end();
+		$formMapper->tab('Contributions')->with('')
 			->add('userContribs', 'sonata_type_collection', [
 				'by_reference' => false,
 				'required' => false,
@@ -153,7 +153,8 @@ class TextAdmin extends Admin {
 				'edit' => 'inline',
 				//'inline' => 'table',
 				'sortable' => 'date',
-			]);
+			])
+			->end()->end();
 		$formMapper->setHelps([
 			'sernr2' => $this->trans('help.text.sernr2'),
 		]);

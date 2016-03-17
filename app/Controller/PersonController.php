@@ -1,6 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Pagination\Pager;
+use App\Service\Translation;
 use App\Util\Stringy;
 use App\Entity\Person;
 use App\Service\SearchService;
@@ -44,9 +45,10 @@ class PersonController extends Controller {
 	}
 
 	public function listByCountryIndexAction($by) {
+		$translation = new Translation();
 		return [
 			'by' => $by,
-			'countries' => $this->getPersonRepository()->getCountryList()
+			'countries' => $translation->getCountryChoices(),
 		];
 	}
 

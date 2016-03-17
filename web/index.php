@@ -1,6 +1,4 @@
 <?php
-$rootDir = __DIR__.'/..';
-
 function exitWithMessage($template = 'error', $retryAfter = 300) {
 	header('HTTP/1.0 503 Service Temporarily Unavailable');
 	header('Status: 503 Service Temporarily Unavailable');
@@ -117,7 +115,8 @@ if (isCacheable()) {
 		$requestUri .= '.ajax';
 	}
 	$compressCache = !filter_input(INPUT_SERVER, 'CACHE_NOCOMPRESS');
-	$cache = new Cache($requestUri, "$rootDir/var/cache/simple_http_cache", "$rootDir/var/logs", $compressCache);
+	$varDir = __DIR__.'/../var';
+	$cache = new Cache($requestUri, "$varDir/cache/simple_http_cache", "$varDir/logs", $compressCache);
 	if (null !== ($cachedContent = $cache->get())) {
 		header("Cache-Control: public, max-age=".$cachedContent['ttl']);
 		echo $cachedContent['data'];
@@ -135,19 +134,20 @@ use Symfony\Component\HttpFoundation\Request;
 // allow generated files (cache, logs) to be world-writable
 umask(0000);
 
-$loader = require $rootDir.'/var/bootstrap.php.cache';
+/**
+ * @var Composer\Autoload\ClassLoader
+ */
+$loader = require __DIR__.'/../app/autoload.php';
+include_once __DIR__.'/../var/bootstrap.php.cache';
 
 try {
-	// Use APC for autoloading to improve performance
-	$apcLoader = new ApcClassLoader('chitanka', $loader);
+	// Enable APC for autoloading to improve performance.
+	$apcLoader = new Symfony\Component\ClassLoader\ApcClassLoader('chitanka', $loader);
 	$loader->unregister();
 	$apcLoader->register(true);
 } catch (\RuntimeException $e) {
 	// APC not enabled
 }
-
-require $rootDir.'/app/AppKernel.php';
-//require $rootDir.'/app/AppCache.php';
 
 register_shutdown_function(function() {
 	$error = error_get_last();
@@ -165,7 +165,7 @@ $kernel = new AppKernel('prod', false);
 $kernel->loadClassCache();
 //$kernel = new AppCache($kernel);
 
-// When using the HttpCache, we need to call the method explicitly instead of relying on the configuration parameter
+// When using the HttpCache, you need to call the method in your front controller instead of relying on the configuration parameter
 //Request::enableHttpMethodParameterOverride();
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);

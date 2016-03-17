@@ -33,12 +33,12 @@ class WikiSiteAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$formMapper->with('General attributes');
-		$formMapper
+		$formMapper->with('General attributes')
 			->add('code')
 			->add('name')
 			->add('url')
 			->add('intro', null, ['required' => false])
+			->end()
 			->setHelps([
 				'code' => $this->trans('help.wikisite.code'),
 				'url' => $this->trans('help.wikisite.url'),

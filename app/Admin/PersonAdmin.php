@@ -53,36 +53,32 @@ class PersonAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$countryList = [];
-		foreach ($this->repository->getCountryList() as $countryCode) {
-			$countryList[$countryCode] = "country.$countryCode";
-		}
-		$formMapper->with('General attributes');
-		$formMapper
+		$translation = $this->getTranslation();
+		$formMapper->tab('General attributes')->with('')
 			->add('slug', null, ['required' => false])
 			->add('name')
 			->add('orig_name', null, ['required' => false])
 			->add('real_name', null, ['required' => false])
 			->add('oreal_name', null, ['required' => false])
 			->add('country', 'choice', [
-				'choices' => $countryList,
+				'choices' => $translation->getCountryChoices(),
 			])
 			->add('is_author', null, ['required' => false])
 			->add('is_translator', null, ['required' => false])
-			->add('info', null, ['required' => false]);
-		$formMapper->with('Main Person');
-		$formMapper
+			->add('info', null, ['required' => false])
+			->end()->end();
+		$formMapper->tab('Main Person')->with('')
 			->add('type', 'choice', [
-				'choices' => $this->repository->getTypeList(),
+				'choices' => $translation->getPersonTypeChoices(),
 				//'expanded' => true,
 				'required' => false,
 				'label' => 'Person Type',
 			])
-			->add('person', 'sonata_type_model_list', ['required' => false, 'label' => 'Main Person']);
+			->add('person', 'sonata_type_model_list', ['required' => false, 'label' => 'Main Person'])
+			->end()->end();
 		$formMapper->setHelps([
 			'info' => $this->trans('help.wiki_article')
 		]);
-
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

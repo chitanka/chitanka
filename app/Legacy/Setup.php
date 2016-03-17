@@ -21,7 +21,7 @@ class Setup {
 			'out'        => self::outputMaker(),
 			'controller' => $controller,
 			'container'  => $container,
-			'sfrequest'  => $container->get('request'),
+			'sfrequest'  => $container->get('request_stack')->getMasterRequest(),
 			'user'       => $controller->getUser(),
 			'logDir' => __DIR__ . '/../../var/log',
 		]);

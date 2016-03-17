@@ -6,14 +6,6 @@ use Doctrine\ORM\NoResultException;
  *
  */
 class TextRatingRepository extends EntityRepository {
-	public static $ratings = [
-		6 => '6 — Шедьовър',
-		5 => '5 — Много добро',
-		4 => '4 — Добро',
-		3 => '3 — Посредствено',
-		2 => '2 — Лошо',
-		1 => '1 — Отвратително',
-	];
 
 	/**
 	 * Get user rating for a given text.

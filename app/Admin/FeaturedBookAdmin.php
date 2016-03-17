@@ -36,13 +36,13 @@ class FeaturedBookAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$formMapper->with('General attributes');
-		$formMapper
+		$formMapper->with('General attributes')
 			->add('title')
 			->add('author')
 			->add('url')
 			->add('cover')
-			->add('description');
+			->add('description')
+			->end();
 
 	}
 

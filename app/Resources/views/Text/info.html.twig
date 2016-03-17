@@ -54,7 +54,7 @@
 
 		{% for labelGroup in text.availableLabels %}
 		<dt>
-			<a href="{{ path('text_label_log', {id: text.id}) }}">{{ ('labels.'~labelGroup)|trans }}</a>
+			<a href="{{ path('text_label_log', {id: text.id}) }}">{{ ('label.group.'~labelGroup)|trans }}</a>
 		</dt>
 		<dd>
 			<ul class="simplelist with-actions">

@@ -420,7 +420,7 @@ class WorkPage extends Page {
 
 	private function makeSearchForm() {
 		$id = $this->FF_LQUERY;
-		$action = $this->controller->generateUrl('workroom');
+		$action = $this->controller->generateUrlForLegacyCode('workroom');
 		return <<<EOS
 
 <form action="$action" method="get" class="form-inline standalone" role="form">
@@ -454,7 +454,7 @@ EOS;
 			];
 			if ($this->searchQuery) $params[$this->FF_LQUERY] = $this->searchQuery;
 			if ($this->scanuser_view) $params['user'] = $this->scanuser_view;
-			$pagelinks = $this->controller->renderView('App::pager.html.twig', [
+			$pagelinks = $this->controller->renderViewForLegacyCode('App::pager.html.twig', [
 				'pager'    => new Pager($this->lpage, $this->db->getCount(self::DB_TABLE, $this->makeSqlWhere('', $where)), $this->llimit),
 				'current_route' => 'workroom',
 				'route_params' => $params,
@@ -553,7 +553,7 @@ EOS;
 		} else {
 			$file = '<span class="fa fa-ban" title="Дата на достъп: '.$entry->getAvailableAt('d.m.Y').'"></span>';
 		}
-		$entryLink = $this->controller->generateUrl('workroom_entry_edit', ['id' => $dbrow['id']]);
+		$entryLink = $this->controller->generateUrlForLegacyCode('workroom_entry_edit', ['id' => $dbrow['id']]);
 		$commentsLink = $dbrow['num_comments'] ? sprintf('<a href="%s#fos_comment_thread" title="Коментари"><span class="fa fa-comments-o"></span>%s</a>', $entryLink, $dbrow['num_comments']) : '';
 		$title = sprintf('<a href="%s" title="Към страницата за преглед">%s</a>', $entryLink, $title);
 		$this->rowclass = $this->nextRowClass($this->rowclass);
@@ -681,7 +681,7 @@ HTML;
 		}
 
 		return sprintf('<a href="%s" class="btn btn-primary"><span class="fa fa-plus"></span> Добавяне на нов запис</a>',
-			$this->controller->generateUrl('workroom_entry_new'));
+			$this->controller->generateUrlForLegacyCode('workroom_entry_new'));
 
 	}
 
@@ -690,7 +690,7 @@ HTML;
 		foreach ($this->viewTypes as $type => $title) {
 			$class = $this->subaction == $type ? 'selected' : '';
 			$links[] = sprintf('<li><a href="%s" class="%s" title="Преглед на произведенията по критерий „%s“">%s %s</a></li>',
-				$this->controller->generateUrl('workroom', [
+				$this->controller->generateUrlForLegacyCode('workroom', [
 					$this->FF_SUBACTION => $type
 				]),
 				$class, $title, "<span class='{$this->statusClasses[$type]}'></span>", $title);
@@ -700,14 +700,14 @@ HTML;
 			$type = "st-$code";
 			$class = $this->subaction == $type ? 'selected' : '';
 			$links[] = sprintf('<li><a href="%s" class="%s" title="Преглед на произведенията по критерий „%s“">%s %s</a></li>',
-				$this->controller->generateUrl('workroom', [
+				$this->controller->generateUrlForLegacyCode('workroom', [
 					$this->FF_SUBACTION => $type
 				]),
 				$class, $statusTitle, "<span class='{$this->statusClasses[$code]}'></span>", $statusTitle);
 		}
 
 		$links[] = '<li role="presentation" class="divider"></li>';
-		$links[] = sprintf('<li><a href="%s">Списък на помощниците</a></li>', $this->controller->generateUrl('workroom_contrib'));
+		$links[] = sprintf('<li><a href="%s">Списък на помощниците</a></li>', $this->controller->generateUrlForLegacyCode('workroom_contrib'));
 
 		return '<div class="btn-group">
 			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Преглед <span class="caret"></span></button>
@@ -736,7 +736,7 @@ HTML;
 					$params['id'] = $this->entryId;
 					$route = 'workroom_entry_edit';
 				}
-				$url = $this->controller->generateUrl($route, $params);
+				$url = $this->controller->generateUrlForLegacyCode($route, $params);
 			}
 			$tabs .= "<li class='$class'><a href='$url'>$text</a></li>";
 		}
@@ -777,7 +777,7 @@ HTML;
 		$entry = $this->out->hiddenField('id', $this->entryId);
 		$workType = $this->out->hiddenField('workType', $this->workType);
 		$bypass = $this->out->hiddenField('bypass', $this->bypassExisting);
-		$action = $this->controller->generateUrl('workroom');
+		$action = $this->controller->generateUrlForLegacyCode('workroom');
 		$this->addJs($this->createCommentsJavascript($this->entryId));
 
 		$corrections = $this->createCorrectionsView();
@@ -927,7 +927,7 @@ CORRECTIONS;
 			return '';
 		}
 		$user = $this->controller->em()->getUserRepository()->find($this->scanuser);
-		$threadUrl = $this->controller->generateUrl('fos_comment_post_threads');
+		$threadUrl = $this->controller->generateUrlForLegacyCode('fos_comment_post_threads');
 		$commentJs = $this->container->getParameter('assets_base_urls') . '/js/comments.js';
 		return <<<JS
 var fos_comment_thread_id = 'WorkEntry:$entry';
@@ -979,7 +979,7 @@ JS;
 
 	private function makeSubmitButton() {
 		$submit = $this->out->submitButton('Запис', '', null, true, ['class' => 'btn btn-primary']);
-		$cancel = sprintf('<a href="%s" title="Към основния списък">Отказ</a>', $this->controller->generateUrl('workroom'));
+		$cancel = sprintf('<a href="%s" title="Към основния списък">Отказ</a>', $this->controller->generateUrlForLegacyCode('workroom'));
 
 		return $submit .' &#160; '. $cancel;
 	}
@@ -1195,7 +1195,7 @@ EOS;
 		$readytogo = $this->userCanMarkAsReady()
 			? $this->out->checkbox('ready', 'ready', false, 'Готово е за добавяне')
 			: '';
-		$action = $this->controller->generateUrl('workroom');
+		$action = $this->controller->generateUrlForLegacyCode('workroom');
 
 		$remoteFile = $this->out->textField('uplfile', 'uplfile2', rawurldecode($uplfile), 50, 255)
 			. ' &#160; '.$this->out->label('Размер: ', 'filesize2') .
@@ -1271,7 +1271,7 @@ EOS;
 				$class .= ' isFrozen';
 				$progressbar .= ' (замразена)';
 			}
-			$deleteForm = $this->controller->renderView('App:Workroom:contrib_delete_form.html.twig', ['contrib' => ['id' => $contrib->getId()]]);
+			$deleteForm = $this->controller->renderViewForLegacyCode('App:Workroom:contrib_delete_form.html.twig', ['contrib' => ['id' => $contrib->getId()]]);
 			$date = $contrib->getDate()->format('d.m.Y');
 			$l .= <<<EOS
 
@@ -1303,7 +1303,7 @@ EOS;
 	}
 
 	private function makePageHelp() {
-		$regUrl = $this->controller->generateUrl('register');
+		$regUrl = $this->controller->generateUrlForLegacyCode('register');
 		$ext = $this->user->isAnonymous() ? "е необходимо първо да се <a href=\"$regUrl\">регистрирате</a> (не се притеснявайте, ще ви отнеме най-много 10–20 секунди, колкото и бавно да пишете). След това се върнете на тази страница и" : '';
 		$umarker = $this->getUserTypeMarker(1);
 		$banYearThreshold = $this->container->getParameter('workroom_ban_year_threshold');
@@ -1325,7 +1325,7 @@ EOS;
 	}
 
 	private function makeAddEntryHelp() {
-		$mainlink = $this->controller->generateUrl('workroom');
+		$mainlink = $this->controller->generateUrlForLegacyCode('workroom');
 
 		return <<<EOS
 
@@ -1500,7 +1500,7 @@ EOS;
 		if ($entry->getUser()->getEmail() == '') {
 			return;
 		}
-		$editLink = $this->controller->generateUrl('workroom_entry_edit', ['id' => $entry->getId()], true);
+		$editLink = $this->controller->generateUrlForLegacyCode('workroom_entry_edit', ['id' => $entry->getId()], true);
 		$messageBody = <<<EOS
 Нов потребител се присъедини към подготовката на „{$entry->getTitle()}“ от {$entry->getAuthor()}.
 

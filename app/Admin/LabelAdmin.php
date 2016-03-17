@@ -39,16 +39,16 @@ class LabelAdmin extends Admin {
 	}
 
 	protected function configureFormFields(FormMapper $formMapper) {
-		$formMapper->with('General attributes');
-		$formMapper
+		$translation = $this->getTranslation();
+		$formMapper->with('General attributes')
 			->add('name')
 			->add('slug')
-			->add('group', 'choice', ['choices' => array_combine(Label::getAvailableGroups(), Label::getAvailableGroups())])
+			->add('group', 'choice', ['choices' => $translation->getLabelGroupChoices()])
 			->add('description')
 			->add('parent', null, ['required' => false, 'query_builder' => function ($repo) {
 				return $repo->createQueryBuilder('e')->orderBy('e.name');
-			}]);
-
+			}])
+			->end();
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {

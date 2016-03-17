@@ -45,10 +45,10 @@ class CommentPage extends Page {
 
 	private function addTextFeedLinks() {
 		if ( empty($this->work) ) {
-			$url = $this->controller->generateUrl('texts_comments', ['_format' => 'rss']);
+			$url = $this->controller->generateUrlForLegacyCode('texts_comments', ['_format' => 'rss']);
 			$title = 'Читателски коментари';
 		} else {
-			$url = $this->controller->generateUrl('text_comments', ['id' => $this->textId, '_format' => 'rss']);
+			$url = $this->controller->generateUrlForLegacyCode('text_comments', ['id' => $this->textId, '_format' => 'rss']);
 			$title = 'Читателски коментари за „' . strip_tags($this->work->getTitle()) . '“';
 		}
 	}
@@ -244,14 +244,14 @@ class CommentPage extends Page {
 			if ( !empty($textId) ) {
 				$links = '';
 				if ($this->includeCommentForm) {
-					$links .= sprintf('<li><a href="%s#e%s" title="Отговор на коментара" onclick="return initReply(%d)"><span class="fa fa-reply"></span><span class="sr-only">Отговор</span></a></li>', $this->controller->generateUrl('text_comments', ['id' => $textId, 'replyto' => $id]), $id, $id);
+					$links .= sprintf('<li><a href="%s#e%s" title="Отговор на коментара" onclick="return initReply(%d)"><span class="fa fa-reply"></span><span class="sr-only">Отговор</span></a></li>', $this->controller->generateUrlForLegacyCode('text_comments', ['id' => $textId, 'replyto' => $id]), $id, $id);
 				}
 				if ( empty($this->textId) ) {
-					$links .= sprintf('<li><a href="%s" title="Всички коментари за произведението"><span class="fa fa-comments"></span><span class="sr-only">Всички коментари</span></a></li>', $this->controller->generateUrl('text_comments', ['id' => $textId]));
+					$links .= sprintf('<li><a href="%s" title="Всички коментари за произведението"><span class="fa fa-comments"></span><span class="sr-only">Всички коментари</span></a></li>', $this->controller->generateUrlForLegacyCode('text_comments', ['id' => $textId]));
 				}
 				if ($this->user->inGroup('admin')) {
-					$links .= sprintf('<li><a href="%s" title="Редактиране на коментара"><span class="fa fa-edit"></span><span class="sr-only">Редактиране</span></a></li>', $this->controller->generateUrl('admin_text_comment_edit', ['id' => $id]));
-					$links .= sprintf('<li><form action="%s" method="post" class="image-form delete-form"><button type="submit" title="Изтриване на коментара"><span class="fa fa-trash-o"></span><span class="sr-only">Изтриване</span></button></form></li>', $this->controller->generateUrl('admin_text_comment_delete', ['id' => $id]));
+					$links .= sprintf('<li><a href="%s" title="Редактиране на коментара"><span class="fa fa-edit"></span><span class="sr-only">Редактиране</span></a></li>', $this->controller->generateUrlForLegacyCode('admin_text_comment_edit', ['id' => $id]));
+					$links .= sprintf('<li><form action="%s" method="post" class="image-form delete-form"><button type="submit" title="Изтриване на коментара"><span class="fa fa-trash-o"></span><span class="sr-only">Изтриване</span></button></form></li>', $this->controller->generateUrlForLegacyCode('admin_text_comment_delete', ['id' => $id]));
 				}
 				$acts = "<ul class='menu' style='float:right'>$links</ul>";
 			}
@@ -337,7 +337,7 @@ JS;
 		$allowHelp = empty(Stringy::$allowableTags) ? ''
 			: '<dl class="instruct"><dt>Разрешени са следните етикети</dt><dd><ul><li>&lt;'.implode('&gt;</li><li>&lt;', Stringy::$allowableTags).'&gt;</li></ul></dd></dl>';
 
-		$postUrl = $this->controller->generateUrl('text_comments', ['id' => $this->textId]);
+		$postUrl = $this->controller->generateUrlForLegacyCode('text_comments', ['id' => $this->textId]);
 		return <<<EOS
 
 <form action="$postUrl" method="post" id="postform" class="form-horizontal">
@@ -395,7 +395,7 @@ EOS;
 			$params['route'] = 'user_comments';
 			$params['route_params'] = ['username' => $this->username];
 		}
-		$pagelinks = $this->controller->renderView('App::pager.html.twig', $params);
+		$pagelinks = $this->controller->renderViewForLegacyCode('App::pager.html.twig', $params);
 
 		$c = '';
 		while ($row = $this->db->fetchAssoc($res)) {

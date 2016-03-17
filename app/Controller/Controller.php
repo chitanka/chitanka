@@ -27,20 +27,21 @@ abstract class Controller extends SymfonyController {
 			return $this->urlRedirect($page->redirect);
 		}
 
+		$request = $this->get('request_stack')->getMasterRequest();
 		$params += [
 			'page' => $page,
 			'navlinks' => $this->renderLayoutComponent('sidebar-menu', 'App::navlinks.html.twig'),
 			'footer_links' => $this->renderLayoutComponent('footer-menu', 'App::footer_links.html.twig'),
-			'current_route' => $this->get('request')->attributes->get('_route'),
+			'current_route' => $request->attributes->get('_route'),
 			'environment' => $this->container->get('kernel')->getEnvironment(),
-			'ajax' => $this->get('request')->isXmlHttpRequest(),
+			'ajax' => $request->isXmlHttpRequest(),
 			'_controller' => ':legacy',
 		];
 		if ($page->inlineJs) {
 			$params['inline_js'] = $page->inlineJs;
 		}
 
-		$response = $this->render("App:{$params['_controller']}.{$this->get('request')->getRequestFormat()}.twig", $params);
+		$response = $this->render("App:{$params['_controller']}.{$request->getRequestFormat()}.twig", $params);
 		$this->setCacheStatusByResponse($response);
 
 		return $response;
@@ -89,7 +90,7 @@ abstract class Controller extends SymfonyController {
 			$this->user = User::initUser($this->em()->getUserRepository());
 			if ($this->user->isAuthenticated()) {
 				$token = new \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken($this->user, $this->user->getPassword(), 'User', $this->user->getRoles());
-				$this->get('security.context')->setToken($token);
+				$this->get('security.token_storage')->setToken($token);
 			}
 		}
 		return $this->user;
@@ -117,18 +118,18 @@ abstract class Controller extends SymfonyController {
 		return $this->flashes ?: $this->flashes = new FlashService($this->get('session')->getFlashBag());
 	}
 
-	/**
-	 * Redirects to another route.
-	 *
-	 * @param string  $route      The route pattern to redirect to
-	 * @param array   $parameters Possible parameters used by the route generation
-	 *
-	 * @return Response A Response instance
-	 */
-	public function redirectToRoute($route, array $parameters = []) {
-		$parameters['_format'] = $this->get('request')->getRequestFormat();
-		return $this->redirect($this->generateUrl($route, $parameters));
-	}
+//	/**
+//	 * Redirects to another route.
+//	 *
+//	 * @param string  $route      The route pattern to redirect to
+//	 * @param array   $parameters Possible parameters used by the route generation
+//	 *
+//	 * @return Response A Response instance
+//	 */
+//	public function redirectToRoute($route, array $parameters = []) {
+//		$parameters['_format'] = $this->get('request')->getRequestFormat();
+//		return $this->redirect($this->generateUrl($route, $parameters));
+//	}
 
 	/**
 	 * Redirects to a URL.
@@ -180,4 +181,11 @@ abstract class Controller extends SymfonyController {
 		return dirname($this->get('request')->server->get('SCRIPT_NAME'));
 	}
 
+	public function generateUrlForLegacyCode($route, $parameters = []) {
+		return $this->generateUrl($route, $parameters);
+	}
+
+	public function renderViewForLegacyCode($view, array $parameters = []) {
+		return $this->renderView($view, $parameters);
+	}
 }

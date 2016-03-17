@@ -3,6 +3,7 @@
 use App\Entity\Book;
 use App\Entity\BookRevision;
 use App\Entity\TextRepository;
+use App\Service\Translation;
 use App\Util\Language;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -75,22 +76,22 @@ class BookAdmin extends Admin {
 	protected function configureFormFields(FormMapper $formMapper) {
 			//->add('sfbg', 'string', array('template' => 'App:BookAdmin:form_sfbg.html.twig'))
 			//->add('datafiles', 'string', array('template' => 'App:BookAdmin:form_datafiles.html.twig'))
-		$formMapper->with('General attributes');
-		$formMapper
+		$translation = $this->getTranslation();
+		$formMapper->tab('General attributes')->with('')
 			->add('slug')
 			->add('title')
-			->add('lang', 'choice', ['choices' => Language::getLangs()])
-			->add('origLang', 'choice', ['required' => false, 'choices' => Language::getLangs()])
-			->add('type', 'choice', ['choices' => Book::getTypeList()])
+			->add('lang', 'choice', ['choices' => $translation->getLanguageChoices()])
+			->add('origLang', 'choice', ['required' => false, 'choices' => $translation->getLanguageChoices()])
+			->add('type', 'choice', ['choices' => $translation->getBookTypeChoices()])
 			->add('bookAuthors', 'sonata_type_collection', [
 				'by_reference' => false,
 				'required' => false,
 			], [
 				'edit' => 'inline',
 				'inline' => 'table',
-			]);
-		$formMapper->with('Extra attributes');
-		$formMapper
+			])
+			->end()->end();
+		$formMapper->tab('Extra attributes')->with('')
 			->add('subtitle', null, ['required' => false])
 			->add('titleExtra', null, ['required' => false])
 			->add('origTitle', null, ['required' => false])
@@ -119,9 +120,9 @@ class BookAdmin extends Admin {
 				'edit' => 'inline',
 				'inline' => 'table',
 				'sortable' => 'site_id'
-			]);
-		$formMapper->with('Textual content');
-		$formMapper
+			])
+			->end()->end();
+		$formMapper->tab('Textual content')->with('')
 			->add('raw_template', 'textarea', [
 				'label' => 'Template',
 				'required' => false,
@@ -145,7 +146,8 @@ class BookAdmin extends Admin {
 				],
 			])
 			->add('revision_comment', 'text', ['required' => false])
-			->add('removedNotice');
+			->add('removedNotice')
+			->end()->end();
 		$formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'fixNewLines']);
 	}
 

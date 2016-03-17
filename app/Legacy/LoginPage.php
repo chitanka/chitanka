@@ -33,11 +33,11 @@ class LoginPage extends RegisterPage {
 		if ( ! $user->validatePassword($this->password) ) { // no match
 			if ( ! $user->validateNewPassword($this->password) ) { // no match
 				if ( $user->getLoginTries() >= self::MAX_LOGIN_TRIES ) {
-					$this->redirect = $this->controller->generateUrl('homepage');
+					$this->redirect = $this->controller->generateUrlForLegacyCode('homepage');
 					return
 						'<div class="error">'
 						.'<p>Направени са повече от '. self::MAX_LOGIN_TRIES .' неуспешни опита за влизане в библиотеката с името <strong>'.$this->username.'</strong>, затова сметката е била блокирана.</p>'
-						. sprintf('<p>Ползвайте страницата „<a href="%s">Изпращане на нова парола</a>“, за да получите нова парола за достъп, или се свържете с администратора на библиотеката.</p>', $this->controller->generateUrl('request_password'));
+						. sprintf('<p>Ползвайте страницата „<a href="%s">Изпращане на нова парола</a>“, за да получите нова парола за достъп, или се свържете с администратора на библиотеката.</p>', $this->controller->generateUrlForLegacyCode('request_password'));
 				}
 				$this->addMessage('Въвели сте грешна парола.', true);
 				$user->incLoginTries();
@@ -55,7 +55,7 @@ class LoginPage extends RegisterPage {
 		$this->controller->setUser($user);
 
 		if (empty($this->returnto)) {
-			$this->redirect = $this->controller->generateUrl('homepage');
+			$this->redirect = $this->controller->generateUrlForLegacyCode('homepage');
 		} else {
 			$this->redirect = $this->returnto;
 		}
@@ -82,19 +82,19 @@ class LoginPage extends RegisterPage {
 	width: .8em;
 }
 </style>
-<form action="{$this->controller->generateUrl('login')}" method="post" class="form-signin" role="form">
+<form action="{$this->controller->generateUrlForLegacyCode('login')}" method="post" class="form-signin" role="form">
 	{$this->out->hiddenField('returnto', $this->returnto)}
 	<div class="input-group">
 		<span class="input-group-addon"><span class="fa fa-user"></span></span>
 		<label for="username" class="sr-only">Потребителско име</label>
 		<input type="text" class="form-control" id="username" name="username" placeholder="Потребителско име" value="{$this->username}" required autofocus>
-		<span class="input-group-addon"><a href="{$this->controller->generateUrl('request_username')}" title="Заявка за забравено име"><span class="fa fa-question"></span></a></span>
+		<span class="input-group-addon"><a href="{$this->controller->generateUrlForLegacyCode('request_username')}" title="Заявка за забравено име"><span class="fa fa-question"></span></a></span>
 	</div>
 	<div class="input-group">
 		<span class="input-group-addon"><span class="fa fa-key"></span></span>
 		<label for="username" class="sr-only">Парола</label>
 		<input type="password" class="form-control" id="password" name="password" placeholder="Парола" required>
-		<span class="input-group-addon"><a href="{$this->controller->generateUrl('request_password')}" title="Заявка за забравена парола"><span class="fa fa-question"></span></a></span>
+		<span class="input-group-addon"><a href="{$this->controller->generateUrlForLegacyCode('request_password')}" title="Заявка за забравена парола"><span class="fa fa-question"></span></a></span>
 	</div>
 	<div class="checkbox">
 		<label>
@@ -109,7 +109,7 @@ class LoginPage extends RegisterPage {
 		<span class="fa fa-2x fa-frown-o"></span>
 	</div>
 	<div class="media-body">
-		Забравихте си входните данни ли? Няма страшно. Подайте <a href="{$this->controller->generateUrl('request_username')}" title="Заявка за забравено име" class="btn btn-default">заявка за забравено име</a> или <a href="{$this->controller->generateUrl('request_password')}" title="Заявка за забравена парола" class="btn btn-default">парола</a>.
+		Забравихте си входните данни ли? Няма страшно. Подайте <a href="{$this->controller->generateUrlForLegacyCode('request_username')}" title="Заявка за забравено име" class="btn btn-default">заявка за забравено име</a> или <a href="{$this->controller->generateUrlForLegacyCode('request_password')}" title="Заявка за забравена парола" class="btn btn-default">парола</a>.
 	</div>
 </div>
 <div class="alert alert-info media">
@@ -117,7 +117,7 @@ class LoginPage extends RegisterPage {
 		<span class="fa fa-2x fa-user"></span>
 	</div>
 	<div class="media-body">
-		Можете да се <a href="{$this->controller->generateUrl('register')}" class="btn btn-default">регистрирате</a> за секунди, ако все още не сте го направили.
+		Можете да се <a href="{$this->controller->generateUrlForLegacyCode('register')}" class="btn btn-default">регистрирате</a> за секунди, ако все още не сте го направили.
 	</div>
 </div>
 

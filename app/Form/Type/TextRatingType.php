@@ -1,27 +1,32 @@
 <?php namespace App\Form\Type;
 
+use App\Service\Translation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Entity\TextRating;
 use App\Entity\TextRatingRepository;
 
 class TextRatingType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
+		$translation = new Translation();
 		$builder
-			->add('text', 'hidden', [
+			->add('text', HiddenType::class, [
 				'data' => $options['data']->getText()->getId(),
 				'mapped' => false,
 			])
-			//->add('user', 'hidden')
-			->add('rating', 'choice', [
-				'choices' => TextRatingRepository::$ratings,
+			//->add('user', HiddenType::class)
+			->add('rating', ChoiceType::class, [
+				'choices' => $translation->getRatingChoices(),
 				'required' => false,
 			]);
 	}
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver) {
+	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults([
-			'data_class' => 'App\Entity\TextRating',
+			'data_class' => TextRating::class,
 		]);
 	}
 

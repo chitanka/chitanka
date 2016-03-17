@@ -94,11 +94,11 @@ class UserPage extends Page {
 
 	protected function makePublicUserDataView() {
 		$rcount = sprintf('<a href="%s">%s</a>',
-			$this->controller->generateUrl('user_ratings', ['username' => $this->username]),
+			$this->controller->generateUrlForLegacyCode('user_ratings', ['username' => $this->username]),
 			$this->getRatingCount()
 		);
 		$ccount = sprintf('<a href="%s">%s</a>',
-			$this->controller->generateUrl('user_comments', ['username' => $this->username]),
+			$this->controller->generateUrlForLegacyCode('user_comments', ['username' => $this->username]),
 			$this->getCommentCount()
 		);
 
@@ -149,12 +149,12 @@ EOS;
 		}
 		$h = '<h2>Сканирани или обработени текстове</h2>';
 
-		return $h . $this->controller->renderView('App:User:contribs_list.html.twig', [
+		return $h . $this->controller->renderViewForLegacyCode('App:User:contribs_list.html.twig', [
 			'user' => $this->shown_user,
 			'contribs' => $repo->getLatestByUser($this->shown_user, 20),
 			'count' => $count
 		])
-		. sprintf('<p>Общо: <a href="%s">%d</a></p>', $this->controller->generateUrl('user_contribs', ['username' => $this->shown_user->getUsername()]), $count);
+		. sprintf('<p>Общо: <a href="%s">%d</a></p>', $this->controller->generateUrlForLegacyCode('user_contribs', ['username' => $this->shown_user->getUsername()]), $count);
 	}
 
 	protected function makeReadList() {
@@ -165,12 +165,12 @@ EOS;
 		}
 		$h = '<h2>Последни прочетени произведения</h2>';
 
-		return $h . $this->controller->renderView('App:User:read_texts_list.html.twig', [
+		return $h . $this->controller->renderViewForLegacyCode('App:User:read_texts_list.html.twig', [
 			'user' => $this->shown_user,
 			'is_owner' => true,
 			'read_texts' => $repo->getLatestByUser($this->shown_user, 20),
 		])
-		. sprintf('<p class="more"><a href="%s">Всички</a></p>', $this->controller->generateUrl('user_read_list', ['username' => $this->shown_user->getUsername()]));
+		. sprintf('<p class="more"><a href="%s">Всички</a></p>', $this->controller->generateUrlForLegacyCode('user_read_list', ['username' => $this->shown_user->getUsername()]));
 	}
 
 	protected function makeBookmarksList() {
@@ -181,12 +181,12 @@ EOS;
 		}
 		$h = '<h2>Последни избрани произведения</h2>';
 
-		return $h . $this->controller->renderView('App:User:bookmarks_list.html.twig', [
+		return $h . $this->controller->renderViewForLegacyCode('App:User:bookmarks_list.html.twig', [
 			'user' => $this->shown_user,
 			'is_owner' => true,
 			'bookmarks' => $repo->getLatestByUser($this->shown_user, 20),
 		])
-		. sprintf('<p class="more"><a href="%s">Всички</a></p>', $this->controller->generateUrl('user_bookmarks', ['username' => $this->shown_user->getUsername()]));
+		. sprintf('<p class="more"><a href="%s">Всички</a></p>', $this->controller->generateUrlForLegacyCode('user_bookmarks', ['username' => $this->shown_user->getUsername()]));
 	}
 
 	protected function makeCurrentContribList() {
@@ -220,7 +220,7 @@ EOS;
 			return '';
 		}
 
-		$link = $this->controller->generateUrl('user_page_edit', ['username' => $this->username]);
+		$link = $this->controller->generateUrlForLegacyCode('user_page_edit', ['username' => $this->username]);
 
 		return "<p style='font-size:small; text-align:right'>[<a href=\"$link\" title=\"Редактиране на личната страница\">редактиране</a>]</p>";
 	}
