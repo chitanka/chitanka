@@ -54,10 +54,10 @@ class CategoryRepository extends EntityRepository {
 		foreach ($labels as $i => $label) {
 			if ($label['parent']) {
 				$labelsById[$label['parent']]['children'][] =& $labels[$i];
+				unset($labels[$i]);
 			}
 		}
-
-		return $labels;
+		return array_values($labels);
 	}
 
 	/**
