@@ -1,10 +1,10 @@
 <?php namespace App\Service;
 
+use App\Entity\Bookmark;
+use App\Entity\BookmarkFolderRepository;
+use App\Entity\BookmarkRepository;
 use App\Entity\Text;
 use App\Entity\User;
-use App\Entity\Bookmark;
-use App\Entity\BookmarkRepository;
-use App\Entity\BookmarkFolderRepository;
 
 class TextBookmarkService {
 

@@ -1,8 +1,8 @@
 <?php namespace App\Entity\Content;
 
-use App\Service\ContentService;
 use App\Entity\Book;
 use App\Entity\Text;
+use App\Service\ContentService;
 use Sfblib\SfbConverter;
 use Sfblib\SfbToHtmlConverter;
 

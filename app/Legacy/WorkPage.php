@@ -1,11 +1,11 @@
 <?php namespace App\Legacy;
 
-use App\Util\Stringy;
-use App\Util\Number;
-use App\Util\Char;
-use App\Util\File;
 use App\Entity\WorkEntry;
 use App\Pagination\Pager;
+use App\Util\Char;
+use App\Util\File;
+use App\Util\Number;
+use App\Util\Stringy;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class WorkPage extends Page {

@@ -1,10 +1,10 @@
 <?php namespace App\Admin;
 
-use Sonata\AdminBundle\Form\FormMapper;
+use App\Entity\User;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use App\Entity\User;
 
 class UserAdmin extends Admin {
 	protected $baseRoutePattern = 'user';

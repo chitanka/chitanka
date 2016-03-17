@@ -1,11 +1,11 @@
 <?php namespace App\Controller;
 
 use App\Entity\Book;
-use App\Pagination\Pager;
-use App\Legacy\Setup;
 use App\Generator\DownloadFile;
-use App\Util\Stringy;
+use App\Legacy\Setup;
+use App\Pagination\Pager;
 use App\Service\SearchService;
+use App\Util\Stringy;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\Request;
 

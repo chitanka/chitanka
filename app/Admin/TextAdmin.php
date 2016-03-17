@@ -4,12 +4,12 @@ use App\Entity\Text;
 use App\Legacy\Legacy;
 use App\Service\ContentService;
 use App\Util\Language;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class TextAdmin extends Admin {
 	protected $baseRoutePattern = 'text';

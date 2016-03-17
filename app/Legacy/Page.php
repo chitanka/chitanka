@@ -1,8 +1,8 @@
 <?php namespace App\Legacy;
 
+use App\Util\Char;
 use App\Util\Number;
 use App\Util\Stringy;
-use App\Util\Char;
 
 abstract class Page {
 

@@ -1,8 +1,8 @@
 <?php namespace App\Controller;
 
 use App\Pagination\Pager;
-use App\Util\Stringy;
 use App\Service\SearchService;
+use App\Util\Stringy;
 use Symfony\Component\HttpFoundation\Request;
 
 class SequenceController extends Controller {

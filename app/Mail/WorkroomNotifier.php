@@ -1,8 +1,8 @@
 <?php namespace App\Mail;
 
 use App\Entity\Comment;
-use App\Entity\WorkEntry;
 use App\Entity\WorkContrib;
+use App\Entity\WorkEntry;
 use Swift_Message;
 use Swift_RfcComplianceException;
 

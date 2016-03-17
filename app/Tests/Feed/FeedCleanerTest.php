@@ -1,7 +1,7 @@
 <?php namespace App\Tests\Feed;
 
-use App\Tests\TestCase;
 use App\Feed\FeedCleaner;
+use App\Tests\TestCase;
 
 class FeedCleanerTest extends TestCase {
 	public function testRemoveScriptContent() {

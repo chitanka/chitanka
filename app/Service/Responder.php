@@ -1,10 +1,10 @@
 <?php namespace App\Service;
 
 use App\Entity\EntityManager;
+use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 
 class Responder {
 

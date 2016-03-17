@@ -1,10 +1,10 @@
 <?php namespace App\Controller;
 
+use App\Entity\Person;
 use App\Pagination\Pager;
+use App\Service\SearchService;
 use App\Service\Translation;
 use App\Util\Stringy;
-use App\Entity\Person;
-use App\Service\SearchService;
 use Symfony\Component\HttpFoundation\Request;
 
 class PersonController extends Controller {

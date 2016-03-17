@@ -1,7 +1,7 @@
 <?php namespace App\Legacy;
 
-use App\Util\File;
 use App\Service\ContentService;
+use App\Util\File;
 
 class CacheManager {
 

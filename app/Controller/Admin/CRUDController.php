@@ -1,8 +1,8 @@
 <?php namespace App\Controller\Admin;
 
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Sonata\AdminBundle\Controller\CRUDController as BaseController;
 use App\Entity\User;
+use Sonata\AdminBundle\Controller\CRUDController as BaseController;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CRUDController extends BaseController {
 

@@ -1,13 +1,13 @@
 <?php namespace App\Form\Type;
 
-use App\Service\Translation;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\TextRating;
 use App\Entity\TextRatingRepository;
+use App\Service\Translation;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TextRatingType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
@@ -30,7 +30,7 @@ class TextRatingType extends AbstractType {
 		]);
 	}
 
-	public function getName() {
+	public function getBlockPrefix() {
 		return 'text_rating';
 	}
 }

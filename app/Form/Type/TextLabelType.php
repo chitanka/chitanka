@@ -1,11 +1,11 @@
 <?php namespace App\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Doctrine\ORM\EntityRepository;
 
 class TextLabelType extends AbstractType {
 
@@ -32,7 +32,7 @@ class TextLabelType extends AbstractType {
 		]);
 	}
 
-	public function getName() {
+	public function getBlockPrefix() {
 		return 'text_label';
 	}
 

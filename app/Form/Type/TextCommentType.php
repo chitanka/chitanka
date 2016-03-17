@@ -1,9 +1,9 @@
 <?php namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class TextCommentType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
@@ -20,7 +20,7 @@ class TextCommentType extends AbstractType {
 		];
 	}
 
-	public function getName() {
+	public function getBlockPrefix() {
 		return 'text_comment';
 	}
 }

@@ -1,8 +1,8 @@
 <?php namespace App\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use App\Validator\Constraints as AppAssert;
 use App\Mail\MailSource;
+use App\Validator\Constraints as AppAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class InfoSuggestion extends MailSource {
 

@@ -22,7 +22,7 @@ class LabelType extends AbstractType {
 		];
 	}
 
-	public function getName() {
+	public function getBlockPrefix() {
 		return 'label';
 	}
 

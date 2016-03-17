@@ -1,11 +1,11 @@
 <?php namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class InfoSuggestionType extends AbstractType {
 
@@ -27,7 +27,7 @@ class InfoSuggestionType extends AbstractType {
 		];
 	}
 
-	public function getName() {
+	public function getBlockPrefix() {
 		return 'suggest_info';
 	}
 

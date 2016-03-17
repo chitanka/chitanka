@@ -1,7 +1,7 @@
 <?php namespace App\Tests\Entity\Content;
 
-use App\Tests\TestCase;
 use App\Entity\Content\BookTemplate;
+use App\Tests\TestCase;
 
 class BookTemplateTest extends TestCase {
 

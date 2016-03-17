@@ -1,8 +1,8 @@
 <?php namespace App\Listener;
 
 use App\Entity\Comment;
-use App\Entity\Thread;
 use App\Entity\EntityManager;
+use App\Entity\Thread;
 use App\Mail\WorkroomNotifier;
 use FOS\CommentBundle\Event\CommentEvent;
 use FOS\CommentBundle\Event\ThreadEvent;

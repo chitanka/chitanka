@@ -1,7 +1,7 @@
 <?php namespace App\Tests\Service;
 
-use App\Tests\TestCase;
 use App\Service\ParametersYamlUpdater;
+use App\Tests\TestCase;
 
 class ParametersYamlUpdaterTest extends TestCase {
 	public function testYamlUpdate() {

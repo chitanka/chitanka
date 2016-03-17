@@ -1,9 +1,9 @@
 <?php namespace App\Doctrine;
 
+use App\Entity\NextIdRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Id\AbstractIdGenerator;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use App\Entity\NextIdRepository;
 
 class CustomIdGenerator extends AbstractIdGenerator {
 	public function generate(EntityManager $em, $entity) {

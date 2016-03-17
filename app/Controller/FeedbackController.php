@@ -1,9 +1,9 @@
 <?php namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Feedback;
 use App\Form\Type\FeedbackType;
 use App\Mail\Notifier;
+use Symfony\Component\HttpFoundation\Request;
 
 class FeedbackController extends Controller {
 

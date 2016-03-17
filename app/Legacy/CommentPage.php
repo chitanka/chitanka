@@ -1,10 +1,10 @@
 <?php namespace App\Legacy;
 
-use App\Util\Date;
-use App\Util\Stringy;
 use App\Entity\Text;
 use App\Entity\TextComment;
 use App\Pagination\Pager;
+use App\Util\Date;
+use App\Util\Stringy;
 
 class CommentPage extends Page {
 

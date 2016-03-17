@@ -3,19 +3,19 @@
 use App\Generator\TextFb2Generator;
 use App\Generator\TextFbiGenerator;
 use App\Generator\TextHtmlGenerator;
+use App\Legacy\Setup;
+use App\Legacy\SfbParserSimple;
 use App\Service\ContentService;
 use App\Util\Char;
 use App\Util\Date;
 use App\Util\File;
 use App\Util\Language;
 use App\Util\Stringy;
-use App\Legacy\Setup;
-use App\Legacy\SfbParserSimple;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Sfblib\SfbToHtmlConverter;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\TextRepository")

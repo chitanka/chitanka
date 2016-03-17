@@ -1,7 +1,7 @@
 <?php namespace App\Controller;
 
-use App\Pagination\Pager;
 use App\Entity\Person;
+use App\Pagination\Pager;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthorController extends PersonController {

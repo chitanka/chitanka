@@ -1,11 +1,11 @@
 <?php namespace App\Controller;
 
-use App\Legacy\Setup;
 use App\Entity\User;
+use App\Legacy\Setup;
 use App\Service\FlashService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class Controller extends SymfonyController {
 

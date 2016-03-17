@@ -1,8 +1,8 @@
 <?php namespace App\Command;
 
+use App\Service\TextService;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Service\TextService;
 
 class UpdateTextAlikesCommand extends Command {
 

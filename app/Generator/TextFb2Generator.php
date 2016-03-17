@@ -1,7 +1,7 @@
 <?php namespace App\Generator;
 
-use App\Entity\Text;
 use App\Entity\Person;
+use App\Entity\Text;
 use App\Service\ContentService;
 use Sfblib\SfbToFb2Converter;
 

@@ -1,9 +1,9 @@
 <?php namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class RequestUsernameType extends AbstractType {
 
@@ -15,7 +15,7 @@ class RequestUsernameType extends AbstractType {
 			->add('save', SubmitType::class);
 	}
 
-	public function getName() {
+	public function getBlockPrefix() {
 		return 'request_username';
 	}
 

@@ -1,9 +1,9 @@
 <?php namespace App\Controller;
 
+use Eko\FeedBundle\Field\Item\ItemField;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Eko\FeedBundle\Field\Item\ItemField;
 
 class WorkroomController extends Controller {
 

@@ -1,9 +1,9 @@
 <?php namespace App\Admin;
 
 use App\Entity\PersonRepository;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 class PersonAdmin extends Admin {

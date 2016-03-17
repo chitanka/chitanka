@@ -5,11 +5,11 @@ use App\Entity\BookRevision;
 use App\Entity\TextRepository;
 use App\Service\Translation;
 use App\Util\Language;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\FormEvents;
 
 class BookAdmin extends Admin {

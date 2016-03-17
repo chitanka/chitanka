@@ -2,14 +2,14 @@
 
 use App\Entity\Text;
 use App\Entity\UserTextRead;
-use App\Form\Type\TextRatingType;
 use App\Form\Type\TextLabelType;
+use App\Form\Type\TextRatingType;
+use App\Generator\TextDownloadService;
 use App\Legacy\Setup;
 use App\Pagination\Pager;
-use App\Generator\TextDownloadService;
+use App\Service\SearchService;
 use App\Service\TextBookmarkService;
 use App\Service\TextLabelService;
-use App\Service\SearchService;
 use App\Util\Stringy;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

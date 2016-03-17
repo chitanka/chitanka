@@ -1,7 +1,7 @@
 <?php namespace App\Tests\Legacy;
 
-use App\Tests\TestCase;
 use App\Legacy\SfbParserSimple;
+use App\Tests\TestCase;
 
 class SfbParserSimpleTest extends TestCase {
 
