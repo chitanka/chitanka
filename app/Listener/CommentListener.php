@@ -6,18 +6,29 @@ use App\Entity\Thread;
 use App\Mail\WorkroomNotifier;
 use FOS\CommentBundle\Event\CommentEvent;
 use FOS\CommentBundle\Event\ThreadEvent;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class CommentListener {
 	private $mailer;
 	private $em;
+	private $tokenStorage;
 
 	/**
 	 * @param \Swift_Mailer $mailer
 	 * @param EntityManager $em
+	 * @param TokenStorage $tokenStorage
 	 */
-	public function __construct(\Swift_Mailer $mailer, EntityManager $em) {
+	public function __construct(\Swift_Mailer $mailer, EntityManager $em, TokenStorage $tokenStorage) {
 		$this->mailer = $mailer;
 		$this->em = $em;
+		$this->tokenStorage = $tokenStorage;
+	}
+
+	/**
+	 * @param CommentEvent $event
+	 */
+	public function onCommentPrePersist(CommentEvent $event) {
+		$this->registerCommentAuthorByDoctrine($event->getComment());
 	}
 
 	/**
@@ -32,6 +43,11 @@ class CommentListener {
 	 */
 	public function onThreadPostPersist(ThreadEvent $event) {
 		$this->attachThreadToTargetEntity($event->getThread());
+	}
+
+	private function registerCommentAuthorByDoctrine(Comment $comment) {
+		$user = $this->em->merge($this->tokenStorage->getToken()->getUser());
+		$comment->setAuthor($user);
 	}
 
 	private function sendNotificationsOnCommentChange(Comment $comment) {

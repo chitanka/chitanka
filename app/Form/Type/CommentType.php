@@ -20,7 +20,7 @@ class CommentType extends BaseCommentType {
 		]);
 	}
 
-	public function getName() {
+	public function getBlockPrefix() {
 		return 'comment_form';
 	}
 }

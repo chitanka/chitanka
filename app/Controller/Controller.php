@@ -178,7 +178,7 @@ abstract class Controller extends SymfonyController {
 	}
 
 	protected function getWebRoot() {
-		return dirname($this->get('request')->server->get('SCRIPT_NAME'));
+		return dirname($this->get('request_stack')->getMasterRequest()->server->get('SCRIPT_NAME'));
 	}
 
 	public function generateUrlForLegacyCode($route, $parameters = []) {

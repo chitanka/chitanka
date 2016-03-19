@@ -262,8 +262,9 @@ services:
 
     comment.listener:
         class: App\Listener\CommentListener
-        arguments: ["@mailer", "@app.entity_manager"]
+        arguments: ["@mailer", "@app.entity_manager", "@security.token_storage"]
         tags:
+            - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist }
             - { name: kernel.event_listener, event: fos_comment.comment.post_persist, method: onCommentPostPersist }
             - { name: kernel.event_listener, event: fos_comment.thread.post_persist, method: onThreadPostPersist }
 

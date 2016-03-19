@@ -1068,12 +1068,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSCommentBundle.git",
-                "reference": "634d94ae98e21c48c935912baac2176241812061"
+                "reference": "33ceb8665eaa087ce4368ed26814ef2d69d8f806"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSCommentBundle/zipball/634d94ae98e21c48c935912baac2176241812061",
-                "reference": "634d94ae98e21c48c935912baac2176241812061",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSCommentBundle/zipball/33ceb8665eaa087ce4368ed26814ef2d69d8f806",
+                "reference": "33ceb8665eaa087ce4368ed26814ef2d69d8f806",
                 "shasum": ""
             },
             "require": {
@@ -1143,7 +1143,7 @@
                 "forum",
                 "threads"
             ],
-            "time": "2016-01-19 09:30:50"
+            "time": "2016-03-16 13:01:26"
         },
         {
             "name": "friendsofsymfony/rest-bundle",
@@ -2000,16 +2000,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v1.2.2",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "b3313b618f4edd76523572531d5d7e22fe747430"
+                "reference": "a93889dfb1c0ae465b62236ede8d00d3ea260952"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/b3313b618f4edd76523572531d5d7e22fe747430",
-                "reference": "b3313b618f4edd76523572531d5d7e22fe747430",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/a93889dfb1c0ae465b62236ede8d00d3ea260952",
+                "reference": "a93889dfb1c0ae465b62236ede8d00d3ea260952",
                 "shasum": ""
             },
             "require": {
@@ -2044,7 +2044,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-03-11 19:54:08"
+            "time": "2016-03-18 17:16:04"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -2200,7 +2200,7 @@
                 "shasum": ""
             },
             "require": {
-                "kriswallsmith/buzz": ">= 0.6",
+                "kriswallsmith/buzz": "> 0.6",
                 "php": ">=5.3.2"
             },
             "type": "symfony-bundle",
@@ -2234,16 +2234,16 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.4",
+            "version": "v5.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "2c167426fc24f9de116345195bc1697a748ee847"
+                "reference": "3a160355bb1364da55ed9e415c1aa1fa8d457b6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/2c167426fc24f9de116345195bc1697a748ee847",
-                "reference": "2c167426fc24f9de116345195bc1697a748ee847",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/3a160355bb1364da55ed9e415c1aa1fa8d457b6f",
+                "reference": "3a160355bb1364da55ed9e415c1aa1fa8d457b6f",
                 "shasum": ""
             },
             "require": {
@@ -2282,7 +2282,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2016-02-12 16:21:30"
+            "time": "2016-03-15 16:21:41"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -2396,12 +2396,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "9681619bdfb130ff746e8289f7d2660b9d5318e4"
+                "reference": "139d11065bf21d987a321b1bad85a35d5ba52578"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/9681619bdfb130ff746e8289f7d2660b9d5318e4",
-                "reference": "9681619bdfb130ff746e8289f7d2660b9d5318e4",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/139d11065bf21d987a321b1bad85a35d5ba52578",
+                "reference": "139d11065bf21d987a321b1bad85a35d5ba52578",
                 "shasum": ""
             },
             "require": {
@@ -2428,13 +2428,18 @@
                 "twig/extensions": "~1.0",
                 "twig/twig": "~1.23"
             },
+            "conflict": {
+                "jms/di-extra-bundle": "<1.7.0"
+            },
             "require-dev": {
+                "jms/di-extra-bundle": "~1.7",
                 "sensio/generator-bundle": "~2.3|~3.0",
                 "sonata-project/intl-bundle": "^2.2.4",
                 "symfony/phpunit-bridge": "~2.7|~3.0",
                 "symfony/yaml": "~2.3|~3.0"
             },
             "suggest": {
+                "jms/di-extra-bundle": "Annotations for Admin definition",
                 "jms/translation-bundle": "Extract message keys from Admins",
                 "sensio/generator-bundle": "Add sonata:admin:generate command",
                 "sonata-project/intl-bundle": "Add localized date and number into the list"
@@ -2473,7 +2478,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2016-03-10 07:33:07"
+            "time": "2016-03-15 16:19:21"
         },
         {
             "name": "sonata-project/block-bundle",

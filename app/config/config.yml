@@ -12,7 +12,7 @@ framework:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
     form:            ~
-    csrf_protection: false
+    csrf_protection: true
     validation:      { enable_annotations: true }
     #serializer:      { enable_annotations: true }
     templating:
@@ -185,7 +185,7 @@ fos_comment:
             thread: App\Entity\Thread
     form:
         comment:
-            type: comment_form
+            type: App\Form\Type\CommentType
     acl: true
     service:
         sorting:
