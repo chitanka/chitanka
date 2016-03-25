@@ -26,7 +26,6 @@ framework:
 #        lifetime:  3600
         name:      CHITANKASESSID
         save_path: null
-        save_path: "%kernel.root_dir%/../var/sessions/%kernel.environment%"
         cookie_httponly: true
     fragments:       ~
     http_method_override: true
