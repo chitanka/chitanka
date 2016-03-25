@@ -2,12 +2,14 @@
 {% for label in labels %}
 	{% if level > 0 or label.parent is empty %}
 	<li>
-		<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>
+		{% if label.nrOfTexts > 0 %}
+			<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>
+			<span class="badge">{{ label.nrOfTexts }}</span>
+		{% else %}
+			{{ label.name }}
+		{% endif %}
 		{% if label.description is not empty %}
 			<span class="popover-trigger" data-content="{{ label.description }}"><span class="fa fa-info-circle"></span></span>
-		{% endif %}
-		{% if label.nrOfTexts > 0 %}
-			<span class="badge">{{ label.nrOfTexts }}</span>
 		{% endif %}
 		{% if label.children is defined %}
 			{% include 'App:Text:label_tree.html.twig' with {'labels': label.children, 'level': level+1} %}
