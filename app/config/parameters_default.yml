@@ -12,18 +12,14 @@ parameters:
     mailer_user:       ~
     mailer_password:   ~
 
-    assets_base_urls: ~
-    style_url:  /css/?
-
-    use_http_cache: false
-    allow_removed_notice: false
-
     # Следните променливи се ползват при пращането на електронна поща
     admin:              Администратор
     admin_email:        { admin@localhost: Администратор }
     site_email:         admin@localhost
     work_email:         admin@localhost
 
+    assets_base_urls: ~
+    style_url:  /css/?
     # Път до библиотеката jQuery. По подразбиране false.
     # При false, се ползва локалното копие
     script_library: false
@@ -55,9 +51,10 @@ parameters:
 
     global_info_message: Това е огледало на <a href="http://chitanka.info">Моята библиотека</a>.
     analytics_snippet: ~
+    use_http_cache: false
     allow_user_registration: false
-    allow_removed_notice: true
     allow_remote_wiki_article: true
+    allow_removed_notice: false
     dev.web_profiler_toolbar: false
     git.path: /usr/bin/git
     rsync.path: /usr/bin/rsync
