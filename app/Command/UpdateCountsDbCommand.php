@@ -29,9 +29,8 @@ class UpdateCountsDbCommand extends Command {
 		$this->updateTextCountByLabelsParents($output, $em);
 		$this->updateBookCountBySequences($output, $em);
 		$this->updateBookCountByCategories($output, $em);
+		$this->updateBookCountByCategoriesParents($output, $em);
 		$this->updateCommentCountByTexts($output, $em);
-		// disable for now, TODO fix pagination by parent categories
-		//$this->updateBookCountByCategoriesParents($output, $em);
 	}
 
 	/**
@@ -86,18 +85,22 @@ class UpdateCountsDbCommand extends Command {
 	 * @param string $field
 	 */
 	private function updateCountByParents(EntityManager $em, $entity, $field) {
-		$dirty = [];
 		$repo = $em->getRepository($entity);
+		$originalCounts = [];
 		foreach ($repo->findAll() as $item) {
-			if (in_array($item->getId(), $dirty)) {
-				$item = $repo->find($item->getId());
+			$originalCounts[$item->getId()] = call_user_func([$item, "get{$field}"]);
+		}
+		foreach ($repo->findAll() as $item) {
+			$count = $originalCounts[$item->getId()];
+			if ($count == 0) {
+				continue;
 			}
 			$parent = $item->getParent();
 			if ($parent) {
-				$count = call_user_func([$item, "get{$field}"]);
-				call_user_func([$parent, "inc{$field}"], $count);
-				$em->persist($parent);
-				$dirty[] = $parent->getId();
+				do {
+					call_user_func(array($parent, "inc{$field}"), $count);
+					$em->persist($parent);
+				} while (null !== ($parent = $parent->getParent()));
 			}
 		}
 
