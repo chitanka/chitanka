@@ -51,8 +51,8 @@ class BookController extends Controller {
 		return [
 			'category' => $category,
 			'parents' => array_reverse($category->getAncestors()),
-			'books' => $bookRepo->findByCategory($category, $page, $limit),
-			'pager'    => new Pager($page, $category->getNrOfBooks(), $limit),
+			'books' => $bookRepo->findByCategory($category->getDescendantIdsAndSelf(), $page, $limit),
+			'pager' => new Pager($page, $category->getNrOfBooks(), $limit),
 			'route_params' => ['slug' => $slug],
 		];
 	}

@@ -30,7 +30,7 @@ class BookRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param Category $category
+	 * @param Category|array $category
 	 * @param int $page
 	 * @param int $limit
 	 * @return Book[]
@@ -52,12 +52,17 @@ class BookRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param Category $category
+	 * @param Category|array $category
 	 * @param int $page
 	 * @param int $limit
 	 */
 	private function getIdsByCategory($category, $page = 1, $limit = null) {
-		$dql = "SELECT b.id FROM {$this->getEntityName()} b WHERE b.category = {$category->getId()} ORDER BY b.title";
+		if ($category instanceof Category) {
+			$ids = [$category->getId()];
+		} else {
+			$ids = implode(',', $category);
+		}
+		$dql = sprintf("SELECT b.id FROM {$this->getEntityName()} b WHERE b.category IN (%s) ORDER BY b.title", $ids);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 
 		return $query->getResult('id');
