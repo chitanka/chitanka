@@ -75,7 +75,7 @@ class FeedCleaner {
 		return $cleanContent;
 	}
 
-	public function relativizeUrlProtocol($content) {
+	public static function relativizeUrlProtocol($content) {
 		$content = str_replace('http://', '//', $content);
 		return $content;
 	}
