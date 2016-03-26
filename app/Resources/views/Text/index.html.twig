@@ -11,7 +11,7 @@
 
 	<div class="row">
 		{% for labelGroup, labelsInGroup in labels %}
-			<div class="col-md-6">.
+			<div class="col-md-6">
 				<h2>{{ ('label.group.'~labelGroup)|trans }}</h2>
 				{% include 'App:Text:label_tree.html.twig' with {labels: labelsInGroup, level: 0} %}
 			</div>
