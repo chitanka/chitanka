@@ -370,6 +370,11 @@ return [
 		],
 	],
 
+	'tooltip' => [
+		'nr-of-books-with-category' => '{1} В категорията „%category%“ има една книга|]1,Inf[ В категорията „%category%“ има %count% книги',
+		'nr-of-texts-with-label' => '{1} Има едно произведение с етикет „%label%“|]1,Inf[ Има %count% произведения с етикет „%label%“',
+	],
+
 	'translators' => 'Преводачи',
 	'translators.by' => [
 		'first-name' => 'Преводачи',

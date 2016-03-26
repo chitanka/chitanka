@@ -4,7 +4,7 @@
 	<li>
 		{% if category.nrOfBooks > 0 %}
 			<a href="{{ path('books_by_category', {'slug': category.slug}) }}" data-edit="{{ path('admin_category_edit', {'id': category.id}) }}">{{ category.name }}</a>
-			<span class="badge">{{ category.nrOfBooks }}</span>
+			<span class="badge nr-of-items" title="{{ "tooltip.nr-of-books-with-category"|transchoice(category.nrOfBooks, {'%category%': category.name}) }}">{{ category.nrOfBooks }}</span>
 		{% else %}
 			{{ category.name }}
 		{% endif %}
