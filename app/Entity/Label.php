@@ -71,6 +71,11 @@ class Label extends Entity implements \JsonSerializable {
 	private $nrOfTexts = 0;
 
 	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $position;
+
+	/**
 	 * The children of this label
 	 * @var Label[]
 	 * @ORM\OneToMany(targetEntity="Label", mappedBy="parent")
@@ -106,6 +111,9 @@ class Label extends Entity implements \JsonSerializable {
 	public function incNrOfTexts($value = 1) {
 		$this->nrOfTexts += $value;
 	}
+
+	public function setPosition($position) { $this->position = $position; }
+	public function getPosition() { return $this->position; }
 
 	public function setChildren($children) { $this->children = $children; }
 	public function getChildren() { return $this->children; }

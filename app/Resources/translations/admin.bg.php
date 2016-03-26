@@ -58,6 +58,7 @@ return [
 	'Person Type' => 'Вид личност',
 	'Person' => 'Личност',
 	'Pos' => 'Позиция',
+	'Position' => 'Позиция',
 	'Publisher' => 'Издател',
 	'Puk' => 'ПУК!',
 	'Question' => 'Въпрос',

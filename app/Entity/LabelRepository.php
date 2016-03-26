@@ -6,6 +6,7 @@
 class LabelRepository extends EntityRepository {
 	/**
 	 * @param string $slug
+	 * @return Label
 	 */
 	public function findBySlug($slug) {
 		return $this->findOneBy(['slug' => $slug]);
@@ -14,7 +15,7 @@ class LabelRepository extends EntityRepository {
 	public function getAll($group = null) {
 		$qb = $this->getQueryBuilder()
 			->addSelect('IDENTITY(e.parent) AS parent')
-			->orderBy('e.name');
+			->orderBy('e.position')->addOrderBy('e.name');
 		if ($group) {
 			$qb->where('e.group = ?1')->setParameter(1, $group);
 		}

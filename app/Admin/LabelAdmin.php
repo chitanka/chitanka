@@ -28,6 +28,7 @@ class LabelAdmin extends Admin {
 			->addIdentifier('name')
 			->add('slug')
 			->add('group')
+			->add('position')
 			->add('_action', 'actions', [
 				'actions' => [
 					'view' => [],
@@ -48,6 +49,7 @@ class LabelAdmin extends Admin {
 			->add('parent', null, ['required' => false, 'query_builder' => function ($repo) {
 				return $repo->createQueryBuilder('e')->orderBy('e.name');
 			}])
+			->add('position')
 			->end();
 	}
 
