@@ -56,6 +56,7 @@ class Responder {
 			'_type' => null,
 		];
 		if (in_array($request->getRequestFormat(), [self::FORMAT_JSON, self::FORMAT_SUGGEST])) {
+			unset($params['_cache'], $params['_status'], $params['_type']);
 			$response = new JsonResponse($params);
 			//$response->setEncodingOptions($response->getEncodingOptions() | JSON_UNESCAPED_UNICODE);
 		} else {
@@ -69,13 +70,13 @@ class Responder {
 			}
 			$response->setContent($content);
 		}
-		if ($params['_cache']) {
+		if (isset($params['_cache'])) {
 			$response->setSharedMaxAge($params['_cache']);
 		}
-		if ($params['_status']) {
+		if (isset($params['_status'])) {
 			$response->setStatusCode($params['_status']);
 		}
-		if ($params['_type']) {
+		if (isset($params['_type'])) {
 			$response->headers->set('Content-Type', $params['_type']);
 		}
 		return $response;
