@@ -3,8 +3,8 @@
 {% set title = 'translators'|trans %}
 {% block head %}
 	{{ parent() }}
-	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('translators_search', {'_format': 'osd'}) }}" title="Търсене по преводачи в Моята библиотека" />
-	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('persons_search', {'_format': 'osd'}) }}" title="Търсене по личности в Моята библиотека" />
+	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('translators_search', {'_format': 'osd'}) }}" title="Търсене на преводачи в Моята библиотека" />
+	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('persons_search', {'_format': 'osd'}) }}" title="Търсене на личности в Моята библиотека" />
 {% endblock %}
 {% block content %}
 	{% include 'App:Translator:navigation.html.twig' with {'by': '', 'letter': ''} %}

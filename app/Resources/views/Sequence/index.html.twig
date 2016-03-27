@@ -3,7 +3,7 @@
 {% set title = 'Издателски поредици' %}
 {% block head %}
 	{{ parent() }}
-	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('sequences_search', {'_format': 'osd'}) }}" title="Търсене по издателски поредици в Моята библиотека" />
+	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('sequences_search', {'_format': 'osd'}) }}" title="Търсене на издателски поредици в Моята библиотека" />
 {% endblock %}
 {% block content %}
 	{% include 'App:Sequence:navigation.html.twig' with {'letter': ''} %}

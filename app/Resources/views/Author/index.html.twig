@@ -3,8 +3,8 @@
 {% set title = 'authors'|trans %}
 {% block head %}
 	{{ parent() }}
-	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('authors_search', {'_format': 'osd'}) }}" title="Търсене по автори в Моята библиотека" />
-	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('persons_search', {'_format': 'osd'}) }}" title="Търсене по личности в Моята библиотека" />
+	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('authors_search', {'_format': 'osd'}) }}" title="Търсене на автори в Моята библиотека" />
+	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('persons_search', {'_format': 'osd'}) }}" title="Търсене на личности в Моята библиотека" />
 {% endblock %}
 {% block content %}
 	{% include 'App:Author:navigation.html.twig' with {'by': '', 'letter': ''} %}

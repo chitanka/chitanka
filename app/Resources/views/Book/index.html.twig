@@ -3,7 +3,7 @@
 {% set title = 'Книги' %}
 {% block head %}
 	{{ parent() }}
-	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('books_search', {'_format': 'osd'}) }}" title="Търсене по книги в Моята библиотека" />
+	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('books_search', {'_format': 'osd'}) }}" title="Търсене на книги в Моята библиотека" />
 {% endblock %}
 {% block content %}
 	<h2>По азбучен ред</h2>
