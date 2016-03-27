@@ -35,10 +35,10 @@
 	{#<link href="{{ helper.url('text_show', {'id': text.id}) }}" type="application/atom+xml; type=entry" rel="alternate" title="Подробна информация"/>#}
 
 	<rights>
-		{% if text.transLicense is defined %}
-			{{ text.transLicense.fullname }}
-		{% elseif text.origLicense is defined %}
-			{{ text.origLicense.fullname }}
+		{% if text.transLicense %}
+			{{ text.transLicense.name }} | {{ text.transLicense.fullname }} | {{ text.transLicense.uri }}
+		{% elseif text.origLicense %}
+			{{ text.origLicense.name }} | {{ text.origLicense.fullname }} | {{ text.origLicense.uri }}
 		{% endif %}
 	</rights>
 
