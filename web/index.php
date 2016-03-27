@@ -87,10 +87,10 @@ class CacheFile {
 	}
 	public function read() {
 		$content = file_get_contents($this->name);
-		if (empty($content) || $content[0] == '<'/* not compressed */) {
+		if (empty($content)) {
 			return $content;
 		}
-		return gzinflate($content);
+		return $this->compressed ? gzinflate($content) : $content;
 	}
 	public function delete() {
 		unlink($this->name);
