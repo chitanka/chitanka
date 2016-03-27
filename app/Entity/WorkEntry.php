@@ -5,15 +5,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Eko\FeedBundle\Item\Writer\RoutedItemInterface;
 
 /**
-* @ORM\Entity(repositoryClass="App\Entity\WorkEntryRepository")
-* @ORM\Table(name="work_entry",
-*	indexes={
-*		@ORM\Index(name="title_idx", columns={"title"}),
-*		@ORM\Index(name="author_idx", columns={"author"}),
-*		@ORM\Index(name="status_idx", columns={"status"}),
-*		@ORM\Index(name="date_idx", columns={"date"})}
-* )
-*/
+ * @ORM\Entity(repositoryClass="App\Entity\WorkEntryRepository")
+ * @ORM\Table(name="work_entry",
+ *	indexes={
+ *		@ORM\Index(name="title_idx", columns={"title"}),
+ *		@ORM\Index(name="author_idx", columns={"author"}),
+ *		@ORM\Index(name="status_idx", columns={"status"}),
+ *		@ORM\Index(name="date_idx", columns={"date"})}
+ * )
+ */
 class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable {
 
 	const STATUS_0 = 0;

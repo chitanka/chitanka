@@ -3,15 +3,15 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity(repositoryClass="App\Entity\TextRatingRepository")
-* @ORM\HasLifecycleCallbacks
-* @ORM\Table(name="text_rating",
-*	uniqueConstraints={@ORM\UniqueConstraint(name="text_user_uniq", columns={"text_id", "user_id"})},
-*	indexes={
-*		@ORM\Index(name="user_idx", columns={"user_id"}),
-*		@ORM\Index(name="date_idx", columns={"date"})}
-* )
-*/
+ * @ORM\Entity(repositoryClass="App\Entity\TextRatingRepository")
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="text_rating",
+ *	uniqueConstraints={@ORM\UniqueConstraint(name="text_user_uniq", columns={"text_id", "user_id"})},
+ *	indexes={
+ *		@ORM\Index(name="user_idx", columns={"user_id"}),
+ *		@ORM\Index(name="date_idx", columns={"date"})}
+ * )
+ */
 class TextRating extends Entity {
 	/**
 	 * @ORM\Column(type="integer")

@@ -3,12 +3,12 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity(repositoryClass="App\Entity\BookmarkRepository")
-* @ORM\HasLifecycleCallbacks
-* @ORM\Table(name="bookmark",
-*	uniqueConstraints={@ORM\UniqueConstraint(name="uniq_key", columns={"folder_id", "text_id", "user_id"})}
-* )
-*/
+ * @ORM\Entity(repositoryClass="App\Entity\BookmarkRepository")
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="bookmark",
+ *	uniqueConstraints={@ORM\UniqueConstraint(name="uniq_key", columns={"folder_id", "text_id", "user_id"})}
+ * )
+ */
 class Bookmark extends Entity {
 	/**
 	 * @ORM\Column(type="integer")

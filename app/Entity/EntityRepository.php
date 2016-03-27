@@ -159,7 +159,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 
 	/**
 	 * @param array $params
-	 * @return Entity
+	 * @return Entity[]
 	 */
 	public function findByQuery($params) {
 		if ($query = $this->query($params)) {

@@ -3,14 +3,14 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /*
-* Not an entity but needed for putting labels on texts.
-* See App\Form\Type\TextLabelType.
-*
-* @ORM\Entity
-* @ORM\Table(name="text_label",
-*	indexes={
-*		@ORM\Index(name="label_idx", columns={"label_id"})})
-*/
+ * Not an entity but needed for putting labels on texts.
+ * See App\Form\Type\TextLabelType.
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="text_label",
+ *	indexes={
+ *		@ORM\Index(name="label_idx", columns={"label_id"})})
+ */
 class TextLabel extends Entity {
 	/**
 	 * @ORM\Column(type="integer")

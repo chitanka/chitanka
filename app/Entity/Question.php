@@ -3,9 +3,9 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity
-* @ORM\Table(name="question")
-*/
+ * @ORM\Entity
+ * @ORM\Table(name="question")
+ */
 class Question extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")

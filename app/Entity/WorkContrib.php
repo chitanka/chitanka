@@ -3,13 +3,13 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity(repositoryClass="App\Entity\WorkEntryRepository")
-* @ORM\Table(name="work_contrib",
-*	uniqueConstraints={@ORM\UniqueConstraint(name="entry_user_uniq", columns={"entry_id", "user_id"})},
-*	indexes={
-*		@ORM\Index(name="user_idx", columns={"user_id"})}
-* )
-*/
+ * @ORM\Entity(repositoryClass="App\Entity\WorkEntryRepository")
+ * @ORM\Table(name="work_contrib",
+ *	uniqueConstraints={@ORM\UniqueConstraint(name="entry_user_uniq", columns={"entry_id", "user_id"})},
+ *	indexes={
+ *		@ORM\Index(name="user_idx", columns={"user_id"})}
+ * )
+ */
 class WorkContrib extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")

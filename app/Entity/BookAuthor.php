@@ -3,11 +3,11 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity
-* @ORM\Table(name="book_author",
-*	uniqueConstraints={@ORM\UniqueConstraint(name="person_book_uniq", columns={"person_id", "book_id"})}
-* )
-*/
+ * @ORM\Entity
+ * @ORM\Table(name="book_author",
+ *	uniqueConstraints={@ORM\UniqueConstraint(name="person_book_uniq", columns={"person_id", "book_id"})}
+ * )
+ */
 class BookAuthor extends Entity {
 	/**
 	 * @ORM\Column(type="integer")

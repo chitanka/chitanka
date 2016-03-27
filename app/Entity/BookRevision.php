@@ -3,13 +3,13 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity(repositoryClass="App\Entity\BookRevisionRepository")
-* @ORM\Table(name="book_revision",
-*	indexes={
-*		@ORM\Index(name="book_idx", columns={"book_id"}),
-*		@ORM\Index(name="date_idx", columns={"date"})}
-* )
-*/
+ * @ORM\Entity(repositoryClass="App\Entity\BookRevisionRepository")
+ * @ORM\Table(name="book_revision",
+ *	indexes={
+ *		@ORM\Index(name="book_idx", columns={"book_id"}),
+ *		@ORM\Index(name="date_idx", columns={"date"})}
+ * )
+ */
 class BookRevision extends Entity {
 	/**
 	 * @ORM\Column(type="integer")

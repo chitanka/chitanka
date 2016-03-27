@@ -4,14 +4,14 @@ use App\Util\Stringy;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity(repositoryClass="App\Entity\BookmarkFolderRepository")
-* @ORM\HasLifecycleCallbacks
-* @ORM\Table(name="bookmark_folder",
-*	uniqueConstraints={@ORM\UniqueConstraint(name="uniq_key", columns={"slug", "user_id"})},
-*	indexes={
-*		@ORM\Index(name="slug_idx", columns={"slug"})}
-* )
-*/
+ * @ORM\Entity(repositoryClass="App\Entity\BookmarkFolderRepository")
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="bookmark_folder",
+ *	uniqueConstraints={@ORM\UniqueConstraint(name="uniq_key", columns={"slug", "user_id"}), @ORM\UniqueConstraint(name="token", columns={"token"})},
+ *	indexes={
+ *		@ORM\Index(name="slug_idx", columns={"slug"})}
+ * )
+ */
 class BookmarkFolder extends Entity {
 	/**
 	 * @ORM\Column(type="integer")

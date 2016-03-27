@@ -3,11 +3,11 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity(repositoryClass="App\Entity\SearchStringRepository")
-* @ORM\Table(name="search_string",
-*	indexes={
-*		@ORM\Index(name="date_idx", columns={"date"})})
-*/
+ * @ORM\Entity(repositoryClass="App\Entity\SearchStringRepository")
+ * @ORM\Table(name="search_string",
+ *	indexes={
+ *		@ORM\Index(name="date_idx", columns={"date"})})
+ */
 class SearchString extends Entity {
 	/**
 	 * @ORM\Column(type="integer")

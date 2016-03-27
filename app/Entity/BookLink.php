@@ -3,11 +3,11 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity
-* @ORM\Table(name="book_link",
-*	uniqueConstraints={@ORM\UniqueConstraint(name="book_site_uniq", columns={"book_id", "site_id"})}
-* )
-*/
+ * @ORM\Entity
+ * @ORM\Table(name="book_link",
+ *	uniqueConstraints={@ORM\UniqueConstraint(name="book_site_uniq", columns={"book_id", "site_id"})}
+ * )
+ */
 class BookLink extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")

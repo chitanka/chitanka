@@ -3,13 +3,13 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity
-* @ORM\Table(name="text_translator",
-*	uniqueConstraints={@ORM\UniqueConstraint(name="person_text_uniq", columns={"person_id", "text_id"})},
-*	indexes={
-*		@ORM\Index(name="text_idx", columns={"text_id"})}
-* )
-*/
+ * @ORM\Entity
+ * @ORM\Table(name="text_translator",
+ *	uniqueConstraints={@ORM\UniqueConstraint(name="person_text_uniq", columns={"person_id", "text_id"})},
+ *	indexes={
+ *		@ORM\Index(name="text_idx", columns={"text_id"})}
+ * )
+ */
 class TextTranslator extends Entity {
 	/**
 	 * @ORM\Column(type="integer")

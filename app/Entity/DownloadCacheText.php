@@ -3,11 +3,11 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity
-* @ORM\Table(name="download_cache_text",
-*	indexes={@ORM\Index(name="text_idx", columns={"text_id"})}
-* )
-*/
+ * @ORM\Entity
+ * @ORM\Table(name="download_cache_text",
+ *	indexes={@ORM\Index(name="text_idx", columns={"text_id"})}
+ * )
+ */
 class DownloadCacheText extends Entity {
 	/**
 	 * @ORM\Id

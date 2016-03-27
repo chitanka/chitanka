@@ -3,13 +3,13 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity
-* @ORM\Table(name="label_log",
-*	indexes={
-*		@ORM\Index(name="text_idx", columns={"text_id"}),
-*		@ORM\Index(name="user_idx", columns={"user_id"})}
-* )
-*/
+ * @ORM\Entity
+ * @ORM\Table(name="label_log",
+ *	indexes={
+ *		@ORM\Index(name="text_idx", columns={"text_id"}),
+ *		@ORM\Index(name="user_idx", columns={"user_id"})}
+ * )
+ */
 class LabelLog extends Entity {
 	/**
 	 * @ORM\Column(type="integer")

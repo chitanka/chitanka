@@ -3,9 +3,9 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity(repositoryClass="App\Entity\ForeignBookRepository")
-* @ORM\Table(name="foreign_book")
-*/
+ * @ORM\Entity(repositoryClass="App\Entity\ForeignBookRepository")
+ * @ORM\Table(name="foreign_book")
+ */
 class ForeignBook extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")

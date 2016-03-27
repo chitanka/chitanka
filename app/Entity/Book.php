@@ -10,16 +10,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Sfblib\SfbConverter;
 
 /**
-* @ORM\Entity(repositoryClass="App\Entity\BookRepository")
-* @ORM\HasLifecycleCallbacks
-* @ORM\Table(name="book",
-*	indexes={
-*		@ORM\Index(name="title_idx", columns={"title"}),
-*		@ORM\Index(name="title_author_idx", columns={"title_author"}),
-*		@ORM\Index(name="subtitle_idx", columns={"subtitle"}),
-*		@ORM\Index(name="orig_title_idx", columns={"orig_title"})}
-* )
-*/
+ * @ORM\Entity(repositoryClass="App\Entity\BookRepository")
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="book",
+ *	indexes={
+ *		@ORM\Index(name="title_idx", columns={"title"}),
+ *		@ORM\Index(name="title_author_idx", columns={"title_author"}),
+ *		@ORM\Index(name="subtitle_idx", columns={"subtitle"}),
+ *		@ORM\Index(name="orig_title_idx", columns={"orig_title"})}
+ * )
+ */
 class Book extends BaseWork implements \JsonSerializable {
 
 	/**
@@ -147,27 +147,27 @@ class Book extends BaseWork implements \JsonSerializable {
 	private $removedNotice;
 
 	/*
-	 * @var ArrayCollection
+	 * @var ArrayCollection|Person[]
 	 * @ORM\ManyToMany(targetEntity="Person", inversedBy="books")
 	 * @ORM\JoinTable(name="book_author")
 	 */
 	private $authors;
 
 	/**
-	 * @var ArrayCollection
+	 * @var ArrayCollection|BookAuthor[]
 	 * @ORM\OneToMany(targetEntity="BookAuthor", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"pos" = "ASC"})
 	 */
 	private $bookAuthors;
 
 	/**
-	 * @var ArrayCollection
+	 * @var ArrayCollection|BookText[]
 	 * @ORM\OneToMany(targetEntity="BookText", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
 	 */
 	private $bookTexts;
 
 	/** FIXME doctrine:schema:create does not allow this relation
-	 * @var ArrayCollection
+	 * @var ArrayCollection|Text[]
 	 * @ORM\ManyToMany(targetEntity="Text", inversedBy="books")
 	 * @ORM\JoinTable(name="book_text",
 	 *	joinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id")},
@@ -176,13 +176,13 @@ class Book extends BaseWork implements \JsonSerializable {
 	private $texts;
 
 	/**
-	 * @var ArrayCollection
+	 * @var ArrayCollection|BookLink[]
 	 * @ORM\OneToMany(targetEntity="BookLink", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
 	 */
 	private $links;
 
 	/**
-	 * @var ArrayCollection
+	 * @var ArrayCollection|BookIsbn[]
 	 * @ORM\OneToMany(targetEntity="BookIsbn", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
 	 */
 	private $isbns;
@@ -268,6 +268,9 @@ class Book extends BaseWork implements \JsonSerializable {
 	public function setRemovedNotice($removedNotice) { $this->removedNotice = $removedNotice; }
 	public function getRemovedNotice() { return $this->removedNotice; }
 
+	/**
+	 * @return Person[]
+	 */
 	public function getAuthors() {
 		if (!isset($this->authors)) {
 			$this->authors = [];
@@ -390,6 +393,10 @@ class Book extends BaseWork implements \JsonSerializable {
 		return $this->getLink('ПУК!');
 	}
 
+	/**
+	 * @param string $name
+	 * @return BookLink|null
+	 */
 	public function getLink($name) {
 		$links = $this->getLinks();
 		foreach ($links as $link) {
@@ -397,7 +404,6 @@ class Book extends BaseWork implements \JsonSerializable {
 				return $link;
 			}
 		}
-
 		return null;
 	}
 
@@ -435,7 +441,7 @@ class Book extends BaseWork implements \JsonSerializable {
 
 	public function getAuthorSlugs() {
 		$slugs = [];
-		foreach ($this->getAuthors() as $author/*@var $author Person*/) {
+		foreach ($this->getAuthors() as $author) {
 			$slugs[] = $author->getSlug();
 		}
 		return $slugs;
@@ -462,6 +468,9 @@ class Book extends BaseWork implements \JsonSerializable {
 	}
 
 	private $translators;
+	/**
+	 * @return Person[]
+	 */
 	public function getTranslators() {
 		if ( ! isset($this->translators) ) {
 			$this->translators = [];
@@ -534,8 +543,9 @@ class Book extends BaseWork implements \JsonSerializable {
 	}
 
 	/**
-	 * @param $id Text or book ID
-	 * @param $defCover Default covers if there aren’t any for $id
+	 * @param int $id Text or book ID
+	 * @param string $defCover Default covers if there aren’t any for $id
+	 * @return string[]
 	 */
 	public static function getCovers($id, $defCover = null) {
 		$key = 'book-cover-content';
@@ -576,6 +586,9 @@ class Book extends BaseWork implements \JsonSerializable {
 		return $this->getTextThumbImages();
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function getLocalImages() {
 		$images = [];
 
@@ -587,6 +600,9 @@ class Book extends BaseWork implements \JsonSerializable {
 		return $images;
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function getTextImages() {
 		$images = [];
 
@@ -597,6 +613,9 @@ class Book extends BaseWork implements \JsonSerializable {
 		return $images;
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function getTextThumbImages() {
 		$images = [];
 
@@ -607,6 +626,9 @@ class Book extends BaseWork implements \JsonSerializable {
 		return $images;
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function getLabels() {
 		$labels = [];
 
@@ -617,10 +639,12 @@ class Book extends BaseWork implements \JsonSerializable {
 		}
 
 		$labels = array_unique($labels);
-
 		return $labels;
 	}
 
+	/**
+	 * @return null|string
+	 */
 	public function getContentAsSfb() {
 		if (!$this->isInSfbFormat()) {
 			return null;
@@ -631,11 +655,17 @@ class Book extends BaseWork implements \JsonSerializable {
 			. $this->getInfoAsSfb();
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getMainBodyAsSfb() {
 		return $this->getTemplate()->generateSfb();
 	}
 
 	private $_mainBodyAsSfbFile;
+	/**
+	 * @return string
+	 */
 	public function getMainBodyAsSfbFile() {
 		if ( isset($this->_mainBodyAsSfbFile) ) {
 			return $this->_mainBodyAsSfbFile;
@@ -649,8 +679,10 @@ class Book extends BaseWork implements \JsonSerializable {
 
 	/**
 	 * Return the author of a text if he/she is not on the book title
+	 * @param Text $text
+	 * @return Person[]
 	 */
-	public function getBookAuthorIfNotInTitle($text) {
+	public function getBookAuthorIfNotInTitle(Text $text) {
 		$bookAuthorsIds = $this->getAuthorIds();
 		$authors = [];
 		foreach ($text->getAuthors() as $author) {
@@ -756,6 +788,9 @@ class Book extends BaseWork implements \JsonSerializable {
 		return isset($texts[$textId]) ? $texts[$textId] : null;
 	}
 
+	/**
+	 * @return Text[]
+	 */
 	public function getTextsById() {
 		if ( empty($this->textsById) ) {
 			foreach ($this->getTextIds() as $id) {
@@ -779,7 +814,7 @@ class Book extends BaseWork implements \JsonSerializable {
 		return false;
 	}
 
-	public function isFromSameAuthor($text) {
+	public function isFromSameAuthor(Text $text) {
 		return $this->getAuthorIds() == $text->getAuthorIds();
 	}
 

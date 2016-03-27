@@ -3,9 +3,9 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* @ORM\Entity
-* @ORM\Table(name="download_cache")
-*/
+ * @ORM\Entity
+ * @ORM\Table(name="download_cache")
+ */
 class DownloadCache extends Entity {
 	/**
 	 * @var int
