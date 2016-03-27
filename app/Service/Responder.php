@@ -57,7 +57,7 @@ class Responder {
 		];
 		if (in_array($request->getRequestFormat(), [self::FORMAT_JSON, self::FORMAT_SUGGEST])) {
 			$response = new JsonResponse($params);
-			$response->setEncodingOptions($response->getEncodingOptions() | JSON_UNESCAPED_UNICODE);
+			//$response->setEncodingOptions($response->getEncodingOptions() | JSON_UNESCAPED_UNICODE);
 		} else {
 			$response = new Response();
 			if (isset($params['_content'])) {
