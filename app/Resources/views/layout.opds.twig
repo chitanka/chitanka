@@ -26,7 +26,7 @@
 	<link rel="start" href="{{ helper.url('catalog') }}" type="application/atom+xml; profile=opds-catalog; kind=navigation"/>
 	<link rel="self" href="{{ link_self }}" type="application/atom+xml; profile=opds-catalog; kind=navigation"/>
 	{% block link_search %}
-		<link rel="search" href="{{ helper.url('books_search') }}" type="application/opensearchdescription+xml" title="Търсене на книги"/>
+		<link rel="search" href="{{ url('books_search', {_format: 'osd'}) }}" type="application/opensearchdescription+xml" title="Търсене на книги"/>
 	{% endblock %}
 	{% if link_up is defined %}
 		<link rel="up" href="{{ link_up }}" type="application/atom+xml; profile=opds-catalog; kind=navigation"/>
