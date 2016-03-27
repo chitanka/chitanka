@@ -4,7 +4,7 @@
 {% set link_self = helper.url('texts') %}
 {% set title = 'Произведения' %}
 {% block link_search %}
-	<link rel="search" href="{{ url('texts_search', {_format: 'osd'}) }}" type="application/opensearchdescription+xml" title="Търсене на произведения"/>
+	<link rel="search" href="{{ helper.url('texts_search') }}" type="application/opensearchdescription+xml" title="Търсене на произведения"/>
 {% endblock %}
 {% block content %}
 	{{ helper.navi_entry('По азбучен ред', texts_updated_at, 'texts_by_alpha_index', {}, 'Списък на произведенията по азбучен ред') }}
