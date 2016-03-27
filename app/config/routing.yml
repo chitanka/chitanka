@@ -68,7 +68,7 @@ authors_search:
     path:           /authors/search.{_format}
     defaults:       { _controller: App:Author:search, _format: html }
     methods:      [GET]
-    requirements:   {  _format: html|xml|json|suggest|osd }
+    requirements:   {  _format: html|json|opds|osd|suggest|xml }
 
 author_show:
     path:           /author/{slug}.{_format}
@@ -126,7 +126,7 @@ translators_search:
     path:           /translators/search.{_format}
     defaults:       { _controller: App:Translator:search, _format: html }
     methods: [GET]
-    requirements:    {  _format: html|xml|json|suggest|osd }
+    requirements:    {  _format: html|json|opds|osd|suggest|xml }
 
 translator_show:
     path:           /translator/{slug}.{_format}
@@ -139,7 +139,7 @@ persons_search:
     path:           /persons/search.{_format}
     defaults:       { _controller: App:Person:search, _format: html }
     methods: [GET]
-    requirements:    {  _format: html|xml|json|suggest|osd }
+    requirements:    {  _format: html|json|opds|osd|suggest|xml }
 
 person_show:
     path:           /person/{slug}.{_format}
@@ -174,7 +174,7 @@ series_search:
     path:           /series/search.{_format}
     defaults:       { _controller: App:Series:search, _format: html }
     methods: [GET]
-    requirements:    {  _format: html|xml|json|suggest|osd }
+    requirements:    {  _format: html|json|opds|osd|xml|suggest }
 
 series_by_alpha:
     path:           /series/alpha/{letter}.{_format}/{page}
@@ -206,7 +206,7 @@ books_search:
     path:           /books/search.{_format}
     defaults:       { _controller: App:Book:search, _format: html }
     methods: [GET]
-    requirements:    {  _format: html|xml|json|suggest|osd }
+    requirements:    {  _format: html|json|opds|osd|suggest|xml }
 
 books_by_alpha:
     path:           /books/alpha/{letter}.{_format}/{page}
@@ -276,7 +276,7 @@ sequences_search:
     path:           /sequences/search.{_format}
     defaults:       { _controller: App:Sequence:search, _format: html }
     methods: [GET]
-    requirements:    {  _format: html|xml|json|suggest|osd }
+    requirements:    {  _format: html|json|opds|osd|suggest|xml }
 
 sequences_by_alpha:
     path:           /sequences/alpha/{letter}.{_format}/{page}
@@ -314,7 +314,7 @@ texts_search:
     path:           /texts/search.{_format}
     defaults:       { _controller: App:Text:search, _format: html }
     methods: [GET]
-    requirements:    {  _format: html|xml|json|suggest|osd }
+    requirements:    {  _format: html|json|opds|osd|suggest|xml }
 
 texts_by_alpha:
     path:           /texts/alpha/{letter}.{_format}/{page}
@@ -420,7 +420,7 @@ search:
     path:         /search.{_format}
     defaults:     { _controller: App:Search:index, _format: html }
     methods: [GET]
-    requirements:    {  _format: html|xml|json|suggest|osd }
+    requirements:    {  _format: html|json|opds|osd|xml|suggest }
 
 sandbox:
     path:      /sandbox

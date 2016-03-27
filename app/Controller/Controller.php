@@ -6,6 +6,7 @@ use App\Service\FlashService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class Controller extends SymfonyController {
 
@@ -68,7 +69,7 @@ abstract class Controller extends SymfonyController {
 	}
 
 	protected function asJson($content) {
-		return $this->asText(json_encode($content));
+		return $this->asText(json_encode($content), 'application/json');
 	}
 
 	protected function setCacheStatusByResponse(Response $response) {
@@ -179,6 +180,10 @@ abstract class Controller extends SymfonyController {
 
 	protected function getWebRoot() {
 		return dirname($this->get('request_stack')->getMasterRequest()->server->get('SCRIPT_NAME'));
+	}
+
+	protected function generateAbsoluteUrl($route, $parameters = array()) {
+		return $this->generateUrl($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
 	}
 
 	public function generateUrlForLegacyCode($route, $parameters = []) {

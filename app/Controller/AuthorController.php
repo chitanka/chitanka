@@ -55,7 +55,7 @@ class AuthorController extends PersonController {
 				$urls[] = $this->generateUrl('author_show', ['slug' => $person->getSlug()], true);
 			}
 
-			return $this->asJson([$query, $items, $descs, $urls]);
+			return [$query, $items, $descs, $urls];
 		}
 		return [];
 	}

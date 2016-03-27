@@ -8,10 +8,13 @@
 	<InputEncoding>UTF-8</InputEncoding>
 	<OutputEncoding>UTF-8</OutputEncoding>
 	<Image width="16" height="16" type="image/png">{{ asset('favicon.png') }}</Image>
-	<Url type="application/opensearchdescription+xml" rel="self" template="{{ url(current_route, {'_format': 'osd'}) }}" />
+	<Url type="application/opensearchdescription+xml" rel="self" template="{{ url(current_route, {'_format': 'osd'}) }}"/>
 	<Url type="text/html" template="{{ url(current_route, {'_format': 'html'}) }}?q={searchTerms}"/>
+	<Url type="text/xml" template="{{ url(current_route, {'_format': 'xml'}) }}?q={searchTerms}"/>
+	<Url type="application/json" template="{{ url(current_route, {'_format': 'json'}) }}?q={searchTerms}"/>
 	<Url type="application/x-suggestions+json" rel="suggestions" template="{{ url(current_route, {'_format': 'suggest'}) }}?q={searchTerms}"/>
-	<Query role="example" searchTerms="man" />
+	{% block extra_urls %}{% endblock %}
+	<Query role="example" searchTerms="man"/>
 	<SyndicationRight>open</SyndicationRight>
 	<Language>bg-bg</Language>
 	<moz:SearchForm>{{ url(current_route, {'_format': 'osd'}) }}</moz:SearchForm>

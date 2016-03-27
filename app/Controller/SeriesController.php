@@ -59,7 +59,7 @@ class SeriesController extends Controller {
 				$urls[] = $this->generateUrl('series_show', ['slug' => $serie['slug']], true);
 			}
 
-			return $this->asJson([$query, $items, $descs, $urls]);
+			return [$query, $items, $descs, $urls];
 		}
 		$searchService = new SearchService($this->em());
 		$query = $searchService->prepareQuery($request, $_format);

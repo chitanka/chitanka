@@ -50,15 +50,15 @@ class SequenceController extends Controller {
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
-				'limit' => 10,
+				'limit' => self::PAGE_COUNT_LIMIT,
 			]);
 			foreach ($sequences as $sequence) {
 				$items[] = $sequence['name'];
 				$descs[] = '';
-				$urls[] = $this->generateUrl('sequence_show', ['slug' => $sequence['slug']], true);
+				$urls[] = $this->generateAbsoluteUrl('sequence_show', ['slug' => $sequence['slug']]);
 			}
 
-			return $this->asJson([$query, $items, $descs, $urls]);
+			return [$query, $items, $descs, $urls];
 		}
 		$searchService = new SearchService($this->em());
 		$query = $searchService->prepareQuery($request, $_format);

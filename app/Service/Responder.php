@@ -8,9 +8,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Responder {
 
+	const FORMAT_JSON = 'json';
+	const FORMAT_OPDS = 'opds';
+	const FORMAT_OSD = 'osd';
+	const FORMAT_SUGGEST = 'suggest';
+
 	public static $customResponseFormats = [
-		'osd' => 'application/opensearchdescription+xml',
-		'suggest' => 'application/x-suggestions+json',
+		self::FORMAT_OSD => 'application/opensearchdescription+xml',
+		self::FORMAT_SUGGEST => 'application/x-suggestions+json',
 	];
 
 	/** @var \Twig_Environment */
@@ -45,26 +50,25 @@ class Responder {
 	 * @return Response
 	 */
 	public function createResponse(Request $request, $controller, $params) {
-		if ($request->getRequestFormat() == 'json') {
-			$jsonResponse = new JsonResponse();
-			$jsonResponse->setData($params);
-			return $jsonResponse;
-		}
-		$response = new Response();
-		$params += [
+		$params += $this->getExtraParamsForFormat($request->getRequestFormat()) + [
 			'_cache' => $this->useHttpCache ? 86400/*24 hours*/ : 0,
 			'_status' => null,
 			'_type' => null,
 		];
-		if (isset($params['_content'])) {
-			$content = $params['_content'];
+		if (in_array($request->getRequestFormat(), [self::FORMAT_JSON, self::FORMAT_SUGGEST])) {
+			$response = new JsonResponse($params);
+			$response->setEncodingOptions($response->getEncodingOptions() | JSON_UNESCAPED_UNICODE);
 		} else {
-			$params += $this->getExtraParamsForFormat($request->getRequestFormat()) + $this->createExtraTemplateParams($request);
-			$template = $params['_template'] ?: $this->createTemplateReference($controller, $request)->getLogicalName();
-			$content = $this->twig->render($template, $params);
+			$response = new Response();
+			if (isset($params['_content'])) {
+				$content = $params['_content'];
+			} else {
+				$params += $this->createExtraTemplateParams($request);
+				$template = $params['_template'] ?: $this->createTemplateReference($controller, $request)->getLogicalName();
+				$content = $this->twig->render($template, $params);
+			}
+			$response->setContent($content);
 		}
-
-		$response->setContent($content);
 		if ($params['_cache']) {
 			$response->setSharedMaxAge($params['_cache']);
 		}
@@ -98,7 +102,7 @@ class Responder {
 	 */
 	private function getExtraParamsForFormat($format) {
 		switch ($format) {
-			case 'opds':
+			case self::FORMAT_OPDS:
 				$textsUpdatedAt = $this->em->getTextRevisionRepository()->getMaxDate();
 				$booksUpdatedAt = $this->em->getBookRevisionRepository()->getMaxDate();
 				return [
@@ -106,7 +110,7 @@ class Responder {
 					'books_updated_at' => $booksUpdatedAt,
 					'updated_at' => max($textsUpdatedAt, $booksUpdatedAt),
 				];
-			case 'osd':
+			case self::FORMAT_OSD:
 				return [
 					'_cache' => 31536000, // an year
 				];

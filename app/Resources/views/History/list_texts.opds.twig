@@ -3,6 +3,9 @@
 
 {% set link_self = helper.url(current_route, {'page': pager.page}) %}
 {% set title = 'Нови произведения' %}
+{% block link_search %}
+	<link rel="search" href="{{ url('texts_search', {_format: 'osd'}) }}" type="application/opensearchdescription+xml" title="Търсене на произведения"/>
+{% endblock %}
 {% block content %}
 	{% for text_revision in text_revisions %}
 		{% include 'App:Text:item.opds.twig' with {'text': text_revision.text} %}

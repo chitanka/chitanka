@@ -140,21 +140,22 @@ class BookController extends Controller {
 			return [];
 		}
 		if ($_format == 'suggest') {
-			$items = $descs = $urls = [];
 			$query = $request->query->get('q');
 			$books = $this->em()->getBookRepository()->findByQuery([
 				'text'  => $query,
-				'by'    => 'title',
+				'by'    => 'title,subtitle,origTitle',
 				'match' => 'prefix',
-				'limit' => 10,
+				'limit' => self::PAGE_COUNT_LIMIT,
 			]);
+			$items = $descs = $urls = [];
 			foreach ($books as $book) {
-				$items[] = $book->getTitle();
+				$authors = $book->getAuthorNamesString();
+				$items[] = $book->getTitle() . ($authors ? " – $authors" : '');
 				$descs[] = '';
-				$urls[] = $this->generateUrl('book_show', ['id' => $book->getId()], true);
+				$urls[] = $this->generateAbsoluteUrl('book_show', ['id' => $book->getId()]);
 			}
 
-			return $this->asJson([$query, $items, $descs, $urls]);
+			return [$query, $items, $descs, $urls];
 		}
 		$searchService = new SearchService($this->em());
 		$query = $searchService->prepareQuery($request, $_format);

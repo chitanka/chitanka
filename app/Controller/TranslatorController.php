@@ -13,15 +13,15 @@ class TranslatorController extends PersonController {
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
-				'limit' => 10,
+				'limit' => self::PAGE_COUNT_LIMIT,
 			]);
 			foreach ($persons as $person) {
 				$items[] = $person['name'];
 				$descs[] = '';
-				$urls[] = $this->generateUrl('translator_show', ['slug' => $person['slug']], true);
+				$urls[] = $this->generateAbsoluteUrl('translator_show', ['slug' => $person['slug']]);
 			}
 
-			return $this->asJson([$query, $items, $descs, $urls]);
+			return [$query, $items, $descs, $urls];
 		}
 		return [];
 	}
