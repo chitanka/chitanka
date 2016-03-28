@@ -3,7 +3,7 @@
 
 {% set title = 'Произведения по етикет' %}
 {% set subtitle = label.name %}
-{% set link_self = helper.url(current_route, {'slug': label.slug}) %}
+{% set link_self = helper.path(current_route, {'slug': label.slug}) %}
 {% block content %}
 	{% include 'App:Text:list.opds.twig' %}
 	{% include 'App::pager.opds.twig' %}

@@ -1,7 +1,7 @@
 {% extends 'App::layout.opds.twig' %}
 {% import 'App::helper.opds.twig' as helper %}
 
-{% set link_self = helper.url('authors_by_alpha_index', {'by': by}) %}
+{% set link_self = helper.path('authors_by_alpha_index', {'by': by}) %}
 {% set title = ('authors.by.'~by)|trans %}
 {% block content %}
 	{{ helper.letter_links('authors_by_alpha', {'by': by}) }}

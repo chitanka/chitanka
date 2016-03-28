@@ -4,7 +4,7 @@
 	<entry>
 		<title>{{ serie.name }}</title>
 		<id>{{ helper.urn('series_show', [serie.slug]) }}</id>
-		{{ helper.link(helper.url('series_show', {'slug': serie.slug})) }}
+		{{ helper.link(helper.path('series_show', {'slug': serie.slug})) }}
 		<content type="html">
 			{% filter escape %}
 			<dl>

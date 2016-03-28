@@ -42,7 +42,7 @@
 	<link rel="http://opds-spec.org/image/thumbnail"
 		href="{{ asset(book.hasCover ? cover(book.id, 200) : cover(0, 200, 'png')) }}"
 		type="image/{{ cover_format }}"/>
-	{#<link href="{{ helper.url('book_show', {'id': book.id}) }}" type="application/atom+xml; type=entry" rel="alternate" title="Подробна информация"/>#}
+	{#<link href="{{ helper.path('book_show', {'id': book.id}) }}" type="application/atom+xml; type=entry" rel="alternate" title="Подробна информация"/>#}
 
 	<rights>
 		{% if book.transLicense is defined %}

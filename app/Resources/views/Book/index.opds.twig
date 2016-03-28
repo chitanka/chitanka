@@ -1,7 +1,7 @@
 {% extends 'App::layout.opds.twig' %}
 {% import 'App::helper.opds.twig' as helper %}
 
-{% set link_self = helper.url(current_route) %}
+{% set link_self = helper.path(current_route) %}
 {% set title = 'Книги' %}
 {% block content %}
 	{{ helper.navi_entry('По азбучен ред', books_updated_at, 'books_by_alpha_index', {}, 'Списък на книгите по азбучен ред') }}

@@ -2,7 +2,7 @@
 
 {% import 'App::helper.opds.twig' as helper %}
 {% set id = helper.urn('books_by_alpha_index') %}
-{% set link_self = helper.url('books_by_alpha_index') %}
+{% set link_self = helper.path('books_by_alpha_index') %}
 {% set title = 'Книги по азбучен ред' %}
 {% block content %}
 	{{ helper.letter_links('books_by_alpha') }}

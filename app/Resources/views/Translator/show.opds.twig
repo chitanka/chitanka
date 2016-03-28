@@ -1,7 +1,7 @@
 {% extends 'App::layout.opds.twig' %}
 {% import 'App::helper.opds.twig' as helper %}
 
-{% set link_self = helper.url('translator_show', {'slug': person.slug}) %}
+{% set link_self = helper.path('translator_show', {'slug': person.slug}) %}
 {% set title = person.name ~ ' (преводач)' %}
 {% block content %}
 	{% for series in texts_as_translator %}

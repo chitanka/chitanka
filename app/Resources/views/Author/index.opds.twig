@@ -1,7 +1,7 @@
 {% extends 'App::layout.opds.twig' %}
 {% import 'App::helper.opds.twig' as helper %}
 
-{% set link_self = helper.url('authors') %}
+{% set link_self = helper.path('authors') %}
 {% set title = 'Автори' %}
 {% block content %}
 	{{ helper.navi_entry('По малко име', updated_at, 'authors_by_alpha_index', {'by': 'first-name'}, 'Списък на авторите по малко име') }}

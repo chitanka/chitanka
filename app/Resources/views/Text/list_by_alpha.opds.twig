@@ -5,7 +5,7 @@
 {% if letter != '-' %}
 	{% set subtitle = letter %}
 {% endif %}
-{% set link_self = helper.url(current_route, {'letter': letter}) %}
+{% set link_self = helper.path(current_route, {'letter': letter}) %}
 {% block content %}
 
 	{% include 'App:Text:list.opds.twig' %}

@@ -32,7 +32,7 @@
 	{{ _self.download_link(text, 'fb2.zip', 'application/x-fictionbook+xml') }}
 	{{ _self.download_link(text, 'txt.zip', 'application/zip') }}
 	{{ _self.download_link(text, 'sfb.zip', 'application/zip') }}
-	{#<link href="{{ helper.url('text_show', {'id': text.id}) }}" type="application/atom+xml; type=entry" rel="alternate" title="Подробна информация"/>#}
+	{#<link href="{{ helper.path('text_show', {'id': text.id}) }}" type="application/atom+xml; type=entry" rel="alternate" title="Подробна информация"/>#}
 
 	<rights>
 		{% if text.transLicense %}

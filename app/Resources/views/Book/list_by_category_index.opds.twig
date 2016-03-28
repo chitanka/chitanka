@@ -5,7 +5,7 @@
 	Книги в категория „{{ category.name }}“. Общо: {{ category.nrOfBooks }}
 {% endmacro %}
 
-{% set link_self = helper.url(current_route) %}
+{% set link_self = helper.path(current_route) %}
 {% set title = 'Книги по категория' %}
 {% block content %}
 	{% for category in categories %}

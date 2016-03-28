@@ -1,7 +1,7 @@
 {% extends 'App::layout.opds.twig' %}
 {% import 'App::helper.opds.twig' as helper %}
 
-{% set link_self = helper.url('texts_by_alpha_index') %}
+{% set link_self = helper.path('texts_by_alpha_index') %}
 {% set title = 'Произведения по азбучен ред' %}
 {% block content %}
 	{{ helper.letter_links('texts_by_alpha') }}

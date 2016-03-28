@@ -1,10 +1,10 @@
 {% extends 'App::layout.opds.twig' %}
 {% import 'App::helper.opds.twig' as helper %}
 
-{% set link_self = helper.url(current_route, {'page': pager.page}) %}
+{% set link_self = helper.path(current_route, {'page': pager.page}) %}
 {% set title = 'Нови произведения' %}
 {% block link_search %}
-	<link rel="search" href="{{ url('texts_search', {_format: 'osd'}) }}" type="application/opensearchdescription+xml" title="Търсене на произведения"/>
+	<link rel="search" href="{{ path('texts_search', {_format: 'osd'}) }}" type="application/opensearchdescription+xml" title="Търсене на произведения"/>
 {% endblock %}
 {% block content %}
 	{% for text_revision in text_revisions %}

@@ -1,10 +1,10 @@
 {% extends 'App::layout.opds.twig' %}
 {% import 'App::helper.opds.twig' as helper %}
 
-{% set link_self = helper.url('catalog') %}
+{% set link_self = helper.path('catalog') %}
 {% block content %}
-	<link type="application/atom+xml; profile=opds-catalog; kind=acquisition" rel="http://opds-spec.org/sort/new" title="Нови книги" href="{{ helper.url('new_books') }}"/>
-	<link type="application/atom+xml; profile=opds-catalog; kind=acquisition" rel="http://opds-spec.org/sort/new" title="Нови творби" href="{{ helper.url('new_texts') }}"/>
+	<link type="application/atom+xml; profile=opds-catalog; kind=acquisition" rel="http://opds-spec.org/sort/new" title="Нови книги" href="{{ helper.path('new_books') }}"/>
+	<link type="application/atom+xml; profile=opds-catalog; kind=acquisition" rel="http://opds-spec.org/sort/new" title="Нови творби" href="{{ helper.path('new_texts') }}"/>
 
 	{{ helper.navi_entry('Нови книги', books_updated_at, 'new_books', {}, 'Новодобавени книги, подредени по дата') }}
 	{{ helper.navi_entry('Нови творби', texts_updated_at, 'new_texts', {}, 'Новодобавени текстове, подредени по дата') }}

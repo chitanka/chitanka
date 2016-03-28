@@ -15,9 +15,8 @@ urn:x-chitanka:{{ route }}{% if params is not empty %}:{{ params|join('-')|url_e
 {% endmacro %}
 
 {% macro link_and_id(route, params) %}
-	{% set url = _self.url(route, params) %}
-	{{ _self.id(url) }}
-	{{ _self.link(url) }}
+	{{ _self.id(_self.url(route, params)) }}
+	{{ _self.link(_self.path(route, params)) }}
 {% endmacro %}
 
 {% macro updated(updatedAt) %}

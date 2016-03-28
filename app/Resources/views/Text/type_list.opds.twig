@@ -2,7 +2,7 @@
 	<entry>
 		<title>{{ ('text.type.singular.'~type) | trans }}</title>
 		<id>{{ helper.urn('texts_by_type', [type]) }}</id>
-		{{ helper.link(helper.url('texts_by_type', {'type': type})) }}
+		{{ helper.link(helper.path('texts_by_type', {'type': type})) }}
 		<content type="text">Произведения от вид „{{ ('text.type.singular.'~type) | trans }}“</content>
 	</entry>
 {% endfor %}

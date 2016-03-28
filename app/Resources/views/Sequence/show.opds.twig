@@ -1,7 +1,7 @@
 {% extends 'App::layout.opds.twig' %}
 {% import 'App::helper.opds.twig' as helper %}
 
-{% set link_self = helper.url(current_route, {'slug': sequence.slug}) %}
+{% set link_self = helper.path(current_route, {'slug': sequence.slug}) %}
 {% set title = sequence.name %}
 {% set subtitle = 'издателска поредица' %}
 {% block content %}

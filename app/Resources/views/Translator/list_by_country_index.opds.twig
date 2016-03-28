@@ -1,7 +1,7 @@
 {% extends 'App::layout.opds.twig' %}
 {% import 'App::helper.opds.twig' as helper %}
 
-{% set link_self = helper.url('translators_by_country_index', {'by': by}) %}
+{% set link_self = helper.path('translators_by_country_index', {'by': by}) %}
 {% set title = ('translators.by.country.'~by)|trans %}
 {% block content %}
 

@@ -1,10 +1,10 @@
 {% extends 'App::layout.opds.twig' %}
 {% import 'App::helper.opds.twig' as helper %}
 
-{% set link_self = helper.url('texts') %}
+{% set link_self = helper.path('texts') %}
 {% set title = 'Произведения' %}
 {% block link_search %}
-	<link rel="search" href="{{ url('texts_search', {_format: 'osd'}) }}" type="application/opensearchdescription+xml" title="Търсене на произведения"/>
+	<link rel="search" href="{{ path('texts_search', {_format: 'osd'}) }}" type="application/opensearchdescription+xml" title="Търсене на произведения"/>
 {% endblock %}
 {% block content %}
 	{{ helper.navi_entry('По азбучен ред', texts_updated_at, 'texts_by_alpha_index', {}, 'Списък на произведенията по азбучен ред') }}
