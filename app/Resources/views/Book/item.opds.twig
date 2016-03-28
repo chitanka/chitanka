@@ -44,13 +44,7 @@
 		type="image/{{ cover_format }}"/>
 	{#<link href="{{ helper.path('book_show', {'id': book.id}) }}" type="application/atom+xml; type=entry" rel="alternate" title="Подробна информация"/>#}
 
-	<rights>
-		{% if book.transLicense is defined %}
-			{{ book.transLicense.fullname }}
-		{% elseif book.origLicense is defined %}
-			{{ book.origLicense.fullname }}
-		{% endif %}
-	</rights>
+	{#<rights></rights>#}
 
 	{#<content type="text"></content>#}
 </entry>
