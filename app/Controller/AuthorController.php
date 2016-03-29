@@ -34,7 +34,7 @@ class AuthorController extends PersonController {
 	public function searchAction(Request $request, $_format) {
 		$query = $request->query->get('q');
 		if ($_format == 'json') {
-			$persons = $this->em()->getPersonRepository()->asAuthor()->findByQuery([
+			$persons = $this->findByQuery([
 				'text'  => $query,
 				'by'    => 'name,orig_name',
 				'limit' => static::PAGE_COUNT_LIMIT,
@@ -42,7 +42,7 @@ class AuthorController extends PersonController {
 			return $persons;
 		}
 		if ($_format == 'suggest') {
-			$persons = $this->em()->getPersonRepository()->asAuthor()->findByQuery([
+			$persons = $this->findByQuery([
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
@@ -65,6 +65,7 @@ class AuthorController extends PersonController {
 	}
 
 	protected function getPersonRepository() {
-		return $this->em()->getPersonRepository()->asAuthor();
+		return parent::getPersonRepository()->asAuthor();
 	}
+
 }

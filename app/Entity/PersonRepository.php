@@ -91,6 +91,7 @@ class PersonRepository extends EntityRepository {
 	/**
 	 * @param string $name
 	 * @param int $limit
+	 * @return array
 	 */
 	public function getByNames($name, $limit = null) {
 		$q = $this->getQueryBuilder()
@@ -103,22 +104,24 @@ class PersonRepository extends EntityRepository {
 		return $q->getArrayResult();
 	}
 
+	/** @return $this */
 	public function asAuthor() {
 		$this->asAuthor = true;
 		$this->asTranslator = false;
-
 		return $this;
 	}
 
+	/** @return $this */
 	public function asTranslator() {
 		$this->asTranslator = true;
 		$this->asAuthor = false;
-
 		return $this;
 	}
 
 	/**
 	 * @param \Doctrine\ORM\QueryBuilder $qb
+	 * @param array $filters
+	 * @return \Doctrine\ORM\QueryBuilder
 	 */
 	public function addFilters($qb, $filters) {
 		$nameField = empty($filters['by']) || $filters['by'] == 'first-name' ? 'e.name' : 'e.last_name';

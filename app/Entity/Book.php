@@ -468,9 +468,7 @@ class Book extends BaseWork implements \JsonSerializable {
 	}
 
 	private $translators;
-	/**
-	 * @return Person[]
-	 */
+	/** @return Person[] */
 	public function getTranslators() {
 		if ( ! isset($this->translators) ) {
 			$this->translators = [];
@@ -532,7 +530,7 @@ class Book extends BaseWork implements \JsonSerializable {
 			$this->covers['front'] = $this->covers['back'] = null;
 
 			$covers = self::getCovers($this->id);
-			if ($covers) {
+			if (! empty($covers)) {
 				$this->covers['front'] = $covers[0];
 				$back = preg_replace('/(.+)\.(\w+)$/', '$1-back.$2', $this->covers['front']);
 				if (file_exists($back)) {

@@ -7,20 +7,19 @@ class TranslatorController extends PersonController {
 
 	public function searchAction(Request $request, $_format) {
 		if ($_format == 'suggest') {
-			$items = $descs = $urls = [];
 			$query = $request->query->get('q');
-			$persons = $this->em()->getPersonRepository()->asTranslator()->getByQuery([
+			$persons = $this->findByQuery([
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
 				'limit' => self::PAGE_COUNT_LIMIT,
 			]);
+			$items = $descs = $urls = [];
 			foreach ($persons as $person) {
-				$items[] = $person['name'];
+				$items[] = $person->getName();
 				$descs[] = '';
-				$urls[] = $this->generateAbsoluteUrl('translator_show', ['slug' => $person['slug']]);
+				$urls[] = $this->generateAbsoluteUrl('translator_show', ['slug' => $person->getSlug()]);
 			}
-
 			return [$query, $items, $descs, $urls];
 		}
 		return [];
@@ -31,6 +30,6 @@ class TranslatorController extends PersonController {
 	}
 
 	protected function getPersonRepository() {
-		return $this->em()->getPersonRepository()->asTranslator();
+		return parent::getPersonRepository()->asTranslator();
 	}
 }

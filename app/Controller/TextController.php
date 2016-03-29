@@ -127,7 +127,7 @@ class TextController extends Controller {
 		}
 		if ($_format == 'suggest') {
 			$query = $request->query->get('q');
-			$texts = $this->em()->getTextRepository()->findByQuery([
+			$texts = $this->findByQuery([
 				'text'  => $query,
 				'by'    => 'title,subtitle,origTitle',
 				'match' => 'prefix',
@@ -404,4 +404,11 @@ class TextController extends Controller {
 		return $label;
 	}
 
+	/**
+	 * @param array $query
+	 * @return Text[]
+	 */
+	protected function findByQuery(array $query) {
+		return $this->em()->getTextRepository()->findByQuery($query);
+	}
 }

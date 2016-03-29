@@ -82,10 +82,10 @@ abstract class BaseWork extends Entity {
 		return "<h1>$title</h1>";
 	}
 
-	/** @return array */
+	/** @return Person[] */
 	abstract public function getAuthors();
 
-	/** @return array */
+	/** @return Person[] */
 	abstract public function getTranslators();
 
 	/** @return int */

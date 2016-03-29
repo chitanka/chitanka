@@ -1,6 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Entity\Person;
+use App\Entity\PersonRepository;
 use App\Pagination\Pager;
 use App\Service\SearchService;
 use App\Service\Translation;
@@ -161,8 +162,17 @@ class PersonController extends Controller {
 		];
 	}
 
+	/** @return PersonRepository */
 	protected function getPersonRepository() {
-		return $this->em()->getPersonRepository()->asAuthor();
+		return $this->em()->getPersonRepository();
+	}
+
+	/**
+	 * @param array $query
+	 * @return Person[]
+	 */
+	protected function findByQuery(array $query) {
+		return $this->getPersonRepository()->findByQuery($query);
 	}
 
 	private function getShowTemplateInfoParams(Person $person) {

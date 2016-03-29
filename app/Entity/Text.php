@@ -466,6 +466,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 		$this->translators[] = $translator;
 	}
 
+	/** @return Person[] */
 	public function getTranslators() {
 		if (!isset($this->translators)) {
 			$this->translators = array_filter(array_map(function(TextTranslator $translator) {

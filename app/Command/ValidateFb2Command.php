@@ -90,9 +90,10 @@ EOT;
 	}
 
 	/**
-	 * @param array $workIds
+	 * @param int[] $workIds
 	 * @param \Doctrine\ORM\EntityRepository $repo
 	 * @param string $entityName
+	 * @throws \Exception
 	 */
 	private function validateWorks($workIds, $repo, $entityName) {
 		foreach ($workIds as $workId) {

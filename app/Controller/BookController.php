@@ -141,7 +141,7 @@ class BookController extends Controller {
 		}
 		if ($_format == 'suggest') {
 			$query = $request->query->get('q');
-			$books = $this->em()->getBookRepository()->findByQuery([
+			$books = $this->findByQuery([
 				'text'  => $query,
 				'by'    => 'title,subtitle,origTitle',
 				'match' => 'prefix',
@@ -166,7 +166,7 @@ class BookController extends Controller {
 		if (empty($query['by'])) {
 			$query['by'] = 'title,subtitle,origTitle';
 		}
-		$books = $this->em()->getBookRepository()->findByQuery($query);
+		$books = $this->findByQuery($query);
 		$found = count($books) > 0;
 		return [
 			'query' => $query,
@@ -210,4 +210,11 @@ class BookController extends Controller {
 		throw $this->createNotFoundException("Книгата не е налична във формат {$format}.");
 	}
 
+	/**
+	 * @param array $query
+	 * @return Book[]
+	 */
+	protected function findByQuery(array $query) {
+		return $this->em()->getBookRepository()->findByQuery($query);
+	}
 }

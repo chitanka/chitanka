@@ -14,7 +14,11 @@ class UserRepository extends EntityRepository implements UserProviderInterface {
 	 * @return User
 	 */
 	public function findByUsername($username) {
-		return $this->findOneBy(['username' => $username]);
+		$user = $this->findOneBy(['username' => $username]);
+		if (!$user) {
+			throw new UsernameNotFoundException;
+		}
+		return $user;
 	}
 
 	/**
@@ -43,12 +47,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface {
 
 	/** {@inheritdoc} */
 	public function loadUserByUsername($username) {
-		$user = $this->findByUsername($username);
-		if (!$user) {
-			throw new UsernameNotFoundException;
-		}
-
-		return $user;
+		return $this->findByUsername($username);
 	}
 
 	/** {@inheritdoc} */

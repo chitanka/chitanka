@@ -2,6 +2,12 @@
 
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 
+/**
+ * A custom entity manager which wraps the entity manager from Doctrine
+ *
+ * @method flush(Entity $entity = null)
+ * @method persist(Entity $entity)
+ */
 class EntityManager {
 
 	private $em;
