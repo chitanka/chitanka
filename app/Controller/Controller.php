@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 abstract class Controller extends SymfonyController {
 
 	/** The max cache time of the response (in seconds) */
-	protected $responseAge = 86400; // 24 hours
+	protected $responseAge = 3600; // 1 hour
 
 	/** @var \App\Entity\EntityManager */
 	private $em;
