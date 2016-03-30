@@ -84,11 +84,7 @@ class TextDownloadService {
 	}
 
 	private function addSfbToDlFileFromNew($textId) {
-		$mainFileData = $this->getMainFileData($textId);
-		if ( ! $mainFileData ) {
-			return false;
-		}
-		list($this->filename, $this->fPrefix, $this->fSuffix, $fbi) = $mainFileData;
+		list($this->filename, $this->fPrefix, $this->fSuffix, $fbi) = $this->getMainFileData($textId);
 		$this->addTextFileEntry($textId, '.sfb');
 //		if ( $this->withFbi ) {
 //			$this->addMiscFileEntry($fbi, $textId, '.fbi');
@@ -145,7 +141,15 @@ class TextDownloadService {
 		return true;
 	}
 
-	/** Common */
+	/**
+	 * Common
+	 * @uses addSfbToDlFileFromCache()
+	 * @uses addSfbToDlFileFromNew()
+	 * @uses addFb2ToDlFileFromCache()
+	 * @uses addFb2ToDlFileFromNew()
+	 * @uses addTxtToDlFileFromCache()
+	 * @uses addTxtToDlFileFromNew()
+	 */
 	private function createDlFile($textIds, $format, $dlkey = null) {
 		$textIds = $this->normalizeTextIds($textIds);
 		if ($dlkey === null) {

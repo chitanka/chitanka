@@ -17,6 +17,7 @@ class UsernameRequestMailer extends Notifier {
 	 * @param string $sender
 	 */
 	public function sendUsername(User $user, $sender) {
+		/** @var $template \Twig_Template */
 		$template = $this->twig->loadTemplate('App:Mail:request_username.txt.twig');
 		$templateParams = ['user' => $user];
 		$message = \Swift_Message::newInstance($template->renderBlock('subject', $templateParams));

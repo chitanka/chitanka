@@ -18,6 +18,7 @@ class PasswordRequestMailer extends Notifier {
 	 * @param string $sender
 	 */
 	public function sendNewPassword(User $user, $newPassword, $sender) {
+		/** @var $template \Twig_Template */
 		$template = $this->twig->loadTemplate('App:Mail:request_password.txt.twig');
 		$templateParams = ['newPassword' => $newPassword];
 		$message = \Swift_Message::newInstance($template->renderBlock('subject', $templateParams));

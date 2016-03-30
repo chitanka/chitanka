@@ -55,8 +55,8 @@ $cacheDir = __DIR__.'/../../var/cache/less';
 require __DIR__."/../bin/Less.php";
 ini_set('memory_limit', '128M');
 $cssFile = compileStyleFiles($cacheDir, get('skin', $skins), get('menu', $positions));
-if ($cssFile) {
+if ($cssFile !== null) {
 	sendCssFile($cssFile);
 } else {
-	error_log(Less_Cache::$error->getMessage());
+	echo '/* Error by compilation of less */';
 }

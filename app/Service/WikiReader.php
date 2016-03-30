@@ -17,23 +17,12 @@ class WikiReader {
 		list($wikiCode, $pageName) = explode(':', $fullPageName, 2);
 		$site = $this->siteRepo->findSiteByCode($wikiCode);
 		$url = $site->getUrl($pageName);
-		$page = new WikiPage($pageName);
+		$page = new WikiReaderPage($pageName);
 		$page->content = $this->mwClient->fetchContent($url);
 		$page->intro = strtr($site->getIntro(), [
 			'$1' => $pageName,
 			'$2' => $url,
 		]);
 		return $page;
-	}
-}
-
-class WikiPage {
-
-	public $name;
-	public $intro;
-	public $content;
-
-	public function __construct($name) {
-		$this->name = $name;
 	}
 }

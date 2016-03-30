@@ -313,10 +313,11 @@ class DownloadFile {
 	 * @param string $filename
 	 * @param string $cacheKey
 	 * @param bool $compress
+	 * @return string
 	 */
 	private function addContentEntry($content, $filename, $cacheKey = null, $compress = true) {
 		$fEntry = $this->zipFile->newFileEntry($content, $filename, 0, $compress);
-		if ($cacheKey) {
+		if ($cacheKey !== null) {
 			CacheManager::setDlCache($cacheKey, serialize($fEntry));
 		}
 		$this->zipFile->addFileEntry($fEntry);
@@ -330,7 +331,7 @@ class DownloadFile {
 	 * @return string
 	 */
 	private function addFileEntry($filename, $targetName = null) {
-		if ($targetName) {
+		if (!empty($targetName)) {
 			if ($targetName[strlen($targetName)-1] == '/') {
 				$targetName .= basename($filename);
 			} else {

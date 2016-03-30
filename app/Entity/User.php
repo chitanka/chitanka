@@ -210,6 +210,7 @@ class User implements UserInterface, \JsonSerializable {
 
 	/**
 	 * @param string $groups
+	 * @return bool
 	 */
 	public function inGroup($groups, $orGod = true) {
 		$groups = (array) $groups;
@@ -226,7 +227,7 @@ class User implements UserInterface, \JsonSerializable {
 	}
 
 	/**
-	 * @param int $news
+	 * @param bool $news
 	 */
 	public function setNews($news) { $this->news = $news; }
 	public function getNews() { return $this->news; }
@@ -538,6 +539,7 @@ class User implements UserInterface, \JsonSerializable {
 	 * @return bool
 	 */
 	public function validatePassword($inputPass) {
+		$encodedPass = '';
 		if (empty($this->algorithm)) {
 			$encodedPass = $this->encodePasswordDB($inputPass);
 		} else {

@@ -7,6 +7,7 @@ class ReviewService {
 	/**
 	 * @param int $limit
 	 * @param bool $random
+	 * @return array
 	 */
 	public static function getReviews($limit = null, $random = false) {
 		$reviews = [];
@@ -35,7 +36,7 @@ class ReviewService {
 			shuffle($reviews);
 		}
 
-		if ($limit) {
+		if ($limit > 0) {
 			$reviews = array_slice($reviews, 0, $limit);
 		}
 
@@ -44,6 +45,7 @@ class ReviewService {
 
 	/**
 	 * @param bool $random
+	 * @return array|null
 	 */
 	public static function getReview($random = false) {
 		$reviews = self::getReviews(1, $random);
