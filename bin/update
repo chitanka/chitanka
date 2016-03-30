@@ -1,10 +1,15 @@
-#!/usr/bin/env php
-<?php
-$console = __DIR__.'/console';
-$_SERVER['argv'] = array(
-	$console,
-	'auto-update',
-	'--env=prod',
-);
-ob_start();
-require $console;
+#!/usr/bin/env bash
+
+rootdir=`dirname $0`/..
+cd $rootdir
+
+function update {
+	bin/console auto-update --env=prod
+}
+
+function fetch_clean_git {
+	git stash
+	git pull
+}
+
+update || (fetch_clean_git && update)
