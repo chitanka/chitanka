@@ -54,6 +54,9 @@ class BookTemplate {
 			return $line . SfbConverter::EOL;
 		}
 		$text = $this->book->getTextById($matches[2]);
+		if ($text === null) {
+			return '';
+		}
 		switch ($matches[1]) {
 			case 'title':
 				return $this->generateSfbForTitleLine($text, $command) . SfbConverter::EOL;
@@ -115,7 +118,7 @@ class BookTemplate {
 		if (!empty($command)) {
 			$textContent = self::replaceSfbHeadings($textContent, $command);
 		}
-		if ($this->extraFileLinesToInsert) {
+		if (!empty($this->extraFileLinesToInsert)) {
 			$textContentWithExtraLines = '';
 			foreach (explode("\n", $textContent) as $idx => $textLine) {
 				$extraIdx = $idx+1; // cause $idx is 0-based

@@ -127,9 +127,7 @@ class CommentPage extends Page {
 		if ( empty($this->textId) ) {
 			if ( !empty($this->username) ) {
 				$this->wheres[$this->showMode][] = 'c.user_id IN ('
-					. $this->db->selectQ(DBT_USER,
-						['username' => $this->username],
-						'id')
+					. $this->db->selectQ(DBT_USER, ['username' => $this->username], ['id'])
 					. ')';
 				$this->title .= ' от ' . $this->makeUserLink($this->username);
 			}

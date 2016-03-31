@@ -225,7 +225,7 @@ class EpubFile {
 	private function getSubjectTags() {
 		$tags = [];
 		foreach ($this->obj->getLabels() as $label) {
-			$tags[] = "<dc:subject>$label</dc:subject>";
+			$tags[] = "<dc:subject>{$label->getName()}</dc:subject>";
 		}
 
 		return implode("\n", $tags);

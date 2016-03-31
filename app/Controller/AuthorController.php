@@ -52,7 +52,7 @@ class AuthorController extends PersonController {
 			foreach ($persons as $person) {
 				$items[] = $person->getName();
 				$descs[] = '';
-				$urls[] = $this->generateUrl('author_show', ['slug' => $person->getSlug()], true);
+				$urls[] = $this->generateAbsoluteUrl('author_show', ['slug' => $person->getSlug()]);
 			}
 
 			return [$query, $items, $descs, $urls];

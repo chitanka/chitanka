@@ -382,6 +382,7 @@ class TextController extends Controller {
 
 	/**
 	 * @param Text $text
+	 * @return Response
 	 */
 	protected function redirectToText($text) {
 		$id = $text instanceof Text ? $text->getId() : $text;
@@ -396,6 +397,11 @@ class TextController extends Controller {
 		return $text;
 	}
 
+	/**
+	 * @param int $labelId
+	 * @param bool $bailIfNotFound
+	 * @return \App\Entity\Label
+	 */
 	protected function findLabel($labelId, $bailIfNotFound = true) {
 		$label = $this->em()->getLabelRepository()->find($labelId);
 		if ($bailIfNotFound && $label === null) {

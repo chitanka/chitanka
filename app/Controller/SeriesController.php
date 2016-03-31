@@ -56,7 +56,7 @@ class SeriesController extends Controller {
 			foreach ($series as $serie) {
 				$items[] = $serie['name'];
 				$descs[] = '';
-				$urls[] = $this->generateUrl('series_show', ['slug' => $serie['slug']], true);
+				$urls[] = $this->generateAbsoluteUrl('series_show', ['slug' => $serie['slug']]);
 			}
 
 			return [$query, $items, $descs, $urls];

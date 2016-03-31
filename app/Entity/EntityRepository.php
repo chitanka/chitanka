@@ -67,7 +67,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	 */
 	public function getCount($where = null) {
 		$qb = $this->createQueryBuilder('e')->select('COUNT(e.id)');
-		if ($where) {
+		if ($where !== null) {
 			$qb->andWhere($where);
 		}
 		return $qb->getQuery()->getSingleScalarResult();
@@ -81,7 +81,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	 * @return \Doctrine\ORM\Query
 	 */
 	protected function setPagination($query, $page, $limit) {
-		if ($limit) {
+		if ($limit > 0) {
 			$query->setMaxResults($limit)->setFirstResult(($page - 1) * $limit);
 		}
 
@@ -117,7 +117,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 		$qb = $this->getEntityManager()->createQueryBuilder()
 			->select($select ?: 'e')
 			->from($this->getEntityName(), 'e');
-		if ($where) {
+		if ($where !== null) {
 			$qb->andWhere($where);
 		}
 		$query = $qb->getQuery()
@@ -238,7 +238,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	public function getQueryBuilder($orderBys = null) {
 		$qb = $this->createQueryBuilder('e');
 
-		if ($orderBys) {
+		if (!empty($orderBys)) {
 			foreach (explode(',', $orderBys) as $orderBy) {
 				$orderBy = ltrim($orderBy);
 				if (strpos($orderBy, ' ') === false) {
@@ -259,6 +259,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 
 	/**
 	 * @param string $s
+	 * @return string
 	 */
 	protected function stringForLikeClause($s) {
 		return "%".str_replace(' ', '%', $s)."%";

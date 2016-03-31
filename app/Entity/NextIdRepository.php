@@ -23,7 +23,7 @@ class NextIdRepository extends \Doctrine\ORM\EntityRepository {
 	 */
 	public function findNextId($entityName) {
 		$nextId = $this->find($entityName);
-		if ($nextId == false) {
+		if ($nextId === null) {
 			$nextId = new NextId($entityName);
 			$nextId->setValue($this->getMaxIdForEntity($entityName) + 1);
 		}

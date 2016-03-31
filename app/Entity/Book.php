@@ -625,19 +625,25 @@ class Book extends BaseWork implements \JsonSerializable {
 	}
 
 	/**
-	 * @return string[]
+	 * @return Label[]
 	 */
 	public function getLabels() {
 		$labels = [];
-
 		foreach ($this->getTexts() as $text) {
 			foreach ($text->getLabels() as $label) {
-				$labels[] = $label->getName();
+				$labels[$label->getId()] = $label;
 			}
 		}
-
-		$labels = array_unique($labels);
 		return $labels;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getLabelNames() {
+		return array_map(function(Label $label) {
+			return $label->getName();
+		}, $this->getLabels());
 	}
 
 	/**

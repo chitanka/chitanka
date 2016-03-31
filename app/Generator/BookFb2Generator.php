@@ -53,6 +53,6 @@ class BookFb2Generator {
 	}
 
 	private function getKeywords(Book $book) {
-		return implode(', ', $book->getLabels());
+		return implode(', ', $book->getLabelNames());
 	}
 }

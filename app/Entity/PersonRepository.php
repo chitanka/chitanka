@@ -10,17 +10,20 @@ class PersonRepository extends EntityRepository {
 
 	/**
 	 * @param string $slug
+	 * @return Person
 	 */
 	public function findBySlug($slug) {
 		return $this->findOneBy(['slug' => $slug]);
 	}
 
 	/**
+	 * @param array $filters
 	 * @param int $limit
+	 * @param int $page
+	 * @return array
 	 */
 	public function getBy($filters, $page = 1, $limit = null) {
 		$query = $this->setPagination($this->getQueryBy($filters), $page, $limit);
-
 		return $query->getArrayResult();
 	}
 
@@ -35,14 +38,12 @@ class PersonRepository extends EntityRepository {
 	public function getQueryBy($filters) {
 		$qb = $this->getQueryBuilder();
 		$qb = $this->addFilters($qb, $filters);
-
 		return $qb->getQuery();
 	}
 
 	public function getCountQueryBy($filters) {
 		$qb = $this->getCountQueryBuilder();
 		$qb = $this->addFilters($qb, $filters);
-
 		return $qb->getQuery();
 	}
 
@@ -50,14 +51,11 @@ class PersonRepository extends EntityRepository {
 		$qb = $this->getBaseQueryBuilder('e')
 			->select('e', 'p')
 			->leftJoin('e.person', 'p');
-
 		return $qb;
 	}
 
 	public function getCountQueryBuilder($alias = 'e') {
-		$qb = $this->getBaseQueryBuilder($alias)->select('COUNT(e.id)');
-
-		return $qb;
+		return $this->getBaseQueryBuilder($alias)->select('COUNT(e.id)');
 	}
 
 	public function getBaseQueryBuilder($alias = 'e') {
@@ -68,14 +66,14 @@ class PersonRepository extends EntityRepository {
 		if ($this->asTranslator) {
 			$qb->andWhere("e.is_translator = 1");
 		}
-
 		return $qb;
 	}
 
 	public function getCount($where = null) {
 		$qb = $this->getCountQueryBuilder();
-		if ($where) $qb->andWhere($where);
-
+		if ($where !== null) {
+			$qb->andWhere($where);
+		}
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
@@ -98,7 +96,7 @@ class PersonRepository extends EntityRepository {
 			->where('e.name LIKE ?1 OR e.orig_name LIKE ?1 OR e.real_name LIKE ?1 OR e.oreal_name LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($name))
 			->getQuery();
-		if ($limit) {
+		if ($limit > 0) {
 			$q->setMaxResults($limit);
 		}
 		return $q->getArrayResult();

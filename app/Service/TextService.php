@@ -18,6 +18,7 @@ class TextService {
 	 * @param Text $text
 	 * @param int $limit   Return up to this limit number of texts
 	 * @param User $reader Do not return texts marked as read by this reader
+	 * @return array
 	 */
 	public function findTextAlikes(Text $text, $limit = 10, User $reader = null) {
 		$qa = [
@@ -26,7 +27,7 @@ class TextService {
 			'WHERE'    => [
 				'r.text_id' => ['<>', $text->getId()],
 				'r.user_id IN ('
-					. $this->legacyDb->selectQ(DBT_READER_OF, ['text_id' => $text->getId()], 'user_id')
+					. $this->legacyDb->selectQ(DBT_READER_OF, ['text_id' => $text->getId()], ['user_id'])
 					. ')',
 			],
 			'GROUP BY' => 'r.text_id',
@@ -34,7 +35,7 @@ class TextService {
 		];
 		if ( is_object($reader) ) {
 			$qa['WHERE'][] = 'text_id NOT IN ('
-				. $this->legacyDb->selectQ(DBT_READER_OF, ['user_id' => $reader->getId()], 'text_id')
+				. $this->legacyDb->selectQ(DBT_READER_OF, ['user_id' => $reader->getId()], ['text_id'])
 				. ')';
 		}
 		$res = $this->legacyDb->extselect($qa);
@@ -65,6 +66,12 @@ class TextService {
 		return $alikes;
 	}
 
+	/**
+	 * @param string $fileOrString
+	 * @param int $textId
+	 * @param int $headlevel
+	 * @return array
+	 */
 	public function buildTextHeadersUpdateQuery($fileOrString, $textId, $headlevel) {
 		require_once __DIR__ . '/../Legacy/SfbParserSimple.php';
 
@@ -98,6 +105,7 @@ class TextService {
 	 * @param Text $text
 	 * @param int $limit   Return up to this limit number of texts
 	 * @param User $reader  Do not return texts marked as read by this reader
+	 * @return array
 	 */
 	private function getSimilarByLabel(Text $text, $limit = 10, User $reader = null) {
 		$qa = [
@@ -106,7 +114,7 @@ class TextService {
 			'WHERE'    => [
 				'text_id' => ['<>', $text->getId()],
 				'label_id IN ('
-					. $this->legacyDb->selectQ(DBT_TEXT_LABEL, ['text_id' => $text->getId()], 'label_id')
+					. $this->legacyDb->selectQ(DBT_TEXT_LABEL, ['text_id' => $text->getId()], ['label_id'])
 					. ')',
 			],
 			'GROUP BY' => 'text_id',
@@ -115,7 +123,7 @@ class TextService {
 		];
 		if ( $reader ) {
 			$qa['WHERE'][] = 'text_id NOT IN ('
-				. $this->legacyDb->selectQ(DBT_READER_OF, ['user_id' => $reader->getId()], 'text_id')
+				. $this->legacyDb->selectQ(DBT_READER_OF, ['user_id' => $reader->getId()], ['text_id'])
 				. ')';
 		}
 		$res = $this->legacyDb->extselect($qa);
@@ -130,6 +138,7 @@ class TextService {
 	 * @param Text $text
 	 * @param array $textIds
 	 * @param int $limit   Return up to this limit number of texts
+	 * @return array
 	 */
 	private function filterSimilarByLabel(Text $text, $textIds, $limit) {
 		$qa = [
@@ -138,7 +147,7 @@ class TextService {
 			'WHERE'    => [
 				'text_id' => ['IN', $textIds],
 				'label_id IN ('
-					. $this->legacyDb->selectQ(DBT_TEXT_LABEL, ['text_id' => $text->getId()], 'label_id')
+					. $this->legacyDb->selectQ(DBT_TEXT_LABEL, ['text_id' => $text->getId()], ['label_id'])
 					. ')',
 			],
 			'GROUP BY' => 'text_id',

@@ -145,6 +145,7 @@ class TextDownloadService {
 	 * Common
 	 * @uses addSfbToDlFileFromCache()
 	 * @uses addSfbToDlFileFromNew()
+	 * @uses addSfbToDlFileEnd()
 	 * @uses addFb2ToDlFileFromCache()
 	 * @uses addFb2ToDlFileFromNew()
 	 * @uses addTxtToDlFileFromCache()

@@ -54,6 +54,7 @@ class BookmarkRepository extends EntityRepository {
 	 * RAW_SQL
 	 * @param User $user
 	 * @param array|string $textIds
+	 * @return array
 	 */
 	public function getValidTextIds($user, $textIds) {
 		if (is_array($textIds)) {
@@ -76,6 +77,7 @@ class BookmarkRepository extends EntityRepository {
 	/**
 	 * @param array $ids
 	 * @param string $orderBy
+	 * @return array
 	 */
 	public function getByIds($ids, $orderBy = null) {
 		return WorkSteward::joinPersonKeysForWorks(parent::getByIds($ids, $orderBy));
@@ -83,6 +85,7 @@ class BookmarkRepository extends EntityRepository {
 
 	/**
 	 * @param string $orderBys
+	 * @return \Doctrine\ORM\QueryBuilder
 	 */
 	public function getQueryBuilder($orderBys = null) {
 		return parent::getQueryBuilder($orderBys)

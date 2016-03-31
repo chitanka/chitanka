@@ -97,6 +97,7 @@ abstract class Controller extends SymfonyController {
 		return $this->user;
 	}
 
+	/** @return User */
 	protected function getSavableUser() {
 		return $this->em()->merge($this->getUser());
 	}

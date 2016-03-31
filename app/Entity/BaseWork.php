@@ -47,7 +47,7 @@ abstract class BaseWork extends Entity {
 	abstract public function getSubtitle();
 
 	/**
-	 * @return array
+	 * @return Label[]
 	 */
 	abstract public function getLabels();
 

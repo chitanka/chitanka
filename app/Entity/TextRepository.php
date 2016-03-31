@@ -65,6 +65,7 @@ class TextRepository extends EntityRepository {
 
 	/**
 	 * @param int $id
+	 * @param bool $fetchRelations
 	 * @return Text
 	 */
 	public function get($id, $fetchRelations = true) {
@@ -92,6 +93,7 @@ class TextRepository extends EntityRepository {
 	 * @param int $page
 	 * @param int $limit
 	 * @param string $orderBy
+	 * @return array
 	 */
 	public function getByPrefix($prefix, $page = 1, $limit = null, $orderBy = null) {
 		$orderBy = $this->normalizeOrderBy($orderBy);
@@ -100,7 +102,6 @@ class TextRepository extends EntityRepository {
 		} catch (NoResultException $e) {
 			return [];
 		}
-
 		return $this->getByIds($ids, $orderBy);
 	}
 
@@ -109,28 +110,28 @@ class TextRepository extends EntityRepository {
 	 * @param int $page
 	 * @param int $limit
 	 * @param string $orderBy
+	 * @return array
+	 * @throws NoResultException
 	 */
 	public function getIdsByPrefix($prefix, $page, $limit, $orderBy) {
 		$where = $prefix ? "WHERE t.title LIKE '$prefix%'" : '';
 		$dql = "SELECT t.id FROM {$this->getEntityName()} t $where ORDER BY t.$orderBy";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$ids = $query->getResult('id');
-
 		if (empty($ids)) {
 			throw new NoResultException;
 		}
-
 		return $ids;
 	}
 
 	/**
 	 * @param string $prefix
+	 * @return int
 	 */
 	public function countByPrefix($prefix) {
 		$where = $prefix ? "WHERE t.title LIKE '$prefix%'" : '';
 		$dql = sprintf('SELECT COUNT(t.id) FROM %s t %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
-
 		return $query->getSingleScalarResult();
 	}
 
@@ -139,6 +140,7 @@ class TextRepository extends EntityRepository {
 	 * @param int $page
 	 * @param int $limit
 	 * @param string $orderBy
+	 * @return array
 	 */
 	public function getByType($type, $page = 1, $limit = null, $orderBy = null) {
 		$orderBy = $this->normalizeOrderBy($orderBy);
@@ -147,7 +149,6 @@ class TextRepository extends EntityRepository {
 		} catch (NoResultException $e) {
 			return [];
 		}
-
 		return $this->getByIds($ids, $orderBy);
 	}
 
@@ -156,28 +157,28 @@ class TextRepository extends EntityRepository {
 	 * @param int $page
 	 * @param int $limit
 	 * @param string $orderBy
+	 * @return array
+	 * @throws NoResultException
 	 */
 	protected function getIdsByType($type, $page, $limit, $orderBy) {
 		$where = "WHERE t.type = '$type'";
 		$dql = "SELECT t.id FROM {$this->getEntityName()} t $where ORDER BY t.$orderBy";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$ids = $query->getResult('id');
-
 		if (empty($ids)) {
 			throw new NoResultException;
 		}
-
 		return $ids;
 	}
 
 	/**
 	 * @param string $type
+	 * @return int
 	 */
 	public function countByType($type) {
 		$where = "WHERE t.type = '$type'";
 		$dql = sprintf('SELECT COUNT(t.id) FROM %s t %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
-
 		return $query->getSingleScalarResult();
 	}
 
@@ -186,6 +187,7 @@ class TextRepository extends EntityRepository {
 	 * @param int $page
 	 * @param int $limit
 	 * @param string $orderBy
+	 * @return array
 	 */
 	public function getByLabel($labels, $page = 1, $limit = null, $orderBy = null) {
 		$orderBy = $this->normalizeOrderBy($orderBy);
@@ -194,7 +196,6 @@ class TextRepository extends EntityRepository {
 		} catch (NoResultException $e) {
 			return [];
 		}
-
 		return $this->getByIds($ids, $orderBy);
 	}
 
@@ -203,21 +204,23 @@ class TextRepository extends EntityRepository {
 	 * @param int $page
 	 * @param int $limit
 	 * @param string $orderBy
+	 * @return array
+	 * @throws NoResultException
 	 */
 	protected function getIdsByLabel($labels, $page, $limit, $orderBy) {
 		$dql = sprintf("SELECT DISTINCT t.id FROM %s t JOIN t.labels l WHERE l.id IN (%s) ORDER BY t.$orderBy", $this->getEntityName(), implode(',', $labels));
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$ids = $query->getResult('id');
-
 		if (empty($ids)) {
 			throw new NoResultException;
 		}
-
 		return $ids;
 	}
 
 	/**
 	 * RAW_SQL
+	 * @param string $labels
+	 * @return int
 	 */
 	public function countByLabel($labels) {
 		return $this->_em->getConnection()->fetchColumn(sprintf('SELECT COUNT(DISTINCT tl.text_id) FROM text_label tl WHERE tl.label_id IN (%s)', implode(',', $labels)), [], 0);
@@ -225,6 +228,8 @@ class TextRepository extends EntityRepository {
 
 	/**
 	 * @param Person $author
+	 * @param bool $groupBySeries
+	 * @return array
 	 */
 	public function findByAuthor($author, $groupBySeries = true) {
 		$texts = $this->getQueryBuilder()
@@ -234,16 +239,15 @@ class TextRepository extends EntityRepository {
 			->getQuery()->getArrayResult();
 
 		$texts = WorkSteward::joinPersonKeysForTexts($texts);
-
 		if ($groupBySeries) {
 			$texts = $this->groupTexts($texts);
 		}
-
 		return $texts;
 	}
 
 	/**
 	 * @param Person $translator
+	 * @return array
 	 */
 	public function findByTranslator($translator) {
 		$texts = $this->getQueryBuilder()
@@ -254,7 +258,6 @@ class TextRepository extends EntityRepository {
 
 		$texts = WorkSteward::joinPersonKeysForTexts($texts);
 		$texts = $this->groupTexts($texts, false);
-
 		return $texts;
 	}
 
@@ -274,13 +277,14 @@ class TextRepository extends EntityRepository {
 	/**
 	 * @param string $title
 	 * @param int $limit
+	 * @return array
 	 */
 	public function getByTitles($title, $limit = null) {
 		$q = $this->getQueryBuilder()
 			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.origTitle LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($title))
 			->getQuery();
-		if ($limit) {
+		if ($limit > 0) {
 			$q->setMaxResults($limit);
 		}
 		return WorkSteward::joinPersonKeysForTexts($q->getArrayResult());
@@ -329,6 +333,9 @@ class TextRepository extends EntityRepository {
 		return WorkSteward::joinPersonKeysForTexts(parent::getByQuery($params));
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getCountsByType() {
 		$counts = $this->_em->createQueryBuilder()
 			->select('e.type', 'COUNT(e.id)')
@@ -339,10 +346,18 @@ class TextRepository extends EntityRepository {
 		return $counts;
 	}
 
+	/**
+	 * @param string $where
+	 * @return int
+	 */
 	public function getRandomId($where = '') {
 		return parent::getRandomId("e.removedNotice IS NULL");
 	}
 
+	/**
+	 * @param string $type
+	 * @return bool
+	 */
 	public function isValidType($type) {
 		return in_array($type, self::$types);
 	}
@@ -363,7 +378,6 @@ class TextRepository extends EntityRepository {
 				$byType[ $text['type'] ]['texts'][$text['id']] = $text;
 			}
 		}
-
 		return $bySeries + $byType;
 	}
 

@@ -857,8 +857,8 @@ QUERY
 			unlink($dest);
 			return;
 		}
-		File::make_parent($dest);
-		copy($source, $dest);
+		$fs = new Filesystem();
+		$fs->copy($source, $dest, true);
 		touch($dest);
 	}
 

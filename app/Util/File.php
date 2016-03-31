@@ -10,44 +10,25 @@ class File {
 		return "\xEF\xBB\xBF";
 	}
 
-	public static function mycopy($source, $dest) {
-		if ( is_dir($source) ) {
-			foreach ( scandir($source) as $file ) {
-				if ( $file[0] == '.' ) continue;
-				self::mycopy("$source/$file", "$dest/$file");
-			}
-			return true;
-		}
-		self::make_parent($dest);
-		return copy($source, $dest);
-	}
-
 	public static function myfile_put_contents($filename, $data, $flags = null) {
 		if (is_dir($filename)) {
 			return false;
 		}
 		self::make_parent($filename);
 		$res = file_put_contents($filename, $data, $flags);
-
 		return $res;
-	}
-
-	public static function mymove_uploaded_file($tmp, $dest) {
-		self::make_parent($dest);
-		return move_uploaded_file($tmp, $dest);
 	}
 
 	public static function make_parent( $filename ) {
 		$dir = dirname( $filename );
-		if ( file_exists( $dir ) ) {
-			@touch( $dir );
-		} else {
-			mkdir( $dir, 0755, true );
+		if ( !file_exists($dir) ) {
+			mkdir($dir, 0755, true);
 		}
 	}
 
 	/**
 	 * @param string $file
+	 * @return string
 	 */
 	public static function guessMimeType($file) {
 		switch ( strtolower(self::getFileExtension($file)) ) {
@@ -63,6 +44,7 @@ class File {
 
 	/**
 	 * @param string $file
+	 * @return bool
 	 */
 	public static function isArchive($file) {
 		$exts = ['zip', 'tgz', 'tar.gz', 'bz2', 'tar.bz2'];
@@ -76,6 +58,7 @@ class File {
 
 	/**
 	 * @param string $filename
+	 * @return string
 	 */
 	public static function getFileExtension($filename) {
 		return ltrim(strrchr($filename, '.'), '.');
@@ -84,6 +67,7 @@ class File {
 	/**
 	 * @param string $fname
 	 * @param bool $woDiac
+	 * @return string
 	 */
 	public static function cleanFileName($fname, $woDiac = true) {
 		$fname = preg_replace('![^a-zA-Z0-9_. -]!u', '', $fname);
@@ -97,12 +81,12 @@ class File {
 			' .' => '', // from empty series number
 			' '  => '_',
 		]);
-
 		return $fname;
 	}
 
 	/**
 	 * @param string $file
+	 * @return bool
 	 */
 	public static function isSFB($file) {
 		if ( (strpos($file, '.sfb') !== false) && file_exists($file) ) {
@@ -110,10 +94,14 @@ class File {
 			if ( strpos($cont, chr(124).chr(9)) !== false )
 				return true;
 		}
-
 		return false;
 	}
 
+	/**
+	 * @param string $filename
+	 * @param array $validExtensions
+	 * @return bool
+	 */
 	public static function hasValidExtension($filename, $validExtensions) {
 		foreach ($validExtensions as $validExtension) {
 			if (preg_match("/\.$validExtension$/i", $filename)) {
