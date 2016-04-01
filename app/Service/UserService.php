@@ -5,11 +5,11 @@ use Symfony\Component\DependencyInjection\Container;
 
 class UserService {
 	private $user;
-	private $container;
+	private $contentDir;
 
-	public function __construct(User $user, Container $container) {
+	public function __construct(User $user, $contentDir) {
 		$this->user = $user;
-		$this->container = $container;
+		$this->contentDir = $contentDir;
 	}
 
 	public function getUserPageContent() {
@@ -28,7 +28,6 @@ class UserService {
 	}
 
 	private function buildUserPageContentFilename() {
-		return $this->container->getParameter('kernel.root_dir') .
-			'/../web/content/user' .'/'. $this->user->getId();
+		return "{$this->contentDir}/user/{$this->user->getId()}";
 	}
 }

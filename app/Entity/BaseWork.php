@@ -3,6 +3,7 @@
 use App\Service\ContentService;
 use App\Util\File;
 use App\Util\Stringy;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sfblib\SfbConverter;
 use Sfblib\SfbToHtmlConverter;
 
@@ -47,7 +48,7 @@ abstract class BaseWork extends Entity {
 	abstract public function getSubtitle();
 
 	/**
-	 * @return Label[]
+	 * @return ArrayCollection|Label[]
 	 */
 	abstract public function getLabels();
 
@@ -192,8 +193,11 @@ abstract class BaseWork extends Entity {
 		return $depth;
 	}
 
+	/**
+	 * @return ArrayCollection
+	 */
 	public function getHeaders() {
-		return [];
+		return new ArrayCollection();
 	}
 
 	public function getHeadersAsNestedXml($allowEmpty = true) {

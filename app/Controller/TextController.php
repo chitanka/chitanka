@@ -95,7 +95,7 @@ class TextController extends Controller {
 		list($id) = explode('-', $id); // remove optional slug
 		switch ($_format) {
 			case 'html':
-				return $this->showHtml($this->findText($id, true));
+				return $this->showHtml($this->findText($id));
 			case 'epub':
 			case 'fb2.zip':
 			case 'txt.zip':
@@ -105,18 +105,18 @@ class TextController extends Controller {
 				return $this->urlRedirect($this->getWebRoot() . $service->generateFile(explode(',', $id), $_format, $request->get('filename')));
 			case 'fb2':
 				Setup::doSetup($this->container);
-				return $this->asText($this->findText($id, true)->getContentAsFb2(), 'application/xml');
+				return $this->asText($this->findText($id)->getContentAsFb2(), 'application/xml');
 			case 'fbi':
 				Setup::doSetup($this->container);
-				return $this->asText($this->findText($id, true)->getFbi());
+				return $this->asText($this->findText($id)->getFbi());
 			case 'txt':
-				return $this->asText($this->findText($id, true)->getContentAsTxt());
+				return $this->asText($this->findText($id)->getContentAsTxt());
 			case 'sfb':
-				return $this->asText($this->findText($id, true)->getContentAsSfb());
+				return $this->asText($this->findText($id)->getContentAsSfb());
 			case 'data':
-				return $this->asText($this->findText($id, true)->getDataAsPlain());
+				return $this->asText($this->findText($id)->getDataAsPlain());
 			case 'json':
-				return ['text' => $this->findText($id, true)];
+				return ['text' => $this->findText($id)];
 		}
 		throw $this->createNotFoundException("Неизвестен формат: $_format");
 	}
@@ -176,7 +176,7 @@ class TextController extends Controller {
 	}
 
 	public function showPartAction($id, $part) {
-		return $this->showHtml($this->findText($id, true), $part);
+		return $this->showHtml($this->findText($id), $part);
 	}
 
 	public function showHtml(Text $text, $part = 1) {
@@ -389,9 +389,14 @@ class TextController extends Controller {
 		return $this->urlRedirect($this->generateUrl('text_show', ['id' => $id]));
 	}
 
-	protected function findText($textId, $bailIfNotFound = true, $fetchRelations = false) {
+	/**
+	 * @param int $textId
+	 * @param bool $fetchRelations
+	 * @return Text
+	 */
+	protected function findText($textId, $fetchRelations = false) {
 		$text = $this->em()->getTextRepository()->get($textId, $fetchRelations);
-		if ($bailIfNotFound && $text === null) {
+		if ($text === null) {
 			throw $this->createNotFoundException("Няма текст с номер $textId.");
 		}
 		return $text;
@@ -399,12 +404,11 @@ class TextController extends Controller {
 
 	/**
 	 * @param int $labelId
-	 * @param bool $bailIfNotFound
 	 * @return \App\Entity\Label
 	 */
-	protected function findLabel($labelId, $bailIfNotFound = true) {
+	protected function findLabel($labelId) {
 		$label = $this->em()->getLabelRepository()->find($labelId);
-		if ($bailIfNotFound && $label === null) {
+		if ($label === null) {
 			throw $this->createNotFoundException("Няма етикет с номер $labelId.");
 		}
 		return $label;

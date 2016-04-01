@@ -33,7 +33,7 @@ class UserController extends Controller {
 		}
 
 		$user = $this->em()->getUserRepository()->findByUsername($username);
-		$userService = new UserService($user, $this->container);
+		$userService = new UserService($user, $this->getParameter('content_dir'));
 
 		if ($request->isMethod('POST')) {
 			$userService->saveUserPageContent($request->request->get("userpage"));
