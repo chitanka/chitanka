@@ -1,9 +1,0 @@
-{% extends 'App::layout.html.twig' %}
-
-{% set title = ('wiki.title.'~page)|trans %}
-{% block content %}
-	<div class="wikidata">
-		{{ contents|raw }}
-	</div>
-	<div class="info"><br><i>(<a href="{{ wiki_page }}">Оригиналната страница се намира в уикито на библиотеката</a>.)</i></div>
-{% endblock %}
