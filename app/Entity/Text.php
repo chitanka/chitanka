@@ -969,23 +969,6 @@ EOS;
 		$this->setCreatedAt(new \DateTime());
 	}
 
-	/**
-	 * @ORM\PostPersist()
-	 * @ORM\PostUpdate()
-	 */
-	public function onPostSave() {
-		$this->persistAnnotation();
-		$this->persistExtraInfo();
-		$this->moveUploadedContentFile($this->getContentFile());
-	}
-
-	private function moveUploadedContentFile(UploadedFile $file = null) {
-		if ($file) {
-			$filename = ContentService::getContentFilePath('text', $this->getId());
-			$file->move(dirname($filename), basename($filename));
-		}
-	}
-
 	private $revisionComment;
 	public function getRevisionComment() {
 		return $this->revisionComment;

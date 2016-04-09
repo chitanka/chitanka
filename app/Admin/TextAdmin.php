@@ -1,9 +1,7 @@
 <?php namespace App\Admin;
 
 use App\Entity\Text;
-use App\Legacy\Legacy;
 use App\Service\ContentService;
-use App\Util\Language;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -196,11 +194,26 @@ class TextAdmin extends Admin {
 		$text->addNewRevision();
 	}
 
-	/** {@inheritdoc} */
+	/**
+	 * @param Text $text
+	 */
 	public function preUpdate($text) {
 		$this->fixRelationships($text);
 		if ($text->getRevisionComment()) {
 			$text->addNewRevision($text->getRevisionComment());
+		}
+	}
+
+	/**
+	 * @param Text $text
+	 */
+	public function postUpdate($text) {
+		$text->persistAnnotation();
+		$text->persistExtraInfo();
+		$file = $text->getContentFile();
+		if ($file !== null) {
+			$filename = ContentService::getContentFilePath('text', $text->getId());
+			$file->move(dirname($filename), basename($filename));
 		}
 	}
 
