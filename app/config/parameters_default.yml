@@ -79,12 +79,12 @@ parameters:
         wiki: https://github.com/chitanka/content-wiki.git
 
     project_links:
-        http://chitanka.info: Библиотека
-        http://forum.chitanka.info: Форум
-        http://wiki.workroom.chitanka.info: Читалие
-        http://rechnik.chitanka.info: Речник
-        http://gramofonche.chitanka.info: Грамофонче
-        http://tools.chitanka.info: Инструменти
+        https://chitanka.info: Библиотека
+        https://forum.chitanka.info: Форум
+        https://wiki.workroom.chitanka.info: Читалие
+        https://rechnik.chitanka.info: Речник
+        https://gramofonche.chitanka.info: Грамофонче
+        https://tools.chitanka.info: Инструменти
 
     main.dashboard:
         authors:
