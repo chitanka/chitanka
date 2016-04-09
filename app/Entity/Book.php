@@ -206,15 +206,6 @@ class Book extends BaseWork implements \JsonSerializable {
 		$this->setCreatedAt(new \DateTime());
 	}
 
-	/**
-	 * @ORM\PostPersist()
-	 * @ORM\PostUpdate()
-	 */
-	public function onPostSave() {
-		$this->persistAnnotation();
-		$this->persistExtraInfo();
-	}
-
 	public function __toString() {
 		return $this->title;
 	}

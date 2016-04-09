@@ -248,7 +248,7 @@ abstract class BaseWork extends Entity {
 		$this->setHasAnno($this->annotation != '');
 	}
 
-	protected function persistAnnotation() {
+	public function persistAnnotation() {
 		$this->saveContentInFile($this->annotation, static::$annotationDir);
 	}
 
@@ -289,7 +289,7 @@ abstract class BaseWork extends Entity {
 		$this->extraInfo = $extraInfo;
 	}
 
-	protected function persistExtraInfo() {
+	public function persistExtraInfo() {
 		$this->saveContentInFile($this->extraInfo, static::$infoDir);
 	}
 
@@ -302,7 +302,7 @@ abstract class BaseWork extends Entity {
 	private function saveContentInFile($content, $dir) {
 		$file = ContentService::getInternalContentFilePath($dir, $this->getId());
 		$fs = new \Symfony\Component\Filesystem\Filesystem();
-		if ($content) {
+		if (!empty($content)) {
 			$fs->dumpFile($file, Stringy::my_replace($content));
 		} else if (file_exists($file) && is_file($file)) {
 		        // disable until a nasty deletion bug is resolved

@@ -161,6 +161,9 @@ class BookAdmin extends Admin {
 		;
 	}
 
+	/**
+	 * @param Book $book
+	 */
 	public function preUpdate($book) {
 		foreach ($book->getIsbns() as $isbn) {
 			$isbn->setBook($book);
@@ -187,4 +190,11 @@ class BookAdmin extends Admin {
 		}
 	}
 
+	/**
+	 * @param Book $book
+	 */
+	public function postUpdate($book) {
+		$book->persistAnnotation();
+		$book->persistExtraInfo();
+	}
 }
