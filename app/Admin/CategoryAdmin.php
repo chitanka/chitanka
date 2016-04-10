@@ -15,6 +15,7 @@ class CategoryAdmin extends Admin {
 			->add('slug')
 			->add('parent')
 			->add('children')
+			->add('nrOfBooks')
 			->add('books')
 		;
 	}
@@ -23,6 +24,8 @@ class CategoryAdmin extends Admin {
 		$listMapper
 			->addIdentifier('name')
 			->add('slug')
+			->add('nrOfBooks')
+			->add('parent')
 			->add('_action', 'actions', [
 				'actions' => [
 					'view' => [],

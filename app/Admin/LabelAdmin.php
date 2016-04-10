@@ -29,6 +29,7 @@ class LabelAdmin extends Admin {
 			->add('slug')
 			->add('group')
 			->add('position')
+			->add('nrOfTexts')
 			->add('_action', 'actions', [
 				'actions' => [
 					'view' => [],
