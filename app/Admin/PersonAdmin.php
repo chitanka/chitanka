@@ -84,7 +84,9 @@ class PersonAdmin extends Admin {
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {
 		$datagrid
 			->add('slug')
-			->add('name')
+			->add('name', null, [
+				'show_filter' => true,
+			])
 			->add('orig_name')
 			->add('real_name')
 			->add('oreal_name')
