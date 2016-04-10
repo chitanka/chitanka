@@ -89,6 +89,12 @@ class Label extends Entity implements \JsonSerializable {
 	 */
 	private $texts;
 
+	/**
+	 * @var TextLabelLog[]
+	 * @ORM\OneToMany(targetEntity="TextLabelLog", mappedBy="label", cascade={"remove"})
+	 */
+	private $logs;
+
 	public function getId() { return $this->id; }
 
 	public function setSlug($slug) { $this->slug = Stringy::slugify($slug); }
@@ -120,6 +126,8 @@ class Label extends Entity implements \JsonSerializable {
 
 	public function setTexts($texts) { $this->texts = $texts; }
 	public function getTexts() { return $this->texts; }
+
+	public function getLogs() { return $this->logs; }
 
 	public function __toString() {
 		return $this->name;
