@@ -22,7 +22,7 @@ class QuestionAdmin extends Admin {
 			->add('answers')
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

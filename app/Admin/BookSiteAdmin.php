@@ -22,7 +22,7 @@ class BookSiteAdmin extends Admin {
 			->add('url')
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

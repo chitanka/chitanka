@@ -28,7 +28,7 @@ class CategoryAdmin extends Admin {
 			->add('parent')
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

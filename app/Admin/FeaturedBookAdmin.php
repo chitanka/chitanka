@@ -27,7 +27,7 @@ class FeaturedBookAdmin extends Admin {
 			->add('url', 'string', ['template' => 'App:FeaturedBookAdmin:list_url.html.twig'])
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

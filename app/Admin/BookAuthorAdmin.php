@@ -21,7 +21,7 @@ class BookAuthorAdmin extends Admin {
 			->add('person')
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

@@ -32,7 +32,7 @@ class LabelAdmin extends Admin {
 			->add('nrOfTexts')
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

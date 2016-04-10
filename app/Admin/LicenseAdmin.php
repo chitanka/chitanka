@@ -27,7 +27,7 @@ class LicenseAdmin extends Admin {
 			->add('free')
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

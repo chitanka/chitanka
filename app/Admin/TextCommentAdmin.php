@@ -33,7 +33,7 @@ class TextCommentAdmin extends Admin {
 			->add('is_shown')
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

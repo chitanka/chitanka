@@ -63,7 +63,7 @@ class BookAdmin extends Admin {
 			->add('puk', 'string', ['template' => 'App:BookAdmin:list_puk.html.twig'])
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

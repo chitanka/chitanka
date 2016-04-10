@@ -29,7 +29,7 @@ class ForeignBookAdmin extends Admin {
 			->add('isFree')
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

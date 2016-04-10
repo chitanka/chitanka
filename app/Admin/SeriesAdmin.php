@@ -28,7 +28,7 @@ class SeriesAdmin extends Admin {
 			->add('slug')
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

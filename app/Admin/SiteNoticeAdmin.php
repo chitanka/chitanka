@@ -27,7 +27,7 @@ class SiteNoticeAdmin extends Admin {
 			->add('isForFrontPage')
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

@@ -23,7 +23,7 @@ class TextTranslatorAdmin extends Admin {
 			->add('year')
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

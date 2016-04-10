@@ -32,7 +32,7 @@ class UserAdmin extends Admin {
 			->add('touched')
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

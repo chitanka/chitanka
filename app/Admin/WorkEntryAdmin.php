@@ -34,7 +34,7 @@ class WorkEntryAdmin extends Admin {
 			->add('author')
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

@@ -25,7 +25,7 @@ class TextLinkAdmin extends Admin {
 			->addIdentifier('code')
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]

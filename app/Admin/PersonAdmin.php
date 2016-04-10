@@ -44,7 +44,7 @@ class PersonAdmin extends Admin {
 
 			->add('_action', 'actions', [
 				'actions' => [
-					'view' => [],
+					'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]
