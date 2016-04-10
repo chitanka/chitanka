@@ -231,5 +231,5 @@
 {% endmacro %}
 
 {% macro qrcode(text) %}
-	<a href="http://bg.wikipedia.org/wiki/QR_%D0%BA%D0%BE%D0%B4" class="qrcode"><img src="{{ url('text_show', {'id': text.id ~'-'~ text.slug})|qrcode }}"></a>
+	<a href="//bg.wikipedia.org/wiki/QR_%D0%BA%D0%BE%D0%B4" class="qrcode"><img src="{{ url('text_show', {'id': text.id ~'-'~ text.slug})|qrcode }}"></a>
 {% endmacro %}

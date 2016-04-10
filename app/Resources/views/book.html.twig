@@ -80,5 +80,5 @@
 {% endmacro %}
 
 {% macro qrcode(book) %}
-	<a href="http://bg.wikipedia.org/wiki/QR_%D0%BA%D0%BE%D0%B4" class="qrcode"><img src="{{ url('book_show', {'id': book.id ~'-'~ book.slug})|qrcode }}"></a>
+	<a href="//bg.wikipedia.org/wiki/QR_%D0%BA%D0%BE%D0%B4" class="qrcode"><img src="{{ url('book_show', {'id': book.id ~'-'~ book.slug})|qrcode }}"></a>
 {% endmacro %}

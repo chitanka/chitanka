@@ -252,7 +252,7 @@ class Extension extends \Twig_Extension {
 	 * @return string
 	 */
 	public function getQrCode($url, $width = 100) {
-		return "http://chart.apis.google.com/chart?cht=qr&chs={$width}x{$width}&chld=H|0&chl=". urlencode($url);
+		return "//chart.apis.google.com/chart?cht=qr&chs={$width}x{$width}&chld=H|0&chl=". urlencode($url);
 	}
 
 	/**
