@@ -16,6 +16,9 @@ class WikiReader {
 	public function fetchPage($fullPageName) {
 		list($wikiCode, $pageName) = explode(':', $fullPageName, 2);
 		$site = $this->siteRepo->findSiteByCode($wikiCode);
+		if ($site === null) {
+			return null;
+		}
 		$url = $site->getUrl($pageName);
 		$page = new WikiReaderPage($pageName);
 		$page->content = $this->mwClient->fetchContent($url);
