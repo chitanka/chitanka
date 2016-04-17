@@ -269,7 +269,7 @@ class WorkPage extends Page {
 
 		if ( $this->handleUpload() && !empty($this->uplfile) ) {
 			$set['uplfile'] = $this->uplfile;
-			$set['tmpfiles'] = $this->makeTmpFilePath(self::rawurlencode($this->uplfile));
+			$set['tmpfiles'] = $this->makeTmpFilePath(self::rawurlencode($this->uplfile), true);
 			$set['tfsize'] = Number::int_b2m(filesize("{$this->absTmpDir}/{$this->uplfile}"));
 		}
 		if ($this->entryId) {
@@ -1517,11 +1517,15 @@ EOS;
 		$notifier->sendMessage($message);
 	}
 
-	private function makeTmpFilePath($file = '') {
+	private function makeTmpFilePath($file = '', $forDb = false) {
 		if (preg_match('|https?://|', $file)) {
 			return $file;
 		}
-		return $this->container->getParameter('workroom_root')."/{$this->tmpDir}/{$file}";
+		$root = $this->container->getParameter('workroom_root');
+		if ($forDb && empty($root)) {
+			return $file;
+		}
+		return "$root/{$this->tmpDir}/{$file}";
 	}
 
 	private function makeFileLink($file, $username = '', $filesize = null) {
