@@ -256,7 +256,7 @@ services:
 
     kernel.listener:
         class: App\Listener\KernelListener
-        arguments: ["@app.responder"]
+        arguments: ["@app.responder", "@app.entity_manager", "@security.token_storage"]
         tags:
             - { name: kernel.event_subscriber }
 

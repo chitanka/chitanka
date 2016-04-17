@@ -5,6 +5,7 @@ use App\Legacy\Setup;
 use App\Service\FlashService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -21,6 +22,7 @@ abstract class Controller extends SymfonyController {
 	/**
 	 * @param string $pageName
 	 * @param array $params
+	 * @return Response
 	 */
 	protected function legacyPage($pageName, array $params = []) {
 		$page = Setup::getPage($pageName, $this, $this->container);
@@ -28,7 +30,7 @@ abstract class Controller extends SymfonyController {
 			return $this->urlRedirect($page->redirect);
 		}
 
-		$request = $this->get('request_stack')->getMasterRequest();
+		$request = $this->getRequest();
 		$params += [
 			'page' => $page,
 			'navlinks' => $this->renderLayoutComponent('sidebar-menu', 'App::navlinks.html.twig'),
@@ -51,6 +53,7 @@ abstract class Controller extends SymfonyController {
 	/**
 	 * @param string $wikiPage
 	 * @param string $fallbackTemplate
+	 * @return string
 	 */
 	protected function renderLayoutComponent($wikiPage, $fallbackTemplate) {
 		$wikiPagePath = $this->container->getParameter('content_dir')."/wiki/special/$wikiPage.html";
@@ -61,6 +64,11 @@ abstract class Controller extends SymfonyController {
 		return $this->renderView($fallbackTemplate);
 	}
 
+	/**
+	 * @param string $text
+	 * @param string $contentType
+	 * @return array
+	 */
 	protected function asText($text, $contentType = 'text/plain') {
 		return [
 			'_content' => $text,
@@ -68,10 +76,18 @@ abstract class Controller extends SymfonyController {
 		];
 	}
 
+	/**
+	 * @param string $content
+	 * @return array
+	 */
 	protected function asJson($content) {
 		return $this->asText(json_encode($content), 'application/json');
 	}
 
+	/**
+	 * @param Response $response
+	 * @return Response
+	 */
 	protected function setCacheStatusByResponse(Response $response) {
 		if ($this->responseAge && $this->container->getParameter('use_http_cache')) {
 			$response->setSharedMaxAge($this->responseAge);
@@ -84,26 +100,18 @@ abstract class Controller extends SymfonyController {
 		return $this->em ?: $this->em = $this->container->get('app.entity_manager');
 	}
 
-	private $user;
 	/** @return User */
 	public function getUser() {
-		if ( ! isset($this->user)) {
-			$this->user = User::initUser($this->em()->getUserRepository());
-			if ($this->user->isAuthenticated()) {
-				$token = new \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken($this->user, $this->user->getPassword(), 'User', $this->user->getRoles());
-				$this->get('security.token_storage')->setToken($token);
-			}
-		}
-		return $this->user;
+		return $this->get('security.token_storage')->getToken()->getUser();
 	}
 
 	/** @return User */
 	protected function getSavableUser() {
-		return $this->em()->merge($this->getUser());
+		return $this->getUser();
 	}
 
 	public function setUser($user) {
-		$this->user = $user;
+		$this->get('security.token_storage')->getToken()->setUser($user);
 	}
 
 	/**
@@ -151,12 +159,7 @@ abstract class Controller extends SymfonyController {
 		if (!$url) {
 			return new Response(null, 410);
 		}
-
 		return new RedirectResponse($url, $permanent ? 301 : 302);
-	}
-
-	public function createAccessDeniedException($message = 'Access Denied', \Exception $previous = null) {
-		return new \Symfony\Component\Security\Core\Exception\AccessDeniedException($message, $previous);
 	}
 
 	// TODO refactor: move to separate class
@@ -180,7 +183,7 @@ abstract class Controller extends SymfonyController {
 	}
 
 	protected function getWebRoot() {
-		return dirname($this->get('request_stack')->getMasterRequest()->server->get('SCRIPT_NAME'));
+		return dirname($this->getRequest()->server->get('SCRIPT_NAME'));
 	}
 
 	protected function generateAbsoluteUrl($route, $parameters = array()) {
@@ -193,5 +196,10 @@ abstract class Controller extends SymfonyController {
 
 	public function renderViewForLegacyCode($view, array $parameters = []) {
 		return $this->renderView($view, $parameters);
+	}
+
+	/** @return Request */
+	private function getRequest() {
+		return $this->get('request_stack')->getMasterRequest();
 	}
 }
