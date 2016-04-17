@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SearchService {
 
-	const MAX_RESULTS = 50;
+	const MAX_RESULTS = 100;
 	const MAX_LATEST_STRINGS = 30;
 	const MAX_TOP_STRINGS = 30;
 
