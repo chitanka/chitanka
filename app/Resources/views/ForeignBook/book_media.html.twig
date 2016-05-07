@@ -21,7 +21,7 @@
 		{% endif %}
 		{% if book.publishedAt %}
 			<div class="book-extra">
-				Дата на публикация: <time datetime="{{ book.publishedAt|date('c') }}">{{ book.publishedAt|date('d.m.Y') }}</time>
+				Дата на издаване: <time datetime="{{ book.publishedAt|date('c') }}">{{ book.publishedAt|date('d.m.Y') }}</time>
 			</div>
 		{% endif %}
 		<div class="book-external-link">

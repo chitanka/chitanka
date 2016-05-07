@@ -30,7 +30,7 @@
 			{% endif %}
 			<dl style="margin: 1em">
 				{% if book.publishedAt %}
-					<dt>Дата на публикация</dt>
+					<dt>Дата на издаване</dt>
 					<dd><time datetime="{{ book.publishedAt|date('c') }}">{{ book.publishedAt|date('d.m.Y') }}</time></dd>
 				{% endif %}
 				{% if book.category is not empty %}
