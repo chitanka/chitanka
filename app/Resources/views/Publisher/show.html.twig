@@ -8,16 +8,16 @@
 			{{ publisher.name }}
 		</li>
 	</ul>
-	{% if publisher.extraInfo is not empty %}
-		<div class="panel panel-info">
-			<div class="panel-heading">
-				Сайт: <a href="{{ publisher.website }}">{{ publisher.website }}</a>
-			</div>
-			<div class="panel-body">
-				{{ publisher.extraInfo|raw }}
-			</div>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			Сайт: <a href="{{ publisher.website }}">{{ publisher.website }}</a>
 		</div>
-	{% endif %}
+		<div class="panel-body">
+			{% if publisher.extraInfo is not empty %}
+				{{ publisher.extraInfo|raw }}
+			{% endif %}
+		</div>
+	</div>
 	<div class="booklist">
 		{% for book in publisher.foreignBooks %}
 			<div class="col-md-6 col-book">
