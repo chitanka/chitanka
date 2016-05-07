@@ -1,0 +1,21 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		textarea.form-control {
+			min-height: 12em;
+		}
+	</style>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="//cdn.ckeditor.com/4.5.8/standard/ckeditor.js"></script>
+	<script src="//cdn.ckeditor.com/4.5.8/standard/adapters/jquery.js"></script>
+	<script>
+		$(function() {
+			$('textarea.richhtml').ckeditor();
+		});
+	</script>
+{% endblock %}
