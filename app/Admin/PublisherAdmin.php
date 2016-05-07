@@ -38,7 +38,7 @@ class PublisherAdmin extends Admin {
 			->add('name')
 			->add('website')
 			->add('email')
-			->add('extraInfo')
+			->add('extraInfo', null, ['attr' => ['class' => 'richhtml']])
 			->end();
 	}
 
