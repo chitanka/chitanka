@@ -17,6 +17,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @UniqueEntity(fields="username")
  */
 class User implements UserInterface, \JsonSerializable {
+
+	const GROUP_USER = 'user';
+	const GROUP_TEXT_LABEL = 'text-label';
+	const GROUP_EDIT_WIKI = 'edit-wiki';
+	const GROUP_WORKROOM_SUPERVISOR = 'workroom-supervisor';
+	const GROUP_WORKROOM_ADMIN = 'workroom-admin';
+	const GROUP_FOREIGN_BOOK_PUBLISHER = 'foreign-book-publisher';
+	const GROUP_ADMIN = 'admin';
+	const GROUP_GOD = 'god';
+
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -78,13 +88,14 @@ class User implements UserInterface, \JsonSerializable {
 	 */
 	private $groups = [];
 	private static $groupList = [
-		'user',
-		'text-label',
-		'edit-wiki',
-		'workroom-supervisor',
-		'workroom-admin',
-		'admin',
-		'god',
+		self::GROUP_USER,
+		self::GROUP_TEXT_LABEL,
+		self::GROUP_EDIT_WIKI,
+		self::GROUP_WORKROOM_SUPERVISOR,
+		self::GROUP_WORKROOM_ADMIN,
+		self::GROUP_FOREIGN_BOOK_PUBLISHER,
+		self::GROUP_ADMIN,
+		self::GROUP_GOD,
 	];
 
 	/**
@@ -130,6 +141,12 @@ class User implements UserInterface, \JsonSerializable {
 	 * @ORM\OneToMany(targetEntity="Bookmark", mappedBy="user", cascade={"persist"})
 	 */
 	private $bookmarks;
+
+	/**
+	 * @var Publisher
+	 * @ORM\ManyToOne(targetEntity="Publisher", inversedBy="users")
+	 */
+	private $publisher;
 
 	public function __construct() {
 		$this->touch();
@@ -215,14 +232,13 @@ class User implements UserInterface, \JsonSerializable {
 	public function inGroup($groups, $orGod = true) {
 		$groups = (array) $groups;
 		if ($orGod) {
-			$groups[] = 'god';
+			$groups[] = self::GROUP_GOD;
 		}
 		foreach ($groups as $group) {
 			if (in_array($group, $this->groups)) {
 				return true;
 			}
 		}
-
 		return false;
 	}
 
@@ -261,6 +277,20 @@ class User implements UserInterface, \JsonSerializable {
 	 */
 	public function addBookmark($bookmark) { $this->bookmarks[] = $bookmark; }
 
+	/**
+	 * @return Publisher
+	 */
+	public function getPublisher() {
+		return $this->publisher;
+	}
+
+	/**
+	 * @param Publisher $publisher
+	 */
+	public function setPublisher($publisher) {
+		$this->publisher = $publisher;
+	}
+
 	public function getExtraStylesheets() {
 		return isset($this->opts['css']) ? $this->opts['css'] : [];
 	}
@@ -274,14 +304,13 @@ class User implements UserInterface, \JsonSerializable {
 	}
 
 	public function getRoles() {
-		#return array();
 		return array_map(function($group){
 			return 'ROLE_' . strtoupper($group);
 		}, $this->getGroups());
 	}
 
 	public function canPutTextLabel() {
-		return $this->inGroup('text-label');
+		return $this->inGroup(self::GROUP_TEXT_LABEL);
 	}
 
 	public function eraseCredentials() {
@@ -321,6 +350,7 @@ class User implements UserInterface, \JsonSerializable {
 			'registration' => $this->registration,
 			'touched' => $this->touched,
 			'token' => $this->token,
+			'publisher' => $this->publisher,
 		];
 	}
 
@@ -328,7 +358,7 @@ class User implements UserInterface, \JsonSerializable {
 	public function preInsert() {
 		$this->registration = new \DateTime;
 		$this->token = $this->generateToken();
-		$this->groups[] = 'user';
+		$this->groups[] = self::GROUP_USER;
 	}
 
 	/** @ORM\PreUpdate */
@@ -494,7 +524,7 @@ class User implements UserInterface, \JsonSerializable {
 	}
 
 	public function isGod() {
-		return $this->inGroup('god');
+		return $this->inGroup(self::GROUP_GOD);
 	}
 
 	public function isHuman() {

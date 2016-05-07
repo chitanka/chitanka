@@ -65,12 +65,12 @@ class KernelListener implements EventSubscriberInterface {
 
 	private function initTokenStorageIfUserAuthenticated() {
 		$user = User::initUser($this->em->getUserRepository());
-		$token = new \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken($user, $user->getPassword(), 'User', $user->getRoles());
-		$this->tokenStorage->setToken($token);
 		if ($user->isAuthenticated()) {
 			// register the user by doctrine
-			$this->em->merge($user);
+			$user = $this->em->merge($user);
 		}
+		$token = new \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken($user, $user->getPassword(), 'User', $user->getRoles());
+		$this->tokenStorage->setToken($token);
 	}
 
 	private function normalizeOpdsContent(Request $request, Response $response) {

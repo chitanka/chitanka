@@ -20,20 +20,25 @@ class MainController extends Controller {
 			'_cache' => 600,
 		];
 		$sections = $this->container->getParameter('main.sections');
-		if (in_array('review', $sections)) {
-			$vars['review'] = ReviewService::getReview(true);
-		}
-		if (in_array('foreign_book', $sections)) {
-			$vars['foreign_book'] = $this->em()->getForeignBookRepository()->getRandom();
-		}
-		if (in_array('featured_book', $sections)) {
-			$vars['featured_book'] = $this->em()->getFeaturedBookRepository()->getRandom();
-		}
 		if (in_array('books', $sections)) {
 			$vars['books'] = $this->em()->getBookRevisionRepository()->getLatest(self::LATEST_BOOKS_LIMIT, 1, false);
 		}
 		if (in_array('texts', $sections)) {
 			$vars['texts'] = $this->em()->getTextRevisionRepository()->getLatest(self::LATEST_TEXTS_LIMIT, 1, false);
+		}
+		if (in_array('featured_books', $sections)) {
+			$vars['featured_books'] = [
+				$this->em()->getFeaturedBookRepository()->getRandom(),
+				$this->em()->getFeaturedBookRepository()->getRandom(),
+				$this->em()->getFeaturedBookRepository()->getRandom(),
+			];
+		}
+		if (in_array('foreign_books', $sections)) {
+			$vars['foreign_books'] = [
+				$this->em()->getForeignBookRepository()->getRandom(),
+				$this->em()->getForeignBookRepository()->getRandom(),
+				$this->em()->getForeignBookRepository()->getRandom(),
+			];
 		}
 		if (in_array('liter_posts', $sections)) {
 			$vars['liter_posts'] = LiternewsFeed::fetchLatest(self::LATEST_LITERNEWS_LIMIT);

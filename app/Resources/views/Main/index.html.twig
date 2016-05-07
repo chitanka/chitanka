@@ -24,28 +24,17 @@
 		</ul>
 	</div>
 
-	<div class="special-books">
-		{% if review is defined and review is not empty %}
-			<section id="mp-review" class="box box3 bookbox">
-				<h2><a href="{{ path('reviews') }}">Открийте</a></h2>
-				{% include 'App:FeaturedBook:book.html.twig' with {book: review} %}
-			</section>
-		{% endif %}
-		{% if foreign_book is defined and foreign_book is not empty %}
-			<section id="mp-foreign-book" class="box box3 bookbox">
-				<h2><a href="{{ path('foreign_books') }}">Купете си</a></h2>
-				{% include 'App:ForeignBook:book.html.twig' with {book: foreign_book} %}
-			</section>
-		{% endif %}
-		{% if featured_book is defined and featured_book is not empty %}
-		<section id="mp-featured-book" class="box box3 bookbox">
-			<h2><a href="{{ path('featured_books') }}">Прочетете</a></h2>
-			{% include 'App:FeaturedBook:book.html.twig' with {book: featured_book} %}
-		</section>
-		{% endif %}
-	</div>
-
-	<div class="separator"></div>
+	{% if featured_books is defined and featured_books is not empty %}
+		<div id="mp-featured-book" class="special-books">
+			<h2><a href="{{ path('featured_books') }}">Препоръчани книги</a></h2>
+			{% for featured_book in featured_books %}
+				<section class="box box3 bookbox">
+					{% include 'App:FeaturedBook:book.html.twig' with {book: featured_book} %}
+				</section>
+			{% endfor %}
+		</div>
+		<div class="separator"></div>
+	{% endif %}
 
 	{% if books is defined %}
 		<section id="mp-new-books" class="box box2">
@@ -68,6 +57,18 @@
 
 	<div class="separator"></div>
 
+	{% if foreign_books is defined and foreign_books is not empty %}
+		<div id="mp-foreign-book" class="special-books">
+			<h2><a href="{{ path('foreign_books_index') }}">Издателска витрина</a></h2>
+			{% for foreign_book in foreign_books %}
+				<section class="box box3 bookbox">
+					{% include 'App:ForeignBook:book.html.twig' with {book: foreign_book} %}
+				</section>
+			{% endfor %}
+		</div>
+		<div class="separator"></div>
+	{% endif %}
+
 	{% if liter_posts is defined %}
 		<section id="mp-liternews" class="box liternewsbox">
 			<h2><a href="http://planet.chitanka.info/">От литературните блогове</a></h2>
@@ -79,7 +80,7 @@
 		</section>
 	{% endif %}
 
-	{% if liter_posts is defined %}
+	{% if searches is defined %}
 		<section id="mp-search" class="box box3">
 			<h2><a href="{{ path('search') }}">Потърсено</a></h2>
 			<div class="well">

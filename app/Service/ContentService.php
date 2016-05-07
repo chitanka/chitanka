@@ -81,6 +81,10 @@ class ContentService {
 	}
 
 	public static function getCover($id, $width = 200, $format = 'jpg') {
-		return self::getContentFilePath('book-cover', $id) . ".$width.$format";
+		if (is_numeric($id)) {
+			return self::getContentFilePath('book-cover', $id) . ".$width.$format";
+		}
+		$thumbName = str_replace('content/', 'thumb/', preg_replace('/(\.[^.]+)$/', ".$width$1", $id));
+		return $thumbName;
 	}
 }

@@ -2,7 +2,7 @@
 	{% import 'App::link.html.twig' as link %}
 	<div class="media book-media" itemscope itemtype="http://schema.org/Book">
 		<div class="media-left">
-			{{ _self.cover(book, 90) }}
+			{{ _self.cover(book, 120) }}
 		</div>
 		<div class="media-body">
 			<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}"

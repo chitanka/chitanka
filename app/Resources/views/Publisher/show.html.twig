@@ -1,0 +1,18 @@
+{% extends 'App::layout.html.twig' %}
+
+{% set title = 'Издателска витрина на ' ~ publisher.name %}
+{% block content %}
+	<ul class="breadcrumb" itemprop="breadcrumb">
+		<li><a href="{{ path('publishers_index') }}">Издатели</a></li>
+		<li class="active">
+			{{ publisher.name }}
+		</li>
+	</ul>
+	<div class="booklist">
+		{% for book in publisher.foreignBooks %}
+			<div class="col-md-6 col-book">
+				{% include 'App:ForeignBook:book_media.html.twig' with {book: book} %}
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}

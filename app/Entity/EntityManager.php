@@ -50,6 +50,8 @@ class EntityManager {
 	public function getNextIdRepository() { return $this->getRepository('NextId'); }
 	/** @return PersonRepository */
 	public function getPersonRepository() { return $this->getRepository('Person'); }
+	/** @return PublisherRepository */
+	public function getPublisherRepository() { return $this->getRepository('Publisher'); }
 	/** @return SearchStringRepository */
 	public function getSearchStringRepository() { return $this->getRepository('SearchString'); }
 	/** @return SequenceRepository */

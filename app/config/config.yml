@@ -37,6 +37,8 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    form_themes:
+        - SonataCoreBundle:Form:datepicker.html.twig
     globals:
         project_links: %project_links%
         analytics_snippet: "%analytics_snippet%"

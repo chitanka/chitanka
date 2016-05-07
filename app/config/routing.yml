@@ -629,6 +629,11 @@ foreign_books:
     defaults: { _controller: App:ForeignBook:index, _format: html }
     requirements: { _format: html|json|rss }
 
+foreign_book_list_by_publisher:
+    path:      /foreign-books/{publisher}.{_format}
+    defaults: { _controller: App:ForeignBook:listByPublisher, _format: html }
+    requirements: { _format: html|json|rss }
+
 reviews:
     path:      /reviews
     defaults: { _controller: App:Review:index }

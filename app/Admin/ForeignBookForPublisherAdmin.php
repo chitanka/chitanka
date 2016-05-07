@@ -1,24 +1,27 @@
 <?php namespace App\Admin;
 
 use App\Entity\ForeignBook;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use App\Entity\User;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class ForeignBookAdmin extends Admin {
-	protected $baseRoutePattern = 'foreign-book';
-	protected $baseRouteName = 'admin_foreign_book';
+class ForeignBookForPublisherAdmin extends ForeignBookAdmin {
+	protected $baseRoutePattern = 'foreign-book-for-publisher';
+	protected $baseRouteName = 'admin_foreign_book_for_publisher';
 
-	protected function configureShowField(ShowMapper $showMapper) {
-		$showMapper
-			->add('author')
-			->add('title')
-			->add('externalUrl')
-			->add('cover')
-			->add('annotation')
-			->add('excerpt', 'html')
-		;
+	/**
+	 * @var TokenStorage
+	 */
+	private $tokenStorage;
+
+	public function setTokenStorage(TokenStorage $tokenStorage) {
+		$this->tokenStorage = $tokenStorage;
+	}
+
+	public function configure() {
+		$this->setTemplate('layout', 'App:Admin:publisher_layout.html.twig');
 	}
 
 	protected function configureListFields(ListMapper $listMapper) {
@@ -26,7 +29,6 @@ class ForeignBookAdmin extends Admin {
 			->add('cover', 'string', ['template' => 'App:ForeignBookAdmin:list_cover.html.twig'])
 			->addIdentifier('title')
 			->add('author')
-			->add('publisher')
 			->add('isActive')
 			->add('_action', 'actions', [
 				'actions' => [
@@ -41,6 +43,9 @@ class ForeignBookAdmin extends Admin {
 	protected function configureFormFields(FormMapper $formMapper) {
 		/** @var $book ForeignBook */
 		$book = $this->getSubject();
+		if ($book->getPublisher() && $book->getPublisher() != $this->getUser()->getPublisher()) {
+			throw new \Exception("Unauthorized");
+		}
 		$coverFileOptions = ['label' => 'Cover', 'required' => false];
 		if ($book && ($webPath = $book->getCoverPath())) {
 			$fullPath = $this->getRequest()->getBasePath() .'/'. $webPath;
@@ -49,7 +54,6 @@ class ForeignBookAdmin extends Admin {
 		$formMapper->with('General attributes')
 			->add('author')
 			->add('title')
-			->add('publisher')
 			->add('externalUrl', null, ['help' => 'help.foreign_book.external_url'])
 			->add('coverFile', 'file', $coverFileOptions)
 			->add('annotation')
@@ -61,22 +65,25 @@ class ForeignBookAdmin extends Admin {
 			->end();
 	}
 
-	protected function configureDatagridFilters(DatagridMapper $datagrid) {
-		$datagrid
-			->add('title')
-			->add('author')
-			->add('externalUrl')
-		;
-	}
-
 	/**
 	 * @param ForeignBook $book
 	 */
-	public function preUpdate($book) {
+	public function prePersist($book) {
+		$book->setPublisher($this->getUser()->getPublisher());
 		$this->saveCover($book);
 	}
 
-	protected function saveCover(ForeignBook $book) {
-		$book->upload($this->getRequest()->getBasePath());
+	public function createQuery($context = 'list') {
+		$query = parent::createQuery($context);
+		$query->where($query->getRootAliases()[0].'.publisher = ?1');
+		$query->setParameter(1, $this->getUser()->getPublisher());
+		return $query;
+	}
+
+	/**
+	 * @return User
+	 */
+	protected function getUser() {
+		return $this->tokenStorage->getToken()->getUser();
 	}
 }

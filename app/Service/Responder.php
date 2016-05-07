@@ -50,6 +50,9 @@ class Responder {
 	 * @return Response
 	 */
 	public function createResponse(Request $request, $controller, $params) {
+		if ($params === null) {
+			$params = [];
+		}
 		$params += $this->getExtraParamsForFormat($request->getRequestFormat()) + [
 			'_cache' => $this->useHttpCache ? 3600/*1 hour*/ : 0,
 			'_status' => null,

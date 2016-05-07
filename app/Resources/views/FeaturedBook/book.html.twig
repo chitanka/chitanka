@@ -2,6 +2,6 @@
 {{ book.author }} — <i>{{ book.title }}</i><br><img src="{{ book.cover }}" class="float-left">{{ book.description|replace({"\n": "<br>"})|raw }}
 {% endset %}
 <a href="{{ book.url }}" class="adbook popover-trigger" data-content="{{ tooltip|e }}" data-edit="{{ path('admin_featured_book_edit', {'id': book.id}) }}">{{ book.author }}<br>
-	<img src="{{ book.cover }}" width="90" alt="{{ book.author }} — {{ book.title }}" /><br>
+	<img src="{{ book.cover }}" width="120" alt="{{ book.author }} — {{ book.title }}" /><br>
 	<b style="font-variant: small-caps"><i>{{ book.title }}</i></b>
 </a>

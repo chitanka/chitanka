@@ -108,7 +108,7 @@ class Person extends Entity implements \JsonSerializable {
 
 	/**
 	 * @var Book[]
-	 * @ORM\ManyToMany(targetEntity="Book")
+	 * @ORM\ManyToMany(targetEntity="Book", mappedBy="authors")
 	 */
 	private $books;
 
@@ -213,6 +213,7 @@ class Person extends Entity implements \JsonSerializable {
 			'id' => $this->getId(),
 			'slug' => $this->getSlug(),
 			'name' => $this->getName(),
+			'lastName' => $this->getLastName(),
 			'origName' => $this->getOrigName(),
 			'realName' => $this->getRealName(),
 			'origRealName' => $this->getOrealName(),

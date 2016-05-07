@@ -102,11 +102,10 @@ parameters:
         workroom:
             icon: table
     main.sections:
-        - review
-        - foreign_book
-        - featured_book
+        - featured_books
         - books
         - texts
+        - foreign_books
         - liter_posts
         - searches
         - comments

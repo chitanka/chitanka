@@ -442,6 +442,7 @@ return [
 		'edit-wiki' => 'Уики редактор',
 		'workroom-supervisor' => 'Проверител ателие',
 		'workroom-admin' => 'Администратор ателие',
+		'foreign-book-publisher' => 'Издател',
 		'admin' => 'Администратор',
 		'god' => 'Бог',
 	],

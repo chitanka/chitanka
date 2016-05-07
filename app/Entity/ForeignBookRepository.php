@@ -6,12 +6,13 @@
 class ForeignBookRepository extends EntityRepository {
 	/**
 	 * @param int $limit
+	 * @return ForeignBook[]
 	 */
 	public function getLatest($limit = null) {
 		return $this->createQueryBuilder('b')
-			->orderBy('b.isFree', 'desc')
-			->addOrderBy('b.id', 'desc')
+			->where('b.isActive = 1')
+			->orderBy('b.publishedAt', 'desc')
 			->getQuery()->setMaxResults($limit)
-			->getArrayResult();
+			->getResult();
 	}
 }

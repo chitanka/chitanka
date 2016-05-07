@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class CRUDController extends BaseController {
 
 	public function configure() {
-		if ( ! $this->getUser()->inGroup('admin')) {
+		if ( ! $this->isAuthorized()) {
 			throw new HttpException(401);
 		}
 		parent::configure();
@@ -20,4 +20,7 @@ class CRUDController extends BaseController {
 		return $this->get('security.token_storage')->getToken()->getUser();
 	}
 
+	protected function isAuthorized() {
+		return $this->getUser()->inGroup(User::GROUP_ADMIN);
+	}
 }

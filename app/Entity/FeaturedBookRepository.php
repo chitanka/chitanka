@@ -6,6 +6,7 @@
 class FeaturedBookRepository extends EntityRepository {
 	/**
 	 * @param int $limit
+	 * @return FeaturedBook[]
 	 */
 	public function getLatest($limit = null) {
 		return $this->_em->createQueryBuilder()
