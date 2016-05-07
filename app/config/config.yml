@@ -119,8 +119,12 @@ sonata_admin:
             - { position: left, type: sonata.admin.block.admin_list }
 
         groups:
-            library_main: ~
-            library_secondary: ~
+            library_main:
+                roles: [ ROLE_ADMIN ]
+            library_secondary:
+                roles: [ ROLE_ADMIN ]
+            library_publisher:
+                roles: [ ROLE_FOREIGN-BOOK-PUBLISHER ]
 
 sonata_doctrine_orm_admin:
     # default value is null, so doctrine uses the value defined in the configuration

@@ -119,7 +119,7 @@ services:
     admin.foreign_book_for_publisher:
         class: App\Admin\ForeignBookForPublisherAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: library_hidden, label: admin.foreign_book_for_publisher }
+            - { name: sonata.admin, manager_type: orm, group: library_publisher, label: admin.foreign_book_for_publisher }
         arguments: [null, App\Entity\ForeignBook, App:Admin\ForeignBookForPublisher]
         calls:
             - [setMaxPerPage, [%admin_max_per_page%]]
