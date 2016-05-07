@@ -35,6 +35,12 @@ class Publisher extends Entity implements \JsonSerializable {
 	 * @var string
 	 * @ORM\Column(type="string", length=100)
 	 */
+	private $website;
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="string", length=100)
+	 */
 	private $email;
 
 	/**
@@ -97,6 +103,20 @@ class Publisher extends Entity implements \JsonSerializable {
 		if (empty($this->getSlug())) {
 			$this->setSlug($name);
 		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getWebsite() {
+		return $this->website;
+	}
+
+	/**
+	 * @param string $website
+	 */
+	public function setWebsite($website) {
+		$this->website = $website;
 	}
 
 	/**

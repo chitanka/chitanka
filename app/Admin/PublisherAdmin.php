@@ -36,6 +36,7 @@ class PublisherAdmin extends Admin {
 		$formMapper->with('General attributes')
 			->add('slug')
 			->add('name')
+			->add('website')
 			->add('email')
 			->add('extraInfo')
 			->end();
