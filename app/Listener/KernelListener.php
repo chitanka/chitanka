@@ -41,7 +41,7 @@ class KernelListener implements EventSubscriberInterface {
 	 */
 	public function onKernelRequest(GetResponseEvent $event) {
 		$this->responder->registerCustomResponseFormats($event->getRequest());
-		$this->initTokenStorageIfUserAuthenticated();
+		$this->initTokenStorage();
 	}
 
 	/**
@@ -63,7 +63,7 @@ class KernelListener implements EventSubscriberInterface {
 		$event->setResponse($response);
 	}
 
-	private function initTokenStorageIfUserAuthenticated() {
+	private function initTokenStorage() {
 		$user = User::initUser($this->em->getUserRepository());
 		if ($user->isAuthenticated()) {
 			// register the user by doctrine
