@@ -270,11 +270,12 @@ class Extension extends \Twig_Extension {
 	 * @return string
 	 */
 	public function formatLinks($text) {
-		$patterns = [
-			'/\[\[(.+)\|(.+)\]\]/Us' => '<a href="$1">$2</a>',
-			'|(?<!")https?://\S+[^,.\s]|e' => "'<a href=\"$0\">'.\$this->getDomain('$0', '$2').'</a>'",
-		];
-		return preg_replace(array_keys($patterns), array_values($patterns), $text);
+		$formattedText = $text;
+		$formattedText = preg_replace('/\[\[(.+)\|(.+)\]\]/Us', '<a href="$1">$2</a>', $formattedText);
+		$formattedText = preg_replace_callback('|(?<!")https?://\S+[^,.\s]|', function ($m) {
+			return "<a href=\"$m[0]\">". $this->getDomain($m[0]) .'</a>';
+		}, $formattedText);
+		return $formattedText;
 	}
 
 	/**
