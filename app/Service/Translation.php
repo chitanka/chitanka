@@ -1,5 +1,6 @@
 <?php namespace App\Service;
 
+use App\Entity\ForeignBook;
 use App\Entity\User;
 
 class Translation {
@@ -16,6 +17,10 @@ class Translation {
 
 	public function getCountryChoices() {
 		return $this->generateChoicesFor('country');
+	}
+
+	public function getForeignBookFormatsChoices() {
+		return $this->generateChoicesFromCodes(ForeignBook::FORMATS, 'foreign_book.format');
 	}
 
 	public function getLabelGroupChoices() {

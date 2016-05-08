@@ -11,6 +11,21 @@ use Symfony\Component\Validator\Constraints\DateTime;
  * @ORM\Table(name="foreign_book")
  */
 class ForeignBook extends Entity implements \JsonSerializable {
+
+	const FORMAT_PAPER = 'paper';
+	const FORMAT_EPUB = 'epub';
+	const FORMAT_FB2 = 'fb2';
+	const FORMAT_MOBI = 'mobi';
+	const FORMAT_PDF = 'pdf';
+
+	const FORMATS = [
+		self::FORMAT_PAPER,
+		self::FORMAT_EPUB,
+		self::FORMAT_FB2,
+		self::FORMAT_MOBI,
+		self::FORMAT_PDF,
+	];
+
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -23,13 +38,25 @@ class ForeignBook extends Entity implements \JsonSerializable {
 	 * @var string
 	 * @ORM\Column(type="string", length=100)
 	 */
-	private $title;
+	private $author;
 
 	/**
 	 * @var string
 	 * @ORM\Column(type="string", length=100)
 	 */
-	private $author;
+	private $title;
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="string", length=100, nullable=true)
+	 */
+	private $sequence;
+
+	/**
+	 * @var int
+	 * @ORM\Column(type="smallint", nullable=true)
+	 */
+	private $sequenceNo;
 
 	/**
 	 * @var string
@@ -85,6 +112,12 @@ class ForeignBook extends Entity implements \JsonSerializable {
 	private $labels;
 
 	/**
+	 * @var array
+	 * @ORM\Column(type="simple_array")
+	 */
+	private $formats;
+
+	/**
 	 * Used by publishers
 	 * @var bool
 	 * @ORM\Column(type="boolean")
@@ -112,15 +145,44 @@ class ForeignBook extends Entity implements \JsonSerializable {
 
 	public function __construct() {
 		$this->labels = new ArrayCollection();
+		$this->formats = [self::FORMAT_PAPER];
 	}
 
 	public function getId() { return $this->id; }
 
+	public function setAuthor($author) { $this->author = $author; }
+	public function getAuthor() { return $this->author; }
+
 	public function setTitle($title) { $this->title = $title; }
 	public function getTitle() { return $this->title; }
 
-	public function setAuthor($author) { $this->author = $author; }
-	public function getAuthor() { return $this->author; }
+	/**
+	 * @return string
+	 */
+	public function getSequence() {
+		return $this->sequence;
+	}
+
+	/**
+	 * @param string $sequence
+	 */
+	public function setSequence($sequence) {
+		$this->sequence = $sequence;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getSequenceNo() {
+		return $this->sequenceNo;
+	}
+
+	/**
+	 * @param int $sequenceNo
+	 */
+	public function setSequenceNo($sequenceNo) {
+		$this->sequenceNo = $sequenceNo;
+	}
 
 	public function setExternalUrl($externalUrl) { $this->externalUrl = $externalUrl; }
 	public function getExternalUrl() { return $this->externalUrl; }
@@ -202,6 +264,20 @@ class ForeignBook extends Entity implements \JsonSerializable {
 	 */
 	public function setLabels($labels) {
 		$this->labels = $labels;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getFormats() {
+		return $this->formats;
+	}
+
+	/**
+	 * @param array $formats
+	 */
+	public function setFormats($formats) {
+		$this->formats = $formats;
 	}
 
 	/**

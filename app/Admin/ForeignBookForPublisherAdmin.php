@@ -51,14 +51,23 @@ class ForeignBookForPublisherAdmin extends ForeignBookAdmin {
 			$fullPath = $this->getRequest()->getBasePath() .'/'. $webPath;
 			$coverFileOptions['help'] = '<img src="'.$fullPath.'" class="admin-preview" width="90"/>';
 		}
+		$translation = $this->getTranslation();
 		$formMapper->with('General attributes')
 			->add('author')
 			->add('title')
+			->add('sequence')
+			->add('sequenceNo')
 			->add('externalUrl', null, ['help' => 'help.foreign_book.external_url'])
 			->add('coverFile', 'file', $coverFileOptions)
 			->add('annotation')
 			->add('category')
 			//->add('labels')
+			->add('formats', 'choice', [
+				'choices' => $translation->getForeignBookFormatsChoices(),
+				'multiple' => true,
+				'expanded' => true,
+				'attr' => ['class' => 'list-inline'],
+			])
 			->add('excerpt', null, ['attr' => ['class' => 'richhtml']])
 			->add('publishedAt', 'sonata_type_date_picker')
 			->add('isActive', null, ['help' => 'help.foreign_book.is_active'])

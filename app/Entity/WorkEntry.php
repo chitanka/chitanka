@@ -102,7 +102,7 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 
 	/**
 	 * @var int
-	 * @ORM\Column(type="smallint")
+	 * @ORM\Column(type="smallint", nullable=true)
 	 */
 	private $progress = 0;
 
@@ -115,7 +115,7 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 	/**
 	 * If set, the entry files will be available for the public at the given date.
 	 * @var DateTime
-	 * @ORM\Column(type="date")
+	 * @ORM\Column(type="date", nullable=true)
 	 */
 	private $availableAt;
 

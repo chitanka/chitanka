@@ -345,6 +345,14 @@ return [
 		'magazine' => 'Списание',
 	],
 
+	'foreign_book.format' => [
+		\App\Entity\ForeignBook::FORMAT_PAPER => 'хартиена',
+		\App\Entity\ForeignBook::FORMAT_EPUB => 'EPUB',
+		\App\Entity\ForeignBook::FORMAT_FB2 => 'FictionBook',
+		\App\Entity\ForeignBook::FORMAT_MOBI => 'Mobi',
+		\App\Entity\ForeignBook::FORMAT_PDF => 'PDF',
+	],
+
 	'month' => [
 		1 => 'януари',
 		'февруари',
