@@ -29,14 +29,30 @@
 				</div>
 			{% endif %}
 			<dl style="margin: 1em">
-				{% if book.publishedAt %}
-					<dt>Дата на издаване</dt>
-					<dd><time datetime="{{ book.publishedAt|date('c') }}">{{ book.publishedAt|date('d.m.Y') }}</time></dd>
+				{% if book.sequence is not empty %}
+					<dt>Поредица</dt>
+					<dd>{{ book.sequence }}
+						{% if book.sequenceNo is not empty %}
+							№ book.sequenceNo
+						{% endif %}
+					</dd>
 				{% endif %}
 				{% if book.category is not empty %}
 					<dt>Категория</dt>
 					<dd>{{ book.category.name }}</dd>
 				{% endif %}
+				{% if book.publishedAt %}
+					<dt>Дата на издаване</dt>
+					<dd><time datetime="{{ book.publishedAt|date('c') }}">{{ book.publishedAt|date('d.m.Y') }}</time></dd>
+				{% endif %}
+				<dt>Формат</dt>
+				<dd>
+					<ul class="dl-list">
+						{% for format in book.formats %}
+							<li>{{ ('foreign_book.format.' ~ format)|trans }}</li>
+						{% endfor %}
+					</ul>
+				</dd>
 				<dt>Място за сдобиване с книгата</dt>
 				<dd>
 					<a href="{{ book.externalUrl }}" target="_blank"><span class="fa fa-external-link"></span> {{ book.externalUrl }}</a>

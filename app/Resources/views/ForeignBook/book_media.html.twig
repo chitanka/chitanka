@@ -9,8 +9,16 @@
 		<a class="booklink" data-edit="{{ path('admin_foreign_book_edit', {id: book.id}) }}" href="{{ path('foreign_books_show', {id: book.id}) }}">
 			<i itemprop="name">{{ book.title }}</i>
 		</a>
+		{% if book.sequence is not empty %}
+			<div class="book-extra">
+				Поредица: {{ book.sequence }}
+				{% if book.sequenceNo is not empty %}
+					№ book.sequenceNo
+				{% endif %}
+			</div>
+		{% endif %}
 		{% if book.category is not empty %}
-			<div class="book-extra" title="Категория">
+			<div class="book-extra">
 				Категория: {{ book.category.name }}
 			</div>
 		{% endif %}
@@ -24,6 +32,14 @@
 				Дата на издаване: <time datetime="{{ book.publishedAt|date('c') }}">{{ book.publishedAt|date('d.m.Y') }}</time>
 			</div>
 		{% endif %}
+		<div class="book-extra">
+			Формат:
+			<ul class="dl-list">
+			{% for format in book.formats %}
+				<li>{{ ('foreign_book.format.' ~ format)|trans }}</li>
+			{% endfor %}
+			</ul>
+		</div>
 		<div class="book-external-link">
 			<a href="{{ book.externalUrl }}" title="Място за сдобиване с книгата" target="_blank"><span class="fa fa-external-link"></span> {{ book.externalUrl|domain }}</a>
 		</div>
