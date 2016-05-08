@@ -44,6 +44,7 @@ class Extension extends \Twig_Extension {
 			new \Twig_SimpleFilter('link', [$this, 'formatLinks']),
 			new \Twig_SimpleFilter('encoding', [$this, 'changeEncoding']),
 			new \Twig_SimpleFilter('urlencode', [$this, 'getUrlEncode']),
+			new \Twig_SimpleFilter('url_decode', 'rawurldecode'),
 			new \Twig_SimpleFilter('qrcode', [$this, 'getQrCode']),
 			new \Twig_SimpleFilter('put_text_in_template', [$this, 'putTextInBookTemplate']),
 		];
