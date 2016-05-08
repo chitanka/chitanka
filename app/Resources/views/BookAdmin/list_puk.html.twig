@@ -3,6 +3,6 @@
 	{% if value %}
 		<a href="{{ value.url }}" class="booksite">ПУК!</a>
 	{% else %}
-		<a href="http://biblio.stage.bg/index.php?do=search&amp;subaction=search&amp;story={{ object.title|encoding('cp1251')|urlencode }}">ПУК!</a>?
+		<a href="http://biblio.stage.bg/index.php?do=search&amp;subaction=search&amp;story={{ object.title|encoding('cp1251')|url_encode }}">ПУК!</a>?
 	{% endif %}
 {% endblock %}
