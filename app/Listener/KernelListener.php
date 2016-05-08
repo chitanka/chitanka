@@ -11,6 +11,7 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -40,6 +41,9 @@ class KernelListener implements EventSubscriberInterface {
 	 * @param GetResponseEvent $event
 	 */
 	public function onKernelRequest(GetResponseEvent $event) {
+		if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+			return;
+		}
 		$this->responder->registerCustomResponseFormats($event->getRequest());
 		$this->initTokenStorage();
 	}
