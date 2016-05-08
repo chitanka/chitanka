@@ -48,6 +48,7 @@ class ForeignBookAdmin extends Admin {
 			$fullPath = $this->getRequest()->getBasePath() .'/'. $webPath;
 			$coverFileOptions['help'] = '<img src="'.$fullPath.'" class="admin-preview" width="90"/>';
 		}
+		$translation = $this->getTranslation();
 		$formMapper->with('General attributes')
 			->add('author')
 			->add('title')
@@ -59,7 +60,12 @@ class ForeignBookAdmin extends Admin {
 			->add('annotation')
 			->add('category')
 			//->add('labels')
-			->add('formats')
+			->add('formats', 'choice', [
+				'choices' => $translation->getForeignBookFormatsChoices(),
+				'multiple' => true,
+				'expanded' => true,
+				'attr' => ['class' => 'list-inline'],
+			])
 			->add('excerpt', null, ['attr' => ['class' => 'richhtml']])
 			->add('publishedAt', 'sonata_type_date_picker')
 			->add('isActive', null, ['help' => 'help.foreign_book.is_active'])
