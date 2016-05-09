@@ -105,8 +105,8 @@ parameters:
         - featured_books
         - books
         - texts
-        - foreign_books
-        - liter_posts
-        - searches
-        - comments
-        - forum_posts
+        #- foreign_books
+        #- liter_posts
+        #- searches
+        #- comments
+        #- forum_posts
