@@ -1,5 +1,7 @@
 <?php namespace App\Legacy;
 
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+
 class LoginPage extends RegisterPage {
 
 	const MAX_LOGIN_TRIES = 50;
@@ -24,8 +26,9 @@ class LoginPage extends RegisterPage {
 			$this->addMessage('Не сте въвели парола.', true);
 			return $this->buildContent();
 		}
-		$user = $this->controller->em()->getUserRepository()->findByUsername($this->username);
-		if ( ! $user) {
+		try {
+			$user = $this->controller->em()->getUserRepository()->findByUsernameOrEmail($this->username);
+		} catch (UsernameNotFoundException $e) {
 			$this->addMessage("Не съществува потребител с име <strong>$this->username</strong>.", true );
 			return $this->buildContent();
 		}

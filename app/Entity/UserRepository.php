@@ -16,9 +16,23 @@ class UserRepository extends EntityRepository implements UserProviderInterface {
 	public function findByUsername($username) {
 		$user = $this->findOneBy(['username' => $username]);
 		if (!$user) {
-			$exception = new UsernameNotFoundException();
-			$exception->setUsername($username);
-			throw $exception;
+			throw new UsernameNotFoundException("unknown username '$username'");
+		}
+		return $user;
+	}
+
+	/**
+	 * @param string $usernameOrEmail
+	 * @return User
+	 */
+	public function findByUsernameOrEmail($usernameOrEmail) {
+		try {
+			return $this->findByUsername($usernameOrEmail);
+		} catch (UsernameNotFoundException $e) {
+			$user = $this->findByEmail($usernameOrEmail);
+			if (!$user) {
+				throw new UsernameNotFoundException("unknown username or email '$usernameOrEmail'");
+			}
 		}
 		return $user;
 	}
