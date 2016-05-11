@@ -4,6 +4,7 @@ use App\Entity\EntityManager;
 use App\Entity\User;
 use App\Service\Responder;
 use App\Util\Opds;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,8 +71,11 @@ class KernelListener implements EventSubscriberInterface {
 	private function initTokenStorage() {
 		$user = User::initUser($this->em->getUserRepository());
 		if ($user->isAuthenticated()) {
-			// register the user by doctrine
-			$user = $this->em->merge($user);
+			try {
+				// register the user by doctrine
+				$user = $this->em->merge($user);
+			} catch (EntityNotFoundException $e) {
+			}
 		}
 		$token = new \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken($user, $user->getPassword(), 'User', $user->getRoles());
 		$this->tokenStorage->setToken($token);

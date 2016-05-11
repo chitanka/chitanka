@@ -439,10 +439,9 @@ class User implements UserInterface, \JsonSerializable {
 	/** @return User */
 	protected static function newFromCookie($repo) {
 		$user = $repo->find($_COOKIE[self::UID_COOKIE]);
-		if ( $user->validateToken($_COOKIE[self::TOKEN_COOKIE], $user->getPassword()) ) {
+		if ($user && $user->validateToken($_COOKIE[self::TOKEN_COOKIE], $user->getPassword())) {
 			$user->touch();
 			$repo->save($user);
-
 			return $user;
 		}
 
