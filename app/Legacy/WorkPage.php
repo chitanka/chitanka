@@ -1392,6 +1392,7 @@ EOS;
 	}
 
 	private function initData($id) {
+		/* @var $entry WorkEntry */
 		$entry = $this->repo()->find($id);
 		if (!$entry) {
 			throw new NotFoundHttpException("Няма запис с номер $id.");
