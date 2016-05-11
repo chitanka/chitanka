@@ -22,6 +22,18 @@ use Sfblib\SfbConverter;
  */
 class Book extends BaseWork implements \JsonSerializable {
 
+	const FORMAT_DJVU = 'djvu';
+	const FORMAT_PDF = 'pdf';
+	const FORMAT_PIC = 'pic';
+	const FORMAT_SFB = 'sfb';
+
+	const FORMATS = [
+		self::FORMAT_DJVU,
+		self::FORMAT_PDF,
+		self::FORMAT_PIC,
+		self::FORMAT_SFB,
+	];
+
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -864,7 +876,7 @@ EOS;
 	public function setDatafiles($f) {} // dummy for sonata admin
 
 	public function getStaticFile($format) {
-		if (!in_array($format, ['djvu', 'pdf'])) {
+		if (!in_array($format, [self::FORMAT_DJVU, self::FORMAT_PDF])) {
 			throw new \Exception("Format $format is not a valid static format for a book.");
 		}
 		return ContentService::getContentFilePath('book-'.$format, $this->id);
@@ -872,10 +884,10 @@ EOS;
 
 	public function getOutputFormats() {
 		$outputFormats = [];
-		if (in_array('sfb', $this->getFormats())) {
+		if (in_array(self::FORMAT_SFB, $this->getFormats())) {
 			$outputFormats = array_merge($outputFormats, ['fb2.zip', 'epub', 'txt.zip', 'sfb.zip']);
 		}
-		foreach (['djvu', 'pdf', 'pic'] as $format) {
+		foreach ([self::FORMAT_DJVU, self::FORMAT_PDF, self::FORMAT_PIC] as $format) {
 			if (in_array($format, $this->getFormats())) {
 				$outputFormats[] = $format;
 			}
