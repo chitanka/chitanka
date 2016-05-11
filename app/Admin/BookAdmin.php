@@ -145,6 +145,12 @@ class BookAdmin extends Admin {
 					'class' => 'span12',
 				],
 			])
+			->add('formats', 'choice', [
+				'choices' => array_combine(Book::FORMATS, Book::FORMATS),
+				'multiple' => true,
+				'expanded' => true,
+				'attr' => ['class' => 'list-inline'],
+			])
 			->add('revision_comment', 'text', ['required' => false])
 			->add('removedNotice')
 			->end()->end();
