@@ -27,18 +27,10 @@ class MainController extends Controller {
 			$vars['texts'] = $this->em()->getTextRevisionRepository()->getLatest(self::LATEST_TEXTS_LIMIT, 1, false);
 		}
 		if (in_array('featured_books', $sections)) {
-			$vars['featured_books'] = [
-				$this->em()->getFeaturedBookRepository()->getRandom(),
-				$this->em()->getFeaturedBookRepository()->getRandom(),
-				$this->em()->getFeaturedBookRepository()->getRandom(),
-			];
+			$vars['featured_books'] = $this->em()->getFeaturedBookRepository()->getRandomEntities(3);
 		}
 		if (in_array('foreign_books', $sections)) {
-			$vars['foreign_books'] = [
-				$this->em()->getForeignBookRepository()->getRandom(),
-				$this->em()->getForeignBookRepository()->getRandom(),
-				$this->em()->getForeignBookRepository()->getRandom(),
-			];
+			$vars['foreign_books'] = $this->em()->getForeignBookRepository()->getRandomEntities(3);
 		}
 		if (in_array('liter_posts', $sections)) {
 			$vars['liter_posts'] = LiternewsFeed::fetchLatest(self::LATEST_LITERNEWS_LIMIT);

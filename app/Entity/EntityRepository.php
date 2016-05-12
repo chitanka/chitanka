@@ -89,6 +89,23 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	}
 
 	/**
+	 * @param int $limit
+	 * @param string $where
+	 * @return Entity
+	 */
+	public function getRandomEntities($limit = 3, $where = null) {
+		$entities = [];
+		while (count($entities) < $limit) {
+			$randomEntity = $this->getRandom($where);
+			if ($randomEntity === null) {
+				break;
+			}
+			$entities[$randomEntity->getId()] = $randomEntity;
+		}
+		return $entities;
+	}
+
+	/**
 	 * @param string $where
 	 * @return Entity
 	 */
