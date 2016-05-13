@@ -99,7 +99,7 @@ sensio_framework_extra:
 
 sonata_admin:
     title:      Администрация
-    #title_logo:
+    title_logo: images/logo/logo.png
     templates:
         # default global templates
         layout:  App:Admin:layout.html.twig
