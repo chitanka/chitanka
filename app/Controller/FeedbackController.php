@@ -11,23 +11,17 @@ class FeedbackController extends Controller {
 		$form = $this->createForm(FeedbackType::class , new Feedback());
 		$adminEmail = $this->container->getParameter('admin_email');
 
-		$message = null;
 		$form->handleRequest($request);
 		if ($form->isValid()) {
 			$notifier = new Notifier($this->get('mailer'));
 			$notifier->sendPerMail($form->getData(), $adminEmail);
-			$message = 'Съобщението ви беше изпратено.';
-//			if ( empty($this->referer) ) {
-//				return '';
-//			}
-//			"<p>Обратно към предишната страница</p>";
-//			return $this->redirectToRoute('task_success');
+			$this->flashes()->addNotice('Съобщението ви беше изпратено.');
+			return $this->redirectToRoute('feedback');
 		}
 
 		return [
 			'admin_email' => key($adminEmail),
 			'form' => $form->createView(),
-			'message' => $message,
 		];
 	}
 
