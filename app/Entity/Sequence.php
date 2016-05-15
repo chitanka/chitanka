@@ -41,6 +41,12 @@ class Sequence extends Entity implements \JsonSerializable {
 	private $publisher = '';
 
 	/**
+	 * @var string
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $annotation;
+
+	/**
 	 * @ORM\Column(type="boolean")
 	 */
 	private $isSeqnrVisible = true;
@@ -70,6 +76,20 @@ class Sequence extends Entity implements \JsonSerializable {
 	public function setPublisher($publisher) { $this->publisher = $publisher; }
 	public function getPublisher() { return $this->publisher; }
 
+	/**
+	 * @return string
+	 */
+	public function getAnnotation() {
+		return $this->annotation;
+	}
+
+	/**
+	 * @param string $annotation
+	 */
+	public function setAnnotation($annotation) {
+		$this->annotation = $annotation;
+	}
+
 	public function setIsSeqnrVisible($isSeqnrVisible) { $this->isSeqnrVisible = $isSeqnrVisible; }
 	public function isSeqnrVisible() { return $this->isSeqnrVisible; }
 	// TODO needed by sonata admin
@@ -98,6 +118,7 @@ class Sequence extends Entity implements \JsonSerializable {
 			'slug' => $this->getSlug(),
 			'name' => $this->getName(),
 			'publisher' => $this->getPublisher(),
+			'anntation' => $this->getAnnotation(),
 			'isSeqnrVisible' => $this->isSeqnrVisible(),
 			'nrOfBooks' => $this->getNrOfBooks(),
 		];

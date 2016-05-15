@@ -41,6 +41,7 @@ class SequenceAdmin extends Admin {
 			->add('slug')
 			->add('publisher', null, ['required' => false])
 			->add('isSeqnrVisible', null, ['required' => false])
+			->add('annotation', null, ['attr' => ['class' => 'richhtml']])
 			->end();
 	}
 

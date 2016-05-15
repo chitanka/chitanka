@@ -15,5 +15,12 @@
 			<span class="badge">{{ sequence.nrOfBooks }}</span>
 		</li>
 	</ul>
+	{% if sequence.annotation is not empty %}
+		<div class="panel panel-info">
+			<div class="panel-body">
+				{{ sequence.annotation|raw }}
+			</div>
+		</div>
+	{% endif %}
 	{% include 'App:Book:list.html.twig' %}
 {% endblock %}
