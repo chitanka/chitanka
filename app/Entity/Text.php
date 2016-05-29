@@ -130,16 +130,10 @@ class Text extends BaseWork implements  \JsonSerializable {
 	private $series;
 
 	/**
-	 * @var int
-	 * @ORM\Column(type="smallint", nullable=true)
+	 * @var int|string
+	 * @ORM\Column(type="decimal", precision=2, scale=1, nullable=true)
 	 */
 	private $sernr;
-
-	/**
-	 * @var int
-	 * @ORM\Column(type="smallint", nullable=true)
-	 */
-	private $sernr2;
 
 	/**
 	 * @var int
@@ -396,9 +390,9 @@ class Text extends BaseWork implements  \JsonSerializable {
 	}
 
 	public function setSernr($sernr) { $this->sernr = $sernr; }
-	public function getSernr() { return $this->sernr; }
-	public function setSernr2($sernr2) { $this->sernr2 = $sernr2; }
-	public function getSernr2() { return $this->sernr2; }
+	public function getSernr() {
+		return rtrim($this->sernr, '0.');
+	}
 
 	public function setCreatedAt($createdAt) { $this->createdAt = $createdAt; }
 	public function getCreatedAt() { return $this->createdAt; }
@@ -1187,7 +1181,6 @@ EOS;
 			'type' => $this->getType(),
 			'series' => $this->getSeries(),
 			'sernr' => $this->getSernr(),
-			'sernr2' => $this->getSernr2(),
 			'headlevel' => $this->getHeadlevel(),
 			'createdAt' => $this->getCreatedAt(),
 			'source' => $this->getSource(),

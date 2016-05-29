@@ -23,7 +23,7 @@
 			</translator>
 		{% endfor %}
 		{% if text.series is not empty %}
-			<serie{% if text.sernr is not empty %} nr="{{ text.sernr }}"{% endif %}{% if text.sernr2 is not empty %} subnr="{{ text.sernr2 }}"{% endif %}>
+			<serie{% if text.sernr is not empty %} nr="{{ text.sernr }}"{% endif %}>
 				{% include 'App:Series:serie.xml.twig' with {'serie': text.series} %}
 			</serie>
 		{% endif %}

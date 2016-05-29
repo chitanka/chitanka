@@ -2,8 +2,8 @@
 	<h2>
 		{% if series.slug is defined %}
 			<a href="{{ path('series_show', {'slug': series.slug}) }}">{{ series.name }}</a>
-			{% if series.orig_name is not empty %}
-				({{ series.orig_name }})
+			{% if series.origName is not empty %}
+				({{ series.origName }})
 			{% endif %}
 		{% else %}
 			{{ ('text.type.plular.'~series.name) | trans }}

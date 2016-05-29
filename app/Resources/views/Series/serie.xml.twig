@@ -1,7 +1,7 @@
 <id>{{ serie.id }}</id>
 <slug>{{ serie.slug }}</slug>
 <name>{{ serie.name }}</name>
-{% if serie.orig_name is defined %}<orig-name>{{ serie.orig_name }}</orig-name>{% endif %}
+{% if serie.origName is defined %}<orig-name>{{ serie.origName }}</orig-name>{% endif %}
 {% if serie.authors is defined %}
 	{% for person in serie.authors %}
 		<author>

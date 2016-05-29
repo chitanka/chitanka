@@ -8,9 +8,9 @@
 		<content type="html">
 			{% filter escape %}
 			<dl>
-				{% if serie.orig_name is defined %}
+				{% if serie.origName is defined %}
 					<dt>Оригинално име</dt>
-					<dd>{{ serie.orig_name }}</dd>
+					<dd>{{ serie.origName }}</dd>
 				{% endif %}
 				<dt>Автор</dt>
 				<dd>{{ text_lister.author_list(serie.authors, ' ', 'opds') }}</dd>

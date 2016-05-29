@@ -4,7 +4,7 @@
 		<dt>
 			<a href="{{ path('series_show', {'slug': series.slug}) }}" itemprop="name"><em>{{ series.name }}</em></a>
 		</dt>
-		<dd class="orig-name"><i>{{ series.orig_name ? series.orig_name : '—' }}</i></dd>
+		<dd class="orig-name"><i>{{ series.origName ? series.origName : '—' }}</i></dd>
 		<dd class="tauthor" itemprop="author">{{ text_lister.author_list(series.authors, ' ') }}</dd>
 	</dl>
 {% endmacro %}

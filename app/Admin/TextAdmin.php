@@ -36,7 +36,6 @@ class TextAdmin extends Admin {
 			->add('type')
 			->add('series')
 			->add('sernr')
-			->add('sernr2')
 			->add('headlevel')
 			->add('source')
 			->add('removedNotice')
@@ -106,7 +105,6 @@ class TextAdmin extends Admin {
 			->add('transLicense', null, ['required' => false])
 			->add('series', 'sonata_type_model_list', ['required' => false])
 			->add('sernr', null, ['required' => false])
-			->add('sernr2', null, ['required' => false])
 			->add('note')
 			->add('article')
 			->add('links', 'sonata_type_collection', [
@@ -154,7 +152,7 @@ class TextAdmin extends Admin {
 			])
 			->end()->end();
 		$formMapper->setHelps([
-			'sernr2' => $this->trans('help.text.sernr2'),
+			'sernr' => $this->trans('help.text.sernr'),
 		]);
 
 		$builder = $formMapper->getFormBuilder();

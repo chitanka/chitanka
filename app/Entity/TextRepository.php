@@ -236,9 +236,7 @@ class TextRepository extends EntityRepository {
 			->leftJoin('e.textAuthors', 'ta')
 			->where('ta.person = ?1')->setParameter(1, $author->getId())
 			->orderBy('s.name, e.sernr, e.type, e.title')
-			->getQuery()->getArrayResult();
-
-		$texts = WorkSteward::joinPersonKeysForTexts($texts);
+			->getQuery()->getResult();
 		if ($groupBySeries) {
 			$texts = $this->groupTexts($texts);
 		}
@@ -254,9 +252,7 @@ class TextRepository extends EntityRepository {
 			->leftJoin('e.textTranslators', 'tt')
 			->where('tt.person = ?1')->setParameter(1, $translator->getId())
 			->orderBy('e.type, e.title')
-			->getQuery()->getArrayResult();
-
-		$texts = WorkSteward::joinPersonKeysForTexts($texts);
+			->getQuery()->getResult();
 		$texts = $this->groupTexts($texts, false);
 		return $texts;
 	}
@@ -264,20 +260,19 @@ class TextRepository extends EntityRepository {
 	/**
 	 * @param array $ids
 	 * @param string $orderBy
-	 * @return array
+	 * @return Text[]
 	 */
 	public function getByIds($ids, $orderBy = null) {
 		$texts = $this->getQueryBuilder($orderBy)
 			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
-			->getQuery()->getArrayResult();
-
-		return WorkSteward::joinPersonKeysForTexts($texts);
+			->getQuery()->getResult();
+		return $texts;
 	}
 
 	/**
 	 * @param string $title
 	 * @param int $limit
-	 * @return array
+	 * @return Text[]
 	 */
 	public function getByTitles($title, $limit = null) {
 		$q = $this->getQueryBuilder()
@@ -287,7 +282,7 @@ class TextRepository extends EntityRepository {
 		if ($limit > 0) {
 			$q->setMaxResults($limit);
 		}
-		return WorkSteward::joinPersonKeysForTexts($q->getArrayResult());
+		return $q->getResult();
 	}
 
 	/**
@@ -306,7 +301,7 @@ class TextRepository extends EntityRepository {
 
 	/**
 	 * @param Series $series
-	 * @return array
+	 * @return Text[]
 	 */
 	public function getBySeries($series) {
 		$texts = $this->_em->createQueryBuilder()
@@ -318,10 +313,7 @@ class TextRepository extends EntityRepository {
 			->leftJoin('e.transLicense', 'tl')
 			->where('e.series = ?1')->setParameter(1, $series->getId())
 			->addOrderBy('e.sernr, e.title')
-			->getQuery()->getArrayResult();
-		$texts = $this->putIdAsKey($texts);
-		$texts = WorkSteward::joinPersonKeysForTexts($texts);
-
+			->getQuery()->getResult();
 		return $texts;
 	}
 
@@ -366,28 +358,24 @@ class TextRepository extends EntityRepository {
 		return self::$types;
 	}
 
+	/**
+	 * @param Text[] $texts
+	 * @param bool $groupBySeries
+	 * @return array
+	 */
 	protected function groupTexts($texts, $groupBySeries = true) {
 		$bySeries = $byType = [];
 
 		foreach ($texts as $text) {
-			if ($groupBySeries && $text['series']) {
-				$bySeries[ $text['series']['id'] ]['data'] = $text['series'];
-				$bySeries[ $text['series']['id'] ]['texts'][$text['id']] = $text;
+			if ($groupBySeries && $text->getSeries()) {
+				$bySeries[ $text->getSeries()->getId() ]['data'] = $text->getSeries();
+				$bySeries[ $text->getSeries()->getId() ]['texts'][$text->getId()] = $text;
 			} else {
-				$byType[ $text['type'] ]['data']['name'] = $text['type'];
-				$byType[ $text['type'] ]['texts'][$text['id']] = $text;
+				$byType[ $text->getType() ]['data']['name'] = $text->getType();
+				$byType[ $text->getType() ]['texts'][$text->getId()] = $text;
 			}
 		}
 		return $bySeries + $byType;
-	}
-
-	protected function putIdAsKey($texts) {
-		$textsById = [];
-		foreach ($texts as $text) {
-			$textsById[$text['id']] = $text;
-		}
-
-		return $textsById;
 	}
 
 	protected function normalizeOrderBy($orderBy) {
