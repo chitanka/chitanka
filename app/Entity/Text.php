@@ -131,7 +131,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 
 	/**
 	 * @var int|string
-	 * @ORM\Column(type="decimal", precision=2, scale=1, nullable=true)
+	 * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true)
 	 */
 	private $sernr;
 
