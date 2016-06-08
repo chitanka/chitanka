@@ -391,7 +391,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 
 	public function setSernr($sernr) { $this->sernr = $sernr; }
 	public function getSernr() {
-		return rtrim($this->sernr, '0.');
+		return $this->sernr ? rtrim($this->sernr, '0.') : null;
 	}
 
 	public function setCreatedAt($createdAt) { $this->createdAt = $createdAt; }
