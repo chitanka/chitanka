@@ -286,13 +286,14 @@ class Book extends BaseWork implements \JsonSerializable {
 		return $this->authors;
 	}
 
-	public function getAuthorNamesString() {
-		$authors = [];
-		foreach ($this->getAuthors() as $author) {
-			$authors[] = $author->getName();
-		}
+	public function getAuthorNames() {
+		return array_map(function(Person $author) {
+			return $author->getName();
+		}, $this->getAuthors());
+	}
 
-		return implode(', ', $authors);
+	public function getAuthorNamesString() {
+		return implode(', ', $this->getAuthorNames());
 	}
 
 	public function addAuthor($author) {

@@ -1,12 +1,10 @@
 <?php namespace App\Command;
 
+use App\Entity\TextRevision;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateNewsletterCommand extends Command {
-
-	private $input;
-	private $output;
 
 	public function getName() {
 		return 'lib:generate-newsletter';
@@ -22,78 +20,46 @@ class GenerateNewsletterCommand extends Command {
 
 	protected function getRequiredArguments() {
 		return [
-			'month' => 'Month (3 or 2011-3)',
+			'date' => 'Year-Month, e.g. 2011-3',
 		];
 	}
 
-	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$this->input = $input;
-		$this->output = $output;
-		$this->generateNewsletter($input->getArgument('month'));
+		$date = new \DateTime($input->getArgument('date'));
+		$newsletter = $this->generateNewsletter($date, $this->getContainer()->get('twig'));
+		$output->write($newsletter);
 	}
 
 	/**
-	 * @param int $month
+	 * @param \DateTime $date
+	 * @param \Twig_Environment $twig
+	 * @return string
 	 */
-	private function generateNewsletter($month) {
-		$this->output->writeln("\n= Книги =\n");
-		$booksByCat = $this->getBooks($month);
-		ksort($booksByCat);
-		foreach ($booksByCat as $cat => $bookRows) {
-			$this->output->writeln("\n== $cat ==\n");
-			ksort($bookRows);
-			foreach ($bookRows as $bookRow) {
-				$this->output->writeln($bookRow);
-			}
-		}
-
-		$this->output->writeln("\n\n= Произведения, невключени в книги =\n");
-		$textRows = $this->getTexts($month);
-		ksort($textRows);
-		foreach ($textRows as $textRow) {
-			$this->output->writeln($textRow);
-		}
+	private function generateNewsletter(\DateTime $date, \Twig_Environment $twig) {
+		$booksByCategory = $this->getBooksByCategory($date);
+		ksort($booksByCategory);
+		return $twig->render('App:Email:newsletter.html.twig', [
+			'date' => $date,
+			'booksByCategory' => $booksByCategory,
+			'texts' => $this->getTexts($date),
+		]);
 	}
 
-	private function getBooks($month) {
+	private function getBooksByCategory(\DateTime $date) {
 		$repo = $this->getEntityManager()->getBookRevisionRepository();
-		$booksByCat = [];
-		foreach ($repo->getByMonth($month) as $revision) {
+		$books = [];
+		foreach ($repo->getByMonth($date) as $revision) {
 			$book = $revision->getBook();
-			$authors = [];
-			foreach ($book->getAuthors() as $author) {
-				$authors[] = $author->getName();
-			}
-			$bookKey = $book->getTitle() . $book->getSubtitle();
 			$cat = $book->getCategory()->getName();
-			$booksByCat[$cat][$bookKey] = sprintf('* „%s“%s%s — http://chitanka.info/book/%d',
-				$book->getTitle(),
-				($book->getSubtitle() ? " ({$book->getSubtitle()})" : ''),
-				($authors ? ' от ' . implode(', ', $authors) : ''),
-				$book->getId());
+			$books[$cat][] = $book;
 		}
-		return $booksByCat;
+		return $books;
 	}
 
-	// TODO fetch only texts w/o books
-	private function getTexts($month) {
+	private function getTexts(\DateTime $date) {
 		$repo = $this->getEntityManager()->getTextRevisionRepository();
-		$texts = [];
-		#foreach ($repo->getByDate(array('2011-07-01', '2011-08-31 23:59'), 1, null, false) as $revision) {
-		foreach ($repo->getByMonth($month) as $revision) {
-			$text = $revision->getText();
-			$authors = [];
-			foreach ($text->getAuthors() as $author) {
-				$authors[] = $author->getName();
-			}
-			$key = $text->getTitle() . $text->getSubtitle();
-			$texts[$key] = sprintf('* „%s“%s%s — http://chitanka.info/text/%d',
-				$text->getTitle(),
-				($text->getSubtitle() ? " ({$text->getSubtitle()})" : ''),
-				($authors ? ' от ' . implode(', ', $authors) : ''),
-				$text->getId());
-		}
-		return $texts;
+		return array_map(function(TextRevision $revision) {
+			return $revision->getText();
+		}, $repo->getByMonth($date));
 	}
 }

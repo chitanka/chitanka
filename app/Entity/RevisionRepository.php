@@ -11,14 +11,8 @@ class RevisionRepository extends EntityRepository {
 		return $this->getByDate(null, $page, $limit, $groupByDate);
 	}
 
-	public function getByMonth($month, $page = 1, $limit = null) {
-		if (strpos($month, '-') === false) {
-			$yearMonth = date('Y') . '-' . $month;
-		} else {
-			$yearMonth = $month;
-		}
-		$dates = ["$yearMonth-01", Date::endOfMonth($yearMonth)];
-
+	public function getByMonth(\DateTime $date, $page = 1, $limit = null) {
+		$dates = [$date->format('Y-m-01'), Date::endOfMonth($date->format('Y-m'))];
 		return $this->getByDate($dates, $page, $limit, false);
 	}
 
@@ -59,6 +53,7 @@ class RevisionRepository extends EntityRepository {
 	/**
 	 * @param array $ids
 	 * @param string $orderBy
+	 * @return BookRevision[]|TextRevision[]
 	 */
 	public function getByIds($ids, $orderBy = null) {
 		$texts = $this->getQueryBuilder($orderBy)
