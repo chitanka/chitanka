@@ -65,7 +65,7 @@ class WorkPage extends Page {
 
 	private $fileWhiteList = [
 		'sfb', 'fb2', 'txt',
-		'odt', 'rtf', 'djvu', 'pdf', 'epub',
+		'odt', 'rtf', 'doc', 'docx', 'djvu', 'pdf', 'epub',
 		'zip', '7z', 'gz', 'tar', 'tgz', 'bz2',
 	];
 
