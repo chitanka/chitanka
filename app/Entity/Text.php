@@ -61,7 +61,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 	 * @ORM\ManyToOne(targetEntity="Language")
 	 * @ORM\JoinColumn(name="lang", referencedColumnName="code", nullable=false)
 	 */
-	private $lang = 'bg';
+	private $lang;
 
 	/**
 	 * @var int
