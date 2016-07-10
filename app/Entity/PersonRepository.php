@@ -20,11 +20,11 @@ class PersonRepository extends EntityRepository {
 	 * @param array $filters
 	 * @param int $limit
 	 * @param int $page
-	 * @return array
+	 * @return Person[]
 	 */
 	public function getBy($filters, $page = 1, $limit = null) {
 		$query = $this->setPagination($this->getQueryBy($filters), $page, $limit);
-		return $query->getArrayResult();
+		return $query->getResult();
 	}
 
 	public function countBy($filters) {
@@ -49,8 +49,9 @@ class PersonRepository extends EntityRepository {
 
 	public function getQueryBuilder($orderBys = null) {
 		$qb = $this->getBaseQueryBuilder('e')
-			->select('e', 'p')
-			->leftJoin('e.person', 'p');
+			->select('e', 'p', 'c')
+			->leftJoin('e.person', 'p')
+			->leftJoin('e.country', 'c');
 		return $qb;
 	}
 
@@ -75,15 +76,6 @@ class PersonRepository extends EntityRepository {
 			$qb->andWhere($where);
 		}
 		return $qb->getQuery()->getSingleScalarResult();
-	}
-
-	public function getCountsByCountry() {
-		$counts = $this->getCountQueryBuilder()
-			->select('e.country', 'COUNT(e.id)')
-			->groupBy('e.country')
-			->getQuery()->getResult('key_value');
-		arsort($counts);
-		return $counts;
 	}
 
 	/**

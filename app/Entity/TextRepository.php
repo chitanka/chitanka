@@ -291,12 +291,14 @@ class TextRepository extends EntityRepository {
 	 */
 	public function getQueryBuilder($orderBys = null) {
 		return parent::getQueryBuilder($orderBys)
-			->select('e', 'a', 'ap', 't', 'tp', 's')
+			->select('e', 'a', 'ap', 't', 'tp', 's', 'lang', 'olang')
 			->leftJoin('e.series', 's')
 			->leftJoin('e.textAuthors', 'a')
 			->leftJoin('a.person', 'ap')
 			->leftJoin('e.textTranslators', 't')
-			->leftJoin('t.person', 'tp');
+			->leftJoin('t.person', 'tp')
+			->leftJoin('e.lang', 'lang')
+			->leftJoin('e.origLang', 'olang');
 	}
 
 	/**
@@ -305,12 +307,14 @@ class TextRepository extends EntityRepository {
 	 */
 	public function getBySeries($series) {
 		$texts = $this->_em->createQueryBuilder()
-			->select('e', 'a', 'ap', 'ol', 'tl')
+			->select('e', 'a', 'ap', 'ol', 'tl', 'lang', 'olang')
 			->from($this->getEntityName(), 'e')
 			->leftJoin('e.textAuthors', 'a')
 			->leftJoin('a.person', 'ap')
 			->leftJoin('e.origLicense', 'ol')
 			->leftJoin('e.transLicense', 'tl')
+			->leftJoin('e.lang', 'lang')
+			->leftJoin('e.origLang', 'olang')
 			->where('e.series = ?1')->setParameter(1, $series->getId())
 			->addOrderBy('e.sernr, e.title')
 			->getQuery()->getResult();

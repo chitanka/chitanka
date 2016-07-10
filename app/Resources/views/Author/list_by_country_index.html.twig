@@ -5,7 +5,7 @@
 
 <ul>
 	{% for country in countries %}
-		<li><a href="{{ path('authors_by_country', {'country': country, 'by': by}) }}">{{ ('country.'~country)|trans }}</a></li>
+		<li><a href="{{ path('authors_by_country', {'country': country.code, 'by': by}) }}">{{ country.name }}</a></li>
 	{% endfor %}
 </ul>
 

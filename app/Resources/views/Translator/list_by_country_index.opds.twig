@@ -6,7 +6,9 @@
 {% block content %}
 
 	{% for country in countries %}
-		{{ helper.navi_entry(('country.'~country)|trans, updated_at, 'translators_by_country', {'country': country, 'by': by}) }}
+		{% if country.nrOfTranslators > 0 %}
+			{{ helper.navi_entry(country.name, updated_at, 'translators_by_country', {'country': country.code, 'by': by}) }}
+		{% endif %}
 	{% endfor %}
 
 {% endblock %}

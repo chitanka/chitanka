@@ -1,9 +1,9 @@
 <table class="table table-condensed table-striped" style="max-width: 18em">
 	<caption>Автори по държава</caption>
-	{% for country, count in author_countries %}
+	{% for country in countries %}
 		<tr>
-			<td><a href="{{ path('authors_by_country', {'country': country}) }}">{{ ('country.'~country) | trans }}</a></td>
-			<td class="text-right">{{ count }}</td>
+			<td><a href="{{ path('authors_by_country', {'country': country.code}) }}">{{ country.name }}</a></td>
+			<td class="text-right">{{ country.nrOfAuthors }}</td>
 		</tr>
 	{% endfor %}
 </table>

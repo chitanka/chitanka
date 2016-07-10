@@ -17,7 +17,7 @@ class StatisticsController extends Controller {
 				'text_comments' => $this->em()->getTextCommentRepository()->getCount('e.is_shown = 1'),
 				'users'         => $this->em()->getUserRepository()->getCount(),
 			],
-			'author_countries'  => $this->em()->getPersonRepository()->asAuthor()->getCountsByCountry(),
+			'countries'  => $this->em()->getCountryRepository()->findAll(),
 			'text_types'        => $this->em()->getTextRepository()->getCountsByType(),
 		];
 	}

@@ -165,6 +165,22 @@ services:
         calls:
             - [setMaxPerPage, [%admin_max_per_page%]]
 
+    admin.country:
+        class: App\Admin\CountryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.country }
+        arguments: [null, App\Entity\Country, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.language:
+        class: App\Admin\LanguageAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.language }
+        arguments: [null, App\Entity\Language, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
     admin.license:
         class: App\Admin\LicenseAdmin
         tags:

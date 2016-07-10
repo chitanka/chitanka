@@ -73,8 +73,8 @@ class TextAdmin extends Admin {
 		$formMapper->tab('General attributes')->with('')
 			->add('slug')
 			->add('title')
-			->add('lang', 'choice', ['choices' => $translation->getLanguageChoices()])
-			->add('origLang', 'choice', ['choices' => $translation->getLanguageChoices()])
+			->add('lang')
+			->add('origLang')
 			->add('type', 'choice', ['choices' => $translation->getTextTypeChoices()])
 			->add('textAuthors', 'sonata_type_collection', [
 				'by_reference' => false,

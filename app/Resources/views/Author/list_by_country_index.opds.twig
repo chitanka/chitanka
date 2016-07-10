@@ -6,7 +6,7 @@
 {% block content %}
 
 	{% for country in countries %}
-		{{ helper.navi_entry(('country.'~country)|trans, updated_at, 'authors_by_country', {'country': country, 'by': by}) }}
+		{{ helper.navi_entry(country.name, updated_at, 'authors_by_country', {'country': country.code, 'by': by}) }}
 	{% endfor %}
 
 {% endblock %}

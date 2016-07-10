@@ -12,11 +12,13 @@
 	</div>
 	<h2>Държава</h2>
 	<ul>
-	{% for country, count in countries %}
-		<li>
-			<a href="{{ path('translators_by_country', {'country': country}) }}">{{ ('country.'~country) | trans }}</a>
-			<span class="badge">{{ count }}</span>
-		</li>
+	{% for country in countries %}
+		{% if country.nrOfTranslators > 0 %}
+			<li>
+				<a href="{{ path('translators_by_country', {'country': country.code}) }}">{{ country.name }}</a>
+				<span class="badge">{{ country.nrOfTranslators }}</span>
+			</li>
+		{% endif %}
 	{% endfor %}
 	</ul>
 {% endif %}

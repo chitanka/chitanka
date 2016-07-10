@@ -8,7 +8,6 @@ use App\Legacy\SfbParserSimple;
 use App\Service\ContentService;
 use App\Util\Char;
 use App\Util\File;
-use App\Util\Language;
 use App\Util\Stringy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -58,8 +57,9 @@ class Text extends BaseWork implements  \JsonSerializable {
 	private $subtitle;
 
 	/**
-	 * @var string
-	 * @ORM\Column(type="string", length=2)
+	 * @var Language
+	 * @ORM\ManyToOne(targetEntity="Language")
+	 * @ORM\JoinColumn(name="lang", referencedColumnName="code", nullable=false)
 	 */
 	private $lang = 'bg';
 
@@ -88,8 +88,9 @@ class Text extends BaseWork implements  \JsonSerializable {
 	private $origSubtitle;
 
 	/**
-	 * @var string
-	 * @ORM\Column(type="string", length=3)
+	 * @var Language
+	 * @ORM\ManyToOne(targetEntity="Language")
+	 * @ORM\JoinColumn(name="orig_lang", referencedColumnName="code", nullable=false)
 	 */
 	private $origLang;
 
@@ -391,6 +392,9 @@ class Text extends BaseWork implements  \JsonSerializable {
 
 	public function setSernr($sernr) { $this->sernr = $sernr; }
 	public function getSernr() {
+		if ($this->sernr == (int) $this->sernr) {
+			return (int) $this->sernr;
+		}
 		return $this->sernr ? rtrim($this->sernr, '0.') : null;
 	}
 
@@ -743,7 +747,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 		if (!$this->isTranslation()) {
 			return '';
 		}
-		$lang = Language::langName($this->getOrigLang(), false);
+		$lang = $this->getOrigLang()->getName();
 		if ($lang) {
 			$lang = ' от '.$lang;
 		}

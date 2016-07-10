@@ -40,12 +40,16 @@ class EntityManager {
 	public function getBookRevisionRepository() { return $this->getRepository('BookRevision'); }
 	/** @return CategoryRepository */
 	public function getCategoryRepository() { return $this->getRepository('Category'); }
+	/** @return CountryRepository */
+	public function getCountryRepository() { return $this->getRepository('Country'); }
 	/** @return FeaturedBookRepository */
 	public function getFeaturedBookRepository() { return $this->getRepository('FeaturedBook'); }
 	/** @return ForeignBookRepository */
 	public function getForeignBookRepository() { return $this->getRepository('ForeignBook'); }
 	/** @return LabelRepository */
 	public function getLabelRepository() { return $this->getRepository('Label'); }
+	/** @return LanguageRepository */
+	public function getLanguageRepository() { return $this->getRepository('Language'); }
 	/** @return NextIdRepository */
 	public function getNextIdRepository() { return $this->getRepository('NextId'); }
 	/** @return PersonRepository */

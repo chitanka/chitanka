@@ -5,7 +5,9 @@
 
 <ul>
 	{% for country in countries %}
-		<li><a href="{{ path('translators_by_country', {'country': country, 'by': by}) }}">{{ ('country.'~country)|trans }}</a></li>
+		{% if country.nrOfTranslators > 0 %}
+			<li><a href="{{ path('translators_by_country', {'country': country.code, 'by': by}) }}">{{ country.name }}</a></li>
+		{% endif %}
 	{% endfor %}
 </ul>
 

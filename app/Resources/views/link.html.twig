@@ -33,7 +33,7 @@
 {% endmacro %}
 
 {% macro authors_by_country(country) %}
-	<a href="{{ path('authors_by_country', {'country': country}) }}" itemprop="name">{{ ('country.'~country) | trans }}</a>
+	<a href="{{ path('authors_by_country', {'country': country.code}) }}" itemprop="name">{{ country.name }}</a>
 {% endmacro %}
 
 {% macro series(series) %}

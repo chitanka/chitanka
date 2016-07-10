@@ -1,6 +1,6 @@
 {% extends 'App::layout.html.twig' %}
 
-{% set title = ('authors.by.country.'~by)|trans ~ ': ' ~ ('country.'~country)|trans %}
+{% set title = ('authors.by.country.'~by)|trans ~ ': ' ~ country.name %}
 {% block content %}
 
 	{% include 'App:Author:list.html.twig' %}

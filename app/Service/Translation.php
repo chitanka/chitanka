@@ -15,20 +15,12 @@ class Translation {
 		return $this->generateChoicesFor('book.type');
 	}
 
-	public function getCountryChoices() {
-		return $this->generateChoicesFor('country');
-	}
-
 	public function getForeignBookFormatsChoices() {
 		return $this->generateChoicesFromCodes(ForeignBook::FORMATS, 'foreign_book.format');
 	}
 
 	public function getLabelGroupChoices() {
 		return $this->generateChoicesFor('label.group');
-	}
-
-	public function getLanguageChoices() {
-		return $this->generateChoicesFor('lang');
 	}
 
 	public function getPersonTypeChoices() {

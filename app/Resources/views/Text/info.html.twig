@@ -41,7 +41,7 @@
 			</dd>
 
 		{% if text.origLang != text.lang %}
-			<dt>Превод от {{ ('lang.'~text.origlang) | trans }}</dt>
+			<dt>Превод от {{ text.origLang }}</dt>
 			<dd>
 			{{ textinfo.translator(text) }}, {{ textinfo.transYear(text) }}
 			{% if text.transLicense is not empty %}

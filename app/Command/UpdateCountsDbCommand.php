@@ -31,6 +31,7 @@ class UpdateCountsDbCommand extends Command {
 		$this->updateBookCountByCategories($output, $em);
 		$this->updateBookCountByCategoriesParents($output, $em);
 		$this->updateCommentCountByTexts($output, $em);
+		$this->updatePersonCountByCountries($output, $em);
 	}
 
 	/**
@@ -77,6 +78,17 @@ class UpdateCountsDbCommand extends Command {
 		$output->writeln('Updating comment counts by texts');
 		$update = $this->maintenanceSql('UPDATE text t SET comment_count = (SELECT COUNT(*) FROM text_comment WHERE text_id = t.id)');
 		$em->getConnection()->executeUpdate($update);
+	}
+
+	/**
+	 * @RawSql
+	 */
+	private function updatePersonCountByCountries(OutputInterface $output, EntityManager $em) {
+		$output->writeln('Updating person counts by countries');
+		$update1 = $this->maintenanceSql('UPDATE country c SET nr_of_authors = (SELECT COUNT(*) FROM person WHERE is_author = 1 AND country = c.code)');
+		$update2 = $this->maintenanceSql('UPDATE country c SET nr_of_translators = (SELECT COUNT(*) FROM person WHERE is_translator = 1 AND country = c.code)');
+		$em->getConnection()->executeUpdate($update1);
+		$em->getConnection()->executeUpdate($update2);
 	}
 
 	/**

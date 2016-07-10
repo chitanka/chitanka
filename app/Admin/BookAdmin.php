@@ -3,8 +3,6 @@
 use App\Entity\Book;
 use App\Entity\BookRevision;
 use App\Entity\TextRepository;
-use App\Service\Translation;
-use App\Util\Language;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -80,8 +78,8 @@ class BookAdmin extends Admin {
 		$formMapper->tab('General attributes')->with('')
 			->add('slug')
 			->add('title')
-			->add('lang', 'choice', ['choices' => $translation->getLanguageChoices()])
-			->add('origLang', 'choice', ['required' => false, 'choices' => $translation->getLanguageChoices()])
+			->add('lang')
+			->add('origLang')
 			->add('type', 'choice', ['choices' => $translation->getBookTypeChoices()])
 			->add('bookAuthors', 'sonata_type_collection', [
 				'by_reference' => false,

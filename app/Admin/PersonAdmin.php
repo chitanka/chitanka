@@ -12,6 +12,7 @@ class PersonAdmin extends Admin {
 
 	public $extraActions = 'App:PersonAdmin:extra_actions.html.twig';
 
+	/** @var PersonRepository */
 	private $repository;
 
 	public function setRepository(PersonRepository $r) {
@@ -60,9 +61,7 @@ class PersonAdmin extends Admin {
 			->add('orig_name', null, ['required' => false])
 			->add('real_name', null, ['required' => false])
 			->add('oreal_name', null, ['required' => false])
-			->add('country', 'choice', [
-				'choices' => $translation->getCountryChoices(),
-			])
+			->add('country')
 			->add('is_author', null, ['required' => false])
 			->add('is_translator', null, ['required' => false])
 			->add('info', null, ['required' => false])

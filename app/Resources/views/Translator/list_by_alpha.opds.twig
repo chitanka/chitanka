@@ -9,7 +9,7 @@
 	{% if translator.orig_name is not empty %}
 		оригинално име: {{ translator.orig_name|name_format(by)|striptags }};
 	{% endif %}
-	държава: {{ ('country.'~translator.country)|trans }}
+	държава: {{ translator.country.name }}
 {% endmacro %}
 
 {% for translator in persons %}

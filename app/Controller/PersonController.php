@@ -15,7 +15,7 @@ class PersonController extends Controller {
 
 	public function indexAction() {
 		return [
-			'countries' => $this->getPersonRepository()->getCountsByCountry(),
+			'countries' => $this->em()->getCountryRepository()->findAll(),
 		];
 	}
 
@@ -46,26 +46,26 @@ class PersonController extends Controller {
 	}
 
 	public function listByCountryIndexAction($by) {
-		$translation = new Translation();
 		return [
 			'by' => $by,
-			'countries' => $translation->getCountryChoices(),
+			'countries' => $this->em()->getCountryRepository()->findAll(),
 		];
 	}
 
 	public function listByCountryAction(Request $request, $country, $by, $page, $_format) {
+		$country = $this->em()->getCountryRepository()->findByCode($country);
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$repo = $this->getPersonRepository();
 		$filters = [
 			'by'      => $by,
-			'country' => $country,
+			'country' => $country->getCode(),
 		];
 		return [
 			'by'      => $by,
 			'country' => $country,
 			'persons' => $repo->getBy($filters, $page, $limit),
 			'pager'    => new Pager($page, $repo->countBy($filters), $limit),
-			'route_params' => ['country' => $country, 'by' => $by, '_format' => $_format],
+			'route_params' => ['country' => $country->getCode(), 'by' => $by, '_format' => $_format],
 		];
 	}
 
