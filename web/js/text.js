@@ -1,6 +1,5 @@
-function prepareGamebook()
-{
-	var $container = $("div.gamebook");
+function prepareGamebook() {
+	var $container = $("div.content-type-gamebook");
 	if ($container.length === 0) {
 		return;
 	}
@@ -283,6 +282,4 @@ if ( ! location.hash ) {
 // 	}
 // });
 
-(function() {
-	prepareGamebook();
-})();
+prepareGamebook();
