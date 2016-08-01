@@ -86,7 +86,7 @@ class EpubFile {
 
 	private function getTocFileContent() {
 		return $this->getTemplate($this->tocFileName, [
-			'LANG'       => $this->obj->getLang(),
+			'LANG'       => $this->obj->getLang()->getCode(),
 			'ID'         => $this->obj->getDocId(),
 			'DEPTH'      => $this->obj->getMaxHeadersDepth(),
 			'EPUBLISHER' => $this->getPublisher(),
@@ -158,7 +158,7 @@ class EpubFile {
 			'REVISIONS'      => $this->getRevisionTags(),
 			'ID'             => $this->obj->getDocId(),
 			'EPUBLISHER'     => $this->getPublisher(),
-			'LANG'           => $this->obj->getLang(),
+			'LANG'           => $this->obj->getLang()->getCode(),
 			'MANIFEST-ITEMS' => $this->getManifestItemTags(),
 			'SPINE-ITEMS'    => $this->getSpineItems(),
 		]);
@@ -440,7 +440,7 @@ class EpubFile {
 		}
 
 		return $this->getTemplate('layout.xhtml', [
-			'LANG'    => $this->obj->getLang(),
+			'LANG'    => $this->obj->getLang()->getCode(),
 			'CSS'     => $this->cssFileName,
 			'TITLE'   => htmlspecialchars($title),
 			'CONTENT' => $this->fixContent($content),

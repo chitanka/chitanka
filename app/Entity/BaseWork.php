@@ -118,11 +118,11 @@ abstract class BaseWork extends Entity {
 	}
 
 	public function getLang() {
-		return '';
+		return new Language();
 	}
 
 	public function getOrigLang() {
-		return '';
+		return new Language();
 	}
 
 	/** @return bool */

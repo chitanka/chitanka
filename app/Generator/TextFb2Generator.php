@@ -112,7 +112,7 @@ class TextFb2Generator {
 		$converter->setGenre($this->getGenres($text));
 		$converter->setKeywords($this->getKeywords($text));
 		$converter->setTextDate($text->getYear());
-		$converter->setLang($text->getLang());
+		$converter->setLang($text->getLang()->getCode());
 
 		foreach ($text->getTranslators() as $translator) {
 			$converter->addTranslator($translator->getName());

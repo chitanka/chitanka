@@ -25,7 +25,7 @@ class BookFb2Generator {
 			$conv->addCoverpage($cover);
 		}
 
-		$conv->setLang($book->getLang());
+		$conv->setLang($book->getLang()->getCode());
 		$conv->setSrcLang($book->getOrigLang() ?: '?');
 
 		foreach ($book->getTranslators() as $translator) {
