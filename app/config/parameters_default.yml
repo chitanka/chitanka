@@ -12,6 +12,10 @@ parameters:
     mailer_user:       ~
     mailer_password:   ~
 
+    orm_metadata_cache_driver: array
+    orm_result_cache_driver: array
+    orm_query_cache_driver: array
+
     # Следните променливи се ползват при пращането на електронна поща
     admin:              Администратор
     admin_email:        { admin@localhost: Администратор }

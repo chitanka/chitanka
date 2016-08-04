@@ -71,6 +71,10 @@ doctrine:
 #        types:
 #            json: Sonata\Doctrine\Types\JsonType
     orm:
+        metadata_cache_driver: %orm_metadata_cache_driver%
+        result_cache_driver: %orm_result_cache_driver%
+        query_cache_driver: %orm_query_cache_driver%
+
         auto_generate_proxy_classes: %kernel.debug%
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
