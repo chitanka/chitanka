@@ -44,25 +44,25 @@ class Person extends Entity implements \JsonSerializable {
 	 * @var string
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
-	private $orig_name;
+	private $origName;
 
 	/**
 	 * @var string
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
-	private $real_name;
+	private $realName;
 
 	/**
 	 * @var string
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
-	private $oreal_name;
+	private $orealName;
 
 	/**
 	 * @var string
 	 * @ORM\Column(type="string", length=50, nullable=true)
 	 */
-	private $last_name;
+	private $lastName;
 
 	/**
 	 * @var Country
@@ -72,10 +72,10 @@ class Person extends Entity implements \JsonSerializable {
 	private $country;
 
 	/** @ORM\Column(type="boolean") */
-	private $is_author = true;
+	private $isAuthor = true;
 
 	/** @ORM\Column(type="boolean") */
-	private $is_translator = false;
+	private $isTranslator = false;
 
 	/**
 	 * @var string
@@ -127,7 +127,7 @@ class Person extends Entity implements \JsonSerializable {
 
 	public function setName($name) {
 		$this->name = $name;
-		$this->last_name = self::getLastNameFromName($name);
+		$this->lastName = self::getLastNameFromName($name);
 		if (empty($this->slug)) {
 			$this->setSlug($name);
 		}
@@ -140,50 +140,47 @@ class Person extends Entity implements \JsonSerializable {
 	}
 
 	public function setOrigName($origName) {
-		$this->orig_name = $origName;
+		$this->origName = $origName;
 		if (empty($this->slug) && preg_match('/[a-z]/', $origName)) {
 			$this->setSlug($origName);
 		}
 	}
-	public function getOrigName() { return $this->orig_name; }
-	public function orig_name() { return $this->orig_name; }
+	public function getOrigName() { return $this->origName; }
 
-	public function setRealName($realName) { $this->real_name = $realName; }
-	public function getRealName() { return $this->real_name; }
+	public function setRealName($realName) { $this->realName = $realName; }
+	public function getRealName() { return $this->realName; }
 
-	public function setOrealName($orealName) { $this->oreal_name = $orealName; }
-	public function getOrealName() { return $this->oreal_name; }
+	public function setOrealName($orealName) { $this->orealName = $orealName; }
+	public function getOrealName() { return $this->orealName; }
 
-	public function getLastName() { return $this->last_name; }
+	public function getLastName() { return $this->lastName; }
 
 	public function setCountry($country) { $this->country = $country; }
 	public function getCountry() { return $this->country; }
 
-	public function getIsAuthor() { return $this->is_author; }
-	public function getIsTranslator() { return $this->is_translator; }
-	public function is_author() { return $this->is_author; }
-	public function is_translator() { return $this->is_translator; }
-	public function setIsAuthor($isAuthor) { $this->is_author = $isAuthor; }
-	public function setIsTranslator($isTranslator) { $this->is_translator = $isTranslator; }
+	public function getIsAuthor() { return $this->isAuthor; }
+	public function getIsTranslator() { return $this->isTranslator; }
+	public function setIsAuthor($isAuthor) { $this->isAuthor = $isAuthor; }
+	public function setIsTranslator($isTranslator) { $this->isTranslator = $isTranslator; }
 
 	public function isAuthor($isAuthor = null) {
 		if ($isAuthor !== null) {
-			$this->is_author = $isAuthor;
+			$this->isAuthor = $isAuthor;
 		}
-		return $this->is_author;
+		return $this->isAuthor;
 	}
 
 	public function isTranslator($isTranslator = null) {
 		if ($isTranslator !== null) {
-			$this->is_translator = $isTranslator;
+			$this->isTranslator = $isTranslator;
 		}
-		return $this->is_translator;
+		return $this->isTranslator;
 	}
 
 	public function getRole() {
 		$roles = [];
-		if ($this->is_author) $roles[] = 'author';
-		if ($this->is_translator) $roles[] = 'translator';
+		if ($this->isAuthor) $roles[] = 'author';
+		if ($this->isTranslator) $roles[] = 'translator';
 
 		return implode(',', $roles);
 	}

@@ -14,8 +14,8 @@
 		{{ helper.navi_entry('Книги', updated_at, 'author_show_books', {'slug': person.slug}, 'Книги от '~person.name) }}
 	{% endif %}
 {#
-	{% if person.is_author %}
-		{% if person.is_translator %}
+	{% if person.isAuthor %}
+		{% if person.isTranslator %}
 			<h2 id="author">Авторски произведения</h2>
 		{% elseif books is defined and texts_as_author|length %}
 			<h2 id="author">Произведения</h2>
@@ -25,8 +25,8 @@
 		{% endfor %}
 	{% endif %}
 
-	{% if person.is_translator %}
-		{% if person.is_author or books is defined %}
+	{% if person.isTranslator %}
+		{% if person.isAuthor or books is defined %}
 			<h2 id="translator">Преводни произведения</h2>
 		{% endif %}
 		{% for series in texts_as_translator %}

@@ -36,7 +36,7 @@ class AuthorController extends PersonController {
 		if ($_format == 'json') {
 			$persons = $this->findByQuery([
 				'text'  => $query,
-				'by'    => 'name,orig_name',
+				'by'    => 'name,origName',
 				'limit' => static::PAGE_COUNT_LIMIT,
 			]);
 			return $persons;

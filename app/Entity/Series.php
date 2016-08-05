@@ -35,10 +35,10 @@ class Series extends Entity implements \JsonSerializable {
 	private $name = '';
 
 	/**
-	 * @var string $orig_name
+	 * @var string $origName
 	 * @ORM\Column(type="string", length=100, nullable=true)
 	 */
-	private $orig_name;
+	private $origName;
 
 	/** FIXME doctrine:schema:create does not allow this relation
 	 * @var array
@@ -70,8 +70,8 @@ class Series extends Entity implements \JsonSerializable {
 	public function setName($name) { $this->name = $name; }
 	public function getName() { return $this->name; }
 
-	public function setOrigName($origName) { $this->orig_name = $origName; }
-	public function getOrigName() { return $this->orig_name; }
+	public function setOrigName($origName) { $this->origName = $origName; }
+	public function getOrigName() { return $this->origName; }
 
 	public function getAuthors() { return $this->authors; }
 

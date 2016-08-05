@@ -5,8 +5,8 @@
 		{% endif %}
 		<div class="wikiinfo">{{ wikiPage.content|raw }}</div>
 	{% else %}
-		{% if person.orig_name is defined %}
-			<p>Оригинално изписване: {{ person.orig_name }}</p>
+		{% if person.origName is defined %}
+			<p>Оригинално изписване: {{ person.origName }}</p>
 		{% endif %}
 		<p><i>Няма биографична информация за {{ person.name }}.</i> <!--<a href="{{ path('person_suggest', {'slug': person.slug}) }}">Предложете такава!</a>--></p>
 	{% endif %}

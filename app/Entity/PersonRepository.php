@@ -6,7 +6,7 @@
 class PersonRepository extends EntityRepository {
 	protected $asAuthor = false;
 	protected $asTranslator = false;
-	protected $queryableFields = ['id', 'slug', 'name', 'orig_name', 'real_name', 'oreal_name'];
+	protected $queryableFields = ['id', 'slug', 'name', 'origName', 'realName', 'orealName'];
 
 	/**
 	 * @param string $slug
@@ -62,10 +62,10 @@ class PersonRepository extends EntityRepository {
 	public function getBaseQueryBuilder($alias = 'e') {
 		$qb = $this->createQueryBuilder($alias);
 		if ($this->asAuthor) {
-			$qb->andWhere("e.is_author = 1");
+			$qb->andWhere("e.isAuthor = 1");
 		}
 		if ($this->asTranslator) {
-			$qb->andWhere("e.is_translator = 1");
+			$qb->andWhere("e.isTranslator = 1");
 		}
 		return $qb;
 	}
@@ -85,7 +85,7 @@ class PersonRepository extends EntityRepository {
 	 */
 	public function getByNames($name, $limit = null) {
 		$q = $this->getQueryBuilder()
-			->where('e.name LIKE ?1 OR e.orig_name LIKE ?1 OR e.real_name LIKE ?1 OR e.oreal_name LIKE ?1')
+			->where('e.name LIKE ?1 OR e.origName LIKE ?1 OR e.realName LIKE ?1 OR e.orealName LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($name))
 			->getQuery();
 		if ($limit > 0) {
@@ -114,7 +114,7 @@ class PersonRepository extends EntityRepository {
 	 * @return \Doctrine\ORM\QueryBuilder
 	 */
 	public function addFilters($qb, $filters) {
-		$nameField = empty($filters['by']) || $filters['by'] == 'first-name' ? 'e.name' : 'e.last_name';
+		$nameField = empty($filters['by']) || $filters['by'] == 'first-name' ? 'e.name' : 'e.lastName';
 		$qb->addOrderBy($nameField);
 		if ( ! empty($filters['prefix']) && $filters['prefix'] != '-' ) {
 			$qb->andWhere("$nameField LIKE :name")->setParameter('name', $filters['prefix'].'%');

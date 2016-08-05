@@ -1,8 +1,8 @@
 {% import 'App::helper.opds.twig' as helper %}
 
 {% macro description(person, by) %}
-	{% if person.orig_name is not empty %}
-		оригинално име: {{ person.orig_name ? person.orig_name|name_format(by)|striptags : '—' }};
+	{% if person.origName is not empty %}
+		оригинално име: {{ person.origName ? person.origName|name_format(by)|striptags : '—' }};
 	{% endif %}
 	държава: {{ person.country.name }}
 {% endmacro %}

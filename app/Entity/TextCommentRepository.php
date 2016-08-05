@@ -6,9 +6,10 @@
 class TextCommentRepository extends EntityRepository {
 	/**
 	 * @param int $limit
+	 * @return TextComment[]
 	 */
 	public function getLatest($limit = null) {
-		return $this->getByIds($this->getLatestIdsByDate($limit), 'e.time DESC');
+		return $this->findByIds($this->getLatestIdsByDate($limit), 'e.time DESC');
 	}
 
 	/**
@@ -27,13 +28,6 @@ class TextCommentRepository extends EntityRepository {
 			->orderBy('e.time', 'ASC')
 			->getQuery()->getArrayResult();
 		return WorkSteward::joinPersonKeysForTexts($texts);
-	}
-
-	/**
-	 * @param string $orderBy
-	 */
-	public function getByIds($ids, $orderBy = null) {
-		return WorkSteward::joinPersonKeysForWorks(parent::getByIds($ids, $orderBy));
 	}
 
 	public function getQueryBuilder($orderBys = null) {

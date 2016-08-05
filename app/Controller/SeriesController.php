@@ -68,7 +68,7 @@ class SeriesController extends Controller {
 		}
 
 		if (empty($query['by'])) {
-			$query['by'] = 'name,orig_name';
+			$query['by'] = 'name,origName';
 		}
 		$series = $this->em()->getSeriesRepository()->getByQuery($query);
 		$found = count($series) > 0;

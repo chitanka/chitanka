@@ -16,7 +16,7 @@ class SeriesAdmin extends Admin {
 		$showMapper
 			->add('slug')
 			->add('name')
-			->add('orig_name')
+			->add('origName')
 			->add('authors')
 			->add('texts')
 		;
@@ -40,7 +40,7 @@ class SeriesAdmin extends Admin {
 		$formMapper->with('General attributes')
 			->add('slug')
 			->add('name')
-			->add('orig_name', null, ['required' => false])
+			->add('origName', null, ['required' => false])
 			->add('seriesAuthors', 'sonata_type_collection', [
 				'by_reference' => false,
 				'required' => false,
@@ -55,7 +55,7 @@ class SeriesAdmin extends Admin {
 		$datagrid
 			->add('slug')
 			->add('name')
-			->add('orig_name')
+			->add('origName')
 		;
 	}
 

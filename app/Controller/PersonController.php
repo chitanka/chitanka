@@ -108,7 +108,7 @@ class PersonController extends Controller {
 		}
 
 		if (empty($query['by'])) {
-			$query['by'] = 'name,orig_name,real_name,orig_real_name';
+			$query['by'] = 'name,origName,realName,origRealName';
 		}
 		$persons = $this->em()->getPersonRepository()->getByQuery($query);
 		$found = count($persons) > 0;

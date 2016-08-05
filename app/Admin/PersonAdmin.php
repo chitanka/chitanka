@@ -23,12 +23,12 @@ class PersonAdmin extends Admin {
 		$showMapper
 			->add('slug')
 			->add('name')
-			->add('orig_name')
-			->add('real_name')
-			->add('oreal_name')
+			->add('origName')
+			->add('realName')
+			->add('orealName')
 			->add('country')
-			->add('is_author')
-			->add('is_translator')
+			->add('isAuthor')
+			->add('isTranslator')
 			->add('info')
 			->add('series', null, ['label' => 'Series plural']);
 		$showMapper->with($this->trans('Main Person'));
@@ -41,7 +41,7 @@ class PersonAdmin extends Admin {
 		$listMapper
 			->addIdentifier('name')
 			->add('slug')
-			->add('orig_name')
+			->add('origName')
 
 			->add('_action', 'actions', [
 				'actions' => [
@@ -58,12 +58,12 @@ class PersonAdmin extends Admin {
 		$formMapper->tab('General attributes')->with('')
 			->add('slug', null, ['required' => false])
 			->add('name')
-			->add('orig_name', null, ['required' => false])
-			->add('real_name', null, ['required' => false])
-			->add('oreal_name', null, ['required' => false])
+			->add('origName', null, ['required' => false])
+			->add('realName', null, ['required' => false])
+			->add('orealName', null, ['required' => false])
 			->add('country')
-			->add('is_author', null, ['required' => false])
-			->add('is_translator', null, ['required' => false])
+			->add('isAuthor', null, ['required' => false])
+			->add('isTranslator', null, ['required' => false])
 			->add('info', null, ['required' => false])
 			->end()->end();
 		$formMapper->tab('Main Person')->with('')
@@ -86,9 +86,9 @@ class PersonAdmin extends Admin {
 			->add('name', null, [
 				'show_filter' => true,
 			])
-			->add('orig_name')
-			->add('real_name')
-			->add('oreal_name')
+			->add('origName')
+			->add('realName')
+			->add('orealName')
 			->add('country')
 		;
 	}

@@ -4,7 +4,7 @@
  *
  */
 class SeriesRepository extends EntityRepository {
-	protected $queryableFields = ['id', 'slug', 'name', 'orig_name'];
+	protected $queryableFields = ['id', 'slug', 'name', 'origName'];
 
 	/**
 	 * @param string $slug
@@ -67,7 +67,7 @@ class SeriesRepository extends EntityRepository {
 	 */
 	public function getByNames($name, $limit = null) {
 		$q = $this->getQueryBuilder()
-			->where('e.name LIKE ?1 OR e.orig_name LIKE ?1')
+			->where('e.name LIKE ?1 OR e.origName LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($name))
 			->getQuery();
 		if ($limit > 0) {

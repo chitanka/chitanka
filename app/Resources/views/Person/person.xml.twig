@@ -1,9 +1,9 @@
 <id>{{ person.id }}</id>
 <slug>{{ person.slug }}</slug>
 <name>{{ person.name }}</name>
-{% if person.orig_name is not empty %}<orig-name>{{ person.orig_name }}</orig-name>{% endif %}
-{% if person.real_name is not empty %}<real-name>{{ person.real_name }}</real-name>{% endif %}
-{% if person.oreal_name is not empty %}<orig-real-name>{{ person.oreal_name }}</orig-real-name>{% endif %}
+{% if person.origName is not empty %}<orig-name>{{ person.origName }}</orig-name>{% endif %}
+{% if person.realName is not empty %}<real-name>{{ person.realName }}</real-name>{% endif %}
+{% if person.orealName is not empty %}<orig-real-name>{{ person.orealName }}</orig-real-name>{% endif %}
 <country>{{ person.country }}</country>
 {% if person.info is not empty %}<info>{{ person.info }}</info>{% endif %}
 {% if person.person is defined and person.person is not empty %}

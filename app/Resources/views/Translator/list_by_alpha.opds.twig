@@ -6,8 +6,8 @@
 {% block content %}
 
 {% macro description(translator, by) %}
-	{% if translator.orig_name is not empty %}
-		оригинално име: {{ translator.orig_name|name_format(by)|striptags }};
+	{% if translator.origName is not empty %}
+		оригинално име: {{ translator.origName|name_format(by)|striptags }};
 	{% endif %}
 	държава: {{ translator.country.name }}
 {% endmacro %}

@@ -14,7 +14,7 @@
 		{% else %}
 			<dt>{{ _self.link(author, by) }}</dt>
 		{% endif %}
-		<dd class="orig-name">{{ author.orig_name ? author.orig_name|name_format(by)|raw : '—' }}</dd>
+		<dd class="orig-name">{{ author.origName ? author.origName|name_format(by)|raw : '—' }}</dd>
 	</dl></li>
 {% else %}
 	<li class="no-items">
