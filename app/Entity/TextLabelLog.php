@@ -28,7 +28,7 @@ class TextLabelLog extends Entity {
 
 	/**
 	 * @var Label
-	 * @ORM\ManyToOne(targetEntity="Label")
+	 * @ORM\ManyToOne(targetEntity="Label", inversedBy="logs")
 	 */
 	private $label;
 
