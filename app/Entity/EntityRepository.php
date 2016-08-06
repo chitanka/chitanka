@@ -103,27 +103,27 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	 * @return Entity
 	 */
 	public function getRandomEntities($limit = 3, $where = null) {
-		$entities = [];
-		while (count($entities) < $limit) {
-			$randomEntity = $this->getRandom($where);
-			if ($randomEntity === null) {
-				break;
+		$cacheKey = static::class."_random_{$limit}_{$where}";
+		return $this->fetchFromCache($cacheKey, function() use ($limit, $where) {
+			$entities = [];
+			while (count($entities) < $limit) {
+				$randomEntity = $this->getRandom($where, 0);
+				if ($randomEntity === null) {
+					break;
+				}
+				$entities[$randomEntity->getId()] = $randomEntity;
 			}
-			$entities[$randomEntity->getId()] = $randomEntity;
-		}
-		return $entities;
+			return $entities;
+		}, self::RANDOM_CACHE_LIFETIME);
 	}
 
 	/**
 	 * @param string $where
+	 * @param int $cacheLifetime
 	 * @return Entity
 	 */
-	public function getRandom($where = null) {
-		try {
-			return $this->getRandomQuery($where)->getSingleResult();
-		} catch (\Doctrine\ORM\NoResultException $e) {
-			return null;
-		}
+	public function getRandom($where = null, $cacheLifetime = null) {
+		return $this->getRandomQuery($where, null, $cacheLifetime)->getOneOrNullResult();
 	}
 
 	/**
@@ -131,15 +131,16 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	 * @return int
 	 */
 	public function getRandomId($where = null) {
-		return $this->getRandomQuery($where, 'e.id')->useResultCache(true, self::RANDOM_CACHE_LIFETIME)->getSingleScalarResult();
+		return $this->getRandomQuery($where, 'e.id')->getSingleScalarResult();
 	}
 
 	/**
 	 * @param string $where
 	 * @param string $select
+	 * @param int $cacheLifetime
 	 * @return \Doctrine\ORM\Query
 	 */
-	protected function getRandomQuery($where = null, $select = null) {
+	protected function getRandomQuery($where = null, $select = null, $cacheLifetime = null) {
 		$qb = $this->getEntityManager()->createQueryBuilder()
 			->select($select ?: 'e')
 			->from($this->getEntityName(), 'e');
@@ -148,9 +149,10 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 		}
 		$query = $qb->getQuery();
 		$cacheKey = md5($query->getSQL());
+		$cacheLifetime = $cacheLifetime !== null ? $cacheLifetime : self::RANDOM_CACHE_LIFETIME;
 		$randomId = $this->fetchFromCache($cacheKey, function() use ($where) {
 			return rand(1, $this->getCount($where)) - 1;
-		}, self::RANDOM_CACHE_LIFETIME);
+		}, $cacheLifetime);
 		$query
 			->setMaxResults(1)
 			->setFirstResult($randomId)
@@ -371,6 +373,9 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	 * @return mixed
 	 */
 	protected function fetchFromCache($cacheKey, $dataGenerator, $lifetime = self::DEFAULT_CACHE_LIFETIME) {
+		if (!$lifetime) {
+			return $dataGenerator();
+		}
 		$cacheDriver = $this->_em->getConfiguration()->getQueryCacheImpl();
 		$data = $cacheDriver->fetch($cacheKey);
 		if (!$data) {
