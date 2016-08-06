@@ -35,7 +35,7 @@ class SearchStringRepository extends EntityRepository {
 	public function getIdsBySort($sort, $limit = null) {
 		$dql = sprintf('SELECT e.id FROM %s e ORDER BY %s', $this->getEntityName(), $sort);
 		$query = $this->_em->createQuery($dql)->setMaxResults($limit);
-
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		return $query->getResult('id');
 	}
 

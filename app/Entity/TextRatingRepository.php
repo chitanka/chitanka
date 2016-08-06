@@ -27,7 +27,9 @@ class TextRatingRepository extends EntityRepository {
 					'user' => $user->getId(),
 				])
 				->setMaxResults(1)
-				->getQuery()->getSingleResult();
+				->getQuery()
+				->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+				->getSingleResult();
 		} catch (NoResultException $e) {
 			return new TextRating($text, $user);
 		}
@@ -44,7 +46,9 @@ class TextRatingRepository extends EntityRepository {
 			->leftJoin('e.user', 'u')
 			->where('e.text = ?1')->setParameter(1, $text)
 			->orderBy('e.date', 'desc')
-			->getQuery()->getArrayResult();
+			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->getArrayResult();
 	}
 
 	/**
@@ -58,6 +62,8 @@ class TextRatingRepository extends EntityRepository {
 			->leftJoin('e.text', 't')
 			->where('e.user = ?1')->setParameter(1, $user)
 			->orderBy('e.date', 'desc')
-			->getQuery()->getArrayResult();
+			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->getArrayResult();
 	}
 }

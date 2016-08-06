@@ -43,15 +43,16 @@ class BookController extends Controller {
 	public function listByCategoryAction(Request $request, $slug, $page) {
 		$slug = Stringy::slugify($slug);
 		$bookRepo = $this->em()->getBookRepository();
-		$category = $this->em()->getCategoryRepository()->findBySlug($slug);
+		$categoryRepo = $this->em()->getCategoryRepository();
+		$category = $categoryRepo->findBySlug($slug);
 		if ($category === null) {
 			throw $this->createNotFoundException("Няма категория с код $slug.");
 		}
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		return [
 			'category' => $category,
-			'parents' => array_reverse($category->getAncestors()),
-			'books' => $bookRepo->findByCategory($category->getDescendantIdsAndSelf(), $page, $limit),
+			'parents' => array_reverse($categoryRepo->findCategoryAncestors($category)),
+			'books' => $bookRepo->findByCategory($categoryRepo->getCategoryDescendantIdsWithSelf($category), $page, $limit),
 			'pager' => new Pager($page, $category->getNrOfBooks(), $limit),
 			'route_params' => ['slug' => $slug],
 		];

@@ -14,6 +14,7 @@ class FeaturedBookRepository extends EntityRepository {
 			->select('b')
 			->orderBy('b.id', 'desc')
 			->getQuery()->setMaxResults($limit)
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
 			->getArrayResult();
 	}
 }

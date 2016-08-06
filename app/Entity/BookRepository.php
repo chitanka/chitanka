@@ -26,7 +26,9 @@ class BookRepository extends EntityRepository {
 			->leftJoin('t.textAuthors', 'ta')
 			->leftJoin('ta.person', 'tap')
 			->where('b.id = ?1')->setParameter(1, $id)
-			->getQuery()->getSingleResult();
+			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->getSingleResult();
 	}
 
 	/**
@@ -64,7 +66,7 @@ class BookRepository extends EntityRepository {
 		}
 		$dql = sprintf("SELECT b.id FROM {$this->getEntityName()} b WHERE b.category IN (%s) ORDER BY b.title", $ids);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
-
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		return $query->getResult('id');
 	}
 
@@ -87,7 +89,7 @@ class BookRepository extends EntityRepository {
 	private function getIdsBySequence($sequence, $page = 1, $limit = null) {
 		$dql = "SELECT b.id FROM {$this->getEntityName()} b WHERE b.sequence = {$sequence->getId()} ORDER BY b.seqnr, b.title";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
-
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		return $query->getResult('id');
 	}
 
@@ -111,7 +113,7 @@ class BookRepository extends EntityRepository {
 		$where = $prefix ? "b.title LIKE '$prefix%'" : '1=1';
 		$dql = "SELECT b.id FROM {$this->getEntityName()} b WHERE $where ORDER BY b.title";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
-
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		return $query->getResult('id');
 	}
 
@@ -123,7 +125,7 @@ class BookRepository extends EntityRepository {
 		$where = $prefix ? "b.title LIKE '$prefix%'" : '1=1';
 		$dql = "SELECT COUNT(b.id) FROM {$this->getEntityName()} b WHERE $where";
 		$query = $this->_em->createQuery($dql);
-
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		return $query->getSingleScalarResult();
 	}
 
@@ -138,6 +140,7 @@ class BookRepository extends EntityRepository {
 			->setParameter(1, $this->stringForLikeClause($title))
 			->setMaxResults($limit)
 			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
 			->getResult();
 		return $books;
 	}
@@ -158,6 +161,7 @@ class BookRepository extends EntityRepository {
 			->setParameters([1 => $this->stringForLikeClause($titleOrIsbn), 2 => $isbn])
 			->setMaxResults($limit)
 			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
 			->getResult();
 		return $books;
 	}
@@ -170,6 +174,7 @@ class BookRepository extends EntityRepository {
 		$books = $this->getQueryBuilder('s.name, e.seqnr, e.title')
 			->andWhere('ap.id = ?1')->setParameter(1, $author->getId())
 			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
 			->getResult();
 		return $books;
 	}
@@ -209,6 +214,7 @@ class BookRepository extends EntityRepository {
 	private function getIdsWithMissingCover($page = 1, $limit = null) {
 		$dql = "SELECT b.id FROM {$this->getEntityName()} b WHERE b.hasCover = 0 ORDER BY b.title ASC";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		return $query->getResult('id');
 	}
 
@@ -218,7 +224,7 @@ class BookRepository extends EntityRepository {
 	public function getCountWithMissingCover() {
 		$dql = "SELECT COUNT(b.id) FROM {$this->getEntityName()} b WHERE b.hasCover = 0";
 		$query = $this->_em->createQuery($dql);
-
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		return $query->getSingleScalarResult();
 	}
 }

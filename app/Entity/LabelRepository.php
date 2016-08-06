@@ -19,7 +19,7 @@ class LabelRepository extends EntityRepository {
 		if ($group) {
 			$qb->where('e.group = ?1')->setParameter(1, $group);
 		}
-		$labelResult = $qb->getQuery()->getArrayResult();
+		$labelResult = $qb->getQuery()->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)->getArrayResult();
 		foreach ($labelResult as $k => $row) {
 			$labelResult[$k] += $row[0];
 			unset($labelResult[$k][0]);
@@ -57,7 +57,9 @@ class LabelRepository extends EntityRepository {
 	public function getNames() {
 		return $this->_em->createQueryBuilder()
 			->from($this->getEntityName(), 'l')->select('l.id, l.name')
-			->getQuery()->getResult('key_value');
+			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->getResult('key_value');
 	}
 
 	/**
@@ -68,7 +70,28 @@ class LabelRepository extends EntityRepository {
 			->where('e.name LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($name))
 			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
 			->getArrayResult();
+	}
+
+	/**
+	 * @param Label $label
+	 * @return Label[]
+	 */
+	public function findLabelAncestors(Label $label) {
+		return $this->fetchFromCache('LabelAncestors_'.$label->getId(), function() use ($label) {
+			return $label->getAncestors();
+		});
+	}
+
+	/**
+	 * @param Label $label
+	 * @return array Array of label IDs
+	 */
+	public function getLabelDescendantIdsWithSelf(Label $label) {
+		return $this->fetchFromCache('LabelDescendantIdsWithSelf_'.$label->getId(), function() use ($label) {
+			return array_merge([$label->getId()], $label->getDescendantIds());
+		});
 	}
 
 }

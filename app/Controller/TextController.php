@@ -61,15 +61,15 @@ class TextController extends Controller {
 		$textRepo = $this->em()->getTextRepository();
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$slug = Stringy::slugify($slug);
-		$label = $this->em()->getLabelRepository()->findBySlug($slug);
+		$labelRepo = $this->em()->getLabelRepository();
+		$label = $labelRepo->findBySlug($slug);
 		if ($label === null) {
 			throw $this->createNotFoundException("Няма етикет с код $slug.");
 		}
-		$labels = $label->getDescendantIdsAndSelf();
-
+		$labels = $labelRepo->getLabelDescendantIdsWithSelf($label);
 		return [
 			'label' => $label,
-			'parents' => array_reverse($label->getAncestors()),
+			'parents' => array_reverse($labelRepo->findLabelAncestors($label)),
 			'texts'   => $textRepo->getByLabel($labels, $page, $limit, $request->query->get('sort')),
 			'pager'    => new Pager($page, $textRepo->countByLabel($labels), $limit),
 			'route_params' => ['slug' => $slug],
@@ -95,7 +95,7 @@ class TextController extends Controller {
 		list($id) = explode('-', $id); // remove optional slug
 		switch ($_format) {
 			case 'html':
-				return $this->showHtml($this->findText($id));
+				return $this->showHtml($this->findText($id, true));
 			case 'epub':
 			case 'fb2.zip':
 			case 'txt.zip':
@@ -105,18 +105,18 @@ class TextController extends Controller {
 				return $this->urlRedirect($this->getWebRoot() . $service->generateFile(explode(',', $id), $_format, $request->get('filename')));
 			case 'fb2':
 				Setup::doSetup($this->container);
-				return $this->asText($this->findText($id)->getContentAsFb2(), 'application/xml');
+				return $this->asText($this->findText($id, true)->getContentAsFb2(), 'application/xml');
 			case 'fbi':
 				Setup::doSetup($this->container);
-				return $this->asText($this->findText($id)->getFbi());
+				return $this->asText($this->findText($id, true)->getFbi());
 			case 'txt':
-				return $this->asText($this->findText($id)->getContentAsTxt());
+				return $this->asText($this->findText($id, true)->getContentAsTxt());
 			case 'sfb':
-				return $this->asText($this->findText($id)->getContentAsSfb());
+				return $this->asText($this->findText($id, true)->getContentAsSfb());
 			case 'data':
-				return $this->asText($this->findText($id)->getDataAsPlain());
+				return $this->asText($this->findText($id, true)->getDataAsPlain());
 			case 'json':
-				return ['text' => $this->findText($id)];
+				return ['text' => $this->findText($id, true)];
 		}
 		throw $this->createNotFoundException("Неизвестен формат: $_format");
 	}
@@ -176,7 +176,7 @@ class TextController extends Controller {
 	}
 
 	public function showPartAction($id, $part) {
-		return $this->showHtml($this->findText($id), $part);
+		return $this->showHtml($this->findText($id, true), $part);
 	}
 
 	public function showHtml(Text $text, $part = 1) {

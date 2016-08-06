@@ -14,7 +14,9 @@ class BookIsbnRepository extends EntityRepository {
 		return $this->createQueryBuilder('e')
 			->select('IDENTITY(e.book)')
 			->where('e.code = ?1')->setParameter(1, BookIsbn::normalizeIsbn($isbn))
-			->getQuery()->getResult('id');
+			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->getResult('id');
 	}
 
 }

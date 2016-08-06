@@ -37,8 +37,8 @@ class BookmarkRepository extends EntityRepository {
 	public function getIdsByUser(User $user, $page, $limit, $orderBys = 't.title ASC') {
 		$dql = sprintf('SELECT e.id FROM %s e LEFT JOIN e.text t WHERE e.user = %d ORDER BY %s', $this->getEntityName(), $user->getId(), $orderBys);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		$ids = $query->getResult('id');
-
 		return $ids;
 	}
 
@@ -59,10 +59,9 @@ class BookmarkRepository extends EntityRepository {
 	public function getValidTextIds($user, $textIds) {
 		if (is_array($textIds)) {
 			$textIds = implode(',', $textIds);
-		} else {
-			$textIds = preg_replace('/[^\d,]/', '', $textIds);
-			$textIds = preg_replace('/,,+/', ',', trim($textIds, ','));
 		}
+		$textIds = preg_replace('/[^\d,]/', '', $textIds);
+		$textIds = preg_replace('/,,+/', ',', trim($textIds, ','));
 
 		if (empty($textIds)) {
 			return [];

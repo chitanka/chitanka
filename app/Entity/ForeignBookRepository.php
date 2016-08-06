@@ -12,7 +12,9 @@ class ForeignBookRepository extends EntityRepository {
 		return $this->createQueryBuilder('b')
 			->where('b.isActive = 1')
 			->orderBy('b.publishedAt', 'desc')
-			->getQuery()->setMaxResults($limit)
+			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->setMaxResults($limit)
 			->getResult();
 	}
 }

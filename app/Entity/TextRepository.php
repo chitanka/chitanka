@@ -82,10 +82,11 @@ class TextRepository extends EntityRepository {
 			->leftJoin('t.books', 'b')
 			->leftJoin('t.origLicense', 'ol')
 			->leftJoin('t.transLicense', 'tl')
-			//->leftJoin('t.headers', 'h') // takes up too much memory by many rows
 			->leftJoin('t.curRev', 'r')
 			->where('t.id = ?1')->setParameter(1, $id)
-			->getQuery()->getSingleResult();
+			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->getSingleResult();
 	}
 
 	/**
@@ -117,6 +118,7 @@ class TextRepository extends EntityRepository {
 		$where = $prefix ? "WHERE t.title LIKE '$prefix%'" : '';
 		$dql = "SELECT t.id FROM {$this->getEntityName()} t $where ORDER BY t.$orderBy";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		$ids = $query->getResult('id');
 		if (empty($ids)) {
 			throw new NoResultException;
@@ -132,6 +134,7 @@ class TextRepository extends EntityRepository {
 		$where = $prefix ? "WHERE t.title LIKE '$prefix%'" : '';
 		$dql = sprintf('SELECT COUNT(t.id) FROM %s t %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		return $query->getSingleScalarResult();
 	}
 
@@ -164,6 +167,7 @@ class TextRepository extends EntityRepository {
 		$where = "WHERE t.type = '$type'";
 		$dql = "SELECT t.id FROM {$this->getEntityName()} t $where ORDER BY t.$orderBy";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		$ids = $query->getResult('id');
 		if (empty($ids)) {
 			throw new NoResultException;
@@ -179,6 +183,7 @@ class TextRepository extends EntityRepository {
 		$where = "WHERE t.type = '$type'";
 		$dql = sprintf('SELECT COUNT(t.id) FROM %s t %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		return $query->getSingleScalarResult();
 	}
 
@@ -210,6 +215,7 @@ class TextRepository extends EntityRepository {
 	protected function getIdsByLabel($labels, $page, $limit, $orderBy) {
 		$dql = sprintf("SELECT DISTINCT t.id FROM %s t JOIN t.labels l WHERE l.id IN (%s) ORDER BY t.$orderBy", $this->getEntityName(), implode(',', $labels));
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		$ids = $query->getResult('id');
 		if (empty($ids)) {
 			throw new NoResultException;
@@ -219,11 +225,14 @@ class TextRepository extends EntityRepository {
 
 	/**
 	 * RAW_SQL
-	 * @param string $labels
+	 * @param array $labelIds
 	 * @return int
 	 */
-	public function countByLabel($labels) {
-		return $this->_em->getConnection()->fetchColumn(sprintf('SELECT COUNT(DISTINCT tl.text_id) FROM text_label tl WHERE tl.label_id IN (%s)', implode(',', $labels)), [], 0);
+	public function countByLabel($labelIds) {
+		$labelIdsSearch = implode(',', $labelIds);
+		return $this->fetchFromCache('TextCountByLabel_'.$labelIdsSearch, function() use ($labelIdsSearch) {
+			return $this->_em->getConnection()->fetchColumn(sprintf('SELECT COUNT(DISTINCT tl.text_id) FROM text_label tl WHERE tl.label_id IN (%s)', $labelIdsSearch), [], 0);
+		});
 	}
 
 	/**
@@ -236,7 +245,9 @@ class TextRepository extends EntityRepository {
 			->leftJoin('e.textAuthors', 'ta')
 			->where('ta.person = ?1')->setParameter(1, $author->getId())
 			->orderBy('s.name, e.sernr, e.type, e.title')
-			->getQuery()->getResult();
+			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->getResult();
 		if ($groupBySeries) {
 			$texts = $this->groupTexts($texts);
 		}
@@ -252,7 +263,9 @@ class TextRepository extends EntityRepository {
 			->leftJoin('e.textTranslators', 'tt')
 			->where('tt.person = ?1')->setParameter(1, $translator->getId())
 			->orderBy('e.type, e.title')
-			->getQuery()->getResult();
+			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->getResult();
 		$texts = $this->groupTexts($texts, false);
 		return $texts;
 	}
@@ -265,7 +278,9 @@ class TextRepository extends EntityRepository {
 	public function getByIds($ids, $orderBy = null) {
 		$texts = $this->getQueryBuilder($orderBy)
 			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
-			->getQuery()->getResult();
+			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->getResult();
 		return $texts;
 	}
 
@@ -279,9 +294,8 @@ class TextRepository extends EntityRepository {
 			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.origTitle LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($title))
 			->getQuery();
-		if ($limit > 0) {
-			$q->setMaxResults($limit);
-		}
+		$q->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$this->addLimitingToQuery($q, $limit);
 		return $q->getResult();
 	}
 
@@ -317,7 +331,9 @@ class TextRepository extends EntityRepository {
 			->leftJoin('e.origLang', 'olang')
 			->where('e.series = ?1')->setParameter(1, $series->getId())
 			->addOrderBy('e.sernr, e.title')
-			->getQuery()->getResult();
+			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->getResult();
 		return $texts;
 	}
 
@@ -337,7 +353,9 @@ class TextRepository extends EntityRepository {
 			->select('e.type', 'COUNT(e.id)')
 			->from($this->getEntityName(), 'e')
 			->groupBy('e.type')
-			->getQuery()->getResult('key_value');
+			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->getResult('key_value');
 		arsort($counts);
 		return $counts;
 	}

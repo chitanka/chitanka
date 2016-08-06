@@ -29,6 +29,7 @@ class CategoryRepository extends EntityRepository {
 			->addSelect('IDENTITY(e.parent) AS parent')
 			->orderBy('e.name')
 			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
 			->getArrayResult();
 		foreach ($categoryResult as $k => $row) {
 			$categoryResult[$k] += $row[0];
@@ -72,4 +73,23 @@ class CategoryRepository extends EntityRepository {
 			->getArrayResult();
 	}
 
+	/**
+	 * @param Category $category
+	 * @return Category[]
+	 */
+	public function findCategoryAncestors(Category $category) {
+		return $this->fetchFromCache('CategoryAncestors_'.$category->getId(), function() use ($category) {
+			return $category->getAncestors();
+		});
+	}
+
+	/**
+	 * @param Category $category
+	 * @return array Array of category IDs
+	 */
+	public function getCategoryDescendantIdsWithSelf(Category $category) {
+		return $this->fetchFromCache('CategoryDescendantIdsWithSelf_'.$category->getId(), function() use ($category) {
+			return array_merge([$category->getId()], $category->getDescendantIds());
+		});
+	}
 }

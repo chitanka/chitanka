@@ -35,7 +35,7 @@ class RevisionRepository extends EntityRepository {
 		}
 		$dql = sprintf('SELECT COUNT(r.id) FROM %s r %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
-
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		return $query->getSingleScalarResult();
 	}
 
@@ -46,7 +46,7 @@ class RevisionRepository extends EntityRepository {
 		}
 		$dql = sprintf('SELECT r.id FROM %s r %s ORDER BY r.date DESC, r.id DESC', $this->getEntityName(), $where);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
-
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		return $query->getResult('id');
 	}
 
@@ -58,7 +58,9 @@ class RevisionRepository extends EntityRepository {
 	public function getByIds($ids, $orderBy = null) {
 		$texts = $this->getQueryBuilder($orderBy)
 			->andWhere(sprintf('r.id IN (%s)', implode(',', $ids)))
-			->getQuery()->getResult();
+			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->getResult();
 		return $texts;
 	}
 
@@ -67,23 +69,27 @@ class RevisionRepository extends EntityRepository {
 	 * RAW_SQL
 	 */
 	public function getMonths() {
-		$sql = sprintf('SELECT
-				DISTINCT DATE_FORMAT(r.date, "%%Y-%%m") AS month,
-				COUNT(*) AS count
-			FROM %s r
-			WHERE r.date != "0000-00-00"
-			GROUP BY month', $this->getClassMetadata()->getTableName());
-
-		return $this->_em->getConnection()->fetchAll($sql);
+		$table = $this->getClassMetadata()->getTableName();
+		return $this->fetchFromCache('Months_'.$table, function() use ($table) {
+			$sql = sprintf('SELECT
+					DISTINCT DATE_FORMAT(r.date, "%%Y-%%m") AS month,
+					COUNT(*) AS count
+				FROM %s r
+				WHERE r.date != "0000-00-00"
+				GROUP BY month', $table);
+			return $this->_em->getConnection()->fetchAll($sql);
+		});
 	}
 
 	/**
 	 * RAW_SQL
 	 */
 	public function getMaxDate() {
-		$sql = sprintf('SELECT MAX(r.date) FROM %s r', $this->getClassMetadata()->getTableName());
-
-		return $this->_em->getConnection()->fetchColumn($sql);
+		$table = $this->getClassMetadata()->getTableName();
+		return $this->fetchFromCache('Months_'.$table, function() use ($table) {
+			$sql = sprintf('SELECT MAX(r.date) FROM %s r', $table);
+			return $this->_em->getConnection()->fetchColumn($sql);
+		});
 	}
 
 	public function getQueryBuilder($orderBys = null) {

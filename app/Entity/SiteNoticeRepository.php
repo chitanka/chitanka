@@ -5,6 +5,8 @@
  */
 class SiteNoticeRepository extends EntityRepository {
 
+	const RANDOM_CACHE_LIFETIME = 600;
+
 	public function findForFrontPage() {
 		return $this->findBy(['isForFrontPage' => true]);
 	}

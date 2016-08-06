@@ -18,7 +18,7 @@ class TextCommentRepository extends EntityRepository {
 	public function getLatestIdsByDate($limit = null) {
 		$dql = sprintf('SELECT e.id FROM %s e WHERE e.is_shown = 1 ORDER BY e.time DESC', $this->getEntityName());
 		$query = $this->_em->createQuery($dql)->setMaxResults($limit);
-
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		return $query->getResult('id');
 	}
 
@@ -26,7 +26,9 @@ class TextCommentRepository extends EntityRepository {
 		$texts = $this->getQueryBuilder()
 			->where('e.text = ?1')->setParameter(1, $text->getId())
 			->orderBy('e.time', 'ASC')
-			->getQuery()->getArrayResult();
+			->getQuery()
+			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->getArrayResult();
 		return WorkSteward::joinPersonKeysForTexts($texts);
 	}
 

@@ -24,6 +24,7 @@ class SequenceRepository extends EntityRepository {
 		$where = $prefix ? "WHERE s.name LIKE '$prefix%'" : '';
 		$dql = sprintf('SELECT s FROM %s s %s ORDER BY s.name', $this->getEntityName(), $where);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		return $query->getArrayResult();
 	}
 
@@ -35,6 +36,7 @@ class SequenceRepository extends EntityRepository {
 		$where = $prefix ? "WHERE s.name LIKE '$prefix%'" : '';
 		$dql = sprintf('SELECT COUNT(s.id) FROM %s s %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
 		return $query->getSingleScalarResult();
 	}
 
@@ -44,14 +46,13 @@ class SequenceRepository extends EntityRepository {
 	 * @return array
 	 */
 	public function getByNames($name, $limit = null) {
-		$q = $this->getQueryBuilder()
+		$query = $this->getQueryBuilder()
 			->where('e.name LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($name))
 			->getQuery();
-		if ($limit > 0) {
-			$q->setMaxResults($limit);
-		}
-		return $q->getArrayResult();
+		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$this->addLimitingToQuery($query, $limit);
+		return $query->getArrayResult();
 	}
 
 }
