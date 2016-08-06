@@ -4,6 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\TextRatingRepository")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="text_rating",
  *	uniqueConstraints={@ORM\UniqueConstraint(name="text_user_uniq", columns={"text_id", "user_id"})},

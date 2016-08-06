@@ -4,6 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\SearchStringRepository")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="search_string",
  *	indexes={
  *		@ORM\Index(name="date_idx", columns={"date"})})

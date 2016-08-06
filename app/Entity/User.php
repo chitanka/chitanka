@@ -8,6 +8,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\UserRepository")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="user",
  *	indexes={
@@ -437,7 +438,7 @@ class User implements UserInterface, \JsonSerializable {
 	}
 
 	/** @return User */
-	protected static function newFromCookie($repo) {
+	protected static function newFromCookie(UserRepository $repo) {
 		$user = $repo->find($_COOKIE[self::UID_COOKIE]);
 		if ($user && $user->validateToken($_COOKIE[self::TOKEN_COOKIE], $user->getPassword())) {
 			$user->touch();

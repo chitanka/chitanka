@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Entity\TextRepository")
  * @ORM\HasLifecycleCallbacks
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="text",
  *   indexes={
  *      @ORM\Index(name="title_idx", columns={"title"}),
@@ -230,6 +231,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 	 * @var ArrayCollection|TextAuthor[]
 	 * @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"pos" = "ASC"})
+	 * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
 	 */
 	private $textAuthors;
 
@@ -237,6 +239,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 	 * @var ArrayCollection|TextTranslator[]
 	 * @ORM\OneToMany(targetEntity="TextTranslator", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"pos" = "ASC"})
+	 * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
 	 */
 	private $textTranslators;
 
@@ -253,6 +256,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 	/**
 	 * @var ArrayCollection|BookText[]
 	 * @ORM\OneToMany(targetEntity="BookText", mappedBy="text")
+	 * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
 	 */
 	private $bookTexts;
 
@@ -277,6 +281,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 	 * @var ArrayCollection|TextHeader[]
 	 * @ORM\OneToMany(targetEntity="TextHeader", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"nr" = "ASC", "level" = "ASC"})
+	 * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
 	 */
 	private $headers;
 
@@ -292,6 +297,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 	/**
 	 * @var ArrayCollection|UserTextContrib[]
 	 * @ORM\OneToMany(targetEntity="UserTextContrib", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
+	 * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
 	 */
 	private $userContribs;
 
@@ -304,6 +310,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 	/**
 	 * @var ArrayCollection|TextLink[]
 	 * @ORM\OneToMany(targetEntity="TextLink", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
+	 * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
 	 */
 	private $links;
 

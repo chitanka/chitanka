@@ -74,7 +74,12 @@ doctrine:
         metadata_cache_driver: %orm_metadata_cache_driver%
         result_cache_driver: %orm_result_cache_driver%
         query_cache_driver: %orm_query_cache_driver%
-
+        second_level_cache:
+            region_cache_driver: %orm_region_cache_driver%
+            region_lock_lifetime: 60
+            log_enabled: true
+            region_lifetime: 600
+            enabled: %second_level_cache_enabled%
         auto_generate_proxy_classes: %kernel.debug%
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true

@@ -6,6 +6,7 @@ use Eko\FeedBundle\Item\Writer\RoutedItemInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\WorkEntryRepository")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="work_entry",
  *	indexes={
  *		@ORM\Index(name="title_idx", columns={"title"}),

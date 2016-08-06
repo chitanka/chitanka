@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\LabelRepository")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="label")
  * @UniqueEntity(fields="slug", message="This slug is already in use.")
  * @UniqueEntity(fields="name")
@@ -154,13 +155,6 @@ class Label extends Entity implements \JsonSerializable {
 		}
 
 		return $ancestors;
-	}
-
-	/**
-	 * @return array Array of IDs
-	 */
-	public function getDescendantIdsAndSelf() {
-		return array_merge([$this->getId()], $this->getDescendantIds());
 	}
 
 	/**

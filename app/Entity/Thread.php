@@ -5,6 +5,7 @@ use FOS\CommentBundle\Entity\Thread as BaseThread;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\ThreadRepository")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="thread")
  * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
  */

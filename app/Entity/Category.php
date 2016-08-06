@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\CategoryRepository")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="category")
  * @UniqueEntity(fields="slug", message="This slug is already in use.")
  * @UniqueEntity(fields="name")
@@ -103,10 +104,6 @@ class Category extends Entity implements \JsonSerializable {
 		}
 
 		return $ancestors;
-	}
-
-	public function getDescendantIdsAndSelf() {
-		return array_merge([$this->getId()], $this->getDescendantIds());
 	}
 
 	/**
