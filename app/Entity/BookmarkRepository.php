@@ -24,7 +24,7 @@ class BookmarkRepository extends EntityRepository {
 	public function getByUser(User $user, $page = 1, $limit = null, $orderBys = 't.title ASC') {
 		$ids = $this->getIdsByUser($user, $page, $limit, $orderBys);
 
-		return empty($ids) ? [] : $this->getByIds($ids, $orderBys);
+		return empty($ids) ? [] : $this->findByIds($ids, $orderBys);
 	}
 
 	/**
@@ -71,15 +71,6 @@ class BookmarkRepository extends EntityRepository {
 		$validTextIds = $this->_em->getConnection()->executeQuery($sql)->fetchAll(\PDO::FETCH_COLUMN);
 
 		return $validTextIds;
-	}
-
-	/**
-	 * @param array $ids
-	 * @param string $orderBy
-	 * @return array
-	 */
-	public function getByIds($ids, $orderBy = null) {
-		return WorkSteward::joinPersonKeysForWorks(parent::getByIds($ids, $orderBy));
 	}
 
 	/**

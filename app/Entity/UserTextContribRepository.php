@@ -22,8 +22,7 @@ class UserTextContribRepository extends EntityRepository {
 	 */
 	public function getByUser(User $user, $page = 1, $limit = null) {
 		$ids = $this->getIdsByUser($user, $page, $limit);
-
-		return empty($ids) ? [] : $this->getByIds($ids);
+		return empty($ids) ? [] : $this->findByIds($ids);
 	}
 
 	/**
@@ -49,33 +48,18 @@ class UserTextContribRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param array $ids
-	 * @param string $orderBy
-	 * @return array
-	 */
-	public function getByIds($ids, $orderBy = null) {
-		$texts = $this->getQueryBuilder()
-			->where(sprintf('c.id IN (%s)', implode(',', $ids)))
-			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
-			->getArrayResult();
-
-		return WorkSteward::joinPersonKeysForWorks($texts);
-	}
-
-	/**
 	 * @param string $orderBys
 	 * @return \Doctrine\ORM\QueryBuilder
 	 */
 	public function getQueryBuilder($orderBys = null) {
 		return $this->_em->createQueryBuilder()
-			->select('c', 't', 'a', 'ap', 's')
-			->from($this->getEntityName(), 'c')
-			->leftJoin('c.text', 't')
+			->select(self::ALIAS, 't', 'a', 'ap', 's')
+			->from($this->getEntityName(), self::ALIAS)
+			->leftJoin(self::ALIAS.'.text', 't')
 			->leftJoin('t.series', 's')
 			->leftJoin('t.textAuthors', 'a')
 			->leftJoin('a.person', 'ap')
-			->orderBy('c.date', 'DESC');
+			->orderBy(self::ALIAS.'.date', 'DESC');
 	}
 
 }
