@@ -77,7 +77,7 @@ doctrine:
         second_level_cache:
             region_cache_driver: %orm_region_cache_driver%
             region_lock_lifetime: 60
-            log_enabled: true
+            log_enabled: false
             region_lifetime: 600
             enabled: %second_level_cache_enabled%
         auto_generate_proxy_classes: %kernel.debug%
