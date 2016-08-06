@@ -86,7 +86,7 @@ class RevisionRepository extends EntityRepository {
 	 */
 	public function getMaxDate() {
 		$table = $this->getClassMetadata()->getTableName();
-		return $this->fetchFromCache('Months_'.$table, function() use ($table) {
+		return $this->fetchFromCache('MaxDate_'.$table, function() use ($table) {
 			$sql = sprintf('SELECT MAX(r.date) FROM %s r', $table);
 			return $this->_em->getConnection()->fetchColumn($sql);
 		});
