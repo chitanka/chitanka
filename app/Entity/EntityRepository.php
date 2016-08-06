@@ -73,7 +73,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	 * @return int
 	 */
 	public function getCount($where = null) {
-		$qb = $this->createQueryBuilder('e')->select('COUNT(e.id)');
+		$qb = $this->createQueryBuilder(self::ALIAS)->select('COUNT('.self::ALIAS.'.id)');
 		if ($where !== null) {
 			$qb->andWhere($where);
 		}
@@ -131,7 +131,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	 * @return int
 	 */
 	public function getRandomId($where = null) {
-		return $this->getRandomQuery($where, 'e.id')->getSingleScalarResult();
+		return $this->getRandomQuery($where, self::ALIAS.'.id')->getSingleScalarResult();
 	}
 
 	/**
@@ -142,8 +142,8 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	 */
 	protected function getRandomQuery($where = null, $select = null, $cacheLifetime = null) {
 		$qb = $this->getEntityManager()->createQueryBuilder()
-			->select($select ?: 'e')
-			->from($this->getEntityName(), 'e');
+			->select($select ?: self::ALIAS)
+			->from($this->getEntityName(), self::ALIAS);
 		if ($where !== null) {
 			$qb->andWhere($where);
 		}
@@ -208,7 +208,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 			return [];
 		}
 		return $this->getQueryBuilder($orderBy)
-			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
+			->where(sprintf(self::ALIAS.'.id IN (%s)', implode(',', $ids)))
 			->getQuery()
 			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
 			->getResult();
@@ -225,7 +225,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 		}
 
 		return $this->getQueryBuilder($orderBy)
-			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
+			->where(sprintf(self::ALIAS.'.id IN (%s)', implode(',', $ids)))
 			->getQuery()
 			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
 			->getArrayResult();
@@ -284,7 +284,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 		$tests = [];
 		foreach (explode(',', $params['by']) as $field) {
 			if (in_array($field, $this->queryableFields)) {
-				$tests[] = "e.$field $op ?1";
+				$tests[] = self::ALIAS.".$field $op ?1";
 			}
 		}
 		if (empty($tests)) {
@@ -323,7 +323,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 					list($field, $order) = explode(' ', ltrim($orderBy));
 				}
 				if (strpos($field, '.') === false) {
-					$field = "e.$field";
+					$field = self::ALIAS.".$field";
 				}
 				$qb->addOrderBy($field, $order);
 			}
