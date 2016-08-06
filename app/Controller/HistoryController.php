@@ -1,5 +1,6 @@
 <?php namespace App\Controller;
 
+use App\Entity\RevisionRepository;
 use App\Pagination\Pager;
 use App\Util\Date;
 
@@ -99,7 +100,7 @@ class HistoryController extends Controller {
 		];
 	}
 
-	private function getDateOptions($repository) {
+	private function getDateOptions(RevisionRepository $repository) {
 		$dates = [];
 		foreach ($repository->getMonths() as $data) {
 			$ym = $data['month'];
