@@ -4,7 +4,7 @@
 {% if person.origName is not empty %}<orig-name>{{ person.origName }}</orig-name>{% endif %}
 {% if person.realName is not empty %}<real-name>{{ person.realName }}</real-name>{% endif %}
 {% if person.orealName is not empty %}<orig-real-name>{{ person.orealName }}</orig-real-name>{% endif %}
-<country>{{ person.country }}</country>
+<country>{{ person.country.name }}</country>
 {% if person.info is not empty %}<info>{{ person.info }}</info>{% endif %}
 {% if person.person is defined and person.person is not empty %}
 	<person>
