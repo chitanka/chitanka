@@ -9,6 +9,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class UserRepository extends EntityRepository implements UserProviderInterface {
 
+	const DEFAULT_CACHE_LIFETIME = 60;
+
 	/**
 	 * @param string $username
 	 * @return User
