@@ -35,7 +35,7 @@ class RevisionRepository extends EntityRepository {
 		}
 		$dql = sprintf('SELECT COUNT(r.id) FROM %s r %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query->getSingleScalarResult();
 	}
 
@@ -46,7 +46,7 @@ class RevisionRepository extends EntityRepository {
 		}
 		$dql = sprintf('SELECT r.id FROM %s r %s ORDER BY r.date DESC, r.id DESC', $this->getEntityName(), $where);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query->getResult('id');
 	}
 
@@ -59,7 +59,7 @@ class RevisionRepository extends EntityRepository {
 		$texts = $this->getQueryBuilder($orderBy)
 			->andWhere(sprintf('r.id IN (%s)', implode(',', $ids)))
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getResult();
 		return $texts;
 	}

@@ -19,7 +19,7 @@ class LabelRepository extends EntityRepository {
 		if ($group) {
 			$qb->where('e.group = ?1')->setParameter(1, $group);
 		}
-		$labelResult = $qb->getQuery()->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)->getArrayResult();
+		$labelResult = $qb->getQuery()->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)->getArrayResult();
 		foreach ($labelResult as $k => $row) {
 			$labelResult[$k] += $row[0];
 			unset($labelResult[$k][0]);
@@ -58,7 +58,7 @@ class LabelRepository extends EntityRepository {
 		return $this->_em->createQueryBuilder()
 			->from($this->getEntityName(), 'l')->select('l.id, l.name')
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getResult('key_value');
 	}
 
@@ -70,7 +70,7 @@ class LabelRepository extends EntityRepository {
 			->where('e.name LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($name))
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getArrayResult();
 	}
 

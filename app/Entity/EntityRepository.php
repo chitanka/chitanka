@@ -78,7 +78,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 			$qb->andWhere($where);
 		}
 		return $qb->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getSingleScalarResult();
 	}
 
@@ -114,7 +114,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 				$entities[$randomEntity->getId()] = $randomEntity;
 			}
 			return $entities;
-		}, self::RANDOM_CACHE_LIFETIME);
+		}, static::RANDOM_CACHE_LIFETIME);
 	}
 
 	/**
@@ -149,14 +149,14 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 		}
 		$query = $qb->getQuery();
 		$cacheKey = md5($query->getSQL());
-		$cacheLifetime = $cacheLifetime !== null ? $cacheLifetime : self::RANDOM_CACHE_LIFETIME;
+		$cacheLifetime = $cacheLifetime !== null ? $cacheLifetime : static::RANDOM_CACHE_LIFETIME;
 		$randomId = $this->fetchFromCache($cacheKey, function() use ($where) {
 			return rand(1, $this->getCount($where)) - 1;
 		}, $cacheLifetime);
 		$query
 			->setMaxResults(1)
 			->setFirstResult($randomId)
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 
 		return $query;
 	}
@@ -193,7 +193,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 		$this->addCriteriaToQueryBuilder($queryBuilder, $criteria);
 		$this->addOrderingToQueryBuilder($queryBuilder, $orderBy);
 		$query = $this->addLimitingToQuery($queryBuilder->getQuery(), $limit, $offset);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query;
 	}
 
@@ -210,7 +210,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 		return $this->getQueryBuilder($orderBy)
 			->where(sprintf(self::ALIAS.'.id IN (%s)', implode(',', $ids)))
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getResult();
 	}
 
@@ -227,7 +227,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 		return $this->getQueryBuilder($orderBy)
 			->where(sprintf(self::ALIAS.'.id IN (%s)', implode(',', $ids)))
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getArrayResult();
 	}
 
@@ -294,7 +294,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 		$query = $this->getQueryBuilder()
 			->where(implode(' OR ', $tests))->setParameter(1, $param)
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		if (isset($params['limit'])) {
 			$query->setMaxResults($params['limit']);
 		}

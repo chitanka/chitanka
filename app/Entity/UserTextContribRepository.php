@@ -34,7 +34,7 @@ class UserTextContribRepository extends EntityRepository {
 	public function getIdsByUser(User $user, $page, $limit) {
 		$dql = sprintf('SELECT c.id FROM %s c WHERE c.user = %d ORDER BY c.date DESC', $this->getEntityName(), $user->getId());
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		$ids = $query->getResult('id');
 		return $ids;
 	}

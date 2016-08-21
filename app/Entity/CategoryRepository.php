@@ -29,7 +29,7 @@ class CategoryRepository extends EntityRepository {
 			->addSelect('IDENTITY(e.parent) AS parent')
 			->orderBy('e.name')
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getArrayResult();
 		foreach ($categoryResult as $k => $row) {
 			$categoryResult[$k] += $row[0];

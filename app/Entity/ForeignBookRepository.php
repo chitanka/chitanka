@@ -13,7 +13,7 @@ class ForeignBookRepository extends EntityRepository {
 			->where('b.isActive = 1')
 			->orderBy('b.publishedAt', 'desc')
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->setMaxResults($limit)
 			->getResult();
 	}

@@ -22,7 +22,7 @@ class WorkEntryRepository extends EntityRepository {
 	public function getLatestIdsByDate($limit = null) {
 		$dql = sprintf('SELECT e.id FROM %s e WHERE e.deletedAt IS NULL ORDER BY e.date DESC', $this->getEntityName());
 		$query = $this->_em->createQuery($dql)->setMaxResults($limit);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query->getResult('id');
 	}
 
@@ -36,7 +36,7 @@ class WorkEntryRepository extends EntityRepository {
 			->andWhere('e.title LIKE ?1 OR e.author LIKE ?1')
 			->setParameter(1, "%$title%")
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getResult();
 	}
 
@@ -50,7 +50,7 @@ class WorkEntryRepository extends EntityRepository {
 			->orderBy('e.date', 'DESC')
 			->setMaxResults($limit)
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getResult();
 	}
 
@@ -64,7 +64,7 @@ class WorkEntryRepository extends EntityRepository {
 			->andWhere('e.date < ?1')
 			->setParameter(1, $date)
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getResult();
 	}
 

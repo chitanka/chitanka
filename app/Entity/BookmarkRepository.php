@@ -37,7 +37,7 @@ class BookmarkRepository extends EntityRepository {
 	public function getIdsByUser(User $user, $page, $limit, $orderBys = 't.title ASC') {
 		$dql = sprintf('SELECT e.id FROM %s e LEFT JOIN e.text t WHERE e.user = %d ORDER BY %s', $this->getEntityName(), $user->getId(), $orderBys);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		$ids = $query->getResult('id');
 		return $ids;
 	}

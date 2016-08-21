@@ -24,7 +24,7 @@ class PersonRepository extends EntityRepository {
 	 */
 	public function getBy($filters, $page = 1, $limit = null) {
 		$query = $this->setPagination($this->getQueryBy($filters), $page, $limit);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query->getResult();
 	}
 
@@ -40,7 +40,7 @@ class PersonRepository extends EntityRepository {
 		$qb = $this->getQueryBuilder();
 		$qb = $this->addFilters($qb, $filters);
 		$query = $qb->getQuery();
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query;
 	}
 
@@ -48,7 +48,7 @@ class PersonRepository extends EntityRepository {
 		$qb = $this->getCountQueryBuilder();
 		$qb = $this->addFilters($qb, $filters);
 		$query = $qb->getQuery();
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query;
 	}
 
@@ -81,7 +81,7 @@ class PersonRepository extends EntityRepository {
 			$qb->andWhere($where);
 		}
 		$query = $qb->getQuery();
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query->getSingleScalarResult();
 	}
 
@@ -96,7 +96,7 @@ class PersonRepository extends EntityRepository {
 			->setParameter(1, $this->stringForLikeClause($name))
 			->getQuery();
 		$this->addLimitingToQuery($q, $limit);
-		$q->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$q->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $q->getArrayResult();
 	}
 

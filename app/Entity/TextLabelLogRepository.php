@@ -8,7 +8,7 @@ class TextLabelLogRepository extends EntityRepository {
 	public function getAll($page = 1, $limit = 30) {
 		$query = $this->createDefaultQueryBuilder('log')->getQuery();
 		$this->setPagination($query, $page, $limit);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query->getArrayResult();
 	}
 
@@ -16,7 +16,7 @@ class TextLabelLogRepository extends EntityRepository {
 		$query = $this->createDefaultQueryBuilder('log')
 			->where('log.text = ?1')->setParameter(1, $text)
 			->getQuery();
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query->getArrayResult();
 	}
 

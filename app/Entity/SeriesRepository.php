@@ -35,7 +35,7 @@ class SeriesRepository extends EntityRepository {
 		$where = $prefix ? "s.name LIKE '$prefix%'" : "s.name != ''";
 		$dql = sprintf('SELECT s.id FROM %s s WHERE %s ORDER BY s.name', $this->getEntityName(), $where);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query->getResult('id');
 	}
 
@@ -48,7 +48,7 @@ class SeriesRepository extends EntityRepository {
 		return $this->getQueryBuilder()
 			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getArrayResult();
 	}
 
@@ -60,7 +60,7 @@ class SeriesRepository extends EntityRepository {
 		$where = $prefix ? "s.name LIKE '$prefix%'" : "s.name != ''";
 		$dql = sprintf('SELECT COUNT(s.id) FROM %s s WHERE %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query->getSingleScalarResult();
 	}
 
@@ -74,7 +74,7 @@ class SeriesRepository extends EntityRepository {
 			->where('e.name LIKE ?1 OR e.origName LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($name))
 			->getQuery();
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		$this->addLimitingToQuery($query, $limit);
 		return $query->getArrayResult();
 	}

@@ -85,7 +85,7 @@ class TextRepository extends EntityRepository {
 			->leftJoin('t.curRev', 'r')
 			->where('t.id = ?1')->setParameter(1, $id)
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getSingleResult();
 	}
 
@@ -118,7 +118,7 @@ class TextRepository extends EntityRepository {
 		$where = $prefix ? "WHERE t.title LIKE '$prefix%'" : '';
 		$dql = "SELECT t.id FROM {$this->getEntityName()} t $where ORDER BY t.$orderBy";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		$ids = $query->getResult('id');
 		if (empty($ids)) {
 			throw new NoResultException;
@@ -134,7 +134,7 @@ class TextRepository extends EntityRepository {
 		$where = $prefix ? "WHERE t.title LIKE '$prefix%'" : '';
 		$dql = sprintf('SELECT COUNT(t.id) FROM %s t %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query->getSingleScalarResult();
 	}
 
@@ -167,7 +167,7 @@ class TextRepository extends EntityRepository {
 		$where = "WHERE t.type = '$type'";
 		$dql = "SELECT t.id FROM {$this->getEntityName()} t $where ORDER BY t.$orderBy";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		$ids = $query->getResult('id');
 		if (empty($ids)) {
 			throw new NoResultException;
@@ -183,7 +183,7 @@ class TextRepository extends EntityRepository {
 		$where = "WHERE t.type = '$type'";
 		$dql = sprintf('SELECT COUNT(t.id) FROM %s t %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query->getSingleScalarResult();
 	}
 
@@ -215,7 +215,7 @@ class TextRepository extends EntityRepository {
 	protected function getIdsByLabel($labels, $page, $limit, $orderBy) {
 		$dql = sprintf("SELECT DISTINCT t.id FROM %s t JOIN t.labels l WHERE l.id IN (%s) ORDER BY t.$orderBy", $this->getEntityName(), implode(',', $labels));
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
-		$query->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		$ids = $query->getResult('id');
 		if (empty($ids)) {
 			throw new NoResultException;
@@ -246,7 +246,7 @@ class TextRepository extends EntityRepository {
 			->where('ta.person = ?1')->setParameter(1, $author->getId())
 			->orderBy('s.name, e.sernr, e.type, e.title')
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getResult();
 		if ($groupBySeries) {
 			$texts = $this->groupTexts($texts);
@@ -264,7 +264,7 @@ class TextRepository extends EntityRepository {
 			->where('tt.person = ?1')->setParameter(1, $translator->getId())
 			->orderBy('e.type, e.title')
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getResult();
 		$texts = $this->groupTexts($texts, false);
 		return $texts;
@@ -279,7 +279,7 @@ class TextRepository extends EntityRepository {
 		$texts = $this->getQueryBuilder($orderBy)
 			->where(sprintf('e.id IN (%s)', implode(',', $ids)))
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getResult();
 		return $texts;
 	}
@@ -294,7 +294,7 @@ class TextRepository extends EntityRepository {
 			->where('e.title LIKE ?1 OR e.subtitle LIKE ?1 OR e.origTitle LIKE ?1')
 			->setParameter(1, $this->stringForLikeClause($title))
 			->getQuery();
-		$q->useResultCache(true, self::DEFAULT_CACHE_LIFETIME);
+		$q->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		$this->addLimitingToQuery($q, $limit);
 		return $q->getResult();
 	}
@@ -332,7 +332,7 @@ class TextRepository extends EntityRepository {
 			->where('e.series = ?1')->setParameter(1, $series->getId())
 			->addOrderBy('e.sernr, e.title')
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getResult();
 		return $texts;
 	}
@@ -354,7 +354,7 @@ class TextRepository extends EntityRepository {
 			->from($this->getEntityName(), 'e')
 			->groupBy('e.type')
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getResult('key_value');
 		arsort($counts);
 		return $counts;

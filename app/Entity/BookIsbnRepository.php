@@ -15,7 +15,7 @@ class BookIsbnRepository extends EntityRepository {
 			->select('IDENTITY(e.book)')
 			->where('e.code = ?1')->setParameter(1, BookIsbn::normalizeIsbn($isbn))
 			->getQuery()
-			->useResultCache(true, self::DEFAULT_CACHE_LIFETIME)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getResult('id');
 	}
 
