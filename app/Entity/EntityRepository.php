@@ -342,7 +342,8 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 
 	protected function addCriteriaToQueryBuilder(QueryBuilder $queryBuilder, array $criteria) {
 		foreach ($criteria as $field => $value) {
-			$queryBuilder->andWhere(self::ALIAS . ".{$field} = :{$field}")->setParameter($field, $value);
+			$comparison = is_array($value) ? "IN (:{$field})" : "= :{$field}";
+			$queryBuilder->andWhere(self::ALIAS . ".{$field} {$comparison}")->setParameter($field, $value);
 		}
 		return $queryBuilder;
 	}
