@@ -531,6 +531,9 @@ EOS;
 			];
 		}
 
+		if ($this->sfrequest->get('onlyAvailable')) {
+			$w[] = "{$pref}available_at <= NOW() OR {$pref}available_at IS NULL";
+		}
 		$w[] = $pref.'deleted_at IS NULL';
 
 		return $w;
