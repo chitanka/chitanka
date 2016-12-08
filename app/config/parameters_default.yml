@@ -15,7 +15,7 @@ parameters:
     orm_metadata_cache_driver: array
     orm_result_cache_driver: array
     orm_query_cache_driver: array
-    orm_region_cache_driver: apc
+    orm_region_cache_driver: apcu
     second_level_cache_enabled: false
 
     # Следните променливи се ползват при пращането на електронна поща
