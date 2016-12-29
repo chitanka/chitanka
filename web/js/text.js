@@ -69,14 +69,14 @@ function prepareGamebook() {
 	});
 	$epHeader.parent().append($help);
 	$container.on("click", "a", function() {
-		var match = $(this).attr("href").match(/#l-(\d+)$/);
-		if (match) {
-			driver.reveal(match[1]);
+		var target = $(this).attr("href");
+		if ($(target).is(":hidden")) {
+			driver.reveal(target.replace(/^#l-/, ""));
 		} else {
 			$(".back-to-ep").remove();
 			var edge = $("#main-content").css("margin-left") == "0px" ? "right" : "left";
 			var linkText = driver.lastEp == 0 ? 'Назад' : 'Назад към епизода';
-			$backToEpLink = $('<a class="back-to-ep" style="position:fixed; bottom:2em">'+linkText+'</a>')
+			$backToEpLink = $('<a class="btn btn-primary back-to-ep" style="position:fixed; bottom:2em">'+linkText+'</a>')
 				.attr("href", "#"+driver.epId(driver.lastEp))
 				.css(edge, "1em")
 				.appendTo("body")
