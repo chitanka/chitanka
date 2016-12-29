@@ -387,6 +387,13 @@ class WorkPage extends Page {
 		}
 		$content = $this->makeUserGuideLink();
 		if ($this->subaction == 'edit') {
+			$content .= <<<HTML
+	<div class="alert alert-info">
+		<span class="fa fa-warning"></span>
+		<strong>Внимание:</strong>
+		Записвайте всяка книга и в <a href="//biblioman.chitanka.info/">проекта Библиоман</a>. Неговата структурирана база от данни ще се използва впоследствие и от „Моята библиотека“.
+	</div>
+HTML;
 			if ($this->entryId) {
 				$this->initData($this->entryId);
 			}
