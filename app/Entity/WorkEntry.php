@@ -51,6 +51,12 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 	private $type;
 
 	/**
+	 * @var int
+	 * @ORM\Column(type="integer")
+	 */
+	private $bibliomanId;
+
+	/**
 	 * @var string
 	 * @ORM\Column(type="string", length=100)
 	 */
@@ -185,6 +191,9 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 
 	public function setType($type) { $this->type = $type; }
 	public function getType() { return $this->type; }
+
+	public function setBibliomanId($bibliomanId) { $this->bibliomanId = $bibliomanId; }
+	public function getBibliomanId() { return $this->bibliomanId; }
 
 	public function setTitle($title) { $this->title = $title; }
 	public function getTitle() { return $this->title; }
@@ -379,6 +388,7 @@ DESC;
 		$fields = [
 			'id' => $this->getId(),
 			'type' => $this->getType(),
+			'bibliomanId' => $this->getBibliomanId(),
 			'title' => $this->getTitle(),
 			'author' => $this->getAuthor(),
 			'publisher' => $this->getPublisher(),

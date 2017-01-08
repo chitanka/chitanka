@@ -75,6 +75,7 @@ class WorkPage extends Page {
 	private $absTmpDir;
 
 	private $entryId;
+	/** @var WorkEntry */
 	private $entry;
 	private $workType;
 	private $btitle;
@@ -233,6 +234,7 @@ class WorkPage extends Page {
 		$set = [
 			'id' => $id,
 			'type' => in_array($this->status, [WorkEntry::STATUS_4]) ? 1 : $this->workType,
+			'biblioman_id' => $this->sfrequest->get('bibliomanId'),
 			'title'=>$this->btitle,
 			'author'=> strtr($this->author, [';'=>',']),
 			'publisher' => $this->publisher,
@@ -730,6 +732,7 @@ HTML;
 			return '<div class="alert alert-danger">Този запис ще бъде наличен след '.$this->entry->getAvailableAt('d.m.Y').'.</div>';
 		}
 
+		$entry = $this->entry ?: new WorkEntry();
 		$this->title .= ' — '.(empty($this->entryId) ? 'Добавяне' : 'Редактиране');
 		$helpTop = empty($this->entryId) ? $this->makeAddEntryHelp() : '';
 		$tabs = '';
@@ -784,7 +787,6 @@ HTML;
 		$alertIfDeleted = isset($this->entry) && $this->entry->isDeleted() ? '<div class="alert alert-danger">Този запис е изтрит.</div>' : '';
 		$helpBot = $this->isSingleUser($this->workType) ? $this->makeSingleUserHelp() : '';
 		$scanuser = $this->out->hiddenField('user', $this->scanuser);
-		$entry = $this->out->hiddenField('id', $this->entryId);
 		$workType = $this->out->hiddenField('workType', $this->workType);
 		$bypass = $this->out->hiddenField('bypass', $this->bypassExisting);
 		$action = $this->controller->generateUrlForLegacyCode('workroom');
@@ -808,7 +810,7 @@ $helpTop
 	<div class="tab-pane active">
 		<form action="$action" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
 			$scanuser
-			$entry
+			{$this->out->hiddenField('id', $this->entryId)}
 			$workType
 			$bypass
 			<div class="form-group">
@@ -817,6 +819,12 @@ $helpTop
 					<div class="form-control">
 						$ulink
 					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="title" class="col-sm-2 control-label">№ в Библиоман:</label>
+				<div class="col-sm-10">
+					<input class="form-control" name="bibliomanId" value="{$entry->getBibliomanId()}">
 				</div>
 			</div>
 			<div class="form-group">
