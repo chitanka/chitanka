@@ -44,6 +44,12 @@ class Book extends BaseWork implements \JsonSerializable {
 	protected $id;
 
 	/**
+	 * @var int
+	 * @ORM\Column(type="integer", nullable=true)
+	 */
+	private $bibliomanId;
+
+	/**
 	 * @var string
 	 * @ORM\Column(type="string", length=50)
 	 */
@@ -228,6 +234,9 @@ class Book extends BaseWork implements \JsonSerializable {
 	}
 
 	public function getId() { return $this->id; }
+
+	public function setBibliomanId($bibliomanId) { $this->bibliomanId = $bibliomanId; }
+	public function getBibliomanId() { return $this->bibliomanId; }
 
 	public function setSlug($slug) { $this->slug = Stringy::slugify($slug); }
 	public function getSlug() { return $this->slug; }
@@ -1022,6 +1031,7 @@ EOS;
 	public function jsonSerialize() {
 		return [
 			'id' => $this->getId(),
+			'bibliomanId' => $this->getBibliomanId(),
 			'slug' => $this->getSlug(),
 			'titleAuthor' => $this->getTitleAuthor(),
 			'title' => $this->getTitle(),

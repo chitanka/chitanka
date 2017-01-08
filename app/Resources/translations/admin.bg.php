@@ -6,6 +6,7 @@ return [
 	'Article' => 'Статия',
 	'Authors' => 'Автори',
 	'Author' => 'Автор',
+	'Biblioman Id' => '№ в Библиоман',
 	'Book Authors' => 'Автори',
 	'Books' => 'Книги',
 	'Category' => 'Категория',

@@ -52,7 +52,7 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 
 	/**
 	 * @var int
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	private $bibliomanId;
 

@@ -76,6 +76,7 @@ class BookAdmin extends Admin {
 			//->add('datafiles', 'string', array('template' => 'App:BookAdmin:form_datafiles.html.twig'))
 		$translation = $this->getTranslation();
 		$formMapper->tab('General attributes')->with('')
+			->add('bibliomanId', null, ['required' => false])
 			->add('slug')
 			->add('title')
 			->add('lang')
