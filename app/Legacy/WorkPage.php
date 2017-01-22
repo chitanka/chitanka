@@ -651,6 +651,7 @@ HTML;
 
 	private function makeWorkEntryInfo($dbrow) {
 		$lines = [];
+		$lines[] = "<b>№ в Библиоман:</b> {$dbrow['biblioman_id']}";
 		if ($dbrow['publisher']) {
 			$lines[] = '<b>Издател:</b> ' . $dbrow['publisher'];
 		}
