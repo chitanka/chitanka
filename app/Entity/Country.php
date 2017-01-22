@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="country")
  */
-class Country {
+class Country implements \JsonSerializable {
 
 	/**
 	 * @var string
@@ -75,4 +75,17 @@ class Country {
 		return $this->name;
 	}
 
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'code' => $this->getCode(),
+			'name' => $this->getName(),
+			'nrOfAuthors' => $this->getNrOfAuthors(),
+			'nrOfTranslators' => $this->getNrOfTranslators(),
+		];
+	}
 }

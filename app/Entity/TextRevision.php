@@ -86,6 +86,7 @@ class TextRevision extends Entity implements \JsonSerializable {
 	public function jsonSerialize() {
 		return [
 			'id' => $this->getId(),
+			'text' => $this->getText(),
 			'comment' => $this->getComment(),
 			'date' => $this->getDate(),
 			'isFirst' => $this->getFirst(),

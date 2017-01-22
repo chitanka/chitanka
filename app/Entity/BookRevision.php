@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  *		@ORM\Index(name="date_idx", columns={"date"})}
  * )
  */
-class BookRevision extends Entity {
+class BookRevision extends Entity implements \JsonSerializable {
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -64,4 +64,18 @@ class BookRevision extends Entity {
 	public function setFirst($first) { $this->first = $first; }
 	public function getFirst() { return $this->first; }
 
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->getId(),
+			'book' => $this->getBook(),
+			'comment' => $this->getComment(),
+			'date' => $this->getDate(),
+			'isFirst' => $this->getFirst(),
+		];
+	}
 }
