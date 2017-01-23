@@ -51,6 +51,7 @@ parameters:
     workroom_url: http://workroom.chitanka.info
     workroom_ban_year_threshold: 2100
 
+    biblioman_url: //biblioman.chitanka.info/books/$1
     wiki_url: http://wiki.chitanka.info/$1
 
     mirror_sites: ~

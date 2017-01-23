@@ -8,6 +8,12 @@ use Sfblib\XmlElement;
 
 class Extension extends \Twig_Extension {
 
+	private $bibliomanUrl;
+
+	public function __construct($bibliomanUrl) {
+		$this->bibliomanUrl = $bibliomanUrl;
+	}
+
 	/** {@inheritdoc} */
 	public function getName() {
 		return 'chitanka';
@@ -18,6 +24,7 @@ class Extension extends \Twig_Extension {
 		return [
 			new \Twig_SimpleFunction('anchor_name', [$this, 'getAnchorName']),
 			new \Twig_SimpleFunction('cover', [$this, 'getCover']),
+			new \Twig_SimpleFunction('biblioman_url', [$this, 'getBibliomanUrl']),
 		];
 	}
 
@@ -202,6 +209,10 @@ class Extension extends \Twig_Extension {
 	 */
 	public function getCover($id, $width = 200, $format = 'jpg') {
 		return ContentService::getCover($id, $width, $format);
+	}
+
+	public function getBibliomanUrl($bookId) {
+		return str_replace('$1', $bookId, $this->bibliomanUrl);
 	}
 
 	/**
