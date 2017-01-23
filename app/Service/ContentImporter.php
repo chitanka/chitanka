@@ -644,6 +644,9 @@ class ContentImporter {
 		$set = [
 			'id' => $book['id'],
 		];
+		if (isset($book['biblioman_id'])) {
+			$set['biblioman_id'] = $book['biblioman_id'];
+		}
 		if (isset($book['title'])) {
 			$set += [
 				'slug' => (isset($book['slug']) ? Stringy::slugify($book['slug']) : Stringy::slugify($book['title'])),
