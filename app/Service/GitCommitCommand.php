@@ -13,6 +13,7 @@ class GitCommitCommand extends \GitElephant\Command\MainCommand {
 	 * @return string
 	 */
 	public function commitWithAuthor($message, $author, $stageAll = false) {
+		setlocale(LC_CTYPE, "en_US.UTF-8"); // so that escapeshellarg() does not remove non-ascii characters
 		$this->clearAll();
 		if (trim($message) == '' || $message == null) {
 			throw new \InvalidArgumentException(sprintf('You can\'t commit without message'));
