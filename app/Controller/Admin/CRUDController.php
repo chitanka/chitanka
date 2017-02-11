@@ -11,6 +11,7 @@ class CRUDController extends BaseController {
 			throw new HttpException(401);
 		}
 		parent::configure();
+		$this->getDoctrine()->getManager()->getConfiguration()->setSecondLevelCacheEnabled(false);
 	}
 
 	/**
