@@ -7,7 +7,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 
 	const ALIAS = 'e';
 	const DEFAULT_CACHE_LIFETIME = 3600;
-	const RANDOM_CACHE_LIFETIME = 300;
+	const RANDOM_CACHE_LIFETIME = 10;
 
 	protected $queryableFields = [];
 
