@@ -4,7 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+ * @ORM\Cache(usage="READ_ONLY")
  * @ORM\Table(name="book_text")
  */
 class BookText extends Entity {

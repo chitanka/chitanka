@@ -4,7 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+ * @ORM\Cache(usage="READ_ONLY")
  * @ORM\Table(name="book_link",
  *	uniqueConstraints={@ORM\UniqueConstraint(name="book_site_uniq", columns={"book_id", "site_id"})}
  * )

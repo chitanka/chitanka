@@ -5,7 +5,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\LanguageRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+ * @ORM\Cache(usage="READ_ONLY")
  * @ORM\Table(name="language")
  */
 class Language implements \JsonSerializable {

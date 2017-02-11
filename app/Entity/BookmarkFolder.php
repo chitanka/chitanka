@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\BookmarkFolderRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+ * @ORM\Cache(usage="READ_ONLY")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="bookmark_folder",
  *	uniqueConstraints={@ORM\UniqueConstraint(name="uniq_key", columns={"slug", "user_id"})},

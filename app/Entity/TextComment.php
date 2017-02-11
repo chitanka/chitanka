@@ -4,7 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\TextCommentRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+ * @ORM\Cache(usage="READ_ONLY")
  * @ORM\Table(name="text_comment",
  *	uniqueConstraints={@ORM\UniqueConstraint(name="user_comment_uniq", columns={"text_id", "rname", "contenthash"})},
  *	indexes={

@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+ * @ORM\Cache(usage="READ_ONLY")
  * @ORM\Table(name="comment")
  * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
  */

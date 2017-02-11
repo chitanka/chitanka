@@ -4,7 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\WorkEntryRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+ * @ORM\Cache(usage="READ_ONLY")
  * @ORM\Table(name="work_contrib",
  *	uniqueConstraints={@ORM\UniqueConstraint(name="entry_user_uniq", columns={"entry_id", "user_id"})},
  *	indexes={

@@ -11,7 +11,7 @@ use Sfblib\SfbConverter;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\BookRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+ * @ORM\Cache(usage="READ_ONLY")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="book",
  *	indexes={
@@ -178,14 +178,14 @@ class Book extends BaseWork implements \JsonSerializable {
 	 * @var ArrayCollection|BookAuthor[]
 	 * @ORM\OneToMany(targetEntity="BookAuthor", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"pos" = "ASC"})
-	 * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+	 * @ORM\Cache(usage="READ_ONLY")
 	 */
 	private $bookAuthors;
 
 	/**
 	 * @var ArrayCollection|BookText[]
 	 * @ORM\OneToMany(targetEntity="BookText", mappedBy="book", cascade={"persist", "remove"}, orphanRemoval=true)
-	 * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+	 * @ORM\Cache(usage="READ_ONLY")
 	 */
 	private $bookTexts;
 
