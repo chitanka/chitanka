@@ -4,7 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\TextRevisionRepository")
- * @ORM\Cache(usage="READ_ONLY")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="text_revision",
  *	indexes={
  *		@ORM\Index(name="text_idx", columns={"text_id"}),

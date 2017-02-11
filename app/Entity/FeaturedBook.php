@@ -4,7 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\FeaturedBookRepository")
- * @ORM\Cache(usage="READ_ONLY")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="featured_book")
  */
 class FeaturedBook extends Entity implements \JsonSerializable {

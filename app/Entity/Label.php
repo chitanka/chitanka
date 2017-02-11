@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\LabelRepository")
- * @ORM\Cache(usage="READ_ONLY")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="label")
  * @UniqueEntity(fields="slug", message="This slug is already in use.")
  * @UniqueEntity(fields="name")

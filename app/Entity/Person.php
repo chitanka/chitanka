@@ -6,7 +6,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\PersonRepository")
- * @ORM\Cache(usage="READ_ONLY")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="person",
  *	indexes={
  *		@ORM\Index(name="name_idx", columns={"name"}),

@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\ForeignBookRepository")
- * @ORM\Cache(usage="READ_ONLY")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="foreign_book")
  */
 class ForeignBook extends Entity implements \JsonSerializable {

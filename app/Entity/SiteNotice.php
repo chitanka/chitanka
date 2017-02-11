@@ -4,7 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\SiteNoticeRepository")
- * @ORM\Cache(usage="READ_ONLY")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(indexes={
  *   @ORM\Index(columns={"is_active"}),
  *   @ORM\Index(columns={"is_for_front_page"})}

@@ -4,7 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\UserTextReadRepository")
- * @ORM\Cache(usage="READ_ONLY")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="user_text_read",
  *	uniqueConstraints={@ORM\UniqueConstraint(name="user_text_uniq", columns={"user_id", "text_id"})},

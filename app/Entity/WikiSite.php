@@ -5,7 +5,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Entity\WikiSiteRepository")
- * @ORM\Cache(usage="READ_ONLY")
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="wiki_site")
  * @UniqueEntity(fields="code")
  * @UniqueEntity(fields="name")
