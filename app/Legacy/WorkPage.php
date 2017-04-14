@@ -734,7 +734,9 @@ HTML;
 		}
 
 		$entry = $this->entry ?: new WorkEntry();
-		$this->title .= ' — '.(empty($this->entryId) ? 'Добавяне' : 'Редактиране');
+		if (!$this->entry) {
+			$this->title = 'Нов запис' .' — '. $this->title;
+		}
 		$helpTop = empty($this->entryId) ? $this->makeAddEntryHelp() : '';
 		$tabs = '';
 		foreach ($this->tabs as $type => $text) {
@@ -1441,6 +1443,7 @@ EOS;
 		}
 
 		$this->entry = $entry;
+		$this->title = $this->entry->getTitle() .' — '. $this->title;
 	}
 
 	private function isEditDone() {
