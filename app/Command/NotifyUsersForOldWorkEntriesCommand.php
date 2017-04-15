@@ -50,11 +50,10 @@ class NotifyUsersForOldWorkEntriesCommand extends Command {
 	}
 
 	private function sendNotification(WorkroomNotifier $notifier, WorkEntry $entry, $stalkInterval) {
-		if ($entry->isNotifiedWithin("$stalkInterval days")) {
-			return;
+		if ($entry->hasNotifiableStatus() && !$entry->isNotifiedWithin("$stalkInterval days")) {
+			$notifier->sendMailByOldWorkEntry($entry);
+			$entry->setLastNotificationDate(new \DateTime);
 		}
-		$notifier->sendMailByOldWorkEntry($entry);
-		$entry->setLastNotificationDate(new \DateTime);
 	}
 
 	private function getThresholdDate(InputInterface $input) {

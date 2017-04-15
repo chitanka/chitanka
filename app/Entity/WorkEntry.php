@@ -283,6 +283,14 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 		return $this->getLastNotificationDate() > new DateTime("-$interval");
 	}
 
+	public function hasNotifiableStatus() {
+		return !in_array($this->getStatus(), [
+			self::STATUS_5,
+			self::STATUS_6,
+			self::STATUS_7,
+		]);
+	}
+
 	public function setCommentThread(Thread $thread) {
 		$this->commentThread = $thread;
 		return $this;
