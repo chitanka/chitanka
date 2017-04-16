@@ -338,6 +338,10 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 		return $openContribs;
 	}
 
+	public function hasOpenContribs() {
+		return $this->getOpenContribs() > 0;
+	}
+
 	/** {@inheritdoc} */
 	public function getFeedItemTitle() {
 		return implode(' — ', array_filter([$this->getTitle(), $this->getAuthor()]));

@@ -333,9 +333,7 @@ class WorkPage extends Page {
 		// update main entry
 		$set = [
 			'date' => $this->date,
-			'status' => $this->isEditDone()
-				? ( $this->isReady() ? WorkEntry::STATUS_6 : WorkEntry::STATUS_5 )
-				: WorkEntry::STATUS_3
+			'status' => $this->entry->hasOpenContribs() ? WorkEntry::STATUS_3 : ( $this->isReady() ? WorkEntry::STATUS_6 : WorkEntry::STATUS_5 ),
 		];
 		$this->controller->em()->getConnection()->update(self::DB_TABLE, $set, $pkey);
 
@@ -1446,16 +1444,6 @@ EOS;
 		$this->title = $this->entry->getTitle() .' — '. $this->title;
 	}
 
-	private function isEditDone() {
-		$key = [
-			'entry_id' => $this->entryId,
-			'is_frozen' => false,
-			'progress < 100',
-			'deleted_at IS NULL',
-		];
-		return ! $this->db->exists(self::DB_TABLE2, $key);
-	}
-
 	private function isSingleUser($type = null) {
 		if ($type === null) $type = $this->workType;
 
@@ -1585,6 +1573,11 @@ EOS;
 	/** @return \App\Entity\WorkEntryRepository */
 	private function repo() {
 		return $this->controller->em()->getWorkEntryRepository();
+	}
+
+	/** @return \Doctrine\ORM\EntityRepository */
+	private function contribRepo() {
+		return $this->controller->em()->getWorkContribRepository();
 	}
 
 	private function nextRowClass($curRowClass = '') {
