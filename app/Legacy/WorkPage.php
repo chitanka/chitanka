@@ -1496,19 +1496,19 @@ EOS;
 	}
 
 	private function userIsAdmin() {
-		return $this->user->inGroup('workroom-admin');
+		return $this->user->inGroup(User::GROUP_WORKROOM_ADMIN);
 	}
 
 	private function userIsSupervisor() {
-		return $this->user->inGroup(['workroom-admin', 'workroom-supervisor']);
+		return $this->user->inGroup([User::GROUP_WORKROOM_ADMIN, User::GROUP_WORKROOM_SUPERVISOR]);
 	}
 
 	private function userCanSetStatus($status) {
 		switch ($status) {
 			case WorkEntry::STATUS_7:
-				return $this->user->inGroup('workroom-admin');
+				return $this->user->inGroup(User::GROUP_WORKROOM_ADMIN);
 			case WorkEntry::STATUS_6:
-				return $this->user->inGroup(['workroom-admin', 'workroom-supervisor']);
+				return $this->user->inGroup([User::GROUP_WORKROOM_ADMIN, User::GROUP_WORKROOM_SUPERVISOR]);
 			default:
 				return $this->user->isAuthenticated();
 		}
