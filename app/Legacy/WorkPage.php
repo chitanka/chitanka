@@ -1515,7 +1515,7 @@ EOS;
 	}
 
 	private function canSeeEntryFiles(WorkEntry $entry) {
-		return $entry->isAvailable() || $this->user->inGroup(User::GROUP_WORKROOM_MEMBER);
+		return $entry->isAvailable() || $this->user->inGroup([User::GROUP_WORKROOM_MEMBER, User::GROUP_WORKROOM_SUPERVISOR, User::GROUP_WORKROOM_ADMIN]);
 	}
 
 	private function informScanUser($entryId) {
