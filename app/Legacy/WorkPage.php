@@ -1238,25 +1238,9 @@ EOS;
 	}
 
 	private function makePageHelp() {
-		$regUrl = $this->controller->generateUrlForLegacyCode('register');
-		$ext = $this->user->isAnonymous() ? "е необходимо първо да се <a href=\"$regUrl\">регистрирате</a> (не се притеснявайте, ще ви отнеме най-много 10–20 секунди, колкото и бавно да пишете). След това се върнете на тази страница и" : '';
-		$umarker = $this->getUserTypeMarker(1);
-		$banYearThreshold = $this->container->getParameter('workroom_ban_year_threshold');
-
-		return <<<EOS
-
-<p>Тук може да разгледате списък на произведенията, които се подготвят за добавяне в библиотеката.</p>
-<p>За да започнете подготовката на нов текст, $ext последвайте връзката „Добавяне на нов запис“. В случай че нямате възможност сами да сканирате текстове, може да се присъедините към коригирането на заглавията, отбелязани ето така: $umarker.</p>
-<p>Бързината на добавянето на нови текстове в библиотеката зависи както от броя на грешките, останали след сканирането и разпознаването, така и от форма&#768;та на текста. Най-бързо ще бъдат добавяни отлично коригирани текстове, правилно преобразувани във <a href="http://wiki.chitanka.info/SFB">формат SFB</a>.</p>
-<div class="alert alert-danger error newbooks-notice media" style="margin:1em 0">
-	<div class="pull-left">
-		<span class="fa fa-warning"></span>
-	</div>
-	<div class="media-body">
-		Разрешено е да се добавят само книги, издадени на български преди $banYearThreshold г. Изключение се прави за онези текстове, които са пратени от авторите си, както и за фен-преводи.
-	</div>
-</div>
-EOS;
+		return $this->controller->renderViewForLegacyCode('Workroom/intro.html.twig', [
+			'banYearThreshold' => $this->container->getParameter('workroom_ban_year_threshold'),
+		]);
 	}
 
 	private function makeAddEntryHelp() {
