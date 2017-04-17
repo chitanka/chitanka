@@ -261,7 +261,7 @@ class WorkPage extends Page {
 			$curDate = new \DateTime;
 			$set += ['deleted_at' => $curDate->format('Y-m-d H:i:s'), 'is_frozen' => 0];
 			$this->controller->em()->getConnection()->update(DBT_WORK, $set, ['id' => $this->entryId]);
-			if ( $this->isMultiUser($this->workType) ) {
+			if ( $this->isMultiUser() ) {
 				$this->controller->em()->getConnection()->update(DBT_WORK_MULTI, ['deleted_at' => $curDate->format('Y-m-d H:i:s')], ['entry_id' => $this->entryId]);
 			}
 			$this->addMessage("Произведението „{$this->btitle}“ беше премахнато от списъка.");
@@ -563,7 +563,7 @@ EOS;
 		} else {
 			$sisFrozen = '';
 		}
-		if ($this->isMultiUser($entry->getType())) {
+		if ($entry->isMultiUser()) {
 			$musers = '';
 			foreach ($entry->getContribs() as $contrib) {
 				$uinfo = $this->makeExtraInfo("{$contrib->getComment()} ({$contrib->getProgress()}%)");
@@ -732,7 +732,7 @@ HTML;
 			}
 			$tabs .= "<li class='$class'><a href='$url'>$text</a></li>";
 		}
-		if ( $this->isSingleUser($this->workType) ) {
+		if ( $this->isSingleUser() ) {
 			$editFields = $this->makeSingleUserEditFields();
 			$extra = '';
 		} else {
@@ -765,7 +765,7 @@ HTML;
 
 		$alertUnavailable = $entry->canShowFilesTo($this->user) ? '<div class="alert alert-info">Качените файлове ще бъдат достъпни за обикновените потребители след '.$entry->getAvailableAt('d.m.Y').'.</div>' : '<div class="alert alert-danger">Качените файлове ще бъдат налични след '.$entry->getAvailableAt('d.m.Y').'.</div>';
 		$alertIfDeleted = $entry->isDeleted() ? '<div class="alert alert-danger">Този запис е изтрит.</div>' : '';
-		$helpBot = $this->isSingleUser($this->workType) ? $this->makeSingleUserHelp() : '';
+		$helpBot = $this->isSingleUser() ? $this->makeSingleUserHelp() : '';
 		$scanuser = $this->out->hiddenField('user', $this->scanuser);
 		$workType = $this->out->hiddenField('workType', $this->workType);
 		$bypass = $this->out->hiddenField('bypass', $this->bypassExisting);
@@ -1344,22 +1344,18 @@ EOS;
 		$this->title = $this->entry->getTitle() .' — '. $this->title;
 	}
 
-	private function isSingleUser($type = null) {
-		if ($type === null) $type = $this->workType;
-
-		return $type == 0;
+	private function isSingleUser() {
+		return $this->workType == WorkEntry::TYPE_SINGLE_USER;
 	}
-	private function isMultiUser($type = null) {
-		if ($type === null) $type = $this->workType;
-
-		return $type == 1;
+	private function isMultiUser() {
+		return $this->workType == WorkEntry::TYPE_MULTI_USER;
 	}
 
 	private function thisUserCanEditEntry(WorkEntry $entry, $type) {
 		if ($this->user->isAnonymous()) {
 			return false;
 		}
-		if ($this->userIsSupervisor() || $type == 1) {
+		if ($this->userIsSupervisor() || $type == WorkEntry::TYPE_MULTI_USER) {
 			return true;
 		}
 		return $entry->belongsTo($this->user);

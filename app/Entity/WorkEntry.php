@@ -25,6 +25,9 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 	const STATUS_6 = 6;
 	const STATUS_7 = 7;
 
+	const TYPE_SINGLE_USER = 0;
+	const TYPE_MULTI_USER = 1;
+
 	private static $statuses = [
 		self::STATUS_0 => 'Планира се',
 		self::STATUS_1 => 'Сканира се',
@@ -191,6 +194,13 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 
 	public function setType($type) { $this->type = $type; }
 	public function getType() { return $this->type; }
+
+	public function isSingleUser() {
+		return $this->type == self::TYPE_SINGLE_USER;
+	}
+	public function isMultiUser() {
+		return $this->type == self::TYPE_MULTI_USER;
+	}
 
 	public function setBibliomanId($bibliomanId) { $this->bibliomanId = $bibliomanId; }
 	public function getBibliomanId() { return $this->bibliomanId; }

@@ -1,6 +1,6 @@
 <td class="date" title="{{ entry.date|humandate }}">{{ entry.date.format('d.m.Y') }}</td>
 <td>
-	<span class="{{ entry.type == 1 ? 'multiuser' : 'singleuser' }}"><span>{{ ('workroom.type.'~entry.type) | trans }}</span></span>
+	<span class="{{ entry.type == 1 ? 'fa fa-users multiuser' : 'fa fa-user singleuser' }}"><span class="sr-only">{{ ('workroom.type.'~entry.type) | trans }}</span></span>
 </td>
 <td>
 	{% if entry.comment %}
