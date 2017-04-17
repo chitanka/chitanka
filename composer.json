@@ -25,6 +25,7 @@
 		"sonata-project/easy-extends-bundle": "~2.1@dev",
 		"sonata-project/intl-bundle": "~2.2@dev",
 		"friendsofsymfony/comment-bundle": "dev-master",
+		"white-october/pagerfanta-bundle": "^1.0",
 		"chitanka/sfb-converter": "dev-master",
 		"twbs/bootstrap": "3.3.*",
 		"oyejorge/less.php": "1.7.*@dev",

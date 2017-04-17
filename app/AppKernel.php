@@ -29,6 +29,7 @@ class AppKernel extends Kernel {
 			new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 			new JMS\SerializerBundle\JMSSerializerBundle(),
 			new FOS\RestBundle\FOSRestBundle(),
+			new \WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
 			new FOS\CommentBundle\FOSCommentBundle(),
 			new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
 			new Eko\FeedBundle\EkoFeedBundle(),
