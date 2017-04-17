@@ -2,7 +2,6 @@
 
 use App\Entity\User;
 use App\Entity\WorkEntry;
-use App\Pagination\Pager;
 use App\Util\Char;
 use App\Util\File;
 use App\Util\Number;
@@ -14,8 +13,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class WorkPage extends Page {
 
 	const DEF_TMPFILE = '';
-	const DB_TABLE = DBT_WORK;
-	const DB_TABLE2 = DBT_WORK_MULTI;
 	const MAX_SCAN_STATUS = 2;
 
 	private $FF_COMMENT = 'comment';
@@ -170,9 +167,8 @@ class WorkPage extends Page {
 	}
 
 	protected function processSubmission() {
-		if ( !empty($this->entryId) && !$this->thisUserCanEditEntry($this->entryId, $this->workType) ) {
+		if ( !empty($this->entryId) && !$this->thisUserCanEditEntry($this->entry, $this->workType) ) {
 			$this->addMessage('Нямате права да редактирате този запис.', true);
-
 			return $this->makeLists();
 		}
 		if ($this->uplfile && ! File::hasValidExtension($this->uplfile, $this->fileWhiteList)) {
@@ -216,13 +212,12 @@ class WorkPage extends Page {
 						return $this->makeForm();
 					}
 				}
-				$key = ['title' => $this->btitle, 'deleted_at IS NULL'];
-				if ($this->db->exists(self::DB_TABLE, $key)) {
+				$existingEntries = $this->createPager($this->btitle);
+				if ($existingEntries->count() > 0) {
 					$this->addMessage('Вече се подготвя произведение със същото заглавие', true);
 					$this->addMessage('Повторното съхраняване ще добави вашия запис въпреки горното предупреждение.');
 					$this->bypassExisting = 1;
-
-					return $this->makeWorkList($this->btitle) . $this->makeForm();
+					return $this->makeWorkList($existingEntries) . $this->makeForm();
 				}
 			}
 		}
@@ -265,9 +260,9 @@ class WorkPage extends Page {
 		if ($this->delete && $this->userIsAdmin()) {
 			$curDate = new \DateTime;
 			$set += ['deleted_at' => $curDate->format('Y-m-d H:i:s'), 'is_frozen' => 0];
-			$this->controller->em()->getConnection()->update(self::DB_TABLE, $set, ['id' => $this->entryId]);
+			$this->controller->em()->getConnection()->update(DBT_WORK, $set, ['id' => $this->entryId]);
 			if ( $this->isMultiUser($this->workType) ) {
-				$this->controller->em()->getConnection()->update(self::DB_TABLE2, ['deleted_at' => $curDate->format('Y-m-d H:i:s')], ['entry_id' => $this->entryId]);
+				$this->controller->em()->getConnection()->update(DBT_WORK_MULTI, ['deleted_at' => $curDate->format('Y-m-d H:i:s')], ['entry_id' => $this->entryId]);
 			}
 			$this->addMessage("Произведението „{$this->btitle}“ беше премахнато от списъка.");
 			$this->deleteEntryFiles($this->entryId);
@@ -282,10 +277,10 @@ class WorkPage extends Page {
 			$set['tfsize'] = Number::int_b2m(filesize("{$this->absTmpDir}/{$this->uplfile}"));
 		}
 		if ($this->entryId) {
-			$this->controller->em()->getConnection()->update(self::DB_TABLE, $set, ['id' => $this->entryId]);
+			$this->controller->em()->getConnection()->update(DBT_WORK, $set, ['id' => $this->entryId]);
 			$msg = 'Данните за произведението бяха обновени.';
 		} else {
-			$this->controller->em()->getConnection()->insert(self::DB_TABLE, $set);
+			$this->controller->em()->getConnection()->insert(DBT_WORK, $set);
 			$msg = 'Произведението беше добавено в списъка с подготвяните.';
 		}
 		$this->scanuser_view = 0;
@@ -328,11 +323,11 @@ class WorkPage extends Page {
 			$set['uplfile'] = $this->uplfile;
 		}
 		if ($this->entry->hasContribForUser($this->user)) {
-			$this->controller->em()->getConnection()->update(self::DB_TABLE2, $set, $key);
+			$this->controller->em()->getConnection()->update(DBT_WORK_MULTI, $set, $key);
 			$msg = 'Данните бяха обновени.';
 		} else {
 			$set['id'] = $this->controller->em()->getNextIdRepository()->findNextId('App:WorkContrib')->getValue();
-			$this->controller->em()->getConnection()->insert(self::DB_TABLE2, $set);
+			$this->controller->em()->getConnection()->insert(DBT_WORK_MULTI, $set);
 			$msg = 'Току-що се включихте в подготовката на произведението.';
 			$this->informScanUser($this->entryId);
 		}
@@ -342,7 +337,7 @@ class WorkPage extends Page {
 			'date' => $this->date,
 			'status' => $this->entry->hasOpenContribs() ? WorkEntry::STATUS_3 : ( $this->isReady() ? WorkEntry::STATUS_6 : WorkEntry::STATUS_5 ),
 		];
-		$this->controller->em()->getConnection()->update(self::DB_TABLE, $set, $pkey);
+		$this->controller->em()->getConnection()->update(DBT_WORK, $set, $pkey);
 
 		return $this->makeLists();
 	}
@@ -450,8 +445,10 @@ HTML;
 EOS;
 	}
 
-	private function makeWorkList($titleFilter = null) {
-		$pager = $this->createPager($titleFilter);
+	private function makeWorkList(Pagerfanta $pager = null) {
+		if ($pager == null) {
+			$pager = $this->createPager();
+		}
 		if ($pager->count() == 0) {
 			return '<p class="standalone emptylist"><strong>Няма подготвящи се произведения.</strong></p>';
 		}
@@ -481,16 +478,13 @@ $table
 </tbody>
 </table>
 EOS;
-		if ($titleFilter) {
-			return $list;
-		}
 		$list .= $this->controller->renderViewForLegacyCode('pager2.html.twig', [
 			'pager' => $pager,
 		]);
 		return $list;
 	}
 
-	private function createPager($titleFilter) {
+	private function createPager($titleFilter = null) {
 		$adapter = new DoctrineORMAdapter($this->query($titleFilter));
 		$pager = new Pagerfanta($adapter);
 		$pager->setMaxPerPage($this->llimit);
@@ -1451,23 +1445,21 @@ EOS;
 		return $type == 1;
 	}
 
-	private function thisUserCanEditEntry($entry, $type) {
+	private function thisUserCanEditEntry(WorkEntry $entry, $type) {
 		if ($this->user->isAnonymous()) {
 			return false;
 		}
-		if ($this->userIsSupervisor() || $type == 1) return true;
-		$key = ['id' => $entry, 'user_id' => $this->user->getId()];
-
-		return $this->db->exists(self::DB_TABLE, $key);
+		if ($this->userIsSupervisor() || $type == 1) {
+			return true;
+		}
+		return $entry->belongsTo($this->user);
 	}
 
-	private $tucde;
 	private function thisUserCanDeleteEntry() {
-		if ($this->userIsSupervisor() || empty($this->entryId)) return true;
-		if ( isset($this->tucde) ) return $this->tucde;
-		$key = ['id' => $this->entryId, 'user_id' => $this->user->getId()];
-
-		return $this->tucde = $this->db->exists(self::DB_TABLE, $key);
+		if ($this->userIsSupervisor() || empty($this->entryId)) {
+			return true;
+		}
+		return $this->entry->belongsTo($this->user);
 	}
 
 	private function userCanAddEntry() {
