@@ -555,7 +555,7 @@ EOS;
 		$info = $this->makeWorkEntryInfo($dbrow);
 		$title = "<i>$dbrow[title]</i>";
 		$file = '';
-		if ($this->canSeeEntryFiles($entry)) {
+		if ($entry->canShowFilesTo($this->user)) {
 			if ( ! empty($dbrow['tmpfiles']) ) {
 				$file = $this->makeFileLink($dbrow['tmpfiles']);
 			} else if ( ! empty($dbrow['uplfile']) ) {
@@ -582,7 +582,7 @@ EOS;
 			$musers = '';
 			foreach ($entry->getContribs() as $contrib) {
 				$uinfo = $this->makeExtraInfo("{$contrib->getComment()} ({$contrib->getProgress()}%)");
-				$ufile = !empty($contrib->getUplfile()) && $this->canSeeEntryFiles($entry)
+				$ufile = !empty($contrib->getUplfile()) && $entry->canShowFilesTo($this->user)
 					? $this->makeFileLink($contrib->getUplfile(), $contrib->getUser()->getUsername())
 					: '';
 				if ($contrib->getUser()->getId() == $dbrow['user_id']) {
@@ -782,7 +782,7 @@ HTML;
 			$button = $delete = '';
 		}
 
-		$alertUnavailable = $this->canSeeEntryFiles($entry) ? '' : '<div class="alert alert-danger">Качените файлове ще бъдат налични след '.$entry->getAvailableAt('d.m.Y').'.</div>';
+		$alertUnavailable = $entry->canShowFilesTo($this->user) ? '<div class="alert alert-info">Качените файлове ще бъдат достъпни за обикновените потребители след '.$entry->getAvailableAt('d.m.Y').'.</div>' : '<div class="alert alert-danger">Качените файлове ще бъдат налични след '.$entry->getAvailableAt('d.m.Y').'.</div>';
 		$alertIfDeleted = $entry->isDeleted() ? '<div class="alert alert-danger">Този запис е изтрит.</div>' : '';
 		$helpBot = $this->isSingleUser($this->workType) ? $this->makeSingleUserHelp() : '';
 		$scanuser = $this->out->hiddenField('user', $this->scanuser);
@@ -1037,7 +1037,7 @@ JS;
 		</div>
 	</div>
 EOS;
-		if ($this->canSeeEntryFiles($this->entry)) {
+		if ($this->entry->canShowFilesTo($this->user)) {
 			$form .= <<<EOS
 	<div class="form-group">
 		<label for="file" class="col-sm-2 control-label">Файл:</label>
@@ -1150,7 +1150,7 @@ FIELDS;
 		</div>
 	</div>
 EOS;
-		if ($this->canSeeEntryFiles($this->entry)) {
+		if ($this->entry->canShowFilesTo($this->user)) {
 			$form .= <<<EOS
 	<div class="form-group">
 		<label for="file" class="col-sm-2 control-label">Файл:</label>
@@ -1291,7 +1291,7 @@ EOS;
 			$class = $this->nextRowClass($class);
 			$ulink = $this->makeUserLinkWithEmail($contrib->getUser()->getUsername(), $contrib->getUser()->getEmail(), $contrib->getUser()->getAllowemail());
 			$comment = strtr($contrib->getComment(), ["\n" => "<br>\n"]);
-			if (!empty($contrib->getUplfile()) && $this->canSeeEntryFiles($this->entry)) {
+			if (!empty($contrib->getUplfile()) && $this->entry->canShowFilesTo($this->user)) {
 				$comment .= ' ' . $this->makeFileLink($contrib->getUplfile(), $contrib->getUser()->getUsername(), $contrib->getFilesize());
 			}
 			$progressbar = $this->makeProgressBar($contrib->getProgress());
@@ -1512,10 +1512,6 @@ EOS;
 			default:
 				return $this->user->isAuthenticated();
 		}
-	}
-
-	private function canSeeEntryFiles(WorkEntry $entry) {
-		return $entry->isAvailable() || $this->user->inGroup([User::GROUP_WORKROOM_MEMBER, User::GROUP_WORKROOM_SUPERVISOR, User::GROUP_WORKROOM_ADMIN]);
 	}
 
 	private function informScanUser($entryId) {

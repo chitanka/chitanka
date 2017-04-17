@@ -211,6 +211,14 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 	/** @return User */
 	public function getUser() { return $this->user; }
 
+	public function canShowFilesTo(User $user) {
+		return $this->isAvailable() || $this->belongsTo($user) || $user->inGroup([User::GROUP_WORKROOM_MEMBER, User::GROUP_WORKROOM_SUPERVISOR, User::GROUP_WORKROOM_ADMIN]);
+	}
+
+	private function belongsTo(User $user) {
+		return $this->user->getId() === $user->getId();
+	}
+
 	public function setComment($comment) { $this->comment = $comment; }
 	public function getComment() { return $this->comment; }
 
