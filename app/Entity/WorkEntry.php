@@ -328,7 +328,7 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 	 */
 	public function getContribs() {
 		$contribs = [];
-		foreach ($this->contribs as $contrib/*@var $contrib WorkContrib*/) {
+		foreach ($this->contribs as $contrib) {
 			if (!$contrib->isDeleted()) {
 				$contribs[] = $contrib;
 			}
@@ -338,7 +338,7 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 
 	public function getOpenContribs() {
 		$openContribs = [];
-		foreach ($this->getContribs() as $contrib/*@var $contrib WorkContrib*/) {
+		foreach ($this->getContribs() as $contrib) {
 			if (!$contrib->isFinished()) {
 				$openContribs[] = $contrib;
 			}
@@ -348,6 +348,15 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 
 	public function hasOpenContribs() {
 		return $this->getOpenContribs() > 0;
+	}
+
+	public function hasContribForUser(User $user) {
+		foreach ($this->getContribs() as $contrib) {
+			if ($contrib->belongsTo($user)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/** {@inheritdoc} */

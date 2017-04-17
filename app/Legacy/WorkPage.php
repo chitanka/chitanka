@@ -321,7 +321,7 @@ class WorkPage extends Page {
 		if ( $this->handleUpload() && !empty($this->uplfile) ) {
 			$set['uplfile'] = $this->uplfile;
 		}
-		if ($this->db->exists(self::DB_TABLE2, $key)) {
+		if ($this->entry->hasContribForUser($this->user)) {
 			$this->controller->em()->getConnection()->update(self::DB_TABLE2, $set, $key);
 			$msg = 'Данните бяха обновени.';
 		} else {

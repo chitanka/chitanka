@@ -113,6 +113,10 @@ class WorkContrib extends Entity implements \JsonSerializable {
 		$this->setDeletedAt(new \DateTime);
 	}
 
+	public function belongsTo(User $user) {
+		return $this->getUser()->getId() === $user->getId();
+	}
+
 	/**
 	 * Specify data which should be serialized to JSON
 	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
