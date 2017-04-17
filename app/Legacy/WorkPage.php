@@ -772,8 +772,6 @@ HTML;
 		$action = $this->controller->generateUrlForLegacyCode('workroom');
 		$this->addJs($this->createCommentsJavascript($this->entryId));
 
-		$corrections = $this->createCorrectionsView();
-
 		$adminFields = $this->userIsAdmin() ? $this->makeAdminOnlyFields() : '';
 		$user = $this->controller->em()->getUserRepository()->find($this->scanuser);
 		$ulink = $this->makeUserLinkWithEmail($user->getUsername(), $user->getEmail(), $user->getAllowemail());
@@ -847,78 +845,12 @@ $helpTop
 	</div>
 </div>
 
-	$corrections
-
 <div id="fos_comment_thread"></div>
 
 <div id="helpBottom">
 $helpBot
 </div>
 EOS;
-	}
-
-	private function createCorrectionsView() {
-		if (!$this->canShowCorrections()) {
-			return '';
-		}
-		// same domain as main site - for ajax
-		$newFile = str_replace('http://static.chitanka.info', '', $this->tmpfiles);
-		$dmpPath = $this->container->getParameter('assets_base_urls') . '/vendor/js/diff_match_patch.js';
-		return <<<CORRECTIONS
-<fieldset>
-	<legend>Корекции</legend>
-	<button onclick="jQuery(this).hide(); showWorkroomDiff('#corrections')">Показване</button>
-	<pre id="corrections" style="display: none; white-space: pre-wrap; /* css-3 */ white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */ white-space: -pre-wrap; /* Opera 4-6 */ white-space: -o-pre-wrap; /* Opera 7 */ word-wrap: break-word; /* Internet Explorer 5.5+ */">
-	Зареждане...
-	</pre>
-</fieldset>
-<script src="$dmpPath"></script>
-<script>
-function showWorkroomDiff(target) {
-	function doDiff(currentContent, newContent) {
-		var dmp = new diff_match_patch();
-		var d = dmp.diff_main(currentContent, newContent);
-		dmp.diff_cleanupSemantic(d);
-		var ds = dmp.diff_prettyHtml(d);
-		var out = '';
-		var sl = ds.split('<br>');
-		var inIns = inDel = false;
-		var prevLine = 1;
-		for ( var i = 0, len = sl.length; i < len; i++ ) {
-			if ( sl[i].indexOf('<ins') != -1 ) inIns = true;
-			if ( sl[i].indexOf('<del') != -1 ) inDel = true;
-			if ( inIns || inDel ) {
-				var line = i+1;
-				if (prevLine < line-1) {
-					out += '		<span style="opacity: .1">[…]</span><br>';
-				}
-				out += '<span style="color: blue">' + line + ':</span>	' + sl[i] +'<br>';
-				prevLine = line;
-			}
-			if ( sl[i].indexOf('</ins>') != -1 ) inIns = false;
-			if ( sl[i].indexOf('</del>') != -1 ) inDel = false;
-		}
-
-		out = out.replace(/&para;/g, '<span style="opacity:.1">¶</span>');
-
-		$(target).html(out);
-	}
-	$(target).show();
-    $.get('$newFile', function(newContent) {
-		// TODO find a better way to find the current text source
-		var m = newContent.match(/(http:\/\/chitanka.info\/(book|text)\/\d+)/);
-		if (m) {
-			var curContentUrl = m[1]+'.sfb';
-			$.get(curContentUrl, function(curContent){
-				doDiff(curContent, newContent);
-			});
-		} else {
-			$(target).text('Съдържанието на източника не беше открито.');
-		}
-	});
-}
-</script>
-CORRECTIONS;
 	}
 
 	private function createCommentsJavascript($entry) {
@@ -968,12 +900,6 @@ $(document)
 	})
 ;
 JS;
-	}
-
-	private function canShowCorrections() {
-		return strpos($this->btitle, '(корекция)') !== false
-			&& strpos($this->tmpfiles, 'chitanka.info') !== false
-			&& File::isSFB($this->absTmpDir.'/'.basename($this->tmpfiles));
 	}
 
 	private function makeSubmitButton() {
