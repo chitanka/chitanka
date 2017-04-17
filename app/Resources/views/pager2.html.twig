@@ -1,0 +1,5 @@
+{% if pager.haveToPaginate %}
+	<div class="text-center">
+		{{ pagerfanta(pager, 'twitter_bootstrap3', { 'omitFirstPage': true }) }}
+	</div>
+{% endif %}

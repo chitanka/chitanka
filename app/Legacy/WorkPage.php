@@ -7,6 +7,8 @@ use App\Util\Char;
 use App\Util\File;
 use App\Util\Number;
 use App\Util\Stringy;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class WorkPage extends Page {
@@ -150,6 +152,10 @@ class WorkPage extends Page {
 			$this->title .= ' — ' . $this->data_scanuser_view->getUsername();
 		}
 
+		if ($this->entryId) {
+			$this->initData($this->entryId);
+		}
+
 		$this->initPaginationFields();
 	}
 
@@ -216,7 +222,7 @@ class WorkPage extends Page {
 					$this->addMessage('Повторното съхраняване ще добави вашия запис въпреки горното предупреждение.');
 					$this->bypassExisting = 1;
 
-					return $this->makeWorkList(0, 0, false, $key) . $this->makeForm();
+					return $this->makeWorkList($this->btitle) . $this->makeForm();
 				}
 			}
 		}
@@ -395,9 +401,6 @@ class WorkPage extends Page {
 		Записвайте всяка книга и в <a href="//biblioman.chitanka.info/">проекта Библиоман</a>. Неговата структурирана база от данни ще се използва впоследствие и от „Моята библиотека“.
 	</div>
 HTML;
-			if ($this->entryId) {
-				$this->initData($this->entryId);
-			}
 			$content .= $this->makeForm();
 		} else {
 			// a global RSS link should be added to the page
@@ -418,7 +421,7 @@ HTML;
 			;
 
 		if ($this->viewList == 'work') {
-			$o .= $this->makeWorkList($this->llimit, $this->loffset);
+			$o .= $this->makeWorkList();
 		} else {
 			$o .= $this->makeContribList();
 		}
@@ -446,33 +449,17 @@ HTML;
 EOS;
 	}
 
-	private function makeWorkList($limit = 0, $offset = 0, $showPageLinks = true, $where = []) {
-		$sql = $this->makeSqlQuery($limit, $offset, $where);
-		$results = $this->controller->em()->getConnection()->executeQuery($sql)->fetchAll();
-		if ( empty($results) ) {
+	private function makeWorkList($titleFilter = null) {
+		$pager = $this->createPager($titleFilter);
+		if ($pager->count() == 0) {
 			return '<p class="standalone emptylist"><strong>Няма подготвящи се произведения.</strong></p>';
 		}
 		$table = '';
-		foreach ($results as $result) {
-			$table .= $this->makeWorkListItem($result);
-		}
-		if ($showPageLinks) {
-			$params = [
-				$this->FF_SUBACTION => $this->subaction
-			];
-			if ($this->searchQuery) $params[$this->FF_LQUERY] = $this->searchQuery;
-			if ($this->scanuser_view) $params['user'] = $this->scanuser_view;
-			$pagelinks = $this->controller->renderViewForLegacyCode('App::pager.html.twig', [
-				'pager'    => new Pager($this->lpage, $this->db->getCount(self::DB_TABLE, $this->makeSqlWhere('', $where)), $this->llimit),
-				'current_route' => 'workroom',
-				'route_params' => $params,
-			]);
-		} else {
-			$pagelinks = '';
+		foreach ($pager->getCurrentPageResults() as $entry) {
+			$table .= $this->makeWorkListItem($entry);
 		}
 		$adminStatus = $this->userIsAdmin() ? '<th title="Администраторски статус"></th>' : '';
-
-		return <<<EOS
+		$list = <<<EOS
 <table class="table table-striped table-condensed table-bordered">
 <thead>
 	<tr>
@@ -492,100 +479,103 @@ EOS;
 $table
 </tbody>
 </table>
-$pagelinks
 EOS;
+		if ($titleFilter) {
+			return $list;
+		}
+		$list .= $this->controller->renderViewForLegacyCode('pager2.html.twig', [
+			'pager' => $pager,
+		]);
+		return $list;
 	}
 
-	private function makeSqlQuery($limit = 0, $offset = 0, $where = []) {
-		$qa = [
-			'SELECT' => 'w.*, DATE(date) ddate, u.username, u.email, u.allowemail, num_comments',
-			'FROM' => self::DB_TABLE. ' w',
-			'LEFT JOIN' => [
-				DBT_USER .' u' => 'w.user_id = u.id',
-				'thread ct' => 'w.comment_thread_id = ct.id',
-			],
-			'WHERE' => $this->makeSqlWhere('w', $where),
-			'ORDER BY' => 'date DESC, w.id DESC',
-			'LIMIT' => [$offset, $limit]
-		];
-
-		return $this->db->extselectQ($qa);
+	private function createPager($titleFilter) {
+		$adapter = new DoctrineORMAdapter($this->query($titleFilter));
+		$pager = new Pagerfanta($adapter);
+		$pager->setMaxPerPage($this->llimit);
+		$pager->setCurrentPage($this->lpage);
+		return $pager;
 	}
 
-	private function makeSqlWhere($pref = '', $base = []) {
-		$w = (array) $base;
-		if ( !empty($pref) ) $pref .= '.';
-		$showuser = 0;
+	private function query($titleFilter = null) {
+		$query = $this->repo()->getQueryBuilder();
+		$query->leftJoin('e.commentThread', 't')->addSelect('t');
+		if ($titleFilter) {
+			$query->andWhere('e.title = :title')->setParameter('title', $titleFilter);
+		}
+		$showuser = null;
 		if ($this->subaction == 'my') {
-			$showuser = $this->user->getId();
+			$showuser = $this->user;
 		} else if ( ! empty($this->scanuser_view) ) {
-			$user = $this->findUser($this->scanuser_view);
-			$showuser = $user ? $user->getId() : null;
+			$showuser = $this->findUser($this->scanuser_view);
 		}
-		if ( ! empty($showuser) ) {
-			$entry_idQ = "SELECT entry_id FROM ".self::DB_TABLE2." WHERE user_id = {$showuser} AND deleted_at IS NULL";
-			$ors = [
-				$pref.'user_id' => $showuser,
-				$pref.'id IN ('. $entry_idQ .')'];
-			$w = array_merge($w, [$ors]);
+		if ($showuser) {
+			$entriesWithUserContribution = $this->contribRepo()->createQueryBuilder('ec')
+				->select('identity(ec.entry)')
+				->where('ec.user = :user AND ec.deletedAt IS NULL');
+			$query->andWhere($query->expr()->orX(
+				$query->expr()->eq('e.user', ":user"),
+				$query->expr()->in('e.id', $entriesWithUserContribution->getDQL())
+			))->setParameter('user', $showuser);
 		} else if ($this->subaction == 'waiting') {
-			$w = ['type' => 1, 'status' => self::MAX_SCAN_STATUS];
+			$query->andWhere('e.type = 1')->andWhere('e.status = '.self::MAX_SCAN_STATUS);
 		} else if ( strpos($this->subaction, 'st-') !== false ) {
-			$w = ['status' => str_replace('st-', '', $this->subaction)];
+			$query->andWhere('e.status = '.(int) str_replace('st-', '', $this->subaction));
 		} else if ( ! empty($this->searchQuery) ) {
-			$w[] = [
-				$pref.'title' => ['LIKE', "%$this->searchQuery%"],
-				$pref.'author' => ['LIKE', "%$this->searchQuery%"],
-			];
+			$query->andWhere($query->expr()->orX(
+				$query->expr()->like('e.title', ":search"),
+				$query->expr()->like('e.author', ":search")
+			))->setParameter('search', "%{$this->searchQuery}%");
 		}
-
 		if ($this->sfrequest->get('onlyAvailable')) {
-			$w[] = "{$pref}available_at <= NOW() OR {$pref}available_at IS NULL";
+			$query->andWhere(
+				$query->expr()->orX(
+					'e.availableAt <= '.date('Y-m-d'),
+					'e.availableAt IS NULL'
+				)
+			);
 		}
-		$w[] = $pref.'deleted_at IS NULL';
-
-		return $w;
+		return $query;
 	}
 
-	private function makeWorkListItem($dbrow) {
-		$entry = $this->repo()->find($dbrow['id']);/* @var $entry WorkEntry */
-		$author = strtr($dbrow['author'], [', '=>',']);
+	private function makeWorkListItem(WorkEntry $entry) {
+		$author = strtr($entry->getAuthor(), [', '=>',']);
 		$author = $this->makeAuthorLink($author);
-		$userlink = $this->makeUserLinkWithEmail($dbrow['username'], $dbrow['email'], $dbrow['allowemail']);
-		$info = $this->makeWorkEntryInfo($dbrow);
-		$title = "<i>$dbrow[title]</i>";
+		$userlink = $this->makeUserLinkWithEmail($entry->getUser()->getUsername(), $entry->getUser()->getEmail(), $entry->getUser()->getAllowemail());
+		$info = $this->makeWorkEntryInfo($entry);
+		$title = "<i>{$entry->getTitle()}</i>";
 		$file = '';
 		if ($entry->canShowFilesTo($this->user)) {
-			if ( ! empty($dbrow['tmpfiles']) ) {
-				$file = $this->makeFileLink($dbrow['tmpfiles']);
-			} else if ( ! empty($dbrow['uplfile']) ) {
-				$file = $this->makeFileLink($dbrow['uplfile']);
+			if ( ! empty($entry->getTmpfiles()) ) {
+				$file = $this->makeFileLink($entry->getTmpfiles());
+			} else if ( ! empty($entry->getUplfile()) ) {
+				$file = $this->makeFileLink($entry->getUplfile());
 			}
 		} else {
 			$file = '<span class="fa fa-ban" title="Дата на достъп: '.$entry->getAvailableAt('d.m.Y').'"></span>';
 		}
-		$entryLink = $this->controller->generateUrlForLegacyCode('workroom_entry_edit', ['id' => $dbrow['id']]);
-		$commentsLink = $dbrow['num_comments'] ? sprintf('<a href="%s#fos_comment_thread" title="Коментари"><span class="fa fa-comments-o"></span>%s</a>', $entryLink, $dbrow['num_comments']) : '';
+		$entryLink = $this->controller->generateUrlForLegacyCode('workroom_entry_edit', ['id' => $entry->getId()]);
+		$commentsLink = $entry->getNbComments() ? sprintf('<a href="%s#fos_comment_thread" title="Коментари"><span class="fa fa-comments-o"></span>%s</a>', $entryLink, $entry->getNbComments()) : '';
 		$title = sprintf('<a href="%s" title="Към страницата за преглед">%s</a>', $entryLink, $title);
 		$this->rowclass = $this->nextRowClass($this->rowclass);
-		$st = $dbrow['progress'] > 0
-			? $this->makeProgressBar($dbrow['progress'])
-			: $this->makeStatus($dbrow['status']);
-		$extraclass = $this->user->getId() == $dbrow['user_id'] ? ' hilite' : '';
-		if ($dbrow['is_frozen']) {
+		$st = $entry->getProgress() > 0
+			? $this->makeProgressBar($entry->getProgress())
+			: $this->makeStatus($entry->getStatus());
+		$extraclass = $entry->belongsTo($this->user) ? ' hilite' : '';
+		if ($entry->isFrozen()) {
 			$sisFrozen = '<span title="Подготовката е замразена">(замразена)</span>';
 			$extraclass .= ' is_frozen';
 		} else {
 			$sisFrozen = '';
 		}
-		if ( $this->isMultiUser($dbrow['type']) ) {
+		if ($this->isMultiUser($entry->getType())) {
 			$musers = '';
 			foreach ($entry->getContribs() as $contrib) {
 				$uinfo = $this->makeExtraInfo("{$contrib->getComment()} ({$contrib->getProgress()}%)");
 				$ufile = !empty($contrib->getUplfile()) && $entry->canShowFilesTo($this->user)
 					? $this->makeFileLink($contrib->getUplfile(), $contrib->getUser()->getUsername())
 					: '';
-				if ($contrib->getUser()->getId() == $dbrow['user_id']) {
+				if ($contrib->belongsTo($entry->getUser())) {
 					$userlink = "$userlink $uinfo $ufile";
 					continue;
 				}
@@ -599,19 +589,18 @@ EOS;
 			}
 			if ( !empty($musers) ) {
 				$userlink = "<ul class='simplelist'>\n\t<li>$userlink</li>$musers</ul>";
-			} else if ( $dbrow['status'] == self::MAX_SCAN_STATUS ) {
+			} else if ($entry->getStatus() == self::MAX_SCAN_STATUS) {
 				$userlink .= ' (<strong>очакват се коректори</strong>)';
 			}
 		}
-		$umarker = $this->getUserTypeMarker($dbrow['type']);
+		$umarker = $this->getUserTypeMarker($entry->getType());
 
-		$adminFields = $this->userIsAdmin() ? $this->makeAdminFieldsForTable($dbrow) : '';
-		$humanDate = (new \DateTime($dbrow['ddate']))->format('d.m.Y');
-
+		$adminFields = $this->userIsAdmin() ? $this->makeAdminFieldsForTable($entry) : '';
+		$humanDate = $entry->getDate()->format('d.m.Y');
 		return <<<EOS
 
-	<tr class="$this->rowclass$extraclass" id="e$dbrow[id]">
-		<td class="date" title="$dbrow[date]">$humanDate</td>
+	<tr class="$this->rowclass$extraclass" id="e{$entry->getId()}">
+		<td class="date" title="{$entry->getDate()->format('c')}">$humanDate</td>
 		$adminFields
 		<td>$umarker</td>
 		<td>$info</td>
@@ -625,16 +614,16 @@ EOS;
 EOS;
 	}
 
-	private function makeAdminFieldsForTable($dbrow) {
-		if (empty($dbrow['admin_comment'])) {
+	private function makeAdminFieldsForTable(WorkEntry $entry) {
+		if (empty($entry->getAdminComment())) {
 			return '<td></td>';
 		}
-		$comment = htmlspecialchars(nl2br($dbrow['admin_comment']));
-		$class = htmlspecialchars(str_replace(' ', '-', $dbrow['admin_status']));
+		$comment = htmlspecialchars(nl2br($entry->getAdminComment()));
+		$class = htmlspecialchars(str_replace(' ', '-', $entry->getAdminStatus()));
 		return <<<HTML
 <td>
 <span class="popover-trigger workroom-$class" data-content="$comment">
-	<span>$dbrow[admin_status]</span>
+	<span>{$entry->getAdminStatus()}</span>
 </span>
 </td>
 HTML;
@@ -648,19 +637,19 @@ HTML;
 		return "<span class='{$this->statusClasses[$code]}'></span> {$this->statuses[$code]}";
 	}
 
-	private function makeWorkEntryInfo($dbrow) {
+	private function makeWorkEntryInfo(WorkEntry $entry) {
 		$lines = [];
-		$lines[] = "<b>№ в Библиоман:</b> {$dbrow['biblioman_id']}";
-		if ($dbrow['publisher']) {
-			$lines[] = '<b>Издател:</b> ' . $dbrow['publisher'];
+		$lines[] = "<b>№ в Библиоман:</b> {$entry->getBibliomanId()}";
+		if ($entry->getPublisher()) {
+			$lines[] = '<b>Издател:</b> ' . $entry->getPublisher();
 		}
-		if ($dbrow['pub_year']) {
-			$lines[] = '<b>Година:</b> ' . $dbrow['pub_year'];
+		if ($entry->getPubYear()) {
+			$lines[] = '<b>Година:</b> ' . $entry->getPubYear();
 		}
-		if ($dbrow['available_at'] && $dbrow['available_at'] != '0000-00-00') {
-			$lines[] = '<b>Дата на достъп:</b> ' . (new \DateTime($dbrow['available_at']))->format('d.m.Y');
+		if (!$entry->isAvailable()) {
+			$lines[] = '<b>Дата на достъп:</b> ' . $entry->getAvailableAt('d.m.Y');
 		}
-		$lines[] = $dbrow['comment'];
+		$lines[] = $entry->getComment();
 		return $this->makeExtraInfo(implode("\n", $lines));
 	}
 

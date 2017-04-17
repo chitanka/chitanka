@@ -215,7 +215,7 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 		return $this->isAvailable() || $this->belongsTo($user) || $user->inGroup([User::GROUP_WORKROOM_MEMBER, User::GROUP_WORKROOM_SUPERVISOR, User::GROUP_WORKROOM_ADMIN]);
 	}
 
-	private function belongsTo(User $user) {
+	public function belongsTo(User $user) {
 		return $this->user->getId() === $user->getId();
 	}
 
@@ -237,6 +237,7 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 
 	public function setIsFrozen($isFrozen) { $this->isFrozen = $isFrozen; }
 	public function getIsFrozen() { return $this->isFrozen; }
+	public function isFrozen() { return $this->isFrozen; }
 
 	public function getAvailableAt($format = null) {
 		if ($format !== null && $this->availableAt instanceof DateTime) {
@@ -304,6 +305,9 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 		return $this;
 	}
 	public function getCommentThread() { return $this->commentThread; }
+	public function getNbComments() {
+		return $this->commentThread ? $this->commentThread->getNumComments() : 0;
+	}
 
 	public function getDeletedAt() { return $this->deletedAt; }
 

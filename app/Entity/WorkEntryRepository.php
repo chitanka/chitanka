@@ -47,7 +47,6 @@ class WorkEntryRepository extends EntityRepository {
 	public function findLatest($limit) {
 		return $this->getQueryBuilder()
 			->where('e.deletedAt IS NULL')
-			->orderBy('e.date', 'DESC')
 			->setMaxResults($limit)
 			->getQuery()
 			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
@@ -78,7 +77,8 @@ class WorkEntryRepository extends EntityRepository {
 			->leftJoin('e.user', 'u')
 			->leftJoin('e.contribs', 'c')
 			->leftJoin('c.user', 'cu')
-			->where('e.deletedAt IS NULL');
+			->where('e.deletedAt IS NULL')
+			->orderBy('e.date', 'DESC');
 
 		return $qb;
 	}
