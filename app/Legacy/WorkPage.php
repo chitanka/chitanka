@@ -432,6 +432,7 @@ HTML;
 	private function makeSearchForm() {
 		$id = $this->FF_LQUERY;
 		$action = $this->controller->generateUrlForLegacyCode('workroom');
+		$query = htmlspecialchars($this->searchQuery);
 		return <<<EOS
 
 <form action="$action" method="get" class="form-inline standalone" role="form">
@@ -439,7 +440,7 @@ HTML;
 	<div class="form-group">
 		<label for="$id" class="sr-only">Търсене на: </label>
 		<div class="input-group">
-			<input type="text" class="form-control" title="Търсене из подготвяните произведения" maxlength="100" size="50" id="$id" name="$id">
+			<input type="text" class="form-control" title="Търсене из подготвяните произведения" maxlength="100" size="50" id="$id" name="$id" value="$query">
 			<span class="input-group-btn">
 				<button class="btn btn-default" type="submit"><span class="fa fa-search"></span><span class="sr-only">Търсене</span></button>
 			</span>
