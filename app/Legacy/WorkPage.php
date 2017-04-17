@@ -718,9 +718,6 @@ HTML;
 				$class, $statusTitle, "<span class='{$this->statusClasses[$code]}'></span>", $statusTitle);
 		}
 
-		$links[] = '<li role="presentation" class="divider"></li>';
-		$links[] = sprintf('<li><a href="%s">Списък на помощниците</a></li>', $this->controller->generateUrlForLegacyCode('workroom_contrib'));
-
 		return '<div class="btn-group">
 			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Преглед <span class="caret"></span></button>
 			<ul class="dropdown-menu" role="menu">'. implode("\n", $links) .'</ul>
