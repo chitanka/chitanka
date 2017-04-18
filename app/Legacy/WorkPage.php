@@ -362,7 +362,7 @@ class WorkPage extends Page {
 			shell_exec($com);
 		}
 
-		$this->addMessage("Файлът беше качен. Благодарим ви за положения труд!");
+		$this->addMessage("Файлът беше качен. Благодарности за положения труд!");
 
 		return true;
 	}
@@ -765,7 +765,12 @@ HTML;
 			$button = $delete = '';
 		}
 
-		$alertUnavailable = $entry->canShowFilesTo($this->user) ? '<div class="alert alert-info">Качените файлове ще бъдат достъпни за обикновените потребители след '.$entry->getAvailableAt('d.m.Y').'.</div>' : '<div class="alert alert-danger">Качените файлове ще бъдат налични след '.$entry->getAvailableAt('d.m.Y').'.</div>';
+		$alertUnavailable = '';
+		if ($entry->getAvailableAt()) {
+			$alertUnavailable = $entry->canShowFilesTo($this->user)
+				? '<div class="alert alert-info">Качените файлове ще бъдат достъпни за обикновените потребители след '.$entry->getAvailableAt('d.m.Y').'.</div>'
+				: '<div class="alert alert-danger">Качените файлове ще бъдат налични след '.$entry->getAvailableAt('d.m.Y').'.</div>';
+		}
 		$alertIfDeleted = $entry->isDeleted() ? '<div class="alert alert-danger">Този запис е изтрит.</div>' : '';
 		$helpBot = $this->isSingleUser() ? $this->makeSingleUserHelp() : '';
 		$scanuser = $this->out->hiddenField('user', $this->scanuser);
