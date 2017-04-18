@@ -50,17 +50,17 @@ class WorkPage extends Page {
 		'waiting' => 'Търси се коректор',
 	];
 	private $statusClasses = [
-		WorkEntry::STATUS_0 => 'fa fa-square-o status-plan',
-		WorkEntry::STATUS_1 => 'fa fa-square status-scan',
-		WorkEntry::STATUS_2 => 'fa fa-circle-o status-waiting',
-		WorkEntry::STATUS_3 => 'fa fa-dot-circle-o status-edit',
-		WorkEntry::STATUS_4 => 'fa fa-code status-format',
-		WorkEntry::STATUS_5 => 'fa fa-question-circle status-forcheck',
-		WorkEntry::STATUS_6 => 'fa fa-check-circle status-checked',
-		WorkEntry::STATUS_7 => 'fa fa-circle status-done',
-		'all' => 'fa fa-tasks',
-		'my' => 'fa fa-user',
-		'waiting' => 'fa fa-search-plus status-waiting',
+		WorkEntry::STATUS_0 => 'fa fa-fw fa-square-o status-plan',
+		WorkEntry::STATUS_1 => 'fa fa-fw fa-square status-scan',
+		WorkEntry::STATUS_2 => 'fa fa-fw fa-circle-o status-waiting',
+		WorkEntry::STATUS_3 => 'fa fa-fw fa-dot-circle-o status-edit',
+		WorkEntry::STATUS_4 => 'fa fa-fw fa-code status-format',
+		WorkEntry::STATUS_5 => 'fa fa-fw fa-question-circle status-forcheck',
+		WorkEntry::STATUS_6 => 'fa fa-fw fa-check-circle status-checked',
+		WorkEntry::STATUS_7 => 'fa fa-fw fa-circle status-done',
+		'all' => 'fa fa-fw fa-tasks',
+		'my' => 'fa fa-fw fa-user',
+		'waiting' => 'fa fa-fw fa-search-plus status-waiting',
 	];
 
 	private $fileWhiteList = [
@@ -114,6 +114,9 @@ class WorkPage extends Page {
 		$this->subaction = $this->request->value( $this->FF_SUBACTION, '', 1 );
 
 		$this->entryId = (int) $this->request->value('id');
+		if ($this->entryId) {
+			$this->entry = $this->repo()->find($this->entryId);
+		}
 		$this->workType = (int) $this->request->value('workType', 0, 3);
 		$this->btitle = $this->request->value('title');
 		$this->author = $this->request->value('author');
@@ -163,9 +166,6 @@ class WorkPage extends Page {
 	}
 
 	protected function processSubmission() {
-		if ($this->entryId) {
-			$this->entry = $this->repo()->find($this->entryId);
-		}
 		if ($this->entry && !$this->thisUserCanEditEntry($this->entry, $this->workType)) {
 			$this->addMessage('Нямате права да редактирате този запис.', true);
 			return $this->makeLists();
@@ -178,8 +178,8 @@ class WorkPage extends Page {
 		}
 
 		switch ($this->workType) {
-			case 0: return $this->updateMainUserData();
-			case 1: return $this->updateMultiUserData();
+			case WorkEntry::TYPE_SINGLE_USER: return $this->updateMainUserData();
+			case WorkEntry::TYPE_MULTI_USER: return $this->updateMultiUserData();
 		}
 	}
 
@@ -408,7 +408,7 @@ HTML;
 	}
 
 	private function makeUserGuideLink() {
-		return '<div class="float-right"><a href="http://wiki.chitanka.info/Workroom" title="Наръчник за работното ателие"><span class="fa fa-info-circle"></span> Наръчник за работното ателие</a></div>';
+		return '<div class="float-right"><a href="//wiki.chitanka.info/Workroom" title="Наръчник за работното ателие"><span class="fa fa-info-circle"></span> Наръчник за работното ателие</a></div>';
 	}
 
 	private function makeLists() {
@@ -427,24 +427,13 @@ HTML;
 	}
 
 	private function makeSearchForm() {
-		$id = $this->FF_LQUERY;
-		$action = $this->controller->generateUrlForLegacyCode('workroom');
-		$query = htmlspecialchars($this->searchQuery);
-		return <<<EOS
-
-<form action="$action" method="get" class="form-inline standalone" role="form">
-	{$this->makeViewWorksLinks()}
-	<div class="form-group">
-		<label for="$id" class="sr-only">Търсене на: </label>
-		<div class="input-group">
-			<input type="text" class="form-control" title="Търсене из подготвяните произведения" maxlength="100" size="50" id="$id" name="$id" value="$query">
-			<span class="input-group-btn">
-				<button class="btn btn-default" type="submit"><span class="fa fa-search"></span><span class="sr-only">Търсене</span></button>
-			</span>
-		</div>
-	</div>
-</form>
-EOS;
+		return $this->controller->renderViewForLegacyCode('Workroom/searchForm.html.twig', [
+			'query' => $this->searchQuery,
+			'viewTypes' => $this->viewTypes,
+			'statuses' => $this->statuses,
+			'subaction' => $this->subaction,
+			'statusClasses' => $this->statusClasses,
+		]);
 	}
 
 	private function makeWorkList(Pagerfanta $pager = null) {
@@ -681,33 +670,6 @@ HTML;
 		return sprintf('<a href="%s" class="btn btn-primary"><span class="fa fa-plus"></span> Добавяне на нов запис</a>',
 			$this->controller->generateUrlForLegacyCode('workroom_entry_new'));
 
-	}
-
-	private function makeViewWorksLinks() {
-		$links = [];
-		foreach ($this->viewTypes as $type => $title) {
-			$class = $this->subaction == $type ? 'selected' : '';
-			$links[] = sprintf('<li><a href="%s" class="%s" title="Преглед на произведенията по критерий „%s“">%s %s</a></li>',
-				$this->controller->generateUrlForLegacyCode('workroom', [
-					$this->FF_SUBACTION => $type
-				]),
-				$class, $title, "<span class='{$this->statusClasses[$type]}'></span>", $title);
-		}
-		$links[] = '<li role="presentation" class="divider"></li>';
-		foreach ($this->statuses as $code => $statusTitle) {
-			$type = "st-$code";
-			$class = $this->subaction == $type ? 'selected' : '';
-			$links[] = sprintf('<li><a href="%s" class="%s" title="Преглед на произведенията по критерий „%s“">%s %s</a></li>',
-				$this->controller->generateUrlForLegacyCode('workroom', [
-					$this->FF_SUBACTION => $type
-				]),
-				$class, $statusTitle, "<span class='{$this->statusClasses[$code]}'></span>", $statusTitle);
-		}
-
-		return '<div class="btn-group">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Преглед <span class="caret"></span></button>
-			<ul class="dropdown-menu" role="menu">'. implode("\n", $links) .'</ul>
-			</div>';
 	}
 
 	private function makeForm() {
