@@ -149,10 +149,6 @@ class WorkPage extends Page {
 			$this->title .= ' — ' . $this->data_scanuser_view->getUsername();
 		}
 
-		if ($this->entryId) {
-			$this->initData($this->entryId);
-		}
-
 		$this->initPaginationFields();
 	}
 
@@ -167,7 +163,10 @@ class WorkPage extends Page {
 	}
 
 	protected function processSubmission() {
-		if ( !empty($this->entryId) && !$this->thisUserCanEditEntry($this->entry, $this->workType) ) {
+		if ($this->entryId) {
+			$this->entry = $this->repo()->find($this->entryId);
+		}
+		if ($this->entry && !$this->thisUserCanEditEntry($this->entry, $this->workType)) {
 			$this->addMessage('Нямате права да редактирате този запис.', true);
 			return $this->makeLists();
 		}
@@ -386,6 +385,9 @@ class WorkPage extends Page {
 	protected function buildContent() {
 		if ($this->viewList == 'listonly') {
 			return $this->makeWorkList();
+		}
+		if ($this->entryId) {
+			$this->initData($this->entryId);
 		}
 		$content = $this->makeUserGuideLink();
 		if ($this->subaction == 'edit') {
@@ -944,7 +946,7 @@ JS;
 		</div>
 	</div>
 EOS;
-		if ($this->entry->canShowFilesTo($this->user)) {
+		if ($this->entry && $this->entry->canShowFilesTo($this->user)) {
 			$form .= <<<EOS
 	<div class="form-group">
 		<label for="file" class="col-sm-2 control-label">Файл:</label>
@@ -1057,7 +1059,7 @@ FIELDS;
 		</div>
 	</div>
 EOS;
-		if ($this->entry->canShowFilesTo($this->user)) {
+		if ($this->entry && $this->entry->canShowFilesTo($this->user)) {
 			$form .= <<<EOS
 	<div class="form-group">
 		<label for="file" class="col-sm-2 control-label">Файл:</label>
@@ -1206,7 +1208,7 @@ EOS;
 				$class .= ' isFrozen';
 				$progressbar .= ' (замразена)';
 			}
-			$deleteForm = $this->controller->renderViewForLegacyCode('App:Workroom:contrib_delete_form.html.twig', ['contrib' => ['id' => $contrib->getId()]]);
+			$deleteForm = $this->controller->renderViewForLegacyCode('Workroom/contrib_delete_form.html.twig', ['contrib' => ['id' => $contrib->getId()]]);
 			$date = $contrib->getDate()->format('d.m.Y');
 			$l .= <<<EOS
 
