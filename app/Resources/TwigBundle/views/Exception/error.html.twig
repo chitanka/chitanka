@@ -21,7 +21,7 @@
 <div id="container">
 	<h1>Неприятна изненада от тип {{ status_code }}</h1>
 	<p id="message">
-		{% if status_code == '401' %}
+		{% if status_code == '401' or status_code == '403' %}
 			Сървърът каза, че не ви е позволено да влизате тук.
 		{% elseif status_code == '404' %}
 			Няма такова място в библиотеката. Кой ви насочи натам?
