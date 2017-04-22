@@ -1,41 +1,89 @@
-<td class="date" title="{{ entry.date|humandate }}">{{ entry.date.format('d.m.Y') }}</td>
+{% macro printExtraInfo(info) %}
+	<span class="popover-trigger" data-content="{{ info }}"><span class="fa fa-info-circle"></span><span class="sr-only">Инфо</span></span>
+{% endmacro %}
+
+{% macro printFileLink(file) %}
+	<a href="{{ file }}" class="save"><span class="fa fa-save"></span><span class="sr-only">Файл</span></a>
+{% endmacro %}
+
+{% import _self as _ %}
+
+<td class="date"><time title="{{ entry.date|humandate }}" datetime="{{ entry.date.format('c') }}">{{ entry.date.format('d.m.Y') }}</time></td>
+{% if userIsAdmin is defined and userIsAdmin %}
+	<td>
+		{% if not entry.adminComment is empty %}
+			<span class="popover-trigger workroom-{{ entry.adminStatus|replace({' ': '-'}) }}" data-content="{{ entry.adminComment }}">
+				<span>{{ entry.adminStatus }}</span>
+			</span>
+		{% endif %}
+	</td>
+{% endif %}
 <td>
-	<span class="{{ entry.type == 1 ? 'fa fa-users multiuser' : 'fa fa-user singleuser' }}"><span class="sr-only">{{ ('workroom.type.'~entry.type) | trans }}</span></span>
+	<span class="{{ entry.isMultiUser ? 'fa fa-users multiuser' : 'fa fa-user singleuser' }}"><span class="sr-only">{{ ('workroom.type.'~entry.type) | trans }}</span></span>
 </td>
 <td>
-	{% if entry.comment %}
-		<span class="popover-trigger" data-content="{{ entry.comment }}"><span class="fa fa-info-circle"></span><span class="sr-only">Инфо</span></span>
+	{% set commentPlusExtraStuff %}
+		<ul>
+			<li><b>№ в Библиоман:</b> {{ entry.bibliomanId }}</li>
+			{% if entry.publisher is not empty %}
+				<li><b>Издател:</b> {{ entry.publisher }}</li>
+			{% endif %}
+			{% if entry.pubYear is not empty %}
+				<li><b>Година:</b> {{ entry.pubYear }}</li>
+			{% endif %}
+			{% if not entry.isAvailable %}
+				<li><b>Дата на достъп:</b> {{ entry.availableAt('d.m.Y') }}</li>
+			{% endif %}
+		</ul>
+		{{ entry.comment }}
+	{% endset %}
+	{{ _.printExtraInfo(commentPlusExtraStuff) }}
+</td>
+<td>
+	{% if entry.nbComments > 0 %}
+		<a href="{{ path('workroom_entry_edit', {'id': entry.id}) }}#fos_comment_thread" title="Коментари"><span class="fa fa-comments-o"></span>{{ entry.nbComments }}</a>
 	{% endif %}
 </td>
 <td>
-	{% if entry.availableAt %}
+	{% if not entry.canShowFilesTo(app.user) %}
 		<span class="fa fa-ban" title="Дата на достъп: {{ entry.availableAt.format('d.m.Y') }}"></span>
 	{% elseif entry.tmpfiles %}
-		<a href="{{ entry.tmpfiles }}" class="save"><span>Файл</span></a>
+		{{ _.printFileLink(entry.tmpfiles) }}
+	{% elseif entry.uplfile %}
+		{{ _.printFileLink(entry.uplfile) }}
 	{% endif %}
 </td>
-<td><a href="{{ path('workroom_entry_edit', {'id': entry.id}) }}"><i>{{ entry.title }}</i></a></td>
-<td>{{ entry.author }}</td>
+<td><a href="{{ path('workroom_entry_edit', {'id': entry.id}) }}" title="Към страницата за преглед"><i>{{ entry.title }}</i></a></td>
 <td>
-	{% if entry.progress %}
-		<div class="progress">
-			<div class="progress-bar" role="progressbar" aria-valuenow="{{ entry.progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ entry.progress }}%;">
-				<span>{{ entry.progress }}%</span>
-			</div>
-		</div>
+	{% for author in entry.author|split(',') %}
+		<a href="{{ path('person_show', {'slug': author|trim|replace({'.': '', '/': '.'})}) }}">{{ author }}</a>{% if not loop.last %},{% endif %}
+	{% endfor %}
+</td>
+<td style="min-width: 10em">
+	{% if entry.progress > 0 %}
+		{% include 'Workroom/progressBar.html.twig' with { 'progressInPercent': entry.progress } %}
 	{% else %}
-		<span class="progress progress-{{ entry.status }}">{{ ('workroom.status.'~entry.status) | trans }}</span>
+		<span class="{{ statusClasses[entry.status] }}"></span> {{ ('workroom.status.'~entry.status) | trans }}
 	{% endif %}
 	{% if entry.isFrozen %}
 		<span title="Подготовката е замразена">(замразена)</span>
 	{% endif %}
 </td>
 <td>
-	{% import 'App::link.html.twig' as link %}
+	{% import 'link.html.twig' as link %}
 	<ul class="simplelist">
 		<li>{{ link.user_with_email(entry.user) }}</li>
 		{% for contrib in entry.contribs %}
-			<li>{{ link.user_with_email(contrib.user) }}<span class="popover-trigger" data-content="{{ contrib.comment }}"><span class="fa fa-info-circle"></span><span class="sr-only">Инфо</span></span></li>
+			<li class="{{ contrib.isFrozen ? 'isFrozen' : '' }}">
+				{{ link.user_with_email(contrib.user) }}
+				{{ _.printExtraInfo(contrib.comment|nl2br ~' ('~ contrib.progress ~'%)' ) }}
+				{% if contrib.uplfile and entry.canShowFilesTo(app.user) %}
+					{{ _.printFileLink(contrib.uplfile) }}
+				{% endif %}
+			</li>
 		{% endfor %}
+		{% if entry.isMultiUser and entry.contribs is empty %}
+			(<strong>очакват се коректори</strong>)
+		{% endif %}
 	</ul>
 </td>

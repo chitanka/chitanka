@@ -229,6 +229,18 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 		return $this->user->getId() === $user->getId();
 	}
 
+	public function hasParticipant(User $user) {
+		if ($this->belongsTo($user)) {
+			return true;
+		}
+		foreach ($this->getContribs() as $contrib) {
+			if ($contrib->belongsTo($user)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public function setComment($comment) { $this->comment = $comment; }
 	public function getComment() { return $this->comment; }
 
