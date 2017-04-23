@@ -1,0 +1,41 @@
+{% if entry.contribs is empty %}
+	<p>Все още никой не се е включил в корекцията на текста.</p>
+{% else %}
+	{% import 'link.html.twig' as link %}
+	{% import 'Workroom/macros.html.twig' as _ %}
+	<table class="content">
+		<caption>Следните потребители обработват текста:</caption>
+		<thead>
+		<tr>
+			<th>Дата</th>
+			<th>Потребител</th>
+			<th>Коментар</th>
+			<th>Файл</th>
+			<th>Напредък</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for contrib in entry.contribs %}
+			<tr class="{{ cycle(['even', 'odd'], loop.index) }} {{ contrib.isFrozen ? 'isFrozen' : '' }} deletable">
+				<td>{{ contrib.date|date('d.m.Y') }}</td>
+				<td>
+					{{ link.user_with_email(contrib.user) }}
+					{% include 'Workroom/contrib_delete_form.html.twig' with { 'contrib': contrib } %}
+				</td>
+				<td>{{ contrib.comment|nl2br }}</td>
+				<td>
+					{% if contrib.uplfile and entry.canShowFilesTo(app.user) %}
+						{{ _.printFileLink(contrib.uplfile) }}
+					{% endif %}
+				</td>
+				<td>
+					{% include 'Workroom/progressBar.html.twig' with { 'progressInPercent': contrib.progress } %}
+					{% if contrib.isFrozen %}
+						(замразена)
+					{% endif %}
+				</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+{% endif %}
