@@ -641,7 +641,7 @@ EOS;
 	}
 
 	private function createCommentsJavascript($entry) {
-		if (empty($entry)) {
+		if (empty($entry) || $this->user->isAnonymous()) {
 			return '';
 		}
 		return $this->controller->renderViewForLegacyCode('Workroom/comments.js.twig', [
