@@ -132,7 +132,7 @@ class TextFb2Generator {
 
 		if ($text->isGamebook()) {
 			// recognize section links
-			$converter->addRegExpPattern('/#(\d+)/', '<a l:href="#l-$1">$1</a>');
+			$converter->addRegExpPattern('/#(\d+)/', '<a xlink:href="#l-$1">$1</a>');
 		}
 
 		$converter->enablePrettyOutput();
