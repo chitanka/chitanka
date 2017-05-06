@@ -4,6 +4,7 @@ use App\Entity\Book;
 use App\Generator\DownloadFile;
 use App\Legacy\Setup;
 use App\Pagination\Pager;
+use App\Service\ContentService;
 use App\Service\SearchService;
 use App\Util\Stringy;
 use Doctrine\ORM\NoResultException;
@@ -124,6 +125,8 @@ class BookController extends Controller {
 			case 'pic':
 				Setup::doSetup($this->container);
 				break;
+			case 'cover':
+				return $this->urlRedirect('/'.ContentService::getCover($book->getId(), 300));
 			case 'html':
 			default:
 		}
