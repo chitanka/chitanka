@@ -126,7 +126,7 @@ class BookController extends Controller {
 				Setup::doSetup($this->container);
 				break;
 			case 'cover':
-				return $this->urlRedirect('/'.ContentService::getCover($book->getId(), $request->get('size', 300)));
+				return $this->urlRedirect('/'.ContentService::getCover($book->hasCover() ? $book->getId() : 0, $request->get('size', 300)));
 			case 'html':
 			default:
 		}
