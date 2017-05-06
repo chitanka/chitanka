@@ -91,7 +91,7 @@ class BookController extends Controller {
 		];
 	}
 
-	public function showAction($id, $_format) {
+	public function showAction(Request $request, $id, $_format) {
 		list($id) = explode('-', $id); // remove optional slug
 		try {
 			$book = $this->em()->getBookRepository()->get($id);
@@ -126,7 +126,7 @@ class BookController extends Controller {
 				Setup::doSetup($this->container);
 				break;
 			case 'cover':
-				return $this->urlRedirect('/'.ContentService::getCover($book->getId(), 300));
+				return $this->urlRedirect('/'.ContentService::getCover($book->getId(), $request->get('size', 300)));
 			case 'html':
 			default:
 		}
