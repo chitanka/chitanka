@@ -11,7 +11,7 @@
 			<li role="presentation" class="divider"></li>
 			{% for code, statusTitle in statuses %}
 				<li>
-					{% set type = 'st'~code %}
+					{% set type = 'st-'~code %}
 					<a href="{{ path('workroom', { 'status': type }) }}" class="{{ subaction == type ? 'selected' : '' }}" title="Преглед на произведенията по критерий „{{ statusTitle }}“"><span class="{{ statusClasses[code] }}"></span> {{ statusTitle }}</a>
 				</li>
 			{% endfor %}
