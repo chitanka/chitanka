@@ -687,7 +687,7 @@ EOS;
 				'<abbr title="Мебибайта">MiB</abbr>';
 
 		$flink = $this->tmpfiles == self::DEF_TMPFILE ? ''
-			: $this->out->link( $this->makeTmpFilePath($this->tmpfiles), Stringy::limitLength($this->tmpfiles)) .
+			: $this->out->link( $this->tmpfiles, Stringy::limitLength($this->tmpfiles)) .
 			($this->tfsize > 0 ? " ($this->tfsize&#160;MiB)" : '');
 
 		$form = <<<EOS
@@ -799,7 +799,7 @@ FIELDS;
 		}
 
 		$flink = $this->tmpfiles == self::DEF_TMPFILE ? ''
-			: $this->out->link( $this->makeTmpFilePath($this->tmpfiles), Stringy::limitLength($this->tmpfiles)) .
+			: $this->out->link( $this->tmpfiles, Stringy::limitLength($this->tmpfiles)) .
 			($this->tfsize > 0 ? " ($this->tfsize&#160;MiB)" : '');
 		$file = $this->out->fileField('file', '');
 		$maxFileSize = $this->out->makeMaxFileSizeField();
