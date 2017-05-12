@@ -28,6 +28,14 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 	const TYPE_SINGLE_USER = 0;
 	const TYPE_MULTI_USER = 1;
 
+	const PACK_TYPE_BOOK = 'book';
+	const PACK_TYPE_WORK = 'work';
+
+	public $packTypes = [
+		self::PACK_TYPE_BOOK,
+		self::PACK_TYPE_WORK,
+	];
+
 	private static $statuses = [
 		self::STATUS_0 => 'Планира се',
 		self::STATUS_1 => 'Сканира се',
@@ -52,6 +60,12 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 	 * @ORM\Column(type="smallint")
 	 */
 	private $type;
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="string", length=10)
+	 */
+	private $packType = self::PACK_TYPE_BOOK;
 
 	/**
 	 * @var int
@@ -195,6 +209,13 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 	public function setType($type) { $this->type = $type; }
 	public function getType() { return $this->type; }
 
+	public function setPackType($packType) { $this->packType = $packType; }
+	public function getPackType() { return $this->packType; }
+
+	public function hasPackType($packType) {
+		return $packType === $this->packType;
+	}
+
 	public function isSingleUser() {
 		return $this->type == self::TYPE_SINGLE_USER;
 	}
@@ -204,6 +225,10 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 
 	public function setBibliomanId($bibliomanId) { $this->bibliomanId = $bibliomanId; }
 	public function getBibliomanId() { return $this->bibliomanId; }
+
+	public function isMissingBibliomanId() {
+		return $this->packType === self::PACK_TYPE_BOOK && empty($this->bibliomanId);
+	}
 
 	public function setTitle($title) { $this->title = $title; }
 	public function getTitle() { return $this->title; }

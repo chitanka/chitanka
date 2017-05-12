@@ -1,4 +1,4 @@
-<table class="table table-striped table-condensed table-bordered">
+<table class="table table-condensed table-bordered table-hover">
 <thead>
 	<tr>
 		<th>Дата</th>
@@ -17,7 +17,7 @@
 </thead>
 <tbody>
 {% for entry in entries %}
-	<tr class="{{ cycle(['even', 'odd'], loop.index) }} {{ entry.isFrozen ? 'frozen' : '' }} {{ entry.hasParticipant(app.user) ? 'hilite' : '' }}" id="e{{ entry.id }}">
+	<tr class="{{ entry.isFrozen ? 'frozen' : '' }} {{ entry.hasParticipant(app.user) ? 'hilite' : '' }} {{ entry.isMissingBibliomanId ? 'missing-biblioman-id' : '' }}" id="e{{ entry.id }}">
 		{% include 'WorkEntry/item.html.twig' %}
 	</tr>
 {% endfor %}

@@ -233,6 +233,7 @@ class WorkPage extends Page {
 		$set = [
 			'id' => $id,
 			'type' => in_array($this->status, [WorkEntry::STATUS_4]) ? 1 : $this->workType,
+			'pack_type' => $this->sfrequest->get('packType'),
 			'biblioman_id' => $this->sfrequest->get('bibliomanId'),
 			'title'=>$this->btitle,
 			'author'=> strtr($this->author, [';'=>',']),
@@ -562,6 +563,9 @@ HTML;
 		$adminFields = $this->userIsAdmin() ? $this->makeAdminOnlyFields() : '';
 		$user = $this->controller->em()->getUserRepository()->find($this->scanuser);
 		$ulink = $this->makeUserLinkWithEmail($user->getUsername(), $user->getEmail(), $user->getAllowemail());
+		$printPackTypeRadioValue = function ($packType) use ($entry) {
+			return ('value="'.$packType.'"') . ($entry->hasPackType($packType) ? ' checked' : '');
+		};
 
 		return <<<EOS
 
@@ -585,6 +589,17 @@ $helpTop
 					<div class="form-control">
 						$ulink
 					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="title" class="col-sm-2 control-label">Вид на творението:</label>
+				<div class="col-sm-10">
+					<label class="radio-inline">
+						<input type="radio" name="packType" {$printPackTypeRadioValue(WorkEntry::PACK_TYPE_BOOK)}> Книга
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="packType" {$printPackTypeRadioValue(WorkEntry::PACK_TYPE_WORK)}> Произведение
+					</label>
 				</div>
 			</div>
 			<div class="form-group">

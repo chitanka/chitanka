@@ -16,7 +16,7 @@
 <td>
 	{% set commentPlusExtraStuff %}
 		<ul>
-			<li><b>№ в Библиоман:</b> {{ entry.bibliomanId }}</li>
+			<li><b>№ в Библиоман:</b> {{ entry.isMissingBibliomanId ? 'липсва' : entry.bibliomanId }}</li>
 			{% if entry.publisher is not empty %}
 				<li><b>Издател:</b> {{ entry.publisher }}</li>
 			{% endif %}
@@ -45,7 +45,7 @@
 		{{ _.printFileLink(entry.uplfile) }}
 	{% endif %}
 </td>
-<td><a href="{{ path('workroom_entry_edit', {'id': entry.id}) }}" title="Към страницата за преглед"><i>{{ entry.title }}</i></a></td>
+<td class="title"><a href="{{ path('workroom_entry_edit', {'id': entry.id}) }}" title="Към страницата за преглед"><i>{{ entry.title }}</i></a></td>
 <td>
 	{% for author in entry.author|split(',') %}
 		<a href="{{ path('person_show', {'slug': author|trim|replace({'.': '', '/': '.'})}) }}">{{ author }}</a>{% if not loop.last %},{% endif %}
