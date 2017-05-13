@@ -9,6 +9,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ContentImporter {
 
+	public $bibliomanCoverUrlTemplate = 'https://biblioman.chitanka.info/books/ID.cover?size=800';
+
 	/**
 	 * @var EntityManager
 	 */
@@ -221,8 +223,12 @@ class ContentImporter {
 		if (file_exists($file = str_replace('.data', '.info', $dataFile))) {
 			$book['info'] = $file;
 		}
-		if (file_exists($file = str_replace('.data', '.covr.jpg', $dataFile))) {
-			$book['cover'] = $file;
+		$coverFile = str_replace('.data', '.covr.jpg', $dataFile);
+		if (file_exists($coverFile)) {
+			$book['cover'] = $coverFile;
+		} else if (!empty($book['biblioman_id'])) {
+			file_put_contents($coverFile, file_get_contents(str_replace('ID', $book['biblioman_id'], $this->bibliomanCoverUrlTemplate)));
+			$book['cover'] = $coverFile;
 		}
 		if (file_exists($dir = strtr($dataFile, ['.data' => ''])) && is_dir($dir)) {
 			$book['img'] = $dir;
