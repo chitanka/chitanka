@@ -9,7 +9,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ContentImporter {
 
-	public $bibliomanCoverUrlTemplate = 'https://biblioman.chitanka.info/books/ID.cover?size=800';
+	public $bibliomanCoverUrlTemplate = 'https://biblioman.chitanka.info/books/ID.cover?size=600';
 
 	/**
 	 * @var EntityManager
