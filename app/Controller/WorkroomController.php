@@ -1,5 +1,7 @@
 <?php namespace App\Controller;
 
+use App\Entity\User;
+use App\Entity\WorkEntry;
 use Eko\FeedBundle\Field\Item\ItemField;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,6 +62,14 @@ class WorkroomController extends Controller {
 	}
 	public function deleteAction() {
 		return $this->legacyPage('Work');
+	}
+	public function patchAction(Request $request, WorkEntry $entry) {
+		$bibliomanId = $request->get('bibliomanId');
+		if ($bibliomanId > 0 && $this->getUser()->inGroup([User::GROUP_WORKROOM_MEMBER, User::GROUP_WORKROOM_SUPERVISOR, User::GROUP_WORKROOM_ADMIN])) {
+			$entry->setBibliomanId($bibliomanId);
+			$this->em()->getWorkEntryRepository()->save($entry);
+		}
+		return $this->asJson($entry);
 	}
 
 	public function deleteContribAction(Request $request, $id) {

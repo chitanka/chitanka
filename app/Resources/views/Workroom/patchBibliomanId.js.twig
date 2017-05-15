@@ -1,0 +1,18 @@
+$(function() {
+	$('#bibliomanId').on('blur', function() {
+		var bibliomanId = this.value;
+		console.log(bibliomanId);
+		if (bibliomanId && bibliomanId != '0') {
+			$.ajax({
+				url: '{{ path('workroom_entry_patch', { 'id': entry.id }) }}',
+				type : 'PATCH',
+				data: { bibliomanId: bibliomanId },
+				success: function(entry) {
+					$('a.bibliomanUrl').each(function() {
+						this.href = this.href.replace(/books\/\d+/, 'books/'+entry.bibliomanId);
+					});
+				}
+			});
+		}
+	});
+});

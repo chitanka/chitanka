@@ -577,14 +577,22 @@ workroom_entry_edit:
     path:      /workroom/entry/{id}
     defaults: { _controller: App:Workroom:edit }
     methods:      [GET]
+    requirements:    {  id: \d+ }
 workroom_entry_update:
     path:      /workroom/entry/{id}
     defaults: { _controller: App:Workroom:update }
     methods:      [PUT]
+    requirements:    {  id: \d+ }
+workroom_entry_patch:
+    path:      /workroom/entry/{id}.patch
+    defaults: { _controller: App:Workroom:patch }
+    methods:      [PATCH]
+    requirements:    {  id: \d+ }
 workroom_entry_delete:
     path:      /workroom/entry/{id}
     defaults: { _controller: App:Workroom:delete }
     methods:      [DELETE]
+    requirements:    {  id: \d+ }
 
 workroom_contrib:
     path:      /workroom/contributors
@@ -600,6 +608,7 @@ workroom_contrib_delete:
     path:      /workroom/contrib/{id}
     defaults: { _controller: App:Workroom:deleteContrib }
     methods:      [DELETE]
+    requirements:    {  id: \d+ }
 
 workroom:
     path:      /workroom/{status}/{page}

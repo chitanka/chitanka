@@ -566,6 +566,9 @@ HTML;
 		$printPackTypeRadioValue = function ($packType) use ($entry) {
 			return ('value="'.$packType.'"') . ($entry->hasPackType($packType) ? ' checked' : '');
 		};
+		if ($entry->getId()) {
+			$this->addJs($this->controller->renderViewForLegacyCode('Workroom/patchBibliomanId.js.twig', ['entry' => $entry]));
+		}
 
 		return <<<EOS
 
@@ -604,8 +607,11 @@ $helpTop
 			</div>
 			<div class="form-group">
 				<label for="title" class="col-sm-2 control-label">№ в Библиоман:</label>
-				<div class="col-sm-10">
-					<input class="form-control" name="bibliomanId" value="{$entry->getBibliomanId()}">
+				<div class="col-sm-2">
+					<input class="form-control" name="bibliomanId" id="bibliomanId" value="{$entry->getBibliomanId()}">
+				</div>
+				<div class="col-sm-8">
+					<a href="//biblioman.chitanka.info/books/{$entry->getBibliomanId()}" class="bibliomanUrl"><span class="fa fa-link"></span></a>
 				</div>
 			</div>
 			<div class="form-group">

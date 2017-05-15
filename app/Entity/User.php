@@ -229,7 +229,7 @@ class User implements UserInterface, \JsonSerializable {
 	}
 
 	/**
-	 * @param string $groups
+	 * @param string|array $groups
 	 * @return bool
 	 */
 	public function inGroup($groups, $orGod = true) {
