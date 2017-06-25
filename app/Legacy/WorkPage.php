@@ -848,6 +848,9 @@ EOS;
 	}
 
 	private function makeMultiEditInput() {
+		if ($this->entry === null) {
+			return '';
+		}
 		$editorList = $this->controller->renderViewForLegacyCode('Workroom/contributors.html.twig', ['entry' => $this->entry]);
 		$myContrib = $this->isMyContribAllowed() ? $this->makeMultiEditMyInput() : '';
 
