@@ -17,7 +17,7 @@ class MediawikiClient {
 	 * @param int $cacheDays
 	 * @return string
 	 */
-	public function fetchContent($url, $cacheDays = 7) {
+	public function fetchContent($url, $cacheDays = 1) {
 		$id = md5($url);
 		$action = 'info';
 
