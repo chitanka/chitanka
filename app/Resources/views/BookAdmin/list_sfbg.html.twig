@@ -1,8 +1,0 @@
-{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
-{% block field%}
-	{% if value %}
-		<a href="{{ value.url }}" class="booksite">SFBG</a>
-	{% else %}
-		<a href="http://www.sfbg.us/search?type=book&amp;query={{ object.title|url_encode }}">SFBG</a>?
-	{% endif %}
-{% endblock %}
