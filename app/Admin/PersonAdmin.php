@@ -42,10 +42,11 @@ class PersonAdmin extends Admin {
 			->addIdentifier('name')
 			->add('slug')
 			->add('origName')
+			->add('info')
 
 			->add('_action', 'actions', [
 				'actions' => [
-					'show' => [],
+					//'show' => [],
 					'edit' => [],
 					'delete' => [],
 				]
