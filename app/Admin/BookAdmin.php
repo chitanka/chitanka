@@ -24,10 +24,13 @@ class BookAdmin extends Admin {
 
 	protected function configureRoutes(RouteCollection $collection) {
 		$collection->remove('create');
+		$collection->remove('delete');
+		$collection->add('updateCover', $this->getRouterIdParameter().'/update-cover');
 	}
 
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper
+			->add('bibliomanId')
 			->add('slug')
 			->add('title')
 			->add('authors')
@@ -57,13 +60,15 @@ class BookAdmin extends Admin {
 			->addIdentifier('title')
 			->add('id')
 			->add('type')
-			->add('sfbg', 'string', ['template' => 'App:BookAdmin:list_sfbg.html.twig'])
-			->add('puk', 'string', ['template' => 'App:BookAdmin:list_puk.html.twig'])
+			->add('bibliomanId', 'string', ['template' => 'App:BookAdmin:list_biblioman.html.twig'])
 			->add('_action', 'actions', [
 				'actions' => [
-					'show' => [],
+					//'show' => [],
 					'edit' => [],
-					'delete' => [],
+					'updateCover' => [
+						'template' => 'App:BookAdmin:list__action_update_cover.html.twig',
+					],
+					//'delete' => [],
 				]
 			])
 		;

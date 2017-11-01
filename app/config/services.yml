@@ -39,7 +39,7 @@ services:
         class: App\Admin\BookAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: library_main, label: admin.book }
-        arguments: [null, App\Entity\Book, App:Admin\CRUD]
+        arguments: [null, App\Entity\Book, App:Admin\Book]
         calls:
             - [setMaxPerPage, [%admin_max_per_page%]]
             - [setTextRepository, ["@app.text.repository"]]

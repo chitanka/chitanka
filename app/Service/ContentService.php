@@ -1,8 +1,14 @@
 <?php namespace App\Service;
 
+use App\Entity\Book;
 use App\Util\Ary;
+use Buzz\Browser;
 
 class ContentService {
+
+	public static $bibliomanCoverUrlTemplate = 'https://biblioman.chitanka.info/books/ID.cover?size=600';
+	public static $clearBookCoverCacheUrl = 'https://assets.chitanka.info/cc_thumb.php';
+	public static $bookCoverExtension = 'jpg';
 
 	private static $contentDirs = [
 		'text' => 'content/text/',
@@ -87,4 +93,26 @@ class ContentService {
 		$thumbName = str_replace('content/', 'thumb/', preg_replace('/(\.[^.]+)$/', ".$width$1", $id));
 		return $thumbName;
 	}
+
+	public static function fetchBibliomanCover($bibliomanId) {
+		return file_get_contents(str_replace('ID', $bibliomanId, self::$bibliomanCoverUrlTemplate));
+	}
+
+	public static function clearCoverCache($bookOrId) {
+		if ($bookOrId instanceof Book) {
+			$bookOrId = [$bookOrId->getId()];
+		} else if (!is_array($bookOrId)) {
+			$bookOrId = [$bookOrId];
+		}
+		$browser = new Browser();
+		$browser->post(self::$clearBookCoverCacheUrl, [], http_build_query(['ids' => implode("\n", $bookOrId)]));
+	}
+
+	public static function copyCoverFromBiblioman(Book $book) {
+		$internalCoverPath = self::getInternalContentFilePath('book-cover-content', $book->getId()).'.'.self::$bookCoverExtension;
+		$bibliomanCover = self::fetchBibliomanCover($book->getBibliomanId());
+		file_put_contents($internalCoverPath, $bibliomanCover);
+		self::clearCoverCache($book);
+	}
+
 }

@@ -1,0 +1,8 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field%}
+	{% if object.bibliomanId %}
+		<a href="//biblioman.chitanka.info/books/{{ object.bibliomanId }}" class="booksite">БМ {{ object.bibliomanId }}</a>
+	{% else %}
+		<a href="//biblioman.chitanka.info/books/?q=title%3A{{ object.title|url_encode }}">БМ</a>?
+	{% endif %}
+{% endblock %}

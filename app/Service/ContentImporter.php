@@ -1,15 +1,10 @@
 <?php namespace App\Service;
 
 use App\Entity\EntityManager;
-use App\Service\ContentService;
-use App\Service\TextService;
-use App\Util\File;
 use App\Util\Stringy;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ContentImporter {
-
-	public $bibliomanCoverUrlTemplate = 'https://biblioman.chitanka.info/books/ID.cover?size=600';
 
 	/**
 	 * @var EntityManager
@@ -227,7 +222,7 @@ class ContentImporter {
 		if (file_exists($coverFile)) {
 			$book['cover'] = $coverFile;
 		} else if (!empty($book['biblioman_id'])) {
-			file_put_contents($coverFile, file_get_contents(str_replace('ID', $book['biblioman_id'], $this->bibliomanCoverUrlTemplate)));
+			file_put_contents($coverFile, ContentService::fetchBibliomanCover($book['biblioman_id']));
 			$book['cover'] = $coverFile;
 		}
 		if (file_exists($dir = strtr($dataFile, ['.data' => ''])) && is_dir($dir)) {

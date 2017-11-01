@@ -1,0 +1,30 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+	{% if object.bibliomanId %}
+		<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Корица в Моята библиотека</div>
+					<div class="panel-body text-center">
+						<img src="{{ asset(object.hasCover ? cover(object.id, 300) : 'images/nocover.300.png') }}" alt="{{ object.id }}" width="300">
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Корица в Библиоман</div>
+					<div class="panel-body text-center">
+						<img src="//biblioman.chitanka.info/books/{{ object.bibliomanId }}.cover?size=300" alt="{{ object.id }}" width="300">
+					</div>
+				</div>
+			</div>
+		</div>
+		<form action="{{ admin.generateObjectUrl('updateCover', object) }}" method="post">
+			<button href="{{ admin.generateObjectUrl('updateCover', object) }}" class="btn btn-success update_cover_link">
+				<span class="fa fa-image"></span>
+				Копиране на корицата от Библиоман
+			</button>
+		</form>
+	{% endif %}
+{% endblock %}
