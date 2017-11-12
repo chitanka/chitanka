@@ -21,6 +21,10 @@ class BookController extends CRUDController {
 
 		if ($request->isMethod(Request::METHOD_POST)) {
 			ContentService::copyCoverFromBiblioman($object);
+			$object->setHasCover(true);
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($object);
+			$em->flush();
 
 			$this->addFlash('sonata_flash_success', "Корицата на „{$object}“ беше обновена.");
 
