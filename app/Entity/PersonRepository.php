@@ -54,9 +54,10 @@ class PersonRepository extends EntityRepository {
 
 	public function getQueryBuilder($orderBys = null) {
 		$qb = $this->getBaseQueryBuilder('e')
-			->select('e', 'p', 'c')
+			->select('e', 'p', 'c', 'pc')
 			->leftJoin('e.person', 'p')
-			->leftJoin('e.country', 'c');
+			->leftJoin('e.country', 'c')
+			->leftJoin('p.country', 'pc');
 		return $qb;
 	}
 
