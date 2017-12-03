@@ -260,7 +260,7 @@ class ContentImporter {
 		if ($value === '') {
 			return [];
 		}
-		if ($value == '-' || $value == '?') {
+		if ($value == '?') {
 			$value = null;
 		}
 		return [$var => $value];
