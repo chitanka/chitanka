@@ -134,36 +134,29 @@ class BookTemplate {
 	}
 
 	private static $headingRepl = [
-		'>' => [
+		'>>' => [
 			"\n>" => "\n>>",
 			"\n>>" => "\n>>>",
 			"\n>>>" => "\n>>>>",
 			"\n>>>>" => "\n>>>>>",
 			"\n>>>>>" => "\n#",
 		],
-		'>>' => [
+		'>>>' => [
 			"\n>" => "\n>>>",
 			"\n>>" => "\n>>>>",
 			"\n>>>" => "\n>>>>>",
 			"\n>>>>" => "\n#",
 			"\n>>>>>" => "\n#",
 		],
-		'>>>' => [
+		'>>>>' => [
 			"\n>" => "\n>>>>",
 			"\n>>" => "\n>>>>>",
 			"\n>>>" => "\n#",
 			"\n>>>>" => "\n#",
 			"\n>>>>>" => "\n#",
 		],
-		'>>>>' => [
-			"\n>" => "\n>>>>>",
-			"\n>>" => "\n#",
-			"\n>>>" => "\n#",
-			"\n>>>>" => "\n#",
-			"\n>>>>>" => "\n#",
-		],
 		'>>>>>' => [
-			"\n>" => "\n#",
+			"\n>" => "\n>>>>>",
 			"\n>>" => "\n#",
 			"\n>>>" => "\n#",
 			"\n>>>>" => "\n#",
@@ -174,8 +167,12 @@ class BookTemplate {
 	/**
 	 * @param string $content
 	 * @param string $startHeading
+	 * @return string
 	 */
 	public static function replaceSfbHeadings($content, $startHeading) {
+		if (!isset(self::$headingRepl[$startHeading])) {
+			return $content;
+		}
 		return ltrim(strtr("\n".$content, self::$headingRepl[$startHeading]), "\n");
 	}
 
