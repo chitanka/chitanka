@@ -491,10 +491,10 @@ HTML;
 		if ($this->sfrequest->get('onlyAvailable')) {
 			$query->andWhere(
 				$query->expr()->orX(
-					'e.availableAt <= '.date('Y-m-d'),
+					'e.availableAt <= :maxAvailableAt',
 					'e.availableAt IS NULL'
 				)
-			);
+			)->setParameter('maxAvailableAt', date('Y-m-d'));
 		}
 		return $query;
 	}
