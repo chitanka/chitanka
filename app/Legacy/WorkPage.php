@@ -381,6 +381,14 @@ class WorkPage extends Page {
 	}
 
 	protected function buildContent() {
+		if (!$this->userCanParticipate() && !$this->sfrequest->query->get('user')) {
+			return <<<HTML
+	<div class="alert alert-danger">
+		<span class="fa fa-warning"></span>
+		Работното ателие е достъпно само за регистрирани потребители.
+	</div>
+HTML;
+		}
 		if ($this->viewList == 'listonly') {
 			return $this->makeWorkList();
 		}
@@ -1024,6 +1032,10 @@ EOS;
 			return true;
 		}
 		return $this->entry->belongsTo($this->user);
+	}
+
+	private function userCanParticipate() {
+		return $this->user->isAuthenticated();
 	}
 
 	private function userCanAddEntry() {
