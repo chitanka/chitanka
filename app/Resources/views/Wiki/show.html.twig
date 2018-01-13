@@ -35,7 +35,7 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% set scripts = ['vendor/js/jquery-ui-1.10.0.custom', 'vendor/js/reMarked', 'vendor/js/rangy-core-1.2.3', 'hallo', 'wiki_editor'] %}
+	{% set scripts = ['vendor/js/jquery-ui-1.10.0.custom', 'hallo', 'wiki_editor'] %}
 	<script>
 jQuery(function($) {
 	var $wikidata = $('.wikidata.editable:eq(0)');
@@ -62,9 +62,6 @@ jQuery(function($) {
 				dataType: 'script',
 				cache: true,
 				complete: function() {
-					if ( !window.rangy.initialized ) {
-						window.rangy.init();
-					}
 					loadWikiEditor($wikidata, $heading, editorOptions);
 				}
 			});

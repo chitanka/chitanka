@@ -2,21 +2,9 @@
 
 window.loadWikiEditor = function($editable, $heading, options) {
 	var $sourcebox = $editable.next(".markdown-source");
-	if ($sourcebox.length == 0) {
+	if ($sourcebox.length === 0) {
 		$sourcebox = $('<textarea class="markdown-source"></textarea>').hide().insertAfter($editable);
 	}
-
-	var getSource = function($editable) {
-		if (options.format != "md") {
-			return $.trim($editable.html()) + "\n";
-		}
-		var reMarker = new reMarked({
-			link_list: false,
-			h1_setext: false,
-			h2_setext: false
-		});
-		return reMarker.render($editable[0]) + "\n";
-	};
 
 	var savePage = function(summary, button) {
 		var params = {
@@ -37,7 +25,7 @@ window.loadWikiEditor = function($editable, $heading, options) {
 
 	var toggleSourceView = function(button) {
 		if ($sourcebox.is(":visible")) {
-			if (options.format == "md") {
+			if (options.format === "md") {
 				$editable.css({ opacity: 0.3 });
 				$.post(options.wiki_preview_path, {content: $sourcebox.val()}, function(response) {
 					$editable.html(response).css({ opacity: 1 });
@@ -46,10 +34,6 @@ window.loadWikiEditor = function($editable, $heading, options) {
 				$editable.html($sourcebox.val());
 			}
 		} else {
-			if ($.trim($sourcebox.val()) == "") {
-				var source = getSource($editable);
-				$sourcebox.val(source);
-			}
 			if ($sourcebox.val().match(/[| -]{120}/)) { // wide tables
 				$sourcebox.attr("wrap", "off");
 			} else {
