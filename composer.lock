@@ -12,19 +12,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/chitanka/sfb-converter.git",
-                "reference": "6ede6f415efcb40caf628cb6798f18249105b6f9"
+                "reference": "61dd35bff03d0e6f084c901e33b9d945780539f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chitanka/sfb-converter/zipball/6ede6f415efcb40caf628cb6798f18249105b6f9",
-                "reference": "6ede6f415efcb40caf628cb6798f18249105b6f9",
+                "url": "https://api.github.com/repos/chitanka/sfb-converter/zipball/61dd35bff03d0e6f084c901e33b9d945780539f7",
+                "reference": "61dd35bff03d0e6f084c901e33b9d945780539f7",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.1.*"
+                "php": ">=5.4.0"
             },
             "type": "library",
             "autoload": {
@@ -43,11 +40,11 @@
                 }
             ],
             "description": "SFB converter used by chitanka",
-            "homepage": "https://github.com/bmanolov/sfb-converter",
+            "homepage": "https://github.com/chitanka/sfb-converter",
             "keywords": [
                 "sfb"
             ],
-            "time": "2014-05-04 09:55:55"
+            "time": "2017-05-28T12:23:21+00:00"
         },
         {
             "name": "cocur/slugify",
@@ -1142,7 +1139,7 @@
                 "forum",
                 "threads"
             ],
-            "time": "2016-03-16 13:01:26"
+            "time": "2016-03-16T13:01:26+00:00"
         },
         {
             "name": "friendsofsymfony/rest-bundle",
@@ -1995,7 +1992,7 @@
                 "php",
                 "stylesheet"
             ],
-            "time": "2014-03-04 18:49:54"
+            "time": "2014-03-04T18:49:54+00:00"
         },
         {
             "name": "pagerfanta/pagerfanta",
@@ -2298,7 +2295,7 @@
                 "buzz",
                 "http client"
             ],
-            "time": "2013-07-11 13:03:01"
+            "time": "2013-07-11T13:03:01+00:00"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -2546,7 +2543,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2016-03-24 15:17:21"
+            "time": "2016-03-24T15:17:21+00:00"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -2820,7 +2817,7 @@
                 "generator",
                 "sonata"
             ],
-            "time": "2016-01-24 12:24:43"
+            "time": "2016-01-24T12:24:43+00:00"
         },
         {
             "name": "sonata-project/easy-extends-bundle",
@@ -2879,7 +2876,7 @@
                 "Easy Extends",
                 "sonata"
             ],
-            "time": "2015-12-02 22:24:42"
+            "time": "2015-12-02T22:24:42+00:00"
         },
         {
             "name": "sonata-project/exporter",
@@ -3006,7 +3003,7 @@
                 "sonata",
                 "time"
             ],
-            "time": "2016-02-20 16:29:57"
+            "time": "2016-02-20T16:29:57+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
