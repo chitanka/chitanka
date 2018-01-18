@@ -19,14 +19,13 @@
 		"sensio/distribution-bundle": "^5.0",
 		"sensio/framework-extra-bundle": "^3.0.2",
 		"sensio/buzz-bundle": "1.0.*@dev",
-		"incenteev/composer-parameter-handler": "^2.0",
 		"sonata-project/admin-bundle": "~2.4@dev",
 		"sonata-project/doctrine-orm-admin-bundle": "~2.4@dev",
 		"sonata-project/easy-extends-bundle": "~2.1@dev",
 		"sonata-project/intl-bundle": "~2.2@dev",
 		"friendsofsymfony/comment-bundle": "dev-master",
 		"white-october/pagerfanta-bundle": "^1.0",
-		"chitanka/sfb-converter": "dev-master",
+		"chitanka/sfb-converter": "^1.0",
 		"twbs/bootstrap": "3.3.*",
 		"oyejorge/less.php": "1.7.*@dev",
 		"fortawesome/font-awesome": "v4.5.0",
@@ -40,7 +39,6 @@
 	},
 	"scripts": {
 		"post-install-cmd": [
-			"Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
@@ -63,9 +61,6 @@
 		"symfony-bin-dir": "bin",
 		"symfony-var-dir": "var",
 		"symfony-web-dir": "web",
-		"symfony-assets-install": "relative",
-		"incenteev-parameters": {
-			"file": "app/config/parameters.yml"
-		}
+		"symfony-assets-install": "relative"
 	}
 }
