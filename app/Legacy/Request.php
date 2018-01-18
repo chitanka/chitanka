@@ -11,8 +11,8 @@ class Request {
 	private $params = [];
 
 	public function __construct() {
-		/** Timelife for cookies */
-		$this->cookieExp = time() + 86400 * 30; // 30 days
+		/** Life time for cookies */
+		$this->cookieExp = time() + 86400 * 300; // 300 days
 	}
 
 	/**
