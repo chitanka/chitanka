@@ -4,7 +4,7 @@
 	<div class="subheader">{{ book.titleextra|nl2br|raw }}</div>
 {% endif %}
 
-	<div class="media book-media book-media-single" itemscope itemtype="http://schema.org/Book">
+	<div class="media book-media book-media-single {% if book.removedNotice is not empty %}book-is-removed{% endif %}" itemscope itemtype="http://schema.org/Book">
 		<div class="pull-left">
 			{{ booktools.cover_div(book, 250) }}
 		</div>

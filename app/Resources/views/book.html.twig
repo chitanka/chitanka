@@ -76,9 +76,7 @@
 		{% else %}
 			<img class="media-object" src="{{ asset(cover(0, width, 'png')) }}" alt="Корица" itemprop="image" width="{{ width }}">
 		{% endif %}
-		{% if book.removedNotice is empty %}
-			<div class="download-links">{{ _self.download_links(book) }}</div>
-		{% endif %}
+		<div class="download-links">{{ _self.download_links(book) }}</div>
 	</div>
 {% endmacro %}
 
