@@ -4,7 +4,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class LoginPage extends RegisterPage {
 
-	const MAX_LOGIN_TRIES = 50;
+	const MAX_LOGIN_TRIES = 20;
 
 	protected $action = 'login';
 	private $remember;
