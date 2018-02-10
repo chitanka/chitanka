@@ -5,6 +5,7 @@ use App\Entity\TextComment;
 use App\Pagination\Pager;
 use App\Util\Date;
 use App\Util\Stringy;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class CommentPage extends Page {
 
@@ -54,6 +55,9 @@ class CommentPage extends Page {
 	}
 
 	protected function processSubmission() {
+		if (!$this->canPost()) {
+			throw new AccessDeniedHttpException("Само регистрирани потребители могат да дават коментари.");
+		}
 		if ( empty($this->reader) || empty($this->comment) ) {
 			$this->addMessage('Попълнете всички полета!', true);
 			if ($this->sfrequest->isXmlHttpRequest()) {
@@ -168,7 +172,7 @@ class CommentPage extends Page {
 			$this->processCommentDbRow($result);
 		}
 		if ( empty($this->acomments) ) {
-			return $this->includeCommentForm ? $this->makeNewCommentLink() : '';
+			return $this->includeCommentForm && $this->canPost() ? $this->makeNewCommentLink() : '';
 		}
 		// TODO правилна инициализация на дървото, ако се почва някъде от средата
 		if ( empty($this->acommentsTree) ) {
@@ -176,7 +180,7 @@ class CommentPage extends Page {
 		}
 		$this->putNr = true;
 		$this->makeCommentsAsTree($this->acommentsTree);
-		$newcommentlink = empty($this->replyto) && $this->includeCommentForm ? $this->makeNewCommentLink() : '';
+		$newcommentlink = empty($this->replyto) && $this->includeCommentForm && $this->canPost() ? $this->makeNewCommentLink() : '';
 		return
 			$newcommentlink
 			. '<div id="readercomments" style="clear:both">'. $this->comments . '</div>'
@@ -285,6 +289,9 @@ EOS;
 	private function makeForm() {
 		if ( empty($this->work) ) {
 			return '';
+		}
+		if (!$this->canPost()) {
+			return '<p class="alert alert-warning">Само регистрирани потребители могат да дават коментари.</p>';
 		}
 		return $this->makeEditForm();
 	}
@@ -470,4 +477,7 @@ EOS;
 		return true;
 	}
 
+	private function canPost() {
+		return $this->user->isAuthenticated();
+	}
 }
