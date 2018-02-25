@@ -48,10 +48,4 @@ class MainController extends Controller {
 		return $this->redirectToRoute($route, []);
 	}
 
-	public function siteboxAction() {
-		return $this->render('App:Main:sitebox.html.twig', [
-			'site' => $this->em()->getSiteRepository()->getRandom()
-		]);
-	}
-
 }

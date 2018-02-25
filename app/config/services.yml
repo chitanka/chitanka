@@ -100,14 +100,6 @@ services:
         calls:
             - [setMaxPerPage, [%admin_max_per_page%]]
 
-    admin.site:
-        class: App\Admin\SiteAdmin
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.site }
-        arguments: [null, App\Entity\Site, App:Admin\CRUD]
-        calls:
-            - [setMaxPerPage, [%admin_max_per_page%]]
-
     admin.book_site:
         class: App\Admin\BookSiteAdmin
         tags:
