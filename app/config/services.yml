@@ -100,39 +100,6 @@ services:
         calls:
             - [setMaxPerPage, [%admin_max_per_page%]]
 
-    admin.featured_book:
-        class: App\Admin\FeaturedBookAdmin
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.featured_book }
-        arguments: [null, App\Entity\FeaturedBook, App:Admin\CRUD]
-        calls:
-            - [setMaxPerPage, [%admin_max_per_page%]]
-
-    admin.foreign_book:
-        class: App\Admin\ForeignBookAdmin
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.foreign_book }
-        arguments: [null, App\Entity\ForeignBook, App:Admin\CRUD]
-        calls:
-            - [setMaxPerPage, [%admin_max_per_page%]]
-
-    admin.foreign_book_for_publisher:
-        class: App\Admin\ForeignBookForPublisherAdmin
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: library_publisher, label: admin.foreign_book_for_publisher }
-        arguments: [null, App\Entity\ForeignBook, App:Admin\ForeignBookForPublisher]
-        calls:
-            - [setMaxPerPage, [%admin_max_per_page%]]
-            - [setTokenStorage, ["@security.token_storage"]]
-
-    admin.publisher:
-        class: App\Admin\PublisherAdmin
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.publisher }
-        arguments: [null, App\Entity\Publisher, App:Admin\CRUD]
-        calls:
-            - [setMaxPerPage, [%admin_max_per_page%]]
-
     admin.site:
         class: App\Admin\SiteAdmin
         tags:

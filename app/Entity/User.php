@@ -25,7 +25,6 @@ class User implements UserInterface, \JsonSerializable {
 	const GROUP_WORKROOM_MEMBER = 'workroom-member';
 	const GROUP_WORKROOM_SUPERVISOR = 'workroom-supervisor';
 	const GROUP_WORKROOM_ADMIN = 'workroom-admin';
-	const GROUP_FOREIGN_BOOK_PUBLISHER = 'foreign-book-publisher';
 	const GROUP_ADMIN = 'admin';
 	const GROUP_GOD = 'god';
 
@@ -96,7 +95,6 @@ class User implements UserInterface, \JsonSerializable {
 		self::GROUP_WORKROOM_MEMBER,
 		self::GROUP_WORKROOM_SUPERVISOR,
 		self::GROUP_WORKROOM_ADMIN,
-		self::GROUP_FOREIGN_BOOK_PUBLISHER,
 		self::GROUP_ADMIN,
 		self::GROUP_GOD,
 	];
@@ -144,12 +142,6 @@ class User implements UserInterface, \JsonSerializable {
 	 * @ORM\OneToMany(targetEntity="Bookmark", mappedBy="user", cascade={"persist"})
 	 */
 	private $bookmarks;
-
-	/**
-	 * @var Publisher
-	 * @ORM\ManyToOne(targetEntity="Publisher", inversedBy="users")
-	 */
-	private $publisher;
 
 	public function __construct() {
 		$this->touch();
@@ -280,20 +272,6 @@ class User implements UserInterface, \JsonSerializable {
 	 */
 	public function addBookmark($bookmark) { $this->bookmarks[] = $bookmark; }
 
-	/**
-	 * @return Publisher
-	 */
-	public function getPublisher() {
-		return $this->publisher;
-	}
-
-	/**
-	 * @param Publisher $publisher
-	 */
-	public function setPublisher($publisher) {
-		$this->publisher = $publisher;
-	}
-
 	public function getExtraStylesheets() {
 		return isset($this->opts['css']) ? $this->opts['css'] : [];
 	}
@@ -353,7 +331,6 @@ class User implements UserInterface, \JsonSerializable {
 			'registration' => $this->registration,
 			'touched' => $this->touched,
 			'token' => $this->token,
-			'publisher' => $this->publisher,
 		];
 	}
 

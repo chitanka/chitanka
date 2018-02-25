@@ -24,18 +24,6 @@
 		</ul>
 	</div>
 
-	{% if featured_books is defined and featured_books is not empty %}
-		<div id="mp-featured-book" class="special-books">
-			<h2><a href="{{ path('featured_books') }}">Препоръчани книги</a></h2>
-			{% for featured_book in featured_books %}
-				<section class="box box3 bookbox">
-					{% include 'App:FeaturedBook:book.html.twig' with {book: featured_book} %}
-				</section>
-			{% endfor %}
-		</div>
-		<div class="separator"></div>
-	{% endif %}
-
 	{% if books is defined %}
 		<section id="mp-new-books" class="box box2">
 			<h2><a href="{{ path('new_books') }}">Нови книги</a></h2>
@@ -56,18 +44,6 @@
 	{% endif %}
 
 	<div class="separator"></div>
-
-	{% if foreign_books is defined and foreign_books is not empty %}
-		<div id="mp-foreign-book" class="special-books">
-			<h2><a href="{{ path('foreign_books_index') }}">Издателска витрина</a></h2>
-			{% for foreign_book in foreign_books %}
-				<section class="box box3 bookbox">
-					{% include 'App:ForeignBook:book.html.twig' with {book: foreign_book} %}
-				</section>
-			{% endfor %}
-		</div>
-		<div class="separator"></div>
-	{% endif %}
 
 	{% if liter_posts is defined %}
 		<section id="mp-liternews" class="box liternewsbox">

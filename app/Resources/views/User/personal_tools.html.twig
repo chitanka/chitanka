@@ -12,9 +12,6 @@
 				{% if _user.inGroup('admin') %}
 					<li class="user-dashboard"><a href="{{ path('sonata_admin_dashboard') }}" title="Администрация"><span class="fa fa-gears"></span> Админ</a></li>
 				{% endif %}
-				{% if _user.inGroup('foreign-book-publisher') %}
-					<li class="user-foreign-book-publisher"><a href="{{ path('admin_foreign_book_for_publisher_list') }}" title="Книги от моето издателство"><span class="fa fa-book"></span> Моите книги</a></li>
-				{% endif %}
 				<li class="user-signout" title="Изход от библиотеката"><a href="{{ path('logout') }}"><span class="fa fa-sign-out"></span> Изход</a></li>
 			</ul>
 		</li>

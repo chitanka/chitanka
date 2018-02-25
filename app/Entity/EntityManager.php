@@ -42,10 +42,6 @@ class EntityManager {
 	public function getCategoryRepository() { return $this->getRepository('Category'); }
 	/** @return CountryRepository */
 	public function getCountryRepository() { return $this->getRepository('Country'); }
-	/** @return FeaturedBookRepository */
-	public function getFeaturedBookRepository() { return $this->getRepository('FeaturedBook'); }
-	/** @return ForeignBookRepository */
-	public function getForeignBookRepository() { return $this->getRepository('ForeignBook'); }
 	/** @return LabelRepository */
 	public function getLabelRepository() { return $this->getRepository('Label'); }
 	/** @return LanguageRepository */
@@ -54,8 +50,6 @@ class EntityManager {
 	public function getNextIdRepository() { return $this->getRepository('NextId'); }
 	/** @return PersonRepository */
 	public function getPersonRepository() { return $this->getRepository('Person'); }
-	/** @return PublisherRepository */
-	public function getPublisherRepository() { return $this->getRepository('Publisher'); }
 	/** @return SearchStringRepository */
 	public function getSearchStringRepository() { return $this->getRepository('SearchString'); }
 	/** @return SequenceRepository */

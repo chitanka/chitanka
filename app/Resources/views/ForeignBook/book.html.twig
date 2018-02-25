@@ -1,7 +1,0 @@
-<a href="{{ path('foreign_books_show', {id: book.id}) }}" class="adbook" data-edit="{{ path('admin_foreign_book_edit', {'id': book.id}) }}">
-	<img src="/{{ cover(book.coverPath, 120) }}" width="120" alt="{{ book.author }} — {{ book.title }}"><br>
-	{{ book.author }}<br>
-	<b style="font-variant: small-caps"><i>{{ book.title }}</i></b>
-</a>
-<br>
-<a href="{{ path('publishers_show', {slug: book.publisher.slug}) }}"><small title="Издател">{{ book.publisher.name }}</small></a>

@@ -628,25 +628,6 @@ message:
     path:     /message
     defaults: { _controller: App:Message:index }
 
-featured_books:
-    path:      /featured-books.{_format}
-    defaults: { _controller: App:FeaturedBook:index, _format: html }
-    requirements: { _format: html|json|rss }
-
-foreign_books:
-    path:      /foreign-books.{_format}
-    defaults: { _controller: App:ForeignBook:index, _format: html }
-    requirements: { _format: html|json|rss }
-
-foreign_book_list_by_publisher:
-    path:      /foreign-books/{publisher}.{_format}
-    defaults: { _controller: App:ForeignBook:listByPublisher, _format: html }
-    requirements: { _format: html|json|rss }
-
-reviews:
-    path:      /reviews
-    defaults: { _controller: App:Review:index }
-
 wiki_save:
     path:     /wiki/save
     defaults: { _controller: App:Wiki:save }

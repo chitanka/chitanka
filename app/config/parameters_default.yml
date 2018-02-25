@@ -111,10 +111,8 @@ parameters:
         workroom:
             icon: table
     main.sections:
-        - featured_books
         - books
         - texts
-        #- foreign_books
         #- liter_posts
         #- searches
         #- comments
