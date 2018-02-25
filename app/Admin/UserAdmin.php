@@ -20,7 +20,6 @@ class UserAdmin extends Admin {
 			->add('news')
 			->add('opts')
 			->add('token')
-			->add('publisher')
 		;
 	}
 
@@ -57,7 +56,6 @@ class UserAdmin extends Admin {
 			->add('news')
 			//->add('opts')
 			->add('token')
-			->add('publisher')
 			->end();
 	}
 

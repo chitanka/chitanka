@@ -132,8 +132,6 @@ sonata_admin:
                 roles: [ ROLE_ADMIN ]
             library_secondary:
                 roles: [ ROLE_ADMIN ]
-            library_publisher:
-                roles: [ ROLE_FOREIGN-BOOK-PUBLISHER ]
 
 sonata_doctrine_orm_admin:
     # default value is null, so doctrine uses the value defined in the configuration
