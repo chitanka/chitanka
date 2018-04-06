@@ -102,7 +102,11 @@ class TextController extends Controller {
 			case 'sfb.zip':
 				Setup::doSetup($this->container);
 				$service = new TextDownloadService($this->em()->getTextRepository());
-				return $this->urlRedirect($this->getWebRoot() . $service->generateFile(explode(',', $id), $_format, $request->get('filename')));
+				$ids = explode(',', $id);
+				if (count($ids) === 1) {
+					$this->findText($id);
+				}
+				return $this->urlRedirect($this->getWebRoot() . $service->generateFile($ids, $_format, $request->get('filename')));
 			case 'fb2':
 				Setup::doSetup($this->container);
 				return $this->asText($this->findText($id, true)->getContentAsFb2(), 'application/xml');
