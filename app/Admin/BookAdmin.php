@@ -3,11 +3,13 @@
 use App\Entity\Book;
 use App\Entity\BookRevision;
 use App\Entity\TextRepository;
+use App\Service\ContentService;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvents;
 
 class BookAdmin extends Admin {
@@ -158,6 +160,22 @@ class BookAdmin extends Admin {
 			->add('revision_comment', 'text', ['required' => false])
 			->add('removedNotice')
 			->end()->end();
+		$book = $this->getSubject(); /* @var $book Book */
+		$coverHtml = '';
+		if ($book->hasCover()) {
+			$coverHtml .= '<img src="/' . ContentService::getCover($book->getId(), 300) . '">';
+		}
+		if ($book->getBibliomanId()) {
+			$coverHtml .= '<br><br><a href="'.$this->generateObjectUrl('updateCover', $book).'" class="btn btn btn-info update_cover_link" title="Копиране на корицата от Библиоман"><span class="fa fa-image"></span> Корица от БМ</a>';
+		}
+		if (!empty($coverHtml)) {
+			$formMapper->tab('Cover')->with('')
+				->add('cover', TextType::class, [
+					'help' => $coverHtml,
+					'disabled' => true,
+				])
+				->end()->end();
+		}
 		$formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'fixNewLines']);
 	}
 
