@@ -60,7 +60,7 @@
 			{{ _self.download_link(book, "pic", "Преглед в галерия") }}
 		{% endif %}
 		{% if book.bibliomanId is not empty %}
-			<a href="{{ biblioman_url(book.bibliomanId) }}" class="btn btn-default dl biblioman-link" title="Запис за книгата в Библиоман"><span class="sr-only">Библиоман</span></a>
+			<a href="{{ biblioman_url(book.bibliomanId) }}" target="_blank" class="btn btn-default dl biblioman-link" title="Запис за книгата в Библиоман"><span class="sr-only">Библиоман</span></a>
 		{% endif %}
 	</div>
 {% endmacro %}
