@@ -1012,9 +1012,8 @@ EOS;
 			foreach ($matches as $match) {
 				list($row, $command, $filename) = $match;
 				$content = ContentService::getContentFile('text', $filename);
-				if (strlen($command) > 1) {
-					$normalizedCommand = substr($command, 1);
-					$content = Content\BookTemplate::replaceSfbHeadings($content, $normalizedCommand);
+				if ($command) {
+					$content = Content\BookTemplate::replaceSfbHeadings($content, $command);
 				}
 				$template = str_replace($row, $content, $template);
 			}
