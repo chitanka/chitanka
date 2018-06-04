@@ -25,7 +25,7 @@ abstract class BaseWork extends Entity {
 	protected static $annotationDir = 'anno';
 	protected static $infoDir = 'info';
 
-	protected $hasTitleNote = false;
+	protected $hasTitleNote;
 
 	public function getDocId() {
 		return 'http://chitanka.info';
