@@ -25,11 +25,15 @@ class UserController extends Controller {
 	 * @Route("/user/close-account", name="user_close_account")
 	 */
 	public function closeAccountAction(Request $request) {
+		$user = $this->getUser();
+		if ($user->isAnonymous()) {
+			return $this->redirectToRoute('login');
+		}
 		$form = $this->createFormBuilder()->getForm();
 		$form->handleRequest($request);
 		if ($form->isSubmitted()) {
 			$system = new System($this->em());
-			if ($system->closeUserAccount($this->getSavableUser())) {
+			if ($system->closeUserAccount($user)) {
 				return $this->redirectWithNotice('Профилът ви беше закрит.');
 			}
 			$this->flashes()->addError('Действието не успя да бъде извършено. Изчакайте малко и опитайте отново.');
