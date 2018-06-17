@@ -1,7 +1,9 @@
 <?php namespace App\Controller;
 
 use App\Pagination\Pager;
+use App\Service\System;
 use App\Service\UserService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller {
@@ -17,6 +19,24 @@ class UserController extends Controller {
 			'_user' => $this->getUser(),
 			'_cache' => 0,
 		]);
+	}
+
+	/**
+	 * @Route("/user/close-account", name="user_close_account")
+	 */
+	public function closeAccountAction(Request $request) {
+		$form = $this->createFormBuilder()->getForm();
+		$form->handleRequest($request);
+		if ($form->isSubmitted()) {
+			$system = new System($this->em());
+			if ($system->closeUserAccount($this->getSavableUser())) {
+				return $this->redirectWithNotice('Профилът ви беше закрит.');
+			}
+			$this->flashes()->addError('Действието не успя да бъде извършено. Изчакайте малко и опитайте отново.');
+		}
+		return [
+			'form' => $form->createView(),
+		];
 	}
 
 	public function showAction($username) {

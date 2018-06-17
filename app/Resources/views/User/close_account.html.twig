@@ -1,0 +1,15 @@
+{% extends 'App::layout.html.twig' %}
+
+{% set title = 'Закриване на профил' %}
+{% block content %}
+	<p class="alert alert-warning"><span class="fa fa-warning"></span> На път сте да закриете профила си в „{{ sitename }}“. Действието е необратимо, затова помислете хубаво, преди да го извършите.</p>
+	{{ form_start(form) }}
+	<button type="submit" class="btn btn-danger" style="display: block; font-size: 200%; letter-spacing: 1px; margin: 2em auto; padding: 1em 2em; text-transform: uppercase">
+		<span class="fa-stack">
+			<span class="fa fa-user fa-stack-1x" style="color: orange"></span>
+			<span class="fa fa-ban fa-stack-2x"></span>
+		</span>
+		Закриване на профила
+	</button>
+	{{ form_end(form) }}
+{% endblock %}

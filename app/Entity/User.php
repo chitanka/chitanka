@@ -130,6 +130,12 @@ class User implements UserInterface, \JsonSerializable {
 	private $touched;
 
 	/**
+	 * @var \DateTime
+	 * @ORM\Column(type="datetime")
+	 */
+	private $closedAt;
+
+	/**
 	 * Token used to access private user lists, e.g. read texts
 	 *
 	 * @var string
@@ -266,6 +272,9 @@ class User implements UserInterface, \JsonSerializable {
 
 	public function setToken($token) { $this->token = $token; }
 	public function getToken() { return $this->token; }
+
+	public function setClosedAt(\DateTime $closedAt = null) { $this->closedAt = $closedAt ?: new \DateTime(); }
+	public function getClosedAt() { return $this->closedAt; }
 
 	/**
 	 * @param Bookmark $bookmark
@@ -642,4 +651,10 @@ class User implements UserInterface, \JsonSerializable {
 		];
 	}
 
+	public function closeAccount() {
+		$this->setClosedAt();
+		$this->setUsername('__CLOSED__'.$this->getUsername());
+		$this->setEmail('__CLOSED__'.$this->getEmail());
+		$this->logout();
+	}
 }

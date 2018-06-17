@@ -160,6 +160,12 @@ class SettingsPage extends RegisterPage {
 		</div>
 	</div>
 </form>
+
+<hr>
+
+<div class="text-center" style="margin: 5em 0">
+	<a href="{$this->controller->generateUrlForLegacyCode('user_close_account')}" class="btn btn-danger">Закриване на профила</a>
+</div>
 EOS;
 	}
 
