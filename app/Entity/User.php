@@ -131,7 +131,7 @@ class User implements UserInterface, \JsonSerializable {
 
 	/**
 	 * @var \DateTime
-	 * @ORM\Column(type="datetime")
+	 * @ORM\Column(type="datetime", nullable=true)
 	 */
 	private $closedAt;
 
