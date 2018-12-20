@@ -51,7 +51,7 @@ class Number {
 		$val = trim($val);
 		$lastChar = strtolower($val[strlen($val)-1]);
 		if (isset(self::$phpIniSuffixValues[$lastChar])) {
-			return $val << self::$phpIniSuffixValues[$lastChar];
+			return substr($val, 0, -1) << self::$phpIniSuffixValues[$lastChar];
 		}
 		return $val;
 	}
