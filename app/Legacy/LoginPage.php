@@ -1,5 +1,6 @@
 <?php namespace App\Legacy;
 
+use App\Service\RocketChatClient;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class LoginPage extends RegisterPage {
@@ -70,8 +71,7 @@ class LoginPage extends RegisterPage {
 		if ( ! empty( $this->returnto ) ) {
 			$this->returnto .= (strpos($this->returnto, '?') === false ? '?' : '&amp;') . 'cache='.time();
 		}
-		return <<<EOS
-
+		$output = <<<EOS
 <style>
 .form-signin {
 	margin: 1em auto 3em;
@@ -123,8 +123,13 @@ class LoginPage extends RegisterPage {
 		Можете да се <a href="{$this->controller->generateUrlForLegacyCode('register')}" class="btn btn-default">регистрирате</a> за секунди, ако все още не сте го направили.
 	</div>
 </div>
-
 EOS;
+		if ($rocketchatUrl = $this->sfrequest->get('rocketchat')) {
+			$rocketchatClient = new RocketChatClient($rocketchatUrl);
+			$user = $this->controller->getUser();
+			$output .= $rocketchatClient->generatePostMessageScript($user->getUsername(), $user->getToken(), $user->getEmail());
+		}
+		return $output;
 	}
 
 }
