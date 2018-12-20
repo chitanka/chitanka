@@ -28,10 +28,9 @@ class WorkPage extends Page {
 
 	private $tabs = ['Самостоятелна подготовка', 'Работа в екип'];
 	private $tabImgs = ['fa fa-user singleuser', 'fa fa-users multiuser'];
-	private $tabImgAlts = ['сам', 'екип'];
 	private $statuses = [
-		WorkEntry::STATUS_0 => 'Планира се',
-		WorkEntry::STATUS_1 => 'Сканира се',
+//		WorkEntry::STATUS_0 => 'Планира се',
+//		WorkEntry::STATUS_1 => 'Сканира се',
 		WorkEntry::STATUS_2 => 'За корекция',
 		WorkEntry::STATUS_3 => 'Коригира се',
 		WorkEntry::STATUS_4 => 'Иска се SFB',
