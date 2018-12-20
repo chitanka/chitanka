@@ -1,5 +1,5 @@
 {% macro printExtraInfo(info) %}
-	<span class="popover-trigger" data-content="{{ info }}"><span class="fa fa-info-circle"></span><span class="sr-only">Инфо</span></span>
+	<span class="popover-trigger" data-content="{{ info|escape }}"><span class="fa fa-info-circle"></span><span class="sr-only">Инфо</span></span>
 {% endmacro %}
 
 {% macro printFileLink(file) %}

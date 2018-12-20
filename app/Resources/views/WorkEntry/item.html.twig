@@ -15,19 +15,28 @@
 </td>
 <td>
 	{% set commentPlusExtraStuff %}
-		<ul>
-			<li><b>№ в Библиоман:</b> {{ entry.isMissingBibliomanId ? 'липсва' : entry.bibliomanId }}</li>
-			{% if entry.publisher is not empty %}
-				<li><b>Издател:</b> {{ entry.publisher }}</li>
-			{% endif %}
-			{% if entry.pubYear is not empty %}
-				<li><b>Година:</b> {{ entry.pubYear }}</li>
-			{% endif %}
-			{% if not entry.isAvailable %}
-				<li><b>Дата на достъп:</b> {{ entry.availableAt('d.m.Y') }}</li>
-			{% endif %}
-		</ul>
-		{{ entry.comment }}
+		<div class="media">
+			<div class="pull-left" style="min-height:220px">
+				{% if entry.bibliomanId > 0 %}
+					<img src="https://biblioman.chitanka.info/books/{{ entry.bibliomanId }}.cover?size=150" style="width:150px">
+				{% endif %}
+			</div>
+			<div class="media-body">
+				<ul>
+					<li><b>№ в Библиоман:</b> {{ entry.isMissingBibliomanId ? 'липсва' : entry.bibliomanId }}</li>
+					{% if entry.publisher is not empty %}
+						<li><b>Издател:</b> {{ entry.publisher }}</li>
+					{% endif %}
+					{% if entry.pubYear is not empty %}
+						<li><b>Година:</b> {{ entry.pubYear }}</li>
+					{% endif %}
+					{% if not entry.isAvailable %}
+						<li><b>Дата на достъп:</b> {{ entry.availableAt('d.m.Y') }}</li>
+					{% endif %}
+				</ul>
+				{{ entry.comment }}
+			</div>
+		</div>
 	{% endset %}
 	{{ _.printExtraInfo(commentPlusExtraStuff) }}
 </td>

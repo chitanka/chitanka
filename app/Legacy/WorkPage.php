@@ -618,7 +618,11 @@ $helpTop
 					<input class="form-control" name="bibliomanId" id="bibliomanId" value="{$entry->getBibliomanId()}">
 				</div>
 				<div class="col-sm-8">
-					<a href="//biblioman.chitanka.info/books/{$entry->getBibliomanId()}" class="bibliomanUrl"><span class="fa fa-link"></span></a>
+EOS
+			.($entry->getBibliomanId() ?
+			"<a href=\"https://biblioman.chitanka.info/books/{$entry->getBibliomanId()}\" class=\"bibliomanUrl\" target=\"_blank\"><img src=\"https://biblioman.chitanka.info/books/{$entry->getBibliomanId()}.cover?size=150\" style=\"width:150px\"></a>"
+			: '').
+			<<<EOS
 				</div>
 			</div>
 			<div class="form-group">
