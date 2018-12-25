@@ -3,12 +3,25 @@
 class RocketChatClient {
 
 	private $chatUrl;
+	private $authToken;
+	private $userId;
+	private $postChannel;
 
 	/**
 	 * @param string $chatUrl
+	 * @param string $authToken
+	 * @param string $userId
+	 * @param string $postChannel
 	 */
-	public function __construct($chatUrl) {
+	public function __construct($chatUrl, $authToken = null, $userId = null, $postChannel = null) {
 		$this->chatUrl = $chatUrl;
+		$this->authToken = $authToken;
+		$this->userId = $userId;
+		$this->postChannel = $postChannel ?: '#general';
+	}
+
+	public function canPost() {
+		return $this->chatUrl && $this->authToken && $this->userId;
 	}
 
 	/**
@@ -26,6 +39,10 @@ window.parent.postMessage({
 	loginToken: ".json_encode($loginToken)."
 }, ".json_encode($this->chatUrl).");
 </script>";
+	}
+
+	public function postMessage($message, $channel = null) {
+		return $this->sendAuthenticatedRequest('chat.postMessage', ['channel' => $channel ?: $this->postChannel, 'text' => $message]);
 	}
 
 	protected function normalizeUsername($name) {
@@ -50,19 +67,26 @@ window.parent.postMessage({
 	}
 
 	private function sendLoginRequest($username, $password) {
-		return $this->sendChatRequest('login', ['user' => $this->normalizeUsername($username), 'password' => $password]);
+		return $this->sendRequest('login', ['user' => $this->normalizeUsername($username), 'password' => $password]);
 	}
 
 	private function sendRegisterRequest($username, $password, $email) {
-		return $this->sendChatRequest('users.register', ['username' => $this->normalizeUsername($username), 'email' => $email, 'pass' => $password, 'name' => $username]);
+		return $this->sendRequest('users.register', ['username' => $this->normalizeUsername($username), 'email' => $email, 'pass' => $password, 'name' => $username]);
 	}
 
-	private function sendChatRequest($path, $assocData) {
+	private function sendAuthenticatedRequest($path, $assocData) {
+		return $this->sendRequest($path, $assocData, [
+			"X-Auth-Token: {$this->authToken}",
+			"X-User-Id: {$this->userId}",
+		]);
+	}
+
+	private function sendRequest($path, $assocData, $headers = []) {
 		$url = "{$this->chatUrl}/api/v1/{$path}";
 		$options = [
 			'http' => [
 				'ignore_errors' => true,
-				'header' => 'Content-Type: application/json',
+				'header' => implode("\r\n", array_merge(['Content-Type: application/json'], $headers)),
 				'method' => 'POST',
 				'content' => json_encode($assocData)
 			]
