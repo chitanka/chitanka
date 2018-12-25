@@ -3,6 +3,7 @@
 use App\Entity\Text;
 use App\Entity\TextComment;
 use App\Pagination\Pager;
+use App\Service\RocketChatClient;
 use App\Util\Date;
 use App\Util\Stringy;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -110,10 +111,11 @@ class CommentPage extends Page {
 		if ($showComment) {
 			$this->db->query(sprintf('UPDATE %s SET comment_count = comment_count + 1 WHERE id = %d', DBT_TEXT, $this->textId));
 
-			// TODO rewrite
-			if (!preg_match('/^(127|192)/', $comment->getIp())) {
-				$chatMsg = sprintf('Нов [url=http://chitanka.info/text/%d/comments#e%d]читателски коментар[/url] от [b]%s[/b] за „%s“', $this->textId, $comment->getId(), $this->reader, $this->work->getTitle());
-				Legacy::getFromUrl('http://forum.chitanka.info/chat/post.php', ['m' => $chatMsg]);
+			// post the message to rocketchat
+			$rocketChatClient = $this->container->get('rocketchat_client'); /* @var $rocketChatClient RocketChatClient */
+			if ($rocketChatClient->canPost()) {
+				$postForRocketChat = sprintf('Нов [читателски коментар](//chitanka.info/text/%d/comments#e%d) от **%s** за _[%s](//chitanka.info/text/%d)_', $this->textId, $comment->getId(), $this->reader, $this->work->getTitle(), $this->textId);
+				$rocketChatClient->postMessage($postForRocketChat);
 			}
 		}
 		if (!$this->sfrequest->isXmlHttpRequest()) {
