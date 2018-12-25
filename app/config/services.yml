@@ -26,6 +26,10 @@ services:
         class: App\Service\MediawikiClient
         arguments: ["@buzz"]
 
+    rocketchat_client:
+        class: App\Service\RocketChatClient
+        arguments: [%rocketchat.url%, %rocketchat.auth_token%, %rocketchat.user_id%, %rocketchat.notifications_channel%]
+
     admin.person:
         class: App\Admin\PersonAdmin
         tags:

@@ -54,6 +54,12 @@ parameters:
     biblioman_url: //biblioman.chitanka.info/books/$1
     wiki_url: http://wiki.chitanka.info/$1
 
+    # used for posting of notifications to a rocket.chat instance
+    rocketchat.url: ~
+    rocketchat.notifications_channel: ~ # here we will post our notifications
+    rocketchat.auth_token: ~
+    rocketchat.user_id: ~
+
     mirror_sites: ~
 
     global_info_message: Това е огледало на <a href="http://chitanka.info">Моята библиотека</a>.
