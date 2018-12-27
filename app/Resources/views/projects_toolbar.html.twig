@@ -11,7 +11,7 @@
 	<div class="collapse navbar-collapse" id="project-links-navbar">
 		<ul class="nav nav-justified">
 			{% for project_link, project_name in project_links %}
-				<li><a href="{{ project_link }}">{{ project_name }}</a></li>
+				<li id="project-link-{{ project_name }}"><a href="{{ project_link }}">{{ project_name }}</a></li>
 			{% endfor %}
 		</ul>
 	</div>
