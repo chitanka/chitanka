@@ -18,7 +18,9 @@ class WorkroomController extends Controller {
 		$_REQUEST['status'] = $status;
 		$_REQUEST['page'] = $page;
 
-		return $this->legacyPage('Work');
+		return $this->legacyPage('Work', [
+			'_controller' => 'Workroom:index',
+		]);
 	}
 
 	public function listAction() {
@@ -29,12 +31,6 @@ class WorkroomController extends Controller {
 
 	public function listContributorsAction() {
 		$_REQUEST['vl'] = 'contrib';
-
-		return $this->legacyPage('Work');
-	}
-
-	public function showAction($id) {
-		$_REQUEST['id'] = $id;
 
 		return $this->legacyPage('Work');
 	}
@@ -51,11 +47,13 @@ class WorkroomController extends Controller {
 	public function createAction() {
 		return $this->legacyPage('Work');
 	}
-	public function editAction($id) {
-		$_REQUEST['id'] = $id;
+	public function editAction(WorkEntry $entry) {
+		$_REQUEST['id'] = $entry->getId();
 		$_REQUEST['status'] = 'edit';
-
-		return $this->legacyPage('Work');
+		return $this->legacyPage('Work', [
+			'entry' => $entry,
+			'_controller' => 'Workroom:show',
+		]);
 	}
 	public function updateAction() {
 		return $this->legacyPage('Work');
