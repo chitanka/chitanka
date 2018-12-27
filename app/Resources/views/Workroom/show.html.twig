@@ -15,7 +15,7 @@
 	} %}
 	{% if entry.bibliomanId > 0 %}
 		{% set opengraph = opengraph|merge({
-			'image': 'https://biblioman.chitanka.info/books/'~entry.bibliomanId~'.jpg?size=300',
+			'image': 'https://biblioman.chitanka.info/books/'~entry.bibliomanId~'.cover?size=300',
 			'image:alt': 'Корица',
 			'image:width': 300
 		}) %}
