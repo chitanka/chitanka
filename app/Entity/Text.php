@@ -11,6 +11,7 @@ use App\Util\File;
 use App\Util\Stringy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Sfblib\SfbConverter;
 use Sfblib\SfbToHtmlConverter;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -1032,13 +1033,21 @@ EOS;
 	}
 
 	public function getExtraInfoForDownload() {
-		$info = "\t\$source = Моята библиотека\n"
-			. "\t\$id = {$this->getId()}\n";
+		$rows = [];
+		$rows[] = "\$id = {$this->getId()}";
 		foreach ($this->getBooks() as $book) {
-			$info .= "\t\$book_id = {$book->getId()}\n";
+			$rows[] = "\$book_id = {$book->getId()}";
 		}
-		$info .= "\n" . $this->getFullExtraInfo();
-		return $info;
+		$rows[] = "Източник: Моята библиотека / {$this->getDocId()}";
+		if ($this->getSource()) {
+			$rows[] = "Оригинален източник: {$this->getSource()}";
+		}
+		foreach ($this->getUserContribs() as $userContrib) {
+			$rows[] = rtrim("{$userContrib->getComment()}: {$userContrib->getUsername()}, {$userContrib->getHumandate()}", ' ,');
+		}
+		return SfbConverter::CMD_DELIM.implode(SfbConverter::EOL.SfbConverter::CMD_DELIM, $rows) . SfbConverter::EOL
+			. SfbConverter::CMD_DELIM . SfbConverter::LINE . SfbConverter::EOL
+			. $this->getFullExtraInfo();
 	}
 
 	public function getContentAsFb2() {
