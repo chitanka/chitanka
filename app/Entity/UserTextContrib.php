@@ -104,7 +104,7 @@ class UserTextContrib extends Entity implements \JsonSerializable {
 	public function getHumandate() { return $this->humandate; }
 
 	public function __toString() {
-		return sprintf('%s: %s (%s, %s%%)', $this->getComment(), $this->getUser(), $this->getHumandate(), $this->getPercent());
+		return rtrim("{$this->getComment()}: {$this->getUsername()}, {$this->getHumandate()}", ' ,');
 	}
 
 	/**

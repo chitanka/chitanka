@@ -1043,7 +1043,7 @@ EOS;
 			$rows[] = "Оригинален източник: {$this->getSource()}";
 		}
 		foreach ($this->getUserContribs() as $userContrib) {
-			$rows[] = rtrim("{$userContrib->getComment()}: {$userContrib->getUsername()}, {$userContrib->getHumandate()}", ' ,');
+			$rows[] = $userContrib;
 		}
 		return SfbConverter::CMD_DELIM.implode(SfbConverter::EOL.SfbConverter::CMD_DELIM, $rows) . SfbConverter::EOL
 			. SfbConverter::CMD_DELIM . SfbConverter::LINE . SfbConverter::EOL
