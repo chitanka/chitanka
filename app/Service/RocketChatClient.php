@@ -48,6 +48,13 @@ window.parent.postMessage({
 </script>";
 	}
 
+	public function postMessageIfAble($message, $channel = null) {
+		if ($this->canPost()) {
+			return $this->postMessage($message, $channel);
+		}
+		return null;
+	}
+
 	public function postMessage($message, $channel = null) {
 		return $this->sendAuthenticatedRequest('chat.postMessage', ['channel' => $channel ?: $this->postChannel, 'text' => $message]);
 	}

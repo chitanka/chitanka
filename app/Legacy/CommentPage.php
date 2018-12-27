@@ -110,13 +110,7 @@ class CommentPage extends Page {
 		$em->flush();
 		if ($showComment) {
 			$this->db->query(sprintf('UPDATE %s SET comment_count = comment_count + 1 WHERE id = %d', DBT_TEXT, $this->textId));
-
-			// post the message to rocketchat
-			$rocketChatClient = $this->container->get('rocketchat_client'); /* @var $rocketChatClient RocketChatClient */
-			if ($rocketChatClient->canPost()) {
-				$postForRocketChat = sprintf('Нов [читателски коментар](//chitanka.info/text/%d/comments#e%d) от **%s** за _[%s](//chitanka.info/text/%d)_', $this->textId, $comment->getId(), $this->reader, $this->work->getTitle(), $this->textId);
-				$rocketChatClient->postMessage($postForRocketChat);
-			}
+			$this->notifyRocketchatAboutComment($comment);
 		}
 		if (!$this->sfrequest->isXmlHttpRequest()) {
 			$this->addMessage('Мнението ви беше получено.');
@@ -127,6 +121,12 @@ class CommentPage extends Page {
 		$this->replyto = $this->comment = '';
 		$this->clearCaptchaQuestion();
 		return $this->buildContent();
+	}
+
+	private function notifyRocketchatAboutComment(TextComment $comment) {
+		$rocketChatClient = $this->container->get('rocketchat_client'); /* @var $rocketChatClient RocketChatClient */
+		$postForRocketChat = sprintf('Нов [читателски коментар](//chitanka.info/text/%d/comments#e%d) от **%s** за _[%s](//chitanka.info/text/%d)_', $this->textId, $comment->getId(), $this->reader, $this->work->getTitle(), $this->textId);
+		$rocketChatClient->postMessageIfAble($postForRocketChat);
 	}
 
 	protected function buildContent() {
