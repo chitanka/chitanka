@@ -190,7 +190,10 @@ abstract class Controller extends SymfonyController {
 		return $this->generateUrl($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
 	}
 
-	public function generateUrlForLegacyCode($route, $parameters = []) {
+	public function generateUrlForLegacyCode($route, $parameters = [], $iAbsolute = false) {
+		if ($iAbsolute) {
+			return $this->generateAbsoluteUrl($route, $parameters);
+		}
 		return $this->generateUrl($route, $parameters);
 	}
 
