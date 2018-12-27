@@ -126,6 +126,8 @@ class LoginPage extends RegisterPage {
 EOS;
 		if ($this->sfrequest->get('rocketchat')) {
 			$rocketchatClient = $this->container->get('rocketchat_client'); /* @var $rocketchatClient RocketChatClient */
+			// allow chat calls through both http and https
+			$rocketchatClient->changeUrlScheme($this->sfrequest->getScheme());
 			$user = $this->controller->getUser();
 			$output .= $rocketchatClient->generatePostMessageScript($user->getUsername(), $user->getToken(), $user->getEmail());
 		}

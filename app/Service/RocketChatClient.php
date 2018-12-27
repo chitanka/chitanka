@@ -24,6 +24,10 @@ class RocketChatClient {
 		return $this->chatUrl && $this->authToken && $this->userId;
 	}
 
+	public function changeUrlScheme($newScheme) {
+		$this->chatUrl = preg_replace('#^\w+://#', "$newScheme://", $this->chatUrl);
+	}
+
 	/**
 	 * @param string $username
 	 * @param string $password
@@ -32,6 +36,9 @@ class RocketChatClient {
 	 */
 	public function generatePostMessageScript($username, $password, $email) {
 		$loginToken = $this->fetchLoginToken($username, $password, $email);
+		if (empty($loginToken)) {
+			return '<!-- Error: Chat login token could not be generated. -->';
+		}
 		return "
 <script>
 window.parent.postMessage({
