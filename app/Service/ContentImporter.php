@@ -806,6 +806,8 @@ class ContentImporter {
 		}
 		if (isset($book['info'])) {
 			$this->copyTextFile($book['info'], "$this->contentDir/book-info/$path");
+		} elseif (!empty($book['biblioman_id'])) {
+			file_put_contents("$this->contentDir/book-info/$path", ContentService::generateBookInfoFromBiblioman($book['biblioman_id']));
 		}
 		if (isset($book['cover'])) {
 			self::copyFile($book['cover'], "$this->contentDir/book-cover/$path.jpg");

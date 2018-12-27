@@ -7,6 +7,8 @@ use Buzz\Browser;
 class ContentService {
 
 	public static $bibliomanCoverUrlTemplate = 'https://biblioman.chitanka.info/books/ID.cover?size=600';
+	public static $bibliomanBookUrlTemplate = 'https://biblioman.chitanka.info/books/ID';
+	public static $bibliomanBookJsonUrlTemplate = 'https://biblioman.chitanka.info/books/ID.json';
 	public static $clearBookCoverCacheUrl = 'https://assets.chitanka.info/cc_thumb.php';
 	public static $bookCoverExtension = 'jpg';
 
@@ -115,4 +117,48 @@ class ContentService {
 		self::clearCoverCache($book);
 	}
 
+	public static function generateBookInfoFromBiblioman($bibliomanId) {
+		$url = str_replace('ID', $bibliomanId, self::$bibliomanBookJsonUrlTemplate);
+		$bibliomanBook = json_decode(file_get_contents($url));
+		if (empty($bibliomanBook)) {
+			return null;
+		}
+		$shownFields = [
+			'author' => 'Автор',
+			'title' => 'Заглавие',
+			'translator' => 'Преводач',
+			'dateOfTranslation' => 'Година на превод',
+			'translatedFromLanguage' => 'Език, от който е преведено',
+			'edition' => 'Издание',
+			'publisher' => 'Издател',
+			'publisherCity' => 'Град на издателя',
+			'publishingYear' => 'Година на издаване',
+			'contentType' => 'Тип',
+			'nationality' => 'Националност',
+			'printingHouse' => 'Печатница',
+			'printOut' => 'Излязла от печат',
+			'chiefEditor' => 'Главен редактор',
+			'managingEditor' => 'Отговорен редактор',
+			'editor' => 'Редактор',
+			'publisherEditor' => 'Редактор на издателството',
+			'artistEditor' => 'Художествен редактор',
+			'technicalEditor' => 'Технически редактор',
+			'consultant' => 'Консултант',
+			'scienceEditor' => 'Научен редактор',
+			'reviewer' => 'Рецензент',
+			'artist' => 'Художник',
+			'illustrator' => 'Художник на илюстрациите',
+			'corrector' => 'Коректор',
+			'isbn' => 'ISBN',
+			'isbn13' => 'ISBN-13',
+		];
+		$output = ['__Издание:__'];
+		foreach ($shownFields as $shownField => $fieldName) {
+			if (!empty($bibliomanBook->$shownField)) {
+				$output[] = "{$fieldName}: {$bibliomanBook->$shownField}";
+			}
+		}
+		$output[] = "Адрес в Библиоман: ".str_replace('ID', $bibliomanId, self::$bibliomanBookUrlTemplate);
+		return "\t".implode("\n\t", $output)."\n";
+	}
 }
