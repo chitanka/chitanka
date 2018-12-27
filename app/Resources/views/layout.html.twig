@@ -41,7 +41,7 @@
 {% endblock %}
 
 {% block body_class %}
-	page-{{ current_route }}
+	page-{{ current_route }} {{ app.user.isAnonymous() ? 'user-anonymous' : 'user-registered' }}
 {% endblock %}
 
 {% block body %}
