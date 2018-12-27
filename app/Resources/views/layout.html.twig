@@ -31,12 +31,23 @@
 {% endblock %}
 
 {% block head %}
-	<meta name="description" content="Универсална библиотека, предлагаща електронни книги и текстове на български език. Над 3000 автори. Поддръжка на свободни формати като FictionBook (FB2), EPUB и TXT.">
+	{% set opengraph = opengraph|default({})|merge({
+		'site_name': 'Моята библиотека'
+	}) %}
+	<meta name="description" content="{{ meta_description|default('Универсална библиотека за книги и текстове на български език. Над 3000 автори. Поддръжка на FictionBook (FB2), EPUB и TXT.') }}">
 	<meta name="viewport" content="initial-scale=1.0, width=device-width">
 	{% if page_feed is defined %}
 		<link rel="alternate" type="application/rss+xml" title="RSS 2.0 — {{ page_feed.title is defined ? page_feed.title : block('title') }}" href="{{ page_feed.url }}">
 	{% endif %}
 	<link rel="related" type="application/atom+xml;profile=opds-catalog" href="{{ path('catalog', {'_format': 'opds'}) }}" title="Каталог на Моята библиотека чрез OPDS" />
+
+	{% for key, value in opengraph %}
+		<meta property="og:{{ key }}" content="{{ value }}">
+	{% endfor %}
+
+	{% if meta_canonical is defined %}
+		<link rel="canonical" href="{{ meta_canonical }}">
+	{% endif %}
 	{#<link rel="search" type="application/opensearchdescription+xml" href="{{ path('search', {'_format': 'osd'}) }}" title="Търсене в Моята библиотека" />#}
 {% endblock %}
 
