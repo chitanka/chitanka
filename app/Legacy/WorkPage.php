@@ -284,7 +284,6 @@ class WorkPage extends Page {
 	}
 
 	protected function updateMultiUserDataForEdit() {
-		$pkey = ['id' => $this->entryId];
 		$key = ['entry_id' => $this->entryId, 'user_id' => $this->user->getId()];
 		if ( empty($this->editComment) ) {
 			$this->addMessage('Въвеждането на коментар е задължително.', true);
@@ -319,11 +318,9 @@ class WorkPage extends Page {
 		}
 		$this->addMessage($msg);
 		// update main entry
-		$set = [
-			'date' => $this->date,
-			'status' => $this->entry->hasOpenContribs() ? WorkEntry::STATUS_3 : ( $this->isReady() ? WorkEntry::STATUS_6 : WorkEntry::STATUS_5 ),
-		];
-		$this->controller->em()->getConnection()->update(DBT_WORK, $set, $pkey);
+		$this->entry->setDate(new \DateTime());
+		$this->entry->setStatus($this->entry->hasOpenContribs() ? WorkEntry::STATUS_3 : ( $this->isReady() ? WorkEntry::STATUS_6 : WorkEntry::STATUS_5 ));
+		$this->repo()->save($this->entry);
 
 		return $this->makeLists();
 	}
