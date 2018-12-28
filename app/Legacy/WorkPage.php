@@ -2,6 +2,7 @@
 
 use App\Entity\User;
 use App\Entity\WorkEntry;
+use App\Service\RocketChatClient;
 use App\Util\Char;
 use App\Util\File;
 use App\Util\Number;
@@ -114,6 +115,8 @@ class WorkPage extends Page {
 		$this->entryId = (int) $this->request->value('id');
 		if ($this->entryId) {
 			$this->entry = $this->repo()->find($this->entryId);
+		} else {
+			$this->entry = new WorkEntry();
 		}
 		$this->workType = (int) $this->request->value('workType', 0, 3);
 		$this->btitle = $this->request->value('title');
@@ -163,7 +166,7 @@ class WorkPage extends Page {
 	}
 
 	protected function processSubmission() {
-		if ($this->entry && !$this->thisUserCanEditEntry($this->entry, $this->workType)) {
+		if ($this->entry->getId() && !$this->thisUserCanEditEntry($this->entry, $this->workType)) {
 			$this->addMessage('Нямате права да редактирате този запис.', true);
 			return $this->makeLists();
 		}
@@ -218,66 +221,53 @@ class WorkPage extends Page {
 			}
 		}
 
-		if ( $this->entryId == 0 ) {
-			$id = $this->controller->em()->getNextIdRepository()->findNextId('App:WorkEntry')->getValue();
-			$this->uplfile = preg_replace('/^0-/', "$id-", $this->uplfile);
-			$entry = new WorkEntry();
-		} else {
-			$id = $this->entryId;
-			$entry = $this->repo()->find($this->entryId);
-		}
+		$this->entry->setType(in_array($this->status, [WorkEntry::STATUS_4]) ? 1 : $this->workType);
+		$this->entry->setPackType($this->sfrequest->get('packType'));
+		$this->entry->setBibliomanId($this->sfrequest->get('bibliomanId'));
+		$this->entry->setTitle($this->btitle);
+		$this->entry->setAuthor(strtr($this->author, [';'=>',']));
+		$this->entry->setPublisher($this->publisher);
+		$this->entry->setPubYear($this->pubYear);
+		$this->entry->setUser($this->user);
+		$this->entry->setComment($this->pretifyComment($this->comment));
+		$this->entry->setDate(new \DateTime());
+		$this->entry->setIsFrozen($this->isFrozen);
+		$this->entry->setStatus($this->status);
+		$this->entry->setProgress($this->progress);
+		$this->entry->setTmpfiles(self::rawurlencode($this->tmpfiles));
+		$this->entry->setTfsize($this->tfsize);
 		if ($this->availableAt) {
-			$entry->setAvailableAt($this->availableAt);
+			$this->entry->setAvailableAt($this->availableAt);
 		}
-		$set = [
-			'id' => $id,
-			'type' => in_array($this->status, [WorkEntry::STATUS_4]) ? 1 : $this->workType,
-			'pack_type' => $this->sfrequest->get('packType'),
-			'biblioman_id' => $this->sfrequest->get('bibliomanId'),
-			'title'=>$this->btitle,
-			'author'=> strtr($this->author, [';'=>',']),
-			'publisher' => $this->publisher,
-			'pub_year' => $this->pubYear,
-			'user_id'=>$this->scanuser,
-			'comment' => $this->pretifyComment($this->comment),
-			'date'=>$this->date,
-			'is_frozen' => $this->isFrozen,
-			'available_at' => $entry->getAvailableAt('Y-m-d'),
-			'status'=>$this->status,
-			'progress' => $this->progress,
-			'tmpfiles' => self::rawurlencode($this->tmpfiles),
-			'tfsize' => $this->tfsize
-		];
 		if ($this->userIsAdmin()) {
-			$set += [
-				'admin_status' => $this->request->value('adminStatus'),
-				'admin_comment' => $this->request->value('adminComment'),
-			];
+			$this->entry->setAdminStatus($this->request->value('adminStatus'));
+			$this->entry->setAdminComment($this->request->value('adminComment'));
 		}
 		if ($this->delete && $this->userIsAdmin()) {
-			$curDate = new \DateTime;
-			$set += ['deleted_at' => $curDate->format('Y-m-d H:i:s'), 'is_frozen' => 0];
-			$this->controller->em()->getConnection()->update(DBT_WORK, $set, ['id' => $this->entryId]);
-			if ( $this->isMultiUser() ) {
-				$this->controller->em()->getConnection()->update(DBT_WORK_MULTI, ['deleted_at' => $curDate->format('Y-m-d H:i:s')], ['entry_id' => $this->entryId]);
-			}
+			$this->entry->delete();
+			$this->repo()->save($this->entry);
 			$this->addMessage("Произведението „{$this->btitle}“ беше премахнато от списъка.");
 			$this->deleteEntryFiles($this->entryId);
 			$this->scanuser_view = null;
-
 			return $this->makeLists();
 		}
 
 		if ( $this->handleUpload() && !empty($this->uplfile) ) {
-			$set['tmpfiles'] = $set['uplfile'] = $this->makeTmpFilePath(self::rawurlencode($this->uplfile));
-			$set['tfsize'] = Number::int_b2m(filesize("{$this->absTmpDir}/{$this->uplfile}"));
+			if (empty($this->entry->getId())) {
+				$id = $this->controller->em()->getNextIdRepository()->findNextId('App:WorkEntry')->getValue();
+				$this->uplfile = preg_replace('/^0-/', "$id-", $this->uplfile);
+			}
+			$uploadedFile = $this->makeTmpFilePath(self::rawurlencode($this->uplfile));
+			$this->entry->setTmpfiles($uploadedFile);
+			$this->entry->setUplfile($uploadedFile);
+			$this->entry->setTfsize(Number::int_b2m(filesize("{$this->absTmpDir}/{$this->uplfile}")));
 		}
+		$this->repo()->save($this->entry);
 		if ($this->entryId) {
-			$this->controller->em()->getConnection()->update(DBT_WORK, $set, ['id' => $this->entryId]);
 			$msg = 'Данните за произведението бяха обновени.';
 		} else {
-			$this->controller->em()->getConnection()->insert(DBT_WORK, $set);
 			$msg = 'Произведението беше добавено в списъка с подготвяните.';
+			$this->notifyRocketchatAboutEntry($this->entry);
 		}
 		$this->scanuser_view = 0;
 		$this->addMessage($msg);
@@ -499,8 +489,8 @@ HTML;
 	}
 
 	private function makeForm() {
-		$entry = $this->entry ?: new WorkEntry();
-		if (!$this->entry) {
+		$entry = $this->entry;
+		if (empty($this->entry->getId())) {
 			$this->title = 'Нов запис' .' — '. $this->title;
 		}
 		$helpTop = empty($this->entryId) ? $this->controller->renderViewForLegacyCode('Workroom/newEntryIntro.html.twig') : '';
@@ -724,7 +714,7 @@ EOS;
 		</div>
 	</div>
 EOS;
-		if ($this->entry && $this->entry->canShowFilesTo($this->user)) {
+		if ($this->entry->getId() && $this->entry->canShowFilesTo($this->user)) {
 			$form .= <<<EOS
 	<div class="form-group">
 		<label for="file" class="col-sm-2 control-label">Файл:</label>
@@ -746,7 +736,7 @@ EOS;
 	}
 
 	private function makeAdminOnlyFields() {
-		if (empty($this->entry)) {
+		if (empty($this->entry->getId())) {
 			return '';
 		}
 		$status = $this->out->textField('adminStatus', '', $this->entry->getAdminStatus(), 30, 255, null, '', ['class' => 'form-control']);
@@ -837,7 +827,7 @@ FIELDS;
 		</div>
 	</div>
 EOS;
-		if ($this->entry && $this->entry->canShowFilesTo($this->user)) {
+		if ($this->entry->getId() && $this->entry->canShowFilesTo($this->user)) {
 			$form .= <<<EOS
 	<div class="form-group">
 		<label for="file" class="col-sm-2 control-label">Файл:</label>
@@ -859,7 +849,7 @@ EOS;
 	}
 
 	private function makeMultiEditInput() {
-		if ($this->entry === null) {
+		if (empty($this->entry->getId())) {
 			return '';
 		}
 		$editorList = $this->controller->renderViewForLegacyCode('Workroom/contributors.html.twig', ['entry' => $this->entry]);
@@ -1128,5 +1118,11 @@ EOS;
 	/** @return \Doctrine\ORM\EntityRepository */
 	private function contribRepo() {
 		return $this->controller->em()->getWorkContribRepository();
+	}
+
+	private function notifyRocketchatAboutEntry(WorkEntry $entry) {
+		$rocketChatClient = $this->container->get('rocketchat_client'); /* @var $rocketChatClient RocketChatClient */
+		$postForRocketChat = sprintf('Нов [запис в ателието](%s) от **%s**', $this->controller->generateUrlForLegacyCode('workroom_entry_edit', ['id' => $entry->getId()], true), $entry->getUser());
+		$rocketChatClient->postMessageIfAble($postForRocketChat);
 	}
 }

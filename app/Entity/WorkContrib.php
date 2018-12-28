@@ -111,6 +111,7 @@ class WorkContrib extends Entity implements \JsonSerializable {
 	public function isDeleted() { return $this->deletedAt !== null; }
 	public function delete() {
 		$this->setDeletedAt(new \DateTime);
+		$this->setIsFrozen(false);
 	}
 
 	public function belongsTo(User $user) {

@@ -364,6 +364,10 @@ class WorkEntry extends Entity implements RoutedItemInterface, \JsonSerializable
 	public function setDeletedAt($deletedAt) { $this->deletedAt = $deletedAt; }
 	public function delete() {
 		$this->setDeletedAt(new DateTime);
+		$this->setIsFrozen(false);
+		foreach ($this->getContribs() as $contrib) {
+			$contrib->delete();
+		}
 	}
 	public function isDeleted() {
 		return $this->deletedAt !== null;
