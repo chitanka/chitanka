@@ -228,7 +228,9 @@ class WorkPage extends Page {
 		$this->entry->setAuthor(strtr($this->author, [';'=>',']));
 		$this->entry->setPublisher($this->publisher);
 		$this->entry->setPubYear($this->pubYear);
-		$this->entry->setUser($this->user);
+		if (empty($this->entry->getId())) {
+			$this->entry->setUser($this->user);
+		}
 		$this->entry->setComment($this->pretifyComment($this->comment));
 		$this->entry->setDate(new \DateTime());
 		$this->entry->setIsFrozen($this->isFrozen);
@@ -1002,9 +1004,6 @@ EOS;
 
 	private function isSingleUser() {
 		return $this->workType == WorkEntry::TYPE_SINGLE_USER;
-	}
-	private function isMultiUser() {
-		return $this->workType == WorkEntry::TYPE_MULTI_USER;
 	}
 
 	private function thisUserCanEditEntry(WorkEntry $entry, $type) {
