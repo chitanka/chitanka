@@ -70,6 +70,10 @@ class SecurityController extends Controller {
 			$this->flashes()->addError("Не съществува потребител с електронна поща <strong>{$email}</strong>.");
 			return false;
 		}
+		if (!$user->isEmailValid()) {
+			$this->flashes()->addError("Посоченият адрес за електронна поща е отбелязан като невалиден. Свържете се с администратор, ако смятате, че това е грешка.");
+			return false;
+		}
 		$mailer = new UsernameRequestMailer($this->get('mailer'), $this->get('twig'));
 		$mailer->sendUsername($user, $this->container->getParameter('site_email'));
 		return $user;
@@ -84,6 +88,10 @@ class SecurityController extends Controller {
 		}
 		if ($user->getEmail() == '') {
 			$this->flashes()->addError("За потребителя <strong>$username</strong> не е посочена електронна поща.");
+			return false;
+		}
+		if (!$user->isEmailValid()) {
+			$this->flashes()->addError("Посоченият адрес за електронна поща е отбелязан като невалиден. Свържете се с администратор, ако смятате, че това е грешка.");
 			return false;
 		}
 
