@@ -370,7 +370,7 @@ class WorkPage extends Page {
 	}
 
 	protected function buildContent() {
-		if (!$this->userCanParticipate() && !$this->sfrequest->query->get('user')) {
+		if (!$this->userCanParticipate() && !$this->sfrequest->query->get('user') && $this->sfrequest->query->get('please') === null) {
 			return <<<HTML
 	<div class="alert alert-danger">
 		<span class="fa fa-warning"></span>
