@@ -655,6 +655,8 @@ class User implements UserInterface, \JsonSerializable {
 		$this->setClosedAt();
 		$this->setUsername('__CLOSED__'.$this->getUsername());
 		$this->setEmail('__CLOSED__'.$this->getEmail());
+		$this->setNews(false);
+		$this->setIsEmailValid(false);
 		$this->logout();
 	}
 }
