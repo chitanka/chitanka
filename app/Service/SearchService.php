@@ -67,7 +67,6 @@ class SearchService {
 			'books'        => $this->em->getBookRepository()->findByTitleOrIsbn($query['text'], self::MAX_RESULTS),
 			'series'       => $this->em->getSeriesRepository()->getByNames($query['text'], self::MAX_RESULTS),
 			'sequences'    => $this->em->getSequenceRepository()->getByNames($query['text'], self::MAX_RESULTS),
-			'work_entries' => $this->em->getWorkEntryRepository()->getByTitleOrAuthor($query['text']),
 			'labels'       => $this->em->getLabelRepository()->getByNames($query['text']),
 			'categories'   => $this->em->getCategoryRepository()->getByNames($query['text']),
 		]);

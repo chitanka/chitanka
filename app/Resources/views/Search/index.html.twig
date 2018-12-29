@@ -38,11 +38,6 @@
 		{% include 'App:Book:category_list.html.twig' with {categories: result.categories} %}
 	{% endif %}
 
-	{% if result.work_entries|length %}
-		<h2>Работно ателие</h2>
-		{% include 'App:WorkEntry:list.html.twig' with {entries: result.work_entries} %}
-	{% endif %}
-
 	{% if result.isEmpty %}
 		<p class="no-items">Не открихме нищо за „{{ query.text }}“.</p>
 	{% endif %}
