@@ -6,7 +6,7 @@
 	xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
 		<title>{% block title '' %} — Моята библиотека</title>
-		<atom:link href="{{ url(current_route, {'_format': 'rss'}) }}" rel="self" type="application/rss+xml" />
+		<atom:link href="{{ app.request.schemeAndHttpHost ~ path(current_route, {'_format': 'rss'}) }}" rel="self" type="application/rss+xml" />
 		<link>{{ url('homepage') }}</link>
 		<description>{{ block('title') }} от Моята библиотека, универсална електронна библиотека</description>
 		<language>bg</language>
@@ -18,8 +18,9 @@
 			<image>
 				<link>{{ url('homepage') }}</link>
 				<title>{{ block('title') }} — Моята библиотека</title>
-				<url>{{ asset('images/banner/logo.200px.png') }}</url>
-				<width>200</width>
+				<url>{{ app.request.schemeAndHttpHost ~ '/images/logo/logo.120px.png' }}</url>
+				<width>120</width>
+				<height>120</height>
 			</image>
 		{% endblock %}
 		{% block content '' %}
