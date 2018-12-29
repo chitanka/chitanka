@@ -1,0 +1,52 @@
+$(function () {
+	var $target = $('{{ target }}');
+	var queryText = '{{ query.text|escape('js') }}';
+	var bibliomanUrl = 'https://biblioman.chitanka.info/books.json';
+
+	var maxPages = 10;
+	var nbFetchedPages = 0;
+	var showBookList = function(response) {
+		if (response.results.length === 0 || nbFetchedPages++ >= maxPages) {
+			return;
+		}
+		var output = '<div class="booklist">';
+		$.each(response.results, function(i, book) {
+			output += '\
+<div class="col-md-6 col-book">\
+	<div class="media book-media">\
+		<div class="media-left">\
+			<a href="'+book.urls.canonical+'" target="_blank">\
+				<div class="cover thumbnail" style="width: 130px" title="'+(book.annotation || '')+'">\
+					<img src="'+book.urls.coverMini+'" width="120">\
+				</div>\
+			</a>\
+		</div>\
+		<div class="media-body">\
+			<a href="'+book.urls.canonical+'" target="_blank" class="booklink">'+book.title+(book.volumeTitle ? ' • '+book.volumeTitle : '')+'</a>\
+			<div>'+ (book.subtitle || '') +'</div>\
+			<div class="bookauthor">' + (book.author || '') +'</div>\
+			'+(book.sequence ? '<div class="bookseq"><span class="fa fa-list-alt fa-fw"></span> ' + book.sequence + (book.sequenceNr ? ', №&nbsp;'+book.sequenceNr : '') + '</div>' : '')+'\
+			'+(book.category ? '<div class="bookcat"><span class="fa fa-folder-o fa-fw"></span> ' + book.category.name +'</div>' : '')+'\
+			'+(book.publisher ? '<div class="bookpublisher book-extra"><span class="fa fa-sun-o fa-fw"></span> ' + book.publisher +(book.publishingYear ? ', '+book.publishingYear : '')+'</div>' : '')+'\
+		</div>\
+	</div>\
+</div>';
+		});
+		$target.append(output);
+		if (response.next) {
+			$.get(response.next, function(nextResponse){
+				showBookList(nextResponse);
+			});
+		}
+	};
+	$.get(bibliomanUrl, {q: queryText}, function (response) {
+		if (response.results.length === 0) {
+			$target.append('<p>Няма резултати</p>');
+			return;
+		}
+		if (response.nbResults > 1) {
+			$target.find(':header:first').append(' <small>('+response.nbResults+' резултата)</small>');
+		}
+		showBookList(response);
+	});
+});
