@@ -1,6 +1,7 @@
 <?php namespace App\Entity;
 
 use App\Generator\BookFb2Generator;
+use App\Generator\BookHtmlGenerator;
 use App\Service\ContentService;
 use App\Util\Ary;
 use App\Util\File;
@@ -755,6 +756,11 @@ class Book extends BaseWork implements \JsonSerializable {
 	public function getContentAsFb2() {
 		$generator = new BookFb2Generator();
 		return $generator->generateFb2($this);
+	}
+
+	public function getContentAsHtml() {
+		$generator = new BookHtmlGenerator();
+		return $generator->generateHtml($this);
 	}
 
 	private $_headers;

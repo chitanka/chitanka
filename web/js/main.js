@@ -292,6 +292,23 @@ function activateTabByHash(hash) {
 	activeTab && activeTab.tab('show');
 }
 
+function enableAjaxTabs() {
+	$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+		var href = $(e.target).attr('href');
+		if (href.charAt(0) === '#') {
+			return;
+		}
+		var contentTarget = $(e.target).data('target');
+		if (!contentTarget) {
+			return;
+		}
+		$(contentTarget).addClass('loading').load(href, function() {
+			$(this).removeClass('loading');
+			$(e.target).attr('href', contentTarget);
+		});
+	});
+}
+
 $(function(){
 	$('#user-tools,#search').appendTo('#main-content-wrapper');
 
@@ -312,6 +329,8 @@ $(function(){
 	$(".toc").boxcollapse();
 
 	registerGotoTopLink();
+
+	enableAjaxTabs();
 
 	if (location.hash) {
 		activateTabByHash(location.hash);

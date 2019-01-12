@@ -79,18 +79,4 @@
 		"chunkId": {{ part }},
 		"nextChunkId": {{ next_part }}
 	});*/
-	$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-		var href = $(e.target).attr('href');
-		if (href.charAt(0) == '#') {
-			return;
-		}
-		var contentTarget = $(e.target).data('target');
-		if (!contentTarget) {
-			return;
-		}
-		$(contentTarget).addClass('loading').load(href, function() {
-			$(this).removeClass('loading');
-			$(e.target).attr('href', contentTarget);
-		});
-	});
 {% endblock %}

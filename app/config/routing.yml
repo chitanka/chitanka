@@ -253,7 +253,7 @@ book_show:
     path:           /book/{id}.{_format}
     defaults:       { _controller: App:Book:show, _format: html }
     methods: [GET]
-    requirements:    {  _format: html|sfb|sfb\.zip|fb2|fb2\.zip|txt|txt\.zip|epub|djvu|pdf|clue|opds|json|pic|data|cover }
+    requirements:    {  _format: html|htmlx|sfb|sfb\.zip|fb2|fb2\.zip|txt|txt\.zip|epub|djvu|pdf|clue|opds|json|pic|data|cover }
 
 book_comments:
     path:           /book/{id}/comments.{_format}
@@ -532,7 +532,6 @@ user_read_list:
 user_bookmarks:
     path:      /user/{username}/bookmarks/{page}
     defaults: { _controller: App:User:bookmarks, page: 1 }
-    methods:      [GET]
     methods: [GET]
     requirements:    {  page: \d+ }
     options:
