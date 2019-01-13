@@ -14,6 +14,12 @@ $("#book-content:not(.book-type-single)").on('click', 'a.textlink', function(eve
 	}
 	$self.loading();
 	var $target = $self.closest(':header');
+	if ($target.length === 0) {
+		$target = $self.closest('.text-entity');
+	}
+	if ($target.length === 0) {
+		$target = $self;
+	}
 	$.get(this.href, function(textContent) {
 		$self.loaded();
 		$self.data('content-loaded', true);
