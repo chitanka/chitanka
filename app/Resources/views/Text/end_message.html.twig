@@ -1,5 +1,5 @@
 {% if next_part %}
-	<div id="text-end-msg">Към <a href="{{ path('text_show_part', {'id': text.id, 'part': next_part}) }}#textstart" rel="next">следващата част</a> или към <a class="goto-toc" href="#text-toc">съдържанието</a></div>
+	<div id="text-end-msg">Към <a href="{{ path('text_show_part', {'id': text.id, 'part': next_part, _format: app.request.requestFormat}) }}#textstart" rel="next">следващата част</a> или към <a class="goto-toc" href="#text-toc">съдържанието</a></div>
 {% else %}
 	<div id="text-end-msg">
 		Край
@@ -8,7 +8,7 @@
 		$this->makeNextSeriesWorkLink(true)
 		$this->makeNextBookWorkLink(true)
 	#}
-	{% if similar_texts|length > 0 %}
+	{% if similar_texts is defined and similar_texts|length > 0 %}
 		{% include 'App:Text:similar_texts.html.twig' with {'texts': similar_texts} %}
 	{% endif %}
 {% endif %}

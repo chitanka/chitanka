@@ -7,14 +7,22 @@
 {% endblock %}
 
 {% block body %}
+	{% if part is not defined %}
+		{% set part = 1 %}
+	{% endif %}
 	<h1>
 		{% if not app.request.xmlHttpRequest %}
 			{{ text.authorNames|join(', ') }}
 			{% if text.authors|length %}<br>{% endif %}
+			<i>{{ text.title }}</i>
+		{% elseif part == 1 %}
+			<i>{{ text.title }}</i>
 		{% endif %}
-		<i>{{ text.title }}</i>
 	</h1>
 	<div class="text-content text-content-main content-type-{{ text.type }}">
-		{{ text.contentHtml(asset('/'), part|default(1), text.id)|raw }}
+		{{ text.contentHtml(asset('/'), part, text.id ~'-'~ part)|raw }}
 	</div>
+	{% if next_part is defined %}
+		{% include 'Text/end_message.html.twig' %}
+	{% endif %}
 {% endblock %}

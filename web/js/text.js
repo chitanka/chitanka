@@ -241,25 +241,16 @@ function prepareGamebook() {
 
 // goto next chapter links
 $(document.body).on("click", "a[rel=next]", function(){
-	if ( $(this).isLoading() ) {
+	if ($(this).isLoading()) {
 		return false;
 	}
 	$(this).loading();
-	$.getJSON((mgSettings.mirror || mgSettings.webroot) + "?jsoncallback=?",
-	{
-		"ajaxFunc" : "getTextPartContent",
-		"action" : mgSettings.action,
-		"textId" : mgSettings.textId,
-		"chunkId" : mgSettings.nextChunkId,
-		"sfbObjCount" : mgSettings.nextChunkId + 2, // anno + info
-		"isAnon" : mgSettings.isAnon
-	}, function(data){
-		$("#textstart").remove();
-		$("#text-end-msg").replaceWith(data.text);
-		$("#toc").replaceWith(data.toc);
-		$("html").animate({scrollTop: $("#textstart").offset().top}, 800);
-		mgSettings.nextChunkId += 1;
-		prepareGamebook();
+	$.get(this.href, function(textContent) {
+		var $newContent = $('<div></div>').html(textContent);
+		$("#text-end-msg").replaceWith($newContent);
+		//$("#toc").replaceWith(data.toc);
+		$("html").animate({scrollTop: $newContent.offset().top}, 800);
+		//prepareGamebook();
 	});
 	return false;
 });

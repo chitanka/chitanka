@@ -191,8 +191,11 @@ class TextController extends Controller {
 			$request->setRequestFormat($_format);
 		}
 		if ($_format === 'htmlx') {
+			$nextHeader = $text->getNextHeaderByNr($part);
 			return [
 				'text' => $text,
+				'part' => $part,
+				'next_part' => ($nextHeader ? $nextHeader->getNr() : 0),
 				'_template' => "App:Text:show.$_format.twig",
 			];
 		}
