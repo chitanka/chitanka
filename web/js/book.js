@@ -1,30 +1,24 @@
-// goto next chapter links
-$("a.one-part-text").click(function(){
-	if ( $(this).isLoading() ) {
+$("#book-content:not(.book-type-single)").on('click', 'a.textlink', function(event) {
+	if (event.ctrlKey || event.shiftKey || event.altKey) {
+		// default behaviour
+		return true;
+	}
+	var $self = $(this);
+	if ($self.data('content-loaded')) {
+		// content was already loaded; return to default behaviour
+		return true;
+	}
+	if ($self.isLoading()) {
+		// content is being currently loaded, so do not load it again
 		return false;
 	}
-	$(this).loading();
-	var textId = getTextIdFromLink( $(this) );
-	if ( ! textId ) {
-		return false;
-	}
-	var cont = $(this).parent();
-	$.getJSON((mgSettings.mirror || mgSettings.webroot) + "?jsoncallback=?",
-	{
-		"ajaxFunc" : "getTextPartContent",
-		"action" : "text",
-		"textId" : textId,
-		//"chunkId" : mgSettings.nextChunkId,
-		"sfbObjCount" : textId,
-		"isAnon" : mgSettings.isAnon
-	}, function(data){
-		$("#textstart").remove();
-		cont.after( "<li>" + data.text + "</li>" );
-		$("html").animate({scrollTop: cont.offset().top}, 800);
+	$self.loading();
+	var $target = $self.closest(':header');
+	$.get(this.href, function(textContent) {
+		$self.loaded();
+		$self.data('content-loaded', true);
+		$('<div class="panel panel-default"></div>').html(textContent).insertAfter($target).boxcollapse(false);
+		$('html').animate({scrollTop: $target.offset().top}, 800);
 	});
 	return false;
-});
-// mark as read link
-$("a.ok").live("click", function(){
-	return markRead( false, this );
 });

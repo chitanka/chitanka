@@ -136,6 +136,7 @@ class BookController extends Controller {
 			'authors' => $book->getAuthors(),
 			'template' => $book->getTemplateAsXhtml(),
 			'info' => $book->getExtraInfoAsXhtml(),
+			'js_extra' => ['book'],
 		];
 	}
 

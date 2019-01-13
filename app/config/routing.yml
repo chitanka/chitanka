@@ -408,11 +408,11 @@ text_show:
     path:           /text/{id}.{_format}
     defaults:       { _controller: App:Text:show, slug: test, _format: html }
     methods: [GET]
-    requirements:    {  _format: html|sfb|fb2|sfb\.zip|fb2\.zip|txt|txt\.zip|epub|clue|opds|json|data|fbi }
+    requirements:    {  _format: html|htmlx|sfb|fb2|sfb\.zip|fb2\.zip|txt|txt\.zip|epub|clue|opds|json|data|fbi }
 
 text_show_part:
-    path:           /text/{id}/{part}
-    defaults:       { _controller: App:Text:showPart, part: 1 }
+    path:           /text/{id}/{part}.{_format}
+    defaults:       { _controller: App:Text:showPart, part: 1, _format: html }
     requirements:   { part: \d+ }
 
 

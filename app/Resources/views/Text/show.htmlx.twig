@@ -1,0 +1,20 @@
+{% extends app.request.xmlHttpRequest ? '::base.htmlx.twig' : '::base.html.twig' %}
+
+{% block title %}
+	{{ text.authorNames|join(', ') }}
+	{% if text.authors|length %}—{% endif %}
+	{{ text.title }}
+{% endblock %}
+
+{% block body %}
+	<h1>
+		{% if not app.request.xmlHttpRequest %}
+			{{ text.authorNames|join(', ') }}
+			{% if text.authors|length %}<br>{% endif %}
+		{% endif %}
+		<i>{{ text.title }}</i>
+	</h1>
+	<div class="text-content text-content-main content-type-{{ text.type }}">
+		{{ text.contentHtml(asset('/'), part|default(1), text.id)|raw }}
+	</div>
+{% endblock %}
