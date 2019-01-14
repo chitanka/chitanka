@@ -1,4 +1,4 @@
-$("#book-content:not(.book-type-single)").on('click', 'a.textlink', function(event) {
+$("#book-content").on('click', 'a.one-part-text', function(event) {
 	if (event.ctrlKey || event.shiftKey || event.altKey) {
 		// default behaviour
 		return true;

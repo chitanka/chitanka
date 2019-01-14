@@ -41,7 +41,7 @@
 {% endmacro %}
 
 {% macro text(text, options) %}
-{% spaceless %}<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}" class="textlink" itemprop="name" data-edit="{{ path('admin_text_edit', {'id': text.id}) }}"
+{% spaceless %}<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}" class="textlink {{ text.headlevel == 0 ? 'one-part-text' : '' }}" itemprop="name" data-edit="{{ path('admin_text_edit', {'id': text.id}) }}"
 	title="{{ text.note }}"
 {% if text.lang != text.origLang %}
 	{#% if text.translators is defined %}
