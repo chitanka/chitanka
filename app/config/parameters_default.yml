@@ -25,6 +25,7 @@ parameters:
     work_email:         admin@localhost
 
     assets_base_urls: ~
+    asset_version: 1
     style_url:  /css/
     # Път до библиотеката jQuery. По подразбиране false.
     # При false, се ползва локалното копие

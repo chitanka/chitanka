@@ -148,6 +148,11 @@
 			scriptname: "{{ path('homepage') }}"
 		};
 	</script>
+	{%- macro local_asset_url(scripts) -%}
+		{{ asset('js/' ~ scripts|join(',')|replace({'/': '--'}) ~','~asset_version~'.js') }}
+	{%- endmacro -%}
+	{% from _self import local_asset_url %}
+
 	{% set scripts = [] %}
 	{% if script_library %}
 		<script src="{{ script_library }}"></script>
@@ -155,10 +160,13 @@
 		{% set scripts = ['vendor/js/jquery'] %}
 	{% endif %}
 	{% set scripts = scripts|merge(['vendor/js/jquery-cookie', 'jquery-myplugins', 'main']) %}
-	<script src="{{ asset('js/' ~ scripts|join(',')|replace({'/': '--'}) ~'.js') }}"></script>
+
+	<script src="{{ local_asset_url(scripts) }}"></script>
+
 	<script src="{{ asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
 	{% if js_extra is defined %}
-		<script src="{{ asset('js/' ~ js_extra|join(',')|replace({'/': '--'}) ~'.js') }}"></script>
+		<script src="{{ local_asset_url(js_extra) }}"></script>
 	{% endif %}
 
 	<script>

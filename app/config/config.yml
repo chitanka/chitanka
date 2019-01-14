@@ -44,6 +44,7 @@ twig:
         project_links: %project_links%
         analytics_snippet: "%analytics_snippet%"
         script_library: %script_library%
+        asset_version: +version%asset_version%
         global_info_message: %global_info_message%
 
 # Assetic Configuration
