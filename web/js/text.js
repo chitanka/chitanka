@@ -241,15 +241,19 @@ function prepareGamebook() {
 
 // goto next chapter links
 $(document.body).on("click", "a[rel=next]", function(){
-	if ($(this).isLoading()) {
+	var $self = $(this);
+	if ($self.isLoading()) {
 		return false;
 	}
-	$(this).loading();
-	$.get(this.href, function(textContent) {
+	$self.loading();
+	var href = this.href;
+	$.get(href, function(textContent) {
 		var $newContent = $('<div></div>').html(textContent);
 		$("#text-end-msg").replaceWith($newContent);
 		//$("#toc").replaceWith(data.toc);
 		$("html").animate({scrollTop: $newContent.offset().top}, 800);
+		history.pushState({url: href}, '', href);
+		$self.loaded();
 		//prepareGamebook();
 	});
 	return false;
