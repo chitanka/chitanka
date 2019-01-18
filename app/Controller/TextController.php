@@ -93,9 +93,8 @@ class TextController extends Controller {
 			return $this->redirectToMirror($mirrorServer, $id, $_format, $request->get('filename'));
 		}
 		list($id) = explode('-', $id); // remove optional slug
-		if ($request->isXmlHttpRequest()) {
-			$_format = 'htmlx';
-			$request->setRequestFormat($_format);
+		if ($_format === 'htmlx' || $request->isXmlHttpRequest()) {
+			return $this->showPartAction($request, $id, 1, $_format);
 		}
 		switch ($_format) {
 			case 'html':
@@ -124,7 +123,6 @@ class TextController extends Controller {
 			case 'data':
 				return $this->asText($this->findText($id, true)->getDataAsPlain());
 			case 'json':
-			case 'htmlx':
 				return ['text' => $this->findText($id, true)];
 		}
 		throw $this->createNotFoundException("Неизвестен формат: $_format");
@@ -186,17 +184,13 @@ class TextController extends Controller {
 
 	public function showPartAction(Request $request, $id, $part, $_format) {
 		$text = $this->findText($id, true);
-		if ($request->isXmlHttpRequest()) {
-			$_format = 'htmlx';
-			$request->setRequestFormat($_format);
-		}
-		if ($_format === 'htmlx') {
+		if ($_format === 'htmlx' || $request->isXmlHttpRequest()) {
 			$nextHeader = $text->getNextHeaderByNr($part);
 			return [
 				'text' => $text,
 				'part' => $part,
 				'next_part' => ($nextHeader ? $nextHeader->getNr() : 0),
-				'_template' => "App:Text:show.$_format.twig",
+				'_template' => 'App:Text:show.htmlx.twig',
 			];
 		}
 		return $this->showHtml($text, $part);
