@@ -1038,6 +1038,7 @@ div.example {
 		text-align: justify;
 		word-wrap: break-word;
 		.hyphens(auto);
+		position: relative;
 	}
 	.center p {
 		text-align: center;
@@ -1194,11 +1195,17 @@ div.poem-middle .subheader {
 	text-align: center;
 	text-indent: 0;
 }
-.verse-num {
+.verse-num, .paragraph-num {
+	opacity: .7;
 	position: absolute;
 	left: -3rem;
 	font-size: .7em;
-	top: .1rem
+	top: .1rem;
+	&:target {
+		color: @headerFgColor;
+		background-color: @headerBgColor;
+		opacity: 1;
+	}
 }
 .book-section:first-child {
 	margin-top: 1.5em;
