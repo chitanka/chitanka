@@ -251,7 +251,7 @@ $(document.body).on("click", "a[rel=next]", function(){
 		var $newContent = $('<div></div>').html(textContent);
 		$("#text-end-msg").replaceWith($newContent);
 		//$("#toc").replaceWith(data.toc);
-		$("html").animate({scrollTop: $newContent.offset().top}, 800);
+		$.scrollTo($newContent);
 		history.pushState({url: href}, '', href);
 		$self.loaded();
 		//prepareGamebook();

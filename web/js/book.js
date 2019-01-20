@@ -24,7 +24,7 @@ $("#book-content").on('click', 'a.one-part-text', function(event) {
 		$self.loaded();
 		$self.data('content-loaded', true);
 		$('<div class="panel panel-default"></div>').html(textContent).insertAfter($target).boxcollapse(false);
-		$('html').animate({scrollTop: $target.offset().top}, 800);
+		$.scrollTo($target);
 	});
 	return false;
 });
