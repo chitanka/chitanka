@@ -8,9 +8,7 @@ $(function() {
 				type : 'PATCH',
 				data: { bibliomanId: bibliomanId },
 				success: function(entry) {
-					$('a.bibliomanUrl').each(function() {
-						this.href = this.href.replace(/books\/\d+/, 'books/'+entry.bibliomanId);
-					});
+					$('.biblioman-cover').html('<a href="https://biblioman.chitanka.info/books/'+entry.bibliomanId+'" target="_blank"><img src="https://biblioman.chitanka.info/books/'+entry.bibliomanId+'.cover?size=150" style="width:150px"></a>');
 				}
 			});
 		}

@@ -606,10 +606,10 @@ $helpTop
 				<div class="col-sm-2">
 					<input class="form-control" name="bibliomanId" id="bibliomanId" value="{$entry->getBibliomanId()}">
 				</div>
-				<div class="col-sm-8">
+				<div class="col-sm-8 biblioman-cover">
 EOS
 			.($entry->getBibliomanId() ?
-			"<a href=\"https://biblioman.chitanka.info/books/{$entry->getBibliomanId()}\" class=\"bibliomanUrl\" target=\"_blank\"><img src=\"https://biblioman.chitanka.info/books/{$entry->getBibliomanId()}.cover?size=150\" style=\"width:150px\"></a>"
+			"<a href=\"https://biblioman.chitanka.info/books/{$entry->getBibliomanId()}\" target=\"_blank\"><img src=\"https://biblioman.chitanka.info/books/{$entry->getBibliomanId()}.cover?size=150\" style=\"width:150px\"></a>"
 			: '').
 			<<<EOS
 				</div>
