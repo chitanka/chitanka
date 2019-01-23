@@ -12,13 +12,17 @@ class SandboxController extends Controller {
 		$htmlContent = null;
 		if ($content) {
 			$converter = new SfbToHtmlConverter($content, $imageDir);
+			if ($request->get('is_gamebook')) {
+				// recognize section links
+				$converter->addRegExpPattern('/#(\d+)/', '<a href="#l-$1" class="ep" title="Към епизод $1">$1</a>');
+			}
 			$htmlContent = $converter->convert()->getContent();
 		}
-
 		return [
 			'image_dir' => $imageDir,
 			'content' => $content,
 			'html_content' => $htmlContent,
+			'js_extra' => ['text'],
 		];
 	}
 

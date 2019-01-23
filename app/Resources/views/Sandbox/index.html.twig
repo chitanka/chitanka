@@ -4,25 +4,38 @@
 
 {% block content %}
 
-{% if html_content is defined %}
-	<div class="text-content text-content-main">
+{% if html_content is not empty %}
+	<div class="text-content text-content-main {% if app.request.get('is_gamebook') %}content-type-gamebook{% endif %}">
 		{{ html_content|raw }}
 	</div>
 	<hr style="clear:both">
 {% endif %}
 
-<p>Тук може да изпробвате как ще се покаже в библиотеката даден текст във формат SFB.</p>
-<form action="{{ path('sandbox') }}" method="post">
-	<div>
-		<label for="image_dir">Път за картинките:</label>
-		<input type="text" name="image_dir" id="image_dir" size="60" maxlength="255" value="{{ image_dir }}" />
+<p>Тук може да изпробвате как би изглеждал в библиотеката даден текст във формат SFB.</p>
+<form action="{{ path('sandbox') }}" method="post" role="form">
+	<div class="form-group">
+		<label for="content">Текст в SFB:</label>
+		<textarea class="form-control" name="content" id="content" cols="80" rows="30" tabindex="0">{{ content }}</textarea>
 	</div>
-	<div>
-		<label for="content">Съдържание:</label>
-		<textarea name="content" id="content" cols="80" rows="30" tabindex="0" style="width: 95%">{{ content }}</textarea>
+	<div class="form-group">
+		<label for="image_dir" class="col-sm-2 control-label">Път за картинките:</label>
+		<div class="col-sm-10">
+			<input class="form-control" type="text" name="image_dir" id="image_dir" size="60" maxlength="255" value="{{ image_dir }}" />
+		</div>
 	</div>
-
-	<div><input type="submit" value="Преглед"></div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="is_gamebook" {% if app.request.get('is_gamebook') %}checked{% endif %}>
+					Режим „книга игра“
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="form-submit"><input type="submit" class="btn btn-primary" value="Преглед"></div>
+	</div>
 </form>
 
 {% endblock %}
