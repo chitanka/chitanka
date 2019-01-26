@@ -758,9 +758,9 @@ class Book extends BaseWork implements \JsonSerializable {
 		return $generator->generateFb2($this);
 	}
 
-	public function getContentAsHtml() {
+	public function getContentAsHtml($imgRoot = '') {
 		$generator = new BookHtmlGenerator();
-		return $generator->generateHtml($this);
+		return $generator->generateHtml($this, $imgRoot);
 	}
 
 	private $_headers;
