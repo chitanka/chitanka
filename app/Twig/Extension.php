@@ -231,7 +231,8 @@ class Extension extends \Twig_Extension {
 	 * @return string
 	 */
 	public function dot2br($value) {
-		return preg_replace('/\. (?=[A-ZА-Я])/u', "<br>\n", $value);
+		$value = str_replace('; ', ' • ', $value);
+		return preg_replace('/\. (?=[A-ZА-Я])/u', ' • ', $value);
 	}
 
 	/**
