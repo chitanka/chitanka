@@ -22,7 +22,7 @@ $(function () {
 			</a>\
 		</div>\
 		<div class="media-body">\
-			<a href="'+book.urls.canonical+'" target="_blank" class="booklink">'+book.title+(book.volumeTitle ? ' • '+book.volumeTitle : '')+'</a>\
+			<a href="'+book.urls.canonical+'" target="_blank" class="booklink">'+ book.title.replace('; ', ' • ') +(book.volumeTitle ? ' • '+book.volumeTitle : '')+'</a>\
 			<div>'+ (book.subtitle || '') +'</div>\
 			<div class="bookauthor">' + (book.author || '') +'</div>\
 			'+(book.sequence ? '<div class="bookseq"><span class="fa fa-list-alt fa-fw"></span> ' + book.sequence + (book.sequenceNr ? ', №&nbsp;'+book.sequenceNr : '') + '</div>' : '')+'\
