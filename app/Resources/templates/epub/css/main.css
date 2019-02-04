@@ -217,6 +217,9 @@ div.poem-middle .subheader {
 .center p {
 	text-indent: 0;
 }
+.left {
+	text-align: left;
+}
 .right {
 	text-align: right;
 }
@@ -261,4 +264,34 @@ div.poem-middle .subheader {
 }
 .xxx-small {
 	font-size: 60%;
+}
+.width5 {
+	max-width: 5em;
+}
+.width10 {
+	max-width: 10em;
+}
+.width15 {
+	max-width: 15em;
+}
+.width20 {
+	max-width: 20em;
+}
+.width25 {
+	max-width: 25em;
+}
+.width30 {
+	max-width: 30em;
+}
+.width35 {
+	max-width: 35em;
+}
+.width40 {
+	max-width: 40em;
+}
+.width45 {
+	max-width: 45em;
+}
+.width50 {
+	max-width: 50em;
 }
