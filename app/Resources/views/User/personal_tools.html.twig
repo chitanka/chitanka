@@ -2,13 +2,15 @@
 	<h3 class="sr-only">Лични инструменти</h3>
 	<ul class="user-tools-menu" role="menu">
 	{% if _user.isAuthenticated() %}
-		<li class="level-0 user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" class="user" title="Лична страница — {{ _user.username }}"><span class="fa fa-user"></span> <span class="user-name">{{ _user.username }}</span></a></li>
 		<li class="level-0 dropdown navbar-right">
 			<a class="dropdown-toggle user-tools-toggle" data-toggle="dropdown" href="#">
+				<span class="fa fa-user"></span> <span class="user-name">{{ _user.username }}</span>
 				<span class="fa fa-caret-down"></span>
 			</a>
 			<ul class="dropdown-menu">
+				<li class="user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" title="Лична страница — {{ _user.username }}"><span class="fa fa-user"></span> Профил</a></li>
 				<li class="user-settings"><a href="{{ path('user_edit', {'username': _user.username}) }}" title="Потребителски настройки"><span class="fa fa-gear"></span> Настройки</a></li>
+				<li role="separator" class="divider"></li>
 				{% if _user.inGroup('admin') %}
 					<li class="user-dashboard"><a href="{{ path('sonata_admin_dashboard') }}" title="Администрация"><span class="fa fa-gears"></span> Админ</a></li>
 				{% endif %}
