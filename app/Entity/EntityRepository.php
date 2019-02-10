@@ -1,5 +1,6 @@
 <?php namespace App\Entity;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
@@ -69,12 +70,14 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 
 	/**
 	 * Get count of entities matching a given where clause
-	 * @param string $where
+	 * @param string|Criteria $where
 	 * @return int
 	 */
 	public function getCount($where = null) {
 		$qb = $this->createQueryBuilder(self::ALIAS)->select('COUNT('.self::ALIAS.'.id)');
-		if ($where !== null) {
+		if ($where instanceof Criteria) {
+			$qb->addCriteria($where);
+		} else if ($where !== null) {
 			$qb->andWhere($where);
 		}
 		return $qb->getQuery()
@@ -127,7 +130,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	}
 
 	/**
-	 * @param string $where
+	 * @param string|Criteria $where
 	 * @return int
 	 */
 	public function getRandomId($where = null) {
@@ -135,7 +138,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	}
 
 	/**
-	 * @param string $where
+	 * @param string|Criteria $where
 	 * @param string $select
 	 * @param int $cacheLifetime
 	 * @return \Doctrine\ORM\Query
@@ -144,7 +147,9 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 		$qb = $this->getEntityManager()->createQueryBuilder()
 			->select($select ?: self::ALIAS)
 			->from($this->getEntityName(), self::ALIAS);
-		if ($where !== null) {
+		if ($where instanceof Criteria) {
+			$qb->addCriteria($where);
+		} else if ($where !== null) {
 			$qb->andWhere($where);
 		}
 		$query = $qb->getQuery();

@@ -2,6 +2,7 @@
 
 use App\Entity\Text;
 use App\Entity\UserTextRead;
+use App\Form\Type\RandomTextFilter;
 use App\Form\Type\TextLabelType;
 use App\Form\Type\TextRatingType;
 use App\Generator\TextDownloadService;
@@ -11,6 +12,7 @@ use App\Service\SearchService;
 use App\Service\TextBookmarkService;
 use App\Service\TextLabelService;
 use App\Util\Stringy;
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -220,10 +222,17 @@ class TextController extends Controller {
 		return $vars;
 	}
 
-	public function randomAction() {
-		$id = $this->em()->getTextRepository()->getRandomId();
-
-		return $this->urlRedirect($this->generateUrl('text_show', ['id' => $id]));
+	public function randomAction(Request $request) {
+		$form = $this->createForm(RandomTextFilter::class);
+		if ($form->handleRequest($request)->isValid()) {
+			$criteria = new Criteria();
+			if ($selectedTypes = $form->getData()['type']) {
+				$criteria = $criteria->where(Criteria::expr()->in('type', $selectedTypes));
+			}
+			$id = $this->em()->getTextRepository()->getRandomId($criteria);
+			return $this->redirectToRoute('text_show', ['id' => $id]);
+		}
+		return ['form' => $form->createView()];
 	}
 
 	public function similarAction($id) {

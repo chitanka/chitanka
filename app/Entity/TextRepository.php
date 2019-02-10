@@ -1,5 +1,6 @@
 <?php namespace App\Entity;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NoResultException;
 
 class TextRepository extends EntityRepository {
@@ -361,11 +362,15 @@ class TextRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param string $where
+	 * @param string|Criteria $where
 	 * @return int
 	 */
-	public function getRandomId($where = '') {
-		return parent::getRandomId("e.removedNotice IS NULL");
+	public function getRandomId($where = null) {
+		if ($where === null) {
+			$where = new Criteria();
+		}
+		$where->andWhere(Criteria::expr()->isNull('e.removedNotice'));
+		return parent::getRandomId($where);
 	}
 
 	/**

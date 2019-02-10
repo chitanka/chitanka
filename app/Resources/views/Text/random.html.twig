@@ -1,0 +1,13 @@
+{% extends '::layout.html.twig' %}
+
+{% import '::link.html.twig' as link %}
+
+{% set title = "Избор на случайно произведение" %}
+
+{% block content %}
+	{{ form_start(form, { action: path('text_random') }) }}
+		{{ form_errors(form) }}
+		{{ form_row(form.type, {'label': 'Форма', 'label_attr': {'class': 'checkbox-inline'}}) }}
+		{{ form_row(form.submit, { 'label': 'Избор', 'attr': {'class': 'btn-primary'} }) }}
+	{{ form_end(form) }}
+{% endblock %}

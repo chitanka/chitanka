@@ -373,7 +373,7 @@ text_label_log:
 text_random:
     path:           /text/random
     defaults:       { _controller: App:Text:random }
-    methods:         [GET]
+    methods:         [GET, POST]
 
 text_comments:
     path:           /text/{id}/comments.{_format}
