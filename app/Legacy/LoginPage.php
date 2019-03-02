@@ -1,5 +1,6 @@
 <?php namespace App\Legacy;
 
+use App\Entity\User;
 use App\Service\RocketChatClient;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
@@ -21,6 +22,11 @@ class LoginPage extends RegisterPage {
 	protected function processSubmission() {
 		if ( empty($this->username) ) {
 			$this->addMessage('Не сте въвели потребителско име.', true);
+			return $this->buildContent();
+		}
+		if (User::isValidUsername($this->username) !== true) {
+			$this->username = '';
+			$this->addMessage('Невалидно потребителско име', true);
 			return $this->buildContent();
 		}
 		if ( empty($this->password) ) {
