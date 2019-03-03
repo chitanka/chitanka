@@ -126,12 +126,24 @@ class Extension extends \Twig_Extension {
 		return mb_strtolower($string, 'UTF-8');
 	}
 
-	/**
-	 * @param string $email
-	 * @return string
-	 */
-	public function obfuscateEmail($email) {
-		return strtr($email, ['@' => '&#160;<span title="при сървъра">(при)</span>&#160;']);
+	public function obfuscateEmail(string $htmlContent): string {
+		return preg_replace_callback('/([\w._+-]+)@(\w+\.\w+)/', function($matches) {
+			$name = $matches[1];
+			$provider = $matches[2];
+			$encodeHtml = function($string) {
+				return implode('', array_map(function($char) { return '&#'.ord($char).';'; }, str_split($string)));
+			};
+			$encodeJs = function($string) {
+				return implode('', array_map(function($char) { return '\x'.dechex(ord($char)); }, str_split($string)));
+			};
+			$id = 'contactAddress_'.uniqid();
+			return <<<CODE
+<span id="$id">{$encodeHtml($name)}&#160;<span title="при сървъра">(при)</span>&#160;{$encodeHtml($provider)}</span><script>
+	var __a__ = ((n, s, o) => [n, s, o].join('~'))('recipient', 'at', 'postoffice').replace('recipient', '{$encodeJs($name)}').replace('~at~', String.fromCharCode(Math.pow(8, 2))).replace('postoffice', '{$encodeJs($provider)}');
+	document.getElementById('$id').innerHTML = '<b><'+'a hr'+'ef="ma'+('il')+('to')+(':')+__a__+'">'+__a__+'<'+'/'+'a></b>';
+</script>
+CODE;
+		}, $htmlContent);
 	}
 
 	/**

@@ -3,7 +3,7 @@
 {% set title = 'Връзка с екипа' %}
 {% block content %}
 
-	{{ intro|raw }}
+	{{ intro|email|raw }}
 	{% include 'App:Feedback:form.html.twig' %}
 
 {% endblock %}
