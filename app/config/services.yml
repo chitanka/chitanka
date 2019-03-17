@@ -27,8 +27,8 @@ services:
         arguments: ["@buzz"]
 
     rocketchat_client:
-        class: App\Service\RocketChatClient
-        arguments: [%rocketchat.url%, %rocketchat.auth_token%, %rocketchat.user_id%, %rocketchat.notifications_channel%]
+        class: Chitanka\RocketChatClient
+        arguments: [%rocketchat.url%, %rocketchat.username%, %rocketchat.password%, %rocketchat.notifications_channel%]
 
     admin.person:
         class: App\Admin\PersonAdmin

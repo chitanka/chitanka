@@ -2,11 +2,11 @@
 
 use App\Entity\User;
 use App\Entity\WorkEntry;
-use App\Service\RocketChatClient;
 use App\Util\Char;
 use App\Util\File;
 use App\Util\Number;
 use App\Util\Stringy;
+use Chitanka\RocketChatClient;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

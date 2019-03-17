@@ -36,7 +36,8 @@
 		"fortawesome/font-awesome": "v4.5.0",
 		"michelf/php-markdown": "1.4.0",
 		"cypresslab/gitelephant": "v1.1.0",
-		"eko/feedbundle": "1.2.*"
+		"eko/feedbundle": "1.2.*",
+		"chitanka/rocket-chat-client": "^0.1.1"
 	},
 	"require-dev": {
 		"sensio/generator-bundle": "^3.0",

@@ -1,7 +1,7 @@
 <?php namespace App\Legacy;
 
 use App\Entity\User;
-use App\Service\RocketChatClient;
+use Chitanka\RocketChatClient;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class LoginPage extends RegisterPage {

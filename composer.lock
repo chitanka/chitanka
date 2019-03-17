@@ -1,11 +1,42 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d11d4c61c741b2fcc19e0809d4ae9ac",
+    "content-hash": "aed53cf7a23f117d34366d101d2e705c",
     "packages": [
+        {
+            "name": "chitanka/rocket-chat-client",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chitanka/rocket-chat-client.git",
+                "reference": "e87ca620e20e167df4597ae1e6dcb25f5e2e2249"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chitanka/rocket-chat-client/zipball/e87ca620e20e167df4597ae1e6dcb25f5e2e2249",
+                "reference": "e87ca620e20e167df4597ae1e6dcb25f5e2e2249",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Chitanka\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Simple PHP client for Rocket.Chat",
+            "homepage": "https://github.com/chitanka/rocket-chat-client",
+            "keywords": [
+                "rocket.chat"
+            ],
+            "time": "2019-03-17T17:48:55+00:00"
+        },
         {
             "name": "chitanka/sfb-converter",
             "version": "1.0.0",
@@ -879,12 +910,12 @@
             "version": "v2.5.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/doctrine/doctrine2.git",
+                "url": "https://github.com/doctrine/orm.git",
                 "reference": "bc4ddbfb0114cb33438cc811c9a740d8aa304aab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/bc4ddbfb0114cb33438cc811c9a740d8aa304aab",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/bc4ddbfb0114cb33438cc811c9a740d8aa304aab",
                 "reference": "bc4ddbfb0114cb33438cc811c9a740d8aa304aab",
                 "shasum": ""
             },
@@ -3075,6 +3106,7 @@
                 "compression",
                 "minification"
             ],
+            "abandoned": "symfony/webpack-encore-pack",
             "time": "2015-12-28T13:12:39+00:00"
         },
         {
@@ -4558,7 +4590,12 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.6"
+        "php": ">=5.6",
+        "ext-curl": "*",
+        "ext-gd": "*",
+        "ext-intl": "*",
+        "ext-xsl": "*",
+        "ext-zip": "*"
     },
     "platform-dev": []
 }

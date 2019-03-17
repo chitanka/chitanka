@@ -3,9 +3,9 @@
 use App\Entity\Text;
 use App\Entity\TextComment;
 use App\Pagination\Pager;
-use App\Service\RocketChatClient;
 use App\Util\Date;
 use App\Util\Stringy;
+use Chitanka\RocketChatClient;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class CommentPage extends Page {
