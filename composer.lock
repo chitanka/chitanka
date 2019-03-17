@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "chitanka/rocket-chat-client",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chitanka/rocket-chat-client.git",
-                "reference": "e87ca620e20e167df4597ae1e6dcb25f5e2e2249"
+                "reference": "dd8d5d8d9de6b5fd55e480eeb4eadca4ab0ffd50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chitanka/rocket-chat-client/zipball/e87ca620e20e167df4597ae1e6dcb25f5e2e2249",
-                "reference": "e87ca620e20e167df4597ae1e6dcb25f5e2e2249",
+                "url": "https://api.github.com/repos/chitanka/rocket-chat-client/zipball/dd8d5d8d9de6b5fd55e480eeb4eadca4ab0ffd50",
+                "reference": "dd8d5d8d9de6b5fd55e480eeb4eadca4ab0ffd50",
                 "shasum": ""
             },
             "type": "library",
@@ -35,7 +35,7 @@
             "keywords": [
                 "rocket.chat"
             ],
-            "time": "2019-03-17T17:48:55+00:00"
+            "time": "2019-03-17T20:12:31+00:00"
         },
         {
             "name": "chitanka/sfb-converter",
