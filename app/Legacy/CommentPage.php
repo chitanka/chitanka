@@ -341,6 +341,7 @@ JS;
 		if ($question) {
 			$question = '<div class="form-group">' . $question . '</div>';
 		}
+		$commentRules = $this->controller->renderLayoutComponent('comment-rules', 'TextComment/rules.html.twig');
 		$allowHelp = empty(Stringy::$allowableTags) ? ''
 			: '<dl class="instruct"><dt>Разрешени са следните етикети</dt><dd><ul><li>&lt;'.implode('&gt;</li><li>&lt;', Stringy::$allowableTags).'&gt;</li></ul></dd></dl>';
 
@@ -350,14 +351,7 @@ JS;
 <form action="$postUrl" method="post" id="postform" class="form-horizontal">
 <fieldset style="margin-top:2em">
 <div class="writingrules">
-<p>Уважаеми посетители на сайта, всеки е добре дошъл да изкаже мнението си относно дадено произведение. Имайте предвид, че модераторите ще изтрият коментара или част от него, ако той съдържа обидни и груби нападки към другите, както и ако рекламира собствени възгледи, които не са в контекста на произведението. Ако сте съгласни с това условие, моля, продължете към изпращането на коментара си.</p>
-
-<p>Задължително е попълването на всички полета, както и писането с кирилица. Коментарите с латиница най-вероятно ще бъдат изтрити.</p>
-<p>Спазвайте елементарни правописни правила:</p>
-<ul>
-	<li>Започвайте изреченията с главна буква;</li>
-	<li>Оставяйте <span title="Синоними: шпация, пауза">интервал</span> след препинателния знак, а не преди него!</li>
-</ul>
+$commentRules
 $allowHelp
 </div>
 	<legend>Нов коментар</legend>
