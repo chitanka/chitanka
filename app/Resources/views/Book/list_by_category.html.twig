@@ -1,16 +1,18 @@
 {% extends 'App::layout.html.twig' %}
 
-{% set title = 'Книги в категория „' ~ category.name ~ '“' %}
+{% set title %}Книги в категория „<a class="selflink" data-edit="{{ path('admin_category_edit', {'id': category.id}) }}">{{ category.name }}</a>“{% endset %}
 {% block content %}
 
+	{% import 'helper.html.twig' as helper %}
 	<ul class="breadcrumb" itemprop="breadcrumb">
 		<li><a href="{{ path('books') }}">Книги</a></li>
 		{% for parent in parents %}
 			<li><a href="{{ path('books_by_category', {'slug': parent.slug}) }}">{{ parent.name }}</a></li>
 		{% endfor %}
 		<li class="active">
-			{{ category.name }}
-			<span class="badge">{{ category.nrOfBooks }}</span>
+			<a href="{{ path('books_by_category', {'slug': category.slug}) }}" data-edit="{{ path('admin_category_edit', {'id': category.id}) }}">{{ category.name }}</a>
+			<span class="badge nr-of-items">{{ category.nrOfBooks }}</span>
+			{{ helper.infoTip(category.description) }}
 		</li>
 	</ul>
 

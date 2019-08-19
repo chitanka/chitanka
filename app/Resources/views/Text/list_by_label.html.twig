@@ -1,13 +1,13 @@
 {% extends 'App::layout.html.twig' %}
 
 {% set title = 'Произведения' %}
-{% set subtitle = label.name %}
+{% set subtitle %}<a class="selflink" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>{% endset %}
 {% block content %}
 
+	{% import 'helper.html.twig' as helper %}
 	{% if texts is empty %}
 
 		<p class="no-items">
-			{% import 'App::helper.html.twig' as helper %}
 			{{ helper.not_found('Няма намерени произведения.') }}
 		</p>
 
@@ -19,8 +19,9 @@
 				<li><a href="{{ path('texts_by_label', {'slug': parent.slug}) }}">{{ parent.name }}</a></li>
 			{% endfor %}
 			<li class="active">
-				{{ subtitle }}
-				<span class="badge">{{ label.nrOfTexts }}</span>
+				<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>
+				<span class="badge nr-of-items">{{ label.nrOfTexts }}</span>
+				{{ helper.infoTip(label.description) }}
 			</li>
 		</ul>
 

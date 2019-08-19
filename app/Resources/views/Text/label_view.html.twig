@@ -1,8 +1,7 @@
 <li>
 	{% import 'App::link.html.twig' as link %}
 	{{ link.label(label) }}
-	{% if label.description is not empty %}
-		<span class="popover-trigger" data-content="{{ label.description }}"><span class="fa fa-info-circle"></span></span>
-	{% endif %}
+	{% import 'helper.html.twig' as helper %}
+	{{ helper.infoTip(label.description) }}
 	{% include 'App:Text:label_delete_form.html.twig' with {'label': label} %}
 </li>

@@ -1,3 +1,4 @@
+{% import 'helper.html.twig' as helper %}
 <ul>
 {% for label in labels %}
 	{% if level > 0 or label.parent is empty %}
@@ -8,9 +9,7 @@
 		{% else %}
 			{{ label.name }}
 		{% endif %}
-		{% if label.description is not empty %}
-			<span class="popover-trigger" data-content="{{ label.description }}"><span class="fa fa-info-circle"></span></span>
-		{% endif %}
+		{{ helper.infoTip(label.description) }}
 		{% if label.children is defined %}
 			{% include 'App:Text:label_tree.html.twig' with {'labels': label.children, 'level': level+1} %}
 		{% endif %}
