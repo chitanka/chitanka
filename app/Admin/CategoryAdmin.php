@@ -13,6 +13,7 @@ class CategoryAdmin extends Admin {
 		$showMapper
 			->add('name')
 			->add('slug')
+			->add('description')
 			->add('parent')
 			->add('children')
 			->add('nrOfBooks')
@@ -40,6 +41,7 @@ class CategoryAdmin extends Admin {
 		$formMapper->with('General attributes')
 			->add('name')
 			->add('slug')
+			->add('description')
 			->add('parent', null, ['required' => false, 'query_builder' => function ($repo) {
 				return $repo->createQueryBuilder('e')->orderBy('e.name');
 			}])
