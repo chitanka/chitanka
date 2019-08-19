@@ -70,6 +70,8 @@ class EntityManager {
 	public function getTextRatingRepository() { return $this->getRepository('TextRating'); }
 	/** @return TextRevisionRepository */
 	public function getTextRevisionRepository() { return $this->getRepository('TextRevision'); }
+	/** @return TextTypeRepository */
+	public function getTextTypeRepository() { return $this->getRepository('TextType'); }
 	/** @return ThreadRepository */
 	public function getThreadRepository() { return $this->getRepository('Thread'); }
 	/** @return UserRepository */

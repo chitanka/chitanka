@@ -6,11 +6,11 @@
 				({{ series.origName }})
 			{% endif %}
 		{% else %}
-			{{ ('text.type.plular.'~series.name) | trans }}
+			{{ series.name }}
 		{% endif %}
 	</h2>
 	{{ text_lister.text_list(texts) }}
 	{% if texts|length > 1 %}
-		{% set filename = person.slug ~'_'~ ( series.slug is defined ? series.slug : ('text.type.plular.'~series.name) | trans ) %}
+		{% set filename = person.slug ~'_'~ ( series.slug is defined ? series.slug : series.name %}
 		{% include 'App:Text:multi_download_form.html.twig' with {'filename': filename~''} %}
 	{% endif %}

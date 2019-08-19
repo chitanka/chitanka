@@ -19,7 +19,7 @@
 			<i>{{ text.title }}</i>
 		{% endif %}
 	</h1>
-	<div class="text-content text-content-main content-type-{{ text.type }}">
+	<div class="text-content text-content-main content-type-{{ text.type.code }}">
 		{{ text.contentHtml(asset('/'), part, text.id ~'-'~ part)|raw }}
 	</div>
 	{% if next_part is defined %}

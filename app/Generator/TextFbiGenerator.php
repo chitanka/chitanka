@@ -130,7 +130,7 @@ EOS;
 
 	private function genFbiMainSeries(Text $text) {
 		$series = $text->getSeries();
-		$fbi = empty($series) ? Legacy::workType($text->getType(), false) : $series->getName();
+		$fbi = empty($series) ? $text->getType() : $series->getName();
 		if ($series && $text->getSernr()) {
 			$fbi .= " [{$text->getSernr()}]";
 		}

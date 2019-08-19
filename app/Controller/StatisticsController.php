@@ -18,7 +18,7 @@ class StatisticsController extends Controller {
 				'users'         => $this->em()->getUserRepository()->getCount(),
 			],
 			'countries'  => $this->em()->getCountryRepository()->findAll(),
-			'text_types'        => $this->em()->getTextRepository()->getCountsByType(),
+			'textTypes' => $this->em()->getTextTypeRepository()->findAll(),
 		];
 	}
 

@@ -26,7 +26,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      @ORM\Index(name="subtitle_idx", columns={"subtitle"}),
  *      @ORM\Index(name="orig_title_idx", columns={"orig_title"}),
  *      @ORM\Index(name="orig_subtitle_idx", columns={"orig_subtitle"}),
- *      @ORM\Index(name="type_idx", columns={"type"}),
  *      @ORM\Index(name="lang_idx", columns={"lang"}),
  *      @ORM\Index(name="orig_lang_idx", columns={"orig_lang"})}
  * )
@@ -121,8 +120,9 @@ class Text extends BaseWork implements  \JsonSerializable {
 	private $transLicense;
 
 	/**
-	 * @var string
-	 * @ORM\Column(type="string", length=14)
+	 * @var TextType
+	 * @ORM\ManyToOne(targetEntity="TextType")
+	 * @ORM\JoinColumn(name="type", referencedColumnName="code", nullable=false)
 	 */
 	private $type;
 
@@ -612,7 +612,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 	}
 
 	public function isGamebook() {
-		return $this->type == 'gamebook';
+		return $this->type->is('gamebook');
 	}
 
 	public function isTranslation() {

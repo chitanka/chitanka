@@ -1,8 +1,8 @@
 {% for type in types %}
 	<entry>
-		<title>{{ ('text.type.singular.'~type) | trans }}</title>
-		<id>{{ helper.urn('texts_by_type', [type]) }}</id>
-		{{ helper.link(helper.path('texts_by_type', {'type': type})) }}
-		<content type="text">Произведения от вид „{{ ('text.type.singular.'~type) | trans }}“</content>
+		<title>{{ type }}</title>
+		<id>{{ helper.urn('texts_by_type', [type.code]) }}</id>
+		{{ helper.link(helper.path('texts_by_type', {'type': type.code})) }}
+		<content type="text">{{ 'tooltip.nr-of-texts-with-type'|transchoice(type.nrOfTexts, {'%type%': type.name}) }}</content>
 	</entry>
 {% endfor %}

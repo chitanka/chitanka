@@ -1,6 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Entity\Text;
+use App\Entity\TextType;
 use App\Entity\UserTextRead;
 use App\Form\Type\RandomTextFilter;
 use App\Form\Type\TextLabelType;
@@ -25,7 +26,7 @@ class TextController extends Controller {
 		if (in_array($_format, ['html', 'json'])) {
 			return [
 				'labels' => $this->em()->getLabelRepository()->getAllAsTree(),
-				'types' => $this->em()->getTextRepository()->getTypes(),
+				'types' => $this->em()->getTextTypeRepository()->findAll(),
 			];
 		}
 
@@ -34,7 +35,7 @@ class TextController extends Controller {
 
 	public function listByTypeIndexAction() {
 		return [
-			'types' => $this->em()->getTextRepository()->getTypes()
+			'types' => $this->em()->getTextTypeRepository()->findAll()
 		];
 	}
 
@@ -48,14 +49,14 @@ class TextController extends Controller {
 		return [];
 	}
 
-	public function listByTypeAction(Request $request, $type, $page) {
+	public function listByTypeAction(Request $request, TextType $type, $page) {
 		$textRepo = $this->em()->getTextRepository();
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		return [
 			'type' => $type,
 			'texts'   => $textRepo->getByType($type, $page, $limit, $request->query->get('sort')),
 			'pager'    => new Pager($page, $textRepo->countByType($type), $limit),
-			'route_params' => ['type' => $type],
+			'route_params' => ['type' => $type->getCode()],
 		];
 	}
 

@@ -2,9 +2,9 @@
 {% import 'App::link.html.twig' as link %}
 <ul class="superlist fa-ul">
 {% for revision in text_revisions %}
-	<li class="title t-{{ revision.text.type }}">
+	<li class="title t-{{ revision.text.type.code }}">
 		<dl>
-			<dt><span class="fa-li fa fa-folder" title="{{ ('text.type.singular.'~revision.text.type)|trans }}"></span>{{ link.text(revision.text) }}</dt>
+			<dt><span class="fa-li fa fa-folder" title="{{ revision.text.type }}"></span>{{ link.text(revision.text) }}</dt>
 			<dd class="tauthor">{{ texttools.author_list(revision.text.authors) }}</dd>
 		</dl>
 	</li>

@@ -50,7 +50,7 @@
 			</dd>
 		{% endif %}
 		<dt>Форма<dt>
-		<dd><a href="{{ path('texts_by_type', {'type': text.type}) }}">{{ ('text.type.singular.'~text.type) | trans }}</a></dd>
+		<dd><a href="{{ path('texts_by_type', {'type': text.type.code}) }}">{{ text.type }}</a></dd>
 
 		{% for labelGroup in text.availableLabels %}
 		<dt>

@@ -1,9 +1,9 @@
 <table class="table table-condensed table-striped" style="max-width: 18em">
 	<caption>Произведения по форма</caption>
-	{% for type, count in text_types %}
+	{% for type in textTypes %}
 		<tr>
-			<td><a href="{{ path('texts_by_type', {'type': type}) }}">{{ ('text.type.singular.'~type) | trans }}</a></td>
-			<td class="text-right">{{ count }}</td>
+			<td><a href="{{ path('texts_by_type', {'type': type.code}) }}">{{ type }}</a></td>
+			<td class="text-right">{{ type.nrOfTexts }}</td>
 		</tr>
 	{% endfor %}
 </table>

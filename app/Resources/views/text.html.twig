@@ -173,8 +173,8 @@
 {% macro text_list_with_author(texts, options) %}
 	<ul class="superlist fa-ul">
 	{% for text in texts %}
-		<li class="title t-{{ text.type }}">
-			<span class="fa fa-li fa-folder" title="{{ ('text.type.singular.'~text.type)|trans }}"></span>
+		<li class="title t-{{ text.type.code }}">
+			<span class="fa fa-li fa-folder" title="{{ text.type }}"></span>
 			{{ _self.text_with_author(text, options) }}
 		</li>
 	{% endfor %}
@@ -185,8 +185,8 @@
 {% macro text_list(texts) %}
 	<ul class="superlist fa-ul">
 	{% for text in texts %}
-		<li class="title t-{{ text.type }}">
-			<span class="fa fa-li fa-folder" title="{{ ('text.type.singular.'~text.type)|trans }}"></span>
+		<li class="title t-{{ text.type.code }}">
+			<span class="fa fa-li fa-folder" title="{{ text.type }}"></span>
 			{{ _self.text(text, {'sernr': 1, 'download_links': 1}) }}
 		</li>
 	{% endfor %}

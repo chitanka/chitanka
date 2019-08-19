@@ -140,13 +140,12 @@ class TextRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param string $type
 	 * @param int $page
 	 * @param int $limit
 	 * @param string $orderBy
 	 * @return array
 	 */
-	public function getByType($type, $page = 1, $limit = null, $orderBy = null) {
+	public function getByType(TextType $type, $page = 1, $limit = null, $orderBy = null) {
 		$orderBy = $this->normalizeOrderBy($orderBy);
 		try {
 			$ids = $this->getIdsByType($type, $page, $limit, $orderBy);
@@ -157,15 +156,14 @@ class TextRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param string $type
 	 * @param int $page
 	 * @param int $limit
 	 * @param string $orderBy
 	 * @return array
 	 * @throws NoResultException
 	 */
-	protected function getIdsByType($type, $page, $limit, $orderBy) {
-		$where = "WHERE t.type = '$type'";
+	protected function getIdsByType(TextType $type, $page, $limit, $orderBy) {
+		$where = "WHERE t.type = '{$type->getCode()}'";
 		$dql = "SELECT t.id FROM {$this->getEntityName()} t $where ORDER BY t.$orderBy";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
@@ -177,11 +175,10 @@ class TextRepository extends EntityRepository {
 	}
 
 	/**
-	 * @param string $type
 	 * @return int
 	 */
-	public function countByType($type) {
-		$where = "WHERE t.type = '$type'";
+	public function countByType(TextType $type) {
+		$where = "WHERE t.type = '{$type->getCode()}'";
 		$dql = sprintf('SELECT COUNT(t.id) FROM %s t %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
 		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
@@ -344,21 +341,6 @@ class TextRepository extends EntityRepository {
 	 */
 	public function getByQuery($params) {
 		return WorkSteward::joinPersonKeysForTexts(parent::getByQuery($params));
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getCountsByType() {
-		$counts = $this->_em->createQueryBuilder()
-			->select('e.type', 'COUNT(e.id)')
-			->from($this->getEntityName(), 'e')
-			->groupBy('e.type')
-			->getQuery()
-			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
-			->getResult('key_value');
-		arsort($counts);
-		return $counts;
 	}
 
 	/**

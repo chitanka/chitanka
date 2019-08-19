@@ -168,6 +168,14 @@ services:
         calls:
             - [setMaxPerPage, [%admin_max_per_page%]]
 
+    admin.text_type:
+        class: App\Admin\TextTypeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: admin.text_type }
+        arguments: [null, App\Entity\TextType, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
     admin.book_isbn:
         class: App\Admin\BookIsbnAdmin
         tags:

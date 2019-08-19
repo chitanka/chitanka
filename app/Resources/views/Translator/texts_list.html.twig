@@ -3,7 +3,7 @@
 		{% if series.slug is defined %}
 			<a href="{{ path('series_show', {'slug': series.slug}) }}">{{ series.name }}</a>
 		{% else %}
-			{{ ('text.type.plular.'~series.name) | trans }}
+			{{ series.name }}
 		{% endif %}
 	</h2>
 	{{ text_lister.text_list_with_author(texts, {'download_links': true}) }}

@@ -2,8 +2,8 @@
 {% import 'App::helper.opds.twig' as helper %}
 
 {% set title = 'Произведения по форма' %}
-{% set subtitle %}{{ ('text.type.plular.'~type) | trans }}{% endset %}
-{% set link_self = helper.path(current_route, {'type': type}) %}
+{% set subtitle = type %}
+{% set link_self = helper.path(current_route, {'type': type.code}) %}
 {% block content %}
 	{% include 'App:Text:list.opds.twig' %}
 	{% include 'App::pager.opds.twig' %}

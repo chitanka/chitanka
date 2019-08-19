@@ -4,8 +4,8 @@
 <ul class="superlist fa-ul">
 {% import 'App::text.html.twig' as texttools %}
 {% for read_text in read_texts %}
-	<li class="title t-{{ read_text.text.type }}" title="{{ read_text.createdAt|humandate }}">
-		<span class="fa fa-li fa-folder" title="{{ ('text.type.singular.'~read_text.text.type)|trans }}"></span>
+	<li class="title t-{{ read_text.text.type.code }}" title="{{ read_text.createdAt|humandate }}">
+		<span class="fa fa-li fa-folder" title="{{ read_text.text.type }}"></span>
 		{{ texttools.text_with_author(read_text.text, {'download_links': true}) }}
 	</li>
 {% endfor %}

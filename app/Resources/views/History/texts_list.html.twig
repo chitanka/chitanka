@@ -9,7 +9,7 @@
 		{% set prefix %}
 			<span title="{{ revision.comment }}">{{ revision.first ? 'Н' : 'к' }}</span>
 		{% endset %}
-		<li class="title t-{{ revision.text.type }}"><span class="fa-li fa fa-folder" title="{{ ('text.type.singular.'~revision.text.type)|trans }}"></span>{{ texttools.text_with_author(revision.text, {'prefix': prefix, 'download_links': true}) }}</li>
+		<li class="title t-{{ revision.text.type.code }}"><span class="fa-li fa fa-folder" title="{{ revision.text.type }}"></span>{{ texttools.text_with_author(revision.text, {'prefix': prefix, 'download_links': true}) }}</li>
 	{% endfor %}
 	</ul>
 {% else %}

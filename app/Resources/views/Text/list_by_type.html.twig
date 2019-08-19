@@ -1,13 +1,12 @@
 {% extends 'App::layout.html.twig' %}
 
-{% set title = 'Произведения' %}
-{% set subtitle %}{{ ('text.type.plular.'~type) | trans }}{% endset %}
+{% set title %}Произведения от вид „<a class="selflink" data-edit="{{ path('admin_text_type_edit', {id: type.code}) }}">{{ type }}</a>“{% endset %}
 {% block content %}
 
+	{% import 'App::helper.html.twig' as helper %}
 	{% if texts is empty %}
 
 		<p class="no-items">
-			{% import 'App::helper.html.twig' as helper %}
 			{{ helper.not_found('Няма намерени произведения.') }}
 		</p>
 
@@ -15,7 +14,10 @@
 
 		<ul class="breadcrumb" itemprop="breadcrumb">
 			<li><a href="{{ path('texts') }}">Произведения</a></li>
-			<li class="active">{{ subtitle }}</li>
+			<li class="active">
+				<a href="{{ path('texts_by_type', {'type': type.code}) }}" itemprop="name" data-edit="{{ path('admin_text_type_edit', {id: type.code}) }}">{{ type }}</a>
+				{{ helper.infoTip(type.description) }}
+			</li>
 		</ul>
 
 		{% include 'App:Text:list.html.twig' %}
