@@ -26,7 +26,8 @@
 				<div class="bookseq">{{ link.sequence(book.sequence) }}{% if book.seqnr is not empty and book.sequence.isSeqnrVisible %}, №&nbsp;{{ book.seqnr }}{% endif %}</div>
 			{% endif %}
 			{% if book.category is not empty %}
-				<div class="bookcat">{{ link.category(book.category) }}</div>
+				{% import 'helper.html.twig' as helper %}
+				<div class="bookcat">{{ link.category(book.category) }} {{ helper.infoTip(book.category.description) }}</div>
 			{% endif %}
 
 			{% if book.removedNotice is empty %}

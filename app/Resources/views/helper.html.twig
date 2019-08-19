@@ -4,3 +4,9 @@
 		{{ message }}
 	</div>
 {% endmacro %}
+
+{% macro infoTip(message) %}
+	{% if message is not empty %}
+		<span class="popover-trigger" data-content="{{ message }}"><span class="fa fa-info-circle"></span></span>
+	{% endif %}
+{% endmacro %}
