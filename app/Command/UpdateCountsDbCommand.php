@@ -27,6 +27,7 @@ class UpdateCountsDbCommand extends Command {
 	private function updateCounts(OutputInterface $output, $em) {
 		$this->updateTextCountByLabels($output, $em);
 		$this->updateTextCountByLabelsParents($output, $em);
+		$this->updateTextCountByTypes($output, $em);
 		$this->updateBookCountBySequences($output, $em);
 		$this->updateBookCountByCategories($output, $em);
 		$this->updateBookCountByCategoriesParents($output, $em);
@@ -46,6 +47,15 @@ class UpdateCountsDbCommand extends Command {
 	private function updateTextCountByLabelsParents(OutputInterface $output, EntityManager $em) {
 		$output->writeln('Updating text counts by labels parents');
 		$this->updateCountByParents($em, 'App:Label', 'NrOfTexts');
+	}
+
+	/**
+	 * @RawSql
+	 */
+	private function updateTextCountByTypes(OutputInterface $output, EntityManager $em) {
+		$output->writeln('Updating text counts by types');
+		$update = $this->maintenanceSql('UPDATE text_type tt SET nr_of_texts = (SELECT COUNT(*) FROM text WHERE type = tt.code)');
+		$em->getConnection()->executeUpdate($update);
 	}
 
 	/**
