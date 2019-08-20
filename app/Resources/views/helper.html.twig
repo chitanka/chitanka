@@ -5,9 +5,13 @@
 	</div>
 {% endmacro %}
 
-{% macro infoTip(message) %}
+{% macro printInfoTip(message, isExpanded) %}
 	{% if message is not empty %}
-		<span class="popover-trigger" data-content="{{ message }}"><span class="fa fa-info-circle"></span></span>
+		{% if isExpanded|default(false) %}
+			<div class="well">{{ message|nl2br }}</div>
+		{% else %}
+			<span class="popover-trigger" data-content="{{ message|nl2br }}"><span class="fa fa-info-circle"></span></span>
+		{% endif %}
 	{% endif %}
 {% endmacro %}
 

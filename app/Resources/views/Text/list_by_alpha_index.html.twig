@@ -1,10 +1,10 @@
 {% extends 'App::layout.html.twig' %}
 
-{% set title = 'Произведения по форма' %}
+{% set title = 'Произведения по азбучен ред' %}
 {% block content %}
 	<ul class="breadcrumb" itemprop="breadcrumb">
 		<li><a href="{{ path('texts') }}">Произведения</a></li>
-		<li class="active">по форма</li>
+		<li class="active">по азбучен ред</li>
 	</ul>
-	{% include 'App:Text:type_list.html.twig' with { isExpanded: true } %}
+	{% include 'App:Text:navigation.html.twig' with {'letter': ''} %}
 {% endblock %}

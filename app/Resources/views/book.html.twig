@@ -27,7 +27,7 @@
 			{% endif %}
 			{% if book.category is not empty %}
 				{% import 'helper.html.twig' as helper %}
-				<div class="bookcat">{{ link.category(book.category) }} {{ helper.infoTip(book.category.description) }}</div>
+				<div class="bookcat">{{ link.category(book.category) }} {{ helper.printInfoTip(book.category.description) }}</div>
 			{% endif %}
 
 			{% if book.removedNotice is empty %}

@@ -2,6 +2,6 @@
 	{% import 'App::link.html.twig' as link %}
 	{{ link.label(label) }}
 	{% import 'helper.html.twig' as helper %}
-	{{ helper.infoTip(label.description) }}
+	{{ helper.printInfoTip(label.description) }}
 	{% include 'App:Text:label_delete_form.html.twig' with {'label': label} %}
 </li>

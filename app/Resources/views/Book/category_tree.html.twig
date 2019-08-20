@@ -9,7 +9,7 @@
 		{% else %}
 			{{ category.name }}
 		{% endif %}
-		{{ helper.infoTip(category.description) }}
+		{{ helper.printInfoTip(category.description) }}
 		{% if category.children is defined %}
 			{% include 'App:Book:category_tree.html.twig' with {'categories': category.children, 'level': level+1} %}
 		{% endif %}

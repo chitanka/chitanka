@@ -21,7 +21,7 @@
 			<li class="active">
 				<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>
 				{{ helper.printNrOfItems(label.nrOfTexts) }}
-				{{ helper.infoTip(label.description) }}
+				{{ helper.printInfoTip(label.description) }}
 			</li>
 		</ul>
 

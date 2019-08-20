@@ -1,10 +1,13 @@
 {% import 'helper.html.twig' as helper %}
-<ul class="two-columns">
+{% if isExpanded is not defined %}
+	{% set isExpanded = false %}
+{% endif %}
+<ul class="{{ not isExpanded ? 'two-columns' : '' }}">
 {% for type in types %}
 	<li>
 		<a href="{{ path('texts_by_type', {'type': type.code}) }}" data-edit="{{ path('admin_text_type_edit', {'id': type.code}) }}">{{ type }}</a>
 		{{ helper.printNrOfItems(type.nrOfTexts, 'tooltip.nr-of-texts-with-type'|transchoice(type.nrOfTexts, {'%type%': type.name})) }}
-		{{ helper.infoTip(type.description) }}
+		{{ helper.printInfoTip(type.description, isExpanded) }}
 	</li>
 {% endfor %}
 </ul>

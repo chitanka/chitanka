@@ -2,5 +2,9 @@
 
 {% set title = 'Произведения по етикет' %}
 {% block content %}
-	{% include 'App:Text:label_list.html.twig' %}
+	<ul class="breadcrumb" itemprop="breadcrumb">
+		<li><a href="{{ path('texts') }}">Произведения</a></li>
+		<li class="active">по етикет</li>
+	</ul>
+	{% include 'App:Text:label_list.html.twig' with { isExpanded: true } %}
 {% endblock %}

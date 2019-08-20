@@ -12,7 +12,7 @@
 		<li class="active">
 			<a href="{{ path('books_by_category', {'slug': category.slug}) }}" data-edit="{{ path('admin_category_edit', {'id': category.id}) }}">{{ category.name }}</a>
 			{{ helper.printNrOfItems(category.nrOfBooks) }}
-			{{ helper.infoTip(category.description) }}
+			{{ helper.printInfoTip(category.description) }}
 		</li>
 	</ul>
 
