@@ -41,7 +41,7 @@ class TextController extends Controller {
 
 	public function listByLabelIndexAction() {
 		return [
-			'labels' => $this->em()->getLabelRepository()->getAll()
+			'labels' => $this->em()->getLabelRepository()->findAll()
 		];
 	}
 

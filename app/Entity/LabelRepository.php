@@ -12,6 +12,13 @@ class LabelRepository extends EntityRepository {
 		return $this->findOneBy(['slug' => $slug]);
 	}
 
+	/**
+	 * @return Label[]
+	 */
+	public function findAll() {
+		return $this->findBy([], ['name' => 'asc']);
+	}
+
 	public function getAll($group = null) {
 		$qb = $this->getQueryBuilder()
 			->addSelect('IDENTITY(e.parent) AS parent')
