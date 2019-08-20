@@ -5,6 +5,7 @@
 {% endset %}
 {% set subtitle = 'издателска поредица' %}
 {% block content %}
+	{% import 'helper.html.twig' as helper %}
 	<ul class="breadcrumb" itemprop="breadcrumb">
 		<li><a href="{{ path('sequences') }}">Издателски поредици</a></li>
 		<li><a href="{{ path('sequences_by_alpha', {'letter': sequence.name|first_char}) }}">{{ sequence.name|first_char }}</a></li>
@@ -12,7 +13,7 @@
 			{% if sequence.publisher %}
 				({{ sequence.publisher }})
 			{% endif %}
-			<span class="badge">{{ sequence.nrOfBooks }}</span>
+			{{ helper.printNrOfItems(sequence.nrOfBooks) }}
 		</li>
 	</ul>
 	{% if sequence.annotation is not empty %}

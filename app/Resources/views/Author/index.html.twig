@@ -8,12 +8,13 @@
 {% endblock %}
 {% block content %}
 	{% include 'App:Author:navigation.html.twig' with {'by': '', 'letter': ''} %}
+	{% import 'helper.html.twig' as helper %}
 	<h2>Държава</h2>
 	<ul>
 		{% for country in countries %}
 			<li>
 				<a href="{{ path('authors_by_country', {'country': country.code}) }}">{{ country.name }}</a>
-				<span class="badge">{{ country.nrOfAuthors }}</span>
+				{{ helper.printNrOfItems(country.nrOfAuthors) }}
 			</li>
 		{% endfor %}
 	</ul>

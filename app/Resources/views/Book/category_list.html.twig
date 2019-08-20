@@ -1,10 +1,9 @@
+{% import 'helper.html.twig' as helper %}
 <ul>
 {% for category in categories %}
 	<li>
 		<a href="{{ path('books_by_category', {'slug': category.slug}) }}">{{ category.name }}</a>
-		{% if category.nrOfBooks > 0 %}
-			<span class="badge">{{ category.nrOfBooks }}</span>
-		{% endif %}
+		{{ helper.printNrOfItems(category.nrOfBooks) }}
 	</li>
 {% endfor %}
 </ul>

@@ -11,12 +11,13 @@
 		{{ navi.person_last_letter_links('translators_by_alpha', (by == 'last-name' ? letter : '')) }}
 	</div>
 	<h2>Държава</h2>
+	{% import 'helper.html.twig' as helper %}
 	<ul>
 	{% for country in countries %}
 		{% if country.nrOfTranslators > 0 %}
 			<li>
 				<a href="{{ path('translators_by_country', {'country': country.code}) }}">{{ country.name }}</a>
-				<span class="badge">{{ country.nrOfTranslators }}</span>
+				{{ helper.printNrOfItems(country.nrOfTranslators) }}
 			</li>
 		{% endif %}
 	{% endfor %}

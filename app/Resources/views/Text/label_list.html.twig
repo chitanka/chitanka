@@ -1,12 +1,10 @@
-{% import 'App::helper.html.twig' as helper %}
+{% import 'helper.html.twig' as helper %}
 <ul>
 {% for label in labels %}
 	<li>
 		<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" data-edit="{{ path('admin_label_edit', {id: label.id}) }}">{{ label.name }}</a>
 		{{ helper.infoTip(label.description) }}
-		{% if label.nrOfTexts > 0 %}
-			<span class="badge nr-of-items">{{ label.nrOfTexts }}</span>
-		{% endif %}
+		{{ helper.printNrOfItems(label.nrOfTexts) }}
 	</li>
 {% endfor %}
 </ul>

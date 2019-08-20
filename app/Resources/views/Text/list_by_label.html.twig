@@ -20,7 +20,7 @@
 			{% endfor %}
 			<li class="active">
 				<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>
-				<span class="badge nr-of-items">{{ label.nrOfTexts }}</span>
+				{{ helper.printNrOfItems(label.nrOfTexts) }}
 				{{ helper.infoTip(label.description) }}
 			</li>
 		</ul>
