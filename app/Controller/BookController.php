@@ -27,9 +27,6 @@ class BookController extends Controller {
 	public function listByCategoryIndexAction($_format) {
 		switch ($_format) {
 			case 'html':
-				return [
-					'categories' => $this->em()->getCategoryRepository()->getAllAsTree(),
-				];
 			case 'opds':
 				return [
 					'categories' => $this->em()->getCategoryRepository()->getAll(),

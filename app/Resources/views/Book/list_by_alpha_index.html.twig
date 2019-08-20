@@ -1,0 +1,10 @@
+{% extends 'App::layout.html.twig' %}
+
+{% set title = 'Книги по азбучен ред' %}
+{% block content %}
+	<ul class="breadcrumb" itemprop="breadcrumb">
+		<li><a href="{{ path('books') }}">Книги</a></li>
+		<li class="active">по азбучен ред</li>
+	</ul>
+	{% include 'App:Book:navigation.html.twig' with {'letter': ''} %}
+{% endblock %}

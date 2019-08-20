@@ -6,9 +6,9 @@
 	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('books_search', {'_format': 'osd'}) }}" title="Търсене на книги в Моята библиотека" />
 {% endblock %}
 {% block content %}
-	<h2>По азбучен ред</h2>
+	<h2><a href="{{ path('books_by_alpha_index') }}">По азбучен ред</a></h2>
 	{% include 'App:Book:navigation.html.twig' with {'letter': ''} %}
 
-	<h2>По категория</h2>
+	<h2><a href="{{ path('books_by_category_index') }}">По категория</a></h2>
 	{% include 'App:Book:category_tree.html.twig' with {'level': 0} %}
 {% endblock %}

@@ -1,9 +1,13 @@
 {% import 'helper.html.twig' as helper %}
-<ul>
+{% if isExpanded is not defined %}
+	{% set isExpanded = false %}
+{% endif %}
+<ul class="categories">
 {% for category in categories %}
 	<li>
 		<a href="{{ path('books_by_category', {'slug': category.slug}) }}">{{ category.name }}</a>
 		{{ helper.printNrOfItems(category.nrOfBooks) }}
+		{{ helper.printInfoTip(category.description, isExpanded) }}
 	</li>
 {% endfor %}
 </ul>

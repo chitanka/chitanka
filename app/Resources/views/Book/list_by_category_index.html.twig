@@ -1,0 +1,10 @@
+{% extends 'App::layout.html.twig' %}
+
+{% set title = 'Книги по категория' %}
+{% block content %}
+	<ul class="breadcrumb" itemprop="breadcrumb">
+		<li><a href="{{ path('books') }}">Книги</a></li>
+		<li class="active">по категория</li>
+	</ul>
+	{% include 'App:Book:category_list.html.twig' with {isExpanded: true} %}
+{% endblock %}
