@@ -447,7 +447,7 @@ class Book extends BaseWork implements \JsonSerializable {
 		if ( ! isset($this->mainAuthors) ) {
 			$this->mainAuthors = [];
 			foreach ($this->getTextsById() as $text) {
-				if ( self::isMainWorkType($text->getType()) ) {
+				if ( self::isMainWorkType($text->getType()->getCode()) ) {
 					foreach ($text->getAuthors() as $author) {
 						$this->mainAuthors[$author->getId()] = $author;
 					}
@@ -475,7 +475,7 @@ class Book extends BaseWork implements \JsonSerializable {
 		if ( ! isset($this->authorsBy[$type]) ) {
 			$this->authorsBy[$type] = [];
 			foreach ($this->getTextsById() as $text) {
-				if ($text->getType() == $type) {
+				if ($text->getType()->is($type)) {
 					foreach ($text->getAuthors() as $author) {
 						$this->authorsBy[$type][$author->getId()] = $author;
 					}

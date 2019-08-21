@@ -380,8 +380,8 @@ class TextRepository extends EntityRepository {
 				$bySeries[ $text->getSeries()->getId() ]['data'] = $text->getSeries();
 				$bySeries[ $text->getSeries()->getId() ]['texts'][$text->getId()] = $text;
 			} else {
-				$byType[ $text->getType() ]['data']['name'] = $text->getType();
-				$byType[ $text->getType() ]['texts'][$text->getId()] = $text;
+				$byType[ $text->getType()->getCode() ]['data']['name'] = $text->getType()->getCode();
+				$byType[ $text->getType()->getCode() ]['texts'][$text->getId()] = $text;
 			}
 		}
 		return $bySeries + $byType;

@@ -858,7 +858,7 @@ title         = {$this->getTitle()}
 subtitle      = {$this->getSubtitle()}
 authors       = $authors
 slug          = {$this->getSlug()}
-type          = {$this->getType()}
+type          = {$this->getType()->getCode()}
 lang          = {$this->getLang()}
 year          = {$this->getYear()}
 orig_license  = {$this->getOrigLicenseCode()}
@@ -1197,7 +1197,7 @@ EOS;
 			'year2' => $this->getYear2(),
 			'origLicense' => $this->getOrigLicense(),
 			'transLicense' => $this->getTransLicense(),
-			'type' => $this->getType(),
+			'type' => $this->getType()->getCode(),
 			'series' => $this->getSeries(),
 			'sernr' => $this->getSernr(),
 			'headlevel' => $this->getHeadlevel(),

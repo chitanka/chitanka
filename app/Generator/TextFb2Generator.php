@@ -150,7 +150,7 @@ class TextFb2Generator {
 		}
 		$genres = array_unique($genres);
 		if (empty($genres)) {
-			switch ($text->getType()) {
+			switch ($text->getType()->getCode()) {
 				case 'poetry': $genres[] = 'poetry'; break;
 				default:       $genres[] = 'prose_contemporary';
 			}
