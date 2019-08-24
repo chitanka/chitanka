@@ -75,7 +75,7 @@ class TextAdmin extends Admin {
 			->add('title')
 			->add('lang')
 			->add('origLang')
-			->add('type', 'choice', ['choices' => $translation->getTextTypeChoices()])
+			->add('type')
 			->add('textAuthors', 'sonata_type_collection', [
 				'by_reference' => false,
 				'required' => false,
