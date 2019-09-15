@@ -105,6 +105,9 @@ class Sequence extends Entity implements \JsonSerializable {
 	public function getBooks() { return $this->books; }
 
 	public function __toString() {
+		if ($this->publisher) {
+			return "{$this->name} ({$this->publisher})";
+		}
 		return $this->name;
 	}
 
