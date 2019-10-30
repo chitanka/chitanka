@@ -269,7 +269,7 @@ class ContentImporter {
 	private static function sortDataFiles($files) {
 		$sorted = [];
 		foreach ($files as $file) {
-			if (preg_match('/\.(\d+)\.data/', $file, $matches)) {
+			if (preg_match('/\.(\d+)\.data/', $file, $matches) && filesize($file)) {
 				$sorted[$matches[1]] = $file;
 			}
 		}
