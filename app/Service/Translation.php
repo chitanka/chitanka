@@ -26,10 +26,6 @@ class Translation {
 		return $this->generateChoicesFor('rating');
 	}
 
-	public function getTextTypeChoices() {
-		return $this->generateChoicesFor('text.type.singular');
-	}
-
 	public function getUserGroupChoices() {
 		$groups = User::getGroupList();
 		return $this->generateChoicesFromCodes($groups, 'user.group');

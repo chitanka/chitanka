@@ -13,6 +13,7 @@ use App\Service\SearchService;
 use App\Service\TextBookmarkService;
 use App\Service\TextLabelService;
 use App\Util\Stringy;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -228,7 +229,11 @@ class TextController extends Controller {
 		if ($form->handleRequest($request)->isValid()) {
 			$criteria = new Criteria();
 			if ($selectedTypes = $form->getData()['type']) {
-				$criteria = $criteria->where(Criteria::expr()->in('type', $selectedTypes));
+				/* @var $selectedTypes ArrayCollection */
+				$codes = $selectedTypes->map(function (TextType $textType) {
+					return $textType->getCode();
+				})->getValues();
+				$criteria = $criteria->where(Criteria::expr()->in('type', $codes));
 			}
 			$id = $this->em()->getTextRepository()->getRandomId($criteria);
 			return $this->redirectToRoute('text_show', ['id' => $id]);
