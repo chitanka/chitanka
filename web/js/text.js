@@ -133,7 +133,8 @@ function prepareGamebook() {
 
 	function replaceInputPlaceholders(str, name) {
 		return str
-			// … x3
+			// ………
+			.replace(/………\(=([^)]+)\)/g, '<textarea style="width: 99%; height: 5em">$1</textarea>')
 			.replace(/………/g, '<textarea style="width: 99%; height: 5em"></textarea>')
 			// (…=radio 1 / radio 2 / radio 3)
 			.replace(/\(…=([^)]+)\)/, function(m0, m1) {
@@ -162,13 +163,18 @@ function prepareGamebook() {
 		var $cell = $(cell);
 		var name = namePrefix + "-" + idx;
 		$cell.html(replaceInputPlaceholders($cell.html(), name));
-		var childrenCount = $cell.children().length;
-		if ($.trim($cell.text()) !== "") {
-			childrenCount++;
-		}
+		var childrenCount = Array.from(cell.childNodes).filter(function(node) {
+			if (node.nodeName === '#text') {
+				return $.trim(node.wholeText) !== ''; // count only non-whitespaced texts
+			}
+			if (node.nodeName[0] === '#') { // exclude comments and other special nodes
+				return false;
+			}
+			return true;
+		}).length;
 		if (childrenCount > 1) {
-			var childrenWidth = Math.floor(100 / childrenCount) - 2/*give it some space*/;
-			$cell.children().width(childrenWidth+"%");
+			let childrenWidth = Math.floor(100 / childrenCount) - 1/*give it some space*/;
+			$cell.children().css({width: childrenWidth+'%'});
 		}
 		$cell.children().each(function(idx, input) {
 			$(input).attr("name", name+"-"+idx);
