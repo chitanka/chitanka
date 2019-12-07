@@ -374,7 +374,7 @@ class EpubFile {
 
 	private function getTitlePageFileContent() {
 		if ( ($series = $this->obj->getPlainSeriesInfo()) ) {
-			$series = sprintf('<p class="series-info">%s</p>', $series);
+			$series = sprintf('<p class="series-info">%s</p>', htmlspecialchars($series));
 		}
 
 		if ( ($translator = $this->obj->getPlainTranslationInfo()) ) {
