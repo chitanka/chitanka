@@ -156,7 +156,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 		$cacheKey = md5($query->getSQL());
 		$cacheLifetime = $cacheLifetime !== null ? $cacheLifetime : static::RANDOM_CACHE_LIFETIME;
 		$randomId = $this->fetchFromCache($cacheKey, function() use ($where) {
-			return rand(1, $this->getCount($where)) - 1;
+			return max(0, rand(1, $this->getCount($where)) - 1);
 		}, $cacheLifetime);
 		$query
 			->setMaxResults(1)
