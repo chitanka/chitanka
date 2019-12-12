@@ -1,6 +1,0 @@
-{% import 'App::book.html.twig' as booktools %}
-<div class="booklist">
-{% for revision in book_revisions %}
-	{{ booktools.book(revision.book) }}
-{% endfor %}
-</div>

@@ -5,7 +5,7 @@ use App\Feed\LiternewsFeed;
 
 class MainController extends Controller {
 
-	const LATEST_BOOKS_LIMIT = 3;
+	const LATEST_BOOKS_LIMIT = 6;
 	const LATEST_TEXTS_LIMIT = 20;
 	const LATEST_SEARCHES_LIMIT = 50;
 	const LATEST_COMMENTS_LIMIT = 5;
@@ -20,10 +20,10 @@ class MainController extends Controller {
 		];
 		$sections = $this->container->getParameter('main.sections');
 		if (in_array('books', $sections)) {
-			$vars['books'] = $this->em()->getBookRevisionRepository()->getLatest(self::LATEST_BOOKS_LIMIT, 1, false);
+			$vars['books'] = $this->em()->getBookRevisionRepository()->getLatest(self::LATEST_BOOKS_LIMIT);
 		}
 		if (in_array('texts', $sections)) {
-			$vars['texts'] = $this->em()->getTextRevisionRepository()->getLatest(self::LATEST_TEXTS_LIMIT, 1, false);
+			$vars['texts'] = $this->em()->getTextRevisionRepository()->getLatest(self::LATEST_TEXTS_LIMIT);
 		}
 		if (in_array('liter_posts', $sections)) {
 			$vars['liter_posts'] = LiternewsFeed::fetchLatest(self::LATEST_LITERNEWS_LIMIT);

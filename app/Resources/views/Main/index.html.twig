@@ -25,20 +25,20 @@
 	</div>
 
 	{% if books is defined %}
-		<section id="mp-new-books" class="box box2">
+		<section id="mp-new-books">
 			<h2><a href="{{ path('new_books') }}">Нови книги</a></h2>
 			<div class="well">
-				{% include 'App:Main:last_books.html.twig' with {book_revisions: books} %}
-				<div class="more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
+				{% include 'App:History:books_list.html.twig' with {book_revisions_by_date: books} %}
+				<div class="btn btn-default more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
 			</div>
 		</section>
 	{% endif %}
 	{% if texts is defined %}
-		<section id="mp-new-texts" class="box box2 textbox">
+		<section id="mp-new-texts">
 			<h2><a href="{{ path('new_texts') }}">Нови произведения</a></h2>
 			<div class="well">
-				{% include 'App:Main:last_texts.html.twig' with {text_revisions: texts} %}
-				<div class="more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
+				{% include 'App:History:texts_list.html.twig' with {text_revisions_by_date: texts} %}
+				<div class="btn btn-default more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
 			</div>
 		</section>
 	{% endif %}
