@@ -1,5 +1,5 @@
 {
-	"name": "chitanka/chitanka",
+	"name": "chitanka",
 	"license": "MIT",
 	"type": "project",
 	"description": "The Chitanka library site",
@@ -14,7 +14,7 @@
 		"ext-intl": "*",
 		"ext-xsl": "*",
 		"ext-zip": "*",
-		"symfony/symfony": "3.4.*",
+		"symfony/symfony": "3.0.*",
 		"doctrine/orm": "^2.5",
 		"doctrine/doctrine-bundle": "^1.6",
 		"twig/extensions": "~1.0",
