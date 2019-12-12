@@ -15,7 +15,7 @@ class SqlImporter {
 		$sqlProc = new SqlFileProcessor($sqlFile);
 		$db = $this->db;
 		$sqlProc->walkThruQueries(function($query) use ($db) {
-			echo substr($query, 0, 80), "\n";
+			echo mb_substr($query, 0, 160), "\n";
 			$result = $db->exec($query);
 			if ($result === false) {
 				error_log("Error by $query");
