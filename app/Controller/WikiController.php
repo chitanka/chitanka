@@ -1,11 +1,15 @@
 <?php namespace App\Controller;
 
 use App\Service\WikiEngine;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class WikiController extends Controller {
 
 	public function showAction($page) {
+		if (strpos($page, 'content/') === 0) {
+			return $this->renderBinaryFile(str_replace('content/', '', $page));
+		}
 		$wiki = $this->wikiEngine();
 		$wikiPage = $wiki->getPage($page);
 		return [
@@ -39,4 +43,7 @@ class WikiController extends Controller {
 		return new WikiEngine($this->container->getParameter('content_dir').'/wiki');
 	}
 
+	private function renderBinaryFile($path) {
+		return new BinaryFileResponse($this->container->getParameter('content_dir').'/'.$path);
+	}
 }
