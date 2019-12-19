@@ -994,7 +994,7 @@ EOS;
 	public function getRawContent($asFileName = false) {
 		if ( ! $this->isCompilation) {
 			if ($asFileName) {
-				return ContentService::getContentFilePath('text', $this->getId());
+				return ContentService::getInternalContentFilePath('text', $this->getId());
 			} else {
 				return ContentService::getContentFile('text', $this->getId());
 			}
