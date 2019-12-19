@@ -905,21 +905,13 @@ EOS;
 	}
 
 	public function getHistoryInfo() {
-		$db = Setup::db();
-		$res = $db->select(DBT_EDIT_HISTORY, ['text_id' => $this->getId()], '*', 'date ASC');
-		$rows = [];
-
-		while ( $row = $db->fetchAssoc($res) ) {
-			$rows[] = $row;
-		}
-
+		$rows = Setup::dbal()->fetchAll('select * from '.DBT_EDIT_HISTORY.' where text_id = ? order by date asc', [$this->getId()]);
 		if (!empty($rows)) {
 			$isoEntryDate = $this->createdAt->format('Y-m-d');
 			if ( "$isoEntryDate 24" < $rows[0]['date'] ) {
 				array_unshift($rows, ['date' => $isoEntryDate, 'comment' => 'Добавяне']);
 			}
 		}
-
 		return $rows;
 	}
 

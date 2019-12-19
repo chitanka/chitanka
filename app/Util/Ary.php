@@ -13,15 +13,6 @@ class Ary {
 	}
 
 	/**
-	 * @param array $arr
-	 * @param string $key
-	 * @param mixed $defVal
-	 */
-	public static function arrVal($arr, $key, $defVal = null) {
-		return array_key_exists($key, $arr) ? $arr[$key] : $defVal;
-	}
-
-	/**
 	 * @param string[] $arr1
 	 * @param string[] $arr2
 	 */

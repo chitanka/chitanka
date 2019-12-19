@@ -1,5 +1,6 @@
 <?php namespace App\Legacy;
 
+use App\Generator\DownloadFile;
 use App\Service\ContentService;
 use App\Util\File;
 
@@ -124,28 +125,7 @@ class CacheManager {
 	 * @return string
 	 */
 	public static function getDl($textIds, $format = '') {
-		return self::getDlFileByHash( self::getHashForTextIds($textIds, $format) );
-	}
-
-	/**
-	 * @param array $textIds
-	 * @param string $file
-	 * @param string $format
-	 */
-	public static function setDl($textIds, $file, $format = '') {
-		$db = Setup::db();
-		$pk = self::getHashForTextIds($textIds, $format);
-		$db->insert(DBT_DL_CACHE, [
-			"id = $pk",
-			'file' => $file,
-		], true, false);
-		foreach ( (array) $textIds as $textId ) {
-			$db->insert(DBT_DL_CACHE_TEXT, [
-				"dc_id = $pk",
-				'text_id' => $textId,
-			], true, false);
-		}
-		return $file;
+		return DownloadFile::getDlFileByHash( self::getHashForTextIds($textIds, $format) );
 	}
 
 	/**
@@ -161,13 +141,6 @@ class CacheManager {
 			$db->delete(DBT_DL_CACHE, ['id' => ['IN', $hashes]]);
 			$db->delete(DBT_DL_CACHE_TEXT, ['dc_id' => ['IN', $hashes]]);
 		}
-	}
-
-	/**
-	 * @param string $hash
-	 */
-	public static function getDlFileByHash($hash) {
-		return Setup::db()->getFields(DBT_DL_CACHE, ["id = $hash"], 'file');
 	}
 
 	/**

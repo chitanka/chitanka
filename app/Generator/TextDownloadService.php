@@ -196,7 +196,7 @@ class TextDownloadService {
 		$fullZipFileName = $this->zipFileName . '.zip';
 
 		CacheManager::setDlFile($fullZipFileName, $this->zf->file());
-		CacheManager::setDl($textIds, $fullZipFileName, $dlkey);
+		DownloadFile::setDlCache($textIds, $fullZipFileName, $dlkey);
 		return CacheManager::getDlFile($fullZipFileName);
 	}
 

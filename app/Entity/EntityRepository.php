@@ -10,6 +10,10 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 	const DEFAULT_CACHE_LIFETIME = 3600;
 	const RANDOM_CACHE_LIFETIME = 3;
 
+	// these values must match the ones coming from \Doctrine\DBAL\Platforms\AbstractPlatform
+	const PLATFORM_MYSQL = 'mysql';
+	const PLATFORM_SQLITE = 'sqlite';
+
 	protected $queryableFields = [];
 
 	/**
@@ -389,5 +393,16 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 			$cacheDriver->save($cacheKey, $data, $lifetime);
 		}
 		return $data;
+	}
+
+	protected function getPlatform(): string {
+		return $this->_em->getConnection()->getDatabasePlatform()->getName();
+	}
+
+	protected function dateToString($date): string {
+		if (!$date instanceof \DateTime) {
+			$date = new \DateTime($date);
+		}
+		return $date->format('Y-m-d');
 	}
 }

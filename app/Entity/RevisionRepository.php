@@ -31,7 +31,7 @@ class RevisionRepository extends EntityRepository {
 	public function countByDate($date = null) {
 		$where = '';
 		if (is_array($date)) {
-			$where = "WHERE r.date BETWEEN '$date[0]' AND '$date[1]'";
+			$where = sprintf("WHERE r.date BETWEEN '%s' AND '%s'", $this->dateToString($date[0]), $this->dateToString($date[1]));
 		}
 		$dql = sprintf('SELECT COUNT(r.id) FROM %s r %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
@@ -42,7 +42,7 @@ class RevisionRepository extends EntityRepository {
 	public function getIdsByDate($date = null, $page = 1, $limit = null) {
 		$where = '';
 		if (is_array($date)) {
-			$where = "WHERE r.date BETWEEN '$date[0]' AND '$date[1]'";
+			$where = sprintf("WHERE r.date BETWEEN '%s' AND '%s'", $this->dateToString($date[0]), $this->dateToString($date[1]));
 		}
 		$dql = sprintf('SELECT r.id FROM %s r %s ORDER BY r.date DESC, r.id DESC', $this->getEntityName(), $where);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
@@ -71,14 +71,20 @@ class RevisionRepository extends EntityRepository {
 	public function getMonths() {
 		$table = $this->getClassMetadata()->getTableName();
 		return $this->fetchFromCache('Months_'.$table, function() use ($table) {
-			$sql = sprintf('SELECT
-					DISTINCT DATE_FORMAT(r.date, "%%Y-%%m") AS month,
-					COUNT(*) AS count
+			$sql = sprintf('SELECT DISTINCT %s AS month, COUNT(*) AS count
 				FROM %s r
 				WHERE r.date != "0000-00-00"
-				GROUP BY month', $table);
+				GROUP BY month', $this->getDateFormatDbFunction('r.date'), $table);
 			return $this->_em->getConnection()->fetchAll($sql);
 		});
+	}
+
+	protected function getDateFormatDbFunction(string $dbField): string {
+		switch ($this->getPlatform()) {
+			case self::PLATFORM_MYSQL:  return "date_format($dbField, \"%Y-%m\")";
+			case self::PLATFORM_SQLITE: return "strftime(\"%Y-%m\", $dbField)";
+			default: return $dbField;
+		}
 	}
 
 	/**

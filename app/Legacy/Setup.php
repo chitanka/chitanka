@@ -10,6 +10,7 @@ class Setup {
 		/** @var Request */      $request,
 		/** @var mlDatabase */   $db,
 		/** @var OutputMaker */  $outputMaker;
+	private static $dbal;
 
 	public static function getPage($name, $controller, $container, $execute = true) {
 		self::doSetup($container);
@@ -74,14 +75,17 @@ class Setup {
 		return self::setupDb();
 	}
 
+	public static function dbal(): \Doctrine\DBAL\Connection {
+		return self::$dbal ?? self::$dbal = self::$config->get('doctrine.dbal.default_connection');
+	}
+
 	public static function outputMaker($forceNew = false) {
 		return self::setupOutputMaker($forceNew);
 	}
 
 	private static function setupDb() {
 		if ( ! isset(self::$db) ) {
-			$conn = self::$config->get('doctrine.dbal.default_connection');
-			self::$db = new mlDatabase($conn->getHost(), $conn->getUsername(), $conn->getPassword(), $conn->getDatabase());
+			self::$db = new mlDatabase(self::dbal());
 		}
 		return self::$db;
 	}

@@ -363,26 +363,17 @@ class DownloadFile {
 	 * @return string
 	 */
 	public static function setDlCache($textIds, $file, $format = '') {
-		$db = Setup::db();
+		$dbal = Setup::dbal();
 		$pk = self::getHashForTextIds($textIds, $format);
-		$db->insert(DBT_DL_CACHE, [
-			"id = $pk",
-			'file' => $file,
-		], true, false);
+		$dbal->executeUpdate('REPLACE '.DBT_DL_CACHE.' set id = ?, file = ?', [$pk, $file]);
 		foreach ( (array) $textIds as $textId ) {
-			$db->insert(DBT_DL_CACHE_TEXT, [
-				"dc_id = $pk",
-				'text_id' => $textId,
-			], true);
+			$dbal->executeUpdate('REPLACE '.DBT_DL_CACHE_TEXT.' set dc_id = ?, text_id = ?', [$pk, $textId]);
 		}
 		return $file;
 	}
 
-	/**
-	 * @param string $hash
-	 */
-	public static function getDlFileByHash($hash) {
-		return Setup::db()->getFields(DBT_DL_CACHE, ["id = $hash"], 'file');
+	public static function getDlFileByHash(string $hash) {
+		return Setup::dbal()->fetchColumn("select file from ".DBT_DL_CACHE." where id = ?", [$hash]);
 	}
 
 	/**

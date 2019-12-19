@@ -2,23 +2,15 @@
 
 class mlDatabase {
 
-	private $server;
-	private $user;
-	private $pass;
-	private $dbName;
-	/**
-		Connection to the database
-		@var \mysqli
-	*/
+	/** @var \Doctrine\DBAL\Connection */
+	private $dbal;
+	/** @var \mysqli */
 	private $conn;
 	private $logFile;
 	private $errLogFile;
 
-	public function __construct($server, $user, $pass, $dbName) {
-		$this->server = $server;
-		$this->user = $user;
-		$this->pass = $pass;
-		$this->dbName = $dbName;
+	public function __construct(\Doctrine\DBAL\Connection $conn) {
+		$this->dbal = $conn;
 		$date = date('Y-m-d');
 		$this->logFile = __DIR__."/../../var/log/db-$date.sql";
 		$this->errLogFile = __DIR__."/../../var/log/db-error-$date";
@@ -117,19 +109,11 @@ class mlDatabase {
 		return $q;
 	}
 
-	public function insert($table, $data, $ignore = false, $putId = true) {
-		return $this->query($this->insertQ($table, $data, $ignore, $putId));
+	public function insert($table, $data, $ignore = false) {
+		return $this->query($this->insertQ($table, $data, $ignore));
 	}
 
-	public function insertQ($table, $data, $ignore = false, $putId = true) {
-		if ( empty($data) ) {
-			return '';
-		}
-
-		if ($putId && ! array_key_exists('id', $data) && ($id = $this->autoIncrementId($table)) ) {
-			$data['id'] = $id;
-		}
-
+	public function insertQ($table, $data, $ignore = false) {
 		$signore = $ignore ? ' IGNORE' : '';
 		return "INSERT$signore INTO $table". $this->makeSetClause($data);
 	}
@@ -158,12 +142,7 @@ class mlDatabase {
 		return "INSERT$signore INTO $table". rtrim($vals, ',');
 	}
 
-	public function updateQ($table, $data, $keys) {
-		if ( empty($data) ) { return ''; }
-		if ( empty($keys) ) { return $this->insertQ($table, $data, true); }
-		if ( !is_array($keys) ) {
-			$keys = ['id' => $keys];
-		}
+	public function updateQ($table, array $data, array $keys) {
 		return 'UPDATE '. $table . $this->makeSetClause($data) .
 			$this->makeWhereClause($keys);
 	}
@@ -274,14 +253,11 @@ class mlDatabase {
 	/**
 		Send a query to the database.
 		@param string $query
-		@param bool $useBuffer Use buffered or unbuffered query
 		@return resource
 	*/
-	public function query($query, $useBuffer = true) {
+	public function query($query) {
 		if ( !isset($this->conn) ) { $this->connect(); }
-		$res = $useBuffer
-			? $this->conn->query($query)
-			: $this->conn->query($query, MYSQLI_USE_RESULT);
+		$res = $this->conn->query($query);
 		if ( !$res ) {
 			$errno = $this->conn->errno;
 			$error = $this->conn->error;
@@ -289,6 +265,10 @@ class mlDatabase {
 			throw new \Exception("A database query made a boo boo. Check the log.");
 		}
 		return $res;
+	}
+
+	public function dbalQuery($sql) {
+		return $this->dbal->query($sql);
 	}
 
 	/**
@@ -315,19 +295,8 @@ class mlDatabase {
 		return mysqli_num_rows($result);
 	}
 
-	/**
-	 * Return next auto increment for a table
-	 * @param string $tableName
-	 * @return int
-	 */
-	public function autoIncrementId($tableName) {
-		$res = $this->query('SHOW TABLE STATUS LIKE "'.$tableName.'"');
-		$row = mysqli_fetch_assoc($res);
-		return $row['Auto_increment'];
-	}
-
 	private function connect() {
-		$this->conn = new \mysqli($this->server,  $this->user,  $this->pass, $this->dbName);
+		$this->conn = new \mysqli($this->dbal->getHost(), $this->dbal->getUsername(), $this->dbal->getPassword(), $this->dbal->getDatabase());
 		$this->conn->query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
 	}
 
