@@ -1,5 +1,6 @@
 <?php namespace App\Listener;
 
+use App\Controller\Controller;
 use App\Entity\EntityManager;
 use App\Entity\User;
 use App\Service\Responder;
@@ -58,6 +59,10 @@ class KernelListener implements EventSubscriberInterface {
 
 	public function onKernelController(FilterControllerEvent $event) {
 		$this->controller = $event->getController();
+		$controllerObject = $this->controller[0];
+		if ($controllerObject instanceof Controller) {
+			$controllerObject->initInternalContentPath();
+		}
 	}
 
 	/**

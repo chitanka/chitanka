@@ -2,6 +2,7 @@
 
 use App\Entity\User;
 use App\Legacy\Setup;
+use App\Service\ContentService;
 use App\Service\FlashService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -199,6 +200,10 @@ abstract class Controller extends SymfonyController {
 
 	public function renderViewForLegacyCode($view, array $parameters = []) {
 		return $this->renderView($view, $parameters);
+	}
+
+	public function initInternalContentPath() {
+		ContentService::setInternalContentPath($this->container->getParameter('content_dir'));
 	}
 
 	/** @return Request */

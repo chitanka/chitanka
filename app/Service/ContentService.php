@@ -11,26 +11,9 @@ class ContentService {
 	public static $bibliomanBookJsonUrlTemplate = 'https://biblioman.chitanka.info/books/ID.json';
 	public static $clearBookCoverCacheUrl = 'https://assets.chitanka.info/cc_thumb.php';
 	public static $bookCoverExtension = 'jpg';
-
-	private static $contentDirs = [
-		'text' => 'content/text/',
-		'text-info' => 'content/text-info/',
-		'text-anno' => 'content/text-anno/',
-		'user' => 'content/user/',
-		'sandbox' => 'content/user/sand/',
-		'info' => 'content/info/',
-		'img' => 'content/img/',
-		'cover' => 'content/cover/',
-		'book' => 'content/book/',
-		'book-anno' => 'content/book-anno/',
-		'book-info' => 'content/book-info/',
-		'book-img' => 'content/book-img/',
-		'book-cover' => 'thumb/book-cover/',
-		'book-cover-content' => 'content/book-cover/',
-		'book-djvu' => 'content/book-djvu/',
-		'book-pdf' => 'content/book-pdf/',
-		'book-pic' => 'content/book-pic/',
-	];
+	public static $internalContentPath = __DIR__ .'/../../web/content';
+	public static $webContentPath = 'content/';
+	public static $webThumbPath = 'thumb/?';
 
 	/**
 	 * @param string $key
@@ -45,25 +28,20 @@ class ContentService {
 		return null;
 	}
 
-	/**
-	 * @param string $key
-	 * @param int $num
-	 * @param bool $full
-	 * @return string
-	 */
-	public static function getContentFilePath($key, $num, $full = true) {
-		$pref = Ary::arrVal(self::$contentDirs, $key, $key .'/');
-		return $pref . self::makeContentFilePath($num, $full);
+	public static function getContentFilePath(string $key, int $num, bool $full = true): string {
+		return self::getPrefixedContentFilePath(self::$webContentPath, $key, $num, $full);
 	}
 
-	/**
-	 * @param string $key
-	 * @param int $num
-	 * @param bool $full
-	 * @return string
-	 */
-	public static function getInternalContentFilePath($key, $num, $full = true) {
-		return __DIR__ .'/../../web/'. self::getContentFilePath($key, $num, $full);
+	public static function getInternalContentFilePath(string $key, int $num, bool $full = true): string {
+		return self::getPrefixedContentFilePath(self::$internalContentPath, $key, $num, $full);
+	}
+
+	public static function setInternalContentPath($path) {
+		self::$internalContentPath = $path;
+	}
+
+	protected static function getPrefixedContentFilePath(string $dir, string $key, int $num, bool $full = true): string {
+		return rtrim($dir, '/').'/'. $key .'/' . self::makeContentFilePath($num, $full);
 	}
 
 	/**
@@ -89,11 +67,7 @@ class ContentService {
 	}
 
 	public static function getCover($id, $width = 200, $format = 'jpg') {
-		if (is_numeric($id)) {
-			return self::getContentFilePath('book-cover', $id) . ".$width.$format";
-		}
-		$thumbName = str_replace('content/', 'thumb/', preg_replace('/(\.[^.]+)$/', ".$width$1", $id));
-		return $thumbName;
+		return str_replace(self::$webContentPath, self::$webThumbPath, self::getContentFilePath('book-cover', $id)) . ".$width.$format";
 	}
 
 	public static function fetchBibliomanCover($bibliomanId) {
@@ -111,7 +85,7 @@ class ContentService {
 	}
 
 	public static function copyCoverFromBiblioman(Book $book) {
-		$internalCoverPath = self::getInternalContentFilePath('book-cover-content', $book->getId()).'.'.self::$bookCoverExtension;
+		$internalCoverPath = self::getInternalContentFilePath('book-cover', $book->getId()).'.'.self::$bookCoverExtension;
 		$bibliomanCover = self::fetchBibliomanCover($book->getBibliomanId());
 		file_put_contents($internalCoverPath, $bibliomanCover);
 		self::clearCoverCache($book);
