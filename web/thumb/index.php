@@ -1,15 +1,18 @@
 <?php
-function genThumbnail($filename, $thumbname, $width = 250, $quality = 90)
-{
+function genThumbnail($filename, $thumbname, $width = 250, $quality = 90) {
 	$dir = dirname($thumbname);
 	if ( ! file_exists($dir)) {
 		mkdir($dir, 0755, true);
 	}
 
+	if (!function_exists('imagecreatetruecolor')) {
+		symlink($filename, $thumbname);
+		return $thumbname;
+	}
+
 	list($width_orig, $height_orig) = getimagesize($filename);
 	if ($width == 'max' || $width_orig < $width) {
-		copy($filename, $thumbname);
-
+		symlink($filename, $thumbname);
 		return $thumbname;
 	}
 
@@ -39,25 +42,30 @@ function genThumbnail($filename, $thumbname, $width = 250, $quality = 90)
 	return $thumbname;
 }
 
-
-$query = ltrim($_SERVER['QUERY_STRING'], '/');
-$query = strtr($query, array('..' => '.'));
-
-list($name, $width, $format) = explode('.', basename($query));
-$file = sprintf('%s/../content/%s/%s.%s', dirname(__FILE__), dirname($query), $name, $format);
-
-if ($format == 'jpg') {
-	$format = 'jpeg';
-}
-
-if (file_exists($file)) {
+function serveFile($file, $format) {
 	$expires = 30240000; // 350 days
 	header("Cache-Control: maxage=$expires");
 	header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
 	header('Content-Type: image/'.$format);
-	$thumb = dirname(__FILE__) . '/../cache' . $_SERVER['REQUEST_URI'];
-	readfile(genThumbnail($file, $thumb, $width, 90));
-} else {
-	header('HTTP/1.1 404 Not Found');
-	error_log($file.' not found');
+	readfile($file);
+	exit;
 }
+
+$query = ltrim($_SERVER['QUERY_STRING'], '/');
+$query = strtr($query, array('..' => '.'));
+list($name, $width, $format) = explode('.', basename($query));
+$contentPath = __DIR__.'/../content/';
+$file = $contentPath . dirname($query) . "/$name.$format";
+if ($format == 'jpg') {
+	$format = 'jpeg';
+}
+$thumb = __DIR__ . "/../cache/thumb/$query";
+$thumbReal = realpath($thumb);
+if ($thumbReal) {
+	serveFile($thumbReal, $format);
+}
+if (file_exists($file)) {
+	serveFile(genThumbnail($file, $thumb, $width, 90), $format);
+}
+header('HTTP/1.1 404 Not Found');
+error_log($file.' not found');
