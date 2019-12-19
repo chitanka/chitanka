@@ -149,7 +149,7 @@
 		};
 	</script>
 	{%- macro local_asset_url(scripts) -%}
-		{{ asset('js/' ~ scripts|join(',')|replace({'/': '--'}) ~','~asset_version~'.js') }}
+		{{ asset(js_path ~ scripts|join(',')|replace({'/': '--'}) ~','~asset_version~'.js') }}
 	{%- endmacro -%}
 	{% from _self import local_asset_url %}
 

@@ -7,6 +7,16 @@
 parameters:
     locale: bg
 
+    database_host: localhost
+    database_name: chitanka
+    database_user: chitanka
+    database_password: ~
+    database_driver: pdo_mysql
+    database_port: null
+
+    # database file for sqlite
+    database_path: "%kernel.root_dir%/../web/content/chitanka.db"
+
     mailer_transport:  smtp
     mailer_host:       localhost
     mailer_user:       ~
@@ -20,13 +30,15 @@ parameters:
 
     # Следните променливи се ползват при пращането на електронна поща
     admin:              Администратор
-    admin_email:        { admin@localhost: Администратор }
+    admin_email:        admin@localhost
     site_email:         admin@localhost
     work_email:         admin@localhost
 
     assets_base_urls: ~
     asset_version: 1
-    style_url:  /css/
+    style_path:  /css/?
+    js_path:  /js/?
+    thumb_path:  /thumb/?
     # Път до библиотеката jQuery. По подразбиране false.
     # При false, се ползва локалното копие
     script_library: false

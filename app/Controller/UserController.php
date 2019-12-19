@@ -179,7 +179,7 @@ class UserController extends Controller {
 			throw $this->createAccessDeniedException();
 		}
 
-		$styleUrl = $this->container->getParameter('style_url') . 'skin=SKIN&menu=NAV';
+		$styleUrl = $this->container->getParameter('style_path') . 'skin=SKIN&menu=NAV';
 		return $this->legacyPage('Settings', [
 			'inline_js' => "
 				function changeStyleSheet(skin, nav) {
@@ -198,7 +198,7 @@ class UserController extends Controller {
 	}
 
 	private function getStylesheet() {
-		$url = $this->container->getParameter('style_url');
+		$url = $this->container->getParameter('style_path');
 		if ( ! $url) {
 			return false;
 		}

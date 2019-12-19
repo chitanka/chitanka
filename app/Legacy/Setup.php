@@ -53,10 +53,8 @@ class Setup {
 		define('SESSION_NAME', 'mls');
 
 		self::defineDbTableConsts();
-		$admin_email = self::setting('admin_email');
-		list($email, $admin) = each($admin_email);
-		define('ADMIN', $admin);
-		define('ADMIN_EMAIL', $email);
+		define('ADMIN', self::setting('admin'));
+		define('ADMIN_EMAIL', self::setting('admin_email'));
 		define('SITENAME', self::setting('sitename'));
 		define('SITE_EMAIL', self::setting('site_email'));
 	}
