@@ -29,7 +29,7 @@
 			<h2><a href="{{ path('new_books') }}">Нови книги</a></h2>
 			<div class="well">
 				{% include 'App:History:books_list.html.twig' with {book_revisions_by_date: books} %}
-				<div class="btn btn-default more"><a href="{{ path('new_books') }}">Още нови книги</a></div>
+				<ul class="pager"><li class="next more"><a href="{{ path('new_books') }}">Още нови книги</a></li></ul>
 			</div>
 		</section>
 	{% endif %}
@@ -38,7 +38,7 @@
 			<h2><a href="{{ path('new_texts') }}">Нови произведения</a></h2>
 			<div class="well">
 				{% include 'App:History:texts_list.html.twig' with {text_revisions_by_date: texts} %}
-				<div class="btn btn-default more"><a href="{{ path('new_texts') }}">Още нови произведения</a></div>
+				<ul class="pager"><li class="next more"><a href="{{ path('new_texts') }}">Още нови произведения</a></li></ul>
 			</div>
 		</section>
 	{% endif %}
