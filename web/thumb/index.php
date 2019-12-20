@@ -55,6 +55,9 @@ $query = ltrim($_SERVER['QUERY_STRING'], '/');
 $query = strtr($query, array('..' => '.'));
 list($name, $width, $format) = explode('.', basename($query));
 $contentPath = __DIR__.'/../content/';
+if (!file_exists($contentPath)) {
+	$contentPath = __DIR__.'/../../../chitanka-content/';
+}
 $file = $contentPath . dirname($query) . "/$name.$format";
 if ($format == 'jpg') {
 	$format = 'jpeg';
