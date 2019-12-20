@@ -43,22 +43,31 @@ class AutoUpdateCommand extends Command {
 		if ( ! $mutex->acquireLock(1800/*secs*/)) {
 			return;
 		}
+		$echo = function ($msg) use ($output) {
+			$output->writeln(date('H:i:s').": ".$msg);
+		};
+		$echo("Update started on ".date('Y-m-d').".");
 		if ($input->getOption('no-wait') === false) {
 			// this will spread check requests from mirrors in time
-			sleep(rand(0, 30));
+			$pause = rand(0, 30);
+			$echo("Pause for $pause seconds.");
+			sleep($pause);
 		}
 		if ($input->getOption('skip-src') === false) {
+			$echo("Executing source update...");
 			$this->executeSrcUpdate($rootDir, $container->getParameter('rsync.url.src'));
 		}
 		if ($input->getOption('skip-content') === false) {
+			$echo("Executing content update...");
 			$this->executeContentUpdate($this->contentDir(), $container->getParameter('rsync.url.content'));
 		}
 		if ($input->getOption('skip-db') === false) {
+			$echo("Executing database update...");
 			$this->executeDbUpdate($container->getParameter('update_db_url'), "$updateDir/db");
 		}
 		$mutex->releaseLock();
 
-		$output->writeln('Done.');
+		$echo('Done.');
 	}
 
 	/**
