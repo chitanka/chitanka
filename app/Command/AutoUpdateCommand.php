@@ -39,13 +39,17 @@ class AutoUpdateCommand extends Command {
 		$container = $this->getContainer();
 		$rootDir = realpath($container->getParameter('kernel.root_dir').'/..');
 		$updateDir = "$rootDir/update";
-		$mutex = new Mutex($updateDir);
-		if ( ! $mutex->acquireLock(1800/*secs*/)) {
-			return;
-		}
+
 		$echo = function ($msg) use ($output) {
 			$output->writeln(date('H:i:s').": ".$msg);
 		};
+
+		$mutex = new Mutex($updateDir);
+		if ( ! $mutex->acquireLock(1800/*secs*/)) {
+			$echo("There is a lock file ($updateDir). If no other update is running, you can safely delete the lock file and run the update again.");
+			return;
+		}
+
 		$echo("Update started on ".date('Y-m-d').".");
 		if ($input->getOption('no-wait') === false) {
 			// this will spread check requests from mirrors in time
@@ -151,7 +155,7 @@ class AutoUpdateCommand extends Command {
 			$this->runCommand('cache:create-cache-class');
 			$fs->remove($cacheDirOld);
 		} catch (IOException $e) {
-			error_log("Auto-update: ".$e->getMessage());
+			error_log(__METHOD__.': '.$e->getMessage());
 		}
 	}
 
@@ -159,7 +163,7 @@ class AutoUpdateCommand extends Command {
 		$php = PHP_BINARY;
 		$binDir = realpath($this->getKernel()->getRootDir().'/../bin');
 		$environment = $this->getKernel()->getEnvironment();
-		$this->runShellCommand("$php $binDir/console $commandName --env=$environment");
+		$this->runShellCommand("\"$php\" \"$binDir/console\" $commandName --env=$environment");
 	}
 
 	public function runGitPullCommand(string $targetDir): FetchGitResponse {
@@ -167,7 +171,7 @@ class AutoUpdateCommand extends Command {
 		if (!$gitBinary) {
 			throw new \Exception('The git binary is not configured.');
 		}
-		return new FetchGitResponse($this->runShellCommand("cd $targetDir && $gitBinary pull"));
+		return new FetchGitResponse($this->runShellCommand("cd \"$targetDir\" && \"$gitBinary\" pull"));
 	}
 
 	public function runRsyncCommand(string $remoteSource, string $localTarget, string $options = null): FetchRsyncResponse {
@@ -179,7 +183,7 @@ class AutoUpdateCommand extends Command {
 		if (strpos($localTarget, ':') !== false) {
 			$localTarget = '/cygdrive/'. strtr($localTarget, [':' => '', '\\' => '/']);
 		}
-		return new FetchRsyncResponse($this->runShellCommand("$rsyncBinary -az --out-format='%n' $options $remoteSource $localTarget"));
+		return new FetchRsyncResponse($this->runShellCommand("\"$rsyncBinary\" -az --out-format=\"%n\" $options \"$remoteSource\" \"$localTarget\""));
 	}
 
 	private function runShellCommand(string $command): string {
