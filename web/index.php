@@ -6,9 +6,8 @@ function exitWithMessage($template = 'error', $retryAfter = 300) {
 	readfile(__DIR__ . "/$template.html");
 	exit;
 }
-
 function isCacheable() {
-	return $_SERVER['REQUEST_METHOD'] == 'GET' && !isset($_COOKIE['mlt']);
+	return filter_input(INPUT_SERVER, 'CACHE_ENABLE') && $_SERVER['REQUEST_METHOD'] == 'GET' && !isset($_COOKIE['mlt']);
 }
 class Cache {
 	private $file;
@@ -116,7 +115,7 @@ if (isCacheable()) {
 	}
 	$compressCache = !filter_input(INPUT_SERVER, 'CACHE_NOCOMPRESS');
 	$varDir = __DIR__.'/../var';
-	$cache = new Cache($requestUri, "$varDir/cache/simple_http_cache", "$varDir/logs", $compressCache);
+	$cache = new Cache($requestUri, "$varDir/cache/simple_http_cache", "$varDir/log", $compressCache);
 	if (null !== ($cachedContent = $cache->get())) {
 		header("Cache-Control: public, max-age=".$cachedContent['ttl']);
 		echo $cachedContent['data'];
