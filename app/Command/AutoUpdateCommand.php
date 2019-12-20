@@ -37,7 +37,7 @@ class AutoUpdateCommand extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->output = $output;
 		$container = $this->getContainer();
-		$rootDir = $container->getParameter('kernel.root_dir').'/..';
+		$rootDir = realpath($container->getParameter('kernel.root_dir').'/..');
 		$updateDir = "$rootDir/update";
 		$mutex = new Mutex($updateDir);
 		if ( ! $mutex->acquireLock(1800/*secs*/)) {
@@ -48,10 +48,10 @@ class AutoUpdateCommand extends Command {
 			sleep(rand(0, 30));
 		}
 		if ($input->getOption('skip-src') === false) {
-			$this->executeSrcUpdate($rootDir, $container->getParameter('git.path'));
+			$this->executeSrcUpdate($rootDir, $container->getParameter('rsync.url.src'));
 		}
 		if ($input->getOption('skip-content') === false) {
-			$this->executeContentUpdate($this->contentDir(), $container->getParameter('rsync.path'));
+			$this->executeContentUpdate($this->contentDir(), $container->getParameter('rsync.url.content'));
 		}
 		if ($input->getOption('skip-db') === false) {
 			$this->executeDbUpdate($container->getParameter('update_db_url'), "$updateDir/db");
@@ -107,25 +107,22 @@ class AutoUpdateCommand extends Command {
 		}
 	}
 
-	/**
-	 * @param string $contentDir
-	 * @param string $rsync Path to rync executable
-	 * @return boolean
-	 */
-	private function executeContentUpdate($contentDir, $rsync) {
-		shell_exec("$rsync -avz --delete rsync.chitanka.info::content/ $contentDir");
-		return true;
+	private function executeContentUpdate(string $contentDir, string $contentRsyncUrl): bool {
+		$response = $this->runRsyncCommand("$contentRsyncUrl/", $contentDir, '--delete');
+		return $response->hasUpdates();
 	}
 
-	/**
-	 * @param string $rootDir
-	 * @param string $git Path to git executable
-	 * @return boolean
-	 */
-	private function executeSrcUpdate($rootDir, $git) {
-		$response = shell_exec("cd $rootDir; LC_ALL=C $git pull");
-		if (strpos($response, 'up-to-date') !== false) {
-			return false;
+	private function executeSrcUpdate(string $rootDir, string $srcRsyncUrl): bool {
+		try {
+			$response = $this->runGitPullCommand($rootDir);
+			if (!$response->hasUpdates()) {
+				return false;
+			}
+		} catch (\Exception $e) {
+			$response = $this->runRsyncCommand("$srcRsyncUrl/", $rootDir);
+			if (!$response->hasUpdates()) {
+				return false;
+			}
 		}
 		$updater = new SourceUpdater($rootDir);
 		$updater->lockFrontController();
@@ -149,14 +146,35 @@ class AutoUpdateCommand extends Command {
 		}
 	}
 
-	/**
-	 * @param string $commandName
-	 */
-	private function runCommand($commandName) {
+	private function runCommand(string $commandName) {
 		$php = PHP_BINARY;
 		$binDir = realpath($this->getKernel()->getRootDir().'/../bin');
 		$environment = $this->getKernel()->getEnvironment();
-		shell_exec("$php $binDir/console $commandName --env=$environment");
+		$this->runShellCommand("$php $binDir/console $commandName --env=$environment");
+	}
+
+	public function runGitPullCommand(string $targetDir): FetchGitResponse {
+		$gitBinary = $this->getContainer()->getParameter('git.path');
+		if (!$gitBinary) {
+			throw new \Exception('The git binary is not configured.');
+		}
+		return new FetchGitResponse($this->runShellCommand("cd $targetDir && $gitBinary pull"));
+	}
+
+	public function runRsyncCommand(string $remoteSource, string $localTarget, string $options = null): FetchRsyncResponse {
+		$rsyncBinary = $this->getContainer()->getParameter('rsync.path');
+		if (!$rsyncBinary) {
+			throw new \Exception('The rsync binary is not configured.');
+		}
+		// rsync does not support absolute windows paths
+		if (strpos($localTarget, ':') !== false) {
+			$localTarget = '/cygdrive/'. strtr($localTarget, [':' => '', '\\' => '/']);
+		}
+		return new FetchRsyncResponse($this->runShellCommand("$rsyncBinary -az --out-format='%n' $options $remoteSource $localTarget"));
+	}
+
+	private function runShellCommand(string $command): string {
+		return shell_exec($command);
 	}
 
 	/**
@@ -234,4 +252,30 @@ class AutoUpdateCommand extends Command {
 		}
 		return null;
 	}
+}
+
+class FetchCommandResponse {
+
+	public $text;
+
+	public function __construct(string $text) {
+		$this->text = trim($text);
+	}
+
+	public function hasUpdates(): bool {
+		return !empty($this->text);
+	}
+}
+
+class FetchGitResponse extends FetchCommandResponse {
+
+	public function hasUpdates(): bool {
+		// before version 2.15 the message was: "Already up-to-date"
+		// after that: "Already up to date"
+		// https://github.com/git/git/commit/7560f547e614244fe1d4648598d4facf7ed33a56
+		return strpos(str_replace('-', ' ', $this->text), 'Already up to date') === false;
+	}
+}
+
+class FetchRsyncResponse extends FetchCommandResponse {
 }
