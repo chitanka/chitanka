@@ -183,7 +183,7 @@ class AutoUpdateCommand extends Command {
 		if (strpos($localTarget, ':') !== false) {
 			$localTarget = '/cygdrive/'. strtr($localTarget, [':' => '', '\\' => '/']);
 		}
-		return new FetchRsyncResponse($this->runShellCommand("\"$rsyncBinary\" -az --out-format=\"%n\" $options \"$remoteSource\" \"$localTarget\""));
+		return new FetchRsyncResponse($this->runShellCommand("\"$rsyncBinary\" -az --chmod=ugo=rwX --out-format=\"%n\" $options \"$remoteSource\" \"$localTarget\""));
 	}
 
 	private function runShellCommand(string $command): string {
