@@ -187,7 +187,7 @@ class AutoUpdateCommand extends Command {
 	}
 
 	private function runShellCommand(string $command): string {
-		return shell_exec($command);
+		return (string) shell_exec($command);
 	}
 
 	/**
