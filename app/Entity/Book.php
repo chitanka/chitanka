@@ -565,10 +565,10 @@ class Book extends BaseWork implements \JsonSerializable {
 	 * @return string[]
 	 */
 	public static function getCovers($id, $defCover = null) {
-		$key = 'book-cover-content';
-		$bases = [ContentService::getContentFilePath($key, $id)];
+		$key = 'book-cover';
+		$bases = [ContentService::getInternalContentFilePath($key, $id)];
 		if ( ! empty($defCover)) {
-			$bases[] = ContentService::getContentFilePath($key, $defCover);
+			$bases[] = ContentService::getInternalContentFilePath($key, $defCover);
 		}
 		$coverFiles = Ary::cartesianProduct($bases, self::$exts);
 		$covers = [];
