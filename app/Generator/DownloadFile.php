@@ -365,9 +365,9 @@ class DownloadFile {
 	public static function setDlCache($textIds, $file, $format = '') {
 		$dbal = Setup::dbal();
 		$pk = self::getHashForTextIds($textIds, $format);
-		$dbal->executeUpdate('REPLACE '.DBT_DL_CACHE.' set id = ?, file = ?', [$pk, $file]);
+		$dbal->executeUpdate('INSERT IGNORE '.DBT_DL_CACHE.' set id = '.$pk.', file = ?', [$file]);
 		foreach ( (array) $textIds as $textId ) {
-			$dbal->executeUpdate('REPLACE '.DBT_DL_CACHE_TEXT.' set dc_id = ?, text_id = ?', [$pk, $textId]);
+			$dbal->executeUpdate('INSERT IGNORE '.DBT_DL_CACHE_TEXT.' set dc_id = '.$pk.', text_id = ?', [$textId]);
 		}
 		return $file;
 	}
