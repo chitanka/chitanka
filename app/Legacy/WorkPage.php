@@ -1118,7 +1118,7 @@ EOS;
 
 	private function notifyRocketchatAboutEntry(WorkEntry $entry) {
 		$rocketChatClient = $this->container->get('rocketchat_client'); /* @var $rocketChatClient RocketChatClient */
-		$postForRocketChat = sprintf('Нов запис в ателието: [_%s_](%s) – добавен от **%s**', $entry->getTitle(), $this->controller->generateUrlForLegacyCode('workroom_entry_edit', ['id' => $entry->getId(), 'please' => ''], true), $entry->getUser());
+		$postForRocketChat = sprintf('Нов запис в ателието: _[%s](%s)_ – добавен от **%s**', $entry->getTitle(), $this->controller->generateUrlForLegacyCode('workroom_entry_edit', ['id' => $entry->getId(), 'please' => ''], true), $entry->getUser());
 		$rocketChatClient->postMessageIfAble($postForRocketChat);
 	}
 }

@@ -125,7 +125,7 @@ class CommentPage extends Page {
 
 	private function notifyRocketchatAboutComment(TextComment $comment) {
 		$rocketChatClient = $this->container->get('rocketchat_client'); /* @var $rocketChatClient RocketChatClient */
-		$postForRocketChat = sprintf('Нов [читателски коментар](//chitanka.info/text/%d/comments#e%d) от **%s** за _[%s](//chitanka.info/text/%d)_', $this->textId, $comment->getId(), $this->reader, $this->work->getTitle(), $this->textId);
+		$postForRocketChat = sprintf('Нов [читателски коментар](https://chitanka.info/text/%d/comments#e%d) от **%s** за _[%s](https://chitanka.info/text/%d)_', $this->textId, $comment->getId(), $this->reader, $this->work->getTitle(), $this->textId);
 		$rocketChatClient->postMessageIfAble($postForRocketChat);
 	}
 
