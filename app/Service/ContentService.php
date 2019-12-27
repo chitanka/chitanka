@@ -17,7 +17,7 @@ class ContentService {
 
 	/**
 	 * @param string $key
-	 * @param int $num
+	 * @param int|string $num  It is a string if of the form "number-knigaX"
 	 * @return string
 	 */
 	public static function getContentFile($key, $num) {
@@ -28,11 +28,11 @@ class ContentService {
 		return null;
 	}
 
-	public static function getContentFilePath(string $key, int $num, bool $full = true): string {
+	public static function getContentFilePath(string $key, $num, bool $full = true): string {
 		return self::getPrefixedContentFilePath(self::$webContentPath, $key, $num, $full);
 	}
 
-	public static function getInternalContentFilePath(string $key, int $num, bool $full = true): string {
+	public static function getInternalContentFilePath(string $key, $num, bool $full = true): string {
 		return self::getPrefixedContentFilePath(self::$internalContentPath, $key, $num, $full);
 	}
 
@@ -40,7 +40,7 @@ class ContentService {
 		self::$internalContentPath = $path;
 	}
 
-	protected static function getPrefixedContentFilePath(string $dir, string $key, int $num, bool $full = true): string {
+	protected static function getPrefixedContentFilePath(string $dir, string $key, $num, bool $full = true): string {
 		return rtrim($dir, '/').'/'. $key .'/' . self::makeContentFilePath($num, $full);
 	}
 
