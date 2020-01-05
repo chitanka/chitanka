@@ -5,6 +5,7 @@
 {% set title = "Избор на случайно произведение" %}
 
 {% block content %}
+	<p>Не е нужно да посочвате форма, ако искате включването на всички произведения, без значение на формата.</p>
 	{{ form_start(form, { action: path('text_random') }) }}
 		{{ form_errors(form) }}
 		{{ form_row(form.type, {'label': 'Форма', 'label_attr': {'class': 'checkbox-inline'}}) }}

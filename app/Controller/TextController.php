@@ -233,7 +233,9 @@ class TextController extends Controller {
 				$codes = $selectedTypes->map(function (TextType $textType) {
 					return $textType->getCode();
 				})->getValues();
-				$criteria = $criteria->where(Criteria::expr()->in('type', $codes));
+				if ($codes) {
+					$criteria = $criteria->where(Criteria::expr()->in('type', $codes));
+				}
 			}
 			$id = $this->em()->getTextRepository()->getRandomId($criteria);
 			return $this->redirectToRoute('text_show', ['id' => $id]);
