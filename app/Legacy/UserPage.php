@@ -196,7 +196,7 @@ EOS;
 			return '';
 		}
 
-		return '<h2>Подготвяни текстове</h2>'. $response->getContent();
+		return '<h2>Подготвяни текстове</h2>'. str_replace('list.htmlx', 'list.html', $response->getContent());
 	}
 
 	protected function getContribCount() {
