@@ -14,6 +14,7 @@ class Responder {
 	const FORMAT_SUGGEST = 'suggest';
 
 	public static $customResponseFormats = [
+		self::FORMAT_OPDS => 'application/atom+xml',
 		self::FORMAT_OSD => 'application/xml', //'application/opensearchdescription+xml',
 		self::FORMAT_SUGGEST => 'application/x-suggestions+json',
 	];
