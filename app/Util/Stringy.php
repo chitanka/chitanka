@@ -155,7 +155,7 @@ class Stringy {
 		$name = Char::cyr2lat($name);
 		$name = self::removeDiacritics($name);
 		$name = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $name);
-		$name = preg_replace('/[^a-z\d]/', '-', $name);
+		$name = preg_replace('/[^a-zA-Z\d]/', '-', $name);
 		$name = preg_replace('/--+/', '-', $name);
 		$name = rtrim(substr($name, 0, $maxlength), '-');
 
