@@ -1,6 +1,6 @@
 <p>Здравейте!</p>
 
-<p>Ето какво беше добавено в „Моята библиотека“ през {{ date|date('F Y') }} г.:</p>
+<p>Ето какво беше добавено в „Моята библиотека“ през&nbsp;{{ ('month.'~date|date('n'))|trans }}&nbsp;{{ date|date('Y') }}&nbsp;г.:</p>
 
 {% for category, books in booksByCategory %}
 
