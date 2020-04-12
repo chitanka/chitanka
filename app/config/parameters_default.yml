@@ -117,21 +117,6 @@ parameters:
         //gramofonche.chitanka.info: Грамофонче
         //tools.chitanka.info: Сръчко
 
-    main.dashboard:
-        authors:
-            icon: users
-        translators:
-            icon: edit
-        books:
-            icon: book
-        texts:
-            icon: folder-open
-        series:
-            icon: sitemap
-        new:
-            icon: calendar
-        workroom:
-            icon: table
     main.sections:
         - books
         - texts

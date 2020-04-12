@@ -15,7 +15,6 @@ class MainController extends Controller {
 	public function indexAction() {
 		$vars = [
 			'siteNotices' => $this->em()->getSiteNoticeRepository()->findForFrontPage(),
-			'dashboard' => $this->container->getParameter('main.dashboard'),
 			'_cache' => 600,
 		];
 		$sections = $this->container->getParameter('main.sections');

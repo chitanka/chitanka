@@ -1,10 +1,5 @@
 {% extends 'App::layout.html.twig' %}
 
-{% block navigation %}
-	{{ render_esi(controller('App:User:personalTools')) }}
-	{% include 'App::search_form.html.twig' %}
-{% endblock %}
-
 {% block site_notice %}{% endblock %}
 
 {% block content %}
@@ -15,14 +10,6 @@
 			{{ siteNotice.content|raw }}
 		</div>
 	{% endfor %}
-
-	<div class="dashboard">
-		<ul>
-			{% for itemRoute, itemOptions in dashboard %}
-				<li class="dashboard-{{ itemRoute }}"><span class="light-flash"></span><a href="{{ path(itemRoute) }}"><span class="fa fa-{{ itemOptions.icon }}"></span><br>{{ ('dashboard.'~itemRoute)|trans }}</a></li>
-			{% endfor %}
-		</ul>
-	</div>
 
 	{% if books is defined %}
 		<section id="mp-new-books">
