@@ -403,6 +403,6 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 		if (!$date instanceof \DateTime) {
 			$date = new \DateTime($date);
 		}
-		return $date->format('Y-m-d');
+		return $date->format('Y-m-d H:i:s');
 	}
 }
