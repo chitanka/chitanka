@@ -151,6 +151,7 @@ class Stringy {
 	public static function slugify($name, $maxlength = 60) {
 		$name = strtr($name, [
 			'²' => '2', '°' => 'deg',
+			'´' => '', '`' => '', // remove the accents as they break in removeDiacritics below
 		]);
 		$name = Char::cyr2lat($name);
 		$name = self::removeDiacritics($name);

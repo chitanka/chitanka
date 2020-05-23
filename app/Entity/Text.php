@@ -606,7 +606,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 	public function getAuthorNameEscaped() {
 		$origNames = implode(', ', $this->getAuthorOrigNames());
 		if (preg_match('/[a-z]/', $origNames)) {
-			return Stringy::removeDiacritics(Char::cyr2lat($origNames));
+			return Stringy::slugify($origNames);
 		}
 		return Char::cyr2lat($this->getAuthorNamesString());
 	}
