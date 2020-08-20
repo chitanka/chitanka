@@ -47,11 +47,15 @@
 		<p class="no-items">Не открихме нищо за „{{ query.text }}“.</p>
 	{% endif %}
 
-	<div id="bibiomanResults">
-		<h2>Библиоман</h2>
-	</div>
+	{% if app.user.isAuthenticated %}
+		<div id="bibiomanResults">
+			<h2>Библиоман</h2>
+		</div>
+	{% endif %}
 {% endblock %}
 
 {% block inline_js %}
+	{% if app.user.isAuthenticated %}
 	{% include 'Search/biblioman_search.js.twig' with {query: query, target: '#bibiomanResults'} %}
+	{% endif %}
 {% endblock %}
