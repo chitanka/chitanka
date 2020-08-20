@@ -62,15 +62,14 @@
 		{% endif %}
 	</div>
 
-	{% include 'App:Text:toc.html.twig' %}
-
 	{% if text.removedNotice is not empty %}
 		<div class="removed-notice">{{ text.removedNotice|raw }}</div>
 	{% else %}
+		{% include 'App:Text:toc.html.twig' %}
 		{% include 'App:Text:content.html.twig' %}
+		{% include 'App:Text:end_message.html.twig' %}
 	{% endif %}
 
-	{% include 'App:Text:end_message.html.twig' %}
 {% endblock %}
 
 {% block inline_js %}
