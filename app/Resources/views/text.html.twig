@@ -86,7 +86,7 @@
 	</dt>
 	<dd class="tauthor" itemprop="author">{{ _self.author_list(text.authors) }}</dd>
 	<!--<dd class="extra">{#{{ _self.text_extra_info(text) }}#}</dd>-->
-	{% if text.removedNotice is empty and options.download_links is defined %}
+	{% if options.download_links is defined %}
 		<dd class="download">{{ _self.download_links(text) }}</dd>
 	{% endif %}
 </dl>
@@ -109,7 +109,7 @@
 		{{ link.text(text, options) }}
 	</dt>
 	<dd class="extra">{{ _self.text_extra_info(text) }}</dd>
-	{% if text.removedNotice is empty and options.download_links is defined %}
+	{% if options.download_links is defined %}
 		<dd class="download">{{ _self.download_links(text) }}</dd>
 	{% endif %}
 </dl>
@@ -161,11 +161,15 @@
 
 {% macro download_links(text) %}
 	<ul class="dl-list">
-		<li>{{ _self.bookmark_form(text) }}</li>
-		<li>{{ _self.download_link(text, 'fb2.zip') }}</li>
-		<li>{{ _self.download_link(text, 'epub') }}</li>
-		<li>{{ _self.download_link(text, 'txt.zip', text.zsize) }}</li>
-		<li>{{ _self.download_link(text, 'sfb.zip') }}</li>
+		{% if text.removedNotice is empty %}
+			<li>{{ _self.bookmark_form(text) }}</li>
+			<li>{{ _self.download_link(text, 'fb2.zip') }}</li>
+			<li>{{ _self.download_link(text, 'epub') }}</li>
+			<li>{{ _self.download_link(text, 'txt.zip', text.zsize) }}</li>
+			<li>{{ _self.download_link(text, 'sfb.zip') }}</li>
+		{% else %}
+			<li><b class="btn btn-xs btn-danger" title="{{ text.removedNotice }}"><i class="fa fa-ban"></i><span class="sr-only">Забранено</span></b></li>
+		{% endif %}
 	</ul>
 {% endmacro %}
 
