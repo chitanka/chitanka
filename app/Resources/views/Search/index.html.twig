@@ -3,6 +3,11 @@
 {% set title = 'Търсене' ~ (query ? ' на „'~query.text|e~'“' : '') %}
 {% block content %}
 
+	<style>
+		h2 {
+			clear: both;
+		}
+	</style>
 	{% if result.persons|length %}
 		<h2>Личности</h2>
 		{% include 'App:Author:list_with_country.html.twig' with {persons: result.persons} %}
