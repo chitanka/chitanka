@@ -1,9 +1,13 @@
 {% macro download_link(texts, format, filename) %}
 	{% set ids = '' %}
 	{% for text in texts %}
+		{% if text.removedNotice is empty %}
 		{% set ids = ids ~ (loop.first ? '' : ',') ~ text.id %}
+		{% endif %}
 	{% endfor %}
+	{% if ',' in ids %}
 	<a href="{{ path('text_show', {'id': ids, '_format': format, filename: filename}) }}" title="Сваляне на всички във формат {{ format }}" class="dl dl-{{ format|replace({'.zip': ''}) }}"><span>{{ format }}</span></a>
+	{% endif %}
 {% endmacro %}
 
 {% set filename = filename is defined ? filename : '' %}
