@@ -43,7 +43,7 @@ function genThumbnail($filename, $thumbname, $width = 250, $quality = 90) {
 }
 
 function serveFile($file, $format) {
-	$expires = 30240000; // 350 days
+	$expires = 86400 * 14; // 14 days
 	header("Cache-Control: maxage=$expires");
 	header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
 	header('Content-Type: image/'.$format);
