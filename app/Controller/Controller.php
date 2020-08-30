@@ -59,7 +59,7 @@ abstract class Controller extends SymfonyController {
 	public function renderLayoutComponent($wikiPage, $fallbackTemplate) {
 		$wikiPagePath = $this->container->getParameter('content_dir')."/wiki/special/$wikiPage.html";
 		if (file_exists($wikiPagePath)) {
-			list(, $content) = explode("\n\n", file_get_contents($wikiPagePath));
+			list(, $content) = explode("\n\n", file_get_contents($wikiPagePath), 2);
 			return $content;
 		}
 		return $this->renderView($fallbackTemplate);
