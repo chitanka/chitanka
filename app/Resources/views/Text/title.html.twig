@@ -5,7 +5,7 @@
 <span class="text-title">
 	<a class="selflink" itemprop="name" data-edit="{{ path('admin_text_edit', {'id': text.id}) }}">{{ text.title }}</a>
 	{% if text.hastitlenote %}
-		<sup id="ref_{{ obj_count|default(3) }}-0" class="ref"><a href="#note_{{ obj_count|default(3) }}-0">[0]</a></sup>
+		<sup id="ref_{{ obj_count }}-0" class="ref"><a href="#note_{{ obj_count }}-0">[0]</a></sup>
 	{% endif %}
 </span>
 {% if part > 1 or text.getNextHeaderNr(part) %}

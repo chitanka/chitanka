@@ -4,7 +4,7 @@
 	<div class="row">
 		{% for text in texts %}
 			<div class="col-md-{{ grid_cols }}">
-				{% include 'Text/title.html.twig' with {'id_suffix': loop.index} %}
+				{% include 'Text/title.html.twig' with {'id_suffix': loop.index, 'obj_count': obj_count * loop.index} %}
 			</div>
 		{% endfor %}
 	</div>
@@ -31,7 +31,7 @@
 				{% if text.removedNotice is not empty %}
 					<div class="removed-notice">{{ text.removedNotice|raw }}</div>
 				{% else %}
-					{% include 'Text/content.html.twig' with {'id_suffix': loop.index} %}
+					{% include 'Text/content.html.twig' with {'id_suffix': loop.index, 'obj_count': obj_count * loop.index} %}
 					{% include 'Text/end_message.html.twig' with {'id_suffix': loop.index} %}
 				{% endif %}
 			</div>

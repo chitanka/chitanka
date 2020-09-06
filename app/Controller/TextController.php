@@ -241,7 +241,7 @@ class TextController extends Controller {
 		return [
 			'texts' => $texts,
 			'part' => $part,
-			'obj_count' => 3 * count($texts), /* after annotation and extra info */
+			'obj_count' => 3, /* after annotation and extra info */
 			'grid_cols' => $gridColsMap[count($texts)],
 			'_template' => 'Text/show_multi.html.twig',
 		];
