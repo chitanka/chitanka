@@ -239,7 +239,7 @@ class CommentPage extends Page {
 				? $this->makeUserLink($rname)
 				: $rname;
 			$timev = !isset($showtime) || $showtime // show per default
-				? ' <small>('. Date::humanDate($fields['time']) .')</small>' : '';
+				? ' <small>('. Date::humanDate($fields['time'] ?? '') .')</small>' : '';
 			$firstrow = empty($textId) || empty($textTitle) ? ''
 				: '<p class="firstrow">'.
 					$this->makeSimpleTextLink($textTitle, $textId) .
@@ -247,13 +247,13 @@ class CommentPage extends Page {
 			$acts = '';
 			if ( !empty($textId) ) {
 				$links = '';
-				if ($this->includeCommentForm) {
+				if ($this->includeCommentForm && $id) {
 					$links .= sprintf('<li><a href="%s#e%s" title="Отговор на коментара" onclick="return initReply(%d)"><span class="fa fa-reply"></span><span class="sr-only">Отговор</span></a></li>', $this->controller->generateUrlForLegacyCode('text_comments', ['id' => $textId, 'replyto' => $id]), $id, $id);
 				}
 				if ( empty($this->textId) ) {
 					$links .= sprintf('<li><a href="%s" title="Всички коментари за произведението"><span class="fa fa-comments"></span><span class="sr-only">Всички коментари</span></a></li>', $this->controller->generateUrlForLegacyCode('text_comments', ['id' => $textId]));
 				}
-				if ($this->user->inGroup('admin')) {
+				if ($this->user->inGroup('admin') && $id) {
 					$links .= sprintf('<li><a href="%s" title="Редактиране на коментара"><span class="fa fa-edit"></span><span class="sr-only">Редактиране</span></a></li>', $this->controller->generateUrlForLegacyCode('admin_text_comment_edit', ['id' => $id]));
 					$links .= sprintf('<li><form action="%s" method="post" class="image-form delete-form"><button type="submit" title="Изтриване на коментара"><span class="fa fa-trash-o"></span><span class="sr-only">Изтриване</span></button></form></li>', $this->controller->generateUrlForLegacyCode('admin_text_comment_delete', ['id' => $id]));
 				}
