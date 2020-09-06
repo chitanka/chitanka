@@ -1134,7 +1134,7 @@ EOS;
 		return null;
 	}
 
-	public function getNextHeaderNr(int $currentNr): ?int {
+	public function getNextHeaderNr(int $currentNr) {
 		$nextHeader = $this->getNextHeaderByNr($currentNr);
 		return $nextHeader ? $nextHeader->getNr() : null;
 	}
