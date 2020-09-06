@@ -1122,10 +1122,7 @@ EOS;
 		return null;
 	}
 
-	/**
-	 * @param int $nr
-	 */
-	public function getNextHeaderByNr($nr) {
+	public function getNextHeaderByNr(int $nr) {
 		if ($nr > 0) {
 			foreach ($this->getHeaders() as $header) {
 				if ($header->getNr() == $nr + 1) {
@@ -1135,6 +1132,11 @@ EOS;
 		}
 
 		return null;
+	}
+
+	public function getNextHeaderNr(int $currentNr): ?int {
+		$nextHeader = $this->getNextHeaderByNr($currentNr);
+		return $nextHeader ? $nextHeader->getNr() : null;
 	}
 
 	public function getTotalRating() {

@@ -151,13 +151,15 @@ CODE;
 	 * @return string
 	 */
 	public function getDocTitle($title) {
-		$title = preg_replace('/\s\s+/', ' ', $title);
 		$title = strtr($title, [
 			'<br>' => ' — ',
 			'&amp;' => '&', // will be escaped afterwards by Twig
+			'</div>' => '|',
 		]);
-		$title = trim(strip_tags($title));
-
+		$title = strip_tags($title);
+		$title = preg_replace('/\s\s+/', ' ', $title);
+		$title = str_replace('| |', '|', $title);
+		$title = trim($title, " |\n");
 		return $title;
 	}
 

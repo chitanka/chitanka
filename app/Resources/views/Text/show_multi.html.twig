@@ -1,0 +1,40 @@
+{% extends 'layout.html.twig' %}
+
+{% set title %}
+	<div class="row">
+		{% for text in texts %}
+			<div class="col-md-{{ grid_cols }}">
+				{% include 'Text/title.html.twig' with {'id_suffix': loop.index} %}
+			</div>
+		{% endfor %}
+	</div>
+{% endset %}
+
+{% block content %}
+	<div class="row">
+		{% for text in texts %}
+			<div class="col-md-{{ grid_cols }}">
+				{% include 'Text/leading_tabs.html.twig' with {'id_suffix': loop.index} %}
+			</div>
+		{% endfor %}
+	</div>
+	<div class="row">
+		{% for text in texts %}
+			<div class="col-md-{{ grid_cols }}">
+				{% include 'Text/toc.html.twig' with {'id_suffix': loop.index} %}
+			</div>
+		{% endfor %}
+	</div>
+	<div class="row" id="textstart">
+		{% for text in texts %}
+			<div class="col-md-{{ grid_cols }}">
+				{% if text.removedNotice is not empty %}
+					<div class="removed-notice">{{ text.removedNotice|raw }}</div>
+				{% else %}
+					{% include 'Text/content.html.twig' with {'id_suffix': loop.index} %}
+					{% include 'Text/end_message.html.twig' with {'id_suffix': loop.index} %}
+				{% endif %}
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}

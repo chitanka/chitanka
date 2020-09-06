@@ -3,19 +3,7 @@
 {% set itemtype = "CreativeWork" %}
 
 {% set title %}
-	{% if authors|length %}
-		{% import 'App::link.html.twig' as link %}
-		<span class="author-title">{{ link.persons_comma(authors) }}</span><br>
-	{% endif %}
-	<span class="text-title">
-		<a class="selflink" itemprop="name" data-edit="{{ path('admin_text_edit', {'id': text.id}) }}">{{ text.title }}</a>
-		{% if text.hastitlenote %}
-			<sup id="ref_{{ obj_count }}-0" class="ref"><a href="#note_{{ obj_count }}-0">[0]</a></sup>
-		{% endif %}
-	</span>
-	{% if part > 1 or next_part > 1 %}
-		<small>({{ part }})</small>
-	{% endif %}
+	{% include 'Text/title.html.twig' %}
 {% endset %}
 {% if text.subtitle %}
 	{% set subtitle = text.subtitle|replace({'\\n': '<br>'})|raw %}
@@ -26,41 +14,7 @@
 		{% include 'App:Text:annotation.html.twig' %}
 	{% endif %}
 
-	<ul class="nav nav-tabs">
-		<li class="active"><a href="#text-info" data-toggle="tab"><span class="fa fa-folder-o"></span> Данни</a></li>
-		{% if part <= 1 %}
-		<li><a href="#text-extra-info" data-toggle="tab"><span class="fa fa-tag"></span> Информация</a></li>
-		{% endif %}
-		<li><a href="#text-links" data-toggle="tab"><span class="fa fa-download"></span> Сваляне / Връзки</a></li>
-		<li><a href="{{ path('text_comments', {'id': text.id}) }}" data-target="#text-comments" data-toggle="tab" itemprop="discussionUrl"><span class="fa fa-comments-o"></span> Коментари ({{ text.commentcount }})</a></li>
-		{% if wikiPage is defined %}
-			<li><a href="#article" data-toggle="tab"><span class="fa fa-file-text-o"></span> Статия</a></li>
-		{% endif %}
-	</ul>
-
-	<div class="tab-content clearfix">
-		<div class="tab-pane active text-info" id="text-info">
-			{% include 'App:Text:info.html.twig' %}
-		</div>
-
-		{% if part <= 1 %}
-			<div class="tab-pane text-extra-info" id="text-extra-info">
-				{% include 'App:Text:extra_info.html.twig' %}
-			</div>
-		{% endif %}
-		<div class="tab-pane expanded-links text-links" id="text-links">
-			{% include 'App:Text:extra_links.html.twig' %}
-		</div>
-		<div class="tab-pane text-comments" id="text-comments">
-			<br>
-		</div>
-		{% if wikiPage is defined %}
-			<div class="tab-pane wikiinfo article" id="article">
-				<p class="intro">{{ wikiPage.intro|raw }}</p>
-				<div class="wikiinfo">{{ wikiPage.content|raw }}</div>
-			</div>
-		{% endif %}
-	</div>
+	{% include 'Text/leading_tabs.html.twig' %}
 
 	{% if text.removedNotice is not empty %}
 		<div class="removed-notice">{{ text.removedNotice|raw }}</div>
@@ -70,12 +24,4 @@
 		{% include 'App:Text:end_message.html.twig' %}
 	{% endif %}
 
-{% endblock %}
-
-{% block inline_js %}
-	/*mgSettings = $.extend(mgSettings, {
-		"textId": {{ text.id }},
-		"chunkId": {{ part }},
-		"nextChunkId": {{ next_part }}
-	});*/
 {% endblock %}

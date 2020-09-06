@@ -1,11 +1,11 @@
 {% import 'App::text.html.twig' as textinfo %}
 {% if text.headers|length %}
-	<div id="text-toc" class="toc collapsed" role="navigation">
-		<p class="sr-only"><a href="#after-toc">(Прескачане на съдържанието)</a></p>
+	<div id="text-toc{{ id_suffix|default('') }}" class="toc collapsed" role="navigation">
+		<p class="sr-only"><a href="#after-toc{{ id_suffix|default('') }}">(Прескачане на съдържанието)</a></p>
 		<h3>Съдържание</h3>
-		{{ textinfo.toc(text, part, part == 0) }}
+		{{ textinfo.toc(text, part, part == 0, app.request.attributes.get('id')) }}
 		<hr>
-		<p class="standalone"><a href="{{ path('text_show_part', {'id': text.id, 'part': 0}) }}">Пълен текст</a></p>
-		<div id="after-toc" class="sr-only"></div>
+		<p class="standalone"><a href="{{ path('text_show_part', {'id': app.request.attributes.get('id'), 'part': 0}) }}">Пълен текст</a></p>
+		<div id="after-toc{{ id_suffix|default('') }}" class="sr-only"></div>
 	</div>
 {% endif %}

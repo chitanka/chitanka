@@ -102,6 +102,9 @@ class TextController extends Controller {
 		}
 		switch ($_format) {
 			case 'html':
+				if ($this->isMultiId($id)) {
+					return $this->showMultiHtml($this->explodeMultiId($id));
+				}
 				return $this->showHtml($this->findText($id, true));
 			case 'epub':
 			case 'fb2.zip':
@@ -109,7 +112,7 @@ class TextController extends Controller {
 			case 'sfb.zip':
 				Setup::doSetup($this->container);
 				$service = new TextDownloadService($this->em()->getTextRepository());
-				$ids = explode(',', $id);
+				$ids = $this->explodeMultiId($id);
 				if (count($ids) === 1) {
 					$this->findText($id);
 				}
@@ -187,6 +190,9 @@ class TextController extends Controller {
 	}
 
 	public function showPartAction(Request $request, $id, $part, $_format) {
+		if ($this->isMultiId($id)) {
+			return $this->showMultiHtml($this->explodeMultiId($id), $part);
+		}
 		$text = $this->findText($id, true);
 		if ($_format === 'htmlx' || $request->isXmlHttpRequest()) {
 			$nextHeader = $text->getNextHeaderByNr($part);
@@ -212,7 +218,6 @@ class TextController extends Controller {
 			'text' => $text,
 			'authors' => $text->getAuthors(),
 			'part' => $part,
-			'next_part' => $nextPart,
 			'obj_count' => 3, /* after annotation and extra info */
 			'js_extra' => ['text'],
 			'similar_texts' => $similarTexts,
@@ -222,6 +227,24 @@ class TextController extends Controller {
 			$vars['wikiPage'] = $this->container->get('wiki_reader')->fetchPage($text->getArticle());
 		}
 		return $vars;
+	}
+
+	protected function showMultiHtml(array $ids, int $part = 1) {
+		$maxNrOfTexts = 4;
+		$texts = $this->em()->getTextRepository()->getMulti(array_slice($ids, 0, $maxNrOfTexts));/* @var $texts Text[] */
+		$gridColsMap = [
+			1 => 12,
+			2 => 6,
+			3 => 4,
+			4 => 3,
+		];
+		return [
+			'texts' => $texts,
+			'part' => $part,
+			'obj_count' => 3 * count($texts), /* after annotation and extra info */
+			'grid_cols' => $gridColsMap[count($texts)],
+			'_template' => 'Text/show_multi.html.twig',
+		];
 	}
 
 	public function randomAction(Request $request) {
@@ -454,5 +477,13 @@ class TextController extends Controller {
 	 */
 	protected function findByQuery(array $query) {
 		return $this->em()->getTextRepository()->findByQuery($query);
+	}
+
+	protected function isMultiId(string $id): bool {
+		return strpos($id, ',') !== false;
+	}
+
+	protected function explodeMultiId(string $id): array {
+		return array_map('trim', explode(',', $id));
 	}
 }

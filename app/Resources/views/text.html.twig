@@ -198,10 +198,10 @@
 {% endmacro %}
 
 
-{% macro toc(text, cur_part, is_full_text) %}
+{% macro toc(text, cur_part, is_full_text, text_id) %}
 	{% set prevlev = 0 %}
 	{% for header in text.headers %}
-		{{ _self.toc_item(header, prevlev, cur_part, text, is_full_text|default(false)) }}
+		{{ _self.toc_item(header, prevlev, cur_part, text, is_full_text|default(false), text_id) }}
 		{% set prevlev = header.level %}
 	{% endfor %}
 
@@ -210,7 +210,7 @@
 	</ul>
 {% endmacro %}
 
-{% macro toc_item(header, prevlev, cur_part, text, is_full_text) %}
+{% macro toc_item(header, prevlev, cur_part, text, is_full_text, text_id) %}
 	{% if prevlev < header.level %}
 		<ul>{{ '<li><ul>'|repeat(header.level - 1 - prevlev)|raw }}
 	{% elseif prevlev > header.level %}
@@ -230,7 +230,7 @@
 		{% else %}
 			{% set rel = '' %}
 		{% endif %}
-		<a href="{{ path('text_show_part', {'id': text.id, 'part': header.nr}) }}#textstart" class="{{ cur_part == header.nr ? 'selected' : '' }}" rel="{{ rel }}">{{ header.name }}</a>
+		<a href="{{ path('text_show_part', {'id': text_id|default(text.id), 'part': header.nr}) }}#textstart" class="{{ cur_part == header.nr ? 'selected' : '' }}" rel="{{ rel }}">{{ header.name }}</a>
 	{% endif %}
 {% endmacro %}
 

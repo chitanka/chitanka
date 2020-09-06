@@ -90,6 +90,13 @@ class TextRepository extends EntityRepository {
 			->getSingleResult();
 	}
 
+	/** @return Text[] */
+	public function getMulti(array $ids) {
+		return array_map(function (int $id) {
+			return $this->get($id);
+		}, $ids);
+	}
+
 	/**
 	 * @param string $prefix
 	 * @param int $page
