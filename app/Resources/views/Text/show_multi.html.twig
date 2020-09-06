@@ -38,3 +38,12 @@
 		{% endfor %}
 	</div>
 {% endblock %}
+
+{% block inline_js %}
+const $mainImages = $('.text-content-main img');
+if ($mainImages.length) {
+	$('<button class="btn btn-default"><i class="fa fa-image"></i> Скриване на изображенията</button>').on('click', function() {
+		$mainImages.toggle();
+	}).insertBefore('#textstart');
+}
+{% endblock %}
