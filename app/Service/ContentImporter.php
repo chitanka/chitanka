@@ -395,7 +395,7 @@ class ContentImporter {
 		if (isset($work['title'])) {
 			$set += [
 				'slug' => (isset($work['slug']) ? Stringy::slugify($work['slug']) : Stringy::slugify($work['title'])),
-				'title' => Stringy::my_replace($work['title']),
+				'title' => $this->replaceChars($work['title'], $work['lang']),
 			];
 		}
 		if (isset($work['toc_level'])) {
@@ -432,7 +432,7 @@ class ContentImporter {
 			}
 		}
 		if (isset($work['subtitle'])) {
-			$set['subtitle'] = Stringy::my_replace($work['subtitle']);
+			$set['subtitle'] = $this->replaceChars($work['subtitle'], $work['lang']);
 		}
 		if (isset($work['orig_subtitle'])) {
 			$set['orig_subtitle'] = self::fixOrigTitle($work['orig_subtitle']);
@@ -601,24 +601,24 @@ class ContentImporter {
 		$path = ContentService::makeContentFilePath($work['id']);
 		$fullTextContent = '';
 		if (isset($work['tmpl'])) {
-			$this->fs->dumpFile("$this->contentDir/text/$path", Stringy::my_replace($work['tmpl']));
+			$this->fs->dumpFile("$this->contentDir/text/$path", $this->replaceChars($work['tmpl'], $work['lang']));
 
 			$fullTextContent = $work['tmpl'];
 			foreach ($work['text'] as $key => $textFile) {
 				$entryFile = dirname("$this->contentDir/text/$path") . "/$key";
-				$this->copyTextFile($textFile, $entryFile);
-				$fullTextContent = str_replace("\t{file:$key}", Stringy::my_replace(file_get_contents($textFile)), $fullTextContent);
+				$this->copyTextFile($textFile, $entryFile, $work['lang']);
+				$fullTextContent = str_replace("\t{file:$key}", $this->replaceChars(file_get_contents($textFile), $work['lang']), $fullTextContent);
 			}
 		} else if (isset($work['text'])) {
 			$entryFile = "$this->contentDir/text/$path";
-			$this->copyTextFile($work['text'], $entryFile);
+			$this->copyTextFile($work['text'], $entryFile, $work['lang']);
 			$fullTextContent = $entryFile;
 		}
 		if (isset($work['anno'])) {
-			$this->copyTextFile($work['anno'], "$this->contentDir/text-anno/$path");
+			$this->copyTextFile($work['anno'], "$this->contentDir/text-anno/$path", $work['lang']);
 		}
 		if (isset($work['info'])) {
-			$this->copyTextFile($work['info'], "$this->contentDir/text-info/$path");
+			$this->copyTextFile($work['info'], "$this->contentDir/text-info/$path", $work['lang']);
 		}
 		if (isset($work['img'])) {
 			$dir = "$this->contentDir/img/$path";
@@ -651,11 +651,11 @@ class ContentImporter {
 		if (isset($book['title'])) {
 			$set += [
 				'slug' => (isset($book['slug']) ? Stringy::slugify($book['slug']) : Stringy::slugify($book['title'])),
-				'title' => Stringy::my_replace($book['title']),
+				'title' => $this->replaceChars($book['title'], $book['lang']),
 			];
 		}
 		if (!empty($book['title_extra'])) {
-			$set['title_extra'] = Stringy::my_replace($book['title_extra']);
+			$set['title_extra'] = $this->replaceChars($book['title_extra'], $book['lang']);
 		}
 		if (!empty($book['lang'])) {
 			$set['lang'] = $book['lang'];
@@ -686,7 +686,7 @@ class ContentImporter {
 			$set['has_cover'] = filesize($book['cover']) ? 1 : 0;
 		}
 		if (isset($book['subtitle'])) {
-			$set['subtitle'] = Stringy::my_replace($book['subtitle']);
+			$set['subtitle'] = $this->replaceChars($book['subtitle'], $book['lang']);
 		}
 		if (isset($book['year'])) {
 			$set['year'] = $book['year'];
@@ -799,13 +799,13 @@ class ContentImporter {
 	private function saveBookFiles(array $book) {
 		$path = ContentService::makeContentFilePath($book['id']);
 		if (isset($book['tmpl'])) {
-			$this->fs->dumpFile("$this->contentDir/book/$path", Stringy::my_replace($book['tmpl']));
+			$this->fs->dumpFile("$this->contentDir/book/$path", $this->replaceChars($book['tmpl'], $book['lang']));
 		}
 		if (isset($book['anno'])) {
-			$this->copyTextFile($book['anno'], "$this->contentDir/book-anno/$path");
+			$this->copyTextFile($book['anno'], "$this->contentDir/book-anno/$path", $book['lang']);
 		}
 		if (isset($book['info'])) {
-			$this->copyTextFile($book['info'], "$this->contentDir/book-info/$path");
+			$this->copyTextFile($book['info'], "$this->contentDir/book-info/$path", $book['lang']);
 		} elseif (!empty($book['biblioman_id'])) {
 			file_put_contents("$this->contentDir/book-info/$path", ContentService::generateBookInfoFromBiblioman($book['biblioman_id']));
 		}
@@ -838,19 +838,17 @@ QUERY
 		);
 	}
 
-	private function copyTextFile($source, $dest, $replaceChars = true) {
+	private function copyTextFile($source, $dest, $lang) {
 		if (filesize($source) == 0) {
 			unlink($dest);
 			return;
 		}
 		$contents = file_get_contents($source);
-		if ($replaceChars) {
-			$enhancedContents = Stringy::my_replace($contents);
-			if (empty($enhancedContents)) {
-				//$output->writeln(sprintf('<error>CharReplace failed by %s</error>', $source));
-			} else {
-				$contents = $enhancedContents;
-			}
+		$enhancedContents = $this->replaceChars($contents, $lang);
+		if (empty($enhancedContents)) {
+			//$output->writeln(sprintf('<error>CharReplace failed by %s</error>', $source));
+		} else {
+			$contents = $enhancedContents;
 		}
 		$this->fs->dumpFile($dest, $contents);
 	}
@@ -898,5 +896,12 @@ QUERY
 		return strtr($title, [
 			'\'' => '’',
 		]);
+	}
+
+	private function replaceChars(string $content, string $lang): string {
+		if ($lang === 'bg') {
+			return Stringy::my_replace($content);
+		}
+		return $content;
 	}
 }
