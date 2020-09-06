@@ -1,5 +1,6 @@
 <?php namespace App\Controller;
 
+use App\Entity\Language;
 use App\Entity\Text;
 use App\Entity\TextType;
 use App\Entity\UserTextRead;
@@ -28,6 +29,7 @@ class TextController extends Controller {
 			return [
 				'labels' => $this->em()->getLabelRepository()->getAllAsTree(),
 				'types' => $this->em()->getTextTypeRepository()->findAll(),
+				'languages' => $this->em()->getLanguageRepository()->findAll(),
 			];
 		}
 
@@ -43,6 +45,18 @@ class TextController extends Controller {
 	public function listByLabelIndexAction() {
 		return [
 			'labels' => $this->em()->getLabelRepository()->findAll()
+		];
+	}
+
+	public function listByLanguageIndexAction() {
+		return [
+			'languages' => $this->em()->getLanguageRepository()->findAll(),
+		];
+	}
+
+	public function listByOriginalLanguageIndexAction() {
+		return [
+			'languages' => $this->em()->getLanguageRepository()->findAll(),
 		];
 	}
 
@@ -77,6 +91,28 @@ class TextController extends Controller {
 			'texts'   => $textRepo->getByLabel($labels, $page, $limit, $request->query->get('sort')),
 			'pager'    => new Pager($page, $textRepo->countByLabel($labels), $limit),
 			'route_params' => ['slug' => $slug],
+		];
+	}
+
+	public function listByLanguageAction(Request $request, Language $language, $page) {
+		$textRepo = $this->em()->getTextRepository();
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
+		return [
+			'language' => $language,
+			'texts'   => $textRepo->getByLanguage($language, $page, $limit, $request->query->get('sort')),
+			'pager'    => new Pager($page, $textRepo->countByLanguage($language), $limit),
+			'route_params' => ['language' => $language->getCode()],
+		];
+	}
+
+	public function listByOriginalLanguageAction(Request $request, Language $language, $page) {
+		$textRepo = $this->em()->getTextRepository();
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
+		return [
+			'language' => $language,
+			'texts'   => $textRepo->getByOriginalLanguage($language, $page, $limit, $request->query->get('sort')),
+			'pager'    => new Pager($page, $textRepo->countByOriginalLanguage($language), $limit),
+			'route_params' => ['language' => $language->getCode()],
 		];
 	}
 

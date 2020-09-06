@@ -28,6 +28,7 @@ class UpdateCountsDbCommand extends Command {
 		$this->updateTextCountByLabels($output, $em);
 		$this->updateTextCountByLabelsParents($output, $em);
 		$this->updateTextCountByTypes($output, $em);
+		$this->updateTextCountByLanguages($output, $em);
 		$this->updateBookCountBySequences($output, $em);
 		$this->updateBookCountByCategories($output, $em);
 		$this->updateBookCountByCategoriesParents($output, $em);
@@ -56,6 +57,13 @@ class UpdateCountsDbCommand extends Command {
 		$output->writeln('Updating text counts by types');
 		$update = $this->maintenanceSql('UPDATE text_type tt SET nr_of_texts = (SELECT COUNT(*) FROM text WHERE type = tt.code)');
 		$em->getConnection()->executeUpdate($update);
+	}
+
+	/** @RawSql */
+	private function updateTextCountByLanguages(OutputInterface $output, EntityManager $em) {
+		$output->writeln('Updating text counts by languages');
+		$em->getConnection()->executeUpdate($this->maintenanceSql('UPDATE language l SET nr_of_texts = (SELECT COUNT(*) FROM text WHERE lang = l.code)'));
+		$em->getConnection()->executeUpdate($this->maintenanceSql('UPDATE language l SET nr_of_translated_texts = (SELECT COUNT(*) FROM text WHERE orig_lang = l.code)'));
 	}
 
 	/**

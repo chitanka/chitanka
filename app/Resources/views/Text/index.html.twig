@@ -23,4 +23,14 @@
 	<div class="two-columns">
 		{% include 'App:Text:type_list.html.twig' %}
 	</div>
+
+	<h2><a href="{{ path('texts_by_language_index') }}">По език</a></h2>
+	<div class="two-columns">
+		{% include 'Text/language_list.html.twig' %}
+	</div>
+
+	<h2><a href="{{ path('texts_by_original_language_index') }}">По език на оригинала</a></h2>
+	<div class="two-columns">
+		{% include 'Text/original_language_list.html.twig' %}
+	</div>
 {% endblock %}

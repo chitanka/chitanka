@@ -25,6 +25,20 @@ class Language implements \JsonSerializable {
 	 */
 	private $name;
 
+	/**
+	 * Number of texts in this language
+	 * @var int
+	 * @ORM\Column(type="integer")
+	 */
+	private $nrOfTexts = 0;
+
+	/**
+	 * Number of texts for which the original is in this language
+	 * @var int
+	 * @ORM\Column(type="integer")
+	 */
+	private $nrOfTranslatedTexts = 0;
+
 	public function getCode() {
 		return $this->code;
 	}
@@ -41,8 +55,24 @@ class Language implements \JsonSerializable {
 		$this->name = $name;
 	}
 
+	public function setNrOfTexts(int $nrOfTexts) { $this->nrOfTexts = $nrOfTexts; }
+	public function getNrOfTexts(): int { return $this->nrOfTexts; }
+	public function incNrOfTexts(int $value = 1) {
+		$this->nrOfTexts += $value;
+	}
+
+	public function setNrOfTranslatedTexts(int $nrOfTranslatedTexts) { $this->nrOfTranslatedTexts = $nrOfTranslatedTexts; }
+	public function getNrOfTranslatedTexts(): int { return $this->nrOfTranslatedTexts; }
+	public function incNrOfTranslatedTexts(int $value = 1) {
+		$this->nrOfTranslatedTexts += $value;
+	}
+
 	public function __toString() {
 		return $this->name;
+	}
+
+	public function is(string $codeOrName): bool {
+		return $this->code === $codeOrName || $this->name === $codeOrName;
 	}
 
 	/**

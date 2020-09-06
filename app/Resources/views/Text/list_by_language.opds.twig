@@ -1,0 +1,10 @@
+{% extends 'layout.opds.twig' %}
+{% import 'helper.opds.twig' as helper %}
+
+{% set title = 'Произведения по език' %}
+{% set subtitle = language %}
+{% set link_self = helper.path(current_route, {'language': language.code}) %}
+{% block content %}
+	{% include 'Text/list.opds.twig' %}
+	{% include 'pager.opds.twig' %}
+{% endblock %}

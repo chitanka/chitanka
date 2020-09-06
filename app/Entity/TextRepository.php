@@ -240,6 +240,62 @@ class TextRepository extends EntityRepository {
 		});
 	}
 
+	public function getByLanguage(Language $language, int $page = 1, int $limit = null, string $orderBy = null): array {
+		$orderBy = $this->normalizeOrderBy($orderBy);
+		try {
+			$ids = $this->getIdsByLanguage($language, $page, $limit, $orderBy);
+		} catch (NoResultException $e) {
+			return [];
+		}
+		return $this->getByIds($ids, $orderBy);
+	}
+
+	protected function getIdsByLanguage(Language $language, int $page, int $limit, string $orderBy): array {
+		$dql = "SELECT t.id FROM {$this->getEntityName()} t WHERE t.lang = '{$language->getCode()}' ORDER BY t.$orderBy";
+		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
+		$ids = $query->getResult('id');
+		if (empty($ids)) {
+			throw new NoResultException;
+		}
+		return $ids;
+	}
+
+	public function countByLanguage(Language $language): int {
+		$dql = "SELECT COUNT(t.id) FROM {$this->getEntityName()} t WHERE t.lang = '{$language->getCode()}'";
+		$query = $this->_em->createQuery($dql);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
+		return $query->getSingleScalarResult();
+	}
+
+	public function getByOriginalLanguage(Language $language, int $page = 1, int $limit = null, string $orderBy = null): array {
+		$orderBy = $this->normalizeOrderBy($orderBy);
+		try {
+			$ids = $this->getIdsByOriginalLanguage($language, $page, $limit, $orderBy);
+		} catch (NoResultException $e) {
+			return [];
+		}
+		return $this->getByIds($ids, $orderBy);
+	}
+
+	protected function getIdsByOriginalLanguage(Language $language, int $page, int $limit, string $orderBy): array {
+		$dql = "SELECT t.id FROM {$this->getEntityName()} t WHERE t.origLang = '{$language->getCode()}' ORDER BY t.$orderBy";
+		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
+		$ids = $query->getResult('id');
+		if (empty($ids)) {
+			throw new NoResultException;
+		}
+		return $ids;
+	}
+
+	public function countByOriginalLanguage(Language $language): int {
+		$dql = "SELECT COUNT(t.id) FROM {$this->getEntityName()} t WHERE t.origLang = '{$language->getCode()}'";
+		$query = $this->_em->createQuery($dql);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
+		return $query->getSingleScalarResult();
+	}
+
 	/**
 	 * @param Person $author
 	 * @param bool $groupBySeries

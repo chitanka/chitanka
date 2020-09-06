@@ -1,0 +1,10 @@
+{% extends 'layout.html.twig' %}
+
+{% set title = 'Произведения по език на оригинала' %}
+{% block content %}
+	<ul class="breadcrumb" itemprop="breadcrumb">
+		<li><a href="{{ path('texts') }}">Произведения</a></li>
+		<li class="active">по език на оригинала</li>
+	</ul>
+	{% include 'Text/original_language_list.html.twig' with { isExpanded: true } %}
+{% endblock %}

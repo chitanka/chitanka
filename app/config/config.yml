@@ -43,6 +43,7 @@ twig:
     globals:
         sitename: %sitename%
         project_links: %project_links%
+        default_content_language: %default_content_language%
         analytics_snippet: "%analytics_snippet%"
         js_path: %js_path%
         script_library: %script_library%

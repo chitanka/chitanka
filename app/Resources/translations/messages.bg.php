@@ -56,6 +56,8 @@ return [
 		'nr-of-books-with-category' => '{1} В категорията „%category%“ има една книга|]1,Inf[ В категорията „%category%“ има %count% книги',
 		'nr-of-texts-with-label' => '{1} Има едно произведение с етикет „%label%“|]1,Inf[ Има %count% произведения с етикет „%label%“',
 		'nr-of-texts-with-type' => '{1} Има едно произведение от вид „%type%“|]1,Inf[ Има %count% произведения от вид „%type%“',
+		'nr-of-texts-in-language' => '{1} Има едно произведение на „%language%“|]1,Inf[ Има %count% произведения на „%language%“',
+		'nr-of-texts-from-language' => '{1} Има едно произведение, преведено от „%language%“|]1,Inf[ Има %count% произведения, преведени от „%language%“',
 	],
 
 	'translators' => 'Преводачи',

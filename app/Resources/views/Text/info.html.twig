@@ -41,13 +41,16 @@
 			</dd>
 
 		{% if text.origLang != text.lang %}
-			<dt>Превод от {{ text.origLang }}</dt>
+			<dt>Превод от {{ link.texts_by_original_language(text.origLang) }}</dt>
 			<dd>
 			{{ textinfo.translator(text) }}, {{ textinfo.transYear(text) }}
 			{% if text.transLicense is not empty %}
 				({{ textinfo.license(text.transLicense) }})
 			{% endif %}
 			</dd>
+		{% elseif not text.lang.is(default_content_language) %}
+			<dt>Език</dt>
+			<dd>{{ link.texts_by_language(text.lang) }}</dd>
 		{% endif %}
 		<dt>Форма<dt>
 		<dd><a href="{{ path('texts_by_type', {'type': text.type.code}) }}">{{ text.type }}</a></dd>

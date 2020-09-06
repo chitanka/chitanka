@@ -1,0 +1,9 @@
+{% extends 'layout.opds.twig' %}
+
+{% import 'helper.opds.twig' as helper %}
+{% set id = helper.urn('texts_by_language_index') %}
+{% set link_self = helper.path('texts_by_language_index') %}
+{% set title = 'Произведения по език' %}
+{% block content %}
+	{% include 'Text/language_list.opds.twig' %}
+{% endblock %}

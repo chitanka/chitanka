@@ -334,6 +334,18 @@ texts_by_label:
     methods: [GET]
     requirements:    {  page: \d+, _format: html|opds|json }
 
+texts_by_language:
+    path:           /texts/language/{language}.{_format}/{page}
+    defaults:       { _controller: App:Text:listByLanguage, page: 1, _format: html }
+    methods: [GET]
+    requirements:    {  page: \d+, _format: html|opds|json }
+
+texts_by_original_language:
+    path:           /texts/original-language/{language}.{_format}/{page}
+    defaults:       { _controller: App:Text:listByOriginalLanguage, page: 1, _format: html }
+    methods: [GET]
+    requirements:    {  page: \d+, _format: html|opds|json }
+
 texts_by_alpha_index:
     path:           /texts/alpha.{_format}
     defaults:       { _controller: App:Text:listByAlphaIndex, _format: html }
@@ -349,6 +361,18 @@ texts_by_type_index:
 texts_by_label_index:
     path:           /texts/label.{_format}
     defaults:       { _controller: App:Text:listByLabelIndex, _format: html }
+    methods: [GET]
+    requirements:    {  _format: html|opds|json }
+
+texts_by_language_index:
+    path:           /texts/language.{_format}
+    defaults:       { _controller: App:Text:listByLanguageIndex, _format: html }
+    methods: [GET]
+    requirements:    {  _format: html|opds|json }
+
+texts_by_original_language_index:
+    path:           /texts/original-language.{_format}
+    defaults:       { _controller: App:Text:listByOriginalLanguageIndex, _format: html }
     methods: [GET]
     requirements:    {  _format: html|opds|json }
 

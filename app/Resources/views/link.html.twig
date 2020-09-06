@@ -66,6 +66,14 @@
 {% spaceless %}<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" rel="tag" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>{% endspaceless %}
 {% endmacro %}
 
+{% macro texts_by_language(language) %}
+{% spaceless %}<a href="{{ path('texts_by_language', {'language': language.code}) }}" rel="tag" data-edit="{{ path('admin_language_edit', {'id': language.code}) }}">{{ language.name }}</a>{% endspaceless %}
+{% endmacro %}
+
+{% macro texts_by_original_language(language) %}
+{% spaceless %}<a href="{{ path('texts_by_original_language', {'language': language.code}) }}" rel="tag" data-edit="{{ path('admin_language_edit', {'id': language.code}) }}">{{ language.name }}</a>{% endspaceless %}
+{% endmacro %}
+
 {% macro user_with_email(user) %}
 <a href="{{ path('user_show', {'username': user.username}) }}" class="user">{{ user.username }}</a>&#160;{% if user.allowemail %}<a href="{{ path('email_user', {'username': user.username}) }}" title="Пращане на писмо на {{ user.username }}"><span class="fa fa-envelope-o"></span><span class="sr-only">Е-поща</span></a>{% endif %}
 {% endmacro %}
