@@ -16,9 +16,9 @@
 	{% endif %}
 {% endmacro %}
 
-{% macro persons_comma(persons) %}
+{% macro persons_comma(persons, lang) %}
 	{% for person in persons %}
-		<span itemscope itemtype="http://schema.org/Person"><a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="name" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name }}</a></span>{{ loop.last ? '' : ',' }}
+		<span itemscope itemtype="http://schema.org/Person"><a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="name" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ lang.is(default_content_language) ? person.name : person.origName }}</a></span>{{ loop.last ? '' : ',' }}
 	{% endfor %}
 {% endmacro %}
 

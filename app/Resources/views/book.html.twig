@@ -20,7 +20,7 @@
 			{% endif %}
 
 			{% if book.authors|length %}
-				<div class="bookauthor" itemprop="author">{{ link.persons_comma(book.authors) }}</div>
+				<div class="bookauthor" itemprop="author">{{ link.persons_comma(book.authors, book.lang) }}</div>
 			{% endif %}
 			{% if book.sequence is not empty %}
 				<div class="bookseq">{{ link.sequence(book.sequence) }}{% if book.seqnr is not empty and book.sequence.isSeqnrVisible %}, №&nbsp;{{ book.seqnr }}{% endif %}</div>

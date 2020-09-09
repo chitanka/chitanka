@@ -14,9 +14,9 @@
 	{% endif %}
 {% endmacro %}
 
-{% macro persons_comma(persons) %}
+{% macro persons_comma(persons, lang) %}
 	{% for person in persons %}
-		<a href="{{ url('person_show', {'slug': person.slug}) }}">{{ person.name }}</a>{{ loop.last ? '' : ',' }}
+		<a href="{{ url('person_show', {'slug': person.slug}) }}">{{ lang.is(default_content_language) ? person.name : person.origName }}</a>{{ loop.last ? '' : ',' }}
 	{% endfor %}
 {% endmacro %}
 

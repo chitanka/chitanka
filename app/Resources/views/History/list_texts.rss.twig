@@ -34,7 +34,7 @@
 				<content:encoded><![CDATA[
 	<div>„<a href="{{ url('text_show', {'id': text.id}) }}"><i>{{ title }}</i></a>“
 		{% if text.authors|length %}
-			от {{ link.persons_comma(text.authors) }}
+			от {{ link.persons_comma(text.authors, text.lang) }}
 		{% endif %}
 	</div>
 	{% if text.series is defined %}

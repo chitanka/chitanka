@@ -39,7 +39,7 @@
 	{% endif %}
 	<div>„<a href="{{ url('book_show', {'id': book.id}) }}"><i>{{ title }}</i></a>“
 		{% if book.authors|length %}
-			от {{ link.persons_comma(book.authors) }}
+			от {{ link.persons_comma(book.authors, book.lang) }}
 		{% endif %}
 	</div>
 	{% if book.sequence is defined and book.sequence is not empty %}
