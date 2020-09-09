@@ -41,13 +41,11 @@
 {% endmacro %}
 
 {% macro text(text, options) %}
-{% spaceless %}<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}" class="textlink {{ text.headlevel == 0 ? 'one-part-text' : '' }}" itemprop="name" data-edit="{{ path('admin_text_edit', {'id': text.id}) }}"
-	title="{{ text.note }}"
-{% if text.lang != text.origLang %}
-	{#% if text.translators is defined %}
-		title="Превод: {{ _self.translators_plain(text.translators) }} {{ text.transYear is defined ? '(' ~ text.transYear ~ ')' : '' }}"
-	{% endif %#}
-{% endif %}><i>{{ options.title is defined ? options.title : text.title }}</i></a>{% endspaceless %}
+<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}" class="textlink {{ text.headlevel == 0 ? 'one-part-text' : '' }}" itemprop="name" data-edit="{{ path('admin_text_edit', {'id': text.id}) }}"
+	title="{{ text.note }}"><i>{{ options.title is defined ? options.title : text.title }}</i></a>
+	{% if not text.lang.is(default_content_language) %}
+		<span class="badge badge-info" title="{{ text.lang }}">{{ text.lang.code }}</span>
+	{% endif %}
 {% endmacro %}
 
 {% macro book(book) %}
