@@ -13,7 +13,7 @@ class TextHtmlGenerator {
 	 * @param int $objCount
 	 * @return string
 	 */
-	public function generateHtml(Text $text, $imgDirPrefix = '', $part = 1, $objCount = 0) {
+	public function generateHtml(Text $text, $imgDirPrefix = '', $part = 1, $objCount = 0, string $paragraphIdPrefix = null) {
 		$imgDir = $imgDirPrefix . ContentService::getContentFilePath('img', $text->getId());
 		$conv = new SfbToHtmlConverter($text->getRawContent(true), $imgDir);
 
@@ -22,6 +22,9 @@ class TextHtmlGenerator {
 
 		if ($objCount) {
 			$conv->setObjectCount($objCount);
+		}
+		if ($paragraphIdPrefix) {
+			$conv->setParagraphIdPrefix($paragraphIdPrefix);
 		}
 		$header = $text->getHeaderByNr($part);
 		if ($header) {

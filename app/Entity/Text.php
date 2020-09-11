@@ -1104,9 +1104,9 @@ EOS;
 		return $this->getEpubChunksFrom($this->getRawContent(true), $imgDir);
 	}
 
-	public function getContentHtml($imgDirPrefix = '', $part = 1, $objCount = 0) {
+	public function getContentHtml($imgDirPrefix = '', $part = 1, $objCount = 0, string $paragraphIdPrefix = null) {
 		$generator = new TextHtmlGenerator();
-		return $generator->generateHtml($this, $imgDirPrefix, $part, $objCount);
+		return $generator->generateHtml($this, $imgDirPrefix, $part, $objCount, $paragraphIdPrefix);
 	}
 
 	/**
