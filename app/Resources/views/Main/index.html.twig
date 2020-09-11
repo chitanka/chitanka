@@ -75,6 +75,7 @@
 
 {% endblock %}
 {% block inline_js %}
+<script>
 (function(){
 	var expander = '<button class="expander btn btn-default" role="button"><span>Показване на още</span> <span class="fa fa-angle-double-down"></span></button>';
 	var hideCss = {"overflow": "hidden"};
@@ -98,4 +99,5 @@
 		$(this).prev().removeClass("collapsed").css(showCss).end().remove();
 	});
 })();
+</script>
 {% endblock %}

@@ -169,11 +169,11 @@
 		<script src="{{ local_asset_url(js_extra) }}"></script>
 	{% endif %}
 
+	{% if inline_js is defined %}
+		<script>{{ inline_js|raw }}</script>
+	{% endif %}
+	{% block inline_js %}{% endblock %}
 	<script>
-		{% if inline_js is defined %}
-			{{ inline_js|raw }}
-		{% endif %}
-		{% block inline_js %}{% endblock %}
 		$.each(user_functions, function(i, func){
 			func();
 		});

@@ -40,6 +40,7 @@
 {% set css_extra = ['css/pic.css'] %}
 {% set js_extra = ['vendor/js/jquery-migrate-1.2.1', 'vendor/js/jquery-galleriffic', 'vendor/js/jquery-hotkeys', 'pic'] %}
 {% set inline_js %}
+<script>
 	$("#help-instructions").html("\
 		<p>Разглеждането на изображенията може да се управлява и чрез клавиатурата:</p>\
 		<ul>\
@@ -47,4 +48,5 @@
 			<li>CTRL + лява стрелка — едно назад</li>\
 			<li><b>f</b> — включване/изключване на режим „Пълен екран“</li>\
 		</ul>");
+</script>
 {% endset %}
