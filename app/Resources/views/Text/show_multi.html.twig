@@ -47,5 +47,49 @@ if ($mainImages.length) {
 		$mainImages.toggle();
 	}).insertBefore('#textstart');
 }
+
+function alignParagraphs() {
+	const texts = $(".text-content-main");
+	texts.find('.dummy-spacer').remove();
+	const paragraphBlocks = texts.map(function() {
+		return $(this).find('p');
+	});
+	const maxNbOfPs = Math.max(...paragraphBlocks.map(function() {
+		return $(this).length;
+	}).get());
+	for (let i = 0; i < maxNbOfPs; i++) {
+		const correspondingParagraps = paragraphBlocks.map(function() {
+			const $par = $(this).eq(i);
+			return $par ? { par: $par, top: $par.offset().top } : undefined;
+		}).get().filter(function(e) {
+			return e !== undefined;
+		});
+		if (correspondingParagraps.length < 2) {
+			continue;
+		}
+		correspondingParagraps.sort(function(p1, p2) {
+			return p1.top < p2.top ? 1 : -1; // reverse sort
+		});
+		for (let oi = 1; oi < correspondingParagraps.length; oi++) {
+			const topDiff = correspondingParagraps[0].top - correspondingParagraps[oi].top;
+			if (topDiff > 0) {
+				correspondingParagraps[oi].par.before('<div class="dummy-spacer" style="height:'+topDiff+'px"></div>');
+			}
+		}
+	}
+}
+function unalignParagraphs() {
+	$(".text-content-main").find('.dummy-spacer').remove();
+}
+$('<button class="btn btn-default"><i class="fa fa-balance-scale"></i> Подравняване на абзаците</button>').on('click', function() {
+	if ($(this).data('activated')) {
+		unalignParagraphs();
+		$(window).off('resize', alignParagraphs);
+	} else {
+		alignParagraphs();
+		$(window).on('resize', alignParagraphs);
+	}
+	$(this).data('activated', !$(this).data('activated')).toggleClass('active').blur();
+}).insertBefore('#textstart');
 </script>
 {% endblock %}
