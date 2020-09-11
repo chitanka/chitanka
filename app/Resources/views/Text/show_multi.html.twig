@@ -3,7 +3,7 @@
 {% set title %}
 	<div class="row">
 		{% for text in texts %}
-			<div class="col-md-{{ grid_cols }}">
+			<div class="col-xs-{{ grid_cols }}">
 				{% include 'Text/title.html.twig' with {'id_suffix': loop.index, 'obj_count': obj_count * loop.index} %}
 			</div>
 		{% endfor %}
@@ -13,21 +13,21 @@
 {% block content %}
 	<div class="row">
 		{% for text in texts %}
-			<div class="col-md-{{ grid_cols }}">
+			<div class="col-xs-{{ grid_cols }}">
 				{% include 'Text/leading_tabs.html.twig' with {'id_suffix': loop.index} %}
 			</div>
 		{% endfor %}
 	</div>
 	<div class="row">
 		{% for text in texts %}
-			<div class="col-md-{{ grid_cols }}">
+			<div class="col-xs-{{ grid_cols }}">
 				{% include 'Text/toc.html.twig' with {'id_suffix': loop.index} %}
 			</div>
 		{% endfor %}
 	</div>
 	<div class="row" id="textstart">
 		{% for text in texts %}
-			<div class="col-md-{{ grid_cols }}">
+			<div class="col-xs-{{ grid_cols }}">
 				{% if text.removedNotice is not empty %}
 					<div class="removed-notice">{{ text.removedNotice|raw }}</div>
 				{% else %}
