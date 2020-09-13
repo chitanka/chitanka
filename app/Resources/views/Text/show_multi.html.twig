@@ -10,6 +10,8 @@
 	</div>
 {% endset %}
 
+{% block body_class %}{{ parent() }} hide-sidebar{% endblock %}
+
 {% block content %}
 	<div class="row">
 		{% for text in texts %}
