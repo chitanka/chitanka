@@ -60,7 +60,7 @@ function alignParagraphs() {
 	for (let i = 0; i < maxNbOfPs; i++) {
 		const correspondingParagraps = paragraphBlocks.map(function() {
 			const $par = $(this).eq(i);
-			return $par ? { par: $par, top: $par.offset().top } : undefined;
+			return $par.length > 0 ? { par: $par, top: $par.offset().top } : undefined;
 		}).get().filter(function(e) {
 			return e !== undefined;
 		});
