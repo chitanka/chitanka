@@ -214,34 +214,38 @@ function showBookmarks()
 
 // create a menu toggle link
 (function(){
-	var togglerCookieName = "nomenu";
-	var $sidebar = $("#navigation");
+	const togglerCookieName = "nomenu";
+	const $sidebar = $("#navigation");
 	if ($sidebar.find(".sidebar-menu").length === 0) {
 		return;
 	}
-	var togglerHtml = '<div>\
+	const $togglerHtml = $('<div>\
 		<a href="#hide-sidebar" class="sidebar-toggle hide-toggle fa-stack" title="Скриване на менюто">\
 			<span class="fa fa-bars fa-stack-1x"></span>\
 			<span class="fa fa-ban fa-stack-2x text-warning"></span>\
 		</a>\
 		<a href="#'+$sidebar.attr('id')+'" class="sidebar-toggle show-toggle hide fa fa-bars" title="Показване на менюто"></a>\
-		</div>';
-	$(togglerHtml).on("click", "a", function() {
+		</div>');
+	const toggleSidebar = function() {
+		$sidebar.toggle();
+		$("#main-content").toggleClass("no-sidebar");
+		$togglerHtml.find('a').toggleClass("hide");
+	};
+	$togglerHtml.on("click", "a", function() {
 		if ($sidebar.css("float") == "none") { // sidebar is at the bottom of the page
 			$.scrollTo($sidebar, 500);
 			return false;
 		}
-		$sidebar.toggle();
-		$("#main-content").toggleClass("no-sidebar");
-		$(this).siblings().addBack().toggleClass("hide");
+		toggleSidebar();
 		$(this).blur();
 		$.cookie(togglerCookieName, $sidebar.is(":visible") ? null : 1, {path: '/'});
 		return false;
 	})
 	.appendTo("#content-wrapper");
 
-	if ($.cookie(togglerCookieName) && $sidebar.css("float") != "none") {
-		$(".hide-toggle").click();
+	const hideSidebar = ( $('body').is('.hide-sidebar') || $.cookie(togglerCookieName) ) && $sidebar.css("float") != "none";
+	if (hideSidebar) {
+		toggleSidebar();
 	}
 })();
 
