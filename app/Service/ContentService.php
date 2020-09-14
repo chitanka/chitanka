@@ -13,7 +13,7 @@ class ContentService {
 	public static $bookCoverExtension = 'jpg';
 	public static $internalContentPath = __DIR__ .'/../../web/content';
 	public static $webContentPath = 'content/';
-	public static $webThumbPath = 'thumb/?';
+	public static $webThumbPath = 'thumb/';
 
 	/**
 	 * @param string $key
