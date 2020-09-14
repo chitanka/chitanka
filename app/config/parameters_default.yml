@@ -60,7 +60,7 @@ parameters:
     default_content_language: bg
 
     download_formats: [txt.zip, fb2.zip, epub, sfb.zip]
-    download_file: AUTHOR - SERIES - SERNO. TITLE-ID
+    download_file: AUTHOR - SERIES - SERNO. TITLE - ID
 
     workroom_remote: false
     workroom_root: ~

@@ -1,6 +1,7 @@
 <?php namespace App\Entity;
 
 use App\Service\ContentService;
+use App\Util\Char;
 use App\Util\File;
 use App\Util\Stringy;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -101,9 +102,6 @@ abstract class BaseWork extends Entity {
 	/** @return string */
 	abstract public function getPlainTranslationInfo();
 
-	/** @return string */
-	abstract public function getAuthorNamesString();
-
 	private $authorIds;
 	public function getAuthorIds() {
 		if ( ! isset($this->authorIds)) {
@@ -115,6 +113,36 @@ abstract class BaseWork extends Entity {
 		}
 
 		return $this->authorIds;
+	}
+
+	public function getAuthorNames(): array {
+		return array_map(function(Person $author) {
+			return $author->getName();
+		}, $this->getAuthors());
+	}
+
+	public function getAuthorSlugs(): array {
+		return array_map(function(Person $author) {
+			return $author->getSlug();
+		}, $this->getAuthors());
+	}
+
+	public function getAuthorOrigNames(): array {
+		return array_map(function(Person $author) {
+			return $author->getOrigName();
+		}, $this->getAuthors());
+	}
+
+	public function getAuthorNameEscaped() {
+		$origNames = implode(', ', $this->getAuthorOrigNames());
+		if (preg_match('/[a-z]/', $origNames)) {
+			return Stringy::slugify($origNames);
+		}
+		return Char::cyr2lat($this->getAuthorNamesString());
+	}
+
+	public function getAuthorNamesString(): string {
+		return implode(', ', $this->getAuthorNames());
 	}
 
 	public function getLang() {

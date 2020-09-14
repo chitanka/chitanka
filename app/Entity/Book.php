@@ -301,16 +301,6 @@ class Book extends BaseWork implements \JsonSerializable {
 		return $this->authors;
 	}
 
-	public function getAuthorNames() {
-		return array_map(function(Person $author) {
-			return $author->getName();
-		}, $this->getAuthors());
-	}
-
-	public function getAuthorNamesString() {
-		return implode(', ', $this->getAuthorNames());
-	}
-
 	public function addAuthor($author) {
 		$this->authors[] = $author;
 	}
@@ -456,14 +446,6 @@ class Book extends BaseWork implements \JsonSerializable {
 		}
 
 		return $this->mainAuthors;
-	}
-
-	public function getAuthorSlugs() {
-		$slugs = [];
-		foreach ($this->getAuthors() as $author) {
-			$slugs[] = $author->getSlug();
-		}
-		return $slugs;
 	}
 
 	public static function isMainWorkType($type) {
@@ -799,7 +781,7 @@ class Book extends BaseWork implements \JsonSerializable {
 	}
 
 	public function getNameForFile() {
-		return trim("$this->titleAuthor - $this->title - $this->subtitle-$this->id-b", '- ');
+		return implode(' - ', array_filter([$this->getAuthorNameEscaped(), $this->getTitle(), $this->getSubtitle(), "$this->id-b"]));
 	}
 
 	public function getTextIds() {
