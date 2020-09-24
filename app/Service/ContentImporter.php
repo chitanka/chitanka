@@ -94,10 +94,7 @@ class ContentImporter {
 	}
 
 	private function processWorkFiles($dataFile) {
-		$work = [];
-		foreach (file($dataFile) as $line) {
-			$work += self::extractVarFromLineData($line);
-		}
+		$work = self::extractVarsFromFile($dataFile) + ['lang' => 'bg'];
 		$packetId = $work['id'];
 		$work['is_new'] = $packetId < 0;
 		if ($work['is_new']) {
@@ -189,10 +186,7 @@ class ContentImporter {
 	}
 
 	private function processBookFiles($dataFile) {
-		$book = [];
-		foreach (file($dataFile) as $line) {
-			$book += self::extractVarFromLineData($line);
-		}
+		$book = self::extractVarsFromFile($dataFile) + ['lang' => 'bg'];
 		$packetId = $book['id'];
 		$book['is_new'] = $packetId < 0;
 		if ($book['is_new']) {
@@ -250,6 +244,14 @@ class ContentImporter {
 		}
 
 		return $book;
+	}
+
+	private static function extractVarsFromFile(string $file): array {
+		$vars = [];
+		foreach (file($file) as $line) {
+			$vars = array_merge($vars, self::extractVarFromLineData($line));
+		}
+		return $vars;
 	}
 
 	private static function extractVarFromLineData($line) {
