@@ -653,8 +653,8 @@ class User implements UserInterface, \JsonSerializable {
 
 	public function closeAccount() {
 		$this->setClosedAt();
-		$this->setUsername('__CLOSED__'.$this->getUsername());
-		$this->setEmail('__CLOSED__'.$this->getEmail());
+		$this->setUsername('__CLOSED__'.time().'__'.$this->getUsername());
+		$this->setEmail('__CLOSED__'.time().'__'.$this->getEmail());
 		$this->setNews(false);
 		$this->setIsEmailValid(false);
 		$this->logout();
