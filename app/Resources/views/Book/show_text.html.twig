@@ -30,6 +30,9 @@
 		{% if info %}
 			<li><a href="#book-extra-info" data-toggle="tab"><span class="fa fa-tag"></span> Информация</a></li>
 		{% endif %}
+		{% if book.bibliomanId is not empty %}
+			<li><a href="#book-biblioman" data-toggle="tab"><span class="fa fa-newspaper-o"></span> Библиоман</a></li>
+		{% endif %}
 		<li><a href="#book-links" data-toggle="tab"><span class="fa fa-download"></span> Сваляне / Връзки</a></li>
 	</ul>
 	<div class="tab-content">
@@ -46,15 +49,21 @@
 			</div>
 		{% endif %}
 
+		<section class="tab-pane text-content text-content-main" id="book-full-content">
+			<br>
+		</section>
+
 		{% if info %}
 			<div class="tab-pane text-content book-extra-info" id="book-extra-info">
 				{{ info|raw }}
 			</div>
 		{% endif %}
 
-		<section class="tab-pane text-content text-content-main" id="book-full-content">
-			<br>
-		</section>
+		{% if book.bibliomanId is not empty %}
+			<div class="tab-pane" id="book-biblioman" style="height: 3000px">
+				<iframe name="biblioman-frame" src="{{ biblioman_url(book.bibliomanId) }}?nonavigation" width="100%" height="100%" style="border:0"></iframe>
+			</div>
+		{% endif %}
 
 		<div class="tab-pane expanded-links" id="book-links">
 			Книгата във формат:
