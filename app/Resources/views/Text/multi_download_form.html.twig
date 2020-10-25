@@ -6,7 +6,7 @@
 		{% endif %}
 	{% endfor %}
 	{% if ',' in ids %}
-	<a href="{{ path('text_show', {'id': ids, '_format': format, filename: filename}) }}" title="Сваляне на всички във формат {{ format }}" class="dl dl-{{ format|replace({'.zip': ''}) }}"><span>{{ format }}</span></a>
+	<a href="{{ path('text_show', {'id': ids, '_format': format, filename: filename}) }}" title="Сваляне на всички във формат {{ format }}" class="btn btn-default btn-sm dl dl-{{ format|replace({'.zip': ''}) }}"><span class="sr-only">{{ format }}</span></a>
 	{% endif %}
 {% endmacro %}
 
@@ -14,11 +14,11 @@
 <dl class="download-multi">
 	<dt>Сваляне на всички:</dt>
 	<dd class="download">
-		<ul class="dl-list">
-			<li>{{ _self.download_link(texts, 'fb2.zip', filename) }}</li>
-			<li>{{ _self.download_link(texts, 'epub', filename) }}</li>
-			<li>{{ _self.download_link(texts, 'txt.zip', filename) }}</li>
-			<li>{{ _self.download_link(texts, 'sfb.zip', filename) }}</li>
-		</ul>
+		<div class="btn-group">
+			{{ _self.download_link(texts, 'fb2.zip', filename) }}
+			{{ _self.download_link(texts, 'epub', filename) }}
+			{{ _self.download_link(texts, 'txt.zip', filename) }}
+			{{ _self.download_link(texts, 'sfb.zip', filename) }}
+		</div>
 	</dd>
 </dl>

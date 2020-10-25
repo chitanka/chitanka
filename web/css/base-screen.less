@@ -488,10 +488,8 @@ dd.download {
 }
 dl.download-multi {
 	padding-top: .5em;
-	dd, dt {
-		padding-top: .5em;
-	}
 	dt {
+		padding-top: .8em;
 		width: 82%;
 		max-width: 82%;
 		text-align: right;
@@ -500,7 +498,7 @@ dl.download-multi {
 	}
 	dd.download {
 		border-top: 1px solid @fieldsetBordColor;
-		padding-left: 20px;
+		padding-top: .5em;
 	}
 }
 dd.orig-name {
@@ -829,6 +827,9 @@ ul.superlist {
 		width: 3em;
 		height: 2.5em;
 	}
+}
+.dl-sm form .btn {
+	padding: 2px 2px 3px 6px;
 }
 .dl-txt { background-image: data-uri('../images/formats/txt.png'); }
 .dl-fb2 { background-image: data-uri('../images/formats/fb2.png'); }
@@ -1785,12 +1786,12 @@ ul.two-columns {
 .delete-form button:hover .fa {
 	display: inline;
 }
+.btn-group .bookmark-form {
+	float: left;
+}
 .bookmark-form button:before {
 	content: "\F006\00A0"; // fa-star-o
 	font-family: FontAwesome;
-}
-.dl-list .bookmark-form button {
-	background-color: transparent;
 }
 .bookmark-form button.active:before,
 .bookmark-form button:focus:before,

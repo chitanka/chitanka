@@ -149,28 +149,28 @@
 
 {% macro download_link(text, format, size) %}
 	{% spaceless %}
-	<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug, '_format': format}) }}" title="Сваляне във формат {{ format }}{% if size %} ({{ size }} KiB){% endif %}" class="dl dl-{{ format|replace({'.zip': ''}) }} action"><span>{{ format }}</span>{% if size %}<span class="filesize"> {{ size }} KiB</span>{% endif %}</a>
+	<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug, '_format': format}) }}" title="Сваляне във формат {{ format }}{% if size %} ({{ size }} KiB){% endif %}" class="btn btn-default btn-sm dl dl-sm dl-{{ format|replace({'.zip': ''}) }} action"><span class="sr-only">{{ format }}</span>{% if size %}<span class="sr-only filesize"> {{ size }} KiB</span>{% endif %}</a>
 	{% endspaceless %}
 {% endmacro %}
 
 {% macro bookmark_form(text, class) %}
-<form class="bookmark-form action-form {{ class|default('image-form') }}" action="{{ path('text_bookmark', {'id': text.id}) }}" method="post" data-credentials="user">
-	<button type="submit" title="Добавяне в Избрани" class="action btn btn-default"><span>Избрани</span></button>
+<form class="bookmark-form action-form {{ class|default('') }}" action="{{ path('text_bookmark', {'id': text.id}) }}" method="post" data-credentials="user">
+	<button type="submit" title="Добавяне в Избрани" class="action btn btn-default"><span class="sr-only">Избрани</span></button>
 </form>
 {% endmacro %}
 
 {% macro download_links(text) %}
-	<ul class="dl-list">
+	<div class="btn-group dl-sm" role="group">
 		{% if text.removedNotice is empty %}
-			<li>{{ _self.bookmark_form(text) }}</li>
-			<li>{{ _self.download_link(text, 'fb2.zip') }}</li>
-			<li>{{ _self.download_link(text, 'epub') }}</li>
-			<li>{{ _self.download_link(text, 'txt.zip', text.zsize) }}</li>
-			<li>{{ _self.download_link(text, 'sfb.zip') }}</li>
+			{{ _self.bookmark_form(text) }}
+			{{ _self.download_link(text, 'fb2.zip') }}
+			{{ _self.download_link(text, 'epub') }}
+			{{ _self.download_link(text, 'txt.zip', text.zsize) }}
+			{{ _self.download_link(text, 'sfb.zip') }}
 		{% else %}
-			<li><b class="btn btn-xs btn-danger" title="{{ text.removedNotice }}"><i class="fa fa-ban"></i><span class="sr-only">Забранено</span></b></li>
+			<b class="btn btn-xs btn-danger" title="{{ text.removedNotice }}"><i class="fa fa-ban"></i><span class="sr-only">Забранено</span></b>
 		{% endif %}
-	</ul>
+	</div>
 {% endmacro %}
 
 
