@@ -252,6 +252,7 @@ class TextController extends Controller {
 		}
 		$vars = [
 			'text' => $text,
+			'juxtaposedTexts' => $text->getJuxtaposedTexts(),
 			'authors' => $text->getAuthors(),
 			'part' => $part,
 			'obj_count' => 3, /* after annotation and extra info */
@@ -274,9 +275,14 @@ class TextController extends Controller {
 			3 => 4,
 			4 => 3,
 		];
+		$textCombinations = $this->em()->getTextCombinationRepository()->getForTexts($texts);
+		$joinedTextCombinations = $textCombinations ? array_replace(...array_map(function(\App\Entity\TextCombination $tc) {
+			return $tc->toArray();
+		}, $textCombinations)) : [];
 		return [
 			'texts' => $texts,
 			'part' => $part,
+			'textCombinations' => $joinedTextCombinations ?: null,
 			'obj_count' => 3, /* after annotation and extra info */
 			'grid_cols' => $gridColsMap[count($texts)],
 			'_template' => 'Text/show_multi.html.twig',

@@ -22,6 +22,7 @@ class User implements UserInterface, \JsonSerializable {
 	const GROUP_USER = 'user';
 	const GROUP_TEXT_LABEL = 'text-label';
 	const GROUP_EDIT_WIKI = 'edit-wiki';
+	const GROUP_EDIT_JUXTAPOSED_TEXTS = 'edit-juxtaposed-texts';
 	const GROUP_WORKROOM_MEMBER = 'workroom-member';
 	const GROUP_WORKROOM_SUPERVISOR = 'workroom-supervisor';
 	const GROUP_WORKROOM_ADMIN = 'workroom-admin';

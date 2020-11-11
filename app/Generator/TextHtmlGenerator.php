@@ -29,6 +29,7 @@ class TextHtmlGenerator {
 		$header = $text->getHeaderByNr($part);
 		if ($header) {
 			$conv->setStartPosition($header->getFpos());
+			$conv->setNbOfSkippedLines($text->getNumberOfLinesUntilHeader($header->getNr()));
 			$conv->setMaxLineCount($header->getLinecnt());
 		} else {
 			$internalLinkTarget = '';

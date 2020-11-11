@@ -309,6 +309,18 @@ class Text extends BaseWork implements  \JsonSerializable {
 	private $revisions;
 
 	/**
+	 * @var ArrayCollection|TextCombination[]
+	 * @ORM\OneToMany(targetEntity="TextCombination", mappedBy="text1", cascade={"persist", "remove"}, orphanRemoval=true)
+	 */
+	private $textCombinations1;
+
+	/**
+	 * @var ArrayCollection|TextCombination[]
+	 * @ORM\OneToMany(targetEntity="TextCombination", mappedBy="text2", cascade={"persist", "remove"}, orphanRemoval=true)
+	 */
+	private $textCombinations2;
+
+	/**
 	 * @var ArrayCollection|TextLink[]
 	 * @ORM\OneToMany(targetEntity="TextLink", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
@@ -320,6 +332,9 @@ class Text extends BaseWork implements  \JsonSerializable {
 	 * @ORM\Column(type="array", nullable=true)
 	 */
 	private $alikes;
+
+	/** @var array Cache storage */
+	private $c = [];
 
 	public function __construct($id = null) {
 		$this->id = $id;
@@ -512,6 +527,14 @@ class Text extends BaseWork implements  \JsonSerializable {
 	public function getRevisions() { return $this->revisions; }
 	public function addRevision(TextRevision $revision) {
 		$this->revisions[] = $revision;
+	}
+
+	/** @return JuxtaposedText[] */
+	public function getJuxtaposedTexts() {
+		return $this->c[__FUNCTION__] ?? $this->c[__FUNCTION__] = array_merge(
+			array_map(function(TextCombination $tc) { return new JuxtaposedText($this, $tc->getText2()); }, $this->textCombinations1->toArray()),
+			array_map(function(TextCombination $tc) { return new JuxtaposedText($this, $tc->getText1()); }, $this->textCombinations2->toArray())
+		);
 	}
 
 	/**
@@ -1104,6 +1127,17 @@ EOS;
 	public function getNextHeaderNr(int $currentNr) {
 		$nextHeader = $this->getNextHeaderByNr($currentNr);
 		return $nextHeader ? $nextHeader->getNr() : null;
+	}
+
+	public function getNumberOfLinesUntilHeader(int $headerNr): int {
+		$nbOfLines = 0;
+		foreach ($this->getHeaders() as $header) {
+			if ($header->getNr() >= $headerNr) {
+				break;
+			}
+			$nbOfLines += $header->getLinecnt();
+		}
+		return $nbOfLines;
 	}
 
 	public function getTotalRating() {

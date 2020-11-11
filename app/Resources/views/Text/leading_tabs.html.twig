@@ -9,6 +9,9 @@
 	{% if wikiPage is defined %}
 		<li><a href="#article{{ id_suffix }}" data-toggle="tab"><span class="fa fa-file-text-o"></span> Статия</a></li>
 	{% endif %}
+	{% if juxtaposedTexts is defined and juxtaposedTexts is not empty %}
+		<li><a href="#text-juxtaposed{{ id_suffix }}" data-toggle="tab"><span class="fa fa-exchange"></span> Съпоставени текстове</a></li>
+	{% endif %}
 </ul>
 
 <div class="tab-content clearfix">
@@ -28,6 +31,12 @@
 		<div class="tab-pane wikiinfo article" id="article{{ id_suffix }}">
 			<p class="intro">{{ wikiPage.intro|raw }}</p>
 			<div class="wikiinfo">{{ wikiPage.content|raw }}</div>
+		</div>
+	{% endif %}
+	{% if juxtaposedTexts is defined and juxtaposedTexts is not empty %}
+		<div class="tab-pane text-juxtaposed" id="text-juxtaposed{{ id_suffix }}">
+			{% import 'text.html.twig' as texttools %}
+			{{ texttools.text_list_with_author(juxtaposedTexts) }}
 		</div>
 	{% endif %}
 </div>

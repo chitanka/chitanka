@@ -62,6 +62,7 @@ class EntityManager {
 	public function getSiteNoticeRepository() { return $this->getRepository('SiteNotice'); }
 	/** @return TextRepository */
 	public function getTextRepository() { return $this->getRepository('Text'); }
+	public function getTextCombinationRepository(): TextCombinationRepository { return $this->getRepository('TextCombination'); }
 	/** @return TextCommentRepository */
 	public function getTextCommentRepository() { return $this->getRepository('TextComment'); }
 	/** @return TextLabelLogRepository */

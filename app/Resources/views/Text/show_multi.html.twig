@@ -27,7 +27,8 @@
 			</div>
 		{% endfor %}
 	</div>
-	<div class="row" id="textstart">
+	<button class="btn btn-default handle-edit-juxtaposed-texts" title="Промяна на съпоставените абзаци" style="position: absolute; top: 0; right: 0" data-credentials="{{ constant('App\\Entity\\User::GROUP_EDIT_JUXTAPOSED_TEXTS') }}"><span class="fa fa-sliders"></span></button>
+	<div class="row juxtaposed-texts" id="textstart">
 		{% for text in texts %}
 			<div class="col-xs-{{ grid_cols }}">
 				{% if text.removedNotice is not empty %}
@@ -43,55 +44,117 @@
 
 {% block inline_js %}
 <script>
-const $mainImages = $('.text-content-main img');
-if ($mainImages.length) {
-	$('<button class="btn btn-default"><i class="fa fa-image"></i> Скриване на изображенията</button>').on('click', function() {
-		$mainImages.toggle();
-	}).insertBefore('#textstart');
-}
+void function() {
+
+const skippedParagraphs = {{ textCombinations|json_encode|raw }} || {};
+const texts = $(".text-content-main");
+const allParagraphBlocks = texts.map(function() {
+	return $(this).find('p');
+});
 
 function alignParagraphs() {
-	const texts = $(".text-content-main");
+	texts.addClass('aligned-paragraphs');
 	texts.find('.dummy-spacer').remove();
-	const paragraphBlocks = texts.map(function() {
-		return $(this).find('p');
-	});
+	const paragraphBlocks = removeSkippedParagraphs(allParagraphBlocks);
 	const maxNbOfPs = Math.max(...paragraphBlocks.map(function() {
 		return $(this).length;
 	}).get());
 	for (let i = 0; i < maxNbOfPs; i++) {
-		const correspondingParagraps = paragraphBlocks.map(function() {
+		const correspondingParagraphs = paragraphBlocks.map(function() {
 			const $par = $(this).eq(i);
 			return $par.length > 0 ? { par: $par, top: $par.offset().top } : undefined;
 		}).get().filter(function(e) {
 			return e !== undefined;
 		});
-		if (correspondingParagraps.length < 2) {
+		if (correspondingParagraphs.length < 2) {
 			continue;
 		}
-		correspondingParagraps.sort(function(p1, p2) {
+		correspondingParagraphs.sort(function(p1, p2) {
 			return p1.top < p2.top ? 1 : -1; // reverse sort
 		});
-		for (let oi = 1; oi < correspondingParagraps.length; oi++) {
-			const topDiff = correspondingParagraps[0].top - correspondingParagraps[oi].top;
+		for (let oi = 1; oi < correspondingParagraphs.length; oi++) {
+			const topDiff = correspondingParagraphs[0].top - correspondingParagraphs[oi].top;
 			if (topDiff > 0) {
-				correspondingParagraps[oi].par.before('<div class="dummy-spacer" style="height:'+topDiff+'px"></div>');
+				correspondingParagraphs[oi].par.before('<div class="dummy-spacer" style="height:'+topDiff+'px"></div>');
 			}
 		}
 	}
 }
-function unalignParagraphs() {
-	$(".text-content-main").find('.dummy-spacer').remove();
+function removeSkippedParagraphs(paragraphBlocks) {
+	const filteredParagraphBlocks = $(paragraphBlocks.get());
+	return filteredParagraphBlocks.each(function(bIndex) {
+		const textId = texts.get(bIndex).getAttribute('data-id');
+		if (!skippedParagraphs[textId]) {
+			return true;
+		}
+		filteredParagraphBlocks[bIndex] = $(this).filter(function() {
+			const paragraphId = this.getAttribute('data-id');
+			const isSkipped = skippedParagraphs[textId].indexOf(paragraphId) !== -1;
+			if (isSkipped) {
+				$(this).addClass('skipped');
+			} else {
+				$(this).removeClass('skipped');
+			}
+			return !isSkipped;
+		});
+	});
 }
-$('<button class="btn btn-default"><i class="fa fa-balance-scale"></i> Подравняване на абзаците</button>').on('click', function() {
-	if ($(this).data('activated')) {
-		unalignParagraphs();
-		$(window).off('resize', alignParagraphs);
-	} else {
-		alignParagraphs();
-		$(window).on('resize', alignParagraphs);
-	}
-	$(this).data('activated', !$(this).data('activated')).toggleClass('active').blur();
-}).insertBefore('#textstart');
+function putChainLinks(paragraphBlocks) {
+	paragraphBlocks.each(function(bIndex) {
+		const textId = texts.get(bIndex).getAttribute('data-id');
+		if (!skippedParagraphs[textId]) {
+			skippedParagraphs[textId] = [];
+		}
+		this.each(function() {
+			const paragraphId = this.getAttribute('data-id');
+			$('<a class="chain-link fa fa-link"></a>').on('click', function() {
+				const eventualIndexOfSkippedParagraph = skippedParagraphs[textId].indexOf(paragraphId);
+				if (eventualIndexOfSkippedParagraph !== -1) {
+					skippedParagraphs[textId].splice(eventualIndexOfSkippedParagraph, 1);
+				} else {
+					skippedParagraphs[textId].push(paragraphId);
+				}
+				alignParagraphs();
+			}).prependTo(this);
+		});
+	});
+}
+function unAlignParagraphs() {
+	texts.removeClass('aligned-paragraphs').find('.dummy-spacer').remove();
+}
+
+function enableJuxtaposedEditing() {
+	texts.addClass('editing-enabled');
+	putChainLinks(allParagraphBlocks);
+	$('<button class="btn btn-primary" style="box-shadow: 0 0 20px #808080"><i class="fa fa-save"></i> Запис на съпоставените абзаци</button>').on('click', function() {
+		const url = {{ path('app_textcombination_save')|json_encode|raw }};
+		const $button = $(this).addClass('disabled');
+		$.post(url, JSON.stringify(skippedParagraphs)).done(function(){
+			const $successMarker = $('<i class="fa fa-check" style="margin-left: 0.67em; font-size: 125%"></i>').insertAfter($button);
+			setTimeout(function (){
+				$successMarker.remove();
+			}, 1500);
+		}).fail(function() {
+			$button.after('Стана някакъв проблем при записването.');
+		}).always(function() {
+			$button.removeClass('disabled').blur();
+		});
+	}).insertBefore('#textstart').wrap('<div class="text-center actions navbar-fixed-top"></div>');
+}
+
+function prepareJuxtaposedEditing() {
+	$('.handle-edit-juxtaposed-texts').on('click', function(){
+		if (user.canTakeAction(this)) {
+			enableJuxtaposedEditing();
+			$(this).remove();
+		} else {
+			window.alert('Нямате необходимите права за това действие.');
+		}
+	}).prependTo('.juxtaposed-texts');
+}
+
+	alignParagraphs();
+	prepareJuxtaposedEditing();
+}()
 </script>
 {% endblock %}

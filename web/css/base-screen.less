@@ -1914,6 +1914,24 @@ td .progress {
 .fa-info-circle {
 	color: @buttonLinksFgColor;
 }
+
+// for juxtaposed texts aka multi-texts
+.aligned-paragraphs p {
+	border-top: 1px dashed #E0E0E0;
+	margin-top: 0.3rem;
+	padding-top: 0.3rem;
+}
+.editing-enabled .skipped {
+	background: lightgoldenrodyellow;
+}
+.skipped .chain-link:before {
+	content: '\f127';// chain-broken
+}
+.chain-link {
+	position: absolute;
+	left: -1em;
+}
+
 // for visual aid during development
 #env-dev {
 	position: absolute;
