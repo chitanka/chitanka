@@ -46,11 +46,7 @@ class TextCombination extends Entity implements \JsonSerializable {
 
 	public function setData(array $data) {
 		$this->skippedParagraphs1 = $this->sortNumbers($data[$this->text1->getId()] ?? []);
-		$this->setSkippedParagraphs2($this->sortNumbers($data[$this->text2->getId()] ?? []));
-	}
-
-	protected function setSkippedParagraphs2($s) {
-		$this->skippedParagraphs2 = $s;
+		$this->skippedParagraphs2 = $this->sortNumbers($data[$this->text2->getId()] ?? []);
 	}
 
 	public function getText1() { return $this->text1; }
