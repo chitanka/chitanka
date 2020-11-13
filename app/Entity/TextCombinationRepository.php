@@ -7,6 +7,8 @@ use App\Math\Combiner;
  */
 class TextCombinationRepository extends EntityRepository {
 
+	const DEFAULT_CACHE_LIFETIME = 10;
+
 	/** @param Text[] $texts */
 	public function getForTexts($texts): array {
 		$ids = array_map(function(Text $t) { return $t->getId(); }, $texts);
