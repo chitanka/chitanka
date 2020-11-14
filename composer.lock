@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe0de90bffa2d8c474c033ddf042555f",
+    "content-hash": "9f10f83c40e8c2f1d46bc109a9839486",
     "packages": [
         {
             "name": "chitanka/rocket-chat-client",
@@ -39,20 +39,20 @@
         },
         {
             "name": "chitanka/sfb-converter",
-            "version": "1.0.3",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chitanka/sfb-converter.git",
-                "reference": "e3122633930225ff0949369bc4347291324eb264"
+                "reference": "aa795d8fb0650e8cb896f0becce2a4a7498ad844"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chitanka/sfb-converter/zipball/e3122633930225ff0949369bc4347291324eb264",
-                "reference": "e3122633930225ff0949369bc4347291324eb264",
+                "url": "https://api.github.com/repos/chitanka/sfb-converter/zipball/aa795d8fb0650e8cb896f0becce2a4a7498ad844",
+                "reference": "aa795d8fb0650e8cb896f0becce2a4a7498ad844",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
+                "php": ">=7.0.0"
             },
             "type": "library",
             "autoload": {
@@ -75,7 +75,7 @@
             "keywords": [
                 "sfb"
             ],
-            "time": "2020-09-11T16:12:27+00:00"
+            "time": "2020-11-13T21:07:18+00:00"
         },
         {
             "name": "cocur/slugify",
@@ -3805,6 +3805,7 @@
                 "i18n",
                 "text"
             ],
+            "abandoned": true,
             "time": "2015-08-22T16:38:35+00:00"
         },
         {
@@ -4531,6 +4532,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
+            "abandoned": "symfony/maker-bundle",
             "time": "2016-02-26T04:36:01+00:00"
         },
         {
@@ -4610,5 +4612,6 @@
         "ext-xsl": "*",
         "ext-zip": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

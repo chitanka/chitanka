@@ -30,7 +30,7 @@
 		"sonata-project/intl-bundle": "~2.2@dev",
 		"friendsofsymfony/comment-bundle": "dev-master",
 		"white-october/pagerfanta-bundle": "^1.0",
-		"chitanka/sfb-converter": "^1.0",
+		"chitanka/sfb-converter": "^2.0",
 		"twbs/bootstrap": "3.3.*",
 		"oyejorge/less.php": "1.7.*@dev",
 		"fortawesome/font-awesome": "v4.5.0",
