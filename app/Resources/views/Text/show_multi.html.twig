@@ -140,6 +140,16 @@ function enableJuxtaposedEditing() {
 			$button.removeClass('disabled').blur();
 		});
 	}).insertBefore('#textstart').wrap('<div class="text-center actions navbar-fixed-top"></div>');
+	enableJuxtaposedEditingForNextLinks();
+}
+
+function enableJuxtaposedEditingForNextLinks() {
+	$('a[rel="next"]').each(function() {
+		const hashChar = '#';
+		const urlParts = this.href.split(hashChar);
+		urlParts[0] += '?editing=on';
+		this.href = urlParts.join(hashChar);
+	});
 }
 
 function prepareJuxtaposedEditing() {
@@ -153,8 +163,13 @@ function prepareJuxtaposedEditing() {
 	}).prependTo('.juxtaposed-texts');
 }
 
+	const isEditingAutoEnabled = new URLSearchParams(location.search).get('editing') === 'on';
 	alignParagraphs();
-	prepareJuxtaposedEditing();
+	if (isEditingAutoEnabled) {
+		enableJuxtaposedEditing();
+	} else {
+		prepareJuxtaposedEditing();
+	}
 }()
 </script>
 {% endblock %}
