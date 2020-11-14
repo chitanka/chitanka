@@ -49,7 +49,7 @@ void function() {
 const skippedParagraphs = {{ textCombinations|json_encode|raw }} || {};
 const texts = $(".text-content-main");
 const allParagraphBlocks = texts.map(function() {
-	return $(this).find('p');
+	return $(this).find('p:not(.empty-line,.separator)');
 });
 
 function alignParagraphs() {
