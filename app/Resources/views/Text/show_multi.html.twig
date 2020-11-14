@@ -163,12 +163,29 @@ function prepareJuxtaposedEditing() {
 	}).prependTo('.juxtaposed-texts');
 }
 
+function executeWhenImagesAreLoaded($images, func) {
+	Promise.all($images.map(function() {
+		return new Promise((resolve, reject) => {
+			const image = new Image();
+			image.src = this.src;
+			image.onload = resolve;
+			image.onerror = resolve;
+		});
+	}).get()).then(func);
+}
+
 	const isEditingAutoEnabled = new URLSearchParams(location.search).get('editing') === 'on';
-	alignParagraphs();
 	if (isEditingAutoEnabled) {
 		enableJuxtaposedEditing();
 	} else {
 		prepareJuxtaposedEditing();
+	}
+
+	const images = texts.find('img');
+	if (images.length === 0) {
+		alignParagraphs();
+	} else { // make sure that all images are loaded because they will mess up the alignment if they get loaded afterwards
+		executeWhenImagesAreLoaded(images, alignParagraphs);
 	}
 }()
 </script>
