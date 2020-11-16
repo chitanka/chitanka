@@ -12,7 +12,7 @@ class Request {
 
 	public function __construct() {
 		/** Life time for cookies */
-		$this->cookieExp = time() + 86400 * 300; // 300 days
+		$this->cookieExp = time() + 86400 * 666; // 666 days
 	}
 
 	/**
