@@ -183,7 +183,7 @@ class User implements UserInterface, \JsonSerializable {
 
 	public function setEmail($email) {
 		if ($email != $this->email) {
-			$this->setIsEmailValid(null);
+			$this->setIsEmailValid(true);
 		}
 		$this->email = $email;
 	}
