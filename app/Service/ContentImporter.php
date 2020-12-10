@@ -94,7 +94,7 @@ class ContentImporter {
 	}
 
 	private function processWorkFiles($dataFile) {
-		$work = self::extractVarsFromFile($dataFile) + ['lang' => 'bg'];
+		$work = self::extractVarsFromFile($dataFile) + ['lang' => ''];
 		$packetId = $work['id'];
 		$work['is_new'] = $packetId < 0;
 		if ($work['is_new']) {
@@ -186,7 +186,7 @@ class ContentImporter {
 	}
 
 	private function processBookFiles($dataFile) {
-		$book = self::extractVarsFromFile($dataFile) + ['lang' => 'bg'];
+		$book = self::extractVarsFromFile($dataFile) + ['lang' => ''];
 		$packetId = $book['id'];
 		$book['is_new'] = $packetId < 0;
 		if ($book['is_new']) {
