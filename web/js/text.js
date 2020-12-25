@@ -284,3 +284,17 @@ if ( ! location.hash ) {
 // });
 
 prepareGamebook();
+
+jQuery(function($){
+	$(document.body).on('click', 'a.audio', function(){
+		const key = 'audio';
+		const audio = $(this).data(key) ||
+			$(this).data(key, $('<audio controls autoplay src="'+this.href+'" class="autoplayer"></audio>').insertAfter(this)[0]).data(key);
+		if (audio.paused) {
+			audio.play();
+		} else {
+			audio.pause();
+		}
+		return false;
+	});
+});

@@ -42,6 +42,12 @@ class TextLink extends Entity implements \JsonSerializable {
 	 */
 	private $description;
 
+	/**
+	 * @var string
+	 * @ORM\Column(type="string", length=30)
+	 */
+	private $type;
+
 	public function getId() { return $this->id; }
 
 	public function setText($text) { $this->text = $text; }
@@ -57,6 +63,9 @@ class TextLink extends Entity implements \JsonSerializable {
 
 	public function setDescription($description) { $this->description = $description; }
 	public function getDescription() { return $this->description; }
+
+	public function setType($type) { $this->type = $type; }
+	public function getType() { return $this->type; }
 
 	public function getUrl() {
 		return str_replace('BOOKID', $this->code, $this->site->getUrl());
@@ -76,6 +85,7 @@ class TextLink extends Entity implements \JsonSerializable {
 			'id' => $this->getId(),
 			'code' => $this->getCode(),
 			'description' => $this->getDescription(),
+			'type' => $this->type,
 		];
 	}
 }
