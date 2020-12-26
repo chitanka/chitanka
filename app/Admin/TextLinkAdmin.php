@@ -15,6 +15,7 @@ class TextLinkAdmin extends Admin {
 			->add('site')
 			->add('code')
 			->add('description')
+			->add('type')
 		;
 	}
 
@@ -23,6 +24,7 @@ class TextLinkAdmin extends Admin {
 			->add('text')
 			->add('site')
 			->addIdentifier('code')
+			->add('type')
 			->add('_action', 'actions', [
 				'actions' => [
 					'show' => [],
@@ -39,14 +41,18 @@ class TextLinkAdmin extends Admin {
 			->add('site')
 			->add('code')
 			->add('description')
+			->add('type', 'choice', [
+				'required' => false,
+				'choices' => array_combine($types = ['audio', 'youtube'], $types),
+			])
 			->end();
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagrid) {
 		$datagrid
-			->add('text')
 			->add('site')
 			->add('code')
+			->add('type')
 		;
 	}
 

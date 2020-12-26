@@ -31,7 +31,7 @@ class BookSite extends Entity implements \JsonSerializable {
 	private $url;
 
 	public function __toString() {
-		return $this->name;
+		return $this->name ?: $this->url;
 	}
 
 	public function getId() { return $this->id; }

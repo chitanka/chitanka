@@ -107,15 +107,6 @@ class TextAdmin extends Admin {
 			->add('sernr', null, ['required' => false])
 			->add('note')
 			->add('article')
-			->add('links', 'sonata_type_collection', [
-				'by_reference' => false,
-				'required' => false,
-				'label' => 'Site Links',
-			], [
-				'edit' => 'inline',
-				'inline' => 'table',
-				'sortable' => 'site_id'
-			])
 			->end()->end();
 		$formMapper->setHelps([
 			'article' => $this->trans('help.wiki_article')
@@ -149,6 +140,17 @@ class TextAdmin extends Admin {
 				'edit' => 'inline',
 				//'inline' => 'table',
 				'sortable' => 'date',
+			])
+			->end()->end();
+		$formMapper->tab('Links')->with('')
+			->add('links', 'sonata_type_collection', [
+				'by_reference' => false,
+				'required' => false,
+				'label' => 'Site Links',
+			], [
+				'edit' => 'inline',
+				'inline' => 'table',
+				'sortable' => 'site_id'
 			])
 			->end()->end();
 		$formMapper->setHelps([
