@@ -4,7 +4,8 @@
 <ul class="nav nav-tabs">
 	<li class="active"><a href="#text-info{{ id_suffix }}" data-toggle="tab"><span class="fa fa-folder-o"></span> Данни</a></li>
 	<li><a href="#text-extra-info{{ id_suffix }}" data-toggle="tab"><span class="fa fa-tag"></span> Информация</a></li>
-	<li><a href="#text-links{{ id_suffix }}" data-toggle="tab"><span class="fa fa-download"></span> Сваляне / Връзки</a></li>
+	<li><a href="#text-links{{ id_suffix }}" data-toggle="tab"><span class="fa fa-download"></span> Сваляне / Връзки {% if text.links|length %}
+({{ text.links|length }}){% endif %}</a></li>
 	<li><a href="{{ path('text_comments', {'id': text.id}) }}" data-target="#text-comments{{ id_suffix }}" data-toggle="tab" itemprop="discussionUrl"><span class="fa fa-comments-o"></span> Коментари ({{ text.commentcount }})</a></li>
 	{% if wikiPage is defined %}
 		<li><a href="#article{{ id_suffix }}" data-toggle="tab"><span class="fa fa-file-text-o"></span> Статия</a></li>

@@ -1937,13 +1937,39 @@ td .progress {
 	left: -1em;
 }
 
-a.audio::before {
-	content: '🔊\00a0';
-}
-.autoplayer {
-	display: block;
-	width: 90%;
+.media-container {
 	margin: 0.3em auto 0.6em;
+	max-width: 80em;
+	audio {
+		width: 100%;
+	}
+}
+// a helper container to generate an aspect ratio of 16:9
+// see https://www.h3xed.com/web-development/how-to-make-a-responsive-100-width-youtube-iframe-embed
+.video-container {
+	position: relative;
+	width: 100%;
+	height: 0;
+	padding-bottom: 56.25%;
+	iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+}
+a.external::before {
+	font-family: FontAwesome;
+}
+a.audio::before {
+	content: '\f028\00a0';// volume-up
+}
+a.youtube::before {
+	content: '\f16a\00a0';// youtube-play
+}
+a.media-active::before {
+	color: red;
 }
 
 // for visual aid during development

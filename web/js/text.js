@@ -286,15 +286,25 @@ if ( ! location.hash ) {
 prepareGamebook();
 
 jQuery(function($){
-	$(document.body).on('click', 'a.audio', function(){
-		const key = 'audio';
-		const audio = $(this).data(key) ||
-			$(this).data(key, $('<audio controls autoplay src="'+this.href+'" class="autoplayer"></audio>').insertAfter(this)[0]).data(key);
-		if (audio.paused) {
-			audio.play();
-		} else {
-			audio.pause();
+	const createMediaFragment = function(link) {
+		switch (link.getAttribute('data-media')) {
+			case 'audio':
+			default:
+				return '<audio controls autoplay src="'+link.href+'" class="media-player"></audio>';
+			case 'youtube':
+				// https://www.youtube-nocookie.com/embed/PVOS2k8Qa-A
+				return '<div class="video-container"><iframe width="560" height="315" src="'+link.href+'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="media-player"></iframe></div>';
 		}
+	};
+	$('a.external').on('click', function(){
+		const key = 'fragment';
+		const media = $(this).data(key);
+		if (media) {
+			$(media).toggle();
+			return false;
+		}
+		const $media = $('<div class="media-container"></div>').append(createMediaFragment(this)).insertAfter(this);
+		$(this).data(key, $media[0]).addClass('media-active');
 		return false;
 	});
 });
