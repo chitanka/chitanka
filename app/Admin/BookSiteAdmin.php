@@ -1,5 +1,6 @@
 <?php namespace App\Admin;
 
+use App\Entity\BookSite;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -13,6 +14,7 @@ class BookSiteAdmin extends Admin {
 		$showMapper
 			->add('name')
 			->add('url')
+			->add('mediaType')
 		;
 	}
 
@@ -34,6 +36,10 @@ class BookSiteAdmin extends Admin {
 		$formMapper->with('General attributes')
 			->add('name')
 			->add('url')
+			->add('mediaType', 'choice', [
+				'required' => false,
+				'choices' => array_combine(BookSite::MEDIA_TYPES, BookSite::MEDIA_TYPES),
+			])
 			->end()
 			->setHelps([
 				'url' => $this->trans('help.booksite.url')
@@ -45,6 +51,7 @@ class BookSiteAdmin extends Admin {
 		$datagrid
 			->add('name')
 			->add('url')
+			->add('mediaType')
 		;
 	}
 

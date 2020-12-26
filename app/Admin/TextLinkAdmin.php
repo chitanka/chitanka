@@ -1,5 +1,6 @@
 <?php namespace App\Admin;
 
+use App\Entity\BookSite;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -15,7 +16,7 @@ class TextLinkAdmin extends Admin {
 			->add('site')
 			->add('code')
 			->add('description')
-			->add('type')
+			->add('mediaType')
 		;
 	}
 
@@ -24,7 +25,7 @@ class TextLinkAdmin extends Admin {
 			->add('text')
 			->add('site')
 			->addIdentifier('code')
-			->add('type')
+			->add('mediaType')
 			->add('_action', 'actions', [
 				'actions' => [
 					'show' => [],
@@ -41,9 +42,9 @@ class TextLinkAdmin extends Admin {
 			->add('site')
 			->add('code')
 			->add('description')
-			->add('type', 'choice', [
+			->add('mediaType', 'choice', [
 				'required' => false,
-				'choices' => array_combine($types = ['audio', 'youtube'], $types),
+				'choices' => array_combine(BookSite::MEDIA_TYPES, BookSite::MEDIA_TYPES),
 			])
 			->end();
 	}
@@ -52,7 +53,7 @@ class TextLinkAdmin extends Admin {
 		$datagrid
 			->add('site')
 			->add('code')
-			->add('type')
+			->add('mediaType')
 		;
 	}
 

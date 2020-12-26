@@ -10,6 +10,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(fields="name")
  */
 class BookSite extends Entity implements \JsonSerializable {
+
+	const MEDIA_TYPES = ['html', 'audio', 'youtube'];
+
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -30,6 +33,12 @@ class BookSite extends Entity implements \JsonSerializable {
 	 */
 	private $url;
 
+	/**
+	 * @var string
+	 * @ORM\Column(type="string", length=30)
+	 */
+	private $mediaType;
+
 	public function __toString() {
 		return $this->name ?: $this->url;
 	}
@@ -42,6 +51,9 @@ class BookSite extends Entity implements \JsonSerializable {
 	public function setUrl($url) { $this->url = $url; }
 	public function getUrl() { return $this->url; }
 
+	public function setMediaType($mediaType) { $this->mediaType = $mediaType; }
+	public function getMediaType() { return $this->mediaType; }
+
 	/**
 	 * Specify data which should be serialized to JSON
 	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -52,6 +64,7 @@ class BookSite extends Entity implements \JsonSerializable {
 			'id' => $this->getId(),
 			'name' => $this->getName(),
 			'url' => $this->getUrl(),
+			'mediaType' => $this->mediaType,
 		];
 	}
 }

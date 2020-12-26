@@ -10,7 +10,7 @@
 		<p>В други сайтове:</p>
 		<ul>
 			{% for link in text.links %}
-				<li><a href="{{ link.url }}" class="btn btn-default external {{ link.type }}" data-media="{{ link.type }}">{{ link.sitename }}{% if link.description is not empty %} ({{ link.description }}){% endif %}</a></li>
+				<li><a href="{{ link.url }}" class="btn btn-default external {{ link.mediaType }}" data-media="{{ link.mediaType }}">{{ link.sitename }}{% if link.description is not empty %} ({{ link.description }}){% endif %}</a></li>
 			{% endfor %}
 		</ul>
 	</div>

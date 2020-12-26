@@ -5,6 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="text_link")
  */
 class TextLink extends Entity implements \JsonSerializable {
@@ -44,7 +45,7 @@ class TextLink extends Entity implements \JsonSerializable {
 	 * @var string
 	 * @ORM\Column(type="string", length=30)
 	 */
-	private $type;
+	private $mediaType;
 
 	public function getId() { return $this->id; }
 
@@ -62,8 +63,8 @@ class TextLink extends Entity implements \JsonSerializable {
 	public function setDescription($description) { $this->description = $description; }
 	public function getDescription() { return $this->description; }
 
-	public function setType($type) { $this->type = $type; }
-	public function getType() { return $this->type; }
+	public function setMediaType($type) { $this->mediaType = $type; }
+	public function getMediaType() { return $this->mediaType; }
 
 	public function getUrl() {
 		return str_replace('BOOKID', $this->code, $this->site->getUrl());
@@ -71,6 +72,13 @@ class TextLink extends Entity implements \JsonSerializable {
 
 	public function __toString() {
 		return $this->getSite() .' ('.$this->code.')';
+	}
+
+	/** @ORM\PrePersist */
+	public function preInsert() {
+		if (empty($this->mediaType)) {
+			$this->setMediaType($this->site->getMediaType());
+		}
 	}
 
 	/**
@@ -83,7 +91,7 @@ class TextLink extends Entity implements \JsonSerializable {
 			'id' => $this->getId(),
 			'code' => $this->getCode(),
 			'description' => $this->getDescription(),
-			'type' => $this->type,
+			'mediaType' => $this->mediaType,
 		];
 	}
 }
