@@ -6,10 +6,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
- * @ORM\Table(name="book_site")
+ * @ORM\Table(name="external_site")
  * @UniqueEntity(fields="name")
  */
-class BookSite extends Entity implements \JsonSerializable {
+class ExternalSite extends Entity implements \JsonSerializable {
 
 	const MEDIA_TYPES = ['html', 'audio', 'youtube'];
 

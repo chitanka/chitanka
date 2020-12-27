@@ -25,8 +25,8 @@ class BookLink extends Entity implements \JsonSerializable {
 	private $book;
 
 	/**
-	 * @var BookSite
-	 * @ORM\ManyToOne(targetEntity="BookSite")
+	 * @var ExternalSite
+	 * @ORM\ManyToOne(targetEntity="ExternalSite")
 	 */
 	private $site;
 

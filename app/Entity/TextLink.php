@@ -24,8 +24,8 @@ class TextLink extends Entity implements \JsonSerializable {
 	private $text;
 
 	/**
-	 * @var BookSite
-	 * @ORM\ManyToOne(targetEntity="BookSite")
+	 * @var ExternalSite
+	 * @ORM\ManyToOne(targetEntity="ExternalSite")
 	 */
 	private $site;
 
