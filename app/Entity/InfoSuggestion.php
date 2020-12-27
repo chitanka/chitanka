@@ -11,6 +11,7 @@ class InfoSuggestion extends MailSource {
 		'orig_year' => 'Информация за година на написване или първа публикация',
 		'translator' => 'Информация за преводач',
 		'trans_year' => 'Информация за година на превод',
+		'link' => 'Предложение за външна връзка',
 		// TODO enable annotation suggestions for books
 		//'annotation' => 'Предложение за анотация',
 	];

@@ -4,14 +4,12 @@
 		{{ texttools.download_links(text) }}
 	</div>
 {% endif %}
-{% if text.links|length %}
-	<div class="menu">
-		<hr>
+	<div class="menu external-links">
 		<p>В други сайтове:</p>
 		<ul>
 			{% for link in text.links %}
 				<li><a href="{{ link.url }}" class="btn btn-default external {{ link.mediaType }}" data-media="{{ link.mediaType }}">{{ link.sitename }}{% if link.description is not empty %} ({{ link.description }}){% endif %}</a></li>
 			{% endfor %}
+			<li><a href="{{ path('suggest_info', {'id': text.id, 'type': 'link'}) }}" class="btn btn-default" title="Предложение за нова връзка"><i class="fa fa-plus"></i></a></li>
 		</ul>
 	</div>
-{% endif %}
