@@ -54,6 +54,10 @@ class ExternalSite extends Entity implements \JsonSerializable {
 	public function setMediaType($mediaType) { $this->mediaType = $mediaType; }
 	public function getMediaType() { return $this->mediaType; }
 
+	public function generateFullUrl(string $mediaId): string {
+		return str_replace('MEDIAID', $mediaId, $this->getUrl());
+	}
+
 	/**
 	 * Specify data which should be serialized to JSON
 	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php

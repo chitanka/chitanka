@@ -50,7 +50,7 @@ class BookLink extends Entity implements \JsonSerializable {
 	public function getCode() { return $this->code; }
 
 	public function getUrl() {
-		return str_replace('BOOKID', $this->code, $this->site->getUrl());
+		return $this->site->generateFullUrl($this->code);
 	}
 
 	public function __toString() {
