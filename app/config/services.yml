@@ -171,7 +171,7 @@ services:
     admin.text_type:
         class: App\Admin\TextTypeAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: library_main, label: admin.text_type }
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.text_type }
         arguments: [null, App\Entity\TextType, App:Admin\CRUD]
         calls:
             - [setMaxPerPage, [%admin_max_per_page%]]
