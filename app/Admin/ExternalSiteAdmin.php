@@ -10,6 +10,10 @@ class ExternalSiteAdmin extends Admin {
 	protected $baseRoutePattern = 'external-site';
 	protected $baseRouteName = 'admin_external_site';
 
+	protected $datagridValues = [
+		'_sort_by' => 'name',
+	];
+
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper
 			->add('name')

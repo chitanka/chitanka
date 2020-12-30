@@ -150,7 +150,6 @@ class TextAdmin extends Admin {
 			], [
 				'edit' => 'inline',
 				'inline' => 'table',
-				'sortable' => 'site_id'
 			])
 			->end()->end();
 		$formMapper->setHelps([
