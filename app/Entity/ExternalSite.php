@@ -23,7 +23,7 @@ class ExternalSite extends Entity implements \JsonSerializable {
 
 	/**
 	 * @var string
-	 * @ORM\Column(type="string", length=50, unique=true)
+	 * @ORM\Column(type="string", length=60)
 	 */
 	private $name = '';
 
