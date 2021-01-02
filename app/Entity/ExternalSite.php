@@ -11,7 +11,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class ExternalSite extends Entity implements \JsonSerializable {
 
-	const MEDIA_TYPES = ['html', 'audio', 'youtube'];
+	const MEDIA_TYPE_HTML = 'html';
+	const MEDIA_TYPE_AUDIO = 'audio';
+	const MEDIA_TYPE_YOUTUBE = 'youtube';
+	const MEDIA_TYPES = [self::MEDIA_TYPE_HTML, self::MEDIA_TYPE_AUDIO, self::MEDIA_TYPE_YOUTUBE];
+
+	const MEDIAID_PLACEHOLDER = 'MEDIAID';
 
 	/**
 	 * @ORM\Column(type="integer")
@@ -39,6 +44,16 @@ class ExternalSite extends Entity implements \JsonSerializable {
 	 */
 	private $mediaType;
 
+	public static function getDefault() {
+		static $default;
+		return $default ?? $default = new self();
+	}
+
+	public function __construct() {
+		$this->url = self::MEDIAID_PLACEHOLDER;
+		$this->mediaType = self::MEDIA_TYPE_HTML;
+	}
+
 	public function __toString() {
 		return $this->name ?: $this->url;
 	}
@@ -55,7 +70,7 @@ class ExternalSite extends Entity implements \JsonSerializable {
 	public function getMediaType() { return $this->mediaType; }
 
 	public function generateFullUrl(string $mediaId): string {
-		return str_replace('MEDIAID', $mediaId, $this->getUrl());
+		return str_replace(self::MEDIAID_PLACEHOLDER, $mediaId, $this->getUrl());
 	}
 
 	/**

@@ -54,8 +54,11 @@ class TextLink extends Entity implements \JsonSerializable {
 
 	public function setSite($site) { $this->site = $site; }
 	public function getSite() { return $this->site; }
+	private function site() {
+		return $this->site ?? ExternalSite::getDefault();
+	}
 
-	public function getSiteName() { return $this->site->getName(); }
+	public function getSiteName() { return $this->site()->getName(); }
 
 	public function setCode($code) { $this->code = $code; }
 	public function getCode() { return $this->code; }
@@ -67,7 +70,7 @@ class TextLink extends Entity implements \JsonSerializable {
 	public function getMediaType() { return $this->mediaType; }
 
 	public function getUrl() {
-		return $this->site->generateFullUrl($this->code);
+		return $this->site()->generateFullUrl($this->code);
 	}
 
 	public function __toString() {
@@ -77,7 +80,7 @@ class TextLink extends Entity implements \JsonSerializable {
 	/** @ORM\PrePersist */
 	public function preInsert() {
 		if (empty($this->mediaType)) {
-			$this->setMediaType($this->site->getMediaType());
+			$this->setMediaType($this->site()->getMediaType());
 		}
 	}
 
