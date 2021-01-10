@@ -126,6 +126,8 @@
 		access_log /PATH/TO/LOG/chitanka.access.log;
 		error_log /PATH/TO/LOG/chitanka.error.log;
 
+		index index.php;
+
 		location / {
 			index index.php;
 			try_files $uri $uri/ /index.php$is_args$args;
