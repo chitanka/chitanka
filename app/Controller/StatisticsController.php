@@ -12,6 +12,7 @@ class StatisticsController extends Controller {
 				'labels'        => $this->em()->getLabelRepository()->getCount(),
 				'books'         => $this->em()->getBookRepository()->getCount(),
 				'books_wo_cover'=> $this->em()->getBookRepository()->getCountWithMissingCover(),
+				'books_wo_biblioman'=> $this->em()->getBookRepository()->getCountWithMissingBibliomanId(),
 				'sequences'     => $this->em()->getSequenceRepository()->getCount(),
 				'categories'    => $this->em()->getCategoryRepository()->getCount(),
 				'text_comments' => $this->em()->getTextCommentRepository()->getCount('e.is_shown = 1'),

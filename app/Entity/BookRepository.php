@@ -196,35 +196,37 @@ class BookRepository extends EntityRepository {
 		return $qb;
 	}
 
-	/**
-	 * @param int $page
-	 * @param int $limit
-	 * @return Book[]
-	 */
-	public function findWithMissingCover($page = 1, $limit = null) {
-		$ids = $this->getIdsWithMissingCover($page, $limit);
-		return empty($ids) ? [] : $this->findByIds($ids);
+	/** @return Book[] */
+	public function findWithMissingCover(int $page = 1, int $limit = null) {
+		return $this->findByIds($this->getIdsWithMissingCover($page, $limit));
+	}
+	private function getIdsWithMissingCover(int $page = 1, int $limit = null): array {
+		return $this->getIdsForDql("SELECT b.id FROM {$this->getEntityName()} b WHERE b.hasCover = 0 ORDER BY b.title ASC", $page, $limit);
+	}
+	public function getCountWithMissingCover(): int {
+		return $this->getCountForDql("SELECT COUNT(b.id) FROM {$this->getEntityName()} b WHERE b.hasCover = 0");
 	}
 
-	/**
-	 * @param int $page
-	 * @param int $limit
-	 * @return array
-	 */
-	private function getIdsWithMissingCover($page = 1, $limit = null) {
-		$dql = "SELECT b.id FROM {$this->getEntityName()} b WHERE b.hasCover = 0 ORDER BY b.title ASC";
-		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
-		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
-		return $query->getResult('id');
+	/** @return Book[] */
+	public function findWithMissingBibliomanId(int $page = 1, int $limit = null) {
+		return $this->findByIds($this->getIdsWithMissingBibliomanId($page, $limit));
+	}
+	private function getIdsWithMissingBibliomanId(int $page = 1, int $limit = null): array {
+		return $this->getIdsForDql("SELECT b.id FROM {$this->getEntityName()} b WHERE b.bibliomanId IS NULL ORDER BY b.title ASC", $page, $limit);
+	}
+	public function getCountWithMissingBibliomanId(): int {
+		return $this->getCountForDql("SELECT COUNT(b.id) FROM {$this->getEntityName()} b WHERE b.bibliomanId IS NULL");
 	}
 
-	/**
-	 * @return int
-	 */
-	public function getCountWithMissingCover() {
-		$dql = "SELECT COUNT(b.id) FROM {$this->getEntityName()} b WHERE b.hasCover = 0";
-		$query = $this->_em->createQuery($dql);
-		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
-		return $query->getSingleScalarResult();
+	private function getIdsForDql(string $dql, $page = 1, $limit = null): array {
+		return $this->setPagination($this->_em->createQuery($dql), $page, $limit)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
+			->getResult('id');
+	}
+
+	public function getCountForDql(string $dql): int {
+		return $this->_em->createQuery($dql)
+			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
+			->getSingleScalarResult();
 	}
 }

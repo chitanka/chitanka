@@ -9,7 +9,11 @@ use App\Service\SearchService;
 use App\Util\Stringy;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/books")
+ */
 class BookController extends Controller {
 
 	const PAGE_COUNT_DEFAULT = 30;
@@ -74,6 +78,18 @@ class BookController extends Controller {
 		return [
 			'books' => $bookRepo->findWithMissingCover($page, $limit),
 			'pager' => new Pager($page, $bookRepo->getCountWithMissingCover(), $limit),
+		];
+	}
+
+	/**
+	 * @Route("/wo-biblioman/{page}.{_format}", name="books_wo_biblioman", defaults={"page": 1, "_format": "html"})
+	 */
+	public function listWoBibliomanAction(Request $request, $page) {
+		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
+		$bookRepo = $this->em()->getBookRepository();
+		return [
+			'books' => $bookRepo->findWithMissingBibliomanId($page, $limit),
+			'pager' => new Pager($page, $bookRepo->getCountWithMissingBibliomanId(), $limit),
 		];
 	}
 
