@@ -120,6 +120,9 @@ class ContentImporter {
 		if (isset($work['translators'])) {
 			$translators = [];
 			foreach (explode(';', $work['translators']) as $slugYear) {
+				if (strpos($slugYear, ',') === false) {
+					$slugYear .= ',?';
+				}
 				list($slug, $transYear) = explode(',', $slugYear);
 				if ($transYear == '?') {
 					$transYear = null;
