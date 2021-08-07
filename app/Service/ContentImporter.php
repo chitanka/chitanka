@@ -114,6 +114,9 @@ class ContentImporter {
 		if (isset($work['year']) && strpos($work['year'], '-') !== false) {
 			list($work['year'], $work['year2']) = explode('-', $work['year']);
 		}
+		if (!isset($work['orig_lang'])) {
+			$work['orig_lang'] = $work['lang'];
+		}
 		if (isset($work['translators'])) {
 			$translators = [];
 			foreach (explode(';', $work['translators']) as $slugYear) {
