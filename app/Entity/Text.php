@@ -871,13 +871,22 @@ EOS;
 	}
 
 	public function getNameForFile() {
-		return strtr(Setup::setting('download_file'), [
+		$lengthLimits = [
+			'AUTHOR' => 50,
+			'SERIES' => 50,
+			'TITLE' => 100,
+		];
+		$parts = [
 			'AUTHOR' => $this->getAuthorNameEscaped(),
 			'SERIES' => empty($this->series) ? '' : Stringy::createAcronym(Char::cyr2lat($this->series->getName())),
 			'SERNO' => $this->getSernr() ?? '',
 			'TITLE' => Char::cyr2lat($this->title),
 			'ID' => $this->getId(),
-		]);
+		];
+		array_walk($parts, function(string &$value, string $name) use ($lengthLimits) {
+			$value = substr($value, 0, $lengthLimits[$name] ?? 20);
+		});
+		return strtr(Setup::setting('download_file'), $parts);
 	}
 
 	public static function getMinRating() {

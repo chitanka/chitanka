@@ -191,6 +191,7 @@ class TextDownloadService {
 			$this->zipFileName = "Архив от Моята библиотека - $fileCount файла-".time();
 		}
 
+		$this->zipFileName = substr($this->zipFileName, 0, 230);
 		$this->zipFileName .= $fileCount > 1 ? "-$format" : $dlkey;
 		$this->zipFileName = File::cleanFileName( Char::cyr2lat($this->zipFileName) );
 		$fullZipFileName = $this->zipFileName . '.zip';
