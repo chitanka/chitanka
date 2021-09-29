@@ -1,0 +1,11 @@
+{% extends 'App::layout.html.twig' %}
+
+{% set title = 'Нови произведения за ' ~ day ~' '~ ('month.'~month)|trans ~' '~ year %}
+{% block content %}
+	{% include 'App:History:toc.html.twig' with {'route': 'new_texts_by_month'} %}
+	{% include 'App:History:texts_list.html.twig' %}
+	{% if texts_by_id|length > 1 %}
+		{% set filename = 'texts-' ~ year ~ '-' ~ month ~ '-' ~ day %}
+		{% include 'App:Text:multi_download_form.html.twig' with {'texts': texts_by_id, 'filename': 'texts-'~year~'-'~month~'-'~day~'-'~pager.page} %}
+	{% endif %}
+{% endblock %}

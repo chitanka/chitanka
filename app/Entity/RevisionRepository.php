@@ -29,10 +29,7 @@ class RevisionRepository extends EntityRepository {
 	}
 
 	public function countByDate($date = null) {
-		$where = '';
-		if (is_array($date)) {
-			$where = sprintf("WHERE r.date BETWEEN '%s' AND '%s'", $this->dateToString($date[0]), $this->dateToString($date[1]));
-		}
+		$where = $date ? 'WHERE r.date '.$this->createWhereClauseForDate($date) : '';
 		$dql = sprintf('SELECT COUNT(r.id) FROM %s r %s', $this->getEntityName(), $where);
 		$query = $this->_em->createQuery($dql);
 		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
@@ -40,14 +37,24 @@ class RevisionRepository extends EntityRepository {
 	}
 
 	public function getIdsByDate($date = null, $page = 1, $limit = null) {
-		$where = '';
-		if (is_array($date)) {
-			$where = sprintf("WHERE r.date BETWEEN '%s' AND '%s'", $this->dateToString($date[0]), $this->dateToString($date[1]));
-		}
+		$where = $date ? 'WHERE r.date '.$this->createWhereClauseForDate($date) : '';
 		$dql = sprintf('SELECT r.id FROM %s r %s ORDER BY r.date DESC, r.id DESC', $this->getEntityName(), $where);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query->getResult('id');
+	}
+
+	private function createWhereClauseForDate($date): string {
+		if (empty($date)) {
+			return '';
+		}
+		if (is_string($date)) {
+			$date = ["$date 00:00:00", "$date 23:59:59"];
+		}
+		if (is_array($date) && count($date) > 1) {
+			return sprintf("BETWEEN '%s' AND '%s'", $this->dateToString($date[0]), $this->dateToString($date[1]));
+		}
+		return '';
 	}
 
 	/**

@@ -481,6 +481,17 @@ new_books_by_month:
         page: \d+
         _format: html|opds|json
 
+new_books_by_day:
+    path:      /new/books/{year}/{month}/{day}.{_format}/{page}
+    defaults: { _controller: App:History:listBooksByDay, page: 1, _format: html }
+    methods:  [GET]
+    requirements:
+        year: \d+
+        month: \d+
+        day: \d+
+        page: \d+
+        _format: html|json
+
 new_texts:
     path:      /new/texts.{_format}/{page}
     defaults: { _controller: App:History:listTexts, page: 1, _format: html }
@@ -497,6 +508,16 @@ new_texts_by_month:
         page: \d+
         _format: html|opds|json
 
+new_texts_by_day:
+    path:      /new/texts/{year}/{month}/{day}.{_format}/{page}
+    defaults: { _controller: App:History:listTextsByDay, page: 1, _format: html }
+    methods:         [GET]
+    requirements:
+        year: \d+
+        month: \d+
+        day: \d+
+        page: \d+
+        _format: html|json
 
 email_user:
     path:      /email/{username}

@@ -46,15 +46,24 @@ class HistoryController extends Controller {
 
 	public function listBooksByMonthAction($year, $month, $page) {
 		$dates = ["$year-$month-01", Date::endOfMonth("$year-$month")];
-		$repo = $this->em()->getBookRevisionRepository();
+		return $this->viewParametersForDateSelectionOfBooks($dates, $page, $year, $month);
+	}
 
+	public function listBooksByDayAction(int $year, int $month, int $day, int $page) {
+		$date = "$year-$month-$day";
+		return $this->viewParametersForDateSelectionOfBooks($date, $page, $year, $month, $day);
+	}
+
+	private function viewParametersForDateSelectionOfBooks($date, int $page, int $year, int $month, int $day = null): array {
+		$repo = $this->em()->getBookRevisionRepository();
 		return [
 			'dates' => $this->getDateOptions($repo),
+			'day' => $day,
 			'month' => ltrim($month, '0'),
 			'year' => $year,
-			'book_revisions_by_date' => $repo->getByDate($dates, $page, static::PAGE_COUNT_DEFAULT),
-			'pager' => new Pager($page, $repo->countByDate($dates), static::PAGE_COUNT_DEFAULT),
-			'route_params' => compact('year', 'month'),
+			'book_revisions_by_date' => $repo->getByDate($date, $page, static::PAGE_COUNT_DEFAULT),
+			'pager' => new Pager($page, $repo->countByDate($date), static::PAGE_COUNT_DEFAULT),
+			'route_params' => compact('year', 'month', 'day'),
 		];
 	}
 
@@ -85,18 +94,26 @@ class HistoryController extends Controller {
 
 	public function listTextsByMonthAction($year, $month, $page) {
 		$dates = ["$year-$month-01", Date::endOfMonth("$year-$month")];
-		$repo = $this->em()->getTextRevisionRepository();
-		$revisions = $repo->getByDate($dates, $page, static::PAGE_COUNT_DEFAULT);
+		return $this->viewParametersForDateSelectionOfTexts($dates, $page, $year, $month);
+	}
 
+	public function listTextsByDayAction(int $year, int $month, int $day, int $page) {
+		$date = "$year-$month-$day";
+		return $this->viewParametersForDateSelectionOfTexts($date, $page, $year, $month, $day);
+	}
+
+	private function viewParametersForDateSelectionOfTexts($date, int $page, int $year, int $month, int $day = null): array {
+		$repo = $this->em()->getTextRevisionRepository();
+		$revisions = $repo->getByDate($date, $page, static::PAGE_COUNT_DEFAULT);
 		return [
 			'dates' => $this->getDateOptions($repo),
+			'day' => $day,
 			'month' => ltrim($month, '0'),
 			'year' => $year,
 			'text_revisions_by_date' => $revisions,
 			'texts_by_id' => $this->extractTextsFromRevisionsByDate($revisions),
-			'pager'    => new Pager($page, $repo->countByDate($dates), static::PAGE_COUNT_DEFAULT),
-			'route' => 'new_texts_by_month',
-			'route_params' => compact('year', 'month'),
+			'pager' => new Pager($page, $repo->countByDate($date), static::PAGE_COUNT_DEFAULT),
+			'route_params' => compact('year', 'month', 'day'),
 		];
 	}
 
