@@ -1,5 +1,6 @@
 {% extends 'App::layout.html.twig' %}
 
+{% set meta_description = book.annotation %}
 {% set itemtype = "Book" %}
 {% set title %}
 	{% if authors|length %}
