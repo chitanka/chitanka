@@ -30,6 +30,7 @@
 		{% if info %}
 			<li><a href="#book-extra-info" data-toggle="tab"><span class="fa fa-tag"></span> Информация</a></li>
 		{% endif %}
+		<li><a href="#book-edit-history" data-toggle="tab"><span class="fa fa-list"></span> История</a></li>
 		{% if book.bibliomanId is not empty %}
 			<li><a href="#book-biblioman" data-toggle="tab"><span class="fa fa-newspaper-o"></span> Библиоман</a></li>
 		{% endif %}
@@ -58,6 +59,14 @@
 				{{ info|raw }}
 			</div>
 		{% endif %}
+
+		<div class="tab-pane text-book-edit-history" id="book-edit-history">
+			<ol>
+				{% for revision in book.revisions %}
+					<li><time datetime="{{ revision.date|date('c') }}">{{ revision.date|date('d.m.Y') }}</time> — {{ revision.comment }}</li>
+				{% endfor %}
+			</ol>
+		</div>
 
 		{% if book.bibliomanId is not empty %}
 			<div class="tab-pane" id="book-biblioman" style="height: 3000px">

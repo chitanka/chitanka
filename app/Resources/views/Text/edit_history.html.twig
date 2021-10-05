@@ -1,0 +1,5 @@
+<ol>
+	{% for revision in text.revisions %}
+		<li><time datetime="{{ revision.date|date('c') }}">{{ revision.date|date('d.m.Y') }}</time> — {{ revision.comment }}</li>
+	{% endfor %}
+</ol>

@@ -4,6 +4,7 @@
 <ul class="nav nav-tabs">
 	<li class="active"><a href="#text-info{{ id_suffix }}" data-toggle="tab"><span class="fa fa-folder-o"></span> Данни</a></li>
 	<li><a href="#text-extra-info{{ id_suffix }}" data-toggle="tab"><span class="fa fa-tag"></span> Информация</a></li>
+	<li><a href="#text-edit-history{{ id_suffix }}" data-toggle="tab"><span class="fa fa-list"></span> История</a></li>
 	<li><a href="#text-links{{ id_suffix }}" data-toggle="tab"><span class="fa fa-download"></span> Сваляне / Връзки {% if text.links|length %}
 ({{ text.links|length }}){% endif %}</a></li>
 	<li><a href="{{ path('text_comments', {'id': text.id}) }}" data-target="#text-comments{{ id_suffix }}" data-toggle="tab" itemprop="discussionUrl"><span class="fa fa-comments-o"></span> Коментари ({{ text.commentcount }})</a></li>
@@ -21,6 +22,9 @@
 	</div>
 	<div class="tab-pane text-extra-info" id="text-extra-info{{ id_suffix }}">
 		{% include 'Text/extra_info.html.twig' %}
+	</div>
+	<div class="tab-pane edit-history" id="text-edit-history{{ id_suffix }}">
+		{% include 'Text/edit_history.html.twig' %}
 	</div>
 	<div class="tab-pane expanded-links text-links" id="text-links{{ id_suffix }}">
 		{% include 'Text/extra_links.html.twig' %}
