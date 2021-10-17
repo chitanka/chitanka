@@ -331,17 +331,21 @@ class ContentImporter {
 	 * @param string $query
 	 * @param string $column
 	 */
-	private function getObjectId($table, $query, $column = 'slug') {
-		if ($column == 'slug') {
+	private function getObjectId($table, $query, $column = null) {
+		$defaultColumn = 'slug';
+		if ($column === null) {
+			return $this->getObjectId($table, $query, $defaultColumn) ?? $this->getObjectId($table, $query, 'name');
+		}
+		if ($column == $defaultColumn) {
 			$query = Stringy::slugify($query);
 		}
 		if (!isset($this->objectsIds[$table][$query])) {
 			$sql = "SELECT id FROM $table WHERE $column = '$query'";
 			$result = $this->em->getConnection()->fetchAssoc($sql);
-			if (empty($result['id'])) {
+			if (empty($result['id']) && $column !== $defaultColumn) {
 				throw new \InvalidArgumentException("Няма запис за $table.$column = '$query'");
 			}
-			$this->objectsIds[$table][$query] = $result['id'];
+			$this->objectsIds[$table][$query] = $result['id'] ?? null;
 		}
 
 		return $this->objectsIds[$table][$query];
