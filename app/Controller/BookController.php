@@ -120,12 +120,12 @@ class BookController extends Controller {
 			case 'fb2.zip':
 			case 'epub':
 				Setup::doSetup($this->container);
-				return $this->urlRedirect($this->processDownload($book, $_format));
+				return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme()));
 			case 'djvu':
-				return $this->urlRedirect($this->processDownload($book, $_format));
+				return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme()));
 			case 'pdf':
 				if ($book->hasCustomPdf()) {
-					return $this->urlRedirect($this->processDownload($book, $_format));
+					return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme()));
 				}
 				if ( ! $this->container->getParameter('pdf_download_enabled')) {
 					throw $this->createNotFoundException("Няма поддръжка на формата PDF.");
@@ -219,9 +219,12 @@ class BookController extends Controller {
 	 * @param string $format
 	 * @return string File URL
 	 */
-	protected function processDownload(Book $book, $format) {
+	protected function processDownload(Book $book, $format, $requestedScheme) {
 		$dlSite = $this->getMirrorServer();
 		if ( $dlSite !== false ) {
+			if (substr($dlSite, 0, 2) === '//') {
+				$dlSite = $requestedScheme .':'. $dlSite;
+			}
 			return "$dlSite/book/{$book->getId()}.$format";
 		}
 

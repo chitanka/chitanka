@@ -131,7 +131,7 @@ class TextController extends Controller {
 
 	public function showAction(Request $request, $id, $_format) {
 		if ($this->canRedirectToMirror($_format) && ($mirrorServer = $this->getMirrorServer())) {
-			return $this->redirectToMirror($mirrorServer, $id, $_format, $request->get('filename'));
+			return $this->redirectToMirror($mirrorServer, $id, $_format, $request->get('filename'), $request->getScheme());
 		}
 		list($id) = explode('-', $id); // remove optional slug
 		if ($_format === 'htmlx' || $request->isXmlHttpRequest()) {
@@ -232,7 +232,10 @@ class TextController extends Controller {
 		]);
 	}
 
-	private function redirectToMirror($mirrorServer, $id, $format, $requestedFilename) {
+	private function redirectToMirror($mirrorServer, $id, $format, $requestedFilename, $requestedScheme) {
+		if (substr($mirrorServer, 0, 2) === '//') {
+			$mirrorServer = $requestedScheme .':'. $mirrorServer;
+		}
 		return $this->urlRedirect("$mirrorServer/text/$id.$format?filename=$requestedFilename");
 	}
 
