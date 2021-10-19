@@ -12,6 +12,13 @@ abstract class BaseWork extends Entity {
 
 	const TITLE_NEW_LINE = "<br>\n";
 
+	const FORMAT_EPUB = 'epub';
+	const FORMAT_MOBI = 'mobi';
+	const FORMAT_PDF = 'pdf';
+
+	public static $MOBI_ENABLED = false;
+	public static $PDF_ENABLED = false;
+
 	public static $ratings = [
 		6 => 'Шедьовър',
 		5 => 'Много добро',

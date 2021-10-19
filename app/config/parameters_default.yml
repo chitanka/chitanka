@@ -62,6 +62,23 @@ parameters:
     download_formats: [txt.zip, fb2.zip, epub, sfb.zip]
     download_file: AUTHOR - SERIES - SERNO. TITLE - ID
 
+    # pdf download is disabled in the standard installation
+    pdf_download_enabled: false
+    # the ebook-convert binary must live in the bin directory or be reachable through the PATH environment variable
+    # ebook-convert is part of calibre
+    pdf_converter_command: ebook-convert INPUT_FILE OUTPUT_FILE --pdf-page-numbers
+    pdf_converter_url: /converter.php?out=pdf
+
+    # mobi download is disabled in the standard installation
+    mobi_download_enabled: false
+    # the ebook-convert binary must live in the bin directory or be reachable through the PATH environment variable
+    # ebook-convert is part of calibre
+    mobi_converter_command: ebook-convert INPUT_FILE OUTPUT_FILE
+    # alternative with kindlegen - by default it includes too much stuff in the final file
+    # the kindlegen binary must live in the bin directory or be reachable through the PATH environment variable
+    #mobi_converter_command: kindlegen INPUT_FILE -o OUTPUT_FILE_BASENAME
+    mobi_converter_url: /converter.php?out=mobi
+
     workroom_remote: false
     workroom_root: ~
     workroom_url: http://workroom.chitanka.info

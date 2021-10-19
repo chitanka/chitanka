@@ -1,5 +1,7 @@
 <?php namespace App\Controller;
 
+use App\Entity\BaseWork;
+use App\Entity\Book;
 use App\Entity\User;
 use App\Legacy\Setup;
 use App\Service\ContentService;
@@ -204,6 +206,13 @@ abstract class Controller extends SymfonyController {
 
 	public function initInternalContentPath() {
 		ContentService::setInternalContentPath($this->container->getParameter('content_dir'));
+	}
+
+	public function configureExtraDownloadFormats() {
+		if (class_exists(BaseWork::class, false)) {
+			BaseWork::$MOBI_ENABLED = $this->container->getParameter('mobi_download_enabled');
+			BaseWork::$PDF_ENABLED = $this->container->getParameter('pdf_download_enabled');
+		}
 	}
 
 	/** @return Request */

@@ -1177,6 +1177,12 @@ EOS;
 
 	public function getOutputFormats() {
 		$outputFormats = ['fb2.zip', 'epub', 'txt.zip', 'sfb.zip'];
+		if (self::$MOBI_ENABLED) {
+			$outputFormats[] = self::FORMAT_MOBI;
+		}
+		if (self::$PDF_ENABLED) {
+			$outputFormats[] = self::FORMAT_PDF;
+		}
 		return $outputFormats;
 	}
 

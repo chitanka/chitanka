@@ -43,21 +43,9 @@
 
 {% macro download_links(book) %}
 	<div class="btn-group" role="group">
-		{% if "sfb" in book.formats %}
-			{{ _self.download_link(book, "fb2.zip") }}
-			{{ _self.download_link(book, "epub") }}
-			{{ _self.download_link(book, "txt.zip") }}
-			{{ _self.download_link(book, "sfb.zip") }}
-		{% endif %}
-		{% if "djvu" in book.formats %}
-			{{ _self.download_link(book, "djvu") }}
-		{% endif %}
-		{% if "pdf" in book.formats %}
-			{{ _self.download_link(book, "pdf") }}
-		{% endif %}
-		{% if "pic" in book.formats %}
-			{{ _self.download_link(book, "pic", "Преглед в галерия") }}
-		{% endif %}
+		{% for format in book.outputFormats %}
+			{{ _self.download_link(book, format) }}
+		{% endfor %}
 		{% if book.removedNotice is not empty %}
 			<span class="btn btn-danger" title="{{ book.removedNotice }}"><span class="fa fa-ban"></span><span class="sr-only">Забранена</span></span>
 		{% endif %}

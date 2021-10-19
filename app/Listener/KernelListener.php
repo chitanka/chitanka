@@ -62,6 +62,7 @@ class KernelListener implements EventSubscriberInterface {
 		$controllerObject = $this->controller[0];
 		if ($controllerObject instanceof Controller) {
 			$controllerObject->initInternalContentPath();
+			$controllerObject->configureExtraDownloadFormats();
 		}
 	}
 

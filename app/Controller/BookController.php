@@ -1,7 +1,9 @@
 <?php namespace App\Controller;
 
+use App\Entity\BaseWork;
 use App\Entity\Book;
 use App\Generator\DownloadFile;
+use App\Generator\DownloadUrlGenerator;
 use App\Legacy\Setup;
 use App\Pagination\Pager;
 use App\Service\ContentService;
@@ -120,8 +122,20 @@ class BookController extends Controller {
 				Setup::doSetup($this->container);
 				return $this->urlRedirect($this->processDownload($book, $_format));
 			case 'djvu':
-			case 'pdf':
 				return $this->urlRedirect($this->processDownload($book, $_format));
+			case 'pdf':
+				if ($book->hasCustomPdf()) {
+					return $this->urlRedirect($this->processDownload($book, $_format));
+				}
+				if ( ! $this->container->getParameter('pdf_download_enabled')) {
+					throw $this->createNotFoundException("Няма поддръжка на формата PDF.");
+				}
+				return $this->urlRedirect($this->generateConverterUrl($this->container->getParameter('pdf_converter_url'), $book));
+			case 'mobi':
+				if ( ! $this->container->getParameter('mobi_download_enabled')) {
+					throw $this->createNotFoundException("Няма поддръжка на формата MOBI.");
+				}
+				return $this->urlRedirect($this->generateConverterUrl($this->container->getParameter('mobi_converter_url'), $book));
 			case 'txt':
 				Setup::doSetup($this->container);
 				return $this->asText($book->getContentAsTxt());
@@ -226,6 +240,11 @@ class BookController extends Controller {
 				return $this->getWebRoot() . $dlFile->getStaticFileForBook($book, $format);
 		}
 		throw $this->createNotFoundException("Книгата не е налична във формат {$format}.");
+	}
+
+	protected function generateConverterUrl(string $urlTemplate, Book $book): string {
+		$epubUrl = $this->generateAbsoluteUrl('book_show', ['id' => $book->getId(), '_format' => Book::FORMAT_EPUB]);
+		return (new DownloadUrlGenerator())->generateConverterUrl($urlTemplate, $epubUrl);
 	}
 
 	/**

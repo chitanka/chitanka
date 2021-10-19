@@ -25,7 +25,6 @@ use Sfblib\SfbConverter;
 class Book extends BaseWork implements \JsonSerializable {
 
 	const FORMAT_DJVU = 'djvu';
-	const FORMAT_PDF = 'pdf';
 	const FORMAT_PIC = 'pic';
 	const FORMAT_SFB = 'sfb';
 
@@ -276,6 +275,10 @@ class Book extends BaseWork implements \JsonSerializable {
 	public function getFormats() { return $this->formats; }
 	public function isInSfbFormat() {
 		return in_array('sfb', $this->formats);
+	}
+
+	public function hasCustomPdf(): bool {
+		return in_array(self::FORMAT_PDF, $this->getFormats());
 	}
 
 	public function getRevisions() { return $this->revisions; }
@@ -892,6 +895,12 @@ EOS;
 		$outputFormats = [];
 		if (in_array(self::FORMAT_SFB, $this->getFormats())) {
 			$outputFormats = array_merge($outputFormats, ['fb2.zip', 'epub', 'txt.zip', 'sfb.zip']);
+			if (self::$MOBI_ENABLED) {
+				$outputFormats[] = self::FORMAT_MOBI;
+			}
+			if (self::$PDF_ENABLED) {
+				$outputFormats[] = self::FORMAT_PDF;
+			}
 		}
 		foreach ([self::FORMAT_DJVU, self::FORMAT_PDF, self::FORMAT_PIC] as $format) {
 			if (in_array($format, $this->getFormats())) {
