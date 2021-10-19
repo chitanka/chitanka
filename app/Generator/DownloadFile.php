@@ -257,7 +257,7 @@ class DownloadFile {
 	 * @param EpubFile $epubFile
 	 */
 	private function addCoverForEpub(Book $book, EpubFile $epubFile) {
-		if ( ($cover = $book->getCover(400)) ) {
+		if ( ($cover = $book->getCover()) ) {
 			$file = $this->addFileEntry($cover, $epubFile->getCoverFileName());
 			$epubFile->addCover($file);
 		}
@@ -272,7 +272,7 @@ class DownloadFile {
 	 * @param EpubFile $epubFile
 	 */
 	private function addBackCoverForEpub(Book $book, EpubFile $epubFile) {
-		if ( ($cover = $book->getBackCover(400)) ) {
+		if ( ($cover = $book->getBackCover()) ) {
 			$file = $this->addFileEntry($cover, $epubFile->getBackCoverFileName());
 			$epubFile->addBackCover($file);
 		}

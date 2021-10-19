@@ -5,8 +5,6 @@ use Sfblib\SfbToFb2Converter;
 
 class BookFb2Generator {
 
-	private $fb2CoverWidth = 400;
-
 	public function generateFb2(Book $book) {
 		if (!$book->isInSfbFormat()) {
 			return null;
@@ -21,7 +19,7 @@ class BookFb2Generator {
 		$conv->setKeywords($this->getKeywords($book));
 		$conv->setTextDate($book->getYear());
 
-		if ( ($cover = $book->getCover($this->fb2CoverWidth)) ) {
+		if ( ($cover = $book->getCover()) ) {
 			$conv->addCoverpage($cover);
 		}
 
