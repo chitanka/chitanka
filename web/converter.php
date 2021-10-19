@@ -12,7 +12,16 @@ $webCacheDir = '/cache/dl';
 $cacheDir = __DIR__.$webCacheDir;
 
 $converter = new App\Generator\EpubConverter($container->getParameterBag(), $cacheDir);
-$outputFile = $converter->convert($epubUrl, $targetFormat);
+try {
+	$outputFile = $converter->convert($epubUrl, $targetFormat);
+} catch (InvalidArgumentException $e) {
+	http_response_code(400);
+	header("X-Exception: {$e->getMessage()}");
+	exit;
+} catch (Exception $e) {
+	http_response_code(500);
+	exit;
+}
 $webOutputFile = $webCacheDir.'/'.basename($outputFile);
 
 header("Location: $webOutputFile");
