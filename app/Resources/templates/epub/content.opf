@@ -23,7 +23,7 @@
 	</spine>
 
 	<guide>
-		<reference href="cover.xhtml" title="Корица" type="cover"/>
+		<reference href="cover-page.xhtml" title="Корица" type="cover"/>
 		<reference href="title-page.xhtml" title="Заглавна страница" type="title-page"/>
 	</guide>
 </package>
