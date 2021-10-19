@@ -66,7 +66,7 @@ parameters:
     pdf_download_enabled: false
     # the ebook-convert binary must live in the bin directory or be reachable through the PATH environment variable
     # ebook-convert is part of calibre
-    pdf_converter_command: ebook-convert INPUT_FILE OUTPUT_FILE --pdf-page-numbers
+    pdf_converter_command: ebook-convert INPUT_FILE OUTPUT_FILE --pdf-page-numbers --change-justification=justify
     pdf_converter_url: /converter.php?out=pdf
 
     # mobi download is disabled in the standard installation
