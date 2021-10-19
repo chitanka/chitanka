@@ -834,6 +834,9 @@ class Book extends BaseWork implements \JsonSerializable {
 	}
 
 	public function getPlainTranslationInfo() {
+		if (empty($this->getTranslators())) {
+			return '';
+		}
 		$info = [];
 		foreach ($this->getTranslators() as $translator) {
 			$info[] = $translator->getName();
