@@ -14,9 +14,9 @@
 	vertical-align: center;
 }
 h1, h2, h3, h4, h5, h6 {
-	margin: 1em 0 0.5em;
+	margin: 1em 0 2.5em;
 	line-height: 1.3em;
-	font-weight: normal;
+	font-weight: bold;
 	text-transform: uppercase;
 	text-align: center;
 }
