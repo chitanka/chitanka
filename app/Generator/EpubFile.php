@@ -520,6 +520,7 @@ class EpubFile {
 	private function fixContent($content) {
 		$content = $this->fixChitankaLinks($content);
 		$content = $this->removeImageLinks($content);
+		$content = $this->addMarkersToNotes($content);
 		return $content;
 	}
 
@@ -539,5 +540,12 @@ class EpubFile {
 		$content = preg_replace('!<a [^>]+>(<img [^>]+>)</a>!', '$1', $content);
 		$content = preg_replace('!<a href="[^"]+" class="zoom"[^]]+>(<span class="image-title">[^<]+</span>)</a>!U', '$1', $content);
 		return $content;
+	}
+
+	private function addMarkersToNotes(string $content): string {
+		return strtr($content, [
+			' href="#note_' => ' epub:type="noteref" href="#note_',
+			' id="note_' => ' epub:type="footnote" id="note_',
+		]);
 	}
 }
