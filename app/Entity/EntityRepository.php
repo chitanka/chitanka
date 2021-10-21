@@ -1,5 +1,6 @@
 <?php namespace App\Entity;
 
+use App\Entity\Query\SortingDefinition;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
@@ -314,30 +315,10 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
 		return $this->queryableFields;
 	}
 
-	/**
-	 *
-	 * @param string $orderBys
-	 * @return QueryBuilder
-	 */
 	public function getQueryBuilder($orderBys = null) {
-		$qb = $this->createQueryBuilder('e');
-
-		if (!empty($orderBys)) {
-			foreach (explode(',', $orderBys) as $orderBy) {
-				$orderBy = ltrim($orderBy);
-				if (strpos($orderBy, ' ') === false) {
-					$field = $orderBy;
-					$order = 'asc';
-				} else {
-					list($field, $order) = explode(' ', ltrim($orderBy));
-				}
-				if (strpos($field, '.') === false) {
-					$field = self::ALIAS.".$field";
-				}
-				$qb->addOrderBy($field, $order);
-			}
-		}
-
+		$qb = $this->createQueryBuilder(self::ALIAS);
+		$sorting = $orderBys instanceof SortingDefinition ? $orderBys : new SortingDefinition((string) $orderBys, self::ALIAS);
+		$sorting->addToQueryBuilder($qb);
 		return $qb;
 	}
 

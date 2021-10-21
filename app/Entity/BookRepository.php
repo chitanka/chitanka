@@ -1,11 +1,19 @@
 <?php namespace App\Entity;
 
+use App\Entity\Query\SortingDefinition;
+
 /**
  * A repository for books
  */
 class BookRepository extends EntityRepository {
 
 	protected $queryableFields = ['id', 'title', 'subtitle', 'origTitle'];
+	protected $sortableFields = [
+		'title',
+		'createdAt',
+		'year',
+	];
+	protected $defaultSortingField = 'title';
 
 	/**
 	 * Fetch a book with all important relations
@@ -37,9 +45,9 @@ class BookRepository extends EntityRepository {
 	 * @param int $limit
 	 * @return Book[]
 	 */
-	public function findByCategory($category, $page = 1, $limit = null) {
-		$ids = $this->getIdsByCategory($category, $page, $limit);
-		return empty($ids) ? [] : $this->findByIds($ids);
+	public function findByCategory($category, $page = 1, $limit = null, SortingDefinition $sorting = null) {
+		$ids = $this->getIdsByCategory($category, $page, $limit, $sorting);
+		return empty($ids) ? [] : $this->findByIds($ids, $sorting);
 	}
 
 	/**
@@ -58,13 +66,13 @@ class BookRepository extends EntityRepository {
 	 * @param int $page
 	 * @param int $limit
 	 */
-	private function getIdsByCategory($category, $page = 1, $limit = null) {
+	private function getIdsByCategory($category, $page = 1, $limit = null, SortingDefinition $sorting = null) {
 		if ($category instanceof Category) {
 			$ids = [$category->getId()];
 		} else {
 			$ids = implode(',', $category);
 		}
-		$dql = sprintf("SELECT b.id FROM {$this->getEntityName()} b WHERE b.category IN (%s) ORDER BY b.title", $ids);
+		$dql = sprintf("SELECT e.id FROM {$this->getEntityName()} e WHERE e.category IN (%s) ORDER BY $sorting", $ids);
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query->getResult('id');
@@ -98,10 +106,10 @@ class BookRepository extends EntityRepository {
 	 * @param int $page
 	 * @param int $limit
 	 */
-	public function findByPrefix($prefix, $page = 1, $limit = null) {
-		$ids = $this->getIdsByPrefix($prefix, $page, $limit);
+	public function findByPrefix($prefix, $page = 1, $limit = null, SortingDefinition $sorting = null) {
+		$ids = $this->getIdsByPrefix($prefix, $page, $limit, $sorting);
 
-		return empty($ids) ? [] : $this->findByIds($ids);
+		return empty($ids) ? [] : $this->findByIds($ids, $sorting);
 	}
 
 	/**
@@ -109,9 +117,9 @@ class BookRepository extends EntityRepository {
 	 * @param int $page
 	 * @param int $limit
 	 */
-	private function getIdsByPrefix($prefix, $page, $limit) {
-		$where = $prefix ? "b.title LIKE '$prefix%'" : '1=1';
-		$dql = "SELECT b.id FROM {$this->getEntityName()} b WHERE $where ORDER BY b.title";
+	private function getIdsByPrefix($prefix, $page, $limit, SortingDefinition $sorting = null) {
+		$where = $prefix ? "e.title LIKE '$prefix%'" : '1=1';
+		$dql = "SELECT e.id FROM {$this->getEntityName()} e WHERE $where ORDER BY $sorting";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		return $query->getResult('id');
@@ -179,9 +187,6 @@ class BookRepository extends EntityRepository {
 		return $books;
 	}
 
-	/**
-	 * @param string $orderBys
-	 */
 	public function getQueryBuilder($orderBys = null) {
 		if (is_null($orderBys)) {
 			$orderBys = 'e.title';
@@ -197,22 +202,22 @@ class BookRepository extends EntityRepository {
 	}
 
 	/** @return Book[] */
-	public function findWithMissingCover(int $page = 1, int $limit = null) {
-		return $this->findByIds($this->getIdsWithMissingCover($page, $limit));
+	public function findWithMissingCover(int $page = 1, int $limit = null, SortingDefinition $sorting = null) {
+		return $this->findByIds($this->getIdsWithMissingCover($page, $limit, $sorting), $sorting);
 	}
-	private function getIdsWithMissingCover(int $page = 1, int $limit = null): array {
-		return $this->getIdsForDql("SELECT b.id FROM {$this->getEntityName()} b WHERE b.hasCover = 0 ORDER BY b.title ASC", $page, $limit);
+	private function getIdsWithMissingCover(int $page = 1, int $limit = null, SortingDefinition $sorting = null): array {
+		return $this->getIdsForDql("SELECT e.id FROM {$this->getEntityName()} e WHERE e.hasCover = 0 ORDER BY $sorting", $page, $limit);
 	}
 	public function getCountWithMissingCover(): int {
 		return $this->getCountForDql("SELECT COUNT(b.id) FROM {$this->getEntityName()} b WHERE b.hasCover = 0");
 	}
 
 	/** @return Book[] */
-	public function findWithMissingBibliomanId(int $page = 1, int $limit = null) {
-		return $this->findByIds($this->getIdsWithMissingBibliomanId($page, $limit));
+	public function findWithMissingBibliomanId(int $page = 1, int $limit = null, SortingDefinition $sorting = null) {
+		return $this->findByIds($this->getIdsWithMissingBibliomanId($page, $limit, $sorting), $sorting);
 	}
-	private function getIdsWithMissingBibliomanId(int $page = 1, int $limit = null): array {
-		return $this->getIdsForDql("SELECT b.id FROM {$this->getEntityName()} b WHERE b.bibliomanId IS NULL ORDER BY b.title ASC", $page, $limit);
+	private function getIdsWithMissingBibliomanId(int $page = 1, int $limit = null, SortingDefinition $sorting = null): array {
+		return $this->getIdsForDql("SELECT e.id FROM {$this->getEntityName()} e WHERE e.bibliomanId IS NULL ORDER BY $sorting", $page, $limit);
 	}
 	public function getCountWithMissingBibliomanId(): int {
 		return $this->getCountForDql("SELECT COUNT(b.id) FROM {$this->getEntityName()} b WHERE b.bibliomanId IS NULL");
@@ -228,5 +233,9 @@ class BookRepository extends EntityRepository {
 		return $this->_em->createQuery($dql)
 			->useResultCache(true, static::DEFAULT_CACHE_LIFETIME)
 			->getSingleScalarResult();
+	}
+
+	public function createSortingDefinition(?string $sorting): SortingDefinition {
+		return new SortingDefinition($sorting ?: $this->defaultSortingField, self::ALIAS, $this->sortableFields);
 	}
 }

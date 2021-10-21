@@ -1,5 +1,6 @@
 <?php namespace App\Entity;
 
+use App\Entity\Query\SortingDefinition;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NoResultException;
 
@@ -57,9 +58,10 @@ class TextRepository extends EntityRepository {
 	];
 
 	protected $sortableFields = [
+		'title',
+		'createdAt',
 		'commentCount',
 		'rating',
-		'title',
 		'votes',
 	];
 	protected $defaultSortingField = 'title';
@@ -104,8 +106,7 @@ class TextRepository extends EntityRepository {
 	 * @param string $orderBy
 	 * @return array
 	 */
-	public function getByPrefix($prefix, $page = 1, $limit = null, $orderBy = null) {
-		$orderBy = $this->normalizeOrderBy($orderBy);
+	public function getByPrefix($prefix, $page = 1, $limit = null, SortingDefinition $orderBy = null) {
 		try {
 			$ids = $this->getIdsByPrefix($prefix, $page, $limit, $orderBy);
 		} catch (NoResultException $e) {
@@ -118,13 +119,12 @@ class TextRepository extends EntityRepository {
 	 * @param string $prefix
 	 * @param int $page
 	 * @param int $limit
-	 * @param string $orderBy
 	 * @return array
 	 * @throws NoResultException
 	 */
-	public function getIdsByPrefix($prefix, $page, $limit, $orderBy) {
-		$where = $prefix ? "WHERE t.title LIKE '$prefix%'" : '';
-		$dql = "SELECT t.id FROM {$this->getEntityName()} t $where ORDER BY t.$orderBy";
+	public function getIdsByPrefix($prefix, $page, $limit, SortingDefinition $orderBy) {
+		$where = $prefix ? "WHERE e.title LIKE '$prefix%'" : '';
+		$dql = "SELECT e.id FROM {$this->getEntityName()} e $where ORDER BY $orderBy";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		$ids = $query->getResult('id');
@@ -149,29 +149,26 @@ class TextRepository extends EntityRepository {
 	/**
 	 * @param int $page
 	 * @param int $limit
-	 * @param string $orderBy
 	 * @return array
 	 */
-	public function getByType(TextType $type, $page = 1, $limit = null, $orderBy = null) {
-		$orderBy = $this->normalizeOrderBy($orderBy);
+	public function getByType(TextType $type, $page, $limit, SortingDefinition $sorting) {
 		try {
-			$ids = $this->getIdsByType($type, $page, $limit, $orderBy);
+			$ids = $this->getIdsByType($type, $page, $limit, $sorting);
 		} catch (NoResultException $e) {
 			return [];
 		}
-		return $this->getByIds($ids, $orderBy);
+		return $this->getByIds($ids, $sorting);
 	}
 
 	/**
 	 * @param int $page
 	 * @param int $limit
-	 * @param string $orderBy
 	 * @return array
 	 * @throws NoResultException
 	 */
-	protected function getIdsByType(TextType $type, $page, $limit, $orderBy) {
-		$where = "WHERE t.type = '{$type->getCode()}'";
-		$dql = "SELECT t.id FROM {$this->getEntityName()} t $where ORDER BY t.$orderBy";
+	protected function getIdsByType(TextType $type, $page, $limit, SortingDefinition $sorting) {
+		$where = "WHERE e.type = '{$type->getCode()}'";
+		$dql = "SELECT e.id FROM {$this->getEntityName()} e $where ORDER BY $sorting";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		$ids = $query->getResult('id');
@@ -200,7 +197,6 @@ class TextRepository extends EntityRepository {
 	 * @return array
 	 */
 	public function getByLabel($labels, $page = 1, $limit = null, $orderBy = null) {
-		$orderBy = $this->normalizeOrderBy($orderBy);
 		try {
 			$ids = $this->getIdsByLabel($labels, $page, $limit, $orderBy);
 		} catch (NoResultException $e) {
@@ -213,12 +209,11 @@ class TextRepository extends EntityRepository {
 	 * @param array $labels
 	 * @param int $page
 	 * @param int $limit
-	 * @param string $orderBy
 	 * @return array
 	 * @throws NoResultException
 	 */
-	protected function getIdsByLabel($labels, $page, $limit, $orderBy) {
-		$dql = sprintf("SELECT DISTINCT t.id FROM %s t JOIN t.labels l WHERE l.id IN (%s) ORDER BY t.$orderBy", $this->getEntityName(), implode(',', $labels));
+	protected function getIdsByLabel($labels, $page, $limit, SortingDefinition $sorting) {
+		$dql = sprintf("SELECT DISTINCT e.id FROM %s e JOIN e.labels l WHERE l.id IN (%s) ORDER BY $sorting", $this->getEntityName(), implode(',', $labels));
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		$ids = $query->getResult('id');
@@ -240,8 +235,7 @@ class TextRepository extends EntityRepository {
 		});
 	}
 
-	public function getByLanguage(Language $language, int $page = 1, int $limit = null, string $orderBy = null): array {
-		$orderBy = $this->normalizeOrderBy($orderBy);
+	public function getByLanguage(Language $language, int $page = 1, int $limit = null, SortingDefinition $orderBy = null): array {
 		try {
 			$ids = $this->getIdsByLanguage($language, $page, $limit, $orderBy);
 		} catch (NoResultException $e) {
@@ -250,8 +244,8 @@ class TextRepository extends EntityRepository {
 		return $this->getByIds($ids, $orderBy);
 	}
 
-	protected function getIdsByLanguage(Language $language, int $page, int $limit, string $orderBy): array {
-		$dql = "SELECT t.id FROM {$this->getEntityName()} t WHERE t.lang = '{$language->getCode()}' ORDER BY t.$orderBy";
+	protected function getIdsByLanguage(Language $language, int $page, int $limit, SortingDefinition $sorting): array {
+		$dql = "SELECT e.id FROM {$this->getEntityName()} e WHERE e.lang = '{$language->getCode()}' ORDER BY $sorting";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		$ids = $query->getResult('id');
@@ -268,8 +262,7 @@ class TextRepository extends EntityRepository {
 		return $query->getSingleScalarResult();
 	}
 
-	public function getByOriginalLanguage(Language $language, int $page = 1, int $limit = null, string $orderBy = null): array {
-		$orderBy = $this->normalizeOrderBy($orderBy);
+	public function getByOriginalLanguage(Language $language, int $page = 1, int $limit = null, SortingDefinition $orderBy = null): array {
 		try {
 			$ids = $this->getIdsByOriginalLanguage($language, $page, $limit, $orderBy);
 		} catch (NoResultException $e) {
@@ -278,8 +271,8 @@ class TextRepository extends EntityRepository {
 		return $this->getByIds($ids, $orderBy);
 	}
 
-	protected function getIdsByOriginalLanguage(Language $language, int $page, int $limit, string $orderBy): array {
-		$dql = "SELECT t.id FROM {$this->getEntityName()} t WHERE t.origLang = '{$language->getCode()}' ORDER BY t.$orderBy";
+	protected function getIdsByOriginalLanguage(Language $language, int $page, int $limit, SortingDefinition $sorting): array {
+		$dql = "SELECT e.id FROM {$this->getEntityName()} e WHERE e.origLang = '{$language->getCode()}' ORDER BY $sorting";
 		$query = $this->setPagination($this->_em->createQuery($dql), $page, $limit);
 		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
 		$ids = $query->getResult('id');
@@ -450,18 +443,7 @@ class TextRepository extends EntityRepository {
 		return $bySeries + $byType;
 	}
 
-	protected function normalizeOrderBy($orderBy) {
-		if ($orderBy === null) {
-			return $this->defaultSortingField;
-		}
-		$orderByParts = explode(' ', str_replace('-', ' ', $orderBy));
-		if (count($orderByParts) == 1) {
-			$orderByParts[] = 'asc';
-		}
-		list($field, $order) = $orderByParts;
-		if (!in_array($field, $this->sortableFields) || !in_array(strtolower($order), ['asc', 'desc'])) {
-			return $this->defaultSortingField;
-		}
-		return "$field $order";
+	public function createSortingDefinition(?string $sorting): SortingDefinition {
+		return new SortingDefinition($sorting ?: $this->defaultSortingField, self::ALIAS, $this->sortableFields);
 	}
 }

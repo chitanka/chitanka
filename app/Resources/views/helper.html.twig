@@ -20,3 +20,14 @@
 		<span class="badge nr-of-items" title="{{ title|default('') }}">{{ nrOfItems }}</span>
 	{% endif %}
 {% endmacro %}
+
+{% macro printSortLink(route, routeParams, field, direction, currentSort) %}
+	{% set sort = field ~ '-' ~ direction %}
+	{% set fieldHuman = ('field.'~field)|trans %}
+	<a href="{{ path(route, routeParams|merge({ sort: sort })) }}" class="dropdown-item" title="{{ ('sort.'~direction)|trans({'%field%': fieldHuman}) }}"><span class="fa fa-fw {{ sort == currentSort ? 'fa-check' : '' }}"></span> {{ fieldHuman }} <span class="fa {{ direction == 'asc' ? 'fa-chevron-up' : 'fa-chevron-down' }}"></span></a>
+{% endmacro %}
+
+{% macro printHumanSortOption(sort) %}
+	{# @var sort \App\Entity\Query\SortingItem #}
+	{{ ('field.'~sort.fieldWoAlias)|trans }} <span class="fa {{ sort.direction == 'asc' ? 'fa-chevron-up' : 'fa-chevron-down' }}"></span>
+{% endmacro %}

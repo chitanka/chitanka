@@ -4,6 +4,7 @@
 {% block content %}
 
 	<div class="well">Има {{ pager.total }} книги без връзка към Библиоман.</div>
+	{% include 'listSettings.html.twig' %}
 	{% include 'Book/list.html.twig' %}
 	{% include 'pager.html.twig' %}
 

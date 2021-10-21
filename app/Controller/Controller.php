@@ -14,6 +14,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class Controller extends SymfonyController {
 
+	const PARAM_SORT = 'sort';
+
 	/** The max cache time of the response (in seconds) */
 	protected $responseAge = 3600; // 1 hour
 
@@ -218,5 +220,17 @@ abstract class Controller extends SymfonyController {
 	/** @return Request */
 	private function getRequest() {
 		return $this->get('request_stack')->getMasterRequest();
+	}
+
+	protected function readOptionOrParam(string $option, string $namespace = 'misc') {
+		$fullOptionName = "$namespace.$option";
+		$user = $this->getUser();
+		$storedOption = $user->option($fullOptionName);
+		$param = $this->getRequest()->query->get($option);
+		if ($param !== null && $storedOption !== $param) {
+			$user->setOption($fullOptionName, $param);
+			$this->em()->getUserRepository()->save($user);
+		}
+		return $param ?? $storedOption;
 	}
 }

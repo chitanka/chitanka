@@ -1,0 +1,22 @@
+{% if route is not defined %}
+	{% set route = app.request.attributes.get('_route') %}
+{% endif %}
+{% if routeParams is not defined %}
+	{% set routeParams = app.request.attributes.get('_route_params') %}
+{% endif %}
+{% set routeParams = routeParams|merge(app.request.query.all) %}
+{% import 'helper.html.twig' as _ %}
+<div class="dropdown">
+	{# @var sorting \App\Entity\Query\SortingDefinition #}
+	<button class="btn btn-default dropdown-toggle {{ sorting.isActive ? 'active' : '' }}" type="button" id="sortOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		<span class="fa fa-sort"></span>
+		Подредба <span class="selected-sort-option">{{ sorting.isActive ? _.printHumanSortOption(sorting.items.0) : '' }}</span>
+		<span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="sortOptions">
+		{% for field in sorting.sortableFields %}
+			<li>{{ _.printSortLink(route, routeParams, field, 'asc', sorting.input) }}</li>
+			<li>{{ _.printSortLink(route, routeParams, field, 'desc', sorting.input) }}</li>
+		{% endfor %}
+	</ul>
+</div>

@@ -4,6 +4,7 @@
 {% block content %}
 
 	<div class="well">Има {{ pager.total }} книги без корица.</div>
+	{% include 'listSettings.html.twig' %}
 	{% include 'App:Book:list.html.twig' %}
 	{% include 'App::pager.html.twig' %}
 

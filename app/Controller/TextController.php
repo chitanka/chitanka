@@ -68,11 +68,13 @@ class TextController extends Controller {
 	public function listByTypeAction(Request $request, TextType $type, $page) {
 		$textRepo = $this->em()->getTextRepository();
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
+		$sorting = $textRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'text'));
 		return [
 			'type' => $type,
-			'texts'   => $textRepo->getByType($type, $page, $limit, $request->query->get('sort')),
+			'texts'   => $textRepo->getByType($type, $page, $limit, $sorting),
 			'pager'    => new Pager($page, $textRepo->countByType($type), $limit),
 			'route_params' => ['type' => $type->getCode()],
+			'sorting' => $sorting,
 		];
 	}
 
@@ -86,34 +88,40 @@ class TextController extends Controller {
 			throw $this->createNotFoundException("Няма етикет с код $slug.");
 		}
 		$labels = $labelRepo->getLabelDescendantIdsWithSelf($label);
+		$sorting = $textRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'text'));
 		return [
 			'label' => $label,
 			'parents' => array_reverse($labelRepo->findLabelAncestors($label)),
-			'texts'   => $textRepo->getByLabel($labels, $page, $limit, $request->query->get('sort')),
+			'texts'   => $textRepo->getByLabel($labels, $page, $limit, $sorting),
 			'pager'    => new Pager($page, $textRepo->countByLabel($labels), $limit),
 			'route_params' => ['slug' => $slug],
+			'sorting' => $sorting,
 		];
 	}
 
 	public function listByLanguageAction(Request $request, Language $language, $page) {
 		$textRepo = $this->em()->getTextRepository();
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
+		$sorting = $textRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'text'));
 		return [
 			'language' => $language,
-			'texts'   => $textRepo->getByLanguage($language, $page, $limit, $request->query->get('sort')),
+			'texts'   => $textRepo->getByLanguage($language, $page, $limit, $sorting),
 			'pager'    => new Pager($page, $textRepo->countByLanguage($language), $limit),
 			'route_params' => ['language' => $language->getCode()],
+			'sorting' => $sorting,
 		];
 	}
 
 	public function listByOriginalLanguageAction(Request $request, Language $language, $page) {
 		$textRepo = $this->em()->getTextRepository();
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
+		$sorting = $textRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'text'));
 		return [
 			'language' => $language,
-			'texts'   => $textRepo->getByOriginalLanguage($language, $page, $limit, $request->query->get('sort')),
+			'texts'   => $textRepo->getByOriginalLanguage($language, $page, $limit, $sorting),
 			'pager'    => new Pager($page, $textRepo->countByOriginalLanguage($language), $limit),
 			'route_params' => ['language' => $language->getCode()],
+			'sorting' => $sorting,
 		];
 	}
 
@@ -121,11 +129,13 @@ class TextController extends Controller {
 		$textRepo = $this->em()->getTextRepository();
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$prefix = $letter == '-' ? null : $letter;
+		$sorting = $textRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'text'));
 		return [
 			'letter' => $letter,
-			'texts' => $textRepo->getByPrefix($prefix, $page, $limit, $request->query->get('sort')),
+			'texts' => $textRepo->getByPrefix($prefix, $page, $limit, $sorting),
 			'pager'    => new Pager($page, $textRepo->countByPrefix($prefix), $limit),
 			'route_params' => ['letter' => $letter],
+			'sorting' => $sorting,
 		];
 	}
 

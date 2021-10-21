@@ -394,12 +394,16 @@ class User implements UserInterface, \JsonSerializable {
 			$user = self::newFromSession();
 		} else if ( self::isSetCookie() ) {
 			$user = self::newFromCookie($repo);
-			$_SESSION[self::U_SESSION] = $user->toArray();
+			$user->storeInSession();
 		} else {
 			$user = new User;
 		}
 
 		return $user;
+	}
+
+	private function storeInSession() {
+		$_SESSION[self::U_SESSION] = $this->toArray();
 	}
 
 	/** @return bool */
@@ -510,6 +514,7 @@ class User implements UserInterface, \JsonSerializable {
 
 	public function setOption($name, $val) {
 		$this->opts[$name] = $val;
+		$this->storeInSession();
 	}
 
 	public function isGod() {

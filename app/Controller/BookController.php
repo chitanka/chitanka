@@ -53,12 +53,14 @@ class BookController extends Controller {
 			throw $this->createNotFoundException("Няма категория с код $slug.");
 		}
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
+		$sorting = $bookRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'book'));
 		return [
 			'category' => $category,
 			'parents' => array_reverse($categoryRepo->findCategoryAncestors($category)),
-			'books' => $bookRepo->findByCategory($categoryRepo->getCategoryDescendantIdsWithSelf($category), $page, $limit),
+			'books' => $bookRepo->findByCategory($categoryRepo->getCategoryDescendantIdsWithSelf($category), $page, $limit, $sorting),
 			'pager' => new Pager($page, $category->getNrOfBooks(), $limit),
 			'route_params' => ['slug' => $slug],
+			'sorting' => $sorting,
 		];
 	}
 
@@ -66,20 +68,24 @@ class BookController extends Controller {
 		$bookRepo = $this->em()->getBookRepository();
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$prefix = $letter == '-' ? null : $letter;
+		$sorting = $bookRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'book'));
 		return [
 			'letter' => $letter,
-			'books' => $bookRepo->findByPrefix($prefix, $page, $limit),
+			'books' => $bookRepo->findByPrefix($prefix, $page, $limit, $sorting),
 			'pager'    => new Pager($page, $bookRepo->countByPrefix($prefix), $limit),
 			'route_params' => ['letter' => $letter],
+			'sorting' => $sorting,
 		];
 	}
 
 	public function listWoCoverAction(Request $request, $page) {
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$bookRepo = $this->em()->getBookRepository();
+		$sorting = $bookRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'book'));
 		return [
-			'books' => $bookRepo->findWithMissingCover($page, $limit),
+			'books' => $bookRepo->findWithMissingCover($page, $limit, $sorting),
 			'pager' => new Pager($page, $bookRepo->getCountWithMissingCover(), $limit),
+			'sorting' => $sorting,
 		];
 	}
 
@@ -89,9 +95,11 @@ class BookController extends Controller {
 	public function listWoBibliomanAction(Request $request, $page) {
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$bookRepo = $this->em()->getBookRepository();
+		$sorting = $bookRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'book'));
 		return [
-			'books' => $bookRepo->findWithMissingBibliomanId($page, $limit),
+			'books' => $bookRepo->findWithMissingBibliomanId($page, $limit, $sorting),
 			'pager' => new Pager($page, $bookRepo->getCountWithMissingBibliomanId(), $limit),
+			'sorting' => $sorting,
 		];
 	}
 

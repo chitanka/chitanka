@@ -26,6 +26,7 @@
 		</ul>
 
 		<div class="superlist">
+			{% include 'listSettings.html.twig' %}
 			{% include 'App:Text:list.html.twig' %}
 			{% include 'App:Text:multi_download_form.html.twig' with { filename: 'label-'~label.name~'_'~pager.page } %}
 		</div>

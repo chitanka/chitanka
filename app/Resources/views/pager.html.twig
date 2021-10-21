@@ -1,6 +1,6 @@
 {% if pager is defined and pager.show %}
 	{% set route = route|default(current_route) %}
-	{% set route_params = route_params|default({}) %}
+	{% set route_params = route_params|default({})|merge(app.request.query.all) %}
 	<nav class="text-center">
 	<ul class="pagination">
 		{% if pager.has_prev %}
