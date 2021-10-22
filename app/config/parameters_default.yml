@@ -67,7 +67,6 @@ parameters:
     # the ebook-convert binary must live in the bin directory or be reachable through the PATH environment variable
     # ebook-convert is part of calibre
     pdf_converter_command: ebook-convert INPUT_FILE OUTPUT_FILE --pdf-page-numbers --change-justification=justify
-    pdf_converter_url: /converter.php?out=pdf
 
     # mobi download is disabled in the standard installation
     mobi_download_enabled: false
@@ -77,7 +76,10 @@ parameters:
     # alternative with kindlegen - by default it includes too much stuff in the final file
     # the kindlegen binary must live in the bin directory or be reachable through the PATH environment variable
     #mobi_converter_command: kindlegen INPUT_FILE -o OUTPUT_FILE_BASENAME
-    mobi_converter_url: /converter.php?out=mobi
+
+    # these formats are included in the download links for books and texts
+    # make sure to enable them, e.g. 'pdf_download_enabled: true'
+    download_formats_external_converter: ~ # [pdf, mobi]
 
     workroom_remote: false
     workroom_root: ~
@@ -94,6 +96,7 @@ parameters:
     rocketchat.username: ~
 
     mirror_sites: ~
+    mirror_sites_for_converter: ~
 
     global_info_message: Това е огледало на <a href="http://chitanka.info">Моята библиотека</a>.
     analytics_snippet: ~

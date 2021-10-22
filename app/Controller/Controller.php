@@ -212,8 +212,7 @@ abstract class Controller extends SymfonyController {
 
 	public function configureExtraDownloadFormats() {
 		if (class_exists(BaseWork::class, false)) {
-			BaseWork::$MOBI_ENABLED = $this->container->getParameter('mobi_download_enabled');
-			BaseWork::$PDF_ENABLED = $this->container->getParameter('pdf_download_enabled');
+			BaseWork::$EXTRA_FORMATS = $this->container->getParameter('download_formats_external_converter') ?: [];
 		}
 	}
 

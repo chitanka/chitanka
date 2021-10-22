@@ -894,13 +894,7 @@ EOS;
 	public function getOutputFormats() {
 		$outputFormats = [];
 		if (in_array(self::FORMAT_SFB, $this->getFormats())) {
-			$outputFormats = array_merge($outputFormats, ['fb2.zip', 'epub', 'txt.zip', 'sfb.zip']);
-			if (self::$MOBI_ENABLED) {
-				$outputFormats[] = self::FORMAT_MOBI;
-			}
-			if (self::$PDF_ENABLED) {
-				$outputFormats[] = self::FORMAT_PDF;
-			}
+			$outputFormats = array_merge($outputFormats, ['fb2.zip', 'epub', 'txt.zip', 'sfb.zip'], self::$EXTRA_FORMATS);
 		}
 		foreach ([self::FORMAT_DJVU, self::FORMAT_PDF, self::FORMAT_PIC] as $format) {
 			if (in_array($format, $this->getFormats())) {

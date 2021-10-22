@@ -16,8 +16,7 @@ abstract class BaseWork extends Entity {
 	const FORMAT_MOBI = 'mobi';
 	const FORMAT_PDF = 'pdf';
 
-	public static $MOBI_ENABLED = false;
-	public static $PDF_ENABLED = false;
+	public static $EXTRA_FORMATS = [];
 
 	public static $ratings = [
 		6 => 'Шедьовър',

@@ -1,16 +1,10 @@
 <?php namespace App\Generator;
 
-use App\Entity\BaseWork;
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Filesystem\Filesystem;
 
 class EpubConverter {
-
-	private const SUPPORTED_FORMATS = [
-		BaseWork::FORMAT_MOBI,
-		BaseWork::FORMAT_PDF,
-	];
 
 	/** @var ParameterBag */
 	private $parameters;
@@ -102,7 +96,8 @@ class EpubConverter {
 	}
 
 	private function assertSupportedTargetFormat(string $targetFormat) {
-		if ( ! in_array($targetFormat, self::SUPPORTED_FORMATS)) {
+		$key = "{$targetFormat}_download_enabled";
+		if ( ! $this->parameters->has($key)) {
 			throw new InvalidArgumentException("Unsupported target format: '{$targetFormat}'");
 		}
 	}

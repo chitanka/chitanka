@@ -164,16 +164,6 @@ class TextController extends Controller {
 					$this->findText($id);
 				}
 				return $this->urlRedirect($this->getWebRoot() . $service->generateFile($ids, $_format, $request->get('filename')));
-			case 'pdf':
-				if ( ! $this->container->getParameter('pdf_download_enabled')) {
-					throw $this->createNotFoundException("Няма поддръжка на формата PDF.");
-				}
-				return $this->urlRedirect($this->generateConverterUrl($this->container->getParameter('pdf_converter_url'), $id));
-			case 'mobi':
-				if ( ! $this->container->getParameter('mobi_download_enabled')) {
-					throw $this->createNotFoundException("Няма поддръжка на формата MOBI.");
-				}
-				return $this->urlRedirect($this->generateConverterUrl($this->container->getParameter('mobi_converter_url'), $id));
 			case 'fb2':
 				Setup::doSetup($this->container);
 				return $this->asText($this->findText($id, true)->getContentAsFb2(), 'application/xml');
@@ -189,6 +179,15 @@ class TextController extends Controller {
 			case 'json':
 				return ['text' => $this->findText($id, true)];
 		}
+
+		$converterFormatKey = "{$_format}_download_enabled";
+		if ($this->container->hasParameter($converterFormatKey)) {
+			if ( ! $this->container->getParameter($converterFormatKey)) {
+				throw $this->createNotFoundException("Поддръжката на формата {$_format} не е включена.");
+			}
+			return $this->urlRedirect($this->generateConverterUrl($id, $_format));
+		}
+
 		throw $this->createNotFoundException("Неизвестен формат: $_format");
 	}
 
@@ -249,9 +248,10 @@ class TextController extends Controller {
 		return $this->urlRedirect("$mirrorServer/text/$id.$format?filename=$requestedFilename");
 	}
 
-	protected function generateConverterUrl(string $urlTemplate, string $id): string {
+	protected function generateConverterUrl(string $id, string $targetFormat): string {
 		$epubUrl = $this->generateAbsoluteUrl('text_show', ['id' => $id, '_format' => Text::FORMAT_EPUB]);
-		return (new DownloadUrlGenerator())->generateConverterUrl($urlTemplate, $epubUrl);
+		$mirrors = $this->container->getParameter('mirror_sites_for_converter') ?: [];
+		return (new DownloadUrlGenerator())->generateConverterUrl($epubUrl, $targetFormat, $mirrors);
 	}
 
 	public function showPartAction(Request $request, $id, $part, $_format) {
