@@ -221,10 +221,10 @@ abstract class Controller extends SymfonyController {
 		return $this->get('request_stack')->getMasterRequest();
 	}
 
-	protected function readOptionOrParam(string $option, string $namespace = 'misc') {
+	protected function readOptionOrParam(string $option, string $namespace = 'misc'): string {
 		$fullOptionName = "$namespace.$option";
 		$user = $this->getUser();
-		$storedOption = $user->option($fullOptionName);
+		$storedOption = $user->option($fullOptionName, '');
 		$param = $this->getRequest()->query->get($option);
 		if ($param !== null && $storedOption !== $param) {
 			$user->setOption($fullOptionName, $param);

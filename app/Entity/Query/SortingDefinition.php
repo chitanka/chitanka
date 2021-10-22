@@ -11,7 +11,7 @@ class SortingDefinition {
 	/** @var SortingItem[] */
 	public $items = [];
 
-	public function __construct(?string $input, string $entityAlias = null, array $sortableFields = []) {
+	public function __construct(string $input, string $entityAlias = null, array $sortableFields = []) {
 		$this->input = $input;
 		$this->sortableFields = $sortableFields;
 

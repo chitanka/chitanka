@@ -235,7 +235,7 @@ class BookRepository extends EntityRepository {
 			->getSingleScalarResult();
 	}
 
-	public function createSortingDefinition(?string $sorting): SortingDefinition {
+	public function createSortingDefinition(string $sorting): SortingDefinition {
 		return new SortingDefinition($sorting ?: $this->defaultSortingField, self::ALIAS, $this->sortableFields);
 	}
 }
