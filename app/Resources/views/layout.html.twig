@@ -66,10 +66,6 @@
 		</div>
 	{% endif %}
 
-	{% if project_links is defined and project_links is not empty %}
-		{% include 'App::projects_toolbar.html.twig' %}
-	{% endif %}
-
 	<div id="content-wrapper" class="clearfix p_{{ current_route }}">
 
 		<div id="main-content-wrapper">
@@ -118,6 +114,9 @@
 			{% block navlinks %}
 				<div class="sidebar-menu">
 				{{ navlinks|raw }}
+					{% if project_links is defined and project_links is not empty %}
+						{% include 'projects_toolbar.html.twig' %}
+					{% endif %}
 				</div>
 			{% endblock %}
 

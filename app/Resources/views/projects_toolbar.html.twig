@@ -1,18 +1,8 @@
-<nav id="project-links" class="navbar navbar-default project-links" role="navigation">
-	<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#project-links-navbar">
-			<span class="sr-only">Показване на проектните връзки</span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		</button>
-	</div>
-
-	<div class="collapse navbar-collapse" id="project-links-navbar">
-		<ul class="nav nav-justified">
-			{% for project_link, project_name in project_links %}
-				<li id="project-link-{{ project_name }}"><a href="{{ project_link }}">{{ project_name }}</a></li>
-			{% endfor %}
-		</ul>
-	</div>
+<nav id="project-links" class="navbody" role="navigation">
+	<h3>Проекти</h3>
+	<ul class="textmenu">
+		{% for project_link, project_name in project_links %}
+			<li id="project-link-{{ project_name }}"><a href="{{ project_link }}">{{ project_name }}</a></li>
+		{% endfor %}
+	</ul>
 </nav>
