@@ -35,9 +35,9 @@
 	</div>
 {% endmacro %}
 
-{% macro download_link(book, format, title) %}
+{% macro download_link(book, format) %}
 	{% spaceless %}
-	<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug, '_format': format}) }}" title="{{title|default('Сваляне във формат '~format)}}" class="btn btn-default dl dl-{{ format|replace({'.zip': ''}) }} action {{ book.removedNotice is not empty ? 'hidden' : '' }}"><span class="sr-only">{{ format }}</span></a>
+	<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug, '_format': format}) }}" title="{{ format == 'pic' ? 'Преглед в галерия' : 'Сваляне във формат '~format }}" class="btn btn-default dl dl-{{ format|replace({'.zip': ''}) }} action {{ book.removedNotice is not empty ? 'hidden' : '' }}"><span class="sr-only">{{ format }}</span></a>
 	{% endspaceless %}
 {% endmacro %}
 
