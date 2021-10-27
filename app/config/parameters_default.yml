@@ -70,12 +70,15 @@ parameters:
 
     # mobi download is disabled in the standard installation
     mobi_download_enabled: false
-    # the ebook-convert binary must live in the bin directory or be reachable through the PATH environment variable
-    # ebook-convert is part of calibre
     mobi_converter_command: ebook-convert INPUT_FILE OUTPUT_FILE
     # alternative with kindlegen - by default it includes too much stuff in the final file
     # the kindlegen binary must live in the bin directory or be reachable through the PATH environment variable
     #mobi_converter_command: kindlegen INPUT_FILE -o OUTPUT_FILE_BASENAME
+
+    # Custom download formats can be enabled through the options FORMAT_download_enabled and FORMAT_converter_command.
+    # Example for docx:
+    # docx_download_enabled: true
+    # docx_converter_command: ebook-convert INPUT_FILE OUTPUT_FILE --base-font-size=14 --minimum-line-height=160 --change-justification=justify
 
     # these formats are included in the download links for books and texts
     # make sure to enable them, e.g. 'pdf_download_enabled: true'
