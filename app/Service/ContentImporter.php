@@ -332,6 +332,7 @@ class ContentImporter {
 	 * @param string $column
 	 */
 	private function getObjectId($table, $query, $column = null) {
+		$query = trim($query);
 		$defaultColumn = 'slug';
 		if ($column === null) {
 			return $this->getObjectId($table, $query, $defaultColumn) ?? $this->getObjectId($table, $query, 'name');
