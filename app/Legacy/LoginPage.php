@@ -97,13 +97,13 @@ class LoginPage extends RegisterPage {
 		<span class="input-group-addon"><span class="fa fa-user"></span></span>
 		<label for="username" class="sr-only">Потребителско име</label>
 		<input type="text" class="form-control" id="username" name="username" placeholder="Потребителско име" value="{$this->username}" required autofocus>
-		<span class="input-group-addon"><a href="{$this->controller->generateUrlForLegacyCode('request_username')}" title="Заявка за забравено име"><span class="fa fa-question"></span></a></span>
+		<span class="input-group-addon"><a href="{$this->controller->generateUrlForLegacyCode('request_username')}" title="Заявка за забравено име" tabindex="-1"><span class="fa fa-question"></span></a></span>
 	</div>
 	<div class="input-group">
 		<span class="input-group-addon"><span class="fa fa-key"></span></span>
 		<label for="username" class="sr-only">Парола</label>
 		<input type="password" class="form-control" id="password" name="password" placeholder="Парола" required>
-		<span class="input-group-addon"><a href="{$this->controller->generateUrlForLegacyCode('request_password')}" title="Заявка за забравена парола"><span class="fa fa-question"></span></a></span>
+		<span class="input-group-addon"><a href="{$this->controller->generateUrlForLegacyCode('request_password')}" title="Заявка за забравена парола" tabindex="-1"><span class="fa fa-question"></span></a></span>
 	</div>
 	<div class="checkbox">
 		<label>
