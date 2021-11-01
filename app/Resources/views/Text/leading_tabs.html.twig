@@ -12,7 +12,7 @@
 		<li><a href="#article{{ id_suffix }}" data-toggle="tab"><span class="fa fa-file-text-o"></span> Статия</a></li>
 	{% endif %}
 	{% if juxtaposedTexts is defined and juxtaposedTexts is not empty %}
-		<li><a href="#text-juxtaposed{{ id_suffix }}" data-toggle="tab"><span class="fa fa-exchange"></span> Съпоставени текстове</a></li>
+		<li><a href="#text-juxtaposed{{ id_suffix }}" data-toggle="tab"><span class="fa fa-exchange"></span> Съпоставени текстове ({{ juxtaposedTexts|length }})</a></li>
 	{% endif %}
 </ul>
 
