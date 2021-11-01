@@ -368,7 +368,7 @@ option[selected=selected],
 	display: inline;
 	position: absolute;
 	top: @contentMarginTop;
-	width: 15em;
+	width: 12em;
 	border: none;
 }
 .user-tools-menu {
@@ -379,6 +379,13 @@ option[selected=selected],
 	.level-0 {
 		display: inline;
 		margin-right: 1em;
+		white-space: nowrap;
+		.user-name {
+			display: inline-block;
+			width: 10em;
+			overflow: hidden;
+			vertical-align: bottom;
+		}
 	}
 	a {
 		text-decoration: none;
@@ -406,10 +413,10 @@ option[selected=selected],
 
 // формуляра за търсене
 #search {
-	z-index: 2;
+	z-index: 3;
 	position: absolute;
 	top: @contentMarginTop;
-	width: 50%;
+	width: 40%;
 	border: none;
 	.form-group, .input-group {
 		width: 100%;
@@ -421,6 +428,10 @@ option[selected=selected],
 		color: inherit;
 		background-color: inherit;
 	}
+}
+#q:focus {
+	width: 80vw;
+	background: @mainBgColor;
 }
 #goto-top-link {
 	display: none;

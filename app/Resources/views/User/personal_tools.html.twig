@@ -2,12 +2,12 @@
 	<h3 class="sr-only">Лични инструменти</h3>
 	<ul class="user-tools-menu" role="menu">
 	{% if _user.isAuthenticated() %}
-		<li class="level-0 dropdown navbar-right">
+		<li class="level-0 dropdown">
 			<a class="dropdown-toggle user-tools-toggle" data-toggle="dropdown" href="#">
 				<span class="fa fa-user"></span> <span class="user-name">{{ _user.username }}</span>
 				<span class="fa fa-caret-down"></span>
 			</a>
-			<ul class="dropdown-menu">
+			<ul class="dropdown-menu dropdown-menu-right">
 				<li class="user-profile"><a href="{{ path('user_show', {'username': _user.username}) }}" title="Лична страница — {{ _user.username }}"><span class="fa fa-user"></span> Профил</a></li>
 				<li class="user-settings"><a href="{{ path('user_edit', {'username': _user.username}) }}" title="Потребителски настройки"><span class="fa fa-gear"></span> Настройки</a></li>
 				<li role="separator" class="divider"></li>
@@ -19,11 +19,11 @@
 		</li>
 	{% else %}
 		<li class="level-0 user-signin"><a href="{{ path('login') }}"><span class="fa fa-sign-in"></span> Вход</a></li>
-		<li class="level-0 dropdown navbar-right">
+		<li class="level-0 dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 				<span class="fa fa-caret-down"></span>
 			</a>
-			<ul class="dropdown-menu">
+			<ul class="dropdown-menu dropdown-menu-right">
 				<li class="user-register"><a href="{{ path('register') }}"><span class="fa fa-user"></span> Регистрация</a></li>
 			</ul>
 		</li>
