@@ -83,7 +83,7 @@ class RegisterPage extends Page {
 		if ( $isValid !== true ) {
 			return "Знакът „{$isValid}“ не е позволен в потребителското име.";
 		}
-		if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+		if ($this->email && !filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
 			return 'Въведеният адрес за електронна поща е невалиден.';
 		}
 		return '';
