@@ -107,6 +107,10 @@
 				<a href="{{ path('homepage') }}" title="Към началната страница"><span class="text-hide">Моята библиотека</span><span></span></a>
 			</div>
 
+			{% block search_form %}
+				{% include 'App::search_form.html.twig' %}
+			{% endblock %}
+
 			{% block personal_tools %}
 				{{ render_esi(controller('App:User:personalTools')) }}
 			{% endblock %}
@@ -118,10 +122,6 @@
 						{% include 'projects_toolbar.html.twig' %}
 					{% endif %}
 				</div>
-			{% endblock %}
-
-			{% block search_form %}
-				{% include 'App::search_form.html.twig' %}
 			{% endblock %}
 
 		{% endblock %}
