@@ -150,3 +150,6 @@ parameters:
         #- searches
         #- comments
         #- forum_posts
+
+    liternews_feed_url: https://planet.chitanka.info/atom.php
+    forum_feed_url: https://forum.chitanka.info/feed.php?c=LIMIT

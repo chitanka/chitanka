@@ -25,7 +25,7 @@ class MainController extends Controller {
 			$vars['texts'] = $this->em()->getTextRevisionRepository()->getLatest(self::LATEST_TEXTS_LIMIT);
 		}
 		if (in_array('liter_posts', $sections)) {
-			$vars['liter_posts'] = LiternewsFeed::fetchLatest(self::LATEST_LITERNEWS_LIMIT);
+			$vars['liter_posts'] = (new LiternewsFeed($this->getParameter('liternews_feed_url')))->fetchLatest(self::LATEST_LITERNEWS_LIMIT);
 		}
 		if (in_array('searches', $sections)) {
 			$vars['searches'] = $this->em()->getSearchStringRepository()->getLatest(self::LATEST_SEARCHES_LIMIT);
@@ -34,7 +34,7 @@ class MainController extends Controller {
 			$vars['comments'] = $this->em()->getTextCommentRepository()->getLatest(self::LATEST_COMMENTS_LIMIT);
 		}
 		if (in_array('forum_posts', $sections)) {
-			$vars['forum_posts'] = ForumFeed::fetchLatest(self::LATEST_FORUM_POSTS_LIMIT);
+			$vars['forum_posts'] = (new ForumFeed($this->getParameter('forum_feed_url')))->fetchLatest(self::LATEST_FORUM_POSTS_LIMIT);
 		}
 		return $vars;
 	}

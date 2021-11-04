@@ -4,12 +4,17 @@ class LiternewsFeed {
 
 	const LATEST_LIMIT = 3;
 
-	public static function fetchLatest($limit = self::LATEST_LIMIT) {
-		$feedUrl = 'https://planet.chitanka.info/atom.xml';
+	private $feedUrl;
+
+	public function __construct(string $feedUrl) {
+		$this->feedUrl = $feedUrl;
+	}
+
+	public function fetchLatest(int $limit = self::LATEST_LIMIT) {
 		$xsl = __DIR__.'/transformers/forum-atom-compact.xsl';
 
 		$fetcher = new FeedFetcher();
-		$response = $fetcher->fetchAndTransform($feedUrl, $xsl);
+		$response = $fetcher->fetchAndTransform($this->feedUrl, $xsl);
 		return $response->limitArticles($limit)->cleanup();
 	}
 }
