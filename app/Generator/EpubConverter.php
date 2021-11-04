@@ -26,16 +26,20 @@ class EpubConverter {
 			throw new InvalidArgumentException("The target format '{$targetFormat}' does not have a shell converter command.");
 		}
 
-		$cachedOutputFileStore = new CachedOutputFileStore($this->cacheDir, $epubUrl, $targetFormat);
-		$cachedOutputFile = $cachedOutputFileStore->get();
+		$cachedOutputFileStore = new CachedOutputFileStore($this->cacheDir, $epubUrl);
+		$cachedOutputFile = $cachedOutputFileStore->get($targetFormat);
 		if ($cachedOutputFile) {
 			return $cachedOutputFile;
 		}
 
-		$epubFile = $this->downloadEpub($epubUrl);
-		$epubFile->saveAt($this->cacheDir);
+		$storedEpubFile = $cachedOutputFileStore->get('epub');
+		if (!$storedEpubFile) {
+			$epubFile = $this->downloadEpub($epubUrl);
+			$epubFile->saveAt($this->cacheDir);
+			$storedEpubFile = $epubFile->path;
+		}
 
-		$outputFile = $this->convertFile($commandTemplate, $epubFile->path, $targetFormat);
+		$outputFile = $this->convertFile($commandTemplate, $storedEpubFile, $targetFormat);
 		$cachedOutputFileStore->set($outputFile);
 		return $outputFile;
 	}
@@ -119,7 +123,7 @@ class DownloadedFile {
 	public $contents;
 	public $path;
 
-	public function __construct($name, $contents) {
+	public function __construct($name, $contents = '') {
 		$this->name = $name;
 		$this->contents = $contents;
 	}
@@ -132,27 +136,29 @@ class DownloadedFile {
 }
 
 class CachedOutputFileStore {
+	private $cacheDir;
 	private $store;
 	private $fs;
 
-	public function __construct(string $cacheDir, string $sourceUrl, string $outputFormat) {
-		$this->store = "$cacheDir/$outputFormat-".md5($sourceUrl).'.file';
+	public function __construct(string $cacheDir, string $sourceUrl) {
+		$this->cacheDir = $cacheDir;
+		$this->store = "$cacheDir/output-".md5($sourceUrl).'.file';
 		$this->fs = new Filesystem();
 	}
 
-	public function get(): ?string {
+	public function get(string $outputFormat): ?string {
 		if ( ! $this->fs->exists($this->store)) {
 			return null;
 		}
-		$cachedOutputFile = trim(file_get_contents($this->store));
+		$cachedOutputFile = "$this->cacheDir/". trim(file_get_contents($this->store)) .".$outputFormat";
 		if ( ! $this->fs->exists($cachedOutputFile)) {
 			return null;
 		}
-		$this->fs->touch($cachedOutputFile);
 		return $cachedOutputFile;
 	}
 
 	public function set(string $outputFile) {
-		$this->fs->dumpFile($this->store, $outputFile);
+		$baseNameWoExtension = basename(str_replace(strrchr($outputFile, '.'), '', $outputFile));
+		$this->fs->dumpFile($this->store, $baseNameWoExtension);
 	}
 }
