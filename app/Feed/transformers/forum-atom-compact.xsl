@@ -30,7 +30,7 @@
 
 <xsl:template match="atom:feed">
 	<xsl:for-each select="atom:entry">
-		<article class="post collapsible">
+		<my-article class="post collapsible">
 			<xsl:apply-templates select="atom:source"/>
 			<h1>
 				<a>
@@ -50,7 +50,7 @@
 			<div>
 				<xsl:apply-templates select="atom:content"/>
 			</div>
-		</article>
+		</my-article>
 	</xsl:for-each>
 </xsl:template>
 
