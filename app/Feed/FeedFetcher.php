@@ -5,6 +5,7 @@ use App\Legacy\Legacy;
 class FeedFetcher {
 
 	const DEFAULT_CACHE_DAYS = 0.02;
+	const DEFAULT_XSL = __DIR__.'/transformers/forum-atom-compact.xsl';
 
 	/**
 	 * @param string $xmlFile    An XML feed document
@@ -12,7 +13,7 @@ class FeedFetcher {
 	 * @param float $cacheDays   Cache the fetched document for given days
 	 * @return FeedResponse
 	 */
-	public function fetchAndTransform($xmlFile, $xslFile, $cacheDays = self::DEFAULT_CACHE_DAYS) {
+	public function fetchAndTransform($xmlFile, $xslFile = self::DEFAULT_XSL, $cacheDays = self::DEFAULT_CACHE_DAYS) {
 		$proc = new \XSLTProcessor();
 		$xsl = new \DOMDocument();
 

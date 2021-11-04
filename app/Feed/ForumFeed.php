@@ -12,10 +12,8 @@ class ForumFeed {
 
 	public function fetchLatest(int $limit = self::LATEST_LIMIT) {
 		$feedUrl = str_replace('LIMIT', $limit, $this->feedUrl);
-		$xsl = __DIR__.'/transformers/forum-atom-compact.xsl';
-
 		$fetcher = new FeedFetcher();
-		$response = new ForumFeedResponse($fetcher->fetchAndTransform($feedUrl, $xsl));
+		$response = new ForumFeedResponse($fetcher->fetchAndTransform($feedUrl));
 		return $response->cleanup();
 	}
 }

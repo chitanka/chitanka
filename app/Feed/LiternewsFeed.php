@@ -11,10 +11,8 @@ class LiternewsFeed {
 	}
 
 	public function fetchLatest(int $limit = self::LATEST_LIMIT) {
-		$xsl = __DIR__.'/transformers/forum-atom-compact.xsl';
-
 		$fetcher = new FeedFetcher();
-		$response = $fetcher->fetchAndTransform($this->feedUrl, $xsl);
+		$response = $fetcher->fetchAndTransform($this->feedUrl);
 		return $response->limitArticles($limit)->cleanup();
 	}
 }
