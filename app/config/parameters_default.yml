@@ -108,7 +108,7 @@ parameters:
     allow_remote_wiki_article: true
     allow_removed_notice: false
     dev.web_profiler_toolbar: false
-    git.path: LC_ALL=C git
+    git.path: git
     rsync.path: rsync
     rsync.url.content: rsync.chitanka.info::content
     rsync.url.src: rsync.chitanka.info::src

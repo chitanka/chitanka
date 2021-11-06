@@ -171,7 +171,7 @@ class AutoUpdateCommand extends Command {
 		if (!$gitBinary) {
 			throw new \Exception('The git binary is not configured.');
 		}
-		return new FetchGitResponse($this->runShellCommand("cd \"$targetDir\" && \"$gitBinary\" pull"));
+		return new FetchGitResponse($this->runShellCommand("cd \"$targetDir\" && LC_ALL=C \"$gitBinary\" pull"));
 	}
 
 	public function runRsyncCommand(string $remoteSource, string $localTarget, string $options = null): FetchRsyncResponse {
