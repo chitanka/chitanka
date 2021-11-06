@@ -2,6 +2,6 @@
 
 {% set title = 'Избрани произведения от ' ~ user.username %}
 {% block content %}
-	{% include 'App:User:bookmarks_list.html.twig' %}
+	{% include 'User/bookmarks_list.html.twig' %}
 	{% include 'App::pager.html.twig' %}
 {% endblock %}

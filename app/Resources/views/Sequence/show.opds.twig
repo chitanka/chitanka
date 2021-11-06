@@ -6,6 +6,6 @@
 {% set subtitle = 'издателска поредица' %}
 {% block content %}
 	{% for book in books %}
-		{% include 'App:Book:item.opds.twig' %}
+		{% include 'Book/item.opds.twig' %}
 	{% endfor %}
 {% endblock %}

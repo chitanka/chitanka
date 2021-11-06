@@ -5,6 +5,6 @@
 {% set subtitle = label.name %}
 {% set link_self = helper.path(current_route, {'slug': label.slug}) %}
 {% block content %}
-	{% include 'App:Text:list.opds.twig' %}
+	{% include 'Text/list.opds.twig' %}
 	{% include 'App::pager.opds.twig' %}
 {% endblock %}

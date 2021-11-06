@@ -4,9 +4,9 @@
 {% block content %}
 
 	{% if message is defined %}
-		{% include 'App:Email:_'~message~'.html.twig' %}
+		{% include 'Email/_'~message~'.html.twig' %}
 	{% else %}
-		{% include 'App:Email:_form.html.twig' %}
+		{% include 'Email/_form.html.twig' %}
 	{% endif %}
 
 {% endblock %}

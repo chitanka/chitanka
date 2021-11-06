@@ -7,21 +7,21 @@
 {% endblock %}
 {% block content %}
 	<h2><a href="{{ path('texts_by_alpha_index') }}">По азбучен ред</a></h2>
-	{% include 'App:Text:navigation.html.twig' with {'letter': ''} %}
+	{% include 'Text/navigation.html.twig' with {'letter': ''} %}
 
 	<h2><a href="{{ path('texts_by_label_index') }}">По етикет</a></h2>
 	<div class="row">
 		{% for labelGroup, labelsInGroup in labels %}
 			<div class="col-md-6">
 				<h3>{{ ('label.group.'~labelGroup)|trans }}</h3>
-				{% include 'App:Text:label_tree.html.twig' with {labels: labelsInGroup, level: 0} %}
+				{% include 'Text/label_tree.html.twig' with {labels: labelsInGroup, level: 0} %}
 			</div>
 		{% endfor %}
 	</div>
 
 	<h2><a href="{{ path('texts_by_type_index') }}">По форма</a></h2>
 	<div class="two-columns">
-		{% include 'App:Text:type_list.html.twig' %}
+		{% include 'Text/type_list.html.twig' %}
 	</div>
 
 	<h2><a href="{{ path('texts_by_language_index') }}">По език</a></h2>

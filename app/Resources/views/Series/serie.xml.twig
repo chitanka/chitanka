@@ -5,7 +5,7 @@
 {% if serie.authors is defined %}
 	{% for person in serie.authors %}
 		<author>
-			{% include 'App:Person:person.xml.twig' %}
+			{% include 'Person/person.xml.twig' %}
 		</author>
 	{% endfor %}
 {% endif %}

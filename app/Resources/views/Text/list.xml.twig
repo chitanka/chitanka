@@ -14,17 +14,17 @@
 		<type>{{ text.type }}</type>
 		{% for person in text.authors %}
 			<author>
-				{% include 'App:Person:person.xml.twig' %}
+				{% include 'Person/person.xml.twig' %}
 			</author>
 		{% endfor %}
 		{% for person in text.translators %}
 			<translator>
-				{% include 'App:Person:person.xml.twig' %}
+				{% include 'Person/person.xml.twig' %}
 			</translator>
 		{% endfor %}
 		{% if text.series is not empty %}
 			<serie{% if text.sernr is not empty %} nr="{{ text.sernr }}"{% endif %}>
-				{% include 'App:Series:serie.xml.twig' with {'serie': text.series} %}
+				{% include 'Series/serie.xml.twig' with {'serie': text.series} %}
 			</serie>
 		{% endif %}
 		{% if text.source is not empty %}<source>{{ text.source }}</source>{% endif %}

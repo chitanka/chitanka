@@ -1,4 +1,4 @@
-{% extends 'App::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% set itemtype = "CreativeWork" %}
 
@@ -11,7 +11,7 @@
 
 {% block content %}
 	{% if part <= 1 %}
-		{% include 'App:Text:annotation.html.twig' %}
+		{% include 'Text/annotation.html.twig' %}
 	{% endif %}
 
 	<p class="sr-only"><a href="#textstart{{ id_suffix|default('') }}">Към текста</a></p>
@@ -21,9 +21,9 @@
 	{% if text.removedNotice is not empty %}
 		<div class="removed-notice">{{ text.removedNotice|raw }}</div>
 	{% else %}
-		{% include 'App:Text:toc.html.twig' %}
-		{% include 'App:Text:content.html.twig' %}
-		{% include 'App:Text:end_message.html.twig' %}
+		{% include 'Text/toc.html.twig' %}
+		{% include 'Text/content.html.twig' %}
+		{% include 'Text/end_message.html.twig' %}
 	{% endif %}
 
 {% endblock %}

@@ -10,6 +10,6 @@
 		$this->makeNextBookWorkLink(true)
 	#}
 	{% if similar_texts is defined and similar_texts|length > 0 %}
-		{% include 'App:Text:similar_texts.html.twig' with {'texts': similar_texts} %}
+		{% include 'Text/similar_texts.html.twig' with {'texts': similar_texts} %}
 	{% endif %}
 {% endif %}

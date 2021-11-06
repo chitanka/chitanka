@@ -5,7 +5,7 @@
 {% block title %}{{ ('translators.by.country.'~by)|trans }}: {{ country.name }}{% endblock %}
 {% block content %}
 
-	{% include 'App:Translator:list.opds.twig' %}
+	{% include 'Translator/list.opds.twig' %}
 	{% include 'App::pager.opds.twig' %}
 
 {% endblock %}

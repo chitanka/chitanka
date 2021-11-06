@@ -7,8 +7,8 @@
 {% endblock %}
 {% block content %}
 	<h2><a href="{{ path('books_by_alpha_index') }}">По азбучен ред</a></h2>
-	{% include 'App:Book:navigation.html.twig' with {'letter': ''} %}
+	{% include 'Book/navigation.html.twig' with {'letter': ''} %}
 
 	<h2><a href="{{ path('books_by_category_index') }}">По категория</a></h2>
-	{% include 'App:Book:category_tree.html.twig' with {'level': 0} %}
+	{% include 'Book/category_tree.html.twig' with {'level': 0} %}
 {% endblock %}

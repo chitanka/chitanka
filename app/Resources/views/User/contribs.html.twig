@@ -2,6 +2,6 @@
 
 {% set title = 'Обработени текстове от ' ~ user.username %}
 {% block content %}
-	{% include 'App:User:contribs_list.html.twig' %}
+	{% include 'User/contribs_list.html.twig' %}
 	{% include 'App::pager.html.twig' %}
 {% endblock %}

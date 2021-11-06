@@ -13,4 +13,4 @@
 {% endif %}
 <is-frozen>{{ entry.isFrozen }}</is-frozen>
 <user>{{ entry.user.username }}</user>
-{% include 'App:WorkContrib:list.xml.twig' with {'contribs': entry.contribs} %}
+{% include 'WorkContrib/list.xml.twig' with {'contribs': entry.contribs} %}

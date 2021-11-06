@@ -7,5 +7,5 @@
 {% set title = 'Издателски поредици: ' ~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
 	{% include 'App::pager.opds.twig' %}
-	{% include 'App:Sequence:list.opds.twig' %}
+	{% include 'Sequence/list.opds.twig' %}
 {% endblock %}

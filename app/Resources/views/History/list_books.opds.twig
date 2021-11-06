@@ -5,7 +5,7 @@
 {% set title = 'Нови книги' %}
 {% block content %}
 	{% for book_revision in book_revisions %}
-		{% include 'App:Book:item.opds.twig' with {'book': book_revision.book} %}
+		{% include 'Book/item.opds.twig' with {'book': book_revision.book} %}
 	{% endfor %}
 	{% include 'App::pager.opds.twig' %}
 {% endblock %}

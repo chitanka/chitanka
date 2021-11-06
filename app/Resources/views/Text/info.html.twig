@@ -20,7 +20,7 @@
 			{% endif %}
 			</dt>
 			<dd>
-			{% include 'App:Book:list.html.twig' with {'books': text.books} %}
+			{% include 'Book/list.html.twig' with {'books': text.books} %}
 			</dd>
 		{% endif %}
 			<dt>
@@ -67,7 +67,7 @@
 					{% if label.description is not empty %}
 						<span class="popover-trigger" data-content="{{ label.description }}"><span class="fa fa-info-circle"></span></span>
 					{% endif %}
-					{% include 'App:Text:label_delete_form.html.twig' with {'label': label} %}
+					{% include 'Text/label_delete_form.html.twig' with {'label': label} %}
 				</li>
 			{% else %}
 				<li class="no-items">Няма</li>

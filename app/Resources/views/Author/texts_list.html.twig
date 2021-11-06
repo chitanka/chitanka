@@ -12,5 +12,5 @@
 	{{ text_lister.text_list(texts) }}
 	{% if texts|length > 1 %}
 		{% set filename = person.slug ~'_'~ ( series.slug is defined ? series.slug : series.name ) %}
-		{% include 'App:Text:multi_download_form.html.twig' with {'filename': filename~''} %}
+		{% include 'Text/multi_download_form.html.twig' with {'filename': filename~''} %}
 	{% endif %}

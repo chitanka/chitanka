@@ -3,8 +3,8 @@
 {% set title = 'Серии: ' ~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
 
-	{% include 'App:Series:navigation.html.twig' with {'letter': letter} %}
-	{% include 'App:Series:list.html.twig' %}
+	{% include 'Series/navigation.html.twig' with {'letter': letter} %}
+	{% include 'Series/list.html.twig' %}
 	{% include 'App::pager.html.twig' %}
 
 {% endblock %}

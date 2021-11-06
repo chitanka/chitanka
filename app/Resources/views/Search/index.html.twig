@@ -10,37 +10,37 @@
 	</style>
 	{% if result.persons|length %}
 		<h2>Личности</h2>
-		{% include 'App:Author:list_with_country.html.twig' with {persons: result.persons} %}
+		{% include 'Author/list_with_country.html.twig' with {persons: result.persons} %}
 	{% endif %}
 
 	{% if result.texts|length %}
 		<h2>Произведения</h2>
-		{% include 'App:Text:list.html.twig' with {texts: result.texts} %}
+		{% include 'Text/list.html.twig' with {texts: result.texts} %}
 	{% endif %}
 
 	{% if result.books|length %}
 		<h2>Книги</h2>
-		{% include 'App:Book:list.html.twig' with {books: result.books} %}
+		{% include 'Book/list.html.twig' with {books: result.books} %}
 	{% endif %}
 
 	{% if result.series|length %}
 		<h2>Авторски серии</h2>
-		{% include 'App:Series:list.html.twig' with {series: result.series} %}
+		{% include 'Series/list.html.twig' with {series: result.series} %}
 	{% endif %}
 
 	{% if result.sequences|length %}
 		<h2>Издателски поредици</h2>
-		{% include 'App:Sequence:list.html.twig' with {sequences: result.sequences} %}
+		{% include 'Sequence/list.html.twig' with {sequences: result.sequences} %}
 	{% endif %}
 
 	{% if result.labels|length %}
 		<h2>Етикети</h2>
-		{% include 'App:Text:label_list.html.twig' with {labels: result.labels} %}
+		{% include 'Text/label_list.html.twig' with {labels: result.labels} %}
 	{% endif %}
 
 	{% if result.categories|length %}
 		<h2>Категории</h2>
-		{% include 'App:Book:category_list.html.twig' with {categories: result.categories} %}
+		{% include 'Book/category_list.html.twig' with {categories: result.categories} %}
 	{% endif %}
 
 	{% if result.isEmpty %}

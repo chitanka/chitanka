@@ -8,5 +8,5 @@
 {% set title = 'Серии: ' ~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
 	{% include 'App::pager.opds.twig' %}
-	{% include 'App:Series:list.opds.twig' %}
+	{% include 'Series/list.opds.twig' %}
 {% endblock %}

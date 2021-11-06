@@ -5,7 +5,7 @@
 {% block title %}{{ ('authors.by.country.'~by)|trans }}: {{ country.name }}{% endblock %}
 {% block content %}
 
-	{% include 'App:Author:list.opds.twig' %}
+	{% include 'Author/list.opds.twig' %}
 	{% include 'App::pager.opds.twig' %}
 
 {% endblock %}

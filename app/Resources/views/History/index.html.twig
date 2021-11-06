@@ -8,7 +8,7 @@
 	</ul>
 	<div class="tab-content">
 		<div class="tab-pane active" id="new-books">
-			{% include 'App:History:books_list.html.twig' %}
+			{% include 'History/books_list.html.twig' %}
 			<nav>
 				<ul class="pager">
 					<li class="next more"><a href="{{ path('new_books', {page: 2}) }}">Още нови книги</a></li>
@@ -16,7 +16,7 @@
 			</nav>
 		</div>
 		<div class="tab-pane" id="new-texts">
-			{% include 'App:History:texts_list.html.twig' %}
+			{% include 'History/texts_list.html.twig' %}
 			<nav>
 				<ul class="pager">
 					<li class="next more"><a href="{{ path('new_texts', {page: 2}) }}">Още нови произведения</a></li>

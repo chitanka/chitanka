@@ -7,7 +7,7 @@
 	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('persons_search', {'_format': 'osd'}) }}" title="Търсене на личности в Моята библиотека" />
 {% endblock %}
 {% block content %}
-	{% include 'App:Author:navigation.html.twig' with {'by': '', 'letter': ''} %}
+	{% include 'Author/navigation.html.twig' with {'by': '', 'letter': ''} %}
 	{% import 'helper.html.twig' as helper %}
 	<h2>Държава</h2>
 	<ul>

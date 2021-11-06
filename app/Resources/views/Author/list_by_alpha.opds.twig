@@ -5,7 +5,7 @@
 {% set title = ('authors.by.'~by)|trans ~': '~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
 
-	{% include 'App:Author:list.opds.twig' %}
+	{% include 'Author/list.opds.twig' %}
 	{% include 'App::pager.opds.twig' %}
 
 {% endblock %}

@@ -5,6 +5,6 @@
 {% set subtitle = type %}
 {% set link_self = helper.path(current_route, {'type': type.code}) %}
 {% block content %}
-	{% include 'App:Text:list.opds.twig' %}
+	{% include 'Text/list.opds.twig' %}
 	{% include 'App::pager.opds.twig' %}
 {% endblock %}

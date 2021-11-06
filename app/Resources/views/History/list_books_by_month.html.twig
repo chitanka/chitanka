@@ -2,6 +2,6 @@
 
 {% set title = 'Нови книги за ' ~ ('month.'~month)|trans ~' '~ year %}
 {% block content %}
-	{% include 'App:History:toc.html.twig' with {'route': 'new_books_by_month'} %}
-	{% include 'App:History:books_list.html.twig' %}
+	{% include 'History/toc.html.twig' with {'route': 'new_books_by_month'} %}
+	{% include 'History/books_list.html.twig' %}
 {% endblock %}

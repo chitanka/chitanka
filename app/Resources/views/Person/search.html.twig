@@ -4,7 +4,7 @@
 {% block content %}
 
 	{% if persons|length %}
-		{% include 'App:Author:list_with_country.html.twig' with {'authors': persons} %}
+		{% include 'Author/list_with_country.html.twig' with {'authors': persons} %}
 	{% endif %}
 
 	{% if not found %}

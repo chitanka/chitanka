@@ -4,5 +4,5 @@
 {% set link_self = helper.path(current_route, {'slug': person.slug}) %}
 {% set title = person.name ~ ' (автор)' %}
 {% block content %}
-	{% include 'App:Text:list.opds.twig' with {'texts': texts} %}
+	{% include 'Text/list.opds.twig' with {'texts': texts} %}
 {% endblock %}

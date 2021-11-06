@@ -10,8 +10,8 @@
 	{{ page.getFullContent()|raw }}
 	{#
 	{% for comment in comments %}
-		{% include 'App:TextComment:comment.html.twig' with {'standalone': false} %}
+		{% include 'TextComment/comment.html.twig' with {'standalone': false} %}
 	{% endfor %}
-	{% include 'App:TextComment:comment_form.html.twig' %}
+	{% include 'TextComment/comment_form.html.twig' %}
 	#}
 {% endblock %}

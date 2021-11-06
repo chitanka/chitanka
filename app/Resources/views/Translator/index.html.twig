@@ -7,5 +7,5 @@
 	<link rel="search" type="application/opensearchdescription+xml" href="{{ path('persons_search', {'_format': 'osd'}) }}" title="Търсене на личности в Моята библиотека" />
 {% endblock %}
 {% block content %}
-	{% include 'App:Translator:navigation.html.twig' with {'by': '', 'letter': ''} %}
+	{% include 'Translator/navigation.html.twig' with {'by': '', 'letter': ''} %}
 {% endblock %}

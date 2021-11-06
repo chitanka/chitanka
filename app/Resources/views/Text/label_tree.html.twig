@@ -11,7 +11,7 @@
 		{% endif %}
 		{{ helper.printInfoTip(label.description) }}
 		{% if label.children is defined %}
-			{% include 'App:Text:label_tree.html.twig' with {'labels': label.children, 'level': level+1} %}
+			{% include 'Text/label_tree.html.twig' with {'labels': label.children, 'level': level+1} %}
 		{% endif %}
 	</li>
 	{% endif %}

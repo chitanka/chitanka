@@ -5,7 +5,7 @@
 {% set title = person.name ~ ' (автор)' %}
 {% block content %}
 	{% if books is defined %}
-		{% include 'App:Book:list.opds.twig' %}
+		{% include 'Book/list.opds.twig' %}
 	{% endif %}
-	{% include 'App:Text:list.opds.twig' with {'texts': texts_as_author} %}
+	{% include 'Text/list.opds.twig' with {'texts': texts_as_author} %}
 {% endblock %}

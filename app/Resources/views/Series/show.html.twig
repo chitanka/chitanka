@@ -14,7 +14,7 @@
 	<div class="superlist">
 	{{ text_lister.text_list(texts) }}
 	{% if texts|length > 1 %}
-		{% include 'App:Text:multi_download_form.html.twig' %}
+		{% include 'Text/multi_download_form.html.twig' %}
 	{% endif %}
 	</div>
 	{#% include 'App::color_legend.html.twig' %#}

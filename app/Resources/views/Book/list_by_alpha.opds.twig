@@ -4,6 +4,6 @@
 {% set link_self = helper.path(current_route, {'letter': letter}) %}
 {% set title = 'Книги — ' ~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
-	{% include 'App:Book:list.opds.twig' %}
+	{% include 'Book/list.opds.twig' %}
 	{% include 'App::pager.opds.twig' %}
 {% endblock %}

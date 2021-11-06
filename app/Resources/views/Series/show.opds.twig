@@ -6,6 +6,6 @@
 {% set subtitle = 'серия' %}
 {% block content %}
 	{% for text in texts %}
-		{% include 'App:Text:item.opds.twig' with {"show_sernr": true} %}
+		{% include 'Text/item.opds.twig' with {"show_sernr": true} %}
 	{% endfor %}
 {% endblock %}

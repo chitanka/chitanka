@@ -1,6 +1,6 @@
 {% extends 'App::layout.xml.twig' %}
 {% block body %}
 <results query="{{ query.text }}">
-	{% include 'App:Book:list.xml.twig' %}
+	{% include 'Book/list.xml.twig' %}
 </results>
 {% endblock %}

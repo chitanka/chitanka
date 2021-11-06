@@ -15,7 +15,7 @@
 		<section id="mp-new-books">
 			<h2><a href="{{ path('new_books') }}">Нови книги</a></h2>
 			<div class="well">
-				{% include 'App:History:books_list.html.twig' with {book_revisions_by_date: books} %}
+				{% include 'History/books_list.html.twig' with {book_revisions_by_date: books} %}
 				<ul class="pager"><li class="next more"><a href="{{ path('new_books') }}">Още нови книги</a></li></ul>
 			</div>
 		</section>
@@ -24,7 +24,7 @@
 		<section id="mp-new-texts">
 			<h2><a href="{{ path('new_texts') }}">Нови произведения</a></h2>
 			<div class="well">
-				{% include 'App:History:texts_list.html.twig' with {text_revisions_by_date: texts} %}
+				{% include 'History/texts_list.html.twig' with {text_revisions_by_date: texts} %}
 				<ul class="pager"><li class="next more"><a href="{{ path('new_texts') }}">Още нови произведения</a></li></ul>
 			</div>
 		</section>
@@ -47,7 +47,7 @@
 		<section id="mp-search" class="box box3">
 			<h2><a href="{{ path('search') }}">Потърсено</a></h2>
 			<div class="well">
-				{% include 'App:Search:top_strings.html.twig' with {strings: searches} %}
+				{% include 'Search/top_strings.html.twig' with {strings: searches} %}
 			</div>
 		</section>
 	{% endif %}
@@ -57,7 +57,7 @@
 	{% if comments is defined %}
 		<section id="mp-reader-comments" class="box box2 commentbox">
 			<h2><a href="{{ path('texts_comments') }}">Читателите казват</a></h2>
-			{% include 'App:TextComment:latest_comments.html.twig' with {comments: comments} %}
+			{% include 'TextComment/latest_comments.html.twig' with {comments: comments} %}
 		</section>
 	{% endif %}
 	{% if forum_posts is defined %}

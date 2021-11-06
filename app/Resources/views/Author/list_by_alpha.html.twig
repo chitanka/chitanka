@@ -3,8 +3,8 @@
 {% set title = ('authors.by.'~by)|trans ~': '~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
 
-	{% include 'App:Author:navigation.html.twig' %}
-	{% include 'App:Author:list_with_country.html.twig' %}
+	{% include 'Author/navigation.html.twig' %}
+	{% include 'Author/list_with_country.html.twig' %}
 	{% include 'App::pager.html.twig' %}
 
 {% endblock %}

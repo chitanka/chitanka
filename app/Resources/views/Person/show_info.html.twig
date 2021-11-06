@@ -6,6 +6,6 @@
 {% set subtitle = ('person.role.'~person.role)|trans %}
 {% block content %}
 	<div class="person-{{ person.slug }}">
-		{% include 'App:Person:info.html.twig' %}
+		{% include 'Person/info.html.twig' %}
 	</div>
 {% endblock %}
