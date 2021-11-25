@@ -209,6 +209,9 @@ class ContentImporter {
 			}
 			$book['authors'] = $authors;
 		}
+		if (!isset($book['orig_lang'])) {
+			$book['orig_lang'] = $book['lang'];
+		}
 		if (file_exists($file = str_replace('.data', '.tmpl', $dataFile))) {
 			list($book['tmpl'], $book['works']) = $this->getBookTemplate($file, $this->works);
 		}
