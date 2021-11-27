@@ -39,6 +39,7 @@
 	<div class="tab-content">
 		{% if template != "" %}
 			<div id="book-content" class="book-content book-type-{{ book.type }} superlist tab-pane">
+				<h3 class="sr-only">Съдържание</h3>
 				{% import 'App::text.html.twig' as texttools %}
 				{# TODO refactor and improve this template expansion #}
 				{% set options = {'title': 'TEXT_TITLE', 'download_links': true} %}
@@ -56,11 +57,13 @@
 
 		{% if info %}
 			<div class="tab-pane text-content book-extra-info" id="book-extra-info">
+				<h3 class="sr-only">Информация</h3>
 				{{ info|raw }}
 			</div>
 		{% endif %}
 
 		<div class="tab-pane text-book-edit-history" id="book-edit-history">
+			<h3 class="sr-only">История</h3>
 			<ol>
 				{% for revision in book.revisions %}
 					<li><time datetime="{{ revision.date|date('c') }}">{{ revision.date|date('d.m.Y') }}</time> — {{ revision.comment }}</li>
@@ -70,11 +73,13 @@
 
 		{% if book.bibliomanId is not empty %}
 			<div class="tab-pane" id="book-biblioman" style="height: 3000px">
+				<h3 class="sr-only">Библиоман</h3>
 				<iframe name="biblioman-frame" src="{{ biblioman_url(book.bibliomanId) }}?nonavigation" width="100%" height="100%" style="border:0"></iframe>
 			</div>
 		{% endif %}
 
 		<div class="tab-pane expanded-links" id="book-links">
+			<h3 class="sr-only">Сваляне / Връзки</h3>
 			Книгата във формат:
 			{{ booktools.download_links(book) }}
 			{% if book.links|length %}

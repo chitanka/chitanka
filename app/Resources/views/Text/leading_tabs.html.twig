@@ -1,6 +1,7 @@
 {% if id_suffix is not defined %}
 	{% set id_suffix = '' %}
 {% endif %}
+<h2 class="sr-only">Метаданни</h2>
 <ul class="nav nav-tabs">
 	<li class="active"><a href="#text-info{{ id_suffix }}" data-toggle="tab"><span class="fa fa-folder-o"></span> Данни</a></li>
 	<li><a href="#text-extra-info{{ id_suffix }}" data-toggle="tab"><span class="fa fa-tag"></span> Информация</a></li>
@@ -18,15 +19,19 @@
 
 <div class="tab-content clearfix">
 	<div class="tab-pane active text-info" id="text-info{{ id_suffix }}">
+		<h3 class="sr-only">Данни</h3>
 		{% include 'Text/info.html.twig' %}
 	</div>
 	<div class="tab-pane text-extra-info" id="text-extra-info{{ id_suffix }}">
+		<h3 class="sr-only">Информация</h3>
 		{% include 'Text/extra_info.html.twig' %}
 	</div>
 	<div class="tab-pane edit-history" id="text-edit-history{{ id_suffix }}">
+		<h3 class="sr-only">История</h3>
 		{% include 'Text/edit_history.html.twig' %}
 	</div>
 	<div class="tab-pane expanded-links text-links" id="text-links{{ id_suffix }}">
+		<h3 class="sr-only">Сваляне / Връзки</h3>
 		{% include 'Text/extra_links.html.twig' %}
 	</div>
 	<div class="tab-pane text-comments" id="text-comments{{ id_suffix }}">
@@ -34,12 +39,14 @@
 	</div>
 	{% if wikiPage is defined %}
 		<div class="tab-pane wikiinfo article" id="article{{ id_suffix }}">
+			<h3 class="sr-only">Статия</h3>
 			<p class="intro">{{ wikiPage.intro|raw }}</p>
 			<div class="wikiinfo">{{ wikiPage.content|raw }}</div>
 		</div>
 	{% endif %}
 	{% if juxtaposedTexts is defined and juxtaposedTexts is not empty %}
 		<div class="tab-pane text-juxtaposed" id="text-juxtaposed{{ id_suffix }}">
+			<h3 class="sr-only">Съпоставени текстове</h3>
 			{% import 'text.html.twig' as texttools %}
 			{{ texttools.text_list_with_author(juxtaposedTexts) }}
 		</div>
