@@ -7,11 +7,13 @@
 			</a>
 		</div>
 		<div class="media-body">
+			<h3 class="book-title">
 			<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}"
 				class="booklink"
 				data-edit="{{ path('admin_book_edit', {'id': book.id}) }}">
 				<i itemprop="name">{{ book.title }}</i>
 			</a>
+			</h3>
 			{% if book.hasAnno %}
 				<span class="popover-trigger" data-content="{{ book.annotationAsXhtml|replace({'IMG_DIR_PREFIX': asset('/')}) }}"><span class="fa fa-info-circle"></span></span>
 			{% endif %}
