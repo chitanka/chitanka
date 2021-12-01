@@ -1,5 +1,5 @@
 <ul class="superlist fa-ul">
-{% import 'App::text.html.twig' as texttools %}
+{% import 'text.html.twig' as texttools %}
 {% for contrib in contribs %}
 	<li class="title t-{{ contrib.text.type.code }}" title="{{ contrib.comment }} ({{ contrib.date|humandate }})">
 		<span class="fa-li fa fa-folder" title="{{ contrib.text.type }}"></span>

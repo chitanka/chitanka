@@ -57,7 +57,7 @@
 
 {% block body %}
 
-	{% include 'App::jumpto_links.html.twig' %}
+	{% include 'jumpto_links.html.twig' %}
 
 	{% if global_info_message is not empty %}
 		<div id="global-info-message">
@@ -103,7 +103,7 @@
 			<h2 class="sr-only">Навигация</h2>
 
 			{% block search_form %}
-				{% include 'App::search_form.html.twig' %}
+				{% include 'search_form.html.twig' %}
 			{% endblock %}
 
 			{% block personal_tools %}

@@ -1,5 +1,5 @@
-{% extends 'App::layout.opds.twig' %}
-{% import 'App::helper.opds.twig' as helper %}
+{% extends 'layout.opds.twig' %}
+{% import 'helper.opds.twig' as helper %}
 
 {% set title = 'Произведения' %}
 {% if letter != '-' %}
@@ -9,6 +9,6 @@
 {% block content %}
 
 	{% include 'Text/list.opds.twig' %}
-	{% include 'App::pager.opds.twig' %}
+	{% include 'pager.opds.twig' %}
 
 {% endblock %}

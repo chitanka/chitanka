@@ -1,10 +1,10 @@
-{% extends 'App::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% import 'App::link.html.twig' as link %}
+{% import 'link.html.twig' as link %}
 
 {% set title = "Читателски оценки" %}
 {% set subtitle %}
-	{% import 'App::text.html.twig' as texttools %}
+	{% import 'text.html.twig' as texttools %}
 	за {{ texttools.text_title_with_author(text) }}
 {% endset %}
 

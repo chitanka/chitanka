@@ -11,6 +11,6 @@
 		<p><i>Няма биографична информация за {{ person.name }}.</i> <!--<a href="{{ path('person_suggest', {'slug': person.slug}) }}">Предложете такава!</a>--></p>
 	{% endif %}
 {% else %}
-	{% import 'App::link.html.twig' as link %}
+	{% import 'link.html.twig' as link %}
 	<p>{{ ('person.alt.'~person.type) | trans({'%current%': person.name, '%target%': link.person(person.person)})|raw }}</p>
 {% endif %}

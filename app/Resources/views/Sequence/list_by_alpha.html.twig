@@ -1,10 +1,10 @@
-{% extends 'App::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% set title = 'Издателски поредици: ' ~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
 
 	{% include 'Sequence/navigation.html.twig' with {'letter': letter} %}
 	{% include 'Sequence/list.html.twig' %}
-	{% include 'App::pager.html.twig' %}
+	{% include 'pager.html.twig' %}
 
 {% endblock %}

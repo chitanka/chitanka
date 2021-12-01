@@ -30,7 +30,7 @@
 {% endmacro %}
 
 {% macro translator(text) %}
-	{% import 'App::link.html.twig' as link %}
+	{% import 'link.html.twig' as link %}
 	{% spaceless %}
 	{% if text.translators|length %}
 		<span itemprop="author">
@@ -74,7 +74,7 @@
 
 
 {% macro text_with_author(text, options) %}
-	{% import 'App::link.html.twig' as link %}
+	{% import 'link.html.twig' as link %}
 <dl class="text-entity" itemscope itemtype="http://schema.org/CreativeWork" data-id="{{ text.id }}">
 	<dt>
 		{{ _self.rating(text) }}
@@ -94,13 +94,13 @@
 
 {% macro text_title_with_author(text) %}
 {% spaceless %}
-	{% import 'App::link.html.twig' as link %}
+	{% import 'link.html.twig' as link %}
 	„{{ link.text(text) }}“ {{ _self.author_list(text.authors) }}
 {% endspaceless %}
 {% endmacro %}
 
 {% macro text(text, options) %}
-	{% import 'App::link.html.twig' as link %}
+	{% import 'link.html.twig' as link %}
 <dl class="text-entity" itemscope itemtype="http://schema.org/CreativeWork" data-id="{{ text.id }}">
 	<dt>
 		{{ _self.rating(text) }}

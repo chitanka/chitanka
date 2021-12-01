@@ -1,9 +1,9 @@
-{% extends 'App::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% set title = 'Добавяне на информация' %}
 {% block content %}
 
-	{% import 'App::text.html.twig' as texttools %}
+	{% import 'text.html.twig' as texttools %}
 	{% set text_title = texttools.text_title_with_author(text) %}
 	{% include 'InfoSuggestion/intro_'~type~'.html.twig' with {text_title: text_title} %}
 

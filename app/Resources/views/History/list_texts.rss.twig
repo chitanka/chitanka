@@ -1,4 +1,4 @@
-{% extends 'App::layout.rss.twig' %}
+{% extends 'layout.rss.twig' %}
 
 {% block title 'Нови произведения' %}
 {% block content %}
@@ -15,9 +15,9 @@
 		</ul>
 	{% endmacro %}
 
-	{% import 'App::text.html.twig' as texttools %}
-	{% import 'App::person.html.twig' as persontools %}
-	{% import 'App::abslink.html.twig' as link %}
+	{% import 'text.html.twig' as texttools %}
+	{% import 'person.html.twig' as persontools %}
+	{% import 'abslink.html.twig' as link %}
 	{% for revisions in text_revisions_by_date %}
 		{% for revision in revisions %}
 			{% set text = revision.text %}

@@ -1,5 +1,5 @@
 {% macro book(book) %}
-	{% import 'App::link.html.twig' as link %}
+	{% import 'link.html.twig' as link %}
 	<div class="media book-media" itemscope itemtype="http://schema.org/Book">
 		<div class="media-left">
 			<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}" class="booklink" tabindex="-1">

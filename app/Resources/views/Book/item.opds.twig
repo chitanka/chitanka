@@ -1,4 +1,4 @@
-{% import 'App::helper.opds.twig' as helper %}
+{% import 'helper.opds.twig' as helper %}
 
 {% macro download_link(book, format, mimetype) %}
 	<link rel="http://opds-spec.org/acquisition" href="{{ path('book_show', {'id': book.id, '_format': format}) }}" type="{{ mimetype }}"/>

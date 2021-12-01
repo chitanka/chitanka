@@ -1,11 +1,11 @@
-{% extends 'App::layout.opds.twig' %}
-{% import 'App::helper.opds.twig' as helper %}
+{% extends 'layout.opds.twig' %}
+{% import 'helper.opds.twig' as helper %}
 
 {% set self_route_params = pager.has_prev ? route_params|merge({'page': pager.page}) : route_params %}
 {% set link_self = helper.path(current_route, self_route_params) %}
 {% set link_up = helper.path('sequences') %}
 {% set title = 'Издателски поредици: ' ~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
-	{% include 'App::pager.opds.twig' %}
+	{% include 'pager.opds.twig' %}
 	{% include 'Sequence/list.opds.twig' %}
 {% endblock %}

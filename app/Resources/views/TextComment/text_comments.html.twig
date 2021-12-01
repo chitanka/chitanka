@@ -1,8 +1,8 @@
-{% extends ajax ? 'App::layout.js.twig' : 'App::layout.html.twig' %}
+{% extends ajax ? 'layout.js.twig' : 'layout.html.twig' %}
 
 {% set title = 'Читателски коментари' %}
 {% set subtitle %}
-	{% import 'App::text.html.twig' as texttools %}
+	{% import 'text.html.twig' as texttools %}
 	за {{ texttools.text_title_with_author(text) }}
 {% endset %}
 

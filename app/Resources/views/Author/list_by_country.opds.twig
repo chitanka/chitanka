@@ -1,11 +1,11 @@
-{% extends 'App::layout.opds.twig' %}
-{% import 'App::helper.opds.twig' as helper %}
+{% extends 'layout.opds.twig' %}
+{% import 'helper.opds.twig' as helper %}
 
 {% set link_self = helper.path('authors_by_country', {'by': by, 'country': country.code}) %}
 {% block title %}{{ ('authors.by.country.'~by)|trans }}: {{ country.name }}{% endblock %}
 {% block content %}
 
 	{% include 'Author/list.opds.twig' %}
-	{% include 'App::pager.opds.twig' %}
+	{% include 'pager.opds.twig' %}
 
 {% endblock %}

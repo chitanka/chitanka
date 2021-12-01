@@ -1,4 +1,4 @@
-{% extends 'App::layout.osd.twig' %}
+{% extends 'layout.osd.twig' %}
 {% set title = 'произведения' %}
 {% block extra_urls %}
 	<Url type="application/atom+xml" template="{{ url(current_route, {'_format': 'opds'}) }}?q={searchTerms}"/>

@@ -14,7 +14,7 @@
 	<li>{{ _self.list_item(sequence) }}</li>
 {% else %}
 	<li class="no-items">
-		{% import 'App::helper.html.twig' as helper %}
+		{% import 'helper.html.twig' as helper %}
 		{{ helper.not_found('Няма намерени поредици.') }}
 	</li>
 {% endfor %}

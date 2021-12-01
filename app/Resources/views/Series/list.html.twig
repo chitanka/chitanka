@@ -1,5 +1,5 @@
 {% macro list_item(series) %}
-	{% import 'App::text.html.twig' as text_lister %}
+	{% import 'text.html.twig' as text_lister %}
 	<dl itemscope itemtype="http://schema.org/CreativeWork">
 		<dt>
 			<a href="{{ path('series_show', {'slug': series.slug}) }}" itemprop="name"><em>{{ series.name }}</em></a>
@@ -14,7 +14,7 @@
 	<li>{{ _self.list_item(serie) }}</li>
 {% else %}
 	<li class="no-items">
-		{% import 'App::helper.html.twig' as helper %}
+		{% import 'helper.html.twig' as helper %}
 		{{ helper.not_found('Няма намерени серии.') }}
 	</li>
 {% endfor %}

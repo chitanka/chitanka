@@ -2,7 +2,7 @@
 	<p>Само вие може да виждате този списък. Ако желаете да дадете достъп до списъка и на други лица, ползвайте следния адрес: <a href="{{ url('user_bookmarks', {'username': user.token}) }}">{{ url('user_bookmarks', {'username': user.token}) }}</a></p>
 {% endif %}
 <ul class="superlist fa-ul">
-{% import 'App::text.html.twig' as texttools %}
+{% import 'text.html.twig' as texttools %}
 {% for bookmark in bookmarks %}
 	<li class="title t-{{ bookmark.text.type.code }}">{{ texttools.text_with_author(bookmark.text, {'download_links': true}) }}</li>
 {% endfor %}

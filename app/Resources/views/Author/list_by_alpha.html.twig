@@ -1,10 +1,10 @@
-{% extends 'App::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% set title = ('authors.by.'~by)|trans ~': '~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
 
 	{% include 'Author/navigation.html.twig' %}
 	{% include 'Author/list_with_country.html.twig' %}
-	{% include 'App::pager.html.twig' %}
+	{% include 'pager.html.twig' %}
 
 {% endblock %}

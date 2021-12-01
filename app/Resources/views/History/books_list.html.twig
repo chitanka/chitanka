@@ -1,4 +1,4 @@
-{% import 'App::book.html.twig' as booktools %}
+{% import 'book.html.twig' as booktools %}
 {% for day, revisions in book_revisions_by_date %}
 	<h3><a href="{{ path('new_books_by_day', {year: day|date('Y'), month: day|date('n'), day: day|date('d')}) }}">{{ day|humandate }}</a></h3>
 	<div class="clearfix booklist">
@@ -10,8 +10,8 @@
 	</div>
 {% else %}
 	<p class="no-items">
-		{% import 'App::helper.html.twig' as helper %}
+		{% import 'helper.html.twig' as helper %}
 		{{ helper.not_found('Няма намерени книги.') }}
 	</p>
 {% endfor %}
-{% include 'App::pager.html.twig' %}
+{% include 'pager.html.twig' %}

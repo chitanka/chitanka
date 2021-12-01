@@ -1,8 +1,8 @@
-{% extends 'App::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% set title = "Подобни произведения" %}
 {% set subtitle %}
-	{% import 'App::text.html.twig' as texttools %}
+	{% import 'text.html.twig' as texttools %}
 	за {{ texttools.text_title_with_author(text) }}
 {% endset %}
 

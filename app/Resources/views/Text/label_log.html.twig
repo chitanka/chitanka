@@ -1,10 +1,10 @@
-{% extends 'App::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% import 'App::link.html.twig' as link %}
+{% import 'link.html.twig' as link %}
 {% set title = "Дневник на етикетите" %}
 {% if text is defined %}
 	{% set subtitle %}
-		{% import 'App::text.html.twig' as texttools %}
+		{% import 'text.html.twig' as texttools %}
 		за {{ texttools.text_title_with_author(text) }}
 	{% endset %}
 {% endif %}
@@ -38,6 +38,6 @@
 		</tbody>
 	</table>
 	{% if pager is defined %}
-		{% include 'App::pager.html.twig' %}
+		{% include 'pager.html.twig' %}
 	{% endif %}
 {% endblock %}

@@ -1,11 +1,11 @@
-{% extends 'App::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% set title %}
 	<a class="selflink" itemprop="name" data-edit="{{ path('admin_series_edit', {id: series.id}) }}">{{ series.name }}</a>
 {% endset %}
 {% set subtitle = 'серия' %}
 {% block content %}
-	{% import 'App::text.html.twig' as text_lister %}
+	{% import 'text.html.twig' as text_lister %}
 	<ul class="breadcrumb" itemprop="breadcrumb">
 		<li><a href="{{ path('series') }}">Серии</a></li>
 		<li><a href="{{ path('series_by_alpha', {'letter': series.name|first_char}) }}">{{ series.name|first_char }}</a></li>
@@ -17,5 +17,5 @@
 		{% include 'Text/multi_download_form.html.twig' %}
 	{% endif %}
 	</div>
-	{#% include 'App::color_legend.html.twig' %#}
+	{#% include 'color_legend.html.twig' %#}
 {% endblock %}

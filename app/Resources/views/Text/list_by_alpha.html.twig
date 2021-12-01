@@ -1,4 +1,4 @@
-{% extends 'App::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% set title = 'Произведения' %}
 {% if letter != '-' %}
@@ -14,6 +14,6 @@
 	{% include 'listSettings.html.twig' %}
 	{% include 'Text/navigation.html.twig' with {'letter': letter} %}
 	{% include 'Text/list.html.twig' %}
-	{% include 'App::pager.html.twig' %}
+	{% include 'pager.html.twig' %}
 
 {% endblock %}

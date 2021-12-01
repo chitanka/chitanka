@@ -1,4 +1,4 @@
-{% import 'App::text.html.twig' as texttools %}
+{% import 'text.html.twig' as texttools %}
 {% for day, revisions in text_revisions_by_date %}
 	<h3><a href="{{ path('new_texts_by_day', {year: day|date('Y'), month: day|date('n'), day: day|date('d')}) }}">{{ day|humandate }}</a></h3>
 	<ul class="superlist fa-ul">
@@ -11,8 +11,8 @@
 	</ul>
 {% else %}
 	<p class="no-items">
-		{% import 'App::helper.html.twig' as helper %}
+		{% import 'helper.html.twig' as helper %}
 		{{ helper.not_found('Няма намерени произведения.') }}
 	</p>
 {% endfor %}
-{% include 'App::pager.html.twig' %}
+{% include 'pager.html.twig' %}

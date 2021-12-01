@@ -1,6 +1,6 @@
-{% extends 'App::layout.opds.twig' %}
+{% extends 'layout.opds.twig' %}
 
-{% import 'App::helper.opds.twig' as helper %}
+{% import 'helper.opds.twig' as helper %}
 {% set id = helper.urn('texts_by_type_index') %}
 {% set link_self = helper.path('texts_by_type_index') %}
 {% set title = 'Произведения по форма' %}

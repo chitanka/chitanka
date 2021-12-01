@@ -1,4 +1,4 @@
-{% extends 'App::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% set title = 'Произведения' %}
 {% set subtitle %}<a class="selflink" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>{% endset %}
@@ -30,10 +30,10 @@
 			{% include 'Text/list.html.twig' %}
 			{% include 'Text/multi_download_form.html.twig' with { filename: 'label-'~label.name~'_'~pager.page } %}
 		</div>
-		{% include 'App::pager.html.twig' %}
+		{% include 'pager.html.twig' %}
 
 	{% endif %}
 
-	{#% include 'App::color_legend.html.twig' %#}
+	{#% include 'color_legend.html.twig' %#}
 
 {% endblock %}

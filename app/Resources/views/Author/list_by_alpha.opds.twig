@@ -1,11 +1,11 @@
-{% extends 'App::layout.opds.twig' %}
-{% import 'App::helper.opds.twig' as helper %}
+{% extends 'layout.opds.twig' %}
+{% import 'helper.opds.twig' as helper %}
 
 {% set link_self = helper.path('authors_by_alpha', {'by': by, 'letter': letter}) %}
 {% set title = ('authors.by.'~by)|trans ~': '~ (letter == '-' ? 'Всички' : letter) %}
 {% block content %}
 
 	{% include 'Author/list.opds.twig' %}
-	{% include 'App::pager.opds.twig' %}
+	{% include 'pager.opds.twig' %}
 
 {% endblock %}

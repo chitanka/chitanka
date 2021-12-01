@@ -1,12 +1,12 @@
-{% extends 'App::layout.opds.twig' %}
-{% import 'App::helper.opds.twig' as helper %}
+{% extends 'layout.opds.twig' %}
+{% import 'helper.opds.twig' as helper %}
 
 {% set link_self = helper.path('person_show', {'slug': person.slug}) %}
 {% block content %}
 	{#% if person.person is empty %}
 		{% include 'Person/info.html.twig' %}
 	{% else %}
-		{% import 'App::link.html.twig' as link %}
+		{% import 'link.html.twig' as link %}
 		<p>{{ ('person.alt.'~person.type) | trans({'%current%': person.name, '%target%': link.person(person.person)})|raw }}</p>
 	{% endif %#}
 

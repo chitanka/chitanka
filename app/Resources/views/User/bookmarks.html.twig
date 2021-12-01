@@ -1,7 +1,7 @@
-{% extends 'App::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% set title = 'Избрани произведения от ' ~ user.username %}
 {% block content %}
 	{% include 'User/bookmarks_list.html.twig' %}
-	{% include 'App::pager.html.twig' %}
+	{% include 'pager.html.twig' %}
 {% endblock %}

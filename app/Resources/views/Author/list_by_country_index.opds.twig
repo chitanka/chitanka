@@ -1,5 +1,5 @@
-{% extends 'App::layout.opds.twig' %}
-{% import 'App::helper.opds.twig' as helper %}
+{% extends 'layout.opds.twig' %}
+{% import 'helper.opds.twig' as helper %}
 
 {% set link_self = helper.path('authors_by_country_index', {'by': by}) %}
 {% set title = ('authors.by.country.'~by)|trans %}

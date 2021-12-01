@@ -1,10 +1,10 @@
-{% extends 'App::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% set meta_description = book.annotation %}
 {% set itemtype = "Book" %}
 {% set title %}
 	{% if authors|length %}
-		{% import 'App::link.html.twig' as link %}
+		{% import 'link.html.twig' as link %}
 		{{ link.persons_comma(authors, book.lang) }}<br>
 	{% endif %}
 	<a class="selflink" itemprop="name" data-edit="{{ path('admin_book_edit', {'id': book.id}) }}">{{ book.title|dot2br|raw }}</a>

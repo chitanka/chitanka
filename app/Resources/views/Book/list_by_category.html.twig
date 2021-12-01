@@ -1,4 +1,4 @@
-{% extends 'App::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% set title %}Книги в категория „<a class="selflink" data-edit="{{ path('admin_category_edit', {'id': category.id}) }}">{{ category.name }}</a>“{% endset %}
 {% block content %}
@@ -18,6 +18,6 @@
 
 	{% include 'listSettings.html.twig' %}
 	{% include 'Book/list.html.twig' %}
-	{% include 'App::pager.html.twig' %}
+	{% include 'pager.html.twig' %}
 
 {% endblock %}
