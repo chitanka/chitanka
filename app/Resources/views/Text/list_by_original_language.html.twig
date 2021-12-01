@@ -12,12 +12,13 @@
 
 	{% else %}
 
-		<ul class="breadcrumb" itemprop="breadcrumb">
-			<li><a href="{{ path('texts') }}">Произведения</a></li>
-			<li class="active">
-				оригинален език: <a href="{{ path('texts_by_original_language', {'language': language.code}) }}" itemprop="name" data-edit="{{ path('admin_language_edit', {id: language.code}) }}">{{ language }}</a>
-			</li>
-		</ul>
+		{% set currentBreadcrumItem -%}
+			оригинален език: <a href="{{ path('texts_by_original_language', {'language': language.code}) }}" itemprop="name" data-edit="{{ path('admin_language_edit', {id: language.code}) }}">{{ language }}</a>
+		{%- endset %}
+		{{ helper.printBreadcrumb({
+			(path('texts')): 'Произведения',
+			'': currentBreadcrumItem
+		}) }}
 
 		{% include 'listSettings.html.twig' %}
 		{% include 'Text/list.html.twig' %}

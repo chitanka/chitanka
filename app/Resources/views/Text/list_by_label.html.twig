@@ -13,17 +13,16 @@
 
 	{% else %}
 
-		<ul class="breadcrumb" itemprop="breadcrumb">
-			<li><a href="{{ path('texts') }}">Произведения</a></li>
-			{% for parent in parents %}
-				<li><a href="{{ path('texts_by_label', {'slug': parent.slug}) }}">{{ parent.name }}</a></li>
-			{% endfor %}
-			<li class="active">
-				<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>
-				{{ helper.printNrOfItems(label.nrOfTexts) }}
-				{{ helper.printInfoTip(label.description) }}
-			</li>
-		</ul>
+		{% set breadcrumbItems = { (path('texts')): 'Произведения' } %}
+		{% for parent in parents %}
+			{% set breadcrumbItems = breadcrumbItems|merge({ (path('texts_by_label', {'slug': parent.slug})) : parent.name }) %}
+		{% endfor %}
+		{% set currentBreadcrumbItem -%}
+			<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>
+			{{ helper.printNrOfItems(label.nrOfTexts) }}
+			{{ helper.printInfoTip(label.description) }}
+		{%- endset %}
+		{{ helper.printBreadcrumb( breadcrumbItems|merge({ '': currentBreadcrumbItem }) ) }}
 
 		<div class="superlist">
 			{% include 'listSettings.html.twig' %}

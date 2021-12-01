@@ -2,9 +2,10 @@
 
 {% set title = 'Произведения по форма' %}
 {% block content %}
-	<ul class="breadcrumb" itemprop="breadcrumb">
-		<li><a href="{{ path('texts') }}">Произведения</a></li>
-		<li class="active">по форма</li>
-	</ul>
+	{% import 'helper.html.twig' as helper %}
+	{{ helper.printBreadcrumb({
+		(path('texts')): 'Произведения',
+		'': 'по форма'
+	}) }}
 	{% include 'Text/type_list.html.twig' with { isExpanded: true } %}
 {% endblock %}

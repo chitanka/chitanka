@@ -31,3 +31,18 @@
 	{# @var sort \App\Entity\Query\SortingItem #}
 	{{ ('field.'~sort.fieldWoAlias)|trans }} <span class="fa {{ sort.direction == 'asc' ? 'fa-chevron-up' : 'fa-chevron-down' }}"></span>
 {% endmacro %}
+
+{% macro printBreadcrumb(items) %}
+	<nav aria-label="breadcrumb" itemprop="breadcrumb">
+		<ol class="breadcrumb">
+			{% for url, text in items %}
+				{% if loop.last %}
+					<li class="active" aria-current="page">{{ text|raw }}</li>
+				{% else %}
+					<li><a href="{{ url }}">{{ text }}</a></li>
+				{% endif %}
+			{% endfor %}
+		</ol>
+	</nav>
+{% endmacro %}
+

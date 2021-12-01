@@ -2,9 +2,10 @@
 
 {% set title = 'Книги по категория' %}
 {% block content %}
-	<ul class="breadcrumb" itemprop="breadcrumb">
-		<li><a href="{{ path('books') }}">Книги</a></li>
-		<li class="active">по категория</li>
-	</ul>
+	{% import 'helper.html.twig' as helper %}
+	{{ helper.printBreadcrumb({
+		(path('books')): 'Книги',
+		'': 'по категория'
+	}) }}
 	{% include 'Book/category_list.html.twig' with {isExpanded: true} %}
 {% endblock %}

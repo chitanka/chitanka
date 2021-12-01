@@ -2,9 +2,10 @@
 
 {% set title = 'Произведения по азбучен ред' %}
 {% block content %}
-	<ul class="breadcrumb" itemprop="breadcrumb">
-		<li><a href="{{ path('texts') }}">Произведения</a></li>
-		<li class="active">по азбучен ред</li>
-	</ul>
+	{% import 'helper.html.twig' as helper %}
+	{{ helper.printBreadcrumb({
+		(path('texts')): 'Произведения',
+		'': 'по азбучен ред'
+	}) }}
 	{% include 'Text/navigation.html.twig' with {'letter': ''} %}
 {% endblock %}

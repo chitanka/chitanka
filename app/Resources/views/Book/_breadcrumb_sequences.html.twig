@@ -1,7 +1,8 @@
 {% if book.sequence %}
-	<ol class="breadcrumb" itemprop="breadcrumb">
-		<li><a href="{{ path('sequences') }}">Поредици</a></li>
-		{% import 'link.html.twig' as link %}
-		<li>{{ link.sequence(book.sequence) }}</li>
-	</ol>
+	{% import 'helper.html.twig' as helper %}
+	{% import 'link.html.twig' as link %}
+	{{ helper.printBreadcrumb({
+		(path('sequences')): 'Поредици',
+		'': link.sequence(book.sequence)
+	}) }}
 {% endif %}

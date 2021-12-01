@@ -6,16 +6,18 @@
 {% set subtitle = 'издателска поредица' %}
 {% block content %}
 	{% import 'helper.html.twig' as helper %}
-	<ul class="breadcrumb" itemprop="breadcrumb">
-		<li><a href="{{ path('sequences') }}">Издателски поредици</a></li>
-		<li><a href="{{ path('sequences_by_alpha', {'letter': sequence.name|first_char}) }}">{{ sequence.name|first_char }}</a></li>
-		<li class="active">{{ sequence.name }}
-			{% if sequence.publisher %}
-				({{ sequence.publisher }})
-			{% endif %}
-			{{ helper.printNrOfItems(sequence.nrOfBooks) }}
-		</li>
-	</ul>
+	{% set currentBreadcrumItem -%}
+		{{ sequence.name }}
+		{% if sequence.publisher %}
+			({{ sequence.publisher }})
+		{% endif %}
+		{{ helper.printNrOfItems(sequence.nrOfBooks) }}
+	{%- endset %}
+	{{ helper.printBreadcrumb({
+		(path('sequences')): 'Издателски поредици',
+		(path('sequences_by_alpha', {'letter': sequence.name|first_char})): sequence.name|first_char,
+		'': currentBreadcrumItem
+	}) }}
 	{% if sequence.annotation is not empty %}
 		<div class="panel panel-info">
 			<div class="panel-body">

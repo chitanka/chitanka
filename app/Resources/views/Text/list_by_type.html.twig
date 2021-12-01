@@ -12,13 +12,14 @@
 
 	{% else %}
 
-		<ul class="breadcrumb" itemprop="breadcrumb">
-			<li><a href="{{ path('texts') }}">Произведения</a></li>
-			<li class="active">
-				<a href="{{ path('texts_by_type', {'type': type.code}) }}" itemprop="name" data-edit="{{ path('admin_text_type_edit', {id: type.code}) }}">{{ type }}</a>
-				{{ helper.printInfoTip(type.description) }}
-			</li>
-		</ul>
+		{% set currentBreadcrumItem -%}
+			<a href="{{ path('texts_by_type', {'type': type.code}) }}" itemprop="name" data-edit="{{ path('admin_text_type_edit', {id: type.code}) }}">{{ type }}</a>
+			{{ helper.printInfoTip(type.description) }}
+		{%- endset %}
+		{{ helper.printBreadcrumb({
+			(path('texts')): 'Произведения',
+			'': currentBreadcrumItem
+		}) }}
 
 		{% include 'listSettings.html.twig' %}
 		{% include 'Text/list.html.twig' %}

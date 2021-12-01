@@ -6,10 +6,11 @@
 {% endif %}
 {% block content %}
 
-	<ul class="breadcrumb" itemprop="breadcrumb">
-		<li><a href="{{ path('texts') }}">Произведения</a></li>
-		<li class="active">{{ letter == '-' ? 'Всички' : letter }}</li>
-	</ul>
+	{% import 'helper.html.twig' as helper %}
+	{{ helper.printBreadcrumb({
+		(path('texts')): title,
+		'': (letter == '-' ? 'Всички' : letter)
+	}) }}
 
 	{% include 'listSettings.html.twig' %}
 	{% include 'Text/navigation.html.twig' with {'letter': letter} %}

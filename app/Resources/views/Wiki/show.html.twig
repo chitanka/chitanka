@@ -17,11 +17,13 @@
 	</div>
 
 	{% if page.hasAncestors %}
-		<ol class="breadcrumb" itemprop="breadcrumb">
+		<nav aria-label="breadcrumb" itemprop="breadcrumb">
+		<ol class="breadcrumb">
 			{% for ancestor in page.ancestors %}
 				<li><a href="{{ path('wiki', { page: ancestor.name }) }}"><span class="fa fa-folder-o"></span> {{ ancestor.title }}</a></li>
 			{% endfor %}
 		</ol>
+		</nav>
 	{% endif %}
 
 	{% if not page.exists %}

@@ -6,11 +6,15 @@
 {% set subtitle = 'серия' %}
 {% block content %}
 	{% import 'text.html.twig' as text_lister %}
-	<ul class="breadcrumb" itemprop="breadcrumb">
-		<li><a href="{{ path('series') }}">Серии</a></li>
-		<li><a href="{{ path('series_by_alpha', {'letter': series.name|first_char}) }}">{{ series.name|first_char }}</a></li>
-		<li class="active"><em>{{ series.name }}</em> {{ text_lister.author_list(series.authors) }}</li>
-	</ul>
+	{% import 'helper.html.twig' as helper %}
+	{% set currentBreadcrumItem -%}
+		<em>{{ series.name }}</em> {{ text_lister.author_list(series.authors) }}
+	{%- endset %}
+	{{ helper.printBreadcrumb({
+		(path('series')): 'Серии',
+		(path('series_by_alpha', {'letter': series.name|first_char})): series.name|first_char,
+		'': currentBreadcrumItem
+	}) }}
 	<div class="superlist">
 	{{ text_lister.text_list(texts) }}
 	{% if texts|length > 1 %}
