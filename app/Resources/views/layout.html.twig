@@ -60,16 +60,16 @@
 	{% include 'jumpto_links.html.twig' %}
 
 	{% if global_info_message is not empty %}
-		<div id="global-info-message">
+		<aside id="global-info-message">
 			<span class="fa fa-warning"></span>
 			{{ global_info_message|raw }}
-		</div>
+		</aside>
 	{% endif %}
 
 	<div id="content-wrapper" class="clearfix p_{{ current_route }}">
 
 		<div id="main-content-wrapper">
-			<div id="main-content" role="main" itemscope itemtype="http://schema.org/{{ itemtype|default('WebPage') }}">
+			<main id="main-content" role="main" itemscope itemtype="http://schema.org/{{ itemtype|default('WebPage') }}">
 				{% block site_notice %}
 					{{ render(controller('App:SiteNotice:stripe')) }}
 				{% endblock %}
@@ -95,7 +95,7 @@
 
 					{% block content '' %}
 				</div>
-			</div>
+			</main>
 		</div>
 
 		<nav id="navigation">
