@@ -1,13 +1,14 @@
 {% macro book(book) %}
 	{% import 'link.html.twig' as link %}
-	<div class="media book-media" itemscope itemtype="http://schema.org/Book">
+	{% set uniqueId = 'book-card-' ~ random() %}
+	<article class="media book-media" aria-labelledby="{{ uniqueId }}" itemscope itemtype="http://schema.org/Book">
 		<div class="media-left">
 			<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}" class="booklink" tabindex="-1">
 				{{ _self.cover(book, 120) }}
 			</a>
 		</div>
 		<div class="media-body">
-			<h4 class="book-title">
+			<h4 class="book-title" id="{{ uniqueId }}">
 			<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}"
 				class="booklink"
 				data-edit="{{ path('admin_book_edit', {'id': book.id}) }}">
@@ -34,7 +35,7 @@
 
 			<div class="download-links">{{ _self.download_links(book) }}</div>
 		</div>
-	</div>
+	</article>
 {% endmacro %}
 
 {% macro download_link(book, format) %}
