@@ -1,8 +1,8 @@
-<nav id="project-links" class="navbody" role="navigation">
+<div id="project-links" class="navbody">
 	<h3>Проекти</h3>
 	<ul class="textmenu">
 		{% for project_link, project_name in project_links %}
 			<li id="project-link-{{ project_name }}"><a href="{{ project_link }}">{{ project_name }}</a></li>
 		{% endfor %}
 	</ul>
-</nav>
+</div>

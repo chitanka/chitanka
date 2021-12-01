@@ -9,7 +9,6 @@ class SettingsPage extends RegisterPage {
 	private $allowemail;
 	private $optKeys = ['skin', 'nav', 'css', 'js'];
 	private $opts;
-	private $tabindex;
 
 	public function __construct($fields) {
 		parent::__construct($fields);
@@ -25,8 +24,6 @@ class SettingsPage extends RegisterPage {
 		foreach ($this->optKeys as $key) {
 			$this->opts[$key] = $this->request->value($key, User::$defOptions[$key]);
 		}
-
-		$this->tabindex = 2;
 	}
 
 	protected function processSubmission() {
@@ -92,14 +89,14 @@ class SettingsPage extends RegisterPage {
 
 	private function makeRegUserForm() {
 		$username = '<span id="username" class="form-control">'.$this->user->getUsername()."</span>";
-		$password = $this->out->passField('password', '', '', 25, 40, $this->tabindex++, ['class' => 'form-control']);
-		$passwordRe = $this->out->passField('passwordRe', '', '', 25, 40, $this->tabindex++, ['class' => 'form-control']);
-		$realname = $this->out->textField('realname', '', $this->realname, 25, 60, $this->tabindex++, '', ['class' => 'form-control']);
-		$email = $this->out->textField('email', '', $this->email, 25, 60, $this->tabindex++, '', ['class' => 'form-control']);
-		$allowemail = $this->out->checkbox('allowemail', '', $this->allowemail, '', null, $this->tabindex++);
+		$password = $this->out->passField('password', '', '', 25, 40, null, ['class' => 'form-control']);
+		$passwordRe = $this->out->passField('passwordRe', '', '', 25, 40, null, ['class' => 'form-control']);
+		$realname = $this->out->textField('realname', '', $this->realname, 25, 60, null, '', ['class' => 'form-control']);
+		$email = $this->out->textField('email', '', $this->email, 25, 60, null, '', ['class' => 'form-control']);
+		$allowemail = $this->out->checkbox('allowemail', '', $this->allowemail);
 		$common = $this->makeCommonInput();
 		$customInput = $this->makeCustomInput();
-		$news = $this->out->checkbox('news', '', $this->news, '', null, $this->tabindex++);
+		$news = $this->out->checkbox('news', '', $this->news);
 		$historyLink = $this->controller->generateUrlForLegacyCode('new');
 
 		return <<<EOS
@@ -112,7 +109,7 @@ class SettingsPage extends RegisterPage {
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="password" class="col-sm-4 control-label">Нова парола<a id="nb1" href="#n1">*</a>:</label>
+		<label for="password" class="col-sm-4 control-label">Нова парола:</label>
 		<div class="col-sm-8">
 			$password
 			<span class="help-block">Въведете нова парола само ако искате да смените сегашната си.</span>
@@ -149,14 +146,14 @@ class SettingsPage extends RegisterPage {
 					$news Получаване на месечен бюлетин
 				</label>
 			</div>
-			<span class="help-block">Алтернативен начин да следите новото в библиотеката предлага страницата <a href="$historyLink">Новодобавено</a>.</span>
+			<span class="help-block">Алтернативен начин да следите новото в библиотеката предлага страницата <a href="$historyLink" tabindex="-1">Новодобавено</a>.</span>
 		</div>
 	</div>
 	$customInput
 
 	<div class="form-group">
 		<div class="col-sm-offset-4 col-sm-8">
-			{$this->out->submitButton('Запис', '', $this->tabindex++, false, ['class' => 'btn btn-primary'])}
+			{$this->out->submitButton('Запис', '', null, false, ['class' => 'btn btn-primary'])}
 		</div>
 	</div>
 </form>
@@ -170,8 +167,8 @@ EOS;
 	}
 
 	private function makeCommonInput() {
-		$skin = $this->makeSkinInput($this->tabindex++);
-		$nav = $this->makeNavPosInput($this->tabindex++);
+		$skin = $this->makeSkinInput();
+		$nav = $this->makeNavPosInput();
 
 		return <<<EOS
 	<div class="form-group">
@@ -189,15 +186,15 @@ EOS;
 EOS;
 	}
 
-	private function makeSkinInput($tabindex) {
+	private function makeSkinInput() {
 		return $this->out->selectBox('skin', '', $this->container->getParameter('skins'),
-			$this->opts['skin'], $tabindex,
+			$this->opts['skin'], null,
 			['class' => 'form-control', 'onchange' => 'changeStyleSheet(this.value, this.form.nav.value)']);
 	}
 
-	private function makeNavPosInput($tabindex) {
+	private function makeNavPosInput() {
 		return $this->out->selectBox('nav', '', $this->container->getParameter('navpos'),
-			$this->opts['nav'], $tabindex,
+			$this->opts['nav'], null,
 			['class' => 'form-control', 'onchange' => 'changeStyleSheet(this.form.skin.value, this.value)']);
 	}
 

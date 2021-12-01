@@ -256,14 +256,14 @@ h2 a:visited {
 	padding: 0;
 	margin: 0 0 1em 0;
 }
-#navigation ul.textmenu {
+.sidebar-menu ul.textmenu {
 	margin: 0;
 	padding: 0;
 }
-#navigation a {
+.sidebar-menu a {
 	text-decoration: none;
 }
-#navigation .navbody {
+.sidebar-menu .navbody {
 	margin-bottom: 1em;
 	border: thin solid @navTitleBgColor;
 	border-radius: @border-radius-base;
@@ -271,16 +271,16 @@ h2 a:visited {
 	background-color: @navBgColor;
 	font-size: .9em;
 }
-#navigation .navcontent {
+.sidebar-menu .navcontent {
 	padding: .2em .6em;
 	text-align: center;
 }
-#navigation .navfooter {
+.sidebar-menu .navfooter {
 	margin: 1em .5em 0 0;
 	font-size: 95%;
 	text-align: right;
 }
-#navigation h3 {
+.sidebar-menu h3 {
 	margin: 0;
 	padding-left: .6em;
 	border: none;
@@ -291,26 +291,38 @@ h2 a:visited {
 	font-weight: bold;
 	text-shadow: 1px 0px 1px @navTitleShadowColor;
 }
-#navigation h4 {
+.sidebar-menu h4 {
 	margin: .1em 0 .3em;
 	font-size: 1.1em;
 }
-#navigation h4 a {
+.sidebar-menu h4 a {
 	display: block;
 }
-#navigation li {
+.sidebar-menu li {
 	margin-left: 0;
 	padding: .2em .2em .2em .6em;
 	list-style-type: none;
 }
-#navigation .navbody .textmenu li:hover,
-#navigation .navbody .textmenu li:hover a {
+.sidebar-menu .navbody .textmenu li:hover,
+.sidebar-menu .navbody .textmenu li:hover a {
 	color: @headerFgColor;
 	background-color: @headerBgColor;
 }
-#navigation .navbody .textmenu li:last-child {
+.sidebar-menu .navbody .textmenu li:last-child {
 	border-radius: 0 0 @border-radius-base @border-radius-base;
 }
+
+a.sr-only:focus {
+	z-index: 100;
+	width: auto;
+	height: auto;
+	clip: auto;
+	margin: 0;
+	padding: .3em .7em;
+	color: @toolbarFgColor;
+	background-color: @toolbarBgColor;
+}
+
 option[selected=selected],
 .hilite {
 	color:@toolbarFgColor !important;

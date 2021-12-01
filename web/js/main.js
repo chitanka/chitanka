@@ -314,8 +314,6 @@ function enableAjaxTabs() {
 }
 
 $(function(){
-	$('#user-tools,#search').appendTo('#main-content-wrapper');
-
 	if (user.isAuthenticated()) {
 		showBookmarks();
 	}

@@ -98,14 +98,9 @@
 			</div>
 		</div>
 
-
-		<div id="navigation" role="navigation">
+		<nav id="navigation">
 		{% block navigation %}
 			<h2 class="sr-only">Навигация</h2>
-
-			<div id="logo" role="banner">
-				<a href="{{ path('homepage') }}" title="Към началната страница"><span class="text-hide">Моята библиотека</span><span></span></a>
-			</div>
 
 			{% block search_form %}
 				{% include 'App::search_form.html.twig' %}
@@ -114,6 +109,10 @@
 			{% block personal_tools %}
 				{{ render_esi(controller('App:User:personalTools')) }}
 			{% endblock %}
+
+			<div id="logo" role="banner">
+				<a href="{{ path('homepage') }}" title="Към началната страница"><span class="sr-only">Начална страница</span><span></span></a>
+			</div>
 
 			{% block navlinks %}
 				<div class="sidebar-menu">
@@ -125,18 +124,20 @@
 			{% endblock %}
 
 		{% endblock %}
-		</div>
+		</nav>
 
 	</div>
 
-	<div id="footer" role="contentinfo">
+	<footer id="footer" role="contentinfo">
 	{% block footer %}
 		<h2 class="sr-only">Допълнителна информация</h2>
 		{{ footer_links|raw }}
 	{% endblock %}
-	</div>
+	</footer>
 
+	<nav>
 	<a href="#main-content" id="goto-top-link" title="Към началото на страницата"><span class="fa fa-chevron-circle-up"></span><span class="sr-only">Към началото на страницата</span></a>
+	</nav>
 
 	<div id="env-{{ environment }}"></div>
 {% endblock body %}
