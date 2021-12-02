@@ -76,10 +76,10 @@
 
 				<div id="first-heading">
 					{% if subtitle is defined %}
-						<hgroup>
-							<h1>{{ title|raw }}</h1>
-							<h2><span>({{ subtitle|trim|raw }})</span></h2>
-						</hgroup>
+						<h1>
+							{{ title|raw }}
+							<span class="subtitle">({{ subtitle|trim|raw }})</span>
+						</h1>
 					{% elseif title is defined %}
 						<h1>{{ title|raw }}</h1>
 					{% endif %}

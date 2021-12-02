@@ -23,12 +23,16 @@ h5+h5,
 h6+h6 {
 	padding-top: 0;
 }
-h1, hgroup h2 {
+h1 {
 	color: @headerFgColor;
 	background-color: @headerBgColor;
 	border-bottom: none;
 	text-shadow: .1em .05em .1em @headerShadowColor;
 	text-align: center;
+	.subtitle {
+		display: block;
+		font-size: 90%;
+	}
 }
 h1, h2, h3, h4, h5, h6 {
 	>p {
