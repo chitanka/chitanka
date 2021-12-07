@@ -229,6 +229,10 @@ div.poem-middle .subheader {
 .italic {
 	font-style: italic;
 }
+.cursive {
+	font-family: serif;
+	font-style: italic;
+}
 .smallcaps {
 	font-variant: small-caps;
 }
