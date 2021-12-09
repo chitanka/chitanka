@@ -226,11 +226,12 @@ class Stringy {
 	 * @return string
 	 */
 	public static function createAcronym($name) {
+		$name = preg_replace('/[^a-zA-Zа-яА-Я\d ]/u', '', $name);
 		if (preg_match_all('/ ([a-zA-Zа-яА-Я\d])/u', ' '.$name, $matches)) {
 			$acronym = implode('', $matches[1]);
 			return Char::mystrtoupper($acronym);
 		}
-		return null;
+		return '';
 	}
 
 	private static function log_error($s, $loud = false) {
