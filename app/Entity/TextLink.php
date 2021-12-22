@@ -60,7 +60,9 @@ class TextLink extends Entity implements \JsonSerializable {
 
 	public function getSiteName() { return $this->site()->getName(); }
 
-	public function setCode($code) { $this->code = $code; }
+	public function setCode($code) {
+		$this->code = $this->site()->extractMediaId($code);
+	}
 	public function getCode() { return $this->code; }
 
 	public function setDescription($description) { $this->description = $description; }

@@ -73,6 +73,11 @@ class ExternalSite extends Entity implements \JsonSerializable {
 		return str_replace(self::MEDIAID_PLACEHOLDER, $mediaId, $this->getUrl());
 	}
 
+	public function extractMediaId(string $url): string {
+		$urlWoMediaId = str_replace(self::MEDIAID_PLACEHOLDER, '', $this->getUrl());
+		return str_replace($urlWoMediaId, '', $url);
+	}
+
 	/**
 	 * Specify data which should be serialized to JSON
 	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
