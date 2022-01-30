@@ -1,5 +1,5 @@
 {% import 'text.html.twig' as text_lister %}
-	<h2>
+	<h3>
 		{% if series.slug is defined %}
 			<a href="{{ path('series_show', {'slug': series.slug}) }}">{{ series.name }}</a>
 			{% if series.origName is not empty %}
@@ -8,7 +8,7 @@
 		{% else %}
 			{{ series.name }}
 		{% endif %}
-	</h2>
+	</h3>
 	{{ text_lister.text_list(texts) }}
 	{% if texts|length > 1 %}
 		{% set filename = person.slug ~'_'~ ( series.slug is defined ? series.slug : series.name ) %}
