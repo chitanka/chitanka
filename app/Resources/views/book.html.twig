@@ -45,7 +45,7 @@
 {% endmacro %}
 
 {% macro download_links(book) %}
-	<div class="btn-group" role="group">
+	<div class="btn-group" role="group" aria-label="Връзки за сваляне">
 		{% for format in book.outputFormats %}
 			{{ _self.download_link(book, format) }}
 		{% endfor %}
