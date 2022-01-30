@@ -85,7 +85,7 @@ class TextService {
 		foreach (\App\Legacy\makeDbRows($file, $headlevel) as $row) {
 			$name = $row[2];
 			$name = strtr($name, ['_' => '']);
-			$name = $this->legacyDb->escape(Stringy::my_replace($name));
+			$name = Stringy::limitLength($this->legacyDb->escape(Stringy::my_replace($name)), 255);
 			$data[] = [$textId, $row[0], $row[1], $name, $row[3], $row[4]];
 		}
 		if ($file != $fileOrString) {
