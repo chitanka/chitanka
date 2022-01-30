@@ -77,12 +77,14 @@
 	{% import 'link.html.twig' as link %}
 <dl class="text-entity" itemscope itemtype="http://schema.org/CreativeWork" data-id="{{ text.id }}">
 	<dt>
+		<h4 class="text-title">
 		{{ _self.rating(text) }}
 		{{ options.prefix is defined ? options.prefix : '' }}
 		{% if text.series is defined and text.series is not empty %}
 			<a href="{{ path('series_show', {'slug': text.series.slug}) }}" title="{{ text.series.name }}">{{ text.series.name|acronym }}</a>:
 		{% endif %}
 		{{ link.text(text, options) }}
+		</h4>
 	</dt>
 	<dd class="tauthor" itemprop="author">{{ _self.author_list(text.authors) }}</dd>
 	<!--<dd class="extra">{#{{ _self.text_extra_info(text) }}#}</dd>-->
@@ -103,10 +105,12 @@
 	{% import 'link.html.twig' as link %}
 <dl class="text-entity" itemscope itemtype="http://schema.org/CreativeWork" data-id="{{ text.id }}">
 	<dt>
+		<h4 class="text-title">
 		{{ _self.rating(text) }}
 		{{ options.prefix is defined ? options.prefix : '' }}
 		{% if options.sernr is defined and text.sernr %}{{ text.sernr }}.{% endif %}
 		{{ link.text(text, options) }}
+		</h4>
 	</dt>
 	<dd class="extra">{{ _self.text_extra_info(text) }}</dd>
 	{% if options.download_links is defined %}
