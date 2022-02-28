@@ -121,6 +121,9 @@ class BookController extends Controller {
 		} catch (NoResultException $e) {
 			throw $this->createNotFoundException("Няма книга с номер $id.");
 		}
+		if ($book->getRemovedNotice() && $_format !== 'html') {
+			return $this->redirectToRoute('book_show', ['id' => $book->getId()]);
+		}
 
 		switch ($_format) {
 			case 'sfb.zip':
