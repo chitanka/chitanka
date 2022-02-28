@@ -13,7 +13,7 @@ $("#book-content").on('click', 'a.one-part-text', function(event) {
 		return false;
 	}
 	$self.loading();
-	var $target = $self.closest(':header');
+	var $target = $self.closest(':header:not(.text-title)');
 	if ($target.length === 0) {
 		$target = $self.closest('.text-entity');
 	}
