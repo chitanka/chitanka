@@ -377,15 +377,12 @@ class User implements UserInterface, \JsonSerializable {
 
 	protected
 		$rights = [], $options = [],
-		$dlTexts = [],
 		$isHuman = false;
 
 	/** Cookie name for the user ID */
 	const UID_COOKIE = 'mli';
 	/** Cookie name for the encrypted user password */
 	const TOKEN_COOKIE = 'mlt';
-	/** Cookie name for the user options */
-	const OPTS_COOKIE = 'mlo';
 	/** Session key for the User object */
 	const U_SESSION = 'user';
 
@@ -470,28 +467,10 @@ class User implements UserInterface, \JsonSerializable {
 		return true;
 	}
 
-	public static function getDataByName($username) {
-		return self::getData( ['username' => $username] );
-	}
-
-	public static function getDataById($userId) {
-		return self::getData( ['id' => $userId] );
-	}
-
-	public static function getData($dbkey) {
-		$db = Setup::db();
-		$res = $db->select(DBT_USER, $dbkey);
-		if ( $db->numRows($res) ==  0) return [];
-		return $db->fetchAssoc($res);
-	}
-
 	public static function getGroupList() {
 		return self::$groupList;
 	}
 
-	public function showName() {
-		return empty($this->realname) ? $this->username : $this->realname;
-	}
 	public function userName() {
 		return $this->username;
 	}
@@ -515,10 +494,6 @@ class User implements UserInterface, \JsonSerializable {
 	public function setOption($name, $val) {
 		$this->opts[$name] = $val;
 		$this->storeInSession();
-	}
-
-	public function isGod() {
-		return $this->inGroup(self::GROUP_GOD);
 	}
 
 	public function isHuman() {
@@ -630,18 +605,6 @@ class User implements UserInterface, \JsonSerializable {
 
 	public function updateSession() {
 		$_SESSION[self::U_SESSION] = $this->toArray();
-	}
-
-	public static function packOptions( $options ) {
-		return serialize($options);
-	}
-
-	public static function unpackOptions( $opts_data ) {
-		if ( ! empty($opts_data) ) {
-			return unserialize($opts_data);
-		}
-
-		return [];
 	}
 
 	public function getSkinPreference() {
