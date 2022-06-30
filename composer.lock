@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ce90af3445f1e563b95cb9fc8b2dfef",
+    "content-hash": "7f5fc77960881d5cdb07166a5c9e70ca",
     "packages": [
         {
             "name": "chitanka/rocket-chat-client",
@@ -4552,12 +4552,12 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "friendsofsymfony/comment-bundle": 20,
         "sensio/buzz-bundle": 20,
         "sonata-project/admin-bundle": 20,
         "sonata-project/doctrine-orm-admin-bundle": 20,
         "sonata-project/easy-extends-bundle": 20,
-        "sonata-project/intl-bundle": 20,
-        "friendsofsymfony/comment-bundle": 20
+        "sonata-project/intl-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -4566,6 +4566,7 @@
         "ext-curl": "*",
         "ext-gd": "*",
         "ext-intl": "*",
+        "ext-json": "*",
         "ext-xsl": "*",
         "ext-zip": "*"
     },

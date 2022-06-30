@@ -12,6 +12,7 @@
 		"ext-curl": "*",
 		"ext-gd": "*",
 		"ext-intl": "*",
+		"ext-json": "*",
 		"ext-xsl": "*",
 		"ext-zip": "*",
 		"chitanka/rocket-chat-client": "^0.1.1",
