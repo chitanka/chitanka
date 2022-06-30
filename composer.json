@@ -32,12 +32,12 @@
 		"white-october/pagerfanta-bundle": "^1.0",
 		"chitanka/sfb-converter": "^2.0",
 		"twbs/bootstrap": "3.3.*",
-		"oyejorge/less.php": "1.7.*@dev",
 		"fortawesome/font-awesome": "v4.5.0",
 		"michelf/php-markdown": "1.4.0",
 		"cypresslab/gitelephant": "v1.1.0",
 		"eko/feedbundle": "1.2.*",
-		"chitanka/rocket-chat-client": "^0.1.1"
+		"chitanka/rocket-chat-client": "^0.1.1",
+		"wikimedia/less.php": "^3.1"
 	},
 	"require-dev": {
 		"sensio/generator-bundle": "^3.0",

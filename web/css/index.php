@@ -52,7 +52,8 @@ $positions = [
 ];
 
 $cacheDir = __DIR__.'/../../var/cache/less';
-require __DIR__."/../bin/Less.php";
+require __DIR__."/../../vendor/wikimedia/less.php/lib/Less/Autoloader.php";
+Less_Autoloader::register();
 ini_set('memory_limit', '128M');
 $cssFile = compileStyleFiles($cacheDir, get('skin', $skins), get('menu', $positions));
 if ($cssFile !== null) {
