@@ -447,7 +447,7 @@ class User implements UserInterface, \JsonSerializable {
 		$max = strlen($chars) - 1;
 		$password = '';
 		for ($i = 0; $i < $passLength; $i++) {
-			$password .= $chars{mt_rand(0, $max)};
+			$password .= $chars[mt_rand(0, $max)];
 		}
 
 		return $password;
@@ -463,8 +463,8 @@ class User implements UserInterface, \JsonSerializable {
 		$forbidden = '/+#"(){}[]<>!?|~*$&%=\\';
 		$len = strlen($forbidden);
 		for ($i=0; $i < $len; $i++) {
-			if ( strpos($username, $forbidden{$i}) !== false ) {
-				return $forbidden{$i};
+			if ( strpos($username, $forbidden[$i]) !== false ) {
+				return $forbidden[$i];
 			}
 		}
 		return true;
