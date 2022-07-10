@@ -441,11 +441,13 @@ class ContentImporter {
 				'votes' => 0,
 				'has_anno' => 0,
 				'is_compilation' => isset($work['tmpl']),
-				'orig_title' => (empty($work['orig_title']) ? '' : self::fixOrigTitle($work['orig_title'])),
 			];
-			if (isset($work['ser_nr'])) {
-				$set['sernr'] = $work['ser_nr'];
-			}
+		}
+		if (isset($work['ser_nr'])) {
+			$set['sernr'] = $work['ser_nr'];
+		}
+		if (isset($work['orig_title'])) {
+			$set['orig_title'] = self::fixOrigTitle($work['orig_title']);
 		}
 		if (isset($work['subtitle'])) {
 			$set['subtitle'] = $this->replaceChars($work['subtitle'], $work['lang']);
