@@ -51,7 +51,7 @@ class Book extends BaseWork implements \JsonSerializable {
 
 	/**
 	 * @var string
-	 * @ORM\Column(type="string", length=50)
+	 * @ORM\Column(type="string", length=100)
 	 */
 	private $slug;
 

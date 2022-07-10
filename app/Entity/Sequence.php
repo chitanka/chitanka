@@ -25,7 +25,7 @@ class Sequence extends Entity implements \JsonSerializable {
 
 	/**
 	 * @var string $slug
-	 * @ORM\Column(type="string", length=50, unique=true)
+	 * @ORM\Column(type="string", length=100, unique=true)
 	 */
 	private $slug = '';
 
