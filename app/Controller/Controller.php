@@ -226,7 +226,7 @@ abstract class Controller extends SymfonyController {
 		$user = $this->getUser();
 		$storedOption = $user->option($fullOptionName, '');
 		$param = $this->getRequest()->query->get($option);
-		if ($param !== null && $storedOption !== $param) {
+		if ($param !== null && $storedOption !== $param && $user->isAuthenticated()) {
 			$user->setOption($fullOptionName, $param);
 			$this->em()->getUserRepository()->save($user);
 		}
