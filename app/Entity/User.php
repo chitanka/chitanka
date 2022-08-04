@@ -93,6 +93,7 @@ class User implements UserInterface, \JsonSerializable {
 		self::GROUP_USER,
 		self::GROUP_TEXT_LABEL,
 		self::GROUP_EDIT_WIKI,
+		self::GROUP_EDIT_JUXTAPOSED_TEXTS,
 		self::GROUP_WORKROOM_MEMBER,
 		self::GROUP_WORKROOM_SUPERVISOR,
 		self::GROUP_WORKROOM_ADMIN,
