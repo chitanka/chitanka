@@ -18,7 +18,7 @@
 
 	{% include 'Text/leading_tabs.html.twig' %}
 
-	{% if text.removedNotice is not empty %}
+	{% if text.blocked %}
 		<div class="removed-notice">{{ text.removedNotice|raw }}</div>
 	{% else %}
 		{% include 'Text/toc.html.twig' %}

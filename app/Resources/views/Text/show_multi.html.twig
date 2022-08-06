@@ -31,7 +31,7 @@
 	<div class="row juxtaposed-texts" id="textstart">
 		{% for text in texts %}
 			<div class="col-xs-{{ grid_cols }}">
-				{% if text.removedNotice is not empty %}
+				{% if text.blocked %}
 					<div class="removed-notice">{{ text.removedNotice|raw }}</div>
 				{% else %}
 					{% include 'Text/content.html.twig' with {'id_suffix': loop.index, 'obj_count': obj_count * loop.index} %}

@@ -5,6 +5,7 @@ use App\Util\Char;
 use App\Util\File;
 use App\Util\Stringy;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Sfblib\SfbConverter;
 use Sfblib\SfbToHtmlConverter;
 
@@ -33,6 +34,14 @@ abstract class BaseWork extends Entity {
 	protected static $infoDir = 'info';
 
 	protected $hasTitleNote;
+
+	/**
+	 * A notice when the access to the work’s content is blocked
+	 * @var string
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	protected $removedNotice;
+
 
 	public function getDocId() {
 		return 'http://chitanka.info';
@@ -426,4 +435,10 @@ abstract class BaseWork extends Entity {
 		return File::getBom();
 	}
 
+	public function setRemovedNotice(?string $removedNotice) { $this->removedNotice = $removedNotice; }
+	public function getRemovedNotice(): string { return $this->removedNotice; }
+
+	public function isBlocked(): bool {
+		return $this->getRemovedNotice() && ! isset($_REQUEST['please']);
+	}
 }

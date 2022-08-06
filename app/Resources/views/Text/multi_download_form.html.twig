@@ -1,7 +1,7 @@
 {% macro download_link(texts, format, filename) %}
 	{% set ids = '' %}
 	{% for text in texts %}
-		{% if text.removedNotice is empty %}
+		{% if not text.blocked %}
 		{% set ids = ids ~ (loop.first ? '' : ',') ~ text.id %}
 		{% endif %}
 	{% endfor %}

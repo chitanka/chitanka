@@ -160,13 +160,6 @@ class Book extends BaseWork implements \JsonSerializable {
 	 */
 	private $revisions;
 
-	/**
-	 * A notice if the content is removed
-	 * @var string
-	 * @ORM\Column(type="text", nullable=true)
-	 */
-	private $removedNotice;
-
 	/*
 	 * @var ArrayCollection|Person[]
 	 * @ORM\ManyToMany(targetEntity="Person", inversedBy="books")
@@ -285,9 +278,6 @@ class Book extends BaseWork implements \JsonSerializable {
 	public function addRevision(BookRevision $revision) {
 		$this->revisions[] = $revision;
 	}
-
-	public function setRemovedNotice($removedNotice) { $this->removedNotice = $removedNotice; }
-	public function getRemovedNotice() { return $this->removedNotice; }
 
 	/**
 	 * @return Person[]

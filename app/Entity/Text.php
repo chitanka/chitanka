@@ -223,12 +223,6 @@ class Text extends BaseWork implements  \JsonSerializable {
 	private $article;
 
 	/**
-	 * A notice if the content is removed
-	 * @ORM\Column(type="text", nullable=true)
-	 */
-	private $removedNotice;
-
-	/**
 	 * @var ArrayCollection|TextAuthor[]
 	 * @ORM\OneToMany(targetEntity="TextAuthor", mappedBy="text", cascade={"persist", "remove"}, orphanRemoval=true)
 	 * @ORM\OrderBy({"pos" = "ASC"})
@@ -455,9 +449,6 @@ class Text extends BaseWork implements  \JsonSerializable {
 
 	public function setArticle($article) { $this->article = $article; }
 	public function getArticle() { return $this->article; }
-
-	public function setRemovedNotice($removedNotice) { $this->removedNotice = $removedNotice; }
-	public function getRemovedNotice() { return $this->removedNotice; }
 
 	public function getUserContribs() { return $this->userContribs; }
 	public function setUserContribs($userContribs) { $this->userContribs = $userContribs; }

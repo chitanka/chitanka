@@ -1,4 +1,4 @@
-{% if text.removedNotice is empty %}
+{% if not text.blocked %}
 	{% import 'text.html.twig' as texttools %}
 	<div class="text-entity" data-id="{{ text.id }}">
 		{{ texttools.download_links(text) }}

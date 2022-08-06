@@ -165,7 +165,7 @@
 
 {% macro download_links(text) %}
 	<div class="btn-group dl-sm" role="group" aria-label="Връзки за сваляне">
-		{% if text.removedNotice is empty %}
+		{% if not text.blocked %}
 			{{ _self.bookmark_form(text) }}
 			{% for format in text.outputFormats %}
 				{{ _self.download_link(text, format) }}
