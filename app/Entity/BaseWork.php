@@ -436,7 +436,7 @@ abstract class BaseWork extends Entity {
 	}
 
 	public function setRemovedNotice(?string $removedNotice) { $this->removedNotice = $removedNotice; }
-	public function getRemovedNotice(): string { return $this->removedNotice; }
+	public function getRemovedNotice(): ?string { return $this->removedNotice; }
 
 	public function isBlocked(): bool {
 		return $this->getRemovedNotice() && ! isset($_REQUEST['please']);
