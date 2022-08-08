@@ -135,7 +135,9 @@ EOS;
 			// allow chat calls through both http and https
 			$rocketchatClient->changeUrlScheme($this->sfrequest->getScheme());
 			$user = $this->controller->getUser();
-			$output .= $rocketchatClient->generatePostMessageScript($user->getUsername(), $user->getToken(), $user->getEmail());
+			if ($user->isAuthenticated()) {
+				$output .= $rocketchatClient->generatePostMessageScript($user->getUsername(), $user->getToken(), $user->getEmail());
+			}
 		}
 		return $output;
 	}
