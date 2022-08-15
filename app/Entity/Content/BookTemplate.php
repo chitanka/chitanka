@@ -181,7 +181,6 @@ class BookTemplate {
 		if (empty($template)) {
 			return '';
 		}
-		$template = preg_replace('/\t\{img:[^}]+\}/', '', $template);
 		$imgDir = 'IMG_DIR_PREFIX' . ContentService::getContentFilePath('book-img', $this->book->getId()).'/';
 		$converter = new SfbToHtmlConverter($template, $imgDir);
 		$content = $converter->convert()->getContent();
