@@ -9,10 +9,11 @@ class NotSpam extends Constraint {
 	public $message = 'notspam';
 	public $urlLimit = 2;
 	public $stopWords = [];
-	private $stopWordsFile = __DIR__.'/../../config/spam_phrases.ini';
+	public $stopWordsFile = __DIR__.'/../../config/spam_phrases.ini';
 
-	public function __construct($options = null) {
+	public function __construct($options = null, string $stopWordsFile = null) {
 		parent::__construct($options);
+		$this->stopWordsFile = $stopWordsFile ?? $this->stopWordsFile;
 		$this->stopWords = $this->fetchStopWords();
 	}
 

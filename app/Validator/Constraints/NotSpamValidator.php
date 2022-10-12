@@ -35,8 +35,10 @@ class NotSpamValidator extends ConstraintValidator {
 	}
 
 	private function containsStopWords($value, array $stopWords) {
+		$delim = '#';
 		foreach ($stopWords as $stopWord) {
-			if (strpos($value, $stopWord) !== false) {
+			$re = $delim . str_replace($delim, '\\' . $delim, $stopWord) . $delim . 'iu';
+			if (preg_match($re, $value)) {
 				return true;
 			}
 		}
