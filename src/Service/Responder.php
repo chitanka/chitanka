@@ -69,7 +69,7 @@ class Responder {
 				$content = $params['_content'];
 			} else {
 				$params += $this->createExtraTemplateParams($request);
-				$template = $params['_template'] ?: $this->createTemplateReference($controller, $request)->getLogicalName();
+				$template = $params['_template'] ?: $this->createTemplateReference($controller, $request);
 				$content = $this->twig->render($template, $params);
 			}
 			$response->setContent($content);
@@ -136,7 +136,7 @@ class Responder {
 			throw new \InvalidArgumentException("The '{$controller[1]}' method does not look like an action method as it does not end with Action");
 		}
 		$inflector = InflectorFactory::create()->build();
-		return 'App/'. $matchController[1] .'/'. $inflector->tableize($matchAction[1]) .'.'. $request->getRequestFormat();
+		return $matchController[1] .'/'. $inflector->tableize($matchAction[1]) .'.'. $request->getRequestFormat().'.twig';
 	}
 
 	/**
