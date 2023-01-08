@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class KernelListener implements EventSubscriberInterface {
 
@@ -33,7 +33,7 @@ class KernelListener implements EventSubscriberInterface {
 	private $tokenStorage;
 	private $controller;
 
-	public function __construct(Responder $responder, EntityManager $em, TokenStorage $tokenStorage) {
+	public function __construct(Responder $responder, EntityManager $em, TokenStorageInterface $tokenStorage) {
 		$this->responder = $responder;
 		$this->em = $em;
 		$this->tokenStorage = $tokenStorage;
