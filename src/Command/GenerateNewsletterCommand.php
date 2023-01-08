@@ -32,10 +32,10 @@ class GenerateNewsletterCommand extends Command {
 
 	/**
 	 * @param \DateTime $date
-	 * @param \Twig_Environment $twig
+	 * @param \Twig\Environment $twig
 	 * @return string
 	 */
-	private function generateNewsletter(\DateTime $date, \Twig_Environment $twig) {
+	private function generateNewsletter(\DateTime $date, \Twig\Environment $twig) {
 		$booksByCategory = $this->getBooksByCategory($date);
 		ksort($booksByCategory);
 		return $twig->render('App:Email:newsletter.html.twig', [

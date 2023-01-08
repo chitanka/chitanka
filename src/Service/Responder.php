@@ -19,14 +19,14 @@ class Responder {
 		self::FORMAT_SUGGEST => 'application/x-suggestions+json',
 	];
 
-	/** @var \Twig_Environment */
+	/** @var \Twig\Environment */
 	private $twig;
 	private $em;
 	private $contentDir;
 	private $useHttpCache;
 	private $debug;
 
-	public function __construct(\Twig_Environment $twig, EntityManager $em, $contentDir, $useHttpCache, $debug) {
+	public function __construct(\Twig\Environment $twig, EntityManager $em, $contentDir, $useHttpCache, $debug) {
 		$this->twig = $twig;
 		$this->em = $em;
 		$this->contentDir = $contentDir;

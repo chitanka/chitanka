@@ -5,8 +5,12 @@ use App\Service\ContentService;
 use App\Util\Number;
 use App\Util\Stringy;
 use Sfblib\XmlElement;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+use Twig\TwigTest;
 
-class Extension extends \Twig_Extension {
+class Extension extends AbstractExtension {
 
 	private $bibliomanUrl;
 
@@ -22,44 +26,44 @@ class Extension extends \Twig_Extension {
 	/** {@inheritdoc} */
 	public function getFunctions() {
 		return [
-			new \Twig_SimpleFunction('anchor_name', [$this, 'getAnchorName']),
-			new \Twig_SimpleFunction('cover', [$this, 'getCover']),
-			new \Twig_SimpleFunction('biblioman_url', [$this, 'getBibliomanUrl']),
+			new TwigFunction('anchor_name', [$this, 'getAnchorName']),
+			new TwigFunction('cover', [$this, 'getCover']),
+			new TwigFunction('biblioman_url', [$this, 'getBibliomanUrl']),
 		];
 	}
 
 	/** {@inheritdoc} */
 	public function getFilters() {
 		return [
-			new \Twig_SimpleFilter('rating_class', [$this, 'getRatingClass']),
-			new \Twig_SimpleFilter('rating_format', [$this, 'formatRating']),
-			new \Twig_SimpleFilter('name_format', [$this, 'formatPersonName']),
-			new \Twig_SimpleFilter('acronym', 'App\Util\Stringy::createAcronym'),
-			new \Twig_SimpleFilter('first_char', [$this, 'getFirstChar']),
-			new \Twig_SimpleFilter('email', [$this, 'obfuscateEmail']),
-			new \Twig_SimpleFilter('doctitle', [$this, 'getDocTitle']),
-			new \Twig_SimpleFilter('lower', [$this, 'strtolower']),
-			new \Twig_SimpleFilter('json', 'json_encode'),
-			new \Twig_SimpleFilter('repeat', [$this, 'repeatString']),
-			new \Twig_SimpleFilter('join_lists', [$this, 'joinLists']),
-			new \Twig_SimpleFilter('humandate', 'App\Util\Date::humanDate'),
-			new \Twig_SimpleFilter('nl2br', [$this, 'nl2br'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
-			new \Twig_SimpleFilter('dot2br', [$this, 'dot2br']),
-			new \Twig_SimpleFilter('user_markup', [$this, 'formatUserMarkup']),
-			new \Twig_SimpleFilter('striptags', 'strip_tags'),
-			new \Twig_SimpleFilter('domain', [$this, 'getDomain']),
-			new \Twig_SimpleFilter('link', [$this, 'formatLinks']),
-			new \Twig_SimpleFilter('encoding', [$this, 'changeEncoding']),
-			new \Twig_SimpleFilter('url_decode', 'rawurldecode'),
-			new \Twig_SimpleFilter('qrcode', [$this, 'getQrCode']),
-			new \Twig_SimpleFilter('put_text_in_template', [$this, 'putTextInBookTemplate']),
+			new TwigFilter('rating_class', [$this, 'getRatingClass']),
+			new TwigFilter('rating_format', [$this, 'formatRating']),
+			new TwigFilter('name_format', [$this, 'formatPersonName']),
+			new TwigFilter('acronym', 'App\Util\Stringy::createAcronym'),
+			new TwigFilter('first_char', [$this, 'getFirstChar']),
+			new TwigFilter('email', [$this, 'obfuscateEmail']),
+			new TwigFilter('doctitle', [$this, 'getDocTitle']),
+			new TwigFilter('lower', [$this, 'strtolower']),
+			new TwigFilter('json', 'json_encode'),
+			new TwigFilter('repeat', [$this, 'repeatString']),
+			new TwigFilter('join_lists', [$this, 'joinLists']),
+			new TwigFilter('humandate', 'App\Util\Date::humanDate'),
+			new TwigFilter('nl2br', [$this, 'nl2br'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
+			new TwigFilter('dot2br', [$this, 'dot2br']),
+			new TwigFilter('user_markup', [$this, 'formatUserMarkup']),
+			new TwigFilter('striptags', 'strip_tags'),
+			new TwigFilter('domain', [$this, 'getDomain']),
+			new TwigFilter('link', [$this, 'formatLinks']),
+			new TwigFilter('encoding', [$this, 'changeEncoding']),
+			new TwigFilter('url_decode', 'rawurldecode'),
+			new TwigFilter('qrcode', [$this, 'getQrCode']),
+			new TwigFilter('put_text_in_template', [$this, 'putTextInBookTemplate']),
 		];
 	}
 
 	/** {@inheritdoc} */
 	public function getTests() {
 		return [
-			new \Twig_SimpleTest('url', [$this, 'isUrl']),
+			new TwigTest('url', [$this, 'isUrl']),
 		];
 	}
 
