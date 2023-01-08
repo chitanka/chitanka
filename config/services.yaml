@@ -171,3 +171,11 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Service\Responder:
+        arguments:
+            $contentDir: "%content_dir%"
+            $useHttpCache: "%use_http_cache%"
+            $debug: "%kernel.debug%"
+
+    App\Persistence\EntityManager:
+        public: true
