@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('font-awesome/css/fontawesome.min.css') }}">
 	{{ render_esi(controller('App\\Controller\\UserController::stylesheetAction')) }}
 	{% if css_extra is defined %}
 		{% for extra_stylesheet in css_extra %}
