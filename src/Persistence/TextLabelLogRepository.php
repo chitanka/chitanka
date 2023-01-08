@@ -1,11 +1,17 @@
 <?php namespace App\Persistence;
 
 use App\Entity\Text;
+use App\Entity\TextLabelLog;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  *
  */
 class TextLabelLogRepository extends EntityRepository {
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, TextLabelLog::class);
+	}
 
 	public function getAll($page = 1, $limit = 30) {
 		$query = $this->createDefaultQueryBuilder('log')->getQuery();

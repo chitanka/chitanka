@@ -3,6 +3,7 @@
 use App\Entity\Text;
 use App\Entity\TextCombination;
 use App\Math\Combiner;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  *
@@ -10,6 +11,10 @@ use App\Math\Combiner;
 class TextCombinationRepository extends EntityRepository {
 
 	const DEFAULT_CACHE_LIFETIME = 2;
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, TextCombination::class);
+	}
 
 	/** @param Text[] $texts */
 	public function getForTexts($texts): array {

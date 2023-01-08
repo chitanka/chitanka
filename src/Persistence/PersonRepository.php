@@ -1,6 +1,7 @@
 <?php namespace App\Persistence;
 
 use App\Entity\Person;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  *
@@ -9,6 +10,10 @@ class PersonRepository extends EntityRepository {
 	protected $asAuthor = false;
 	protected $asTranslator = false;
 	protected $queryableFields = ['id', 'slug', 'name', 'origName', 'realName', 'orealName'];
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, Person::class);
+	}
 
 	/**
 	 * @param string $slug

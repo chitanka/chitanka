@@ -2,11 +2,16 @@
 
 use App\Entity\BookmarkFolder;
 use App\Entity\User;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  *
  */
 class BookmarkFolderRepository extends EntityRepository {
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, BookmarkFolder::class);
+	}
 
 	/**
 	 * @param User $user

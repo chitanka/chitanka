@@ -1,11 +1,17 @@
 <?php namespace App\Persistence;
 
 use App\Entity\User;
+use App\Entity\UserTextContrib;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  *
  */
 class UserTextContribRepository extends EntityRepository {
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, UserTextContrib::class);
+	}
 
 	/**
 	 * @param User $user

@@ -1,9 +1,16 @@
 <?php namespace App\Persistence;
 
+use App\Entity\SearchString;
+use Doctrine\Persistence\ManagerRegistry;
+
 /**
  *
  */
 class SearchStringRepository extends EntityRepository {
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, SearchString::class);
+	}
 
 	/**
 	 * @param string $name

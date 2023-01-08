@@ -4,11 +4,16 @@ use App\Entity\Text;
 use App\Entity\TextRating;
 use App\Entity\User;
 use Doctrine\ORM\NoResultException;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  *
  */
 class TextRatingRepository extends EntityRepository {
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, TextRating::class);
+	}
 
 	/**
 	 * Get user rating for a given text.

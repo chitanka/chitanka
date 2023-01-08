@@ -5,7 +5,7 @@ use App\Util\Date;
 /**
  *
  */
-class RevisionRepository extends EntityRepository {
+abstract class RevisionRepository extends EntityRepository {
 
 	public function getLatest($limit = null, $page = 1, $groupByDate = true) {
 		return $this->getByDate(null, $page, $limit, $groupByDate);
@@ -110,7 +110,7 @@ class RevisionRepository extends EntityRepository {
 
 		if ($orderBys) {
 			foreach (explode(',', $orderBys) as $orderBy) {
-				list($field, $order) = explode(' ', ltrim($orderBy));
+				[$field, $order] = explode(' ', ltrim($orderBy));
 				$qb->addOrderBy($field, $order);
 			}
 		} else {

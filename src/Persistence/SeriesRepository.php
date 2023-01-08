@@ -1,12 +1,17 @@
 <?php namespace App\Persistence;
 
 use App\Entity\Series;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  *
  */
 class SeriesRepository extends EntityRepository {
 	protected $queryableFields = ['id', 'slug', 'name', 'origName'];
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, Series::class);
+	}
 
 	/**
 	 * @param string $slug

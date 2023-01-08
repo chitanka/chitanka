@@ -1,6 +1,7 @@
 <?php namespace App\Persistence;
 
 use App\Entity\WorkEntry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  *
@@ -8,6 +9,10 @@ use App\Entity\WorkEntry;
 class WorkEntryRepository extends EntityRepository {
 
 	const DEFAULT_CACHE_LIFETIME = 60;
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, WorkEntry::class);
+	}
 
 	/**
 	 * @param int $limit

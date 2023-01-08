@@ -9,6 +9,7 @@ use App\Entity\TextType;
 use App\Entity\WorkSteward;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NoResultException;
+use Doctrine\Persistence\ManagerRegistry;
 
 class TextRepository extends EntityRepository {
 	public static $types = [
@@ -71,6 +72,10 @@ class TextRepository extends EntityRepository {
 		'votes',
 	];
 	protected $defaultSortingField = 'title';
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, Text::class);
+	}
 
 	/**
 	 * @param int $id

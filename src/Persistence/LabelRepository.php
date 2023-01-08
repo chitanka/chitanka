@@ -1,11 +1,17 @@
 <?php namespace App\Persistence;
 
 use App\Entity\Label;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  *
  */
 class LabelRepository extends EntityRepository {
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, Label::class);
+	}
+
 	/**
 	 * @param string $slug
 	 * @return Label

@@ -1,6 +1,7 @@
 <?php namespace App\Persistence;
 
 use App\Entity\User;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -11,6 +12,10 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class UserRepository extends EntityRepository implements UserProviderInterface {
 
 	const DEFAULT_CACHE_LIFETIME = 60;
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, User::class);
+	}
 
 	/**
 	 * @param string $username

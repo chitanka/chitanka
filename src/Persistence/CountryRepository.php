@@ -1,11 +1,16 @@
 <?php namespace App\Persistence;
 
 use App\Entity\Country;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  *
  */
 class CountryRepository extends EntityRepository {
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, Country::class);
+	}
 
 	/**
 	 * @return Country[]

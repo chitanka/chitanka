@@ -2,11 +2,12 @@
 
 use App\Entity\Entity;
 use App\Entity\Query\SortingDefinition;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
-abstract class EntityRepository extends \Doctrine\ORM\EntityRepository {
+abstract class EntityRepository extends ServiceEntityRepository {
 
 	const ALIAS = 'e';
 	const DEFAULT_CACHE_LIFETIME = 3600;

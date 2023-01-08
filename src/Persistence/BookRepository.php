@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Person;
 use App\Entity\Query\SortingDefinition;
 use App\Entity\Sequence;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * A repository for books
@@ -19,6 +20,10 @@ class BookRepository extends EntityRepository {
 		'year',
 	];
 	protected $defaultSortingField = 'title';
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, Book::class);
+	}
 
 	/**
 	 * Fetch a book with all important relations

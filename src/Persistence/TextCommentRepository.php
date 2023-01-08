@@ -2,11 +2,17 @@
 
 use App\Entity\TextComment;
 use App\Entity\WorkSteward;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  *
  */
 class TextCommentRepository extends EntityRepository {
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, TextComment::class);
+	}
+
 	/**
 	 * @param int $limit
 	 * @return TextComment[]

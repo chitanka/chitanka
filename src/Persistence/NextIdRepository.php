@@ -1,11 +1,16 @@
 <?php namespace App\Persistence;
 
 use App\Entity\NextId;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  *
  */
-class NextIdRepository extends \Doctrine\ORM\EntityRepository {
+class NextIdRepository extends EntityRepository {
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, NextId::class);
+	}
 
 	/**
 	 * @param object $entity

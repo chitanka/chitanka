@@ -1,11 +1,17 @@
 <?php namespace App\Persistence;
 
+use App\Entity\Bookmark;
 use App\Entity\User;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  *
  */
 class BookmarkRepository extends EntityRepository {
+
+	public function __construct(ManagerRegistry $registry, string $entityClass = null) {
+		parent::__construct($registry, $entityClass ?? Bookmark::class);
+	}
 
 	/**
 	 * @param User $user

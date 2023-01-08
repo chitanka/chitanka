@@ -1,11 +1,17 @@
 <?php namespace App\Persistence;
 
 use App\Entity\Category;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  *
  */
 class CategoryRepository extends EntityRepository {
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, CategoryRepository::class);
+	}
+
 	/**
 	 * @param string $slug
 	 * @return Category
