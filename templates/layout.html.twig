@@ -19,7 +19,7 @@
 
 {% block stylesheets %}
 	<link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}">
-	{{ render_esi(controller('App:User:stylesheet')) }}
+	{{ render_esi(controller('App\\Controller\\UserController::stylesheetAction')) }}
 	{% if css_extra is defined %}
 		{% for extra_stylesheet in css_extra %}
 			<link rel="stylesheet" href="{{ asset(extra_stylesheet) }}">
@@ -107,7 +107,7 @@
 			{% endblock %}
 
 			{% block personal_tools %}
-				{{ render_esi(controller('App:User:personalTools')) }}
+				{{ render_esi(controller('App\\Controller\\UserController::personalToolsAction')) }}
 			{% endblock %}
 
 			<div id="logo" role="banner">

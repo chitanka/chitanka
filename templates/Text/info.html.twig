@@ -83,9 +83,9 @@
 
 	<ul class="user-actions">
 		<li>Вашата оценка:
-			{{ render_esi(controller('App:Text:rating', {'id': text.id})) }}
+			{{ render_esi(controller('App\\Controller\\TextController::ratingAction', {'id': text.id})) }}
 		</li>
-		<li>{{ render_esi(controller('App:Text:markReadForm', {'id': text.id})) }}
+		<li>{{ render_esi(controller('App\\Controller\\TextController::markReadFormAction', {'id': text.id})) }}
 		<li>{{ textinfo.bookmark_form(text, ' ') }}</li>
 	</ul>
 </div>
