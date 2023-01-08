@@ -149,7 +149,7 @@ EOS;
 		}
 		$h = '<h2>Сканирани или обработени текстове</h2>';
 
-		return $h . $this->controller->renderViewForLegacyCode('App:User:contribs_list.html.twig', [
+		return $h . $this->controller->renderViewForLegacyCode('User/contribs_list.html.twig', [
 			'user' => $this->shown_user,
 			'contribs' => $repo->getLatestByUser($this->shown_user, 20),
 			'count' => $count
@@ -165,7 +165,7 @@ EOS;
 		}
 		$h = '<h2>Последни прочетени произведения</h2>';
 
-		return $h . $this->controller->renderViewForLegacyCode('App:User:read_texts_list.html.twig', [
+		return $h . $this->controller->renderViewForLegacyCode('User/read_texts_list.html.twig', [
 			'user' => $this->shown_user,
 			'is_owner' => true,
 			'read_texts' => $repo->getLatestByUser($this->shown_user, 20),
@@ -181,7 +181,7 @@ EOS;
 		}
 		$h = '<h2>Последни избрани произведения</h2>';
 
-		return $h . $this->controller->renderViewForLegacyCode('App:User:bookmarks_list.html.twig', [
+		return $h . $this->controller->renderViewForLegacyCode('User/bookmarks_list.html.twig', [
 			'user' => $this->shown_user,
 			'is_owner' => true,
 			'bookmarks' => $repo->getLatestByUser($this->shown_user, 20),

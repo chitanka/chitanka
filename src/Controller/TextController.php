@@ -265,7 +265,7 @@ class TextController extends Controller {
 				'text' => $text,
 				'part' => $part,
 				'next_part' => ($nextHeader ? $nextHeader->getNr() : 0),
-				'_template' => 'App:Text:show.htmlx.twig',
+				'_template' => 'Text/show.htmlx.twig',
 			];
 		}
 		return $this->showHtml($text, $part);
@@ -287,7 +287,7 @@ class TextController extends Controller {
 			'obj_count' => 3, /* after annotation and extra info */
 			'js_extra' => ['text'],
 			'similar_texts' => $similarTexts,
-			'_template' => 'App:Text:show.html.twig',
+			'_template' => 'Text/show.html.twig',
 		];
 		if ($text->getArticle()) {
 			$vars['wikiPage'] = $this->container->get('wiki_reader')->fetchPage($text->getArticle());
@@ -395,7 +395,7 @@ class TextController extends Controller {
 			$service->addTextLabel($textLabel, $text);
 			if ($request->isXmlHttpRequest()) {
 				return [
-					'_template' => 'App:Text:label_view.html.twig',
+					'_template' => 'Text/label_view.html.twig',
 					'text' => $text,
 					'label' => $textLabel->getLabel(),
 				];

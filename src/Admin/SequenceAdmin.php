@@ -9,7 +9,7 @@ class SequenceAdmin extends Admin {
 	protected $baseRoutePattern = 'sequence';
 	protected $baseRouteName = 'admin_sequence';
 
-	public $extraActions = 'App:SequenceAdmin:extra_actions.html.twig';
+	public $extraActions = 'SequenceAdmin/extra_actions.html.twig';
 
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper

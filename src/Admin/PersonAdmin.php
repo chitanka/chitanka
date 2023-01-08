@@ -10,7 +10,7 @@ class PersonAdmin extends Admin {
 	protected $baseRoutePattern = 'person';
 	protected $baseRouteName = 'admin_person';
 
-	public $extraActions = 'App:PersonAdmin:extra_actions.html.twig';
+	public $extraActions = 'PersonAdmin/extra_actions.html.twig';
 
 	/** @var PersonRepository */
 	private $repository;

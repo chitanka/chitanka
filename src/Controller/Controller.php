@@ -38,8 +38,8 @@ abstract class Controller extends AbstractController {
 		$request = $this->getRequest();
 		$params += [
 			'page' => $page,
-			'navlinks' => $this->renderLayoutComponent('sidebar-menu', 'App::navlinks.html.twig'),
-			'footer_links' => $this->renderLayoutComponent('footer-menu', 'App::footer_links.html.twig'),
+			'navlinks' => $this->renderLayoutComponent('sidebar-menu', 'navlinks.html.twig'),
+			'footer_links' => $this->renderLayoutComponent('footer-menu', 'footer_links.html.twig'),
 			'current_route' => $request->attributes->get('_route'),
 			'environment' => $this->container->get('kernel')->getEnvironment(),
 			'ajax' => $request->isXmlHttpRequest(),
@@ -49,7 +49,7 @@ abstract class Controller extends AbstractController {
 			$params['inline_js'] = $page->inlineJs;
 		}
 
-		$response = $this->render("App:{$params['_controller']}.{$request->getRequestFormat()}.twig", $params);
+		$response = $this->render("{$params['_controller']}.{$request->getRequestFormat()}.twig", $params);
 		$this->setCacheStatusByResponse($response);
 
 		return $response;

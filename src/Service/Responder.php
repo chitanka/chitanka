@@ -92,8 +92,8 @@ class Responder {
 	 */
 	private function createExtraTemplateParams(Request $request) {
 		return [
-			'navlinks' => $this->renderLayoutComponent('sidebar-menu', 'App::navlinks.html.twig'),
-			'footer_links' => $this->renderLayoutComponent('footer-menu', 'App::footer_links.html.twig'),
+			'navlinks' => $this->renderLayoutComponent('sidebar-menu', 'navlinks.html.twig'),
+			'footer_links' => $this->renderLayoutComponent('footer-menu', 'footer_links.html.twig'),
 			'current_route' => $request->attributes->get('_route'),
 			'environment' => $this->debug ? 'dev' : 'prod',
 			'ajax' => $request->isXmlHttpRequest(),

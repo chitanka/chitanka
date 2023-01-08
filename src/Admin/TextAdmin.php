@@ -13,7 +13,7 @@ class TextAdmin extends Admin {
 	protected $baseRoutePattern = 'text';
 	protected $baseRouteName = 'admin_text';
 
-	public $extraActions = 'App:TextAdmin:extra_actions.html.twig';
+	public $extraActions = 'TextAdmin/extra_actions.html.twig';
 
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper

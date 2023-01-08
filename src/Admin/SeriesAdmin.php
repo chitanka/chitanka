@@ -10,7 +10,7 @@ class SeriesAdmin extends Admin {
 	protected $baseRoutePattern = 'series';
 	protected $baseRouteName = 'admin_series';
 
-	public $extraActions = 'App:SeriesAdmin:extra_actions.html.twig';
+	public $extraActions = 'SeriesAdmin/extra_actions.html.twig';
 
 	protected function configureShowField(ShowMapper $showMapper) {
 		$showMapper

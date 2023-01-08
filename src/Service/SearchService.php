@@ -28,7 +28,7 @@ class SearchService {
 
 		if (empty($query)) {
 			return [
-				'_template' => "App:Search:list_top_strings.$format.twig",
+				'_template' => "Search/list_top_strings.$format.twig",
 				'latest_strings' => $this->em->getSearchStringRepository()->getLatest(self::MAX_LATEST_STRINGS),
 				'top_strings' => $this->em->getSearchStringRepository()->getTop(self::MAX_TOP_STRINGS),
 			];
@@ -42,7 +42,7 @@ class SearchService {
 				$this->validateQueryLength($query);
 			} catch (\InvalidArgumentException $e) {
 				return [
-					'_template' => "App:Search:message.$format.twig",
+					'_template' => "Search/message.$format.twig",
 					'_status' => self::HTTP_STATUS_INVALID,
 					'message' => $e->getMessage(),
 				];

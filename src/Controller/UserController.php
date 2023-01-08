@@ -15,7 +15,7 @@ class UserController extends Controller {
 		if (!$this->container->getParameter('allow_user_registration')) {
 			return $this->asText('');
 		}
-		return $this->render('App:User:personal_tools.html.twig', [
+		return $this->render('User/personal_tools.html.twig', [
 			'_user' => $this->getUser(),
 			'_cache' => 0,
 		]);
@@ -190,7 +190,7 @@ class UserController extends Controller {
 	}
 
 	public function stylesheetAction() {
-		return $this->render('App:User:stylesheet.html.twig', [
+		return $this->render('User/stylesheet.html.twig', [
 			'stylesheet' => $this->getStylesheet(),
 			'extra_stylesheets' => $this->getUser()->getExtraStylesheets(),
 			'extra_javascripts' => $this->getUser()->getExtraJavascripts(),

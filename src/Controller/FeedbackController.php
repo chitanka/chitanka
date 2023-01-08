@@ -18,7 +18,7 @@ class FeedbackController extends Controller {
 		}
 
 		return [
-			'intro' => $this->renderLayoutComponent('contact-intro', 'App:Feedback:intro.html.twig'),
+			'intro' => $this->renderLayoutComponent('contact-intro', 'Feedback/intro.html.twig'),
 			'form' => $form->createView(),
 		];
 	}

@@ -16,7 +16,7 @@ class BookAdmin extends Admin {
 	protected $baseRoutePattern = 'book';
 	protected $baseRouteName = 'admin_book';
 
-	public $extraActions = 'App:BookAdmin:extra_actions.html.twig';
+	public $extraActions = 'BookAdmin/extra_actions.html.twig';
 
 	private $textRepository;
 
@@ -57,18 +57,18 @@ class BookAdmin extends Admin {
 
 	protected function configureListFields(ListMapper $listMapper) {
 		$listMapper
-			->add('url', 'string', ['template' => 'App:BookAdmin:list_url.html.twig'])
+			->add('url', 'string', ['template' => 'BookAdmin/list_url.html.twig'])
 			->add('slug')
 			->addIdentifier('title')
 			->add('id')
 			->add('type')
-			->add('bibliomanId', 'string', ['template' => 'App:BookAdmin:list_biblioman.html.twig'])
+			->add('bibliomanId', 'string', ['template' => 'BookAdmin/list_biblioman.html.twig'])
 			->add('_action', 'actions', [
 				'actions' => [
 					//'show' => [],
 					'edit' => [],
 					'updateCover' => [
-						'template' => 'App:BookAdmin:list__action_update_cover.html.twig',
+						'template' => 'BookAdmin/list__action_update_cover.html.twig',
 					],
 					//'delete' => [],
 				]

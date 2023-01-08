@@ -7,7 +7,7 @@ class SiteNoticeController extends Controller {
 		if ( rand(0, 5) === 0 /*every fifth*/ ) {
 			$siteNotice = $this->em()->getSiteNoticeRepository()->getGlobalRandom();
 		}
-		return $this->render('App:SiteNotice:stripe.html.twig', [
+		return $this->render('SiteNotice/stripe.html.twig', [
 			'siteNotice' => $siteNotice,
 		]);
 	}

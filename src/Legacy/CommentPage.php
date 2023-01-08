@@ -396,7 +396,7 @@ EOS;
 			$params['route'] = 'user_comments';
 			$params['route_params'] = ['username' => $this->username];
 		}
-		$pagelinks = $this->controller->renderViewForLegacyCode('App::pager.html.twig', $params);
+		$pagelinks = $this->controller->renderViewForLegacyCode('pager.html.twig', $params);
 
 		$c = '';
 		while ($row = $this->db->fetchAssoc($res)) {
