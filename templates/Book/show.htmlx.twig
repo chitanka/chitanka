@@ -1,4 +1,4 @@
-{% extends app.request.xmlHttpRequest ? '::base.htmlx.twig' : '::base.html.twig' %}
+{% extends app.request.xmlHttpRequest ? 'base.htmlx.twig' : 'base.html.twig' %}
 
 {% block title %}
 	{% for author in authors %}
