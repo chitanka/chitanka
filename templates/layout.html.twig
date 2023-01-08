@@ -71,7 +71,7 @@
 		<div id="main-content-wrapper">
 			<main id="main-content" role="main" itemscope itemtype="http://schema.org/{{ itemtype|default('WebPage') }}">
 				{% block site_notice %}
-					{{ render(controller('App:SiteNotice:stripe')) }}
+					{{ render(controller('App\\Controller\\SiteNoticeController::stripeAction')) }}
 				{% endblock %}
 
 				<div id="first-heading">
