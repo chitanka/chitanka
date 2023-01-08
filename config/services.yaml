@@ -179,3 +179,8 @@ services:
 
     App\Persistence\EntityManager:
         public: true
+
+    App\Twig\Extension:
+        tags:
+            - { name: twig.extension }
+        arguments: ["%biblioman_url%"]
