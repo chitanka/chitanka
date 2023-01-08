@@ -50,18 +50,6 @@
             "config/packages/eko_feed.yaml"
         ]
     },
-    "kriswallsmith/buzz": {
-        "version": "1.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "main",
-            "version": "1.0",
-            "ref": "7238da98cc4912f7ff0a124cbac6e89ffb149db2"
-        },
-        "files": [
-            "config/packages/buzz.yaml"
-        ]
-    },
     "phpunit/phpunit": {
         "version": "9.5",
         "recipe": {
@@ -75,9 +63,6 @@
             "phpunit.xml.dist",
             "tests/bootstrap.php"
         ]
-    },
-    "sensio/buzz-bundle": {
-        "version": "v1.1.0"
     },
     "sensio/framework-extra-bundle": {
         "version": "6.2",

@@ -14,5 +14,4 @@ return [
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
     Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
     Eko\FeedBundle\EkoFeedBundle::class => ['all' => true],
-    Sensio\Bundle\BuzzBundle\SensioBuzzBundle::class => ['all' => true],
 ];
