@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\TextRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\TextRepository")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="text",

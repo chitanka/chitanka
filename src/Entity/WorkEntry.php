@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Eko\FeedBundle\Item\Writer\RoutedItemInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\WorkEntryRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\WorkEntryRepository")
  * @ORM\Table(name="work_entry",
  *	indexes={
  *		@ORM\Index(name="title_idx", columns={"title"}),

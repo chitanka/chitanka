@@ -3,7 +3,7 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\TextLabelLogRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\TextLabelLogRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(
  *  indexes={

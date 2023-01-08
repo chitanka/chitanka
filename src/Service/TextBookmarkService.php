@@ -1,8 +1,8 @@
 <?php namespace App\Service;
 
 use App\Entity\Bookmark;
-use App\Entity\BookmarkFolderRepository;
-use App\Entity\BookmarkRepository;
+use App\Persistence\BookmarkFolderRepository;
+use App\Persistence\BookmarkRepository;
 use App\Entity\Text;
 use App\Entity\User;
 

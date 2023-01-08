@@ -1,7 +1,7 @@
 <?php namespace App\Generator;
 
 use App\Entity\Text;
-use App\Entity\TextRepository;
+use App\Persistence\TextRepository;
 use App\Legacy\CacheManager;
 use App\Service\ContentService;
 use App\Util\Char;

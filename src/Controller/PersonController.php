@@ -1,7 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Entity\Person;
-use App\Entity\PersonRepository;
+use App\Persistence\PersonRepository;
 use App\Pagination\Pager;
 use App\Service\SearchService;
 use App\Service\Translation;

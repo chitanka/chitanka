@@ -1,6 +1,6 @@
 <?php namespace App\Command;
 
-use App\Entity\EntityManager;
+use App\Persistence\EntityManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Sfblib\SfbConverter;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\BookRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\BookRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="book",

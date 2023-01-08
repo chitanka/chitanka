@@ -1,6 +1,6 @@
 <?php namespace App\Controller;
 
-use App\Entity\RevisionRepository;
+use App\Persistence\RevisionRepository;
 use App\Pagination\Pager;
 use App\Util\Date;
 

@@ -1,7 +1,7 @@
 <?php namespace App\Form\Type;
 
 use App\Entity\TextRating;
-use App\Entity\TextRatingRepository;
+use App\Persistence\TextRatingRepository;
 use App\Service\Translation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

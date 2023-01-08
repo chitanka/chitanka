@@ -19,7 +19,7 @@ abstract class Controller extends SymfonyController {
 	/** The max cache time of the response (in seconds) */
 	protected $responseAge = 3600; // 1 hour
 
-	/** @var \App\Entity\EntityManager */
+	/** @var \App\Persistence\EntityManager */
 	private $em;
 	/** @var \App\Service\FlashService */
 	private $flashes;
@@ -100,9 +100,9 @@ abstract class Controller extends SymfonyController {
 		return $response;
 	}
 
-	/** @return \App\Entity\EntityManager */
+	/** @return \App\Persistence\EntityManager */
 	public function em() {
-		return $this->em ?: $this->em = $this->container->get('app.entity_manager');
+		return $this->em ?: $this->em = $this->container->get('App\Persistence\EntityManager');
 	}
 
 	/** @return User */

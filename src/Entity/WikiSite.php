@@ -4,7 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\WikiSiteRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\WikiSiteRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="wiki_site")
  * @UniqueEntity(fields="code")

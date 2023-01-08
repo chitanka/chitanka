@@ -4,7 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\CountryRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\CountryRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="country")
  */

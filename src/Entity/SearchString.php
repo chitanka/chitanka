@@ -3,7 +3,7 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\SearchStringRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\SearchStringRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="search_string",
  *	indexes={

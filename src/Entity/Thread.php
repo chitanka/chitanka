@@ -1,10 +1,11 @@
 <?php namespace App\Entity;
 
+use App\Persistence\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\CommentBundle\Entity\Thread as BaseThread;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\ThreadRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\ThreadRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="thread")
  * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
@@ -31,7 +32,7 @@ class Thread extends BaseThread {
 	}
 
 	public function getTarget(EntityManager $em) {
-		list($entity, $id) = explode(':', $this->id);
+		[$entity, $id] = explode(':', $this->id);
 		$repo = $em->getRepository($entity);
 		return $repo ? $repo->find($id) : null;
 	}

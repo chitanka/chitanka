@@ -1,6 +1,6 @@
 <?php namespace App\Service;
 
-use App\Entity\EntityManager;
+use App\Persistence\EntityManager;
 use App\Util\Stringy;
 use Symfony\Component\Filesystem\Filesystem;
 

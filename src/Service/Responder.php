@@ -1,6 +1,6 @@
 <?php namespace App\Service;
 
-use App\Entity\EntityManager;
+use App\Persistence\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

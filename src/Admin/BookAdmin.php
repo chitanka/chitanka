@@ -2,7 +2,7 @@
 
 use App\Entity\Book;
 use App\Entity\BookRevision;
-use App\Entity\TextRepository;
+use App\Persistence\TextRepository;
 use App\Service\ContentService;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

@@ -4,7 +4,7 @@ use App\Entity\Label;
 use App\Entity\Text;
 use App\Entity\TextLabel;
 use App\Entity\TextLabelLog;
-use App\Entity\TextLabelLogRepository;
+use App\Persistence\TextLabelLogRepository;
 use App\Entity\User;
 
 class TextLabelService {

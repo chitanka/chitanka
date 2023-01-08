@@ -1,6 +1,6 @@
 <?php namespace App\Doctrine;
 
-use App\Entity\NextIdRepository;
+use App\Persistence\NextIdRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Id\AbstractIdGenerator;
 use Doctrine\ORM\Mapping\ClassMetadata;

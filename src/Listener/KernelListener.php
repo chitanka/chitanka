@@ -1,7 +1,7 @@
 <?php namespace App\Listener;
 
 use App\Controller\Controller;
-use App\Entity\EntityManager;
+use App\Persistence\EntityManager;
 use App\Entity\User;
 use App\Service\Responder;
 use App\Util\Opds;

@@ -129,7 +129,7 @@ abstract class Command extends ContainerAwareCommand {
 		return '/*MAINTENANCESQL*/'.$sql;
 	}
 
-	/** @return \App\Entity\EntityManager */
+	/** @return \App\Persistence\EntityManager */
 	protected function getEntityManager() {
 		return $this->getContainer()->get('app.entity_manager');
 	}

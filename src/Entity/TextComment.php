@@ -3,7 +3,7 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\TextCommentRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\TextCommentRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="text_comment",
  *	uniqueConstraints={@ORM\UniqueConstraint(name="user_comment_uniq", columns={"text_id", "rname", "contenthash"})},

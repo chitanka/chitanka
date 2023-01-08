@@ -2,12 +2,13 @@
 
 use App\Legacy\Legacy;
 use App\Legacy\Setup;
+use App\Persistence\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\UserRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\UserRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="user",

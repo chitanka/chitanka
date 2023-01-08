@@ -1,6 +1,6 @@
 <?php namespace App\Form\Type;
 
-use App\Entity\EntityRepository;
+use App\Persistence\EntityRepository;
 use App\Entity\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

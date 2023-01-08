@@ -6,7 +6,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\LabelRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\LabelRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="label")
  * @UniqueEntity(fields="slug", message="This slug is already in use.")

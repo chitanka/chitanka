@@ -3,7 +3,7 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\TextHeaderRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\TextHeaderRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="text_header")
  */

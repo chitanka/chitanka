@@ -1,6 +1,6 @@
 <?php namespace App\Service;
 
-use App\Entity\WikiSiteRepository;
+use App\Persistence\WikiSiteRepository;
 use App\Service\MediawikiClient;
 
 class WikiReader {

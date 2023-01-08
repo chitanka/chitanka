@@ -3,7 +3,7 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\BookIsbnRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\BookIsbnRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(name="book_isbn",
  *     indexes={

@@ -4,7 +4,7 @@ use App\Util\Stringy;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\BookmarkFolderRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\BookmarkFolderRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="bookmark_folder",

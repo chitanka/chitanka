@@ -1,6 +1,6 @@
 <?php namespace App\Entity\Query;
 
-use App\Entity\EntityRepository;
+use App\Persistence\EntityRepository;
 
 class SortingItem {
 

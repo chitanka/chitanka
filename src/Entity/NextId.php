@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * A helper model used for the custom IDs generation
  *
- * @ORM\Entity(repositoryClass="App\Entity\NextIdRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\NextIdRepository")
  * @ORM\Table(name="next_id")
  */
 class NextId {

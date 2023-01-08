@@ -3,7 +3,7 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Entity\SiteNoticeRepository")
+ * @ORM\Entity(repositoryClass="App\Persistence\SiteNoticeRepository")
  * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  * @ORM\Table(indexes={
  *   @ORM\Index(columns={"is_active"}),
