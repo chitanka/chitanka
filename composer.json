@@ -3,6 +3,8 @@
 	"license": "MIT",
 	"type": "project",
 	"description": "The Chitanka library site",
+	"minimum-stability": "stable",
+	"prefer-stable": true,
 	"require": {
 		"php": ">=7.2.5",
 		"ext-ctype": "*",
