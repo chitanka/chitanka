@@ -33,11 +33,11 @@
 {% endmacro %}
 
 {% macro book(book) %}
-{% spaceless %}<a href="{{ url('book_show', {'id': book.id ~'-'~ book.slug}) }}"><i>{{ book.title }}</i></a>{% endspaceless %}
+{% apply spaceless %}<a href="{{ url('book_show', {'id': book.id ~'-'~ book.slug}) }}"><i>{{ book.title }}</i></a>{% endapply %}
 {% endmacro %}
 
 {% macro sequence(sequence) %}
-{% spaceless %}<a href="{{ url('sequence_show', {'slug': sequence.slug}) }}" rel="category">{{ sequence.name }}</a>{% endspaceless %}
+{% apply spaceless %}<a href="{{ url('sequence_show', {'slug': sequence.slug}) }}" rel="category">{{ sequence.name }}</a>{% endapply %}
 {% endmacro %}
 
 {% macro category(category) %}
@@ -45,5 +45,5 @@
 {% endmacro %}
 
 {% macro label(label) %}
-{% spaceless %}<a href="{{ url('texts_by_label', {'slug': label.slug}) }}" rel="tag">{{ label.name }}</a>{% endspaceless %}
+{% apply spaceless %}<a href="{{ url('texts_by_label', {'slug': label.slug}) }}" rel="tag">{{ label.name }}</a>{% endapply %}
 {% endmacro %}

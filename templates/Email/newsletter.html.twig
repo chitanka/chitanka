@@ -5,7 +5,7 @@
 {% for category, books in booksByCategory %}
 
 	<h3>{{ category }}</h3>
-	{% spaceless %}
+	{% apply spaceless %}
 	<ul>
 	{% for book in books %}
 		<li>
@@ -13,12 +13,12 @@
 		</li>
 	{% endfor %}
 	</ul>
-	{% endspaceless %}
+	{% endapply %}
 {% endfor %}
 
 {% if texts is not empty %}
 	<h3>Произведения, невключени в книги</h3>
-	{% spaceless %}
+	{% apply spaceless %}
 	<ul>
 		{% for text in texts %}
 			<li>
@@ -26,7 +26,7 @@
 			</li>
 		{% endfor %}
 	</ul>
-	{% endspaceless %}
+	{% endapply %}
 {% endif %}
 
 <p>Приятно четене!</p>

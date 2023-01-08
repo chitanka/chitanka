@@ -17,7 +17,7 @@
 {% endmacro %}
 
 {% macro origTitle(text) %}
-	{% spaceless %}
+	{% apply spaceless %}
 	{% if text.origTitle %}
 		{{ text.origTitle }}
 		{% if text.origSubtitle %}
@@ -26,12 +26,12 @@
 	{% else %}
 		[не е въведено; <a href="{{ path('suggest_info', {'id': text.id, 'type': 'orig_title'}) }}">помогнете</a> за добавянето му]
 	{% endif %}
-	{% endspaceless %}
+	{% endapply %}
 {% endmacro %}
 
 {% macro translator(text) %}
 	{% import 'link.html.twig' as link %}
-	{% spaceless %}
+	{% apply spaceless %}
 	{% if text.translators|length %}
 		<span itemprop="author">
 		{{ link.persons(text.translators) }}
@@ -39,16 +39,16 @@
 	{% else %}
 		[Няма данни за преводача; <a href="{{ path('suggest_info', {'id': text.id, 'type': 'translator'}) }}">помогнете</a> за добавянето му]
 	{% endif %}
-	{% endspaceless %}
+	{% endapply %}
 {% endmacro %}
 
-{% macro license(license) %}{% spaceless %}
+{% macro license(license) %}{% apply spaceless %}
 	{% if license.uri is empty %}
 		{{ license.fullname }}
 	{% else %}
 		<a href="{{ license.uri }}" rel="license">{{ license.fullname }}</a>
 	{% endif %}
-{% endspaceless %}{% endmacro %}
+{% endapply %}{% endmacro %}
 
 {% macro rating(text) %}
 	<span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
@@ -95,10 +95,10 @@
 {% endmacro %}
 
 {% macro text_title_with_author(text) %}
-{% spaceless %}
+{% apply spaceless %}
 	{% import 'link.html.twig' as link %}
 	„{{ link.text(text) }}“ {{ _self.author_list(text.authors) }}
-{% endspaceless %}
+{% endapply %}
 {% endmacro %}
 
 {% macro text(text, options) %}
@@ -146,15 +146,15 @@
 {% endmacro %}
 
 {% macro author_link(author, format) %}
-	{% spaceless %}
+	{% apply spaceless %}
 	<span itemscope itemtype="http://schema.org/Person"><a href="{{ path('person_show', {'slug': author.slug, '_format': format|default('html')}) }}" data-edit="{{ path('admin_person_edit', {'id': author.id}) }}" itemprop="name">{{ author.name }}</a></span>
-	{% endspaceless %}
+	{% endapply %}
 {% endmacro %}
 
 {% macro download_link(text, format, size) %}
-	{% spaceless %}
+	{% apply spaceless %}
 	<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug, '_format': format}) }}" title="Сваляне във формат {{ format }}{% if size %} ({{ size }} KiB){% endif %}" class="btn btn-default btn-sm dl dl-sm dl-{{ format|replace({'.zip': ''}) }} action"><span class="sr-only">{{ format }}</span>{% if size %}<span class="sr-only filesize"> {{ size }} KiB</span>{% endif %}</a>
-	{% endspaceless %}
+	{% endapply %}
 {% endmacro %}
 
 {% macro bookmark_form(text, class) %}

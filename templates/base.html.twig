@@ -8,7 +8,7 @@
 		{% block stylesheets %}{% endblock %}
 		{% block head %}{% endblock %}
 	</head>
-	<body class="{% spaceless %}{% block body_class '' %}{% endspaceless %}">
+	<body class="{% apply spaceless %}{% block body_class '' %}{% endapply %}">
 		{% block body %}{% endblock %}
 		{% block javascripts %}{% endblock %}
 	</body>

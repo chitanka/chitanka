@@ -39,9 +39,9 @@
 {% endmacro %}
 
 {% macro download_link(book, format) %}
-	{% spaceless %}
+	{% apply spaceless %}
 	<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug, '_format': format}) }}" title="{{ format == 'pic' ? 'Преглед в галерия' : 'Сваляне във формат '~format }}" class="btn btn-default dl dl-{{ format|replace({'.zip': ''}) }} action {{ book.blocked ? 'hidden' : '' }}"><span class="sr-only">{{ format }}</span></a>
-	{% endspaceless %}
+	{% endapply %}
 {% endmacro %}
 
 {% macro download_links(book) %}

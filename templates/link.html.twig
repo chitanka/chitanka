@@ -1,7 +1,7 @@
 {% macro person(person) %}
-{% spaceless %}
+{% apply spaceless %}
 	<span itemscope itemtype="http://schema.org/Person"><a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="name" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name }}</a></span>
-{% endspaceless %}
+{% endapply %}
 {% endmacro %}
 
 {% macro persons(persons) %}
@@ -23,13 +23,13 @@
 {% endmacro %}
 
 {% macro translators_plain(persons) %}
-{% spaceless %}
+{% apply spaceless %}
 	{% for person in persons %}
 		{{ person.name }}{{ loop.last ? '' : ',' }}
 	{% else %}
 		Неизвестен преводач
 	{% endfor %}
-{% endspaceless %}
+{% endapply %}
 {% endmacro %}
 
 {% macro authors_by_country(country) %}
@@ -49,11 +49,11 @@
 {% endmacro %}
 
 {% macro book(book) %}
-{% spaceless %}<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}" {% if book.hasAnno %}rel="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"{% endif %} class="booklink" itemprop="name" data-edit="{{ path('admin_book_edit', {'id': book.id}) }}"><i>{{ book.title }}</i></a>{% endspaceless %}
+{% apply spaceless %}<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}" {% if book.hasAnno %}rel="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"{% endif %} class="booklink" itemprop="name" data-edit="{{ path('admin_book_edit', {'id': book.id}) }}"><i>{{ book.title }}</i></a>{% endapply %}
 {% endmacro %}
 
 {% macro sequence(sequence) %}
-{% spaceless %}<a href="{{ path('sequence_show', {'slug': sequence.slug}) }}" rel="category" data-edit="{{ path('admin_sequence_edit', {'id': sequence.id}) }}">{{ sequence.name }}</a>{% endspaceless %}
+{% apply spaceless %}<a href="{{ path('sequence_show', {'slug': sequence.slug}) }}" rel="category" data-edit="{{ path('admin_sequence_edit', {'id': sequence.id}) }}">{{ sequence.name }}</a>{% endapply %}
 {% endmacro %}
 
 {% macro category(category) %}
@@ -61,15 +61,15 @@
 {% endmacro %}
 
 {% macro label(label) %}
-{% spaceless %}<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" rel="tag" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>{% endspaceless %}
+{% apply spaceless %}<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" rel="tag" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>{% endapply %}
 {% endmacro %}
 
 {% macro texts_by_language(language) %}
-{% spaceless %}<a href="{{ path('texts_by_language', {'language': language.code}) }}" rel="tag" data-edit="{{ path('admin_language_edit', {'id': language.code}) }}">{{ language.name }}</a>{% endspaceless %}
+{% apply spaceless %}<a href="{{ path('texts_by_language', {'language': language.code}) }}" rel="tag" data-edit="{{ path('admin_language_edit', {'id': language.code}) }}">{{ language.name }}</a>{% endapply %}
 {% endmacro %}
 
 {% macro texts_by_original_language(language) %}
-{% spaceless %}<a href="{{ path('texts_by_original_language', {'language': language.code}) }}" rel="tag" data-edit="{{ path('admin_language_edit', {'id': language.code}) }}">{{ language.name }}</a>{% endspaceless %}
+{% apply spaceless %}<a href="{{ path('texts_by_original_language', {'language': language.code}) }}" rel="tag" data-edit="{{ path('admin_language_edit', {'id': language.code}) }}">{{ language.name }}</a>{% endapply %}
 {% endmacro %}
 
 {% macro user_with_email(user) %}
