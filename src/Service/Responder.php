@@ -1,7 +1,7 @@
 <?php namespace App\Service;
 
 use App\Persistence\EntityManager;
-use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
+use Doctrine\Inflector\InflectorFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -125,12 +125,9 @@ class Responder {
 
 	/**
 	 * @param callable $controller A callable controller action as an array
-	 * @param Request $request
-	 * @param string $engine
-	 * @return TemplateReference
 	 * @throws \InvalidArgumentException
 	 */
-	private function createTemplateReference($controller, Request $request, $engine = 'twig') {
+	private function createTemplateReference($controller, Request $request): string {
 		$controllerClass = get_class($controller[0]);
 		if (!preg_match('/Controller\\\\(.+)Controller$/', $controllerClass, $matchController)) {
 			throw new \InvalidArgumentException("The '{$controllerClass}' class does not look like a controller class. It must be in a 'Controller' sub-namespace and the class name must end with 'Controller')");
@@ -138,7 +135,8 @@ class Responder {
 		if (!preg_match('/^(.+)Action$/', $controller[1], $matchAction)) {
 			throw new \InvalidArgumentException("The '{$controller[1]}' method does not look like an action method as it does not end with Action");
 		}
-		return new TemplateReference('App', $matchController[1], \Doctrine\Common\Util\Inflector::tableize($matchAction[1]), $request->getRequestFormat(), $engine);
+		$inflector = InflectorFactory::create()->build();
+		return 'App/'. $matchController[1] .'/'. $inflector->tableize($matchAction[1]) .'.'. $request->getRequestFormat();
 	}
 
 	/**
