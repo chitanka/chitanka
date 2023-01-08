@@ -1,30 +1,17 @@
 #!/usr/bin/env php
 <?php
 
+use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Debug\Debug;
 
-// read http://symfony.com/doc/current/book/installation.html#configuration-and-setup for more information
-// allow generated files (cache, logs) to be world-writable
-umask(0000);
-
-if (ob_get_level()) {
-	ob_end_clean();
+if (!is_file(dirname(__DIR__).'/vendor/autoload_runtime.php')) {
+    throw new LogicException('Symfony Runtime is missing. Try running "composer require symfony/runtime".');
 }
 
-set_time_limit(0);
+require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
-/**
- * @var Composer\Autoload\ClassLoader $loader
- */
-$loader = require __DIR__.'/../app/autoload.php';
-$input = new ArgvInput();
-$env = $input->getParameterOption(['--env', '-e'], getenv('SYMFONY_ENV') ?: 'dev');
-$debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(['--no-debug', '']) && $env !== 'prod';
-if ($debug) {
-	Debug::enable();
-}
-$kernel = new AppKernel($env, $debug);
-$application = new Application($kernel);
-$application->run($input);
+return function (array $context) {
+    $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+
+    return new Application($kernel);
+};
