@@ -13,12 +13,14 @@ class TextCombination extends Entity implements \JsonSerializable {
 	 * The smallest ID is always in the field 'text1'.
 	 * @var Text
 	 * @ORM\Id @ORM\ManyToOne(targetEntity="Text", inversedBy="textCombinations1")
+	 * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
 	 */
 	private $text1;
 
 	/**
 	 * @var Text
 	 * @ORM\Id @ORM\ManyToOne(targetEntity="Text", inversedBy="textCombinations2")
+	 * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
 	 */
 	private $text2;
 
