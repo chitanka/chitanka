@@ -9,10 +9,10 @@ use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -39,37 +39,28 @@ class KernelListener implements EventSubscriberInterface {
 		$this->tokenStorage = $tokenStorage;
 	}
 
-	/**
-	 * @param GetResponseEvent $event
-	 */
-	public function onKernelRequest(GetResponseEvent $event) {
-		if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+	public function onKernelRequest(RequestEvent $event) {
+		if ($event->getRequestType() !== HttpKernelInterface::MAIN_REQUEST) {
 			return;
 		}
 		$this->responder->registerCustomResponseFormats($event->getRequest());
 		$this->initTokenStorage();
 	}
 
-	/**
-	 * @param FilterResponseEvent $event
-	 */
-	public function onKernelResponse(FilterResponseEvent $event) {
+	public function onKernelResponse(ResponseEvent $event) {
 		$this->normalizeOpdsContent($event->getRequest(), $event->getResponse());
 	}
 
-	public function onKernelController(FilterControllerEvent $event) {
+	public function onKernelController(ControllerEvent $event) {
 		$this->controller = $event->getController();
-		$controllerObject = $this->controller[0];
+		$controllerObject = $this->controller;
 		if ($controllerObject instanceof Controller) {
 			$controllerObject->initInternalContentPath();
 			$controllerObject->configureExtraDownloadFormats();
 		}
 	}
 
-	/**
-	 * @param GetResponseForControllerResultEvent $event
-	 */
-	public function onKernelView(GetResponseForControllerResultEvent $event) {
+	public function onKernelView(ViewEvent $event) {
 		$response = $this->responder->createResponse($event->getRequest(), $this->controller, $event->getControllerResult());
 		$event->setResponse($response);
 	}

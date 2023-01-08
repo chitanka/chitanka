@@ -2,7 +2,7 @@
 
 use App\Entity\User;
 use Chitanka\RocketChatClient;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class LoginPage extends RegisterPage {
 
@@ -35,7 +35,7 @@ class LoginPage extends RegisterPage {
 		}
 		try {
 			$user = $this->controller->em()->getUserRepository()->findByUsernameOrEmail($this->username);
-		} catch (UsernameNotFoundException $e) {
+		} catch (UserNotFoundException $e) {
 			$this->addMessage("Не съществува потребител с име <strong>$this->username</strong>.", true );
 			return $this->buildContent();
 		}

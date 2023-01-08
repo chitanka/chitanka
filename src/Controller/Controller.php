@@ -6,13 +6,13 @@ use App\Entity\User;
 use App\Legacy\Setup;
 use App\Service\ContentService;
 use App\Service\FlashService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-abstract class Controller extends SymfonyController {
+abstract class Controller extends AbstractController {
 
 	const PARAM_SORT = 'sort';
 
