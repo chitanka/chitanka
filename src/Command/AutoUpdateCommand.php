@@ -37,7 +37,7 @@ class AutoUpdateCommand extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->output = $output;
 		$container = $this->getContainer();
-		$rootDir = realpath($container->getParameter('kernel.root_dir').'/..');
+		$rootDir = $container->getParameter('kernel.project_dir');
 		$updateDir = "$rootDir/update";
 
 		$echo = function ($msg) use ($output) {
@@ -99,7 +99,7 @@ class AutoUpdateCommand extends Command {
 
 	private function createSqlImporter() {
 		$c = $this->getContainer();
-		require_once $c->getParameter('kernel.root_dir').'/../maintenance/sql_importer.lib.php';
+		require_once $c->getParameter('kernel.project_dir').'/maintenance/sql_importer.lib.php';
 
 		$dbhost = $c->getParameter('database_host');
 		$dbname = $c->getParameter('database_name');
