@@ -11,6 +11,17 @@ use App\Generator\DownloadUrlGenerator;
 use App\Generator\TextDownloadService;
 use App\Legacy\Setup;
 use App\Pagination\Pager;
+use App\Persistence\BookmarkFolderRepository;
+use App\Persistence\BookmarkRepository;
+use App\Persistence\LabelRepository;
+use App\Persistence\LanguageRepository;
+use App\Persistence\TextCombinationRepository;
+use App\Persistence\TextLabelLogRepository;
+use App\Persistence\TextRatingRepository;
+use App\Persistence\TextRepository;
+use App\Persistence\TextTypeRepository;
+use App\Persistence\UserRepository;
+use App\Persistence\UserTextReadRepository;
 use App\Service\SearchService;
 use App\Service\TextBookmarkService;
 use App\Service\TextLabelService;
@@ -25,39 +36,46 @@ class TextController extends Controller {
 	const PAGE_COUNT_DEFAULT = 50;
 	const PAGE_COUNT_LIMIT = 500;
 
-	public function indexAction($_format) {
+	private $textRepository;
+
+	public function __construct(UserRepository $userRepository, TextRepository $textRepository) {
+		parent::__construct($userRepository);
+		$this->textRepository = $textRepository;
+	}
+
+	public function indexAction(LabelRepository $labelRepository, TextTypeRepository $textTypeRepository, LanguageRepository $languageRepository, $_format) {
 		if (in_array($_format, ['html', 'json'])) {
 			return [
-				'labels' => $this->em()->getLabelRepository()->getAllAsTree(),
-				'types' => $this->em()->getTextTypeRepository()->findAll(),
-				'languages' => $this->em()->getLanguageRepository()->findAll(),
+				'labels' => $labelRepository->getAllAsTree(),
+				'types' => $textTypeRepository->findAll(),
+				'languages' => $languageRepository->findAll(),
 			];
 		}
 
 		return [];
 	}
 
-	public function listByTypeIndexAction() {
+	public function listByTypeIndexAction(TextTypeRepository $textTypeRepository) {
 		return [
-			'types' => $this->em()->getTextTypeRepository()->findAll()
+			'types' => $textTypeRepository->findAll()
 		];
 	}
 
-	public function listByLabelIndexAction() {
+	public function listByLabelIndexAction(LabelRepository $labelRepository) {
 		return [
-			'labels' => $this->em()->getLabelRepository()->findAll()
+			'labels' => $labelRepository->findAll()
 		];
 	}
 
-	public function listByLanguageIndexAction() {
+	public function listByLanguageIndexAction(LanguageRepository $languageRepository) {
 		return [
-			'languages' => $this->em()->getLanguageRepository()->findAll(),
+			'languages' => $languageRepository->findAll(),
 		];
 	}
 
-	public function listByOriginalLanguageIndexAction() {
+	public function listByOriginalLanguageIndexAction(LanguageRepository $languageRepository) {
 		return [
-			'languages' => $this->em()->getLanguageRepository()->findAll(),
+			'languages' => $languageRepository->findAll(),
 		];
 	}
 
@@ -65,8 +83,7 @@ class TextController extends Controller {
 		return [];
 	}
 
-	public function listByTypeAction(Request $request, TextType $type, $page) {
-		$textRepo = $this->em()->getTextRepository();
+	public function listByTypeAction(TextRepository $textRepo, Request $request, TextType $type, $page) {
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$sorting = $textRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'text'));
 		return [
@@ -78,11 +95,9 @@ class TextController extends Controller {
 		];
 	}
 
-	public function listByLabelAction(Request $request, $slug, $page) {
-		$textRepo = $this->em()->getTextRepository();
+	public function listByLabelAction(TextRepository $textRepo, LabelRepository $labelRepo, Request $request, $slug, $page) {
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$slug = Stringy::slugify($slug);
-		$labelRepo = $this->em()->getLabelRepository();
 		$label = $labelRepo->findBySlug($slug);
 		if ($label === null) {
 			throw $this->createNotFoundException("Няма етикет с код $slug.");
@@ -99,8 +114,7 @@ class TextController extends Controller {
 		];
 	}
 
-	public function listByLanguageAction(Request $request, Language $language, $page) {
-		$textRepo = $this->em()->getTextRepository();
+	public function listByLanguageAction(TextRepository $textRepo, Request $request, Language $language, $page) {
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$sorting = $textRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'text'));
 		return [
@@ -112,8 +126,7 @@ class TextController extends Controller {
 		];
 	}
 
-	public function listByOriginalLanguageAction(Request $request, Language $language, $page) {
-		$textRepo = $this->em()->getTextRepository();
+	public function listByOriginalLanguageAction(TextRepository $textRepo, Request $request, Language $language, $page) {
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$sorting = $textRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'text'));
 		return [
@@ -125,8 +138,7 @@ class TextController extends Controller {
 		];
 	}
 
-	public function listByAlphaAction(Request $request, $letter, $page) {
-		$textRepo = $this->em()->getTextRepository();
+	public function listByAlphaAction(TextRepository $textRepo, Request $request, $letter, $page) {
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$prefix = $letter == '-' ? null : $letter;
 		$sorting = $textRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'text'));
@@ -139,18 +151,18 @@ class TextController extends Controller {
 		];
 	}
 
-	public function showAction(Request $request, $id, $_format) {
+	public function showAction(TextCombinationRepository $textCombinationRepository, Request $request, $id, $_format) {
 		if ($this->canRedirectToMirror($_format) && ($mirrorServer = $this->getMirrorServer())) {
 			return $this->redirectToMirror($mirrorServer, $id, $_format, $request->get('filename'), $request->getScheme());
 		}
-		list($id) = explode('-', $id); // remove optional slug
+		[$id] = explode('-', $id); // remove optional slug
 		if ($_format === 'htmlx' || $request->isXmlHttpRequest()) {
-			return $this->showPartAction($request, $id, 1, $_format);
+			return $this->showPartAction($textCombinationRepository, $request, $id, 1, $_format);
 		}
 		switch ($_format) {
 			case 'html':
 				if ($this->isMultiId($id)) {
-					return $this->showMultiHtml($this->explodeMultiId($id));
+					return $this->showMultiHtml($textCombinationRepository, $this->explodeMultiId($id));
 				}
 				return $this->showHtml($this->findText($id, true));
 			case 'epub':
@@ -158,7 +170,7 @@ class TextController extends Controller {
 			case 'txt.zip':
 			case 'sfb.zip':
 				Setup::doSetup($this->container);
-				$service = new TextDownloadService($this->em()->getTextRepository());
+				$service = new TextDownloadService($this->textRepository);
 				$ids = $this->explodeMultiId($id);
 				if (count($ids) === 1) {
 					$this->findText($id);
@@ -191,7 +203,7 @@ class TextController extends Controller {
 		throw $this->createNotFoundException("Неизвестен формат: $_format");
 	}
 
-	public function searchAction(Request $request, $_format) {
+	public function searchAction(SearchService $searchService, Request $request, $_format) {
 		if ($_format == 'osd') {
 			return [];
 		}
@@ -213,7 +225,6 @@ class TextController extends Controller {
 
 			return [$query, $items, $descs, $urls];
 		}
-		$searchService = new SearchService($this->em());
 		$query = $searchService->prepareQuery($request, $_format);
 		if (isset($query['_template'])) {
 			return $query;
@@ -222,7 +233,7 @@ class TextController extends Controller {
 		if (empty($query['by'])) {
 			$query['by'] = 'title,subtitle,origTitle';
 		}
-		$texts = $this->em()->getTextRepository()->getByQuery($query);
+		$texts = $this->textRepository->getByQuery($query);
 		$found = count($texts) > 0;
 		return [
 			'query' => $query,
@@ -254,9 +265,9 @@ class TextController extends Controller {
 		return (new DownloadUrlGenerator())->generateConverterUrl($epubUrl, $targetFormat, $mirrors);
 	}
 
-	public function showPartAction(Request $request, $id, $part, $_format) {
+	public function showPartAction(TextCombinationRepository $textCombinationRepository, Request $request, $id, $part, $_format) {
 		if ($this->isMultiId($id)) {
-			return $this->showMultiHtml($this->explodeMultiId($id), $part);
+			return $this->showMultiHtml($textCombinationRepository, $this->explodeMultiId($id), $part);
 		}
 		$text = $this->findText($id, true);
 		if ($_format === 'htmlx' || $request->isXmlHttpRequest()) {
@@ -277,7 +288,7 @@ class TextController extends Controller {
 		$similarTexts = [];
 		if (empty($nextPart)) {
 			$alikes = $text->getAlikes();
-			$similarTexts = $alikes ? $this->em()->getTextRepository()->getByIds(array_slice($alikes, 0, 30)) : [];
+			$similarTexts = $alikes ? $this->textRepository->getByIds(array_slice($alikes, 0, 30)) : [];
 		}
 		$vars = [
 			'text' => $text,
@@ -295,16 +306,16 @@ class TextController extends Controller {
 		return $vars;
 	}
 
-	protected function showMultiHtml(array $ids, int $part = 1) {
+	protected function showMultiHtml(TextCombinationRepository $textCombinationRepository, array $ids, int $part = 1) {
 		$maxNrOfTexts = 4;
-		$texts = $this->em()->getTextRepository()->getMulti(array_slice($ids, 0, $maxNrOfTexts));/* @var $texts Text[] */
+		$texts = $this->textRepository->getMulti(array_slice($ids, 0, $maxNrOfTexts));/* @var $texts Text[] */
 		$gridColsMap = [
 			1 => 12,
 			2 => 6,
 			3 => 4,
 			4 => 3,
 		];
-		$textCombinations = $this->em()->getTextCombinationRepository()->getForTexts($texts);
+		$textCombinations = $textCombinationRepository->getForTexts($texts);
 		$joinedTextCombinations = $textCombinations ? array_replace(...array_map(function(\App\Entity\TextCombination $tc) {
 			return $tc->toArray();
 		}, $textCombinations)) : [];
@@ -331,7 +342,7 @@ class TextController extends Controller {
 					$criteria = $criteria->where(Criteria::expr()->in('type', $codes));
 				}
 			}
-			$id = $this->em()->getTextRepository()->getRandomId($criteria);
+			$id = $this->textRepository->getRandomId($criteria);
 			return $this->redirectToRoute('text_show', ['id' => $id]);
 		}
 		return ['form' => $form->createView()];
@@ -342,15 +353,15 @@ class TextController extends Controller {
 		$alikes = $text->getAlikes();
 		return [
 			'text' => $text,
-			'similar_texts' => $alikes ? $this->em()->getTextRepository()->getByIds(array_slice($alikes, 0, 30)) : [],
+			'similar_texts' => $alikes ? $this->textRepository->getByIds(array_slice($alikes, 0, 30)) : [],
 		];
 	}
 
-	public function ratingAction(Request $request, $id) {
+	public function ratingAction(TextRatingRepository $textRatingRepository, Request $request, $id) {
 		$text = $this->findText($id);
 
-		$user = $this->em()->merge($this->getUser());
-		$rating = $this->em()->getTextRatingRepository()->getByTextAndUser($text, $user);
+		$user = $this->userRepository->__em__()->merge($this->getUser());
+		$rating = $textRatingRepository->getByTextAndUser($text, $user);
 		$form = $this->createForm(TextRatingType::class, $rating);
 
 		// TODO replace with DoctrineListener
@@ -360,13 +371,13 @@ class TextController extends Controller {
 		if ($user->isAuthenticated() && $form->isValid()) {
 			// TODO replace with DoctrineListener
 			$text->updateAvgRating($rating->getRating(), $oldRating);
-			$this->em()->getTextRepository()->save($text);
+			$this->textRepository->save($text);
 
 			// TODO bind overwrites the Text object with an id
 			$rating->setText($text);
 
 			$rating->setCurrentDate();
-			$this->em()->getTextRatingRepository()->save($rating);
+			$textRatingRepository->save($rating);
 		}
 
 		if ($request->isXmlHttpRequest() || $request->isMethod('GET')) {
@@ -380,12 +391,12 @@ class TextController extends Controller {
 		return $this->redirectToText($text);
 	}
 
-	public function newLabelAction(Request $request, $id) {
+	public function newLabelAction(TextLabelLogRepository $textLabelLogRepository, Request $request, $id) {
 		if (!$this->getUser()->canPutTextLabel()) {
 			throw $this->createAccessDeniedException();
 		}
 		$text = $this->findText($id);
-		$service = new TextLabelService($this->em()->getTextLabelLogRepository(), $this->getSavableUser());
+		$service = new TextLabelService($textLabelLogRepository, $this->getSavableUser());
 		$textLabel = $service->newTextLabel($text);
 		$group = $request->get('group');
 		$form = $this->createForm(TextLabelType::class, $textLabel, ['group' => $group]);
@@ -412,15 +423,15 @@ class TextController extends Controller {
 		];
 	}
 
-	public function deleteLabelAction(Request $request, $id, $labelId) {
+	public function deleteLabelAction(LabelRepository $labelRepository, TextLabelLogRepository $textLabelLogRepository, Request $request, $id, $labelId) {
 		$this->responseAge = 0;
 
 		if (!$this->getUser()->canPutTextLabel()) {
 			throw $this->createAccessDeniedException();
 		}
 		$text = $this->findText($id);
-		$label = $this->findLabel($labelId);
-		$service = new TextLabelService($this->em()->getTextLabelLogRepository(), $this->getSavableUser());
+		$label = $this->findLabel($labelRepository, $labelId);
+		$service = new TextLabelService($textLabelLogRepository, $this->getSavableUser());
 		$service->removeTextLabel($text, $label);
 
 		if ($request->isXmlHttpRequest()) {
@@ -429,18 +440,17 @@ class TextController extends Controller {
 		return $this->redirectToText($text);
 	}
 
-	public function labelLogAction($id) {
+	public function labelLogAction(TextLabelLogRepository $textLabelLogRepository, $id) {
 		$text = $this->findText($id);
 		return [
 			'text' => $text,
-			'log' => $this->em()->getTextLabelLogRepository()->getForText($text),
+			'log' => $textLabelLogRepository->getForText($text),
 		];
 	}
 
-	public function fullLabelLogAction(Request $request) {
+	public function fullLabelLogAction(TextLabelLogRepository $repo, Request $request) {
 		$page = $request->get('page', 1);
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
-		$repo = $this->em()->getTextLabelLogRepository();
 		return [
 			'log' => $repo->getAll($page, $limit),
 			'pager' => new Pager($page, $repo->count(), $limit),
@@ -451,17 +461,17 @@ class TextController extends Controller {
 	 * Show all ratings for given text.
 	 * @param int $id Text ID
 	 */
-	public function ratingsAction($id) {
+	public function ratingsAction(TextRatingRepository $textRatingRepository, $id) {
 		$text = $this->findText($id);
 		return [
 			'text' => $text,
-			'ratings' => $this->em()->getTextRatingRepository()->getByText($text),
+			'ratings' => $textRatingRepository->getByText($text),
 		];
 	}
 
-	public function markReadFormAction($id) {
+	public function markReadFormAction(UserTextReadRepository $userTextReadRepository, $id) {
 		if ($this->getUser()->isAuthenticated()) {
-			$tr = $this->em()->getUserTextReadRepository()->findOneBy(['text' => $id, 'user' => $this->getUser()->getId()]);
+			$tr = $userTextReadRepository->findOneBy(['text' => $id, 'user' => $this->getUser()->getId()]);
 			if ($tr) {
 				return new Response('Произведението е отбелязано като прочетено.');
 			}
@@ -472,7 +482,7 @@ class TextController extends Controller {
 		];
 	}
 
-	public function markReadAction(Request $request, $id) {
+	public function markReadAction(UserTextReadRepository $userTextReadRepository, Request $request, $id) {
 		$this->responseAge = 0;
 
 		if ( ! $this->getUser()->isAuthenticated()) {
@@ -480,7 +490,7 @@ class TextController extends Controller {
 		}
 
 		$text = $this->findText($id);
-		$this->em()->getUserTextReadRepository()->save(new UserTextRead($this->getSavableUser(), $text));
+		$userTextReadRepository->save(new UserTextRead($this->getSavableUser(), $text));
 
 		if ($request->isXmlHttpRequest()) {
 			return $this->asJson('Произведението е отбелязано като прочетено.');
@@ -488,7 +498,7 @@ class TextController extends Controller {
 		return $this->redirectToText($text);
 	}
 
-	public function addBookmarkAction(Request $request, $id) {
+	public function addBookmarkAction(BookmarkRepository $bookmarkRepository, BookmarkFolderRepository $bookmarkFolderRepository, Request $request, $id) {
 		$this->responseAge = 0;
 
 		if ( ! $this->getUser()->isAuthenticated()) {
@@ -496,7 +506,7 @@ class TextController extends Controller {
 		}
 
 		$text = $this->findText($id);
-		$service = new TextBookmarkService($this->em()->getBookmarkRepository(), $this->em()->getBookmarkFolderRepository(), $this->getSavableUser());
+		$service = new TextBookmarkService($bookmarkRepository, $bookmarkFolderRepository, $this->getSavableUser());
 		$bookmark = $service->addBookmark($text);
 
 		if ($request->isXmlHttpRequest()) {
@@ -523,7 +533,7 @@ class TextController extends Controller {
 	 * @return Text
 	 */
 	protected function findText($textId, $fetchRelations = false) {
-		$text = $this->em()->getTextRepository()->get($textId, $fetchRelations);
+		$text = $this->textRepository->get($textId, $fetchRelations);
 		if ($text === null) {
 			throw $this->createNotFoundException("Няма текст с номер $textId.");
 		}
@@ -534,8 +544,8 @@ class TextController extends Controller {
 	 * @param int $labelId
 	 * @return \App\Entity\Label
 	 */
-	protected function findLabel($labelId) {
-		$label = $this->em()->getLabelRepository()->find($labelId);
+	protected function findLabel(LabelRepository $labelRepository, $labelId) {
+		$label = $labelRepository->find($labelId);
 		if ($label === null) {
 			throw $this->createNotFoundException("Няма етикет с номер $labelId.");
 		}
@@ -547,7 +557,7 @@ class TextController extends Controller {
 	 * @return Text[]
 	 */
 	protected function findByQuery(array $query) {
-		return $this->em()->getTextRepository()->findByQuery($query);
+		return $this->textRepository->findByQuery($query);
 	}
 
 	protected function isMultiId(string $id): bool {

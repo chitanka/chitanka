@@ -4,6 +4,7 @@ use App\Entity\BaseWork;
 use App\Entity\Book;
 use App\Entity\User;
 use App\Legacy\Setup;
+use App\Persistence\UserRepository;
 use App\Service\ContentService;
 use App\Service\FlashService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,18 +20,21 @@ abstract class Controller extends AbstractController {
 	/** The max cache time of the response (in seconds) */
 	protected $responseAge = 3600; // 1 hour
 
-	/** @var \App\Persistence\EntityManager */
-	private $em;
+	protected $userRepository;
 	/** @var \App\Service\FlashService */
 	private $flashes;
+
+	public function __construct(UserRepository $userRepository) {
+		$this->userRepository = $userRepository;
+	}
 
 	/**
 	 * @param string $pageName
 	 * @param array $params
 	 * @return Response
 	 */
-	protected function legacyPage($pageName, array $params = []) {
-		$page = Setup::getPage($pageName, $this, $this->container);
+	protected function legacyPage($pageName, array $params = [], array $repositories = []) {
+		$page = Setup::getPage($pageName, $this, $this->container, $repositories);
 		if ($page->redirect) {
 			return $this->urlRedirect($page->redirect);
 		}
@@ -98,11 +102,6 @@ abstract class Controller extends AbstractController {
 			$response->setSharedMaxAge($this->responseAge);
 		}
 		return $response;
-	}
-
-	/** @return \App\Persistence\EntityManager */
-	public function em() {
-		return $this->em ?: $this->em = $this->container->get('App\Persistence\EntityManager');
 	}
 
 	/** @return User */
@@ -228,7 +227,7 @@ abstract class Controller extends AbstractController {
 		$param = $this->getRequest()->query->get($option);
 		if ($param !== null && $storedOption !== $param && $user->isAuthenticated()) {
 			$user->setOption($fullOptionName, $param);
-			$this->em()->getUserRepository()->save($user);
+			$this->userRepository->save($user);
 		}
 		return $param ?? $storedOption;
 	}

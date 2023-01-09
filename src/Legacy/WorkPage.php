@@ -2,6 +2,10 @@
 
 use App\Entity\User;
 use App\Entity\WorkEntry;
+use App\Persistence\NextIdRepository;
+use App\Persistence\TextRepository;
+use App\Persistence\WorkContribRepository;
+use App\Persistence\WorkEntryRepository;
 use App\Util\Char;
 use App\Util\File;
 use App\Util\Number;
@@ -103,6 +107,11 @@ class WorkPage extends Page {
 	private $date;
 	private $viewList;
 
+	/** @var WorkEntryRepository */protected $workEntryRepository;
+	/** @var WorkContribRepository */protected $workContribRepository;
+	/** @var TextRepository */protected $textRepository;
+	/** @var NextIdRepository */protected $nextIdRepository;
+
 	public function __construct($fields) {
 		parent::__construct($fields);
 		$this->title = 'Работно ателие';
@@ -161,7 +170,7 @@ class WorkPage extends Page {
 	}
 
 	private function findUser($user) {
-		$userRepo = $this->controller->em()->getUserRepository();
+		$userRepo = $this->userRepository;
 		return is_numeric($user) ? $userRepo->find($user) : $userRepo->findByUsername($user);
 	}
 
@@ -198,7 +207,7 @@ class WorkPage extends Page {
 			$this->scanuser_view = 0;
 			if ( ! $this->bypassExisting) {
 				// TODO does not work if there are more than one titles with the same name
-				$texts = $this->controller->em()->getTextRepository()->findBy(['title' => $this->btitle]);
+				$texts = $this->textRepository->findBy(['title' => $this->btitle]);
 				foreach ($texts as $text) {
 					if ($text->getAuthorNames() == $this->author) {
 						$wl = $this->makeSimpleTextLink($text->getTitle(), $text->getId());
@@ -256,7 +265,7 @@ class WorkPage extends Page {
 
 		if ( $this->handleUpload() && !empty($this->uplfile) ) {
 			if (empty($this->entry->getId())) {
-				$id = $this->controller->em()->getNextIdRepository()->findNextId('App:WorkEntry')->getValue();
+				$id = $this->nextIdRepository->findNextId('App:WorkEntry')->getValue();
 				$this->uplfile = preg_replace('/^0-/', "$id-", $this->uplfile);
 			}
 			$uploadedFile = $this->makeTmpFilePath(self::rawurlencode($this->uplfile));
@@ -310,11 +319,11 @@ class WorkPage extends Page {
 			$set['uplfile'] = $this->makeTmpFilePath(self::rawurlencode($this->uplfile));
 		}
 		if ($this->entry->hasContribForUser($this->user)) {
-			$this->controller->em()->getConnection()->update(DBT_WORK_MULTI, $set, $key);
+			$this->workEntryRepository->__em__()->getConnection()->update(DBT_WORK_MULTI, $set, $key);
 			$msg = 'Данните бяха обновени.';
 		} else {
-			$set['id'] = $this->controller->em()->getNextIdRepository()->findNextId('App:WorkContrib')->getValue();
-			$this->controller->em()->getConnection()->insert(DBT_WORK_MULTI, $set);
+			$set['id'] = $this->nextIdRepository->findNextId('App:WorkContrib')->getValue();
+			$this->workEntryRepository->__em__()->getConnection()->insert(DBT_WORK_MULTI, $set);
 			$msg = 'Току-що се включихте в подготовката на произведението.';
 			$this->informScanUser($this->entryId);
 		}
@@ -557,7 +566,7 @@ HTML;
 		$this->addJs($this->createCommentsJavascript($this->entryId));
 
 		$adminFields = $this->userIsAdmin() ? $this->makeAdminOnlyFields() : '';
-		$user = $this->controller->em()->getUserRepository()->find($this->scanuser);
+		$user = $this->userRepository->find($this->scanuser);
 		$ulink = $this->makeUserLinkWithEmail($user->getUsername(), $user->getEmail(), $user->getAllowemail());
 		$printPackTypeRadioValue = function ($packType) use ($entry) {
 			return ('value="'.$packType.'"') . ($entry->hasPackType($packType) ? ' checked' : '');
@@ -667,7 +676,7 @@ EOS;
 		}
 		return $this->controller->renderViewForLegacyCode('Workroom/comments.js.twig', [
 			'entry' => $entry,
-			'user' => $this->controller->em()->getUserRepository()->find($this->scanuser),
+			'user' => $this->userRepository->find($this->scanuser),
 		]);
 	}
 
@@ -962,7 +971,7 @@ EOS;
 	}
 
 	private function makeContribList() {
-		$query = $this->controller->em()->createQuery('SELECT ut AS contrib, u, count(u.id) AS nbContribs, sum(ut.size) AS size FROM App:UserTextContrib ut JOIN ut.user u GROUP BY u.id ORDER BY size desc');
+		$query = $this->workEntryRepository->__em__()->createQuery('SELECT ut AS contrib, u, count(u.id) AS nbContribs, sum(ut.size) AS size FROM App:UserTextContrib ut JOIN ut.user u GROUP BY u.id ORDER BY size desc');
 		return $this->controller->renderViewForLegacyCode('Workroom/contributorRanking.html.twig', [
 			'rows' => $query->getResult()
 		]);
@@ -1106,14 +1115,12 @@ EOS;
 		return Stringy::my_replace($text);
 	}
 
-	/** @return \App\Entity\WorkEntryRepository */
-	private function repo() {
-		return $this->controller->em()->getWorkEntryRepository();
+	private function repo(): WorkEntryRepository {
+		return $this->workEntryRepository;
 	}
 
-	/** @return \Doctrine\ORM\EntityRepository */
-	private function contribRepo() {
-		return $this->controller->em()->getWorkContribRepository();
+	private function contribRepo(): WorkContribRepository {
+		return $this->workContribRepository;
 	}
 
 	private function notifyRocketchatAboutEntry(WorkEntry $entry) {

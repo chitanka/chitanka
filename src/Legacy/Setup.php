@@ -12,7 +12,7 @@ class Setup {
 		/** @var OutputMaker */  $outputMaker;
 	private static $dbal;
 
-	public static function getPage($name, $controller, $container, $execute = true) {
+	public static function getPage($name, $controller, $container, array $repositories, $execute = true) {
 		self::doSetup($container);
 
 		$class = 'App\Legacy\\'.$name.'Page';
@@ -25,7 +25,7 @@ class Setup {
 			'sfrequest'  => $container->get('request_stack')->getMasterRequest(),
 			'user'       => $controller->getUser(),
 			'logDir' => __DIR__ . '/../../var/log',
-		]);
+		] + $repositories);
 
 		if ($execute) {
 			$page->execute();

@@ -1,11 +1,20 @@
 <?php namespace App\Controller;
 
 use App\Entity\Person;
+use App\Persistence\BookRepository;
+use App\Persistence\PersonRepository;
+use App\Persistence\TextRepository;
+use App\Persistence\UserRepository;
+use App\Service\SearchService;
 use Symfony\Component\HttpFoundation\Request;
 
 class TranslatorController extends PersonController {
 
-	public function searchAction(Request $request, $_format) {
+	public function __construct(UserRepository $userRepository, PersonRepository $personRepository) {
+		parent::__construct($userRepository, $personRepository->asTranslator());
+	}
+
+	public function searchAction(SearchService $searchService, Request $request, $_format) {
 		if ($_format == 'suggest') {
 			$query = $request->query->get('q');
 			$persons = $this->findByQuery([
@@ -25,11 +34,8 @@ class TranslatorController extends PersonController {
 		return [];
 	}
 
-	protected function getShowTemplateParams(Person $person, $format) {
-		return $this->getShowTemplateParamsTranslator($person, $format);
+	protected function getShowTemplateParams(TextRepository $textRepository, BookRepository $bookRepository, Person $person, $format) {
+		return $this->getShowTemplateParamsTranslator($textRepository, $person, $format);
 	}
 
-	protected function getPersonRepository() {
-		return parent::getPersonRepository()->asTranslator();
-	}
 }

@@ -6,6 +6,9 @@ use App\Generator\DownloadFile;
 use App\Generator\DownloadUrlGenerator;
 use App\Legacy\Setup;
 use App\Pagination\Pager;
+use App\Persistence\BookRepository;
+use App\Persistence\CategoryRepository;
+use App\Persistence\UserRepository;
 use App\Service\ContentService;
 use App\Service\SearchService;
 use App\Util\Stringy;
@@ -21,21 +24,28 @@ class BookController extends Controller {
 	const PAGE_COUNT_DEFAULT = 30;
 	const PAGE_COUNT_LIMIT = 300;
 
-	public function indexAction($_format) {
+	private $bookRepository;
+
+	public function __construct(UserRepository $userRepository, BookRepository $bookRepository) {
+		parent::__construct($userRepository);
+		$this->bookRepository = $bookRepository;
+	}
+
+	public function indexAction(CategoryRepository $categoryRepository, $_format) {
 		if (in_array($_format, ['html', 'json'])) {
 			return [
-				'categories' => $this->em()->getCategoryRepository()->getAllAsTree(),
+				'categories' => $categoryRepository->getAllAsTree(),
 			];
 		}
 		return [];
 	}
 
-	public function listByCategoryIndexAction($_format) {
+	public function listByCategoryIndexAction(CategoryRepository $categoryRepository, $_format) {
 		switch ($_format) {
 			case 'html':
 			case 'opds':
 				return [
-					'categories' => $this->em()->getCategoryRepository()->getAll(),
+					'categories' => $categoryRepository->getAll(),
 				];
 		}
 	}
@@ -44,10 +54,9 @@ class BookController extends Controller {
 		return [];
 	}
 
-	public function listByCategoryAction(Request $request, $slug, $page) {
+	public function listByCategoryAction(CategoryRepository $categoryRepo, Request $request, $slug, $page) {
 		$slug = Stringy::slugify($slug);
-		$bookRepo = $this->em()->getBookRepository();
-		$categoryRepo = $this->em()->getCategoryRepository();
+		$bookRepo = $this->bookRepository;
 		$category = $categoryRepo->findBySlug($slug);
 		if ($category === null) {
 			throw $this->createNotFoundException("Няма категория с код $slug.");
@@ -65,7 +74,7 @@ class BookController extends Controller {
 	}
 
 	public function listByAlphaAction(Request $request, $letter, $page) {
-		$bookRepo = $this->em()->getBookRepository();
+		$bookRepo = $this->bookRepository;
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$prefix = $letter == '-' ? null : $letter;
 		$sorting = $bookRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'book'));
@@ -80,7 +89,7 @@ class BookController extends Controller {
 
 	public function listWoCoverAction(Request $request, $page) {
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
-		$bookRepo = $this->em()->getBookRepository();
+		$bookRepo = $this->bookRepository;
 		$sorting = $bookRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'book'));
 		return [
 			'books' => $bookRepo->findWithMissingCover($page, $limit, $sorting),
@@ -94,7 +103,7 @@ class BookController extends Controller {
 	 */
 	public function listWoBibliomanAction(Request $request, $page) {
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
-		$bookRepo = $this->em()->getBookRepository();
+		$bookRepo = $this->bookRepository;
 		$sorting = $bookRepo->createSortingDefinition($this->readOptionOrParam(self::PARAM_SORT, 'book'));
 		return [
 			'books' => $bookRepo->findWithMissingBibliomanId($page, $limit, $sorting),
@@ -104,7 +113,7 @@ class BookController extends Controller {
 	}
 
 	public function listByIsbnAction($isbn) {
-		$books = $this->em()->getBookRepository()->findByIsbn($isbn);
+		$books = $this->bookRepository->findByIsbn($isbn);
 		if (count($books) == 1) {
 			return $this->redirectToRoute('book_show', ['id' => $books[0]->getId()]);
 		}
@@ -115,9 +124,9 @@ class BookController extends Controller {
 	}
 
 	public function showAction(Request $request, $id, $_format) {
-		list($id) = explode('-', $id); // remove optional slug
+		[$id] = explode('-', $id); // remove optional slug
 		try {
-			$book = $this->em()->getBookRepository()->get($id);
+			$book = $this->bookRepository->get($id);
 		} catch (NoResultException $e) {
 			throw $this->createNotFoundException("Няма книга с номер $id.");
 		}
@@ -176,7 +185,7 @@ class BookController extends Controller {
 		];
 	}
 
-	public function searchAction(Request $request, $_format) {
+	public function searchAction(SearchService $searchService, Request $request, $_format) {
 		if ($_format == 'osd') {
 			return [];
 		}
@@ -198,7 +207,6 @@ class BookController extends Controller {
 
 			return [$query, $items, $descs, $urls];
 		}
-		$searchService = new SearchService($this->em());
 		$query = $searchService->prepareQuery($request, $_format);
 		if (isset($query['_template'])) {
 			return $query;
@@ -218,7 +226,7 @@ class BookController extends Controller {
 	}
 
 	public function randomAction() {
-		$id = $this->em()->getBookRepository()->getRandomId();
+		$id = $this->bookRepository->getRandomId();
 
 		return $this->urlRedirect($this->generateUrl('book_show', ['id' => $id]));
 	}
@@ -265,6 +273,6 @@ class BookController extends Controller {
 	 * @return Book[]
 	 */
 	protected function findByQuery(array $query) {
-		return $this->em()->getBookRepository()->findByQuery($query);
+		return $this->bookRepository->findByQuery($query);
 	}
 }

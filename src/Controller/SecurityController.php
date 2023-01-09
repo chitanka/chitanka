@@ -13,14 +13,18 @@ class SecurityController extends Controller {
 		if (!$this->container->getParameter('allow_user_registration')) {
 			throw $this->createAccessDeniedException();
 		}
-		return $this->legacyPage('Login');
+		return $this->legacyPage('Login', [], [
+			'userRepository' => $this->userRepository,
+		]);
 	}
 
 	public function registerAction() {
 		if (!$this->container->getParameter('allow_user_registration')) {
 			throw $this->createAccessDeniedException();
 		}
-		return $this->legacyPage('Register');
+		return $this->legacyPage('Register', [], [
+			'userRepository' => $this->userRepository,
+		]);
 	}
 
 	public function logoutAction(Request $request) {
@@ -65,7 +69,7 @@ class SecurityController extends Controller {
 	}
 
 	private function processUsernameRequest($email) {
-		$user = $this->em()->getUserRepository()->findByEmail($email);
+		$user = $this->userRepository->findByEmail($email);
 		if (!$user) {
 			$this->flashes()->addError("Не съществува потребител с електронна поща <strong>{$email}</strong>.");
 			return false;
@@ -80,7 +84,7 @@ class SecurityController extends Controller {
 	}
 
 	private function processPasswordRequest($username) {
-		$userRepo = $this->em()->getUserRepository();
+		$userRepo = $this->userRepository;
 		$user = $userRepo->findByUsername($username);
 		if (!$user) {
 			$this->flashes()->addError("Не съществува потребител с име <strong>$username</strong>.");

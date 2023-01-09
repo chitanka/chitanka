@@ -1,10 +1,12 @@
 <?php namespace App\Controller;
 
+use App\Persistence\WorkEntryRepository;
+
 class WorkEntryController extends Controller {
 
-	public function latestAction($limit = 10) {
+	public function latestAction(WorkEntryRepository $workEntryRepository, $limit = 10) {
 		return [
-			'entries' => $this->em()->getWorkEntryRepository()->getLatest($limit),
+			'entries' => $workEntryRepository->getLatest($limit),
 		];
 	}
 }

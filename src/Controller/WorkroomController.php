@@ -2,6 +2,11 @@
 
 use App\Entity\User;
 use App\Entity\WorkEntry;
+use App\Persistence\NextIdRepository;
+use App\Persistence\TextRepository;
+use App\Persistence\UserRepository;
+use App\Persistence\WorkContribRepository;
+use App\Persistence\WorkEntryRepository;
 use Eko\FeedBundle\Field\Item\ItemField;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,11 +19,30 @@ class WorkroomController extends Controller {
 
 	protected $responseAge = 0;
 
+	/** @var WorkEntryRepository */protected $workEntryRepository;
+	/** @var WorkContribRepository */protected $workContribRepository;
+	/** @var TextRepository */protected $textRepository;
+	/** @var NextIdRepository */protected $nextIdRepository;
+
+	public function __construct(
+		UserRepository $userRepository,
+		WorkEntryRepository $workEntryRepository,
+		WorkContribRepository $workContribRepository,
+		TextRepository $textRepository,
+		NextIdRepository $nextIdRepository
+	) {
+		parent::__construct($userRepository);
+		$this->workEntryRepository = $workEntryRepository;
+		$this->workContribRepository = $workContribRepository;
+		$this->textRepository = $textRepository;
+		$this->nextIdRepository = $nextIdRepository;
+	}
+
 	public function indexAction($status, $page) {
 		$_REQUEST['status'] = $status;
 		$_REQUEST['page'] = $page;
 
-		return $this->legacyPage('Work', [
+		return $this->legacyWorkPage([
 			'_controller' => 'Workroom:index',
 		]);
 	}
@@ -26,13 +50,13 @@ class WorkroomController extends Controller {
 	public function listAction() {
 		$_REQUEST['vl'] = 'listonly';
 
-		return $this->legacyPage('Work');
+		return $this->legacyWorkPage();
 	}
 
 	public function listContributorsAction() {
 		$_REQUEST['vl'] = 'contrib';
 
-		return $this->legacyPage('Work');
+		return $this->legacyWorkPage();
 	}
 
 	public function newAction() {
@@ -42,46 +66,46 @@ class WorkroomController extends Controller {
 		$_REQUEST['id'] = 0;
 		$_REQUEST['status'] = 'edit';
 
-		return $this->legacyPage('Work');
+		return $this->legacyWorkPage();
 	}
 	public function createAction() {
-		return $this->legacyPage('Work');
+		return $this->legacyWorkPage();
 	}
 	public function editAction(WorkEntry $entry) {
 		$_REQUEST['id'] = $entry->getId();
 		$_REQUEST['status'] = 'edit';
-		return $this->legacyPage('Work', [
+		return $this->legacyWorkPage([
 			'entry' => $entry,
 			'_controller' => 'Workroom:show',
 		]);
 	}
 	public function updateAction() {
-		return $this->legacyPage('Work');
+		return $this->legacyWorkPage();
 	}
 	public function deleteAction() {
-		return $this->legacyPage('Work');
+		return $this->legacyWorkPage();
 	}
-	public function patchAction(Request $request, WorkEntry $entry) {
+	public function patchAction(WorkEntryRepository $workEntryRepository, Request $request, WorkEntry $entry) {
 		$bibliomanId = $request->get('bibliomanId');
 		if ($bibliomanId > 0 && $this->getUser()->inGroup([User::GROUP_WORKROOM_MEMBER, User::GROUP_WORKROOM_SUPERVISOR, User::GROUP_WORKROOM_ADMIN])) {
 			$entry->setBibliomanId($bibliomanId);
-			$this->em()->getWorkEntryRepository()->save($entry);
+			$workEntryRepository->save($entry);
 		}
 		return $this->asJson($entry);
 	}
 
-	public function deleteContribAction(Request $request, $id) {
+	public function deleteContribAction(WorkContribRepository $workContribRepository, Request $request, $id) {
 		if (!$this->getUser()->inGroup('workroom-admin')) {
 			throw $this->createAccessDeniedException('Нямате достатъчни права за това действие.');
 		}
 
-		$contrib = $this->em()->getWorkContribRepository()->find($id);
+		$contrib = $workContribRepository->find($id);
 		if ($contrib === null) {
 			throw $this->createNotFoundException();
 		}
 		$entry = $contrib->getEntry();
 		$contrib->delete();
-		$this->em()->getWorkContribRepository()->save($contrib);
+		$workContribRepository->save($contrib);
 
 		if ($request->isXmlHttpRequest()) {
 			return $this->asJson($contrib);
@@ -94,8 +118,8 @@ class WorkroomController extends Controller {
 	 * @param int $limit
 	 * Cache(maxage="60", public=true) - disabled
 	 */
-	public function rssAction($limit) {
-		$entries = $this->em()->getWorkEntryRepository()->findLatest(min($limit, self::$feedListLimit));
+	public function rssAction(WorkEntryRepository $workEntryRepository, $limit) {
+		$entries = $workEntryRepository->findLatest(min($limit, self::$feedListLimit));
 
 		$feed = $this->get('eko_feed.feed.manager')->get('workroom');
 		//$feed->addItemField(new ItemField('dc:creator', 'getFeedItemCreator'));
@@ -105,4 +129,13 @@ class WorkroomController extends Controller {
 		return new Response($feed->render('rss'));
 	}
 
+	private function legacyWorkPage(array $params = []) {
+		return $this->legacyPage('Work', $params, [
+			'userRepository' => $this->userRepository,
+			'workEntryRepository' => $this->workEntryRepository,
+			'workContribRepository' => $this->workContribRepository,
+			'textRepository' => $this->textRepository,
+			'nextIdRepository' => $this->nextIdRepository
+		]);
+	}
 }

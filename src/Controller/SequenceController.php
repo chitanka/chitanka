@@ -1,6 +1,8 @@
 <?php namespace App\Controller;
 
 use App\Pagination\Pager;
+use App\Persistence\BookRepository;
+use App\Persistence\SequenceRepository;
 use App\Service\SearchService;
 use App\Util\Stringy;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,8 +16,7 @@ class SequenceController extends Controller {
 		return [];
 	}
 
-	public function listByAlphaAction(Request $request, $letter, $page) {
-		$repo = $this->em()->getSequenceRepository();
+	public function listByAlphaAction(SequenceRepository $repo, Request $request, $letter, $page) {
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 
 		$prefix = $letter == '-' ? null : $letter;
@@ -27,26 +28,26 @@ class SequenceController extends Controller {
 		];
 	}
 
-	public function showAction($slug) {
+	public function showAction(SequenceRepository $sequenceRepository, BookRepository $bookRepository, $slug) {
 		$slug = Stringy::slugify($slug);
-		$sequence = $this->em()->getSequenceRepository()->findBySlug($slug);
+		$sequence = $sequenceRepository->findBySlug($slug);
 		if ($sequence === null) {
 			throw $this->createNotFoundException("Няма поредица с код $slug.");
 		}
 		return [
 			'sequence' => $sequence,
-			'books'  => $this->em()->getBookRepository()->findBySequence($sequence),
+			'books'  => $bookRepository->findBySequence($sequence),
 		];
 	}
 
-	public function searchAction(Request $request, $_format) {
+	public function searchAction(SearchService $searchService, SequenceRepository $sequenceRepository, Request $request, $_format) {
 		if ($_format == 'osd') {
 			return [];
 		}
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = [];
 			$query = $request->query->get('q');
-			$sequences = $this->em()->getSequenceRepository()->getByQuery([
+			$sequences = $sequenceRepository->getByQuery([
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
@@ -60,7 +61,6 @@ class SequenceController extends Controller {
 
 			return [$query, $items, $descs, $urls];
 		}
-		$searchService = new SearchService($this->em());
 		$query = $searchService->prepareQuery($request, $_format);
 		if (isset($query['_template'])) {
 			return $query;
@@ -69,7 +69,7 @@ class SequenceController extends Controller {
 		if (empty($query['by'])) {
 			$query['by'] = 'name';
 		}
-		$sequences = $this->em()->getSequenceRepository()->getByQuery($query);
+		$sequences = $sequenceRepository->getByQuery($query);
 		$found = count($sequences) > 0;
 		return [
 			'query'     => $query,

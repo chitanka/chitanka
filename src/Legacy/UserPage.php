@@ -1,5 +1,8 @@
 <?php namespace App\Legacy;
 
+use App\Persistence\BookmarkRepository;
+use App\Persistence\UserTextContribRepository;
+use App\Persistence\UserTextReadRepository;
 use App\Util\Stringy;
 use Sfblib\SfbToHtmlConverter;
 
@@ -22,6 +25,10 @@ class UserPage extends Page {
 	/** @var \App\Entity\User */
 	private $shown_user;
 
+	/** @var BookmarkRepository */protected $bookmarkRepository;
+	/** @var UserTextReadRepository */protected $userTextReadRepository;
+	/** @var UserTextContribRepository */protected $userTextContribRepository;
+
 	public function __construct($fields) {
 		parent::__construct($fields);
 
@@ -32,7 +39,7 @@ class UserPage extends Page {
 		$this->q = $this->request->value(self::FF_QUERY, '');
 		$this->initPaginationFields();
 
-		$this->shown_user = $this->controller->em()->getUserRepository()->findByUsername($this->username);
+		$this->shown_user = $this->userRepository->findByUsername($this->username);
 	}
 
 	protected function buildContent() {
@@ -142,7 +149,7 @@ EOS;
 	}
 
 	protected function makeContribList() {
-		$repo = $this->controller->em()->getUserTextContribRepository();
+		$repo = $this->userTextContribRepository;
 		$count = $repo->countByUser($this->shown_user);
 		if ( ! $count) {
 			return '';
@@ -158,7 +165,7 @@ EOS;
 	}
 
 	protected function makeReadList() {
-		$repo = $this->controller->em()->getUserTextReadRepository();
+		$repo = $this->userTextReadRepository;
 		$count = $repo->countByUser($this->shown_user);
 		if ( ! $count) {
 			return '';
@@ -174,7 +181,7 @@ EOS;
 	}
 
 	protected function makeBookmarksList() {
-		$repo = $this->controller->em()->getBookmarkRepository();
+		$repo = $this->bookmarkRepository;
 		$count = $repo->countByUser($this->shown_user);
 		if ( ! $count) {
 			return '';

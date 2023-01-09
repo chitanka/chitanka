@@ -388,4 +388,13 @@ abstract class EntityRepository extends ServiceEntityRepository {
 		}
 		return $date->format('Y-m-d H:i:s');
 	}
+
+	/**
+	 * This is used in some legacy places.
+	 * Do not use for new code.
+	 * @deprecated
+	 */
+	public function __em__() {
+		return $this->_em;
+	}
 }

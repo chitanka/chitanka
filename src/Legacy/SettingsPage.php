@@ -43,7 +43,7 @@ class SettingsPage extends RegisterPage {
 			return $this->makeRegUserForm();
 		}
 
-		$user = $this->controller->em()->merge($this->user);
+		$user = $this->userRepository->__em__()->merge($this->user);
 		$user->setRealname($this->realname);
 		$user->setEmail($this->email);
 		$user->setAllowemail((int) $this->allowemail);
@@ -54,7 +54,7 @@ class SettingsPage extends RegisterPage {
 			$user->setPassword($this->password);
 		}
 
-		$this->controller->em()->getUserRepository()->save($user);
+		$this->userRepository->save($user);
 
 		$this->addMessage("Данните ви бяха променени.");
 

@@ -1,8 +1,12 @@
 <?php namespace App\Controller;
 
 use App\Entity\Person;
+use App\Persistence\BookRepository;
+use App\Persistence\CountryRepository;
 use App\Persistence\PersonRepository;
 use App\Pagination\Pager;
+use App\Persistence\TextRepository;
+use App\Persistence\UserRepository;
 use App\Service\SearchService;
 use App\Service\Translation;
 use App\Util\Stringy;
@@ -13,9 +17,16 @@ class PersonController extends Controller {
 	const PAGE_COUNT_DEFAULT = 100;
 	const PAGE_COUNT_LIMIT = 1000;
 
-	public function indexAction() {
+	protected $personRepository;
+
+	public function __construct(UserRepository $userRepository, PersonRepository $personRepository) {
+		parent::__construct($userRepository);
+		$this->personRepository = $personRepository;
+	}
+
+	public function indexAction(CountryRepository $countryRepository) {
 		return [
-			'countries' => $this->em()->getCountryRepository()->findAll(),
+			'countries' => $countryRepository->findAll(),
 		];
 	}
 
@@ -45,15 +56,15 @@ class PersonController extends Controller {
 		];
 	}
 
-	public function listByCountryIndexAction($by) {
+	public function listByCountryIndexAction(CountryRepository $countryRepository, $by) {
 		return [
 			'by' => $by,
-			'countries' => $this->em()->getCountryRepository()->findAll(),
+			'countries' => $countryRepository->findAll(),
 		];
 	}
 
-	public function listByCountryAction(Request $request, $country, $by, $page, $_format) {
-		$country = $this->em()->getCountryRepository()->findByCode($country);
+	public function listByCountryAction(CountryRepository $countryRepository, Request $request, $country, $by, $page, $_format) {
+		$country = $countryRepository->findByCode($country);
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$repo = $this->getPersonRepository();
 		$filters = [
@@ -69,25 +80,25 @@ class PersonController extends Controller {
 		];
 	}
 
-	public function showAction($slug, $_format) {
+	public function showAction(TextRepository $textRepository, BookRepository $bookRepository, $slug, $_format) {
 		$person = $this->tryToFindPerson($slug);
 		if ( ! $person instanceof Person) {
 			return $person;
 		}
 
-		return $this->getShowTemplateParams($person, $_format) + [
+		return $this->getShowTemplateParams($textRepository, $bookRepository, $person, $_format) + [
 			'person' => $person,
 		] + $this->getShowTemplateInfoParams($person);
 	}
 
-	public function searchAction(Request $request, $_format) {
+	public function searchAction(SearchService $searchService, Request $request, $_format) {
 		if ($_format == 'osd') {
 			return [];
 		}
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = [];
 			$query = $request->query->get('q');
-			$persons = $this->em()->getPersonRepository()->getByQuery([
+			$persons = $this->personRepository->getByQuery([
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
@@ -101,7 +112,6 @@ class PersonController extends Controller {
 
 			return [$query, $items, $descs, $urls];
 		}
-		$searchService = new SearchService($this->em());
 		$query = $searchService->prepareQuery($request, $_format);
 		if (isset($query['_template'])) {
 			return $query;
@@ -110,7 +120,7 @@ class PersonController extends Controller {
 		if (empty($query['by'])) {
 			$query['by'] = 'name,origName,realName,origRealName';
 		}
-		$persons = $this->em()->getPersonRepository()->getByQuery($query);
+		$persons = $this->personRepository->getByQuery($query);
 		$found = count($persons) > 0;
 		return [
 			'query'   => $query,
@@ -131,40 +141,39 @@ class PersonController extends Controller {
 	}
 
 	protected function tryToFindPerson($slug) {
-		$person = $this->em()->getPersonRepository()->findBySlug(Stringy::slugify($slug));
+		$person = $this->personRepository->findBySlug(Stringy::slugify($slug));
 		if ($person) {
 			return $person;
 		}
 
-		$person = $this->em()->getPersonRepository()->findOneBy(['name' => $slug]);
+		$person = $this->personRepository->findOneBy(['name' => $slug]);
 		if ($person) {
 			return $this->urlRedirect($this->generateUrl('person_show', ['slug' => $person->getSlug()]), true);
 		}
 		throw $this->createNotFoundException("Няма личност с код $slug.");
 	}
 
-	protected function getShowTemplateParams(Person $person, $format) {
+	protected function getShowTemplateParams(TextRepository $textRepository, BookRepository $bookRepository, Person $person, $format) {
 		return array_merge(
-			$this->getShowTemplateParamsAuthor($person, $format),
-			$this->getShowTemplateParamsTranslator($person, $format)
+			$this->getShowTemplateParamsAuthor($textRepository, $bookRepository, $person, $format),
+			$this->getShowTemplateParamsTranslator($textRepository, $person, $format)
 		);
 	}
-	protected function getShowTemplateParamsAuthor(Person $person, $format) {
+	protected function getShowTemplateParamsAuthor(TextRepository $textRepository, BookRepository $bookRepository, Person $person, $format) {
 		$groupBySeries = $format == 'html';
 		return [
-			'texts_as_author' => $this->em()->getTextRepository()->findByAuthor($person, $groupBySeries),
-			'books' => $this->em()->getBookRepository()->findByAuthor($person),
+			'texts_as_author' => $textRepository->findByAuthor($person, $groupBySeries),
+			'books' => $bookRepository->findByAuthor($person),
 		];
 	}
-	protected function getShowTemplateParamsTranslator(Person $person, $format) {
+	protected function getShowTemplateParamsTranslator(TextRepository $textRepository, Person $person, $format) {
 		return [
-			'texts_as_translator' => $this->em()->getTextRepository()->findByTranslator($person),
+			'texts_as_translator' => $textRepository->findByTranslator($person),
 		];
 	}
 
-	/** @return PersonRepository */
-	protected function getPersonRepository() {
-		return $this->em()->getPersonRepository();
+	protected function getPersonRepository(): PersonRepository {
+		return $this->personRepository;
 	}
 
 	/**

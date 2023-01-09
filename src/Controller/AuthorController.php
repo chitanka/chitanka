@@ -2,11 +2,20 @@
 
 use App\Entity\Person;
 use App\Pagination\Pager;
+use App\Persistence\BookRepository;
+use App\Persistence\PersonRepository;
+use App\Persistence\TextRepository;
+use App\Persistence\UserRepository;
+use App\Service\SearchService;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthorController extends PersonController {
 
-	public function showBooksAction($slug) {
+	public function __construct(UserRepository $userRepository, PersonRepository $personRepository) {
+		parent::__construct($userRepository, $personRepository->asAuthor());
+	}
+
+	public function showBooksAction(BookRepository $bookRepository, $slug) {
 		$person = $this->tryToFindPerson($slug);
 		if ( ! $person instanceof Person) {
 			return $person;
@@ -14,11 +23,11 @@ class AuthorController extends PersonController {
 
 		return [
 			'person' => $person,
-			'books'  => $this->em()->getBookRepository()->findByAuthor($person),
+			'books'  => $bookRepository->findByAuthor($person),
 		];
 	}
 
-	public function showTextsAction($slug, $_format) {
+	public function showTextsAction(TextRepository $textRepository, $slug, $_format) {
 		$person = $this->tryToFindPerson($slug);
 		if ( ! $person instanceof Person) {
 			return $person;
@@ -27,11 +36,11 @@ class AuthorController extends PersonController {
 		$groupBySeries = $_format == 'html';
 		return [
 			'person' => $person,
-			'texts'  => $this->em()->getTextRepository()->findByAuthor($person, $groupBySeries),
+			'texts'  => $textRepository->findByAuthor($person, $groupBySeries),
 		];
 	}
 
-	public function searchAction(Request $request, $_format) {
+	public function searchAction(SearchService $searchService, Request $request, $_format) {
 		$query = $request->query->get('q');
 		if ($_format == 'json') {
 			$persons = $this->findByQuery([
@@ -60,12 +69,7 @@ class AuthorController extends PersonController {
 		return [];
 	}
 
-	protected function getShowTemplateParams(Person $person, $format) {
-		return $this->getShowTemplateParamsAuthor($person, $format);
+	protected function getShowTemplateParams(TextRepository $textRepository, BookRepository $bookRepository, Person $person, $format) {
+		return $this->getShowTemplateParamsAuthor($textRepository, $bookRepository, $person, $format);
 	}
-
-	protected function getPersonRepository() {
-		return parent::getPersonRepository()->asAuthor();
-	}
-
 }

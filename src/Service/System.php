@@ -1,22 +1,20 @@
 <?php namespace App\Service;
 
-use App\Persistence\EntityManager;
 use App\Entity\User;
+use App\Persistence\UserRepository;
 
 class System {
 
-	/** @var EntityManager */
-	private $em;
+	private $userRepository;
 
-	public function __construct(EntityManager $em) {
-		$this->em = $em;
+	public function __construct(UserRepository $userRepository) {
+		$this->userRepository = $userRepository;
 	}
 
 	public function closeUserAccount(User $user) {
 		$user->closeAccount();
 		// TODO delete everything
-		$this->em->persist($user);
-		$this->em->flush();
+		$this->userRepository->save($user);
 		return true;
 	}
 

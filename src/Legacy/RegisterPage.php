@@ -59,7 +59,7 @@ class RegisterPage extends Page {
 		}
 		$user->setNews((bool) $this->news);
 
-		$this->controller->em()->getUserRepository()->save($user);
+		$this->userRepository->save($user);
 
 		$this->addMessage("Регистрирахте се в <em>$this->sitename</em> като $this->username.");
 

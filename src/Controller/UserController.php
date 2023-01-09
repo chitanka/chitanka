@@ -1,6 +1,12 @@
 <?php namespace App\Controller;
 
 use App\Pagination\Pager;
+use App\Persistence\BookmarkRepository;
+use App\Persistence\TextCommentRepository;
+use App\Persistence\TextRatingRepository;
+use App\Persistence\TextRepository;
+use App\Persistence\UserTextContribRepository;
+use App\Persistence\UserTextReadRepository;
 use App\Service\System;
 use App\Service\UserService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -32,7 +38,7 @@ class UserController extends Controller {
 		$form = $this->createFormBuilder()->getForm();
 		$form->handleRequest($request);
 		if ($form->isSubmitted()) {
-			$system = new System($this->em());
+			$system = new System($this->userRepository);
 			if ($system->closeUserAccount($user)) {
 				return $this->redirectWithNotice('Профилът ви беше закрит.');
 			}
@@ -43,12 +49,16 @@ class UserController extends Controller {
 		];
 	}
 
-	public function showAction($username) {
+	public function showAction(BookmarkRepository $bookmarkRepository, UserTextReadRepository $userTextReadRepository, UserTextContribRepository $userTextContribRepository, $username) {
 		$this->responseAge = 0;
 
 		$_REQUEST['username'] = $username;
 
-		return $this->legacyPage('User');
+		return $this->legacyPage('User', [], [
+			'bookmarkRepository' => $bookmarkRepository,
+			'userTextReadRepository' => $userTextReadRepository,
+			'userTextContribRepository' => $userTextContribRepository,
+		]);
 	}
 
 	public function pageAction(Request $request, $username) {
@@ -56,7 +66,7 @@ class UserController extends Controller {
 			throw $this->createAccessDeniedException();
 		}
 
-		$user = $this->em()->getUserRepository()->findByUsername($username);
+		$user = $this->userRepository->findByUsername($username);
 		$userService = new UserService($user, $this->getParameter('content_dir'));
 
 		if ($request->isMethod('POST')) {
@@ -74,25 +84,27 @@ class UserController extends Controller {
 		];
 	}
 
-	public function ratingsAction($username) {
-		$user = $this->em()->getUserRepository()->findByUsername($username);
+	public function ratingsAction(TextRatingRepository $textRatingRepository, $username) {
+		$user = $this->userRepository->findByUsername($username);
 		return [
 			'user' => $user,
-			'ratings' => $this->em()->getTextRatingRepository()->getByUser($user),
+			'ratings' => $textRatingRepository->getByUser($user),
 		];
 	}
 
-	public function commentsAction($username, $page) {
+	public function commentsAction(TextRepository $textRepository, TextCommentRepository $textCommentRepository, $username, $page) {
 		$_REQUEST['username'] = $username;
 		$_REQUEST['page'] = $page;
 
-		return $this->legacyPage('Comment');
+		return $this->legacyPage('Comment', [], [
+			'textRepository' => $textRepository,
+			'textCommentRepository' => $textCommentRepository,
+		]);
 	}
 
-	public function contribsAction(Request $request, $username, $page) {
+	public function contribsAction(UserTextContribRepository $repo, Request $request, $username, $page) {
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
-		$user = $this->em()->getUserRepository()->findByUsername($username);
-		$repo = $this->em()->getUserTextContribRepository();
+		$user = $this->userRepository->findByUsername($username);
 		return [
 			'user' => $user,
 			'contribs' => $repo->getByUser($user, $page, $limit),
@@ -102,20 +114,19 @@ class UserController extends Controller {
 		];
 	}
 
-	public function readListAction(Request $request, $username, $page) {
+	public function readListAction(UserTextReadRepository $repo, Request $request, $username, $page) {
 		if ($this->getUser()->getUsername() != $username) {
-			$user = $this->em()->getUserRepository()->findByToken($username);
+			$user = $this->userRepository->findByToken($username);
 			if (!$user) {
 				throw $this->createAccessDeniedException();
 			}
 			$isOwner = false;
 		} else {
-			$user = $this->em()->getUserRepository()->findByUsername($username);
+			$user = $this->userRepository->findByUsername($username);
 			$isOwner = true;
 		}
 
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
-		$repo = $this->em()->getUserTextReadRepository();
 
 		return [
 			'user' => $user,
@@ -128,20 +139,19 @@ class UserController extends Controller {
 		];
 	}
 
-	public function bookmarksAction(Request $request, $username, $page) {
+	public function bookmarksAction(BookmarkRepository $repo, Request $request, $username, $page) {
 		if ($this->getUser()->getUsername() != $username) {
-			$user = $this->em()->getUserRepository()->findByToken($username);
+			$user = $this->userRepository->findByToken($username);
 			if (!$user) {
 				throw $this->createAccessDeniedException();
 			}
 			$isOwner = false;
 		} else {
-			$user = $this->em()->getUserRepository()->findByUsername($username);
+			$user = $this->userRepository->findByUsername($username);
 			$isOwner = true;
 		}
 
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
-		$repo = $this->em()->getBookmarkRepository();
 
 		return [
 			'user' => $user,
@@ -158,7 +168,7 @@ class UserController extends Controller {
 	 * Tell if any of the requested texts are special for the current user
 	 * i.e. the user has bookmarked it or read it
 	 */
-	public function specialTextsAction(Request $request) {
+	public function specialTextsAction(UserTextReadRepository $userTextReadRepository, BookmarkRepository $bookmarkRepository, Request $request) {
 		if ($this->getUser()->isAnonymous()) {
 			throw $this->createAccessDeniedException();
 		}
@@ -166,8 +176,8 @@ class UserController extends Controller {
 		$texts = $request->get('texts');
 
 		return $this->asJson([
-			'read' => array_flip($this->em()->getUserTextReadRepository()->getValidTextIds($this->getUser(), $texts)),
-			'favorities' => array_flip($this->em()->getBookmarkRepository()->getValidTextIds($this->getUser(), $texts)),
+			'read' => array_flip($userTextReadRepository->getValidTextIds($this->getUser(), $texts)),
+			'favorities' => array_flip($bookmarkRepository->getValidTextIds($this->getUser(), $texts)),
 			'_cache' => 0,
 		]);
 	}
@@ -186,6 +196,8 @@ class UserController extends Controller {
 					var url = '$styleUrl'.replace(/SKIN/, skin).replace(/NAV/, nav);
 					$('<link rel=\"stylesheet\" type=\"text/css\" href=\"'+url+'\">').appendTo('head');
 				}"
+		], [
+			'userRepository' => $this->userRepository,
 		]);
 	}
 

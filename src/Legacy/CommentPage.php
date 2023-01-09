@@ -3,6 +3,9 @@
 use App\Entity\Text;
 use App\Entity\TextComment;
 use App\Pagination\Pager;
+use App\Persistence\EntityManager;
+use App\Persistence\TextCommentRepository;
+use App\Persistence\TextRepository;
 use App\Util\Date;
 use App\Util\Stringy;
 use Chitanka\RocketChatClient;
@@ -24,8 +27,12 @@ class CommentPage extends Page {
 		$includeCommentForm   = true,
 		$includeViewTypeLinks = true;
 
+	/** @var TextRepository */private $textRepository;
+	/** @var TextCommentRepository */private $textCommentRepository;
+
 	public function __construct($fields) {
 		parent::__construct($fields);
+
 		$this->title = 'Читателски коментари';
 		$this->reader = $this->user->isAnonymous()
 			? trim($this->request->value('reader'))
@@ -91,9 +98,8 @@ class CommentPage extends Page {
 				$showComment = 0;
 			}
 		}
-		$em = $this->controller->em();
 		$comment = new TextComment;
-		$comment->setText($em->find('App:Text', $this->textId));
+		$comment->setText($this->textRepository->find($this->textId));
 		$comment->setRname($this->reader);
 		$comment->setContent($this->comment);
 		$comment->setContenthash(md5($this->comment));
@@ -101,13 +107,12 @@ class CommentPage extends Page {
 		$comment->setIp(@$_SERVER['REMOTE_ADDR']);
 		$comment->setIsShown($showComment);
 		if ($this->user->isAuthenticated()) {
-			$comment->setUser($em->merge($this->user));
+			$comment->setUser($this->textRepository->__em__()->merge($this->user));
 		}
 		if ($this->replyto) {
-			$comment->setReplyto($em->find('App:TextComment', $this->replyto));
+			$comment->setReplyto($this->textCommentRepository->find($this->replyto));
 		}
-		$em->persist($comment);
-		$em->flush();
+		$this->textCommentRepository->save($comment);
 		if ($showComment) {
 			$this->db->query(sprintf('UPDATE %s SET comment_count = comment_count + 1 WHERE id = %d', DBT_TEXT, $this->textId));
 			$this->notifyRocketchatAboutComment($comment);
@@ -169,7 +174,7 @@ class CommentPage extends Page {
 		$this->comments = '';
 		$this->acomments = $this->acommentsTree = $this->acommentsTmp = [];
 		$this->curRowNr = 0;
-		$results = $this->controller->em()->getConnection()->executeQuery($sql)->fetchAll();
+		$results = $this->textCommentRepository->__em__()->getConnection()->executeQuery($sql)->fetchAll();
 		foreach ($results as $result) {
 			$this->processCommentDbRow($result);
 		}
@@ -461,7 +466,7 @@ EOS;
 			return true;
 		}
 		$this->initDone = true;
-		$this->work = $this->controller->em()->getTextRepository()->find($this->textId);
+		$this->work = $this->textRepository->find($this->textId);
 		if ( empty($this->work) ) {
 			$this->addMessage("Не съществува текст с номер <strong>$this->textId</strong>.", true);
 			return false;

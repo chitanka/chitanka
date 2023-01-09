@@ -1,6 +1,7 @@
 <?php namespace App\Legacy;
 
 use App\Entity\User;
+use App\Persistence\UserRepository;
 use Chitanka\RocketChatClient;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
@@ -34,7 +35,7 @@ class LoginPage extends RegisterPage {
 			return $this->buildContent();
 		}
 		try {
-			$user = $this->controller->em()->getUserRepository()->findByUsernameOrEmail($this->username);
+			$user = $this->userRepository->findByUsernameOrEmail($this->username);
 		} catch (UserNotFoundException $e) {
 			$this->addMessage("Не съществува потребител с име <strong>$this->username</strong>.", true );
 			return $this->buildContent();
@@ -60,7 +61,7 @@ class LoginPage extends RegisterPage {
 		$user->setPassword($this->password); // update with the new algorithm
 		$user->login($this->remember);
 
-		$this->controller->em()->getUserRepository()->save($user);
+		$this->userRepository->save($user);
 
 		$this->controller->setUser($user);
 

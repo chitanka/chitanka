@@ -3,13 +3,14 @@
 use App\Entity\InfoSuggestion;
 use App\Form\Type\InfoSuggestionType;
 use App\Mail\Notifier;
+use App\Persistence\TextRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 class InfoSuggestionController extends Controller {
 
-	public function indexAction(Request $request, $type, $id) {
+	public function indexAction(TextRepository $textRepository, Request $request, $type, $id) {
 		try {
-			$text = $this->em()->getTextRepository()->get($id);
+			$text = $textRepository->get($id);
 			$infoSuggestion = new InfoSuggestion($type, $text);
 			$infoSuggestion->setSender($this->getUser());
 		} catch (\InvalidArgumentException $e) {

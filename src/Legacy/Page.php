@@ -1,5 +1,6 @@
 <?php namespace App\Legacy;
 
+use App\Persistence\UserRepository;
 use App\Util\Char;
 use App\Util\Number;
 use App\Util\Stringy;
@@ -63,6 +64,8 @@ abstract class Page {
 	private $captchaQuestion;
 	private $captchaAnswer;
 	private $captchaQuestionT;
+
+	/** @var UserRepository */protected $userRepository;
 
 	public function __construct(array $fields) {
 		foreach ($fields as $f => $v) {

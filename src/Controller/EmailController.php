@@ -3,11 +3,12 @@
 use App\Entity\Email;
 use App\Form\Type\EmailType;
 use App\Mail\Notifier;
+use App\Persistence\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 class EmailController extends Controller {
 
-	public function newAction(Request $request, $username) {
+	public function newAction(UserRepository $userRepository, Request $request, $username) {
 		$senderUser = $this->getUser();
 		if ($senderUser->isAnonymous()) {
 			return ['message' => 'stop_anon'];
@@ -16,7 +17,7 @@ class EmailController extends Controller {
 			return ['message' => 'stop_no_email', 'sender' => $senderUser];
 		}
 
-		$recipientUser = $this->em()->getUserRepository()->findByUsername($username);
+		$recipientUser = $userRepository->findByUsername($username);
 		if (!$recipientUser) {
 			throw $this->createNotFoundException("Не съществува потребител с име $username.");
 		}

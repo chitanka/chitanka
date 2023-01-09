@@ -1,6 +1,8 @@
 <?php namespace App\Controller;
 
 use App\Pagination\Pager;
+use App\Persistence\SeriesRepository;
+use App\Persistence\TextRepository;
 use App\Service\SearchService;
 use App\Util\Stringy;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,8 +16,7 @@ class SeriesController extends Controller {
 		return [];
 	}
 
-	public function listByAlphaAction(Request $request, $letter, $page) {
-		$repo = $this->em()->getSeriesRepository();
+	public function listByAlphaAction(SeriesRepository $repo, Request $request, $letter, $page) {
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 
 		$prefix = $letter == '-' ? null : $letter;
@@ -27,27 +28,27 @@ class SeriesController extends Controller {
 		];
 	}
 
-	public function showAction($slug) {
+	public function showAction(SeriesRepository $seriesRepository, TextRepository $textRepository, $slug) {
 		$slug = Stringy::slugify($slug);
-		$series = $this->em()->getSeriesRepository()->findBySlug($slug);
+		$series = $seriesRepository->findBySlug($slug);
 		if ($series === null) {
 			throw $this->createNotFoundException("Няма серия с код $slug.");
 		}
 
 		return [
 			'series' => $series,
-			'texts'  => $this->em()->getTextRepository()->getBySeries($series),
+			'texts'  => $textRepository->getBySeries($series),
 		];
 	}
 
-	public function searchAction(Request $request, $_format) {
+	public function searchAction(SearchService $searchService, SeriesRepository $seriesRepository, Request $request, $_format) {
 		if ($_format == 'osd') {
 			return [];
 		}
 		if ($_format == 'suggest') {
 			$items = $descs = $urls = [];
 			$query = $request->query->get('q');
-			$series = $this->em()->getSeriesRepository()->getByQuery([
+			$series = $seriesRepository->getByQuery([
 				'text'  => $query,
 				'by'    => 'name',
 				'match' => 'prefix',
@@ -61,7 +62,6 @@ class SeriesController extends Controller {
 
 			return [$query, $items, $descs, $urls];
 		}
-		$searchService = new SearchService($this->em());
 		$query = $searchService->prepareQuery($request, $_format);
 		if (isset($query['_template'])) {
 			return $query;
@@ -70,7 +70,7 @@ class SeriesController extends Controller {
 		if (empty($query['by'])) {
 			$query['by'] = 'name,origName';
 		}
-		$series = $this->em()->getSeriesRepository()->getByQuery($query);
+		$series = $seriesRepository->getByQuery($query);
 		$found = count($series) > 0;
 		return [
 			'query'  => $query,

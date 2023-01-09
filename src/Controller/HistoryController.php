@@ -1,7 +1,9 @@
 <?php namespace App\Controller;
 
+use App\Persistence\BookRevisionRepository;
 use App\Persistence\RevisionRepository;
 use App\Pagination\Pager;
+use App\Persistence\TextRevisionRepository;
 use App\Util\Date;
 
 class HistoryController extends Controller {
@@ -11,16 +13,15 @@ class HistoryController extends Controller {
 	const PAGE_COUNT_DEFAULT = 50;
 	const PAGE_COUNT_LIMIT = 500;
 
-	public function indexAction() {
+	public function indexAction(BookRevisionRepository $bookRevisionRepository, TextRevisionRepository $textRevisionRepository) {
 		return [
-			'book_revisions_by_date' => $this->em()->getBookRevisionRepository()->getLatest(static::PAGE_COUNT_DEFAULT),
-			'text_revisions_by_date' => $this->em()->getTextRevisionRepository()->getLatest(static::PAGE_COUNT_DEFAULT),
+			'book_revisions_by_date' => $bookRevisionRepository->getLatest(static::PAGE_COUNT_DEFAULT),
+			'text_revisions_by_date' => $textRevisionRepository->getLatest(static::PAGE_COUNT_DEFAULT),
 			'_cache' => $this->responseAge,
 		];
 	}
 
-	public function listBooksAction($page, $_format) {
-		$repo = $this->em()->getBookRevisionRepository();
+	public function listBooksAction(BookRevisionRepository $repo, $page, $_format) {
 		$pager = new Pager($page, static::PAGE_COUNT_DEFAULT * 50, static::PAGE_COUNT_DEFAULT);
 		switch ($_format) {
 			case 'html':
@@ -44,18 +45,17 @@ class HistoryController extends Controller {
 		}
 	}
 
-	public function listBooksByMonthAction($year, $month, $page) {
+	public function listBooksByMonthAction(BookRevisionRepository $bookRevisionRepository, $year, $month, $page) {
 		$dates = ["$year-$month-01", Date::endOfMonth("$year-$month")];
-		return $this->viewParametersForDateSelectionOfBooks($dates, $page, $year, $month);
+		return $this->viewParametersForDateSelectionOfBooks($bookRevisionRepository, $dates, $page, $year, $month);
 	}
 
-	public function listBooksByDayAction(int $year, int $month, int $day, int $page) {
+	public function listBooksByDayAction(BookRevisionRepository $bookRevisionRepository, int $year, int $month, int $day, int $page) {
 		$date = "$year-$month-$day";
-		return $this->viewParametersForDateSelectionOfBooks($date, $page, $year, $month, $day);
+		return $this->viewParametersForDateSelectionOfBooks($bookRevisionRepository, $date, $page, $year, $month, $day);
 	}
 
-	private function viewParametersForDateSelectionOfBooks($date, int $page, int $year, int $month, int $day = null): array {
-		$repo = $this->em()->getBookRevisionRepository();
+	private function viewParametersForDateSelectionOfBooks(BookRevisionRepository $repo, $date, int $page, int $year, int $month, int $day = null): array {
 		return [
 			'dates' => $this->getDateOptions($repo),
 			'day' => $day,
@@ -67,8 +67,7 @@ class HistoryController extends Controller {
 		];
 	}
 
-	public function listTextsAction($page, $_format) {
-		$repo = $this->em()->getTextRevisionRepository();
+	public function listTextsAction(TextRevisionRepository $repo, $page, $_format) {
 		$pager = new Pager($page, static::PAGE_COUNT_DEFAULT * 50, static::PAGE_COUNT_DEFAULT);
 		switch ($_format) {
 			case 'html':
@@ -92,18 +91,17 @@ class HistoryController extends Controller {
 		}
 	}
 
-	public function listTextsByMonthAction($year, $month, $page) {
+	public function listTextsByMonthAction(TextRevisionRepository $textRevisionRepository, $year, $month, $page) {
 		$dates = ["$year-$month-01", Date::endOfMonth("$year-$month")];
-		return $this->viewParametersForDateSelectionOfTexts($dates, $page, $year, $month);
+		return $this->viewParametersForDateSelectionOfTexts($textRevisionRepository, $dates, $page, $year, $month);
 	}
 
-	public function listTextsByDayAction(int $year, int $month, int $day, int $page) {
+	public function listTextsByDayAction(TextRevisionRepository $textRevisionRepository, int $year, int $month, int $day, int $page) {
 		$date = "$year-$month-$day";
-		return $this->viewParametersForDateSelectionOfTexts($date, $page, $year, $month, $day);
+		return $this->viewParametersForDateSelectionOfTexts($textRevisionRepository, $date, $page, $year, $month, $day);
 	}
 
-	private function viewParametersForDateSelectionOfTexts($date, int $page, int $year, int $month, int $day = null): array {
-		$repo = $this->em()->getTextRevisionRepository();
+	private function viewParametersForDateSelectionOfTexts(TextRevisionRepository $repo, $date, int $page, int $year, int $month, int $day = null): array {
 		$revisions = $repo->getByDate($date, $page, static::PAGE_COUNT_DEFAULT);
 		return [
 			'dates' => $this->getDateOptions($repo),
@@ -121,7 +119,7 @@ class HistoryController extends Controller {
 		$dates = [];
 		foreach ($repository->getMonths() as $data) {
 			$ym = $data['month'];
-			list($y, $m) = explode('-', $ym);
+			[$y, $m] = explode('-', $ym);
 			$data['year'] = $y;
 			$data['month'] = ltrim($m, '0');
 			$dates[$ym] = $data;
