@@ -43,7 +43,8 @@ class SecurityController extends Controller {
 	public function requestUsernameAction(Request $request, string $siteEmail) {
 		$form = $this->createForm(RequestUsernameType::class);
 
-		if ($form->handleRequest($request)->isValid()) {
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
 			$data = $form->getData();
 			if ($user = $this->processUsernameRequest($data['email'], $siteEmail)) {
 				return $this->redirectWithNotice("На адреса <strong>{$user->getEmail()}</strong> беше изпратено напомнящо писмо. Ако не се сещате и за паролата си, ползвайте функцията „<a href=\"{$this->generateUrl('request_password')}\">Изпращане на нова парола</a>“. Иначе можете спокойно <a href=\"{$this->generateUrl('login')}\">да влезете</a>.");
@@ -57,7 +58,8 @@ class SecurityController extends Controller {
 	public function requestPasswordAction(Request $request, string $siteEmail) {
 		$form = $this->createForm(RequestPasswordType::class);
 
-		if ($form->handleRequest($request)->isValid()) {
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
 			$data = $form->getData();
 			if ($user = $this->processPasswordRequest($data['username'], $siteEmail)) {
 				return $this->redirectWithNotice("Нова парола беше изпратена на електронната поща на <strong>{$user->getUsername()}</strong>. Моля, <a href=\"{$this->generateUrl('login')}\">влезте отново</a>, след като я получите.");

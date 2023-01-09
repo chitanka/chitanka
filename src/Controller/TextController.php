@@ -330,7 +330,8 @@ class TextController extends Controller {
 
 	public function randomAction(Request $request) {
 		$form = $this->createForm(RandomTextFilter::class);
-		if ($form->handleRequest($request)->isValid()) {
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
 			$criteria = new Criteria();
 			if ($selectedTypes = $form->getData()['type']) {
 				/* @var $selectedTypes ArrayCollection */
@@ -367,7 +368,7 @@ class TextController extends Controller {
 		$oldRating = $rating->getRating();
 
 		$form->handleRequest($request);
-		if ($user->isAuthenticated() && $form->isValid()) {
+		if ($user->isAuthenticated() && $form->isSubmitted() && $form->isValid()) {
 			// TODO replace with DoctrineListener
 			$text->updateAvgRating($rating->getRating(), $oldRating);
 			$this->textRepository->save($text);
@@ -400,7 +401,8 @@ class TextController extends Controller {
 		$group = $request->get('group');
 		$form = $this->createForm(TextLabelType::class, $textLabel, ['group' => $group]);
 
-		if ($form->handleRequest($request)->isValid()) {
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
 			// TODO Form::handleRequest() overwrites the Text object with an id, so we give $text explicitly
 			$service->addTextLabel($textLabel, $text);
 			if ($request->isXmlHttpRequest()) {

@@ -10,7 +10,7 @@ class FeedbackController extends Controller {
 	public function indexAction(Request $request, string $adminEmail) {
 		$form = $this->createForm(FeedbackType::class , new Feedback());
 		$form->handleRequest($request);
-		if ($form->isValid()) {
+		if ($form->isSubmitted() && $form->isValid()) {
 			$notifier = new Notifier($this->get('mailer'));
 			$notifier->sendPerMail($form->getData(), $adminEmail);
 			$this->flashes()->addNotice('Съобщението ви беше изпратено.');

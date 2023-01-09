@@ -18,7 +18,8 @@ class InfoSuggestionController extends Controller {
 		}
 		$form = $this->createForm(InfoSuggestionType::class, $infoSuggestion);
 
-		if ($form->handleRequest($request)->isValid()) {
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
 			$notifier = new Notifier($this->get('mailer'));
 			$notifier->sendPerMail($infoSuggestion, $workEmail);
 			return $this->redirectWithNotice('Съобщението ви беше изпратено.');

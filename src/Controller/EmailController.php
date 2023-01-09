@@ -31,7 +31,8 @@ class EmailController extends Controller {
 		$email = new Email($recipientUser, $senderUser);
 		$form = $this->createForm(EmailType::class, $email);
 
-		if ($form->handleRequest($request)->isValid()) {
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
 			$notifier = new Notifier($this->get('mailer'));
 			$notifier->sendPerMail($email, $email->getRecipient());
 			return $this->redirectWithNotice('Писмото ви беше изпратено.');
