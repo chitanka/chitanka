@@ -11,7 +11,7 @@ $targetFormat = filter_input(INPUT_GET, 'out') ?? '';
 $webCacheDir = '/cache/dl';
 $cacheDir = __DIR__.$webCacheDir;
 
-$converter = new App\Generator\EpubConverter($container->getParameterBag(), $cacheDir);
+$converter = new App\Generator\EpubConverter($container->getParameter('converter_download'), $cacheDir);
 try {
 	$outputFile = $converter->convert($epubUrl, $targetFormat);
 } catch (InvalidArgumentException $e) {

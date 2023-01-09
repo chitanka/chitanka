@@ -211,7 +211,7 @@ abstract class Controller extends AbstractController {
 
 	public function configureExtraDownloadFormats() {
 		if (class_exists(BaseWork::class, false)) {
-			BaseWork::$EXTRA_FORMATS = $this->container->getParameter('download_formats_external_converter') ?: [];
+			BaseWork::$EXTRA_FORMATS = $this->container->getParameter('converter_download')['publicized_formats'] ?: [];
 		}
 	}
 

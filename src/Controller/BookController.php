@@ -168,9 +168,10 @@ class BookController extends Controller {
 				return $this->urlRedirect('/'.ContentService::getCover($book->hasCover() ? $book->getId() : 0, $request->get('size', 300)));
 		}
 
-		$converterFormatKey = "{$_format}_download_enabled";
-		if ($this->container->hasParameter($converterFormatKey)) {
-			if ( ! $this->container->getParameter($converterFormatKey)) {
+		$converterSettings = $this->container->getParameter('converter_download');
+		$converterFormatKey = "{$_format}_enabled";
+		if (isset($converterSettings[$converterFormatKey])) {
+			if ( ! $converterSettings[$converterFormatKey]) {
 				throw $this->createNotFoundException("Няма поддръжка на формата {$_format}.");
 			}
 			return $this->urlRedirect($this->generateConverterUrl($book, $_format));

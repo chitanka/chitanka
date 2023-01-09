@@ -192,9 +192,10 @@ class TextController extends Controller {
 				return ['text' => $this->findText($id, true)];
 		}
 
-		$converterFormatKey = "{$_format}_download_enabled";
-		if ($this->container->hasParameter($converterFormatKey)) {
-			if ( ! $this->container->getParameter($converterFormatKey)) {
+		$converterSettings = $this->container->getParameter('converter_download');
+		$converterFormatKey = "{$_format}_enabled";
+		if (isset($converterSettings[$converterFormatKey])) {
+			if ( ! $converterSettings[$converterFormatKey]) {
 				throw $this->createNotFoundException("Поддръжката на формата {$_format} не е включена.");
 			}
 			return $this->urlRedirect($this->generateConverterUrl($id, $_format));

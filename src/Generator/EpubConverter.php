@@ -1,17 +1,16 @@
 <?php namespace App\Generator;
 
 use InvalidArgumentException;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Filesystem\Filesystem;
 
 class EpubConverter {
 
-	/** @var ParameterBag */
+	/** @var array */
 	private $parameters;
 	/** @var string */
 	private $cacheDir;
 
-	public function __construct(ParameterBag $parameters, string $cacheDir) {
+	public function __construct(array $parameters, string $cacheDir) {
 		$this->parameters = $parameters;
 		$this->cacheDir = $cacheDir;
 	}
@@ -21,7 +20,7 @@ class EpubConverter {
 		$this->assertSupportedTargetFormat($targetFormat);
 		$this->assertEnabledTargetFormat($targetFormat);
 
-		$commandTemplate = $this->parameters->get("{$targetFormat}_converter_command");
+		$commandTemplate = $this->parameters["{$targetFormat}_command"];
 		if (empty($commandTemplate)) {
 			throw new InvalidArgumentException("The target format '{$targetFormat}' does not have a shell converter command.");
 		}
@@ -100,15 +99,15 @@ class EpubConverter {
 	}
 
 	private function assertSupportedTargetFormat(string $targetFormat) {
-		$key = "{$targetFormat}_download_enabled";
-		if ( ! $this->parameters->has($key)) {
+		$key = "{$targetFormat}_enabled";
+		if ( ! isset($this->parameters[$key])) {
 			throw new InvalidArgumentException("Unsupported target format: '{$targetFormat}'");
 		}
 	}
 
 	private function assertEnabledTargetFormat(string $targetFormat) {
-		$key = "{$targetFormat}_download_enabled";
-		if ( ! $this->parameters->get($key)) {
+		$key = "{$targetFormat}_enabled";
+		if ( ! $this->parameters[$key]) {
 			throw new InvalidArgumentException("Target format is not enabled: '{$targetFormat}'");
 		}
 	}

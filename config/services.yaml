@@ -61,27 +61,29 @@ parameters:
     download_formats: [txt.zip, fb2.zip, epub, sfb.zip]
     download_file: AUTHOR - SERIES - SERNO. TITLE - ID
 
-    # pdf download is disabled in the standard installation
-    pdf_download_enabled: false
-    # the ebook-convert binary must live in the bin directory or be reachable through the PATH environment variable
-    # ebook-convert is part of calibre
-    pdf_converter_command: ebook-convert INPUT_FILE OUTPUT_FILE --pdf-page-numbers --change-justification=justify
+    converter_download:
 
-    # mobi download is disabled in the standard installation
-    mobi_download_enabled: false
-    mobi_converter_command: ebook-convert INPUT_FILE OUTPUT_FILE
-    # alternative with kindlegen - by default it includes too much stuff in the final file
-    # the kindlegen binary must live in the bin directory or be reachable through the PATH environment variable
-    #mobi_converter_command: kindlegen INPUT_FILE -o OUTPUT_FILE_BASENAME
+        # pdf download is disabled in the standard installation
+        pdf_enabled: false
+        # the ebook-convert binary must live in the bin directory or be reachable through the PATH environment variable
+        # ebook-convert is part of calibre
+        pdf_command: ebook-convert INPUT_FILE OUTPUT_FILE --pdf-page-numbers --change-justification=justify
 
-    # Custom download formats can be enabled through the options FORMAT_download_enabled and FORMAT_converter_command.
-    # Example for docx:
-    # docx_download_enabled: true
-    # docx_converter_command: ebook-convert INPUT_FILE OUTPUT_FILE --base-font-size=14 --minimum-line-height=160 --change-justification=justify
+        # mobi download is disabled in the standard installation
+        mobi_enabled: false
+        mobi_command: ebook-convert INPUT_FILE OUTPUT_FILE
+        # alternative with kindlegen - by default it includes too much stuff in the final file
+        # the kindlegen binary must live in the bin directory or be reachable through the PATH environment variable
+        #mobi_command: kindlegen INPUT_FILE -o OUTPUT_FILE_BASENAME
 
-    # these formats are included in the download links for books and texts
-    # make sure to enable them, e.g. 'pdf_download_enabled: true'
-    download_formats_external_converter: ~ # [pdf, mobi]
+        # Custom download formats can be enabled through the options FORMAT_download_enabled and FORMAT_converter_command.
+        # Example for docx:
+        # docx_enabled: true
+        # docx_command: ebook-convert INPUT_FILE OUTPUT_FILE --base-font-size=14 --minimum-line-height=160 --change-justification=justify
+
+        # these formats are included in the download links for books and texts
+        # make sure to enable them, e.g. 'converter_download.pdf_enabled: true'
+        publicized_formats: [] # [pdf, mobi]
 
     workroom_remote: false
     workroom_root: ~
