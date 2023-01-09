@@ -41,6 +41,6 @@ class Translation {
 	}
 
 	private function loadMessages() {
-		return require __DIR__.'/../Resources/translations/messages.bg.php';
+		return require __DIR__.'/../../translations/messages.bg.php';
 	}
 }
