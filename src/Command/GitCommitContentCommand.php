@@ -5,7 +5,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GitCommitContentCommand extends Command {
 
-	private $em;
 	private $output;
 
 	public function getName() {
@@ -35,7 +34,6 @@ class GitCommitContentCommand extends Command {
 	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->output = $output;
-		$this->em = $this->getEntityManager();
 
 		$description = $input->getArgument('desc');
 		$lastMinutes = $input->getOption('from');

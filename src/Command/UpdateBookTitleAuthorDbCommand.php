@@ -8,7 +8,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class UpdateBookTitleAuthorDbCommand extends Command {
 
-	private $em;
 	private $output;
 	private $dumpSql;
 
@@ -32,7 +31,6 @@ class UpdateBookTitleAuthorDbCommand extends Command {
 
 	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$this->em = $this->getEntityManager();
 		$this->output = $output;
 		$this->dumpSql = $input->getOption('dump-sql') === true;
 		$this->updateBookTitleAuthor($this->dumpSql);

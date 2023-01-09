@@ -3,15 +3,14 @@
 class Setup {
 
 	private static
-		$setupDone = false,
-		$config = null;
+		$setupDone = false;
 
 	private static
 		/** @var Request */      $request,
 		/** @var mlDatabase */   $db,
 		/** @var OutputMaker */  $outputMaker;
-	private static $dbal;
-	private static $parameters = [];
+	public static $dbal;
+	public static $parameters = [];
 
 	public static function getPage($name, $controller, $container, array $repositories, array $parameters = [], $execute = true) {
 		self::$parameters = $parameters;
@@ -42,10 +41,10 @@ class Setup {
 			return;
 		}
 
-		self::$config = $container;
+		self::$dbal = $container->get('doctrine')->getConnection();
+		self::$parameters = $container->get('parameter_bag')->all();
 
 		self::defineDbTableConsts();
-
 		ini_set('date.timezone', self::setting('default_timezone'));
 
 		self::$setupDone = true;
@@ -67,7 +66,7 @@ class Setup {
 	}
 
 	public static function dbal(): \Doctrine\DBAL\Connection {
-		return self::$dbal ?? self::$dbal = self::$config->get('doctrine.dbal.default_connection');
+		return self::$dbal;
 	}
 
 	public static function outputMaker($forceNew = false) {
@@ -76,6 +75,7 @@ class Setup {
 
 	private static function setupDb() {
 		if ( ! isset(self::$db) ) {
+			self::defineDbTableConsts();
 			self::$db = new mlDatabase(self::dbal());
 		}
 		return self::$db;
@@ -99,6 +99,9 @@ class Setup {
 	}
 
 	private static function defineDbTableConsts() {
+		if (defined('DBT_AUTHOR_OF')) {
+			return;
+		}
 		define('DBT_AUTHOR_OF', 'text_author');
 		define('DBT_BOOK', 'book');
 		define('DBT_COMMENT', 'text_comment');

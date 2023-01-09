@@ -6,7 +6,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateHeadersDbCommand extends Command {
 
-	private $em;
 	private $output;
 
 	public function getName() {
@@ -35,7 +34,6 @@ class UpdateHeadersDbCommand extends Command {
 
 	/** {@inheritdoc} */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$this->em = $this->getEntityManager();
 		$this->output = $output;
 		$texts = trim($input->getArgument('texts'));
 		$dumpSql = $input->getOption('dump-sql') === true;

@@ -1,11 +1,21 @@
 <?php namespace App\Command;
 
 use App\Legacy\Setup;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use App\Persistence\EntityManager;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-abstract class Command extends ContainerAwareCommand {
+abstract class Command extends \Symfony\Component\Console\Command\Command {
+
+	/** @var EntityManager */protected $em;
+	/** @var array */protected $parameters;
+
+	public function __construct(EntityManager $em, ParameterBagInterface $parameters) {
+		$this->em = $em;
+		$this->parameters = $parameters;
+		parent::__construct();
+	}
 
 	protected function configure() {
 		$this->setName($this->getName());
@@ -109,14 +119,15 @@ abstract class Command extends ContainerAwareCommand {
 	}
 
 	public function contentDir($file = null) {
-		return realpath($this->getContainer()->getParameter('content_dir') . ($file ? "/$file" : ''));
+		return realpath($this->parameters['content_dir'] . ($file ? "/$file" : ''));
 	}
 
 	private $olddb;
 	/** @return \App\Legacy\mlDatabase */
 	protected function olddb() {
 		if (!$this->olddb) {
-			Setup::doSetup($this->getContainer());
+			Setup::$dbal = $this->em->getConnection();
+			Setup::$parameters = $this->parameters;
 			$this->olddb = Setup::db();
 		}
 		return $this->olddb;
@@ -131,6 +142,6 @@ abstract class Command extends ContainerAwareCommand {
 
 	/** @return \App\Persistence\EntityManager */
 	protected function getEntityManager() {
-		return $this->getContainer()->get('app.entity_manager');
+		return $this->em;
 	}
 }

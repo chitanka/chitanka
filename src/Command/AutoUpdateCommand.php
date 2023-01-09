@@ -36,8 +36,7 @@ class AutoUpdateCommand extends Command {
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->output = $output;
-		$container = $this->getContainer();
-		$rootDir = $container->getParameter('kernel.project_dir');
+		$rootDir = $this->parameters['kernel.project_dir'];
 		$updateDir = "$rootDir/update";
 
 		$echo = function ($msg) use ($output) {
@@ -59,15 +58,15 @@ class AutoUpdateCommand extends Command {
 		}
 		if ($input->getOption('skip-src') === false) {
 			$echo("Executing source update...");
-			$this->executeSrcUpdate($rootDir, $container->getParameter('rsync.url.src'));
+			$this->executeSrcUpdate($rootDir, $this->parameters['rsync.url.src']);
 		}
 		if ($input->getOption('skip-content') === false) {
 			$echo("Executing content update...");
-			$this->executeContentUpdate($this->contentDir(), $container->getParameter('rsync.url.content'));
+			$this->executeContentUpdate($this->contentDir(), $this->parameters['rsync.url.content']);
 		}
 		if ($input->getOption('skip-db') === false) {
 			$echo("Executing database update...");
-			$this->executeDbUpdate($container->getParameter('update_db_url'), "$updateDir/db");
+			$this->executeDbUpdate($this->parameters['update_db_url'], "$updateDir/db");
 		}
 		$mutex->releaseLock();
 
@@ -98,14 +97,13 @@ class AutoUpdateCommand extends Command {
 	}
 
 	private function createSqlImporter() {
-		$c = $this->getContainer();
-		require_once $c->getParameter('kernel.project_dir').'/maintenance/sql_importer.lib.php';
+		require_once $this->parameters['kernel.project_dir'].'/maintenance/sql_importer.lib.php';
 
-		$dbhost = $c->getParameter('database_host');
-		$dbname = $c->getParameter('database_name');
-		$dbport = $c->getParameter('database_port');
-		$dbuser = $c->getParameter('database_user');
-		$dbpassword = $c->getParameter('database_password');
+		$dbhost = $this->parameters['database_host'];
+		$dbname = $this->parameters['database_name'];
+		$dbport = $this->parameters['database_port'];
+		$dbuser = $this->parameters['database_user'];
+		$dbpassword = $this->parameters['database_password'];
 		$dsn = "mysql:host=$dbhost;dbname=$dbname";
 		if ($dbport) {
 			$dsn .= ";port=$dbport";
@@ -114,7 +112,7 @@ class AutoUpdateCommand extends Command {
 	}
 
 	private function deleteRemovedNoticesIfDisallowed() {
-		if ($this->getContainer()->getParameter('allow_removed_notice') === false) {
+		if ($this->parameters['allow_removed_notice'] === false) {
 			$this->getEntityManager()->getTextRepository()->execute('UPDATE text SET removed_notice = NULL');
 			$this->getEntityManager()->getBookRepository()->execute('UPDATE book SET removed_notice = NULL');
 		}
@@ -167,7 +165,7 @@ class AutoUpdateCommand extends Command {
 	}
 
 	public function runGitPullCommand(string $targetDir): FetchGitResponse {
-		$gitBinary = $this->getContainer()->getParameter('git.path');
+		$gitBinary = $this->parameters['git.path'];
 		if (!$gitBinary) {
 			throw new \Exception('The git binary is not configured.');
 		}
@@ -175,7 +173,7 @@ class AutoUpdateCommand extends Command {
 	}
 
 	public function runRsyncCommand(string $remoteSource, string $localTarget, string $options = null): FetchRsyncResponse {
-		$rsyncBinary = $this->getContainer()->getParameter('rsync.path');
+		$rsyncBinary = $this->parameters['rsync.path'];
 		if (!$rsyncBinary) {
 			throw new \Exception('The rsync binary is not configured.');
 		}

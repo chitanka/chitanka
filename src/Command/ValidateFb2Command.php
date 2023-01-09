@@ -50,7 +50,6 @@ EOT;
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->output = $output;
 
-		Setup::doSetup($this->getContainer());
 		list($textIds, $bookIds) = $this->parseInputIds($input->getArgument('id'));
 		$this->validator = new Fb2Validator();
 		$this->validateTexts($textIds);
