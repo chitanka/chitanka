@@ -6,11 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class WikiController extends Controller {
 
-	public function showAction($page) {
+	public function showAction($page, string $contentDir) {
 		if (strpos($page, 'content/') === 0) {
-			return $this->renderBinaryFile(str_replace('content/', '', $page));
+			return $this->renderBinaryFile($contentDir, str_replace('content/', '', $page));
 		}
-		$wiki = $this->wikiEngine();
+		$wiki = $this->wikiEngine($contentDir);
 		$wikiPage = $wiki->getPage($page);
 		return [
 			'page' => $wikiPage,
@@ -18,9 +18,9 @@ class WikiController extends Controller {
 		];
 	}
 
-	public function saveAction(Request $request) {
+	public function saveAction(Request $request, string $contentDir) {
 		$input = $request->request;
-		$wiki = $this->wikiEngine();
+		$wiki = $this->wikiEngine($contentDir);
 		$user = $this->getUser();
 		$wiki->savePage($input->get('summary'), $input->get('page'), $input->get('content'), $input->get('title'), "{$user->getUsername()} <{$user->getUsername()}@chitanka>");
 		return $this->asJson(1);
@@ -30,8 +30,8 @@ class WikiController extends Controller {
 		return $this->asText(WikiEngine::markdownToHtml($request->request->get('content')), 'text/html');
 	}
 
-	public function historyAction($page) {
-		$wiki = $this->wikiEngine();
+	public function historyAction($page, string $contentDir) {
+		$wiki = $this->wikiEngine($contentDir);
 		$commits = $wiki->getHistory($page);
 		return [
 			'page' => $wiki->getPage($page),
@@ -39,11 +39,11 @@ class WikiController extends Controller {
 		];
 	}
 
-	private function wikiEngine() {
-		return new WikiEngine($this->container->getParameter('content_dir').'/wiki');
+	private function wikiEngine(string $contentDir) {
+		return new WikiEngine($contentDir.'/wiki');
 	}
 
-	private function renderBinaryFile($path) {
-		return new BinaryFileResponse($this->container->getParameter('content_dir').'/'.$path);
+	private function renderBinaryFile(string $contentDir, $path) {
+		return new BinaryFileResponse($contentDir.'/'.$path);
 	}
 }

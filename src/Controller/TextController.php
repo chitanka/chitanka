@@ -151,8 +151,8 @@ class TextController extends Controller {
 		];
 	}
 
-	public function showAction(TextCombinationRepository $textCombinationRepository, Request $request, $id, $_format) {
-		if ($this->canRedirectToMirror($_format) && ($mirrorServer = $this->getMirrorServer())) {
+	public function showAction(TextCombinationRepository $textCombinationRepository, Request $request, $id, $_format, array $mirrorSites, array $mirrorSitesForConverter, array $converterDownload) {
+		if ($this->canRedirectToMirror($_format) && ($mirrorServer = $this->getMirrorServer($mirrorSites))) {
 			return $this->redirectToMirror($mirrorServer, $id, $_format, $request->get('filename'), $request->getScheme());
 		}
 		[$id] = explode('-', $id); // remove optional slug
@@ -192,13 +192,12 @@ class TextController extends Controller {
 				return ['text' => $this->findText($id, true)];
 		}
 
-		$converterSettings = $this->container->getParameter('converter_download');
 		$converterFormatKey = "{$_format}_enabled";
-		if (isset($converterSettings[$converterFormatKey])) {
-			if ( ! $converterSettings[$converterFormatKey]) {
+		if (isset($converterDownload[$converterFormatKey])) {
+			if ( ! $converterDownload[$converterFormatKey]) {
 				throw $this->createNotFoundException("Поддръжката на формата {$_format} не е включена.");
 			}
-			return $this->urlRedirect($this->generateConverterUrl($id, $_format));
+			return $this->urlRedirect($this->generateConverterUrl($id, $_format, $mirrorSitesForConverter));
 		}
 
 		throw $this->createNotFoundException("Неизвестен формат: $_format");
@@ -260,9 +259,8 @@ class TextController extends Controller {
 		return $this->urlRedirect("$mirrorServer/text/$id.$format?filename=$requestedFilename");
 	}
 
-	protected function generateConverterUrl(string $id, string $targetFormat): string {
+	protected function generateConverterUrl(string $id, string $targetFormat, array $mirrors): string {
 		$epubUrl = $this->generateAbsoluteUrl('text_show', ['id' => $id, '_format' => Text::FORMAT_EPUB]);
-		$mirrors = $this->container->getParameter('mirror_sites_for_converter') ?: [];
 		return (new DownloadUrlGenerator())->generateConverterUrl($epubUrl, $targetFormat, $mirrors);
 	}
 

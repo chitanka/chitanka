@@ -123,7 +123,7 @@ class BookController extends Controller {
 		];
 	}
 
-	public function showAction(Request $request, $id, $_format) {
+	public function showAction(Request $request, $id, $_format, array $mirrorSites, array $mirrorSitesForConverter, array $converterDownload) {
 		[$id] = explode('-', $id); // remove optional slug
 		try {
 			$book = $this->bookRepository->get($id);
@@ -140,12 +140,12 @@ class BookController extends Controller {
 			case 'fb2.zip':
 			case 'epub':
 				Setup::doSetup($this->container);
-				return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme()));
+				return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme(), $mirrorSites));
 			case 'djvu':
-				return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme()));
+				return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme(), $mirrorSites));
 			case 'pdf':
 				if ($book->hasCustomPdf()) {
-					return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme()));
+					return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme(), $mirrorSites));
 				}
 				break;
 			case 'txt':
@@ -168,13 +168,12 @@ class BookController extends Controller {
 				return $this->urlRedirect('/'.ContentService::getCover($book->hasCover() ? $book->getId() : 0, $request->get('size', 300)));
 		}
 
-		$converterSettings = $this->container->getParameter('converter_download');
 		$converterFormatKey = "{$_format}_enabled";
-		if (isset($converterSettings[$converterFormatKey])) {
-			if ( ! $converterSettings[$converterFormatKey]) {
+		if (isset($converterDownload[$converterFormatKey])) {
+			if ( ! $converterDownload[$converterFormatKey]) {
 				throw $this->createNotFoundException("Няма поддръжка на формата {$_format}.");
 			}
-			return $this->urlRedirect($this->generateConverterUrl($book, $_format));
+			return $this->urlRedirect($this->generateConverterUrl($book, $_format, $mirrorSitesForConverter));
 		}
 
 		return [
@@ -237,8 +236,8 @@ class BookController extends Controller {
 	 * @param string $format
 	 * @return string File URL
 	 */
-	protected function processDownload(Book $book, $format, $requestedScheme) {
-		$dlSite = $this->getMirrorServer();
+	protected function processDownload(Book $book, $format, $requestedScheme, array $mirrorSites) {
+		$dlSite = $this->getMirrorServer($mirrorSites);
 		if ( $dlSite !== false ) {
 			if (substr($dlSite, 0, 2) === '//') {
 				$dlSite = $requestedScheme .':'. $dlSite;
@@ -263,9 +262,8 @@ class BookController extends Controller {
 		throw $this->createNotFoundException("Книгата не е налична във формат {$format}.");
 	}
 
-	protected function generateConverterUrl(Book $book, string $targetFormat): string {
+	protected function generateConverterUrl(Book $book, string $targetFormat, array $mirrors): string {
 		$epubUrl = $this->generateAbsoluteUrl('book_show', ['id' => $book->getId(), '_format' => Book::FORMAT_EPUB]);
-		$mirrors = $this->container->getParameter('mirror_sites_for_converter') ?: [];
 		return (new DownloadUrlGenerator())->generateConverterUrl($epubUrl, $targetFormat, $mirrors);
 	}
 

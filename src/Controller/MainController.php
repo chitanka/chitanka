@@ -22,13 +22,16 @@ class MainController extends Controller {
 		BookRevisionRepository $bookRevisionRepository,
 		TextRevisionRepository $textRevisionRepository,
 		SearchStringRepository $searchStringRepository,
-		TextCommentRepository $textCommentRepository
+		TextCommentRepository $textCommentRepository,
+		array $mainPageSections,
+		string $liternewsFeedUrl,
+		string $forumFeedUrl
 	) {
 		$vars = [
 			'siteNotices' => $siteNoticeRepository->findForFrontPage(),
 			'_cache' => 600,
 		];
-		$sections = $this->container->getParameter('main.sections');
+		$sections = $mainPageSections;
 		if (in_array('books', $sections)) {
 			$vars['books'] = $bookRevisionRepository->getLatest(self::LATEST_BOOKS_LIMIT);
 		}
@@ -36,7 +39,7 @@ class MainController extends Controller {
 			$vars['texts'] = $textRevisionRepository->getLatest(self::LATEST_TEXTS_LIMIT);
 		}
 		if (in_array('liter_posts', $sections)) {
-			$vars['liter_posts'] = (new LiternewsFeed($this->getParameter('liternews_feed_url')))->fetchLatest(self::LATEST_LITERNEWS_LIMIT);
+			$vars['liter_posts'] = (new LiternewsFeed($liternewsFeedUrl))->fetchLatest(self::LATEST_LITERNEWS_LIMIT);
 		}
 		if (in_array('searches', $sections)) {
 			$vars['searches'] = $searchStringRepository->getLatest(self::LATEST_SEARCHES_LIMIT);
@@ -45,7 +48,7 @@ class MainController extends Controller {
 			$vars['comments'] = $textCommentRepository->getLatest(self::LATEST_COMMENTS_LIMIT);
 		}
 		if (in_array('forum_posts', $sections)) {
-			$vars['forum_posts'] = (new ForumFeed($this->getParameter('forum_feed_url')))->fetchLatest(self::LATEST_FORUM_POSTS_LIMIT);
+			$vars['forum_posts'] = (new ForumFeed($forumFeedUrl))->fetchLatest(self::LATEST_FORUM_POSTS_LIMIT);
 		}
 		return $vars;
 	}

@@ -80,7 +80,7 @@ class PersonController extends Controller {
 		];
 	}
 
-	public function showAction(TextRepository $textRepository, BookRepository $bookRepository, $slug, $_format) {
+	public function showAction(TextRepository $textRepository, BookRepository $bookRepository, $slug, $_format, bool $allowRemoteWikiArticle) {
 		$person = $this->tryToFindPerson($slug);
 		if ( ! $person instanceof Person) {
 			return $person;
@@ -88,7 +88,7 @@ class PersonController extends Controller {
 
 		return $this->getShowTemplateParams($textRepository, $bookRepository, $person, $_format) + [
 			'person' => $person,
-		] + $this->getShowTemplateInfoParams($person);
+		] + $this->getShowTemplateInfoParams($person, $allowRemoteWikiArticle);
 	}
 
 	public function searchAction(SearchService $searchService, Request $request, $_format) {
@@ -184,8 +184,8 @@ class PersonController extends Controller {
 		return $this->getPersonRepository()->findByQuery($query);
 	}
 
-	private function getShowTemplateInfoParams(Person $person) {
-		if ($person->getInfo() == '' || !$this->container->getParameter('allow_remote_wiki_article')) {
+	private function getShowTemplateInfoParams(Person $person, bool $allowRemoteWikiArticle) {
+		if ($person->getInfo() == '' || !$allowRemoteWikiArticle) {
 			return [];
 		}
 		return [

@@ -17,8 +17,8 @@ class UserController extends Controller {
 	const PAGE_COUNT_DEFAULT = 50;
 	const PAGE_COUNT_LIMIT = 500;
 
-	public function personalToolsAction() {
-		if (!$this->container->getParameter('allow_user_registration')) {
+	public function personalToolsAction(string $allowUserRegistration) {
+		if (!$allowUserRegistration) {
 			return $this->asText('');
 		}
 		return $this->render('User/personal_tools.html.twig', [
@@ -61,13 +61,13 @@ class UserController extends Controller {
 		]);
 	}
 
-	public function pageAction(Request $request, $username) {
+	public function pageAction(Request $request, string $contentDir, $username) {
 		if ($this->getUser()->getUsername() != $username) {
 			throw $this->createAccessDeniedException();
 		}
 
 		$user = $this->userRepository->findByUsername($username);
-		$userService = new UserService($user, $this->getParameter('content_dir'));
+		$userService = new UserService($user, $contentDir);
 
 		if ($request->isMethod('POST')) {
 			$userService->saveUserPageContent($request->request->get("userpage"));
@@ -182,14 +182,14 @@ class UserController extends Controller {
 		]);
 	}
 
-	public function editAction($username) {
+	public function editAction(string $stylePath, $username) {
 		$this->responseAge = 0;
 
 		if ($this->getUser()->getUsername() != $username) {
 			throw $this->createAccessDeniedException();
 		}
 
-		$styleUrl = $this->container->getParameter('style_path') . 'skin=SKIN&menu=NAV';
+		$styleUrl = $stylePath . 'skin=SKIN&menu=NAV';
 		return $this->legacyPage('Settings', [
 			'inline_js' => "
 				function changeStyleSheet(skin, nav) {
@@ -201,16 +201,16 @@ class UserController extends Controller {
 		]);
 	}
 
-	public function stylesheetAction() {
+	public function stylesheetAction(string $stylePath) {
 		return $this->render('User/stylesheet.html.twig', [
-			'stylesheet' => $this->getStylesheet(),
+			'stylesheet' => $this->getStylesheet($stylePath),
 			'extra_stylesheets' => $this->getUser()->getExtraStylesheets(),
 			'extra_javascripts' => $this->getUser()->getExtraJavascripts(),
 		]);
 	}
 
-	private function getStylesheet() {
-		$url = $this->container->getParameter('style_path');
+	private function getStylesheet(string $stylePath) {
+		$url = $stylePath;
 		if ( ! $url) {
 			return false;
 		}

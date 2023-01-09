@@ -167,9 +167,7 @@ abstract class Controller extends AbstractController {
 	}
 
 	// TODO refactor: move to separate class
-	protected function getMirrorServer() {
-		$mirrorSites = $this->container->getParameter('mirror_sites');
-
+	protected function getMirrorServer(array $mirrorSites) {
 		if ( empty($mirrorSites) ) {
 			return false;
 		}
