@@ -44,23 +44,11 @@ class Setup {
 
 		self::$config = $container;
 
-		self::defineConstants();
+		self::defineDbTableConsts();
 
 		ini_set('date.timezone', self::setting('default_timezone'));
 
 		self::$setupDone = true;
-	}
-
-	public static function defineConstants() {
-		define('BASEDIR', __DIR__ . '/../../web'); // TODO remove
-
-		define('SESSION_NAME', 'mls');
-
-		self::defineDbTableConsts();
-		define('ADMIN', self::setting('admin'));
-		define('ADMIN_EMAIL', self::setting('admin_email'));
-		define('SITENAME', self::setting('sitename'));
-		define('SITE_EMAIL', self::setting('site_email'));
 	}
 
 	/**
@@ -113,15 +101,11 @@ class Setup {
 	private static function defineDbTableConsts() {
 		define('DBT_AUTHOR_OF', 'text_author');
 		define('DBT_BOOK', 'book');
-		define('DBT_BOOK_AUTHOR', 'book_author');
-		define('DBT_BOOK_TEXT', 'book_text');
 		define('DBT_COMMENT', 'text_comment');
 		define('DBT_DL_CACHE', 'download_cache');
 		define('DBT_DL_CACHE_TEXT', 'download_cache_text');
 		define('DBT_EDIT_HISTORY', 'text_revision');
-		define('DBT_HEADER', 'header');
 		define('DBT_LABEL', 'label');
-		define('DBT_LICENSE', 'license');
 		define('DBT_PERSON', 'person');
 		define('DBT_QUESTION', 'question');
 		define('DBT_READER_OF', 'user_text_read');
@@ -133,7 +117,6 @@ class Setup {
 		define('DBT_TRANSLATOR_OF', 'text_translator');
 		define('DBT_USER', 'user');
 		define('DBT_USER_TEXT', 'user_text_contrib');
-		define('DBT_WORK', 'work_entry');
 		define('DBT_WORK_MULTI', 'work_contrib');
 	}
 

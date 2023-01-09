@@ -130,7 +130,6 @@ abstract class Page {
 	 */
 	public function getFullContent() {
 		$this->messages = empty($this->messages) ? '' : "<div id='messages'>\n$this->messages\n</div>";
-		$this->templates['{SITENAME}'] = $this->sitename;
 		return strtr($this->messages . $this->content, $this->templates);
 	}
 
