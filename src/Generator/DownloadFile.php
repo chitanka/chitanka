@@ -304,7 +304,7 @@ class DownloadFile {
 			}
 		}
 
-		$file = $this->addFileEntry(__DIR__ . '/../../web/images/logo/logo_transparent.png', "$imagesDir/chitanka-logo");
+		$file = $this->addFileEntry(__DIR__ . '/../../public/images/logo/logo_transparent.png', "$imagesDir/chitanka-logo");
 		$epubFile->addFile('logo-image', $file);
 	}
 

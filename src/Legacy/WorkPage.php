@@ -117,7 +117,7 @@ class WorkPage extends Page {
 		$this->title = 'Работно ателие';
 
 		$this->tmpDir = 'todo';
-		$this->absTmpDir = $this->parameters['kernel.project_dir'] . "/web/{$this->tmpDir}";
+		$this->absTmpDir = $this->parameters['kernel.project_dir'] . "/public/{$this->tmpDir}";
 
 		$this->subaction = $this->request->value( $this->FF_SUBACTION, '', 1 );
 

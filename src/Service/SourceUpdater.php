@@ -30,7 +30,7 @@ class SourceUpdater {
 	 * @return string
 	 */
 	private function frontControllerName() {
-		return "$this->rootDir/web/index.php";
+		return "$this->rootDir/public/index.php";
 	}
 
 	private function lockMethodCall() {

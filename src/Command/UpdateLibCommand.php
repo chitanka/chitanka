@@ -35,7 +35,7 @@ class UpdateLibCommand extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$saveFiles = $input->getOption('save') === true;
 		$dumpSql = $input->getOption('dump-sql') === true;
-		$contentDir = $this->parameters['kernel.project_dir'].'/web/content';
+		$contentDir = $this->parameters['kernel.project_dir'].'/public/content';
 		$importer = new ContentImporter($this->getEntityManager(), $contentDir, $saveFiles, $this->olddb());
 		$queries = $this->conquerTheWorld($importer, $input->getArgument('input'));
 

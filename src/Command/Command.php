@@ -115,7 +115,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command {
 	}
 
 	public function webDir($file = null) {
-		return realpath(__DIR__ . '/../../web' . ($file ? "/$file" : ''));
+		return realpath(__DIR__ . '/../../public' . ($file ? "/$file" : ''));
 	}
 
 	public function contentDir($file = null) {

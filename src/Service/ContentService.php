@@ -11,7 +11,7 @@ class ContentService {
 	public static $bibliomanBookJsonUrlTemplate = 'https://biblioman.chitanka.info/books/ID.json';
 	public static $clearBookCoverCacheUrl = 'https://assets.chitanka.info/cc_thumb.php';
 	public static $bookCoverExtension = 'jpg';
-	public static $internalContentPath = __DIR__ .'/../../web/content';
+	public static $internalContentPath = __DIR__ .'/../../public/content';
 	public static $webContentPath = 'content/';
 	public static $webThumbPath = 'thumb/';
 

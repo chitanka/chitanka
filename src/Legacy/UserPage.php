@@ -32,7 +32,7 @@ class UserPage extends Page {
 	public function __construct($fields) {
 		parent::__construct($fields);
 
-		$this->contentDir = $this->parameters['kernel.project_dir'] . '/web/content/user';
+		$this->contentDir = $this->parameters['kernel.project_dir'] . '/public/content/user';
 
 		$this->username = $this->request->value('username', null, 1);
 		$this->userpage = $this->request->value('userpage');
