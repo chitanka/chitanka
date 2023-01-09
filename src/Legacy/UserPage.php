@@ -32,7 +32,7 @@ class UserPage extends Page {
 	public function __construct($fields) {
 		parent::__construct($fields);
 
-		$this->contentDir = $this->container->getParameter('kernel.project_dir') . '/web/content/user';
+		$this->contentDir = $this->parameters['kernel.project_dir'] . '/web/content/user';
 
 		$this->username = $this->request->value('username', null, 1);
 		$this->userpage = $this->request->value('userpage');
@@ -197,7 +197,7 @@ EOS;
 	}
 
 	protected function makeCurrentContribList() {
-		$listUrl = sprintf('%s/workroom/list.htmlx?user=%s', $this->container->getParameter('workroom_url'), $this->username);
+		$listUrl = sprintf('%s/workroom/list.htmlx?user=%s', $this->parameters['workroom_url'], $this->username);
 		$response = $this->container->get('buzz')->get($listUrl);
 		if ( !$response->isOk() || strpos($response->getContent(), 'emptylist') !== false ) {
 			return '';

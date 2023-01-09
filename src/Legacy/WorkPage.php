@@ -117,7 +117,7 @@ class WorkPage extends Page {
 		$this->title = 'Работно ателие';
 
 		$this->tmpDir = 'todo';
-		$this->absTmpDir = $this->container->getParameter('kernel.project_dir') . "/web/{$this->tmpDir}";
+		$this->absTmpDir = $this->parameters['kernel.project_dir'] . "/web/{$this->tmpDir}";
 
 		$this->subaction = $this->request->value( $this->FF_SUBACTION, '', 1 );
 
@@ -352,7 +352,7 @@ class WorkPage extends Page {
 		}
 
 		// copy local file if there is a remote workroom
-		if ( $remote = $this->container->getParameter('workroom_remote') ) {
+		if ( $remote = $this->parameters['workroom_remote'] ) {
 			$com = sprintf('scp "%s" %s', $dest, $remote);
 			shell_exec($com);
 		}
@@ -416,7 +416,7 @@ HTML;
 
 	private function makeLists() {
 		$o = $this->controller->renderViewForLegacyCode('Workroom/intro.html.twig', [
-				'banYearThreshold' => $this->container->getParameter('workroom_ban_year_threshold'),
+				'banYearThreshold' => $this->parameters['workroom_ban_year_threshold'],
 			])
 			. $this->controller->renderViewForLegacyCode('Workroom/searchForm.html.twig', [
 				'query' => $this->searchQuery,
@@ -1082,7 +1082,7 @@ $editLink
 Моята библиотека
 EOS;
 		$message = \Swift_Message::newInstance("Моята библиотека: Нов коректор на ваш текст");
-		$message->setFrom($this->container->getParameter('work_email'), 'Моята библиотека');
+		$message->setFrom($this->parameters['work_email'], 'Моята библиотека');
 		$message->setTo($entry->getUser()->getEmail(), $entry->getUser()->getUsername());
 		$message->setBody($messageBody);
 
@@ -1094,7 +1094,7 @@ EOS;
 		if (preg_match('|https?://|', $file)) {
 			return $file;
 		}
-		$root = $this->container->getParameter('workroom_root');
+		$root = $this->parameters['workroom_root'];
 		return "$root/{$this->tmpDir}/{$file}";
 	}
 

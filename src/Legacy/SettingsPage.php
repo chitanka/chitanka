@@ -187,13 +187,13 @@ EOS;
 	}
 
 	private function makeSkinInput() {
-		return $this->out->selectBox('skin', '', $this->container->getParameter('skins'),
+		return $this->out->selectBox('skin', '', $this->parameters['skins'],
 			$this->opts['skin'], null,
 			['class' => 'form-control', 'onchange' => 'changeStyleSheet(this.value, this.form.nav.value)']);
 	}
 
 	private function makeNavPosInput() {
-		return $this->out->selectBox('nav', '', $this->container->getParameter('navpos'),
+		return $this->out->selectBox('nav', '', $this->parameters['navpos'],
 			$this->opts['nav'], null,
 			['class' => 'form-control', 'onchange' => 'changeStyleSheet(this.form.skin.value, this.value)']);
 	}
@@ -201,7 +201,7 @@ EOS;
 	private function makeCustomInput() {
 		$inputs = '';
 		$inputs .= '<div class="form-group">';
-		$cssFiles = $this->container->getParameter('user_css');
+		$cssFiles = $this->parameters['user_css'];
 		foreach ($cssFiles as $file => $title) {
 			$inputs .= sprintf(<<<HTML
 		<div class="col-sm-offset-4 col-sm-8">
@@ -218,7 +218,7 @@ HTML
 				(isset($this->opts['css'][$file]) ? 'checked="checked"' : ''),
 				$title);
 		}
-		$jsFiles = $this->container->getParameter('user_js');
+		$jsFiles = $this->parameters['user_js'];
 		foreach ($jsFiles as $file => $title) {
 			$inputs .= sprintf(<<<HTML
 		<div class="col-sm-offset-4 col-sm-8">

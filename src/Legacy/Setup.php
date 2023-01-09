@@ -11,8 +11,10 @@ class Setup {
 		/** @var mlDatabase */   $db,
 		/** @var OutputMaker */  $outputMaker;
 	private static $dbal;
+	private static $parameters = [];
 
-	public static function getPage($name, $controller, $container, array $repositories, $execute = true) {
+	public static function getPage($name, $controller, $container, array $repositories, array $parameters = [], $execute = true) {
+		self::$parameters = $parameters;
 		self::doSetup($container);
 
 		$class = 'App\Legacy\\'.$name.'Page';
@@ -25,6 +27,7 @@ class Setup {
 			'sfrequest'  => $container->get('request_stack')->getMasterRequest(),
 			'user'       => $controller->getUser(),
 			'logDir' => __DIR__ . '/../../var/log',
+			'parameters' => $parameters,
 		] + $repositories);
 
 		if ($execute) {
@@ -64,7 +67,7 @@ class Setup {
 	 * @param string $settingName
 	 */
 	public static function setting($settingName) {
-		return self::$config->getParameter($settingName);
+		return self::$parameters[$settingName];
 	}
 
 	public static function request() {

@@ -34,7 +34,7 @@ abstract class Controller extends AbstractController {
 	 * @return Response
 	 */
 	protected function legacyPage($pageName, array $params = [], array $repositories = []) {
-		$page = Setup::getPage($pageName, $this, $this->container, $repositories);
+		$page = Setup::getPage($pageName, $this, $this->container, $repositories, $this->container->get('parameter_bag')->all());
 		if ($page->redirect) {
 			return $this->urlRedirect($page->redirect);
 		}
@@ -65,7 +65,7 @@ abstract class Controller extends AbstractController {
 	 * @return string
 	 */
 	public function renderLayoutComponent($wikiPage, $fallbackTemplate) {
-		$wikiPagePath = $this->container->getParameter('content_dir')."/wiki/special/$wikiPage.html";
+		$wikiPagePath = $this->container->get('parameter_bag')->get('content_dir')."/wiki/special/$wikiPage.html";
 		if (file_exists($wikiPagePath)) {
 			list(, $content) = explode("\n\n", file_get_contents($wikiPagePath), 2);
 			return $content;
@@ -98,7 +98,7 @@ abstract class Controller extends AbstractController {
 	 * @return Response
 	 */
 	protected function setCacheStatusByResponse(Response $response) {
-		if ($this->responseAge && $this->container->getParameter('use_http_cache')) {
+		if ($this->responseAge && $this->container->get('parameter_bag')->get('use_http_cache')) {
 			$response->setSharedMaxAge($this->responseAge);
 		}
 		return $response;
@@ -204,12 +204,12 @@ abstract class Controller extends AbstractController {
 	}
 
 	public function initInternalContentPath() {
-		ContentService::setInternalContentPath($this->container->getParameter('content_dir'));
+		ContentService::setInternalContentPath($this->container->get('parameter_bag')->get('content_dir'));
 	}
 
 	public function configureExtraDownloadFormats() {
 		if (class_exists(BaseWork::class, false)) {
-			BaseWork::$EXTRA_FORMATS = $this->container->getParameter('converter_download')['publicized_formats'] ?: [];
+			BaseWork::$EXTRA_FORMATS = $this->container->get('parameter_bag')->get('converter_download')['publicized_formats'] ?: [];
 		}
 	}
 

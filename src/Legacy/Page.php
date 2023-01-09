@@ -66,6 +66,7 @@ abstract class Page {
 	private $captchaQuestionT;
 
 	/** @var UserRepository */protected $userRepository;
+	/** @var array */protected $parameters;
 
 	public function __construct(array $fields) {
 		foreach ($fields as $f => $v) {
@@ -73,7 +74,7 @@ abstract class Page {
 		}
 
 		$this->root = '/';
-		$this->sitename = $this->container->getParameter('sitename');
+		$this->sitename = $this->parameters['sitename'];
 		$this->messages = $this->content = '';
 		$this->title = $this->sitename;
 	}
