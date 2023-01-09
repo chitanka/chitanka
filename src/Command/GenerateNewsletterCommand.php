@@ -1,10 +1,20 @@
 <?php namespace App\Command;
 
 use App\Entity\TextRevision;
+use App\Persistence\EntityManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Twig\Environment as Twig;
 
 class GenerateNewsletterCommand extends Command {
+
+	/** @var Twig */private $twig;
+
+	public function __construct(EntityManager $em, ParameterBagInterface $parameters, Twig $twig) {
+		parent::__construct($em, $parameters);
+		$this->twig = $twig;
+	}
 
 	public function getName() {
 		return 'lib:generate-newsletter';
@@ -26,19 +36,18 @@ class GenerateNewsletterCommand extends Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$date = new \DateTime($input->getArgument('date'));
-		$newsletter = $this->generateNewsletter($date, $this->getContainer()->get('twig'));
+		$newsletter = $this->generateNewsletter($date);
 		$output->write($newsletter);
 	}
 
 	/**
 	 * @param \DateTime $date
-	 * @param \Twig\Environment $twig
 	 * @return string
 	 */
-	private function generateNewsletter(\DateTime $date, \Twig\Environment $twig) {
+	private function generateNewsletter(\DateTime $date) {
 		$booksByCategory = $this->getBooksByCategory($date);
 		ksort($booksByCategory);
-		return $twig->render('Email/newsletter.html.twig', [
+		return $this->twig->render('Email/newsletter.html.twig', [
 			'date' => $date,
 			'booksByCategory' => $booksByCategory,
 			'texts' => $this->getTexts($date),
