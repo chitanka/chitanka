@@ -27,8 +27,8 @@ class CommentPage extends Page {
 		$includeCommentForm   = true,
 		$includeViewTypeLinks = true;
 
-	/** @var TextRepository */private $textRepository;
-	/** @var TextCommentRepository */private $textCommentRepository;
+	/** @var TextRepository */protected $textRepository;
+	/** @var TextCommentRepository */protected $textCommentRepository;
 
 	public function __construct($fields) {
 		parent::__construct($fields);
