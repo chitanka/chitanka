@@ -45,7 +45,7 @@ abstract class Controller extends AbstractController {
 			'navlinks' => $this->renderLayoutComponent('sidebar-menu', 'navlinks.html.twig'),
 			'footer_links' => $this->renderLayoutComponent('footer-menu', 'footer_links.html.twig'),
 			'current_route' => $request->attributes->get('_route'),
-			'environment' => $this->container->get('kernel')->getEnvironment(),
+			'environment' => $request->server->get('APP_ENV'),
 			'ajax' => $request->isXmlHttpRequest(),
 			'_controller' => ':legacy',
 		];
