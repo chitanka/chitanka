@@ -48,7 +48,7 @@ abstract class Controller extends AbstractController {
 			'current_route' => $request->attributes->get('_route'),
 			'environment' => $request->server->get('APP_ENV'),
 			'ajax' => $request->isXmlHttpRequest(),
-			'_controller' => ':legacy',
+			'_controller' => 'legacy',
 		];
 		if ($page->inlineJs) {
 			$params['inline_js'] = $page->inlineJs;
