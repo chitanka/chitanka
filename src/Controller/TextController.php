@@ -25,6 +25,7 @@ use App\Persistence\UserTextReadRepository;
 use App\Service\SearchService;
 use App\Service\TextBookmarkService;
 use App\Service\TextLabelService;
+use App\Service\WikiReader;
 use App\Util\Stringy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
@@ -151,7 +152,7 @@ class TextController extends Controller {
 		];
 	}
 
-	public function showAction(TextCombinationRepository $textCombinationRepository, Request $request, $id, $_format, array $mirrorSites, array $mirrorSitesForConverter, array $converterDownload) {
+	public function showAction(TextCombinationRepository $textCombinationRepository, WikiReader $wikiReader, Request $request, $id, $_format, array $mirrorSites, array $mirrorSitesForConverter, array $converterDownload) {
 		if ($this->canRedirectToMirror($_format) && ($mirrorServer = $this->getMirrorServer($mirrorSites))) {
 			return $this->redirectToMirror($mirrorServer, $id, $_format, $request->get('filename'), $request->getScheme());
 		}
@@ -164,7 +165,7 @@ class TextController extends Controller {
 				if ($this->isMultiId($id)) {
 					return $this->showMultiHtml($textCombinationRepository, $this->explodeMultiId($id));
 				}
-				return $this->showHtml($this->findText($id, true));
+				return $this->showHtml($wikiReader, $this->findText($id, true));
 			case 'epub':
 			case 'fb2.zip':
 			case 'txt.zip':
@@ -264,7 +265,7 @@ class TextController extends Controller {
 		return (new DownloadUrlGenerator())->generateConverterUrl($epubUrl, $targetFormat, $mirrors);
 	}
 
-	public function showPartAction(TextCombinationRepository $textCombinationRepository, Request $request, $id, $part, $_format) {
+	public function showPartAction(TextCombinationRepository $textCombinationRepository, WikiReader $wikiReader, Request $request, $id, $part, $_format) {
 		if ($this->isMultiId($id)) {
 			return $this->showMultiHtml($textCombinationRepository, $this->explodeMultiId($id), $part);
 		}
@@ -278,10 +279,10 @@ class TextController extends Controller {
 				'_template' => 'Text/show.htmlx.twig',
 			];
 		}
-		return $this->showHtml($text, $part);
+		return $this->showHtml($wikiReader, $text, $part);
 	}
 
-	public function showHtml(Text $text, $part = 1) {
+	public function showHtml(WikiReader $wikiReader, Text $text, $part = 1) {
 		$nextHeader = $text->getNextHeaderByNr($part);
 		$nextPart = $nextHeader ? $nextHeader->getNr() : 0;
 		$similarTexts = [];
@@ -300,7 +301,7 @@ class TextController extends Controller {
 			'_template' => 'Text/show.html.twig',
 		];
 		if ($text->getArticle()) {
-			$vars['wikiPage'] = $this->container->get('wiki_reader')->fetchPage($text->getArticle());
+			$vars['wikiPage'] = $wikiReader->fetchPage($text->getArticle());
 		}
 		return $vars;
 	}

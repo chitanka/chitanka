@@ -9,6 +9,7 @@ use App\Persistence\TextRepository;
 use App\Persistence\UserRepository;
 use App\Service\SearchService;
 use App\Service\Translation;
+use App\Service\WikiReader;
 use App\Util\Stringy;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -80,7 +81,7 @@ class PersonController extends Controller {
 		];
 	}
 
-	public function showAction(TextRepository $textRepository, BookRepository $bookRepository, $slug, $_format, bool $allowRemoteWikiArticle) {
+	public function showAction(TextRepository $textRepository, BookRepository $bookRepository, $slug, $_format, bool $allowRemoteWikiArticle, WikiReader $wikiReader) {
 		$person = $this->tryToFindPerson($slug);
 		if ( ! $person instanceof Person) {
 			return $person;
@@ -88,7 +89,7 @@ class PersonController extends Controller {
 
 		return $this->getShowTemplateParams($textRepository, $bookRepository, $person, $_format) + [
 			'person' => $person,
-		] + $this->getShowTemplateInfoParams($person, $allowRemoteWikiArticle);
+		] + $this->getShowTemplateInfoParams($person, $allowRemoteWikiArticle, $wikiReader);
 	}
 
 	public function searchAction(SearchService $searchService, Request $request, $_format) {
@@ -184,12 +185,12 @@ class PersonController extends Controller {
 		return $this->getPersonRepository()->findByQuery($query);
 	}
 
-	private function getShowTemplateInfoParams(Person $person, bool $allowRemoteWikiArticle) {
+	private function getShowTemplateInfoParams(Person $person, bool $allowRemoteWikiArticle, WikiReader $wikiReader) {
 		if ($person->getInfo() == '' || !$allowRemoteWikiArticle) {
 			return [];
 		}
 		return [
-			'wikiPage' => $this->container->get('wiki_reader')->fetchPage($person->getInfo()),
+			'wikiPage' => $wikiReader->fetchPage($person->getInfo()),
 		];
 	}
 
