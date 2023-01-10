@@ -40,7 +40,7 @@ class EpubFile {
 		$this->creditsPageFileName = 'credits.xhtml';
 
 		$this->imagesDir = 'images';
-		$this->templateDir = __DIR__ . '/../Resources/templates/epub';
+		$this->templateDir = __DIR__ . '/../../templates/converter/epub';
 
 		$this->addFile('ncx', $this->tocFileName, 'application/x-dtbncx+xml');
 		$this->addFile('stylesheet', $this->cssFileName, 'text/css');
