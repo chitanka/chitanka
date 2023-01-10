@@ -43,7 +43,7 @@
 {% macro text(text, options) %}
 <a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}" class="textlink {{ text.headlevel == 0 ? 'one-part-text' : '' }}" itemprop="name" data-edit="{{ path('admin_text_edit', {'id': text.id}) }}"
 	title="{{ text.note }}"><i>{{ options.title is defined ? options.title : text.title }}</i></a>
-	{% if not text.lang.is(default_content_language) %}
+	{% if text.lang is defined and not text.lang.is(default_content_language) %}
 		<span class="badge badge-info" title="{{ text.lang }}">{{ text.lang.code }}</span>
 	{% endif %}
 {% endmacro %}
