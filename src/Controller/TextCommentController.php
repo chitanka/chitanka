@@ -29,7 +29,7 @@ class TextCommentController extends Controller {
 
 		return $this->legacyPage('Comment', [
 			'text' => $text,
-			'_controller' => 'TextComment:text_comments',
+			'_controller' => 'TextComment/text_comments',
 		], [
 			'textRepository' => $textRepository,
 			'textCommentRepository' => $textCommentRepository,

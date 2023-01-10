@@ -43,7 +43,7 @@ class WorkroomController extends Controller {
 		$_REQUEST['page'] = $page;
 
 		return $this->legacyWorkPage([
-			'_controller' => 'Workroom:index',
+			'_controller' => 'Workroom/index',
 		]);
 	}
 
@@ -76,7 +76,7 @@ class WorkroomController extends Controller {
 		$_REQUEST['status'] = 'edit';
 		return $this->legacyWorkPage([
 			'entry' => $entry,
-			'_controller' => 'Workroom:show',
+			'_controller' => 'Workroom/show',
 		]);
 	}
 	public function updateAction() {
