@@ -1,7 +1,7 @@
 <?php
 require __DIR__.'/../vendor/autoload.php';
 
-$kernel = new AppKernel('prod', false);
+$kernel = new App\Kernel('prod', false);
 $kernel->boot();
 $container = $kernel->getContainer();/* @var $container \Symfony\Component\DependencyInjection\Container */
 
