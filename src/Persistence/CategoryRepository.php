@@ -9,7 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class CategoryRepository extends EntityRepository {
 
 	public function __construct(ManagerRegistry $registry) {
-		parent::__construct($registry, CategoryRepository::class);
+		parent::__construct($registry, Category::class);
 	}
 
 	/**
