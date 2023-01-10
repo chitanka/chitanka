@@ -1,16 +1,10 @@
 <?php namespace App\Service;
 
 use App\Legacy\CacheManager;
-use Buzz\Browser;
 
 class MediawikiClient {
 
-	private $browser;
 	private $userAgentString = 'Mylib (http://chitanka.info)';
-
-	public function __construct(Browser $browser) {
-		$this->browser = $browser;
-	}
 
 	/**
 	 * @param string $url
@@ -26,10 +20,13 @@ class MediawikiClient {
 		}
 
 		try {
-			/* @var $response \Buzz\Message\Response */
-			$response = $this->browser->get("{$url}?action=render", ["User-Agent: {$this->userAgentString}"]);
-			if ($response->isOk()) {
-				$content = $this->processContent($response->getContent(), $url);
+			$response = file_get_contents("{$url}?action=render", false, stream_context_create([
+				'http' => [
+					'user_agent' => $this->userAgentString,
+				],
+			]));
+			if ($response) {
+				$content = $this->processContent($response, $url);
 				return CacheManager::setCache($action, $id, $content);
 			}
 		} catch (\RuntimeException $e) {
