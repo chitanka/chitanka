@@ -198,12 +198,12 @@ EOS;
 
 	protected function makeCurrentContribList() {
 		$listUrl = sprintf('%s/workroom/list.htmlx?user=%s', $this->parameters['workroom_url'], $this->username);
-		$response = $this->container->get('buzz')->get($listUrl);
-		if ( !$response->isOk() || strpos($response->getContent(), 'emptylist') !== false ) {
+		$response = file_get_contents($listUrl);
+		if ( empty($response) || strpos($response, 'emptylist') !== false ) {
 			return '';
 		}
 
-		return '<h2>Подготвяни текстове</h2>'. str_replace('list.htmlx', 'list.html', $response->getContent());
+		return '<h2>Подготвяни текстове</h2>'. str_replace('list.htmlx', 'list.html', $response);
 	}
 
 	protected function getContribCount() {
