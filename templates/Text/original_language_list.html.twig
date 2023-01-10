@@ -7,7 +7,7 @@
 	{% if language.nrOfTranslatedTexts > 0 %}
 	<li>
 		<a href="{{ path('texts_by_original_language', {'language': language.code}) }}" data-edit="{{ path('admin_language_edit', {'id': language.code}) }}">{{ language }}</a>
-		{{ helper.printNrOfItems(language.nrOfTranslatedTexts, 'tooltip.nr-of-texts-from-language'|transchoice(language.nrOfTranslatedTexts, {'%language%': language.name})) }}
+		{{ helper.printNrOfItems(language.nrOfTranslatedTexts, 'tooltip.nr-of-texts-from-language'|trans({'%count%': language.nrOfTranslatedTexts, '%language%': language.name})) }}
 	</li>
 	{% endif %}
 {% endfor %}

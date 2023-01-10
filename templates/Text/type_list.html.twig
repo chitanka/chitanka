@@ -7,7 +7,7 @@
 	{% if type.nrOfTexts > 0 %}
 	<li>
 		<a href="{{ path('texts_by_type', {'type': type.code}) }}" data-edit="{{ path('admin_text_type_edit', {'id': type.code}) }}">{{ type }}</a>
-		{{ helper.printNrOfItems(type.nrOfTexts, 'tooltip.nr-of-texts-with-type'|transchoice(type.nrOfTexts, {'%type%': type.name})) }}
+		{{ helper.printNrOfItems(type.nrOfTexts, 'tooltip.nr-of-texts-with-type'|trans({'%count%': type.nrOfTexts, '%type%': type.name})) }}
 		{{ helper.printInfoTip(type.description, isExpanded) }}
 	</li>
 	{% endif %}

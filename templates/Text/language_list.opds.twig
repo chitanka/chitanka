@@ -3,6 +3,6 @@
 		<title>{{ language }}</title>
 		<id>{{ helper.urn('texts_by_language', [language.code]) }}</id>
 		{{ helper.link(helper.path('texts_by_language', {'language': language.code})) }}
-		<content type="text">{{ 'tooltip.nr-of-texts-in-language'|transchoice(language.nrOfTexts, {'%language%': language.name}) }}</content>
+		<content type="text">{{ 'tooltip.nr-of-texts-in-language'|trans({'%count%': language.nrOfTexts, '%language%': language.name}) }}</content>
 	</entry>
 {% endfor %}

@@ -5,7 +5,7 @@
 	<li>
 		{% if category.nrOfBooks > 0 %}
 			<a href="{{ path('books_by_category', {'slug': category.slug}) }}" data-edit="{{ path('admin_category_edit', {'id': category.id}) }}">{{ category.name }}</a>
-			{{ helper.printNrOfItems(category.nrOfBooks, "tooltip.nr-of-books-with-category"|transchoice(category.nrOfBooks, {'%category%': category.name})) }}
+			{{ helper.printNrOfItems(category.nrOfBooks, "tooltip.nr-of-books-with-category"|trans({'%count%': category.nrOfBooks, '%category%': category.name})) }}
 		{% else %}
 			{{ category.name }}
 		{% endif %}

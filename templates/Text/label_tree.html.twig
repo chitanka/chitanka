@@ -5,7 +5,7 @@
 	<li>
 		{% if label.nrOfTexts > 0 %}
 			<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>
-			{{ helper.printNrOfItems(label.nrOfTexts, "tooltip.nr-of-texts-with-label"|transchoice(label.nrOfTexts, {'%label%': label.name})) }}
+			{{ helper.printNrOfItems(label.nrOfTexts, "tooltip.nr-of-texts-with-label"|trans({'%count%': label.nrOfTexts, '%label%': label.name})) }}
 		{% else %}
 			{{ label.name }}
 		{% endif %}
