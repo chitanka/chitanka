@@ -34,6 +34,7 @@ abstract class Controller extends AbstractController {
 	 * @return Response
 	 */
 	protected function legacyPage($pageName, array $params = [], array $repositories = []) {
+		$repositories['userRepository'] = $this->userRepository;
 		$page = Setup::getPage($pageName, $this, $this->container, $repositories, $this->container->get('parameter_bag')->all());
 		if ($page->redirect) {
 			return $this->urlRedirect($page->redirect);
