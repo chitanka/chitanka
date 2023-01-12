@@ -15,7 +15,7 @@ parameters:
     database_port: null
 
     # database file for sqlite
-    database_path: "%kernel.root_dir%/../web/content/chitanka.db"
+    database_path: "%kernel.project_dir%/public/content/chitanka.db"
 
     mailer_transport:  smtp
     mailer_host:       localhost
@@ -98,8 +98,8 @@ parameters:
     rocketchat.password: ~
     rocketchat.username: ~
 
-    mirror_sites: ~
-    mirror_sites_for_converter: ~
+    mirror_sites: []
+    mirror_sites_for_converter: []
 
     global_info_message: Това е огледало на <a href="http://chitanka.info">Моята библиотека</a>.
     analytics_snippet: ~
@@ -112,7 +112,7 @@ parameters:
     rsync.path: rsync
     rsync.url.content: rsync.chitanka.info::content
     rsync.url.src: rsync.chitanka.info::src
-    content_dir: %kernel.root_dir%/../web/content
+    content_dir: "%kernel.project_dir%/public/content"
     content_web_dir: content # not used at the moment
     content_urls:
         book: https://github.com/chitanka/content-book.git
