@@ -29,6 +29,7 @@ use App\Service\WikiReader;
 use App\Util\Stringy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -152,8 +153,9 @@ class TextController extends Controller {
 		];
 	}
 
-	public function showAction(TextCombinationRepository $textCombinationRepository, WikiReader $wikiReader, Request $request, $id, $_format, array $mirrorSites, array $mirrorSitesForConverter, array $converterDownload) {
-		if ($this->canRedirectToMirror($_format) && ($mirrorServer = $this->getMirrorServer($mirrorSites))) {
+	public function showAction(TextCombinationRepository $textCombinationRepository, WikiReader $wikiReader, Request $request, $id, $_format, ParameterBagInterface $parameterBag) {
+		$parameters = $parameterBag->all();
+		if ($this->canRedirectToMirror($_format) && ($mirrorServer = $this->getMirrorServer($parameters['mirror_sites']))) {
 			return $this->redirectToMirror($mirrorServer, $id, $_format, $request->get('filename'), $request->getScheme());
 		}
 		[$id] = explode('-', $id); // remove optional slug
@@ -193,12 +195,12 @@ class TextController extends Controller {
 				return ['text' => $this->findText($id, true)];
 		}
 
-		$converterFormatKey = "{$_format}_enabled";
-		if (isset($converterDownload[$converterFormatKey])) {
-			if ( ! $converterDownload[$converterFormatKey]) {
+		$converterFormatKey = "{$_format}_download_enabled";
+		if (isset($parameters[$converterFormatKey])) {
+			if ( ! $parameters[$converterFormatKey]) {
 				throw $this->createNotFoundException("Поддръжката на формата {$_format} не е включена.");
 			}
-			return $this->urlRedirect($this->generateConverterUrl($id, $_format, $mirrorSitesForConverter));
+			return $this->urlRedirect($this->generateConverterUrl($id, $_format, $parameters['mirror_sites_for_converter']));
 		}
 
 		throw $this->createNotFoundException("Неизвестен формат: $_format");

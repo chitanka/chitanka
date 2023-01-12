@@ -20,7 +20,7 @@ class EpubConverter {
 		$this->assertSupportedTargetFormat($targetFormat);
 		$this->assertEnabledTargetFormat($targetFormat);
 
-		$commandTemplate = $this->parameters["{$targetFormat}_command"];
+		$commandTemplate = $this->parameters["{$targetFormat}_converter_command"];
 		if (empty($commandTemplate)) {
 			throw new InvalidArgumentException("The target format '{$targetFormat}' does not have a shell converter command.");
 		}
@@ -99,14 +99,14 @@ class EpubConverter {
 	}
 
 	private function assertSupportedTargetFormat(string $targetFormat) {
-		$key = "{$targetFormat}_enabled";
+		$key = "{$targetFormat}_download_enabled";
 		if ( ! isset($this->parameters[$key])) {
 			throw new InvalidArgumentException("Unsupported target format: '{$targetFormat}'");
 		}
 	}
 
 	private function assertEnabledTargetFormat(string $targetFormat) {
-		$key = "{$targetFormat}_enabled";
+		$key = "{$targetFormat}_download_enabled";
 		if ( ! $this->parameters[$key]) {
 			throw new InvalidArgumentException("Target format is not enabled: '{$targetFormat}'");
 		}

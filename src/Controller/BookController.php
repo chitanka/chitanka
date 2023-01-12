@@ -13,6 +13,7 @@ use App\Service\ContentService;
 use App\Service\SearchService;
 use App\Util\Stringy;
 use Doctrine\ORM\NoResultException;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -123,7 +124,7 @@ class BookController extends Controller {
 		];
 	}
 
-	public function showAction(Request $request, $id, $_format, array $mirrorSites, array $mirrorSitesForConverter, array $converterDownload) {
+	public function showAction(Request $request, $id, $_format, ParameterBagInterface $parameterBag) {
 		[$id] = explode('-', $id); // remove optional slug
 		try {
 			$book = $this->bookRepository->get($id);
@@ -134,18 +135,19 @@ class BookController extends Controller {
 			return $this->redirectToRoute('book_show', ['id' => $book->getId()]);
 		}
 
+		$parameters = $parameterBag->all();
 		switch ($_format) {
 			case 'sfb.zip':
 			case 'txt.zip':
 			case 'fb2.zip':
 			case 'epub':
 				Setup::doSetup($this->container);
-				return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme(), $mirrorSites));
+				return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme(), $parameters['mirror_sites']));
 			case 'djvu':
-				return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme(), $mirrorSites));
+				return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme(), $parameters['mirror_sites']));
 			case 'pdf':
 				if ($book->hasCustomPdf()) {
-					return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme(), $mirrorSites));
+					return $this->urlRedirect($this->processDownload($book, $_format, $request->getScheme(), $parameters['mirror_sites']));
 				}
 				break;
 			case 'txt':
@@ -168,12 +170,12 @@ class BookController extends Controller {
 				return $this->urlRedirect('/'.ContentService::getCover($book->hasCover() ? $book->getId() : 0, $request->get('size', 300)));
 		}
 
-		$converterFormatKey = "{$_format}_enabled";
-		if (isset($converterDownload[$converterFormatKey])) {
-			if ( ! $converterDownload[$converterFormatKey]) {
+		$converterFormatKey = "{$_format}_download_enabled";
+		if (isset($parameters[$converterFormatKey])) {
+			if ( ! $parameters[$converterFormatKey]) {
 				throw $this->createNotFoundException("Няма поддръжка на формата {$_format}.");
 			}
-			return $this->urlRedirect($this->generateConverterUrl($book, $_format, $mirrorSitesForConverter));
+			return $this->urlRedirect($this->generateConverterUrl($book, $_format, $parameters['mirror_sites_for_converter']));
 		}
 
 		return [
