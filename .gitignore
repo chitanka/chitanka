@@ -1,4 +1,4 @@
-/app/config/parameters.yml
+/config/parameters.local.yaml
 /bin/
 !/bin/console
 !/bin/update
