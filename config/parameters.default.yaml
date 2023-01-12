@@ -153,3 +153,25 @@ parameters:
 
     liternews_feed_url: https://planet.chitanka.info/atom.php
     forum_feed_url: https://forum.chitanka.info/feed.php?c=LIMIT
+
+    # Облици
+    skins:
+        blackwhite: Белчо
+        purple:     Люляк
+        olive:      Маслинова нощ
+        neg:        Негортокал
+        orange:     Портокал
+        pink:       Роза
+        blue:       Синева
+        phoenix:    Феникс
+
+    # Позиция на навигационното меню
+    navpos:
+        right: Вдясно
+        left:  Вляво
+
+    user_css:
+        css/onecolumn_frontpage.css: Едноколонна начална страница
+        css/show_filesize.css: Видим размер на произведенията
+
+    user_js: []
