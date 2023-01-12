@@ -160,7 +160,7 @@ class TextController extends Controller {
 		}
 		[$id] = explode('-', $id); // remove optional slug
 		if ($_format === 'htmlx' || $request->isXmlHttpRequest()) {
-			return $this->showPartAction($textCombinationRepository, $request, $id, 1, $_format);
+			return $this->showPartAction($textCombinationRepository, $wikiReader, $request, $id, 1, $_format);
 		}
 		switch ($_format) {
 			case 'html':
