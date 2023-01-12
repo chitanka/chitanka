@@ -17,7 +17,7 @@ class UserController extends Controller {
 	const PAGE_COUNT_DEFAULT = 50;
 	const PAGE_COUNT_LIMIT = 500;
 
-	public function personalToolsAction(string $allowUserRegistration) {
+	public function personalToolsAction(bool $allowUserRegistration) {
 		if (!$allowUserRegistration) {
 			return $this->asText('');
 		}
