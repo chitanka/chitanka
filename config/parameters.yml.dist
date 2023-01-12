@@ -1,0 +1,15 @@
+# Indentation: 4 spaces, NO tabs
+# Comments start with #
+# Empty values are indicated with ~
+
+# These parameters can be imported into other config files
+# by enclosing the key with % (like %database_user%)
+parameters:
+    database_host:      localhost
+    database_name:      chitanka
+    database_user:      root
+    database_password:  ~
+    database_driver:    pdo_mysql
+    database_port:      ~
+
+    secret: ThisTokenIsNotSoSecretChangeIt
