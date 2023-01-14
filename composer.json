@@ -15,6 +15,7 @@
 		"ext-json": "*",
 		"ext-xsl": "*",
 		"ext-zip": "*",
+		"ext-zlib": "*",
 		"chitanka/rocket-chat-client": "*",
 		"chitanka/sfb-converter": "*",
 		"cypresslab/gitelephant": "*",

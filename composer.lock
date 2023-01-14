@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "861ba5e5b68ad2291dd3c5f064dc6f59",
+    "content-hash": "e37623443566b92555d2e2403d95d962",
     "packages": [
         {
             "name": "chitanka/rocket-chat-client",
@@ -10878,7 +10878,8 @@
         "ext-intl": "*",
         "ext-json": "*",
         "ext-xsl": "*",
-        "ext-zip": "*"
+        "ext-zip": "*",
+        "ext-zlib": "*"
     },
     "platform-dev": [],
     "platform-overrides": {
