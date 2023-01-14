@@ -1,5 +1,6 @@
 <?php namespace App\Form\Type;
 
+use App\Entity\Label;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -9,7 +10,7 @@ class LabelType extends AbstractType {
 			->add('slug')
 			->add('name')
 			->add('parent', 'entity', [
-				'class' => 'App:Label',
+				'class' => Label::class,
 				'query_builder' => function ($repo) {
 					return $repo->createQueryBuilder('l')->orderBy('l.name');
 				}

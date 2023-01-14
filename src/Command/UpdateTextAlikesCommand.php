@@ -19,7 +19,7 @@ class UpdateTextAlikesCommand extends Command {
 		$textService = new TextService($this->olddb());
 		$maxAlikesCount = 50;
 		$repo = $this->getEntityManager()->getTextRepository();
-		$dql = 'SELECT t FROM App:Text t WHERE t.id < 10';
+		$dql = 'SELECT t FROM App\Entity\Text t WHERE t.id < 10';
 		$iterableResult = $this->getEntityManager()->createQuery($dql)->iterate();
 		foreach ($iterableResult AS $row) {
 			$text = $row[0];

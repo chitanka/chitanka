@@ -20,7 +20,7 @@ class UpdateHeadersDbCommand extends Command {
 		return 'The <info>%command.name%</info> command updates the text headers in the database.';
 	}
 
-	protected function getOptionalArguments() {
+	protected function getRequiredArguments() {
 		return [
 			'texts' => 'Texts which headers should be updated (comma separated)',
 		];
@@ -47,7 +47,7 @@ class UpdateHeadersDbCommand extends Command {
 	 */
 	private function updateHeaders($texts, $dumpSql) {
 		$queries = [];
-		$dql = 'SELECT t FROM App:Text t WHERE t.headlevel > 0';
+		$dql = 'SELECT t FROM App\Entity\Text t WHERE t.headlevel > 0';
 		if ($texts) {
 			$dql .= " AND t.id IN ($texts)";
 		}

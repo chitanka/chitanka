@@ -1,5 +1,6 @@
 <?php namespace App\Form\Type;
 
+use App\Entity\Label;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -16,7 +17,7 @@ class TextLabelType extends AbstractType {
 				'mapped' => false,
 			])
 			->add('label', EntityType::class, [
-				'class' => 'App:Label',
+				'class' => Label::class,
 				'query_builder' => function (EntityRepository $repo) use ($options) {
 					return $repo->createQueryBuilder('l')
 						->where('l.group = ?1')->setParameter(1, $options['group'])

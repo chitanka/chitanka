@@ -59,7 +59,7 @@ class TextCombinationRepository extends EntityRepository {
 	}
 
 	private function constructEntityForData(array $data): TextCombination {
-		$texts = $this->_em->getRepository('App:Text')->findByIds(array_keys($data));
+		$texts = $this->_em->getRepository(Text::class)->findByIds(array_keys($data));
 		return new TextCombination($texts, $data);
 	}
 

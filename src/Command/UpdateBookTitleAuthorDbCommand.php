@@ -42,7 +42,7 @@ class UpdateBookTitleAuthorDbCommand extends Command {
 	 */
 	private function updateBookTitleAuthor($dumpSql) {
 		$queries = [];
-		$iterableResult = $this->em->createQuery('SELECT b FROM App:Book b WHERE b.titleAuthor IS NULL')->iterate();
+		$iterableResult = $this->em->createQuery('SELECT b FROM App\Entity\Book b WHERE b.titleAuthor IS NULL')->iterate();
 		foreach ($iterableResult AS $row) {
 			$book = $row[0];
 			if (count($book->getAuthors()) == 0) {

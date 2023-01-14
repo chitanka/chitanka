@@ -67,7 +67,7 @@ class BookRepository extends EntityRepository {
 	 * @return Book[]
 	 */
 	public function findByIsbn($isbn) {
-		$ids = $this->getEntityManager()->getRepository('App:BookIsbn')->getBookIdsByIsbn($isbn);
+		$ids = $this->getEntityManager()->getRepository(BookIsbn::class)->getBookIdsByIsbn($isbn);
 		return empty($ids) ? [] : $this->findByIds($ids);
 	}
 

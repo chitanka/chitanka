@@ -44,7 +44,7 @@ class VerifyPersonInfoLinksDbCommand extends Command {
 	}
 
 	private function getIdsForPersonsWithInvalidInfoLinks() {
-		$iterableResult = $this->getEntityManager()->createQuery('SELECT p FROM App:Person p WHERE p.info LIKE \'%:%\'')->iterate();
+		$iterableResult = $this->getEntityManager()->createQuery('SELECT p FROM App\Entity\Person p WHERE p.info LIKE \'%:%\'')->iterate();
 		$siteRepo = $this->getEntityManager()->getWikiSiteRepository();
 		$httpAgent = new HttpAgent;
 

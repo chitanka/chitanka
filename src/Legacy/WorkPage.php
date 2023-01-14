@@ -1,6 +1,7 @@
 <?php namespace App\Legacy;
 
 use App\Entity\User;
+use App\Entity\WorkContrib;
 use App\Entity\WorkEntry;
 use App\Persistence\NextIdRepository;
 use App\Persistence\TextRepository;
@@ -265,7 +266,7 @@ class WorkPage extends Page {
 
 		if ( $this->handleUpload() && !empty($this->uplfile) ) {
 			if (empty($this->entry->getId())) {
-				$id = $this->nextIdRepository->findNextId('App:WorkEntry')->getValue();
+				$id = $this->nextIdRepository->findNextId(WorkEntry::class)->getValue();
 				$this->uplfile = preg_replace('/^0-/', "$id-", $this->uplfile);
 			}
 			$uploadedFile = $this->makeTmpFilePath(self::rawurlencode($this->uplfile));
@@ -322,7 +323,7 @@ class WorkPage extends Page {
 			$this->workEntryRepository->__em__()->getConnection()->update(DBT_WORK_MULTI, $set, $key);
 			$msg = 'Данните бяха обновени.';
 		} else {
-			$set['id'] = $this->nextIdRepository->findNextId('App:WorkContrib')->getValue();
+			$set['id'] = $this->nextIdRepository->findNextId(WorkContrib::class)->getValue();
 			$this->workEntryRepository->__em__()->getConnection()->insert(DBT_WORK_MULTI, $set);
 			$msg = 'Току-що се включихте в подготовката на произведението.';
 			$this->informScanUser($this->entryId);
@@ -971,7 +972,7 @@ EOS;
 	}
 
 	private function makeContribList() {
-		$query = $this->workEntryRepository->__em__()->createQuery('SELECT ut AS contrib, u, count(u.id) AS nbContribs, sum(ut.size) AS size FROM App:UserTextContrib ut JOIN ut.user u GROUP BY u.id ORDER BY size desc');
+		$query = $this->workEntryRepository->__em__()->createQuery('SELECT ut AS contrib, u, count(u.id) AS nbContribs, sum(ut.size) AS size FROM App\Entity\UserTextContrib ut JOIN ut.user u GROUP BY u.id ORDER BY size desc');
 		return $this->controller->renderViewForLegacyCode('Workroom/contributorRanking.html.twig', [
 			'rows' => $query->getResult()
 		]);

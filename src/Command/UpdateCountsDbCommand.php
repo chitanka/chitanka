@@ -1,5 +1,7 @@
 <?php namespace App\Command;
 
+use App\Entity\Category;
+use App\Entity\Label;
 use App\Persistence\EntityManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -47,7 +49,7 @@ class UpdateCountsDbCommand extends Command {
 
 	private function updateTextCountByLabelsParents(OutputInterface $output, EntityManager $em) {
 		$output->writeln('Updating text counts by labels parents');
-		$this->updateCountByParents($em, 'App:Label', 'NrOfTexts');
+		$this->updateCountByParents($em, Label::class, 'NrOfTexts');
 	}
 
 	/**
@@ -86,7 +88,7 @@ class UpdateCountsDbCommand extends Command {
 
 	private function updateBookCountByCategoriesParents(OutputInterface $output, EntityManager $em) {
 		$output->writeln('Updating book counts by categories parents');
-		$this->updateCountByParents($em, 'App:Category', 'NrOfBooks');
+		$this->updateCountByParents($em, Category::class, 'NrOfBooks');
 	}
 
 	/**
