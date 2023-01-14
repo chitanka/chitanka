@@ -127,45 +127,23 @@ if (isCacheable()) {
 // DO NOT remove next line - it is used by the auto-update command
 //exitWithMessage('maintenance');
 
-use Symfony\Component\ClassLoader\ApcClassLoader;
+use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
+
+require dirname(__DIR__).'/vendor/autoload.php';
 
 // allow generated files (cache, logs) to be world-writable
 umask(0000);
 
-/**
- * @var Composer\Autoload\ClassLoader
- */
-$loader = require __DIR__.'/../app/autoload.php';
-include_once __DIR__.'/../var/bootstrap.php.cache';
+(new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
 
-try {
-	// Enable APC for autoloading to improve performance.
-	$apcLoader = new Symfony\Component\ClassLoader\ApcClassLoader('chitanka', $loader);
-	$loader->unregister();
-	$apcLoader->register(true);
-} catch (\RuntimeException $e) {
-	// APC not enabled
+if ($_SERVER['APP_DEBUG']) {
+	Debug::enable();
 }
 
-register_shutdown_function(function() {
-	$error = error_get_last();
-	if ($error['type'] == E_ERROR) {
-		if (preg_match('/parameters\.yml.+does not exist/', $error['message'])) {
-			header('Location: install.php');
-			exit;
-		}
-		ob_clean();
-		exitWithMessage('error');
-	}
-});
+$kernel = new App\Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 
-$kernel = new AppKernel('prod', false);
-$kernel->loadClassCache();
-//$kernel = new AppCache($kernel);
-
-// When using the HttpCache, you need to call the method in your front controller instead of relying on the configuration parameter
-//Request::enableHttpMethodParameterOverride();
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 if (isset($cache) && $response->isOk()) {
