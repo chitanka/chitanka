@@ -1,14 +1,24 @@
 <?php namespace App\Command;
 
+use App\Persistence\EntityManager;
 use App\Service\Mutex;
 use App\Service\SourceUpdater;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class AutoUpdateCommand extends Command {
 
 	private $output;
+	private $httpClient;
+
+	public function __construct(EntityManager $em, ParameterBagInterface $parameters, HttpClientInterface $httpClient) {
+		parent::__construct($em, $parameters);
+		$this->httpClient = $httpClient;
+	}
 
 	public function getName() {
 		return 'auto-update';
@@ -46,7 +56,7 @@ class AutoUpdateCommand extends Command {
 		$mutex = new Mutex($updateDir);
 		if ( ! $mutex->acquireLock(1800/*secs*/)) {
 			$echo("There is a lock file ($updateDir). If no other update is running, you can safely delete the lock file and run the update again.");
-			return;
+			return self::FAILURE;
 		}
 
 		$echo("Update started on ".date('Y-m-d').".");
@@ -71,6 +81,8 @@ class AutoUpdateCommand extends Command {
 		$mutex->releaseLock();
 
 		$echo('Done.');
+
+		return self::SUCCESS;
 	}
 
 	/**
@@ -98,23 +110,14 @@ class AutoUpdateCommand extends Command {
 
 	private function createSqlImporter() {
 		require_once $this->parameters['kernel.project_dir'].'/maintenance/sql_importer.lib.php';
-
-		$dbhost = $this->parameters['database_host'];
-		$dbname = $this->parameters['database_name'];
-		$dbport = $this->parameters['database_port'];
-		$dbuser = $this->parameters['database_user'];
-		$dbpassword = $this->parameters['database_password'];
-		$dsn = "mysql:host=$dbhost;dbname=$dbname";
-		if ($dbport) {
-			$dsn .= ";port=$dbport";
-		}
-		return new \SqlImporter($dsn, $dbuser, $dbpassword);
+		return new \SqlImporter($this->em->getConnection());
 	}
 
 	private function deleteRemovedNoticesIfDisallowed() {
 		if ($this->parameters['allow_removed_notice'] === false) {
-			$this->getEntityManager()->getTextRepository()->execute('UPDATE text SET removed_notice = NULL');
-			$this->getEntityManager()->getBookRepository()->execute('UPDATE book SET removed_notice = NULL');
+			$db = $this->em->getConnection();
+			$db->executeQuery('UPDATE text SET removed_notice = NULL');
+			$db->executeQuery('UPDATE book SET removed_notice = NULL');
 		}
 	}
 
@@ -159,7 +162,7 @@ class AutoUpdateCommand extends Command {
 
 	private function runCommand(string $commandName) {
 		$php = PHP_BINARY;
-		$binDir = realpath($this->getKernel()->getRootDir().'/../bin');
+		$binDir = realpath($this->getKernel()->getProjectDir().'/bin');
 		$environment = $this->getKernel()->getEnvironment();
 		$this->runShellCommand("\"$php\" \"$binDir/console\" $commandName --env=$environment");
 	}
@@ -202,19 +205,15 @@ class AutoUpdateCommand extends Command {
 		$this->output->writeln("Fetching update from $url");
 
 		try {
-			$response = $this->downloadUpdate($url, $updateDir);
-		} catch (\RuntimeException $e) {
+			$response = $this->downloadUpdate($url);
+			if ($response->getStatusCode() == 304) { // not modified, i.e. there are no updates
+				return null;
+			}
+			return $this->initZipFileFromContent($response->getContent());
+		} catch (\Throwable $e) {
 			error_log("fetch error by $url ({$e->getMessage()})");
 			return null;
 		}
-		if ($response->isRedirection()) { // most probably not modified - 304
-			return null;
-		}
-		if ( ! $response->isSuccessful()) {
-			error_log("fetch error by $url (code {$response->getStatusCode()})");
-			return null;
-		}
-		return $this->initZipFileFromContent($response->getContent());
 	}
 
 	/**
@@ -233,18 +232,8 @@ class AutoUpdateCommand extends Command {
 		return "$fetchUrl/$lastmod";
 	}
 
-	/**
-	 * @param string $url
-	 * @param string $updateDir
-	 * @return \Buzz\Message\Response
-	 */
-	private function downloadUpdate($url, $updateDir) {
-		$browser = $this->getContainer()->get('buzz');
-		$client = new \App\Service\ResumeCurlClient();
-		$client->setSaveDir($updateDir);
-		$browser->setClient($client);
-		$browser->addListener($client);
-		return $browser->get($url, ['User-Agent: Mylib (http://chitanka.info)']);
+	private function downloadUpdate(string $url): ResponseInterface {
+		return $this->httpClient->request('GET', $url);
 	}
 
 	/**

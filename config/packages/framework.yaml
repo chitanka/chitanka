@@ -17,6 +17,11 @@ framework:
     php_errors:
         log: true
 
+    http_client:
+        default_options:
+            headers:
+                'User-Agent': 'Mylib (http://chitanka.info)'
+
 when@test:
     framework:
         test: true

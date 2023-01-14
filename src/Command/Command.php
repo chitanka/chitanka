@@ -13,7 +13,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command {
 
 	public function __construct(EntityManager $em, ParameterBagInterface $parameters) {
 		$this->em = $em;
-		$this->parameters = $parameters;
+		$this->parameters = $parameters->all();
 		parent::__construct();
 	}
 

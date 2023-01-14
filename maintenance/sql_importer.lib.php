@@ -1,29 +1,32 @@
 <?php
 
+use Doctrine\DBAL\Connection;
+
 class SqlImporter {
 
-	private $db;
+	/** @var Connection */private $db;
 
-	public function __construct($dsn, $dbuser, $dbpassword) {
-		$this->db = new \PDO($dsn, $dbuser, $dbpassword);
+	public function __construct(Connection $db) {
+		$this->db = $db;
 	}
 
 	public function importFile($sqlFile) {
-		$this->db->exec('SET FOREIGN_KEY_CHECKS=0');
-		$this->db->exec('SET NAMES utf8');
+		$this->db->executeQuery('SET FOREIGN_KEY_CHECKS=0');
+		$this->db->executeQuery('SET NAMES utf8');
 
 		$sqlProc = new SqlFileProcessor($sqlFile);
 		$db = $this->db;
 		$sqlProc->walkThruQueries(function($query) use ($db) {
 			echo mb_substr($query, 0, 160), "\n";
-			$result = $db->exec($query);
-			if ($result === false) {
+			try {
+				$db->executeQuery($query);
+			} catch (\Throwable $e) {
 				error_log("Error by $query");
-				error_log(print_r($db->errorInfo(), true));
+				error_log($e->getMessage());
 			}
 		});
 
-		$this->db->exec('SET FOREIGN_KEY_CHECKS=1');
+		$this->db->executeQuery('SET FOREIGN_KEY_CHECKS=1');
 	}
 }
 
