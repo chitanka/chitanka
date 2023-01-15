@@ -32,7 +32,7 @@ class GitCommitContentCommand extends Command {
 	}
 
 	/** {@inheritdoc} */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$this->output = $output;
 
 		$description = $input->getArgument('desc');
@@ -41,6 +41,7 @@ class GitCommitContentCommand extends Command {
 		$this->commitChanges($this->webDir('content'), $this->createMessageFile($description, $fromTime));
 
 		$output->writeln('Done.');
+		return self::SUCCESS;
 	}
 
 	/**

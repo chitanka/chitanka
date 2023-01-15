@@ -32,7 +32,7 @@ class UpdateLibCommand extends Command {
 	}
 
 	/** {@inheritdoc} */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$saveFiles = $input->getOption('save') === true;
 		$dumpSql = $input->getOption('dump-sql') === true;
 		$contentDir = $this->parameters['kernel.project_dir'].'/public/content';
@@ -44,6 +44,7 @@ class UpdateLibCommand extends Command {
 		}
 
 		$output->writeln('/*Done.*/');
+		return self::SUCCESS;
 	}
 
 	private function conquerTheWorld(ContentImporter $importer, $inputDir) {

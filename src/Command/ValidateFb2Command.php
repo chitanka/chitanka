@@ -47,13 +47,14 @@ EOT;
 	}
 
 	/** {@inheritdoc} */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$this->output = $output;
 
 		list($textIds, $bookIds) = $this->parseInputIds($input->getArgument('id'));
 		$this->validator = new Fb2Validator();
 		$this->validateTexts($textIds);
 		$this->validateBooks($bookIds);
+		return self::SUCCESS;
 	}
 
 	private function parseInputIds($inputIds) {

@@ -15,7 +15,7 @@ class UpdateTextAlikesCommand extends Command {
 	}
 
 	/** @inheritdoc */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$textService = new TextService($this->olddb());
 		$maxAlikesCount = 50;
 		$repo = $this->getEntityManager()->getTextRepository();
@@ -30,5 +30,6 @@ class UpdateTextAlikesCommand extends Command {
 				$output->write('.');
 			}
 		}
+		return self::SUCCESS;
 	}
 }

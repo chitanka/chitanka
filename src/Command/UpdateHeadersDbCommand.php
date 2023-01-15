@@ -33,12 +33,13 @@ class UpdateHeadersDbCommand extends Command {
 	}
 
 	/** {@inheritdoc} */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$this->output = $output;
 		$texts = trim($input->getArgument('texts'));
 		$dumpSql = $input->getOption('dump-sql') === true;
 		$this->updateHeaders($texts, $dumpSql);
 		$output->writeln('/*Done.*/');
+		return self::SUCCESS;
 	}
 
 	/**

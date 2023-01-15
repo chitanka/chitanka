@@ -33,7 +33,7 @@ class NotifyUsersForOldWorkEntriesCommand extends Command {
 	}
 
 	/** {@inheritdoc} */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$repo = $this->getEntityManager()->getWorkEntryRepository();
 		$oldEntries = $repo->findOlderThan($this->getThresholdDate($input));
 		$skippedUsers = $this->getSkippedUsers($input);
@@ -47,6 +47,7 @@ class NotifyUsersForOldWorkEntriesCommand extends Command {
 		$repo->flush();
 
 		$output->writeln('/*Done.*/');
+		return self::SUCCESS;
 	}
 
 	private function sendNotification(WorkroomNotifier $notifier, WorkEntry $entry, $stalkInterval) {

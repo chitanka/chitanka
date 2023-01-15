@@ -16,10 +16,11 @@ class UpdateBookInfoFromBibliomanCommand extends Command {
 		];
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$book = $this->getEntityManager()->getBookRepository()->find($input->getArgument('id'));
 		$file = ContentService::getInternalContentFilePath('book-info', $book->getId());
 		file_put_contents($file, ContentService::generateBookInfoFromBiblioman($book->getBibliomanId()));
 		$output->writeln("Info written to $file");
+		return self::SUCCESS;
 	}
 }

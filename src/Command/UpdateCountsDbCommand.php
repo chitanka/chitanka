@@ -21,9 +21,10 @@ class UpdateCountsDbCommand extends Command {
 	}
 
 	/** {@inheritdoc} */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$this->updateCounts($output, $this->getEntityManager());
 		$output->writeln('Done.');
+		return self::SUCCESS;
 	}
 
 	private function updateCounts(OutputInterface $output, $em) {

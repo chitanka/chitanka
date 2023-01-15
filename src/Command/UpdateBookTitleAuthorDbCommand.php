@@ -30,11 +30,12 @@ class UpdateBookTitleAuthorDbCommand extends Command {
 	}
 
 	/** {@inheritdoc} */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$this->output = $output;
 		$this->dumpSql = $input->getOption('dump-sql') === true;
 		$this->updateBookTitleAuthor($this->dumpSql);
 		$output->writeln('/*Done.*/');
+		return self::SUCCESS;
 	}
 
 	/**

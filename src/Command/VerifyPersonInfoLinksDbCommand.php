@@ -28,11 +28,12 @@ class VerifyPersonInfoLinksDbCommand extends Command {
 	}
 
 	/** {@inheritdoc} */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$this->output = $output;
 		$dumpSql = $input->getOption('dump-sql') === true;
 		$this->verifyWikiInfoLinks($dumpSql);
 		$output->writeln('/*Done.*/');
+		return self::SUCCESS;
 	}
 
 	/**

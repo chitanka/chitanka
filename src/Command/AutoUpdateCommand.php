@@ -44,7 +44,7 @@ class AutoUpdateCommand extends Command {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$this->output = $output;
 		$rootDir = $this->parameters['kernel.project_dir'];
 		$updateDir = "$rootDir/update";

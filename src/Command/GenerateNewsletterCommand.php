@@ -34,10 +34,11 @@ class GenerateNewsletterCommand extends Command {
 		];
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$date = new \DateTime($input->getArgument('date'));
 		$newsletter = $this->generateNewsletter($date);
 		$output->write($newsletter);
+		return self::SUCCESS;
 	}
 
 	/**

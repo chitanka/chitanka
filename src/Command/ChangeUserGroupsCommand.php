@@ -21,12 +21,13 @@ class ChangeUserGroupsCommand extends Command {
 	}
 
 	/** @inheritdoc */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$userNames = $this->readUsers($input);
 		list($groupsToAdd, $groupsToRemove) = $this->readGroups($input);
 		$users = $this->getEntityManager()->getUserRepository()->findByUsernames($userNames);
 		$this->modifyUserGroups($users, $groupsToAdd, $groupsToRemove);
 		$output->writeln("Done.");
+		return self::SUCCESS;
 	}
 
 	/**
