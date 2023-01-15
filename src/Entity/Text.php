@@ -805,12 +805,11 @@ class Text extends BaseWork implements  \JsonSerializable {
 
 	public function getHistoryAndVersion() {
 		$history = [];
-		$historyRows = $this->getHistoryInfo();
 		$verNo = 1;
 		$ver = '0';
-		foreach ( $historyRows as $data ) {
+		foreach ( $this->getRevisions() as $revision ) {
 			$ver = '0.' . ($verNo++);
-			$history[] = "$ver ($data[date]) — $data[comment]";
+			$history[] = "$ver ({$revision->getDate()->format('Y-m-d H:i:s')}) — {$revision->getComment()}";
 		}
 
 		return [$history, $ver];
@@ -892,17 +891,6 @@ EOS;
 		return Setup::db()->getFields(DBT_TEXT,
 			['id' => $id],
 			['rating', 'votes']);
-	}
-
-	public function getHistoryInfo() {
-		$rows = Setup::dbal()->fetchAll('select * from '.DBT_EDIT_HISTORY.' where text_id = ? order by date asc', [$this->getId()]);
-		if (!empty($rows)) {
-			$isoEntryDate = $this->createdAt->format('Y-m-d');
-			if ( "$isoEntryDate 24" < $rows[0]['date'] ) {
-				array_unshift($rows, ['date' => $isoEntryDate, 'comment' => 'Добавяне']);
-			}
-		}
-		return $rows;
 	}
 
 	/**

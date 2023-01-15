@@ -5,6 +5,7 @@ use App\Util\Char;
 use App\Util\File;
 use App\Util\Stringy;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Sfblib\SfbConverter;
 use Sfblib\SfbToHtmlConverter;
@@ -116,6 +117,9 @@ abstract class BaseWork extends Entity {
 
 	/** @return string */
 	abstract public function getPlainTranslationInfo();
+
+	/** @return Collection|BookRevision[]|TextRevision[] */
+	abstract public function getRevisions();
 
 	private $authorIds;
 	public function getAuthorIds() {
@@ -365,10 +369,6 @@ abstract class BaseWork extends Entity {
 		}
 
 		return $text;
-	}
-
-	public function getHistoryInfo() {
-		return [];
 	}
 
 	/**

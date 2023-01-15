@@ -255,10 +255,10 @@ class EpubFile {
 
 	private function getRevisionTags() {
 		$tags = [];
-		foreach ($this->obj->getHistoryInfo() as $rev) {
+		foreach ($this->obj->getRevisions() as $rev) {
 			$tags[] = sprintf('<dc:date opf:event="chitanka-%s">%s</dc:date>',
-				htmlspecialchars($rev['comment']),
-				preg_replace('/(\S+) \S+/', '$1', $rev['date']));
+				htmlspecialchars($rev->getComment()),
+				$rev->getDate()->format('Y-m-d'));
 		}
 
 		return implode("\n", $tags);
