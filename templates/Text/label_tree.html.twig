@@ -1,10 +1,11 @@
 {% import 'helper.html.twig' as helper %}
+{% import 'link.html.twig' as link %}
 <ul>
 {% for label in labels %}
 	{% if level > 0 or label.parent is empty %}
 	<li>
 		{% if label.nrOfTexts > 0 %}
-			<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>
+			<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" data-edit="{{ link.admin_label_edit(label) }}">{{ label.name }}</a>
 			{{ helper.printNrOfItems(label.nrOfTexts, "tooltip.nr-of-texts-with-label"|trans({'%count%': label.nrOfTexts, '%label%': label.name})) }}
 		{% else %}
 			{{ label.name }}

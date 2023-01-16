@@ -11,7 +11,7 @@
 			<h4 class="book-title" id="{{ uniqueId }}">
 			<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}"
 				class="booklink"
-				data-edit="{{ path('admin_book_edit', {'id': book.id}) }}">
+				data-edit="{{ link.admin_book_edit(book) }}">
 				<i itemprop="name">{{ book.title }}</i>
 			</a>
 			{% if book.hasAnno %}

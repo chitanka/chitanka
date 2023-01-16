@@ -39,6 +39,9 @@ class Language implements \JsonSerializable {
 	 */
 	private $nrOfTranslatedTexts = 0;
 
+	public function getId() {
+		return $this->code;
+	}
 	public function getCode() {
 		return $this->code;
 	}

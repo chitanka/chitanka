@@ -1,5 +1,6 @@
 <?php namespace App\Legacy;
 
+use App\Controller\Admin\TextCommentCrudController;
 use App\Entity\Text;
 use App\Entity\TextComment;
 use App\Pagination\Pager;
@@ -9,6 +10,7 @@ use App\Persistence\TextRepository;
 use App\Util\Date;
 use App\Util\Stringy;
 use Chitanka\RocketChatClient;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class CommentPage extends Page {
@@ -29,6 +31,7 @@ class CommentPage extends Page {
 
 	/** @var TextRepository */protected $textRepository;
 	/** @var TextCommentRepository */protected $textCommentRepository;
+	/** @var AdminUrlGenerator */protected $adminUrlGenerator;
 
 	public function __construct($fields) {
 		parent::__construct($fields);
@@ -259,8 +262,16 @@ class CommentPage extends Page {
 					$links .= sprintf('<li><a href="%s" title="Всички коментари за произведението"><span class="fa fa-comments"></span><span class="sr-only">Всички коментари</span></a></li>', $this->controller->generateUrlForLegacyCode('text_comments', ['id' => $textId]));
 				}
 				if ($this->user->inGroup('admin') && $id) {
-					$links .= sprintf('<li><a href="%s" title="Редактиране на коментара"><span class="fa fa-edit"></span><span class="sr-only">Редактиране</span></a></li>', $this->controller->generateUrlForLegacyCode('admin_text_comment_edit', ['id' => $id]));
-					$links .= sprintf('<li><form action="%s" method="post" class="image-form delete-form"><button type="submit" title="Изтриване на коментара"><span class="fa fa-trash-o"></span><span class="sr-only">Изтриване</span></button></form></li>', $this->controller->generateUrlForLegacyCode('admin_text_comment_delete', ['id' => $id]));
+					$editLink = $this->adminUrlGenerator->setController(TextCommentCrudController::class)
+						->setAction('edit')
+						->setEntityId($id)
+						->generateUrl();
+					$deleteLink = $this->adminUrlGenerator->setController(TextCommentCrudController::class)
+						->setAction('delete')
+						->setEntityId($id)
+						->generateUrl();
+					$links .= sprintf('<li><a href="%s" title="Редактиране на коментара"><span class="fa fa-edit"></span><span class="sr-only">Редактиране</span></a></li>', $editLink);
+					$links .= sprintf('<li><form action="%s" method="post" class="image-form delete-form"><button type="submit" title="Изтриване на коментара"><span class="fa fa-trash-o"></span><span class="sr-only">Изтриване</span></button></form></li>', $deleteLink);
 				}
 				$acts = "<ul class='menu' style='float:right'>$links</ul>";
 			}

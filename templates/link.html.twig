@@ -1,6 +1,6 @@
 {% macro person(person) %}
 {% apply spaceless %}
-	<span itemscope itemtype="http://schema.org/Person"><a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="name" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name }}</a></span>
+	<span itemscope itemtype="http://schema.org/Person"><a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="name" data-edit="{{ _self.admin_person_edit(person) }}">{{ person.name }}</a></span>
 {% endapply %}
 {% endmacro %}
 
@@ -18,7 +18,7 @@
 
 {% macro persons_comma(persons, lang) %}
 	{% for person in persons %}
-		<span itemscope itemtype="http://schema.org/Person"><a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="name" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ lang.is(default_content_language) ? person.name : person.origName }}</a></span>{{ loop.last ? '' : ',' }}
+		<span itemscope itemtype="http://schema.org/Person"><a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="name" data-edit="{{ _self.admin_person_edit(person) }}">{{ lang.is(default_content_language) ? person.name : person.origName }}</a></span>{{ loop.last ? '' : ',' }}
 	{% endfor %}
 {% endmacro %}
 
@@ -37,11 +37,11 @@
 {% endmacro %}
 
 {% macro series(series) %}
-	<a href="{{ path('series_show', {'slug': series.slug}) }}" data-edit="{{ path('admin_series_edit', {'id': series.id}) }}"><i>{{ series.name }}</i></a>
+	<a href="{{ path('series_show', {'slug': series.slug}) }}" data-edit="{{ _self.admin_serie_edit(series) }}"><i>{{ series.name }}</i></a>
 {% endmacro %}
 
 {% macro text(text, options) %}
-<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}" class="textlink {{ text.headlevel == 0 ? 'one-part-text' : '' }}" itemprop="name" data-edit="{{ path('admin_text_edit', {'id': text.id}) }}"
+<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug}) }}" class="textlink {{ text.headlevel == 0 ? 'one-part-text' : '' }}" itemprop="name" data-edit="{{ _self.admin_text_edit(text) }}"
 	title="{{ text.note }}"><i>{{ options.title is defined ? options.title : text.title }}</i></a>
 	{% if text.lang is defined and not text.lang.is(default_content_language) %}
 		<span class="badge badge-info" title="{{ text.lang }}">{{ text.lang.code }}</span>
@@ -49,29 +49,40 @@
 {% endmacro %}
 
 {% macro book(book) %}
-{% apply spaceless %}<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}" {% if book.hasAnno %}rel="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"{% endif %} class="booklink" itemprop="name" data-edit="{{ path('admin_book_edit', {'id': book.id}) }}"><i>{{ book.title }}</i></a>{% endapply %}
+{% apply spaceless %}<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}" {% if book.hasAnno %}rel="{{ path('book_show', {'id': book.id, '_format': 'clue'}) }}"{% endif %} class="booklink" itemprop="name" data-edit="{{ _self.admin_book_edit(book) }}"><i>{{ book.title }}</i></a>{% endapply %}
 {% endmacro %}
 
 {% macro sequence(sequence) %}
-{% apply spaceless %}<a href="{{ path('sequence_show', {'slug': sequence.slug}) }}" rel="category" data-edit="{{ path('admin_sequence_edit', {'id': sequence.id}) }}">{{ sequence.name }}</a>{% endapply %}
+{% apply spaceless %}<a href="{{ path('sequence_show', {'slug': sequence.slug}) }}" rel="category" data-edit="{{ _self.admin_sequence_edit(sequence) }}">{{ sequence.name }}</a>{% endapply %}
 {% endmacro %}
 
 {% macro category(category) %}
-	<a href="{{ path('books_by_category', {'slug': category.slug}) }}" rel="category tag" data-edit="{{ path('admin_category_edit', {'id': category.id}) }}">{{ category.name }}</a>
+	<a href="{{ path('books_by_category', {'slug': category.slug}) }}" rel="category tag" data-edit="{{ _self.admin_category_edit(category) }}">{{ category.name }}</a>
 {% endmacro %}
 
 {% macro label(label) %}
-{% apply spaceless %}<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" rel="tag" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>{% endapply %}
+{% apply spaceless %}<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" rel="tag" data-edit="{{ _self.admin_label_edit(label) }}">{{ label.name }}</a>{% endapply %}
 {% endmacro %}
 
 {% macro texts_by_language(language) %}
-{% apply spaceless %}<a href="{{ path('texts_by_language', {'language': language.code}) }}" rel="tag" data-edit="{{ path('admin_language_edit', {'id': language.code}) }}">{{ language.name }}</a>{% endapply %}
+{% apply spaceless %}<a href="{{ path('texts_by_language', {'language': language.code}) }}" rel="tag" data-edit="{{ _self.admin_language_edit(language) }}">{{ language.name }}</a>{% endapply %}
 {% endmacro %}
 
 {% macro texts_by_original_language(language) %}
-{% apply spaceless %}<a href="{{ path('texts_by_original_language', {'language': language.code}) }}" rel="tag" data-edit="{{ path('admin_language_edit', {'id': language.code}) }}">{{ language.name }}</a>{% endapply %}
+{% apply spaceless %}<a href="{{ path('texts_by_original_language', {'language': language.code}) }}" rel="tag" data-edit="{{ _self.admin_language_edit(language) }}">{{ language.name }}</a>{% endapply %}
 {% endmacro %}
 
 {% macro user_with_email(user) %}
 <a href="{{ path('user_show', {'username': user.username}) }}" class="user">{{ user.username }}</a>&#160;{% if user.allowemail %}<a href="{{ path('email_user', {'username': user.username}) }}" title="Пращане на писмо на {{ user.username }}"><span class="fa fa-envelope-o"></span><span class="sr-only">Е-поща</span></a>{% endif %}
 {% endmacro %}
+
+{% macro admin_person_edit(person) %}{{ _self.admin_edit('Person', person) }}{% endmacro %}
+{% macro admin_book_edit(book) %}{{ _self.admin_edit('Book', book) }}{% endmacro %}
+{% macro admin_text_edit(text) %}{{ _self.admin_edit('Text', text) }}{% endmacro %}
+{% macro admin_category_edit(category) %}{{ _self.admin_edit('Category', category) }}{% endmacro %}
+{% macro admin_label_edit(label) %}{{ _self.admin_edit('Label', label) }}{% endmacro %}
+{% macro admin_sequence_edit(sequence) %}{{ _self.admin_edit('Sequence', sequence) }}{% endmacro %}
+{% macro admin_serie_edit(serie) %}{{ _self.admin_edit('Serie', serie) }}{% endmacro %}
+{% macro admin_language_edit(language) %}{{ _self.admin_edit('Language', language) }}{% endmacro %}
+{% macro admin_text_type_edit(text_type) %}{{ _self.admin_edit('TextType', text_type) }}{% endmacro %}
+{% macro admin_edit(entity_class, entity) %}{{ ea_url({referrer: app.request.requestUri}).setController('App\\Controller\\Admin\\'~entity_class~'CrudController').setAction('edit').setEntityId(entity.id) }}{% endmacro %}

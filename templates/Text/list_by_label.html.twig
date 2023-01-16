@@ -1,10 +1,12 @@
 {% extends 'layout.html.twig' %}
 
+{% import 'link.html.twig' as link %}
 {% set title = 'Произведения' %}
-{% set subtitle %}<a class="selflink" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>{% endset %}
+{% set subtitle %}<a class="selflink" data-edit="{{ link.admin_label_edit(label) }}">{{ label.name }}</a>{% endset %}
 {% block content %}
 
 	{% import 'helper.html.twig' as helper %}
+	{% import 'link.html.twig' as link %}
 	{% if texts is empty %}
 
 		<p class="no-items">
@@ -18,7 +20,7 @@
 			{% set breadcrumbItems = breadcrumbItems|merge({ (path('texts_by_label', {'slug': parent.slug})) : parent.name }) %}
 		{% endfor %}
 		{% set currentBreadcrumbItem -%}
-			<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" data-edit="{{ path('admin_label_edit', {'id': label.id}) }}">{{ label.name }}</a>
+			<a href="{{ path('texts_by_label', {'slug': label.slug}) }}" data-edit="{{ link.admin_label_edit(label) }}">{{ label.name }}</a>
 			{{ helper.printNrOfItems(label.nrOfTexts) }}
 			{{ helper.printInfoTip(label.description) }}
 		{%- endset %}

@@ -1,9 +1,11 @@
 {% extends 'layout.html.twig' %}
 
-{% set title %}Произведения от вид „<a class="selflink" data-edit="{{ path('admin_text_type_edit', {id: type.code}) }}">{{ type }}</a>“{% endset %}
+{% import 'link.html.twig' as link %}
+{% set title %}Произведения от вид „<a class="selflink" data-edit="{{ link.admin_text_type_edit(type) }}">{{ type }}</a>“{% endset %}
 {% block content %}
 
 	{% import 'helper.html.twig' as helper %}
+	{% import 'link.html.twig' as link %}
 	{% if texts is empty %}
 
 		<p class="no-items">
@@ -13,7 +15,7 @@
 	{% else %}
 
 		{% set currentBreadcrumItem -%}
-			<a href="{{ path('texts_by_type', {'type': type.code}) }}" itemprop="name" data-edit="{{ path('admin_text_type_edit', {id: type.code}) }}">{{ type }}</a>
+			<a href="{{ path('texts_by_type', {'type': type.code}) }}" itemprop="name" data-edit="{{ link.admin_text_type_edit(type) }}">{{ type }}</a>
 			{{ helper.printInfoTip(type.description) }}
 		{%- endset %}
 		{{ helper.printBreadcrumb({

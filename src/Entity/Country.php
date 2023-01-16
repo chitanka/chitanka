@@ -39,6 +39,9 @@ class Country implements \JsonSerializable {
 	 */
 	private $nrOfTranslators = 0;
 
+	public function getId() {
+		return $this->code;
+	}
 	public function getCode() {
 		return $this->code;
 	}

@@ -1,7 +1,8 @@
 {% extends 'layout.html.twig' %}
 
+{% import 'link.html.twig' as link %}
 {% set title %}
-	<a class="selflink" itemprop="name" data-edit="{{ path('admin_person_edit', {id: person.id}) }}">{{ person.name }}</a>
+	<a class="selflink" itemprop="name" data-edit="{{ link.admin_person_edit(person) }}">{{ person.name }}</a>
 {% endset %}
 {% set subtitle = ('person.role.'~person.role)|trans %}
 {% block content %}

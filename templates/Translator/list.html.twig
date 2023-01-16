@@ -1,7 +1,8 @@
+{% import 'link.html.twig' as link %}
 <ul class="superlist">
 {% for translator in persons %}
 	<li><dl itemscope itemtype="http://schema.org/Person">
-		<dt><a href="{{ path('person_show', {'slug': translator.slug}) }}" itemprop="url" data-edit="{{ path('admin_person_edit', {'id': translator.id}) }}">{{ translator.name|name_format(by)|raw }}</a></dt>
+		<dt><a href="{{ path('person_show', {'slug': translator.slug}) }}" itemprop="url" data-edit="{{ link.admin_person_edit(translator) }}">{{ translator.name|name_format(by)|raw }}</a></dt>
 		<dd class="country" itemprop="nationality" itemscope itemtype="http://schema.org/Country"><span itemprop="name">{{ translator.country.name }}</span></dd>
 	</dl></li>
 {% else %}

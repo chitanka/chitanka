@@ -1,4 +1,5 @@
 {% import 'helper.html.twig' as helper %}
+{% import 'link.html.twig' as link %}
 {% if isExpanded is not defined %}
 	{% set isExpanded = false %}
 {% endif %}
@@ -6,7 +7,7 @@
 {% for language in languages %}
 	{% if language.nrOfTranslatedTexts > 0 %}
 	<li>
-		<a href="{{ path('texts_by_original_language', {'language': language.code}) }}" data-edit="{{ path('admin_language_edit', {'id': language.code}) }}">{{ language }}</a>
+		<a href="{{ path('texts_by_original_language', {'language': language.code}) }}" data-edit="{{ link.admin_language_edit(language) }}">{{ language }}</a>
 		{{ helper.printNrOfItems(language.nrOfTranslatedTexts, 'tooltip.nr-of-texts-from-language'|trans({'%count%': language.nrOfTranslatedTexts, '%language%': language.name})) }}
 	</li>
 	{% endif %}

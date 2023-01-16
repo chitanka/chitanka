@@ -146,8 +146,9 @@
 {% endmacro %}
 
 {% macro author_link(author, format) %}
+	{% import 'link.html.twig' as link %}
 	{% apply spaceless %}
-	<span itemscope itemtype="http://schema.org/Person"><a href="{{ path('person_show', {'slug': author.slug, '_format': format|default('html')}) }}" data-edit="{{ path('admin_person_edit', {'id': author.id}) }}" itemprop="name">{{ author.name }}</a></span>
+	<span itemscope itemtype="http://schema.org/Person"><a href="{{ path('person_show', {'slug': author.slug, '_format': format|default('html')}) }}" data-edit="{{ link.admin_person_edit(author) }}" itemprop="name">{{ author.name }}</a></span>
 	{% endapply %}
 {% endmacro %}
 

@@ -1,10 +1,11 @@
 {% import 'helper.html.twig' as helper %}
+{% import 'link.html.twig' as link %}
 <ul>
 {% for category in categories %}
 	{% if level > 0 or category.parent is empty %}
 	<li>
 		{% if category.nrOfBooks > 0 %}
-			<a href="{{ path('books_by_category', {'slug': category.slug}) }}" data-edit="{{ path('admin_category_edit', {'id': category.id}) }}">{{ category.name }}</a>
+			<a href="{{ path('books_by_category', {'slug': category.slug}) }}" data-edit="{{ link.admin_category_edit(category) }}">{{ category.name }}</a>
 			{{ helper.printNrOfItems(category.nrOfBooks, "tooltip.nr-of-books-with-category"|trans({'%count%': category.nrOfBooks, '%category%': category.name})) }}
 		{% else %}
 			{{ category.name }}

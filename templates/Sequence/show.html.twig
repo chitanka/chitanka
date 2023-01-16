@@ -1,7 +1,8 @@
 {% extends 'layout.html.twig' %}
 
+{% import 'link.html.twig' as link %}
 {% set title %}
-	<a class="selflink" itemprop="name" data-edit="{{ path('admin_sequence_edit', {id: sequence.id}) }}">{{ sequence.name }}</a>
+	<a class="selflink" itemprop="name" data-edit="{{ link.admin_sequence_edit(sequence) }}">{{ sequence.name }}</a>
 {% endset %}
 {% set subtitle = 'издателска поредица' %}
 {% block content %}

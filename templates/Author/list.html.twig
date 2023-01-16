@@ -1,5 +1,6 @@
+{% import 'link.html.twig' as link %}
 {% macro link(person, by) %}
-	<a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="url" data-edit="{{ path('admin_person_edit', {'id': person.id}) }}">{{ person.name|name_format(by)|raw }}</a>
+	<a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="url" data-edit="{{ link.admin_person_edit(person) }}">{{ person.name|name_format(by)|raw }}</a>
 {% endmacro %}
 
 <ul class="superlist">
