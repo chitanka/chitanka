@@ -41,7 +41,7 @@ class User implements UserInterface, \JsonSerializable {
 	 * @var string
 	 * @ORM\Column(type="string", length=100, unique=true)
 	 */
-	private $username;
+	private $username = '~anon';
 
 	/**
 	 * @var string
