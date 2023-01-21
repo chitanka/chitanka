@@ -84,11 +84,6 @@ parameters:
     # make sure to enable them, e.g. 'pdf_download_enabled: true'
     download_formats_external_converter: ~ # [pdf, mobi]
 
-    workroom_remote: false
-    workroom_root: ~
-    workroom_url: http://workroom.chitanka.info
-    workroom_ban_year_threshold: 2100
-
     biblioman_url: //biblioman.chitanka.info/books/$1
     wiki_url: http://wiki.chitanka.info/$1
 

@@ -190,55 +190,6 @@ sonata_block:
     http_cache:
         listener: false
 
-fos_rest:
-    body_listener: false
-    format_listener: false
-    view:
-        view_response_listener: true
-
-fos_comment:
-    db_driver: orm
-    class:
-        model:
-            comment: App\Entity\Comment
-            thread: App\Entity\Thread
-    form:
-        comment:
-            type: App\Form\Type\CommentType
-    acl: true
-    service:
-        sorting:
-            default: date_asc
-        acl:
-            thread:  fos_comment.acl.thread.roles
-            comment: fos_comment.acl.comment.roles
-            vote:    fos_comment.acl.vote.roles
-    acl_roles:
-        comment:
-            create: ROLE_USER
-            view:   IS_AUTHENTICATED_ANONYMOUSLY
-            edit:   ROLE_ADMIN
-            delete: ROLE_ADMIN
-        thread:
-            create: ROLE_USER
-            view:   IS_AUTHENTICATED_ANONYMOUSLY
-            edit:   ROLE_ADMIN
-            delete: ROLE_ADMIN
-        vote:
-            create: ROLE_USER
-            view:   IS_AUTHENTICATED_ANONYMOUSLY
-            edit:   ROLE_ADMIN
-            delete: ROLE_ADMIN
-
-eko_feed:
-    feeds:
-        workroom:
-            title:       Работно ателие — Моята библиотека
-            description: Универсална електронна библиотека
-            link:        http://chitanka.info
-            encoding:    utf-8
-            #author:     Моята библиотека
-
 parameters:
     # Облици
     skins:

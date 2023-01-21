@@ -1,9 +1,3 @@
-fos_comment_api:
-    type: rest
-    resource: "@FOSCommentBundle/Resources/config/routing.yml"
-    prefix: /api
-    defaults: { _format: html }
-
 homepage:
     path: /
     controller: App\Controller\MainController::indexAction
@@ -664,63 +658,6 @@ request_username:
     path: /request-username
     controller: App\Controller\SecurityController::requestUsernameAction
 
-
-workroom_entry_new:
-    path: /workroom/entry
-    controller: App\Controller\WorkroomController::newAction
-    methods: GET
-workroom_entry_create:
-    path: /workroom/entry
-    controller: App\Controller\WorkroomController::createAction
-    methods:      [POST]
-workroom_entry_edit:
-    path: /workroom/entry/{id}
-    controller: App\Controller\WorkroomController::editAction
-    methods: GET
-    requirements: { id: \d+ }
-workroom_entry_update:
-    path: /workroom/entry/{id}
-    controller: App\Controller\WorkroomController::updateAction
-    methods:      [PUT]
-    requirements: { id: \d+ }
-workroom_entry_patch:
-    path: /workroom/entry/{id}.patch
-    controller: App\Controller\WorkroomController::patchAction
-    methods:      [PATCH]
-    requirements: { id: \d+ }
-workroom_entry_delete:
-    path: /workroom/entry/{id}
-    controller: App\Controller\WorkroomController::deleteAction
-    methods: DELETE
-    requirements: { id: \d+ }
-
-workroom_contrib:
-    path: /workroom/contributors
-    controller: App\Controller\WorkroomController::listContributorsAction
-    methods: GET
-
-workroom_list:
-    path: /workroom/list.{_format}
-    controller: App\Controller\WorkroomController::listAction
-    methods: GET
-
-workroom_contrib_delete:
-    path: /workroom/contrib/{id}
-    controller: App\Controller\WorkroomController::deleteContribAction
-    methods: DELETE
-    requirements: { id: \d+ }
-
-workroom:
-    path: /workroom/{status}/{page}
-    controller: App\Controller\WorkroomController::indexAction
-    defaults: { status: all, page: 1 }
-    requirements: { page: \d+ }
-
-workroom_rss:
-    path: /workroom.rss/{limit}
-    controller: App\Controller\WorkroomController::rssAction
-    defaults: { limit: 25 }
-    methods: GET
 
 suggest_info:
     path: /suggest/{type}/text/{id}

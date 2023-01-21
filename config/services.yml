@@ -265,14 +265,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    comment.listener:
-        class: App\Listener\CommentListener
-        arguments: ["@mailer", "@app.entity_manager", "@security.token_storage"]
-        tags:
-            - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist }
-            - { name: kernel.event_listener, event: fos_comment.comment.post_persist, method: onCommentPostPersist }
-            - { name: kernel.event_listener, event: fos_comment.thread.post_persist, method: onThreadPostPersist }
-
     doctrine.listener:
         class: App\Listener\DoctrineListener
         tags:
@@ -296,11 +288,5 @@ services:
 
     label_form:
         class: App\Form\Type\LabelType
-        tags:
-           -  { name: form.type }
-
-    comment_form:
-        class: App\Form\Type\CommentType
-        arguments: [%fos_comment.model.comment.class%]
         tags:
            -  { name: form.type }
