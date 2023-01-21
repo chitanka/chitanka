@@ -47,18 +47,6 @@
             "ref": "b131e6cbfe1b898a508987851963fff485986285"
         }
     },
-    "eko/feedbundle": {
-        "version": "2.1",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "main",
-            "version": "1.2",
-            "ref": "18200f71f86a12023fcd952546dad61850806c22"
-        },
-        "files": [
-            "config/packages/eko_feed.yaml"
-        ]
-    },
     "phpunit/phpunit": {
         "version": "9.5",
         "recipe": {

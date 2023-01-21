@@ -25,7 +25,6 @@
 		"doctrine/inflector": "*",
 		"doctrine/orm": "^2.12",
 		"easycorp/easyadmin-bundle": "^3.5",
-		"eko/feedbundle": "*",
 		"fortawesome/font-awesome": "^4.5",
 		"michelf/php-markdown": "*",
 		"phpdocumentor/reflection-docblock": "^5.3",
