@@ -74,7 +74,7 @@ class KernelListener implements EventSubscriberInterface {
 			} catch (EntityNotFoundException $e) {
 			}
 		}
-		$token = new \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken($user, $user->getPassword(), 'User', $user->getRoles());
+		$token = new \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken($user, 'User', $user->getRoles());
 		$this->tokenStorage->setToken($token);
 	}
 
