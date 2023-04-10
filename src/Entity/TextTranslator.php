@@ -92,4 +92,7 @@ class TextTranslator extends Entity {
 		return $this->year;
 	}
 
+	public function __toString(): string {
+		return $this->person . ($this->year ? " ($this->year)" : '');
+	}
 }

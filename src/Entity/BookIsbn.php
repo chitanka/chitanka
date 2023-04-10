@@ -28,6 +28,7 @@ class BookIsbn extends Entity implements \JsonSerializable {
 	/**
 	 * @var Book
 	 * @ORM\ManyToOne(targetEntity="Book", inversedBy="isbns")
+	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $book;
 

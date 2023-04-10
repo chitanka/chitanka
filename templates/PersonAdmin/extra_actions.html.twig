@@ -1,5 +1,0 @@
-<ul>
-	{% if object.slug is not empty %}
-		<li class="btn sonata-action-element"><a href="{{ path('person_show', {'slug': object.slug}) }}">{{ 'library_link_action_show'|trans({}, 'admin') }}</a></li>
-	{% endif %}
-</ul>

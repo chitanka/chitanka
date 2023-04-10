@@ -80,8 +80,13 @@ class ContentService {
 		} else if (!is_array($bookOrId)) {
 			$bookOrId = [$bookOrId];
 		}
-		$browser = new Browser();
-		$browser->post(self::$clearBookCoverCacheUrl, [], http_build_query(['ids' => implode("\n", $bookOrId)]));
+		file_get_contents(self::$clearBookCoverCacheUrl, false, stream_context_create([
+			'http' => [
+				'method' => 'POST',
+				'header'=> 'Content-type: application/x-www-form-urlencoded',
+				'content' => http_build_query(['ids' => implode("\n", $bookOrId)]),
+			],
+		]));
 	}
 
 	public static function copyCoverFromBiblioman(Book $book) {
@@ -135,4 +140,12 @@ class ContentService {
 		$output[] = "Адрес в Библиоман: ".str_replace('ID', $bibliomanId, self::$bibliomanBookUrlTemplate);
 		return "\t".implode("\n\t", $output)."\n";
 	}
+
+	public static function unifyNewLines(string $content): string {
+		return strtr($content, [
+			"\r\n" => "\n",
+			"\r" => "\n",
+		]);
+	}
+
 }

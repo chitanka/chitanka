@@ -97,7 +97,7 @@ class TextController extends Controller {
 		];
 	}
 
-	public function listByLabelAction(TextRepository $textRepo, LabelRepository $labelRepo, Request $request, $slug, $page) {
+	public function listByLabelAction(TextRepository $textRepo, LabelRepository $labelRepo, Request $request, $slug, $page = 1) {
 		$limit = min($request->query->get('limit', static::PAGE_COUNT_DEFAULT), static::PAGE_COUNT_LIMIT);
 		$slug = Stringy::slugify($slug);
 		$label = $labelRepo->findBySlug($slug);
@@ -153,7 +153,7 @@ class TextController extends Controller {
 		];
 	}
 
-	public function showAction(TextCombinationRepository $textCombinationRepository, WikiReader $wikiReader, Request $request, $id, $_format, ParameterBagInterface $parameterBag) {
+	public function showAction(TextCombinationRepository $textCombinationRepository, WikiReader $wikiReader, Request $request, $id, ParameterBagInterface $parameterBag, $_format = 'html') {
 		$parameters = $parameterBag->all();
 		if ($this->canRedirectToMirror($_format) && ($mirrorServer = $this->getMirrorServer($parameters['mirror_sites']))) {
 			return $this->redirectToMirror($mirrorServer, $id, $_format, $request->get('filename'), $request->getScheme());

@@ -1,0 +1,5 @@
+{% if field.value %}
+	<a href="//biblioman.chitanka.info/books/{{ field.value }}" class="external-site">БМ {{ field.value }}</a>
+{% else %}
+	<a href="//biblioman.chitanka.info/books/?q=title%3A{{ entity.instance.title|url_encode }}">БМ</a>?
+{% endif %}

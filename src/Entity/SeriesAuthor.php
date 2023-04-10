@@ -38,4 +38,7 @@ class SeriesAuthor extends Entity {
 	public function setSeries($series) { $this->series = $series; }
 	public function getSeries() { return $this->series; }
 
+	public function __toString(): string {
+		return (string) $this->person;
+	}
 }

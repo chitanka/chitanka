@@ -218,8 +218,9 @@ class BookTemplate {
 		return $this->content ?: $this->content = ContentService::getContentFile('book', $this->book->getId());
 	}
 	public function setContent($content) {
-		file_put_contents(ContentService::getContentFilePath('book', $this->book->getId()), $content);
-		$this->content = $content;
+		$cleanContent = ContentService::unifyNewLines($content);
+		file_put_contents(ContentService::getContentFilePath('book', $this->book->getId()), $cleanContent);
+		$this->content = $cleanContent;
 		$this->textIds = null;
 	}
 

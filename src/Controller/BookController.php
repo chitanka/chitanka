@@ -55,7 +55,7 @@ class BookController extends Controller {
 		return [];
 	}
 
-	public function listByCategoryAction(CategoryRepository $categoryRepo, Request $request, $slug, $page) {
+	public function listByCategoryAction(CategoryRepository $categoryRepo, Request $request, $slug, $page = 1) {
 		$slug = Stringy::slugify($slug);
 		$bookRepo = $this->bookRepository;
 		$category = $categoryRepo->findBySlug($slug);
@@ -124,7 +124,7 @@ class BookController extends Controller {
 		];
 	}
 
-	public function showAction(Request $request, $id, $_format, ParameterBagInterface $parameterBag) {
+	public function showAction(Request $request, $id, ParameterBagInterface $parameterBag, $_format = 'html') {
 		[$id] = explode('-', $id); // remove optional slug
 		try {
 			$book = $this->bookRepository->get($id);

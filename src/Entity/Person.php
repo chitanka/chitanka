@@ -110,7 +110,8 @@ class Person extends Entity implements \JsonSerializable {
 
 	/**
 	 * @var Book[]
-	 * @ORM\ManyToMany(targetEntity="Book")
+	 * @ORM\ManyToMany(targetEntity="Book", mappedBy="authors")
+	 * @ORM\JoinTable(name="book_author")
 	 */
 	private $books;
 

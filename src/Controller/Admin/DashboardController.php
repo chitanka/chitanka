@@ -15,10 +15,12 @@ use App\Entity\SiteNotice;
 use App\Entity\Text;
 use App\Entity\TextComment;
 use App\Entity\TextType;
+use App\Entity\User;
 use App\Entity\WikiSite;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -27,9 +29,11 @@ class DashboardController extends AbstractDashboardController {
 
 	/** @var TranslatorInterface */
 	private $translator;
+	private $assetPackage;
 
-	public function __construct(TranslatorInterface $translator) {
+	public function __construct(TranslatorInterface $translator, Packages $assetPackage) {
 		$this->translator = $translator;
+		$this->assetPackage = $assetPackage;
 	}
 
 	/**
@@ -40,9 +44,9 @@ class DashboardController extends AbstractDashboardController {
 	}
 
 	public function configureDashboard(): Dashboard {
+		$logo = $this->assetPackage->getUrl('images/logo/logo-circle.png');
 		return Dashboard::new()
-			->setTitle($this->translator->trans('title.dashboard', [], 'admin'))
-			->setTranslationDomain('admin')
+			->setTitle('<img src="'.$logo.'" width="36" alt="Лого"> ' . $this->translator->trans('title.dashboard'))
 		;
 	}
 
@@ -56,7 +60,7 @@ class DashboardController extends AbstractDashboardController {
 		yield MenuItem::linkToCrud('Seriess', 'fas fa-list-ul', Series::class);
 		yield MenuItem::linkToCrud('Categories', 'fas fa-folder', Category::class);
 		yield MenuItem::linkToCrud('Labels', 'fas fa-tag', Label::class);
-		yield MenuItem::linkToCrud('TextComments', 'fas fa-comments', TextComment::class);
+
 		yield MenuItem::section('title.secondary');
 		yield MenuItem::linkToCrud('SiteNotices', 'fas fa-bullhorn', SiteNotice::class);
 		yield MenuItem::linkToCrud('ExternalSites', 'fa fa-external-link', ExternalSite::class);
@@ -65,6 +69,10 @@ class DashboardController extends AbstractDashboardController {
 		yield MenuItem::linkToCrud('Languages', 'fas fa-language', Language::class);
 		yield MenuItem::linkToCrud('TextTypes', 'fas fa-font', TextType::class);
 		yield MenuItem::linkToCrud('Licenses', 'fas fa-file-contract', License::class);
+
+		yield MenuItem::section('title.users');
+		yield MenuItem::linkToCrud('TextComments', 'fas fa-comments', TextComment::class);
+		yield MenuItem::linkToCrud('Users', 'fas fa-users', User::class)->setPermission('ROLE_GOD');
 		yield MenuItem::linkToCrud('Questions', 'fa fa-question', Question::class);
 	}
 

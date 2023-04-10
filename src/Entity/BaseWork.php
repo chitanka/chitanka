@@ -350,7 +350,8 @@ abstract class BaseWork extends Entity {
 		$file = ContentService::getInternalContentFilePath($dir, $this->getId());
 		$fs = new \Symfony\Component\Filesystem\Filesystem();
 		if (!empty($content)) {
-			$fs->dumpFile($file, Stringy::my_replace($content));
+			$cleanContent = ContentService::unifyNewLines(Stringy::my_replace($content));
+			$fs->dumpFile($file, $cleanContent);
 		} else if (file_exists($file) && is_file($file)) {
 		        // disable until a nasty deletion bug is resolved
 			//unlink($file);

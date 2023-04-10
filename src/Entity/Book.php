@@ -160,10 +160,12 @@ class Book extends BaseWork implements \JsonSerializable {
 	 */
 	private $revisions;
 
-	/*
+	/** FIXME doctrine:schema:create does not allow this relation
 	 * @var ArrayCollection|Person[]
 	 * @ORM\ManyToMany(targetEntity="Person", inversedBy="books")
-	 * @ORM\JoinTable(name="book_author")
+	 * @ORM\JoinTable(name="book_author",
+	 *	joinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id")},
+	 *	inverseJoinColumns={@ORM\JoinColumn(name="person_id", referencedColumnName="id")})
 	 */
 	private $authors;
 
@@ -213,6 +215,7 @@ class Book extends BaseWork implements \JsonSerializable {
 		$this->bookAuthors = new ArrayCollection;
 		$this->bookTexts = new ArrayCollection;
 		$this->links = new ArrayCollection;
+		$this->isbns = new ArrayCollection;
 	}
 
 	/**
@@ -345,6 +348,7 @@ class Book extends BaseWork implements \JsonSerializable {
 	public function setIsbns($isbns) { $this->isbns = $isbns; }
 	public function getIsbns() { return $this->isbns; }
 	public function addIsbn(BookIsbn $isbn) {
+		$isbn->setBook($this);
 		$this->isbns[] = $isbn;
 	}
 	public function removeIsbn(BookIsbn $isbn) {
@@ -355,12 +359,11 @@ class Book extends BaseWork implements \JsonSerializable {
 	public function getLinks() { return $this->links; }
 	public function addLink(BookLink $link) {
 		$this->links[] = $link;
+		$link->setBook($this);
 	}
 	public function removeLink(BookLink $link) {
 		$this->links->removeElement($link);
 	}
-	// TODO needed by admin; why?
-	public function addLinks(BookLink $link) { $this->addLink($link); }
 
 	/** @param bool $hasAnno */
 	public function setHasAnno($hasAnno) { $this->hasAnno = $hasAnno; }

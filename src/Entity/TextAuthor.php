@@ -58,4 +58,7 @@ class TextAuthor extends Entity {
 	public function setYear($year) { $this->year = $year; }
 	public function getYear() { return $this->year; }
 
+	public function __toString(): string {
+		return $this->person . ($this->year ? " ($this->year)" : '');
+	}
 }

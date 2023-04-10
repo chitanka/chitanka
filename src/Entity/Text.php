@@ -454,6 +454,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 	public function setUserContribs($userContribs) { $this->userContribs = $userContribs; }
 	public function addUserContrib(UserTextContrib $userContrib) {
 		$this->userContribs[] = $userContrib;
+		$userContrib->setText($this);
 	}
 	public function removeUserContrib(UserTextContrib $userContrib) {
 		$this->userContribs->removeElement($userContrib);
@@ -489,12 +490,11 @@ class Text extends BaseWork implements  \JsonSerializable {
 
 	public function addTextAuthor(TextAuthor $textAuthor) {
 		$this->textAuthors[] = $textAuthor;
+		$textAuthor->setText($this);
 	}
 	public function removeTextAuthor(TextAuthor $textAuthor) {
 		$this->textAuthors->removeElement($textAuthor);
 	}
-	// TODO needed by admin; why?
-	public function addTextAuthors(TextAuthor $textAuthor) { $this->addTextAuthor($textAuthor); }
 
 	public function setTextAuthors($textAuthors) { $this->textAuthors = $textAuthors; }
 	/** @return ArrayCollection|TextAuthor[] */
@@ -502,12 +502,11 @@ class Text extends BaseWork implements  \JsonSerializable {
 
 	public function addTextTranslator(TextTranslator $textTranslator) {
 		$this->textTranslators[] = $textTranslator;
+		$textTranslator->setText($this);
 	}
 	public function removeTextTranslator(TextTranslator $textTranslator) {
 		$this->textTranslators->removeElement($textTranslator);
 	}
-	// TODO needed by admin; why?
-	public function addTextTranslators(TextTranslator $textTranslator) { $this->addTextTranslator($textTranslator); }
 
 	public function setTextTranslators($textTranslators) { $this->textTranslators = $textTranslators; }
 	/** @return ArrayCollection|TextTranslator[] */
@@ -548,10 +547,7 @@ class Text extends BaseWork implements  \JsonSerializable {
 	public function getLinks() { return $this->links; }
 	public function addLink(TextLink $link) {
 		$this->links[] = $link;
-	}
-	// needed by SonataAdmin
-	public function addLinks(TextLink $link) {
-		$this->addLink($link);
+		$link->setText($this);
 	}
 	public function removeLink(TextLink $link) {
 		$this->links->removeElement($link);
@@ -893,33 +889,11 @@ EOS;
 			['rating', 'votes']);
 	}
 
-	/**
-	 * @Assert\File
-	 * @var UploadedFile
-	 */
-	private $content_file;
-	public function getContentFile() {
-		return $this->content_file;
-	}
-
-	/** @param UploadedFile $file */
-	public function setContentFile(UploadedFile $file = null) {
-		$this->content_file = $file;
-		if ($file) {
-			$this->setSize($file->getSize() / 1000);
-			$this->rebuildHeaders($file->getRealPath());
-		}
-	}
-
-	public function isContentFileUpdated() {
-		return $this->getContentFile() !== null;
-	}
+	/** Just a placeholder for the upload of a content file */
+	public $contentFile;
 
 	public function setHeadlevel($headlevel) {
 		$this->headlevel = $headlevel;
-		if ( !$this->isContentFileUpdated()) {
-			$this->rebuildHeaders();
-		}
 	}
 	public function getHeadlevel() { return $this->headlevel; }
 
@@ -943,6 +917,13 @@ EOS;
 	 */
 	public function onPreInsert() {
 		$this->setCreatedAt(new \DateTime());
+	}
+
+	/** @ORM\PreUpdate */
+	public function onPreUpdate() {
+		if ($this->headlevel > 0 && $this->headers->isEmpty()) {
+			$this->rebuildHeaders();
+		}
 	}
 
 	private $revisionComment;
@@ -1052,14 +1033,11 @@ EOS;
 	}
 
 	public function clearHeaders() {
-		Entity::clearCollection($this->getHeaders());
+		$this->getHeaders()->clear();
 	}
 
-	/**
-	 * @param string $file
-	 */
-	public function rebuildHeaders($file = null) {
-		if ($file === null) $file = ContentService::getContentFilePath('text', $this->getId());
+	public function rebuildHeaders() {
+		$file = ContentService::getContentFilePath('text', $this->getId());
 		$headlevel = $this->getHeadlevel();
 
 		$this->clearHeaders();

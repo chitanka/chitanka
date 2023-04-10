@@ -81,7 +81,7 @@ class PersonController extends Controller {
 		];
 	}
 
-	public function showAction(TextRepository $textRepository, BookRepository $bookRepository, $slug, $_format, bool $allowRemoteWikiArticle, WikiReader $wikiReader) {
+	public function showAction(TextRepository $textRepository, BookRepository $bookRepository, $slug, bool $allowRemoteWikiArticle, WikiReader $wikiReader, $_format = 'html') {
 		$person = $this->tryToFindPerson($slug);
 		if ( ! $person instanceof Person) {
 			return $person;
