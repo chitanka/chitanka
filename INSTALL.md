@@ -1,5 +1,6 @@
 Дадените указания важат за операционната система ГНУ/Линукс.
 
+Възможно е да използвате следния [скрипт](https://github.com/chitanka/chitanka-installer/blob/master/chitanka.sh) за автоматизирана инсталация.
 
 # 1. Необходим софтуер
 
@@ -62,9 +63,9 @@
 	cd /PATH/TO/chitanka
 	chmod -R a+w var/cache var/log var/spool web/cache
 
-Ако разполагате и с файла със съдържанието на библиотеката (текстове, изображения), го разархивирайте в директорията /PATH/TO/chitanka/web:
+Ако разполагате и с файла със съдържанието на библиотеката (текстове, изображения), го разархивирайте в директорията /PATH/TO/chitanka/web/content:
 
-	tar zxvf chitanka-content.tar.gz -C /PATH/TO/chitanka/web
+	tar zxvf chitanka-content.tar.gz -C /PATH/TO/chitanka/web/content
 
 
 # 4. База от данни
@@ -139,6 +140,8 @@
 			#fastcgi_pass unix:/var/run/php5-fpm.sock;
 			fastcgi_split_path_info ^(.+\.php)(/.*)$;
 			include fastcgi_params;
+			fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+                        fastcgi_param DOCUMENT_ROOT $realpath_root;
 		}
 
 		location ~ /(css|js|thumb) {
