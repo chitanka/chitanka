@@ -26,8 +26,6 @@
 
 Ще получите нова директория chitanka. Нека се казва `/PATH/TO/chitanka`.
 
-Сега копирайте файла `app/config/parameters.yml.dist` като `app/config/parameters.yml`.
-
 След това много лесно може да актуализирате софтуера само чрез следните команди:
 
 	cd /PATH/TO/chitanka && git pull
@@ -43,29 +41,29 @@
 Ще получите нова директория chitanka. Нека се казва `/PATH/TO/chitanka`. След това изпълнете в конзолата:
 
 	cd /PATH/TO/chitanka
-	php /PATH/TO/composer.phar install
+	php /PATH/TO/composer install
 
-Това ще отнеме около десетина минути. В края ще се появи запитване за попълване на определени параметри. В скоби се намира стойността по подразбиране. Засега са важни само тези за базата от данни (database_xxx). За `database_driver` оставете `pdo_mysql`. При другите просто натиснете Enter.
-
-Записаните параметри се намират във файла `app/config/parameters.yml` и могат да бъдат променяни по всяко време по-късно.
+Това ще отнеме около десетина минути.
 
 Последващите обновявания на софтуера могат да стават чрез:
 
-	cd /PATH/TO/chitanka && git pull && php /PATH/TO/composer.phar update
+	cd /PATH/TO/chitanka && git pull && php /PATH/TO/composer update
 
 
 # 3. Настройка
 
-Сега е нужно да разрешите на софтуера (сървъра) да пише в директориите `var/cache`, `var/log`, `var/spool` и `web/cache`.
+Сега е нужно да разрешите на софтуера (сървъра) да пише в директориите `var` и `public/cache`.
 
 Това става най-лесно през командния ред:
 
 	cd /PATH/TO/chitanka
-	chmod -R a+w var/cache var/log var/spool web/cache
+	chmod -R a+w var/* public/cache
 
-Ако разполагате и с файла със съдържанието на библиотеката (текстове, изображения), го разархивирайте в директорията /PATH/TO/chitanka/web/content:
+Ако разполагате и с файла със съдържанието на библиотеката (текстове, изображения), го разархивирайте в директорията /PATH/TO/chitanka/public/content:
 
-	tar zxvf chitanka-content.tar.gz -C /PATH/TO/chitanka/web/content
+	tar zxvf chitanka-content.tar.gz -C /PATH/TO/chitanka/public/content
+
+Копирайте файла `config/.env` като `config/.env.local`.
 
 
 # 4. База от данни
@@ -84,16 +82,13 @@
 
 При желание може да създадете специален потребител с достъп само до тази база от данни.
 
-Във файла `app/config/parameters.yml` е посочена конфигурацията за базата от данни. По подразбиране този файл съдържа:
+Във файла `config/.env.local` е посочена конфигурацията за базата от данни. По подразбиране този файл съдържа реда:
 
-	database_host:      localhost
-	database_name:      chitanka
-	database_user:      root
-	database_password:  ~
+    DATABASE_URL="mysql://chitanka_user:chitanka_password@127.0.0.1:3306/chitanka"
 
-Това ще рече, че базата от данни се намира на локалния компютър и се нарича chitanka. За достъп до нея ще се ползва потребителят root, който няма парола.
+Това ще рече, че базата от данни се намира на локалния компютър и се нарича `chitanka`. За достъп до нея ще се ползва потребителят `chitanka_user`, който има парола `chitanka_password`.
 
-Ако решите да ползвате друга конфигурация, напр. root с парола или пък съвсем друг потребител, просто въведете нужните данни във файла `app/config/parameters.yml`.
+Ако решите да ползвате друга конфигурация, напр. root с парола или пък съвсем друг потребител, просто променете съответните данни във файла `config/.env.local`.
 
 
 # 5. Настройка на сървъра
@@ -105,9 +100,9 @@
 Настройте нов виртуален хост при апача (Apache 2), като добавите това в конфигурацията му:
 
 	<VirtualHost *:80>
-		DocumentRoot /PATH/TO/chitanka/web
+		DocumentRoot /PATH/TO/chitanka/public
 		ServerName chitanka.local
-		<Directory "/PATH/TO/chitanka/web">
+		<Directory "/PATH/TO/chitanka/public">
 			AllowOverride All
 			Allow from All
 		</Directory>
@@ -122,7 +117,7 @@
 		listen 80;
 
 		server_name chitanka.local;
-		root /PATH/TO/chitanka/web;
+		root /PATH/TO/chitanka/public;
 
 		access_log /PATH/TO/LOG/chitanka.access.log;
 		error_log /PATH/TO/LOG/chitanka.error.log;
@@ -137,7 +132,7 @@
 		location ~ /(index|index_dev)\.php($|/) {
 			fastcgi_pass 127.0.0.1:9000;
 			# or thru a unix socket
-			#fastcgi_pass unix:/var/run/php5-fpm.sock;
+			#fastcgi_pass unix:/var/run/php-fpm.sock;
 			fastcgi_split_path_info ^(.+\.php)(/.*)$;
 			include fastcgi_params;
 			fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
