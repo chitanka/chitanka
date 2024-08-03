@@ -1,0 +1,688 @@
+homepage:
+    path: /
+    controller: App\Controller\MainController::indexAction
+    methods: GET
+
+catalog:
+    path: /catalog.{_format}
+    controller: App\Controller\MainController::catalogAction
+    methods: GET
+    requirements: { _format: opds }
+
+
+# # #   PERSONS   # # #
+
+authors:
+    path: /authors.{_format}
+    controller: App\Controller\AuthorController::indexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+authors_alt:
+    path: /author
+    controller: App\Controller\MainController::redirectAction
+    defaults: { route: authors }
+    methods: GET
+
+authors_by_alpha_index:
+    path: /authors/{by}.{_format}
+    controller: App\Controller\AuthorController::listByAlphaIndexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { by: first-name|last-name, _format: html|opds|json }
+authors_by_alpha:
+    path: /authors/{by}/{letter}.{_format}/{page}
+    controller: App\Controller\AuthorController::listByAlphaAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements: { by: first-name|last-name, page: \d+, _format: html|opds|json }
+
+authors_by_country_index:
+    path: /authors/country/{by}.{_format}
+    controller: App\Controller\AuthorController::listByCountryIndexAction
+    defaults: { by: first-name, _format: html }
+    methods: GET
+    requirements: { by: first-name|last-name, _format: html|opds|json }
+authors_by_country:
+    path: /authors/country/{country}/{by}.{_format}/{page}
+    controller: App\Controller\AuthorController::listByCountryAction
+    defaults: { by: first-name, page: 1, _format: html }
+    methods: GET
+    requirements: { by: first-name|last-name, page: \d+, _format: html|opds|json }
+
+authors_search:
+    path: /authors/search.{_format}
+    controller: App\Controller\AuthorController::searchAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|json|opds|osd|suggest|xml }
+
+author_show:
+    path: /author/{slug}.{_format}
+    controller: App\Controller\AuthorController::showAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+author_show_books:
+    path: /author/{slug}/books.{_format}
+    controller: App\Controller\AuthorController::showBooksAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+author_show_texts:
+    path: /author/{slug}/texts.{_format}
+    controller: App\Controller\AuthorController::showTextsAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+
+translators:
+    path: /translators.{_format}
+    controller: App\Controller\TranslatorController::indexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+translators_alt:
+    path: /translator
+    controller: App\Controller\MainController::redirectAction
+    defaults: { route: translators }
+    methods: GET
+
+translators_by_alpha_index:
+    path: /translators/{by}.{_format}
+    controller: App\Controller\TranslatorController::listByAlphaIndexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { by: first-name|last-name, _format: html|opds|json }
+translators_by_alpha:
+    path: /translators/{by}/{letter}.{_format}/{page}
+    controller: App\Controller\TranslatorController::listByAlphaAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements: { by: first-name|last-name, page: \d+, _format: html|opds|json }
+
+translators_by_country_index:
+    path: /translators/country/{by}.{_format}
+    controller: App\Controller\TranslatorController::listByCountryIndexAction
+    defaults: { by: first-name, _format: html }
+    methods: GET
+    requirements: { by: first-name|last-name, _format: html|opds|json }
+translators_by_country:
+    path: /translators/country/{country}/{by}.{_format}/{page}
+    controller: App\Controller\TranslatorController::listByCountryAction
+    defaults: { by: first-name, page: 1, _format: html }
+    methods: GET
+    requirements: { by: first-name|last-name, page: \d+, _format: html|opds|json }
+
+translators_search:
+    path: /translators/search.{_format}
+    controller: App\Controller\TranslatorController::searchAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|json|opds|osd|suggest|xml }
+
+translator_show:
+    path: /translator/{slug}.{_format}
+    controller: App\Controller\TranslatorController::showAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+
+persons_search:
+    path: /persons/search.{_format}
+    controller: App\Controller\PersonController::searchAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|json|opds|osd|suggest|xml }
+
+person_show:
+    path: /person/{slug}.{_format}
+    controller: App\Controller\PersonController::showAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+person_show_info:
+    path: /person/{slug}/info.{_format}
+    controller: App\Controller\PersonController::showInfoAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|json }
+
+person_suggest:
+    path: /person/{slug}/suggest
+    controller: App\Controller\PersonController::suggestAction
+
+# # #   SERIES   # # #
+
+series:
+    path: /series.{_format}
+    controller: App\Controller\SeriesController::indexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+series_alt:
+    path: /serie
+    controller: App\Controller\MainController::redirectAction
+    defaults: { route: series }
+    methods: GET
+
+series_search:
+    path: /series/search.{_format}
+    controller: App\Controller\SeriesController::searchAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|json|opds|osd|xml|suggest }
+
+series_by_alpha:
+    path: /series/alpha/{letter}.{_format}/{page}
+    controller: App\Controller\SeriesController::listByAlphaAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements: { page: \d+, _format: html|opds|json }
+
+series_show:
+    path: /serie/{slug}.{_format}
+    controller: App\Controller\SeriesController::showAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+
+# # #   BOOKS   # # #
+
+books:
+    path: /books.{_format}
+    controller: App\Controller\BookController::indexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+books_alt:
+    path: /book
+    controller: App\Controller\MainController::redirectAction
+    defaults: { route: books }
+    methods: GET
+
+books_search:
+    path: /books/search.{_format}
+    controller: App\Controller\BookController::searchAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|json|opds|osd|suggest|xml }
+
+books_by_alpha:
+    path: /books/alpha/{letter}.{_format}/{page}
+    controller: App\Controller\BookController::listByAlphaAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements: { page: \d+, _format: html|opds|json }
+
+books_by_category:
+    path: /books/category/{slug}.{_format}/{page}
+    controller: App\Controller\BookController::listByCategoryAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements: { page: \d+, _format: html|opds|json }
+
+books_wo_cover:
+    path: /books/wo-cover/{page}
+    controller: App\Controller\BookController::listWoCoverAction
+    defaults: { page: 1 }
+    methods: GET
+    requirements: { page: \d+ }
+
+books_by_isbn:
+    path: /books/isbn/{isbn}.{_format}
+    controller: App\Controller\BookController::listByIsbnAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|json }
+
+books_by_alpha_index:
+    path: /books/alpha.{_format}
+    controller: App\Controller\BookController::listByAlphaIndexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+books_by_category_index:
+    path: /books/category.{_format}
+    controller: App\Controller\BookController::listByCategoryIndexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+book_random:
+    path: /book/random
+    controller: App\Controller\BookController::randomAction
+    methods: GET
+
+book_show:
+    path: /book/{id}.{_format}
+    controller: App\Controller\BookController::showAction
+    defaults: { _format: html }
+    methods: GET
+
+book_comments:
+    path: /book/{id}/comments.{_format}
+    controller: App\Controller\BookController::commentsAction
+    defaults: { _format: html }
+
+# # #   BOOK SEQUENCES   # # #
+
+sequences:
+    path: /sequences.{_format}
+    controller: App\Controller\SequenceController::indexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+sequences_alt:
+    path: /sequence
+    controller: App\Controller\MainController::redirectAction
+    defaults: { route: sequences }
+    methods: GET
+
+sequences_search:
+    path: /sequences/search.{_format}
+    controller: App\Controller\SequenceController::searchAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|json|opds|osd|suggest|xml }
+
+sequences_by_alpha:
+    path: /sequences/alpha/{letter}.{_format}/{page}
+    controller: App\Controller\SequenceController::listByAlphaAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements: { page: \d+, _format: html|opds|json }
+
+sequence_show:
+    path: /sequence/{slug}.{_format}
+    controller: App\Controller\SequenceController::showAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+
+# # #   TEXTS   # # #
+
+texts_comments:
+    path: /texts/comments.{_format}/{page}
+    controller: App\Controller\TextCommentController::indexAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements: { page: \d+, _format: html|json|rss }
+
+texts:
+    path: /texts.{_format}
+    controller: App\Controller\TextController::indexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+texts_alt:
+    path: /text
+    controller: App\Controller\MainController::redirectAction
+    defaults: { route: texts }
+    methods: GET
+
+texts_search:
+    path: /texts/search.{_format}
+    controller: App\Controller\TextController::searchAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|json|opds|osd|suggest|xml }
+
+texts_by_alpha:
+    path: /texts/alpha/{letter}.{_format}/{page}
+    controller: App\Controller\TextController::listByAlphaAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements: { page: \d+, _format: html|opds|json }
+
+texts_by_type:
+    path: /texts/type/{type}.{_format}/{page}
+    controller: App\Controller\TextController::listByTypeAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements: { page: \d+, _format: html|opds|json }
+
+texts_by_label:
+    path: /texts/label/{slug}.{_format}/{page}
+    controller: App\Controller\TextController::listByLabelAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements: { page: \d+, _format: html|opds|json }
+
+texts_by_language:
+    path: /texts/language/{language}.{_format}/{page}
+    controller: App\Controller\TextController::listByLanguageAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements: { page: \d+, _format: html|opds|json }
+
+texts_by_original_language:
+    path: /texts/original-language/{language}.{_format}/{page}
+    controller: App\Controller\TextController::listByOriginalLanguageAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements: { page: \d+, _format: html|opds|json }
+
+texts_by_alpha_index:
+    path: /texts/alpha.{_format}
+    controller: App\Controller\TextController::listByAlphaIndexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+texts_by_type_index:
+    path: /texts/type.{_format}
+    controller: App\Controller\TextController::listByTypeIndexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+texts_by_label_index:
+    path: /texts/label.{_format}
+    controller: App\Controller\TextController::listByLabelIndexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+texts_by_language_index:
+    path: /texts/language.{_format}
+    controller: App\Controller\TextController::listByLanguageIndexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+texts_by_original_language_index:
+    path: /texts/original-language.{_format}
+    controller: App\Controller\TextController::listByOriginalLanguageIndexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|opds|json }
+
+texts_label_log:
+    path: /texts/label-log
+    controller: App\Controller\TextController::fullLabelLogAction
+    methods: GET
+
+text_label_new:
+    path: /text/{id}/label/new/group/{group}
+    controller: App\Controller\TextController::newLabelAction
+text_label_delete:
+    path: /text/{id}/label/{labelId}
+    controller: App\Controller\TextController::deleteLabelAction
+    methods: DELETE
+
+text_label_log:
+    path: /text/{id}/label-log
+    controller: App\Controller\TextController::labelLogAction
+    methods: GET
+
+text_random:
+    path: /text/random
+    controller: App\Controller\TextController::randomAction
+    methods: GET|POST
+
+text_comments:
+    path: /text/{id}/comments.{_format}
+    controller: App\Controller\TextCommentController::listForTextAction
+    defaults: { _format: html }
+
+text_ratings:
+    path: /text/{id}/ratings
+    controller: App\Controller\TextController::ratingsAction
+
+text_rating:
+    path: /text/{id}/rating
+    controller: App\Controller\TextController::ratingAction
+
+text_similar:
+    path: /text/{id}/similar
+    controller: App\Controller\TextController::similarAction
+    methods: GET
+
+text_read:
+    path: /text/{id}/read
+    controller: App\Controller\TextController::markReadAction
+    methods: POST
+    requirements: { id: \d+ }
+
+text_bookmark:
+    path: /text/{id}/mark
+    controller: App\Controller\TextController::addBookmarkAction
+    methods: POST
+    requirements: { id: \d+ }
+
+text_show:
+    path: /text/{id}.{_format}
+    controller: App\Controller\TextController::showAction
+    defaults: { slug: test, _format: html }
+    methods: GET
+
+text_show_part:
+    path: /text/{id}/{part}.{_format}
+    controller: App\Controller\TextController::showPartAction
+    defaults: { part: 1, _format: html }
+    requirements: { part: \d+ }
+
+
+search:
+    path: /search.{_format}
+    controller: App\Controller\SearchController::indexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|json|opds|osd|xml|suggest }
+
+sandbox:
+    path: /sandbox
+    controller: App\Controller\SandboxController::indexAction
+
+feedback:
+    path: /feedback
+    controller: App\Controller\FeedbackController::indexAction
+
+statistics:
+    path: /statistics
+    controller: App\Controller\StatisticsController::indexAction
+
+
+new:
+    path: /new.{_format}
+    controller: App\Controller\HistoryController::indexAction
+    defaults: { _format: html }
+    methods: GET
+    requirements: { _format: html|json }
+
+new_books:
+    path: /new/books.{_format}/{page}
+    controller: App\Controller\HistoryController::listBooksAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements: { page: \d+, _format: html|rss|opds|json }
+
+new_books_by_month:
+    path: /new/books/{year}/{month}.{_format}/{page}
+    controller: App\Controller\HistoryController::listBooksByMonthAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements:
+        year: \d+
+        month: \d+
+        page: \d+
+        _format: html|opds|json
+
+new_books_by_day:
+    path: /new/books/{year}/{month}/{day}.{_format}/{page}
+    controller: App\Controller\HistoryController::listBooksByDayAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements:
+        year: \d+
+        month: \d+
+        day: \d+
+        page: \d+
+        _format: html|json
+
+new_texts:
+    path: /new/texts.{_format}/{page}
+    controller: App\Controller\HistoryController::listTextsAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements: { page: \d+, _format: html|rss|opds|json }
+
+new_texts_by_month:
+    path: /new/texts/{year}/{month}.{_format}/{page}
+    controller: App\Controller\HistoryController::listTextsByMonthAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements:
+        year: \d+
+        month: \d+
+        page: \d+
+        _format: html|opds|json
+
+new_texts_by_day:
+    path: /new/texts/{year}/{month}/{day}.{_format}/{page}
+    controller: App\Controller\HistoryController::listTextsByDayAction
+    defaults: { page: 1, _format: html }
+    methods: GET
+    requirements:
+        year: \d+
+        month: \d+
+        day: \d+
+        page: \d+
+        _format: html|json
+
+email_user:
+    path: /email/{username}
+    controller: App\Controller\EmailController::newAction
+    options:
+        segment_separators: [/]
+# settings
+user_edit:
+    path: /user/{username}/edit
+    controller: App\Controller\UserController::editAction
+    options:
+        segment_separators: [/]
+user_show:
+    path: /user/{username}
+    controller: App\Controller\UserController::showAction
+    methods: GET
+    options:
+        segment_separators: [/]
+# old edituserpage
+user_page_edit:
+    path: /user/{username}/page
+    controller: App\Controller\UserController::pageAction
+    options:
+        segment_separators: [/]
+
+user_comments:
+    path: /user/{username}/comments/{page}
+    controller: App\Controller\UserController::commentsAction
+    defaults: { page: 1 }
+    methods: GET
+    requirements: { page: \d+ }
+    options:
+        segment_separators: [/]
+
+user_ratings:
+    path: /user/{username}/ratings
+    controller: App\Controller\UserController::ratingsAction
+    methods: GET
+    options:
+        segment_separators: [/]
+
+user_contribs:
+    path: /user/{username}/contribs/{page}
+    controller: App\Controller\UserController::contribsAction
+    defaults: { page: 1 }
+    methods: GET
+    requirements: { page: \d+ }
+    options:
+        segment_separators: [/]
+
+user_read_list:
+    path: /user/{username}/read/{page}
+    controller: App\Controller\UserController::readListAction
+    defaults: { page: 1 }
+    methods: GET
+    requirements: { page: \d+ }
+    options:
+        segment_separators: [/]
+
+user_bookmarks:
+    path: /user/{username}/bookmarks/{page}
+    controller: App\Controller\UserController::bookmarksAction
+    defaults: { page: 1 }
+    methods: GET
+    requirements: { page: \d+ }
+    options:
+        segment_separators: [/]
+
+user_special_texts:
+    path: /user-special-texts
+    controller: App\Controller\UserController::specialTextsAction
+
+
+register:
+    path: /register
+    controller: App\Controller\SecurityController::registerAction
+login:
+    path: /login
+    controller: App\Controller\SecurityController::loginAction
+login_check:
+    path: /login_check
+# logout:
+#     path: /logout
+logout:
+    path: /signout
+    controller: App\Controller\SecurityController::logoutAction
+
+request_password:
+    path: /request-password
+    controller: App\Controller\SecurityController::requestPasswordAction
+request_username:
+    path: /request-username
+    controller: App\Controller\SecurityController::requestUsernameAction
+
+
+suggest_info:
+    path: /suggest/{type}/text/{id}
+    controller: App\Controller\InfoSuggestionController::indexAction
+
+message:
+    path: /message
+    controller: App\Controller\MessageController::indexAction
+
+wiki_save:
+    path: /wiki/save
+    controller: App\Controller\WikiController::saveAction
+    methods: POST
+
+wiki_preview:
+    path: /wiki/preview
+    controller: App\Controller\WikiController::previewAction
+    methods: POST
+
+wiki_history:
+    path: /wiki/history/{page}
+    controller: App\Controller\WikiController::historyAction
+    requirements: { page: .+ }
+
+wiki:
+    path: /{page}
+    controller: App\Controller\WikiController::showAction
+    requirements: { page: .+ }

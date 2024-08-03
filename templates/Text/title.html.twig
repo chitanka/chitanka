@@ -1,0 +1,13 @@
+{% import 'link.html.twig' as link %}
+{% if text.authors|length %}
+	<span class="author-title">{{ link.persons_comma(text.authors, text.lang) }}</span><br>
+{% endif %}
+<span class="text-title">
+	<a href="{{ path('text_show', {id: text.id}) }}" itemprop="name" data-edit="{{ link.admin_text_edit(text) }}">{{ text.title }}</a>
+	{% if text.hastitlenote %}
+		<sup id="ref_{{ obj_count }}-0" class="ref"><a href="#note_{{ obj_count }}-0">[0]</a></sup>
+	{% endif %}
+</span>
+{% if part > 1 or text.getNextHeaderNr(part) %}
+	<small>({{ part }})</small>
+{% endif %}

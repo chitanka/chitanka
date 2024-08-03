@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+
+{% if title is defined and pager is defined and pager.has_prev %}
+	{% set suffix = 'страница '~pager.page %}
+	{% set subtitle = subtitle is defined ? subtitle ~' — '~ suffix : suffix %}
+{% endif %}
+
+{% block title %}
+	{% if title is defined %}
+		{{ title|doctitle }}
+		{% if subtitle is defined %}
+			— {{ subtitle|doctitle }}
+		{% endif %}
+		— {{ parent() }}
+	{% else %}
+		{{ parent() }}
+	{% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}">
+	{{ render_esi(controller('App\\Controller\\UserController::stylesheetAction')) }}
+	{% if css_extra is defined %}
+		{% for extra_stylesheet in css_extra %}
+			<link rel="stylesheet" href="{{ asset(extra_stylesheet) }}">
+		{% endfor %}
+	{% endif %}
+	{% if css is defined %}
+		<style>{{ css|raw }}</style>
+	{% endif %}
+{% endblock %}
+
+{% block head %}
+	{% set opengraph = opengraph|default({})|merge({
+		'site_name': 'Моята библиотека'
+	}) %}
+	<meta name="description" content="{{ meta_description|default('Универсална библиотека за книги и текстове на български и други езици. Над 3000 автори. Поддръжка на FictionBook (FB2), EPUB и TXT.') }}">
+	<meta name="viewport" content="initial-scale=1.0, width=device-width">
+	{% if page_feed is defined %}
+		<link rel="alternate" type="application/rss+xml" title="RSS 2.0 — {{ page_feed.title is defined ? page_feed.title : block('title') }}" href="{{ page_feed.url }}">
+	{% endif %}
+	<link rel="related" type="application/atom+xml;profile=opds-catalog" href="{{ path('catalog', {'_format': 'opds'}) }}" title="Каталог на Моята библиотека чрез OPDS" />
+
+	{% for key, value in opengraph %}
+		<meta property="og:{{ key }}" content="{{ value }}">
+	{% endfor %}
+
+	{% if meta_canonical is defined %}
+		<link rel="canonical" href="{{ meta_canonical }}">
+	{% endif %}
+	{#<link rel="search" type="application/opensearchdescription+xml" href="{{ path('search', {'_format': 'osd'}) }}" title="Търсене в Моята библиотека" />#}
+{% endblock %}
+
+{% block body_class %}
+	page-{{ current_route }} {{ app.user.isAnonymous() ? 'user-anonymous' : 'user-registered' }}
+{% endblock %}
+
+{% block body %}
+
+	{% include 'jumpto_links.html.twig' %}
+
+	{% if global_info_message is not empty %}
+		<aside id="global-info-message">
+			<span class="fa fa-warning"></span>
+			{{ global_info_message|raw }}
+		</aside>
+	{% endif %}
+
+	<div id="content-wrapper" class="clearfix p_{{ current_route }}">
+
+		<div id="main-content-wrapper">
+			<main id="main-content" role="main" itemscope itemtype="http://schema.org/{{ itemtype|default('WebPage') }}">
+				{% block site_notice %}
+					{{ render(controller('App\\Controller\\SiteNoticeController::stripeAction')) }}
+				{% endblock %}
+
+				<div id="first-heading">
+					{% if subtitle is defined %}
+						<h1>
+							{{ title|raw }}
+							<span class="subtitle">({{ subtitle|trim|raw }})</span>
+						</h1>
+					{% elseif title is defined %}
+						<h1>{{ title|raw }}</h1>
+					{% endif %}
+				</div>
+
+				<div class="page-content">
+					{% for flashMessage in app.session.flashbag.get('error') %}
+						<div class="messages error alert alert-error">{{ flashMessage|raw }}</div>
+					{% endfor %}
+					{% for flashMessage in app.session.flashbag.get('notice') %}
+						<div class="messages alert alert-info">{{ flashMessage|raw }}</div>
+					{% endfor %}
+
+					{% block content '' %}
+				</div>
+			</main>
+		</div>
+
+		<nav id="navigation">
+		{% block navigation %}
+			<h2 class="sr-only">Навигация</h2>
+
+			{% block search_form %}
+				{% include 'search_form.html.twig' %}
+			{% endblock %}
+
+			{% block personal_tools %}
+				{{ render_esi(controller('App\\Controller\\UserController::personalToolsAction')) }}
+			{% endblock %}
+
+			<div id="logo" role="banner">
+				<a href="{{ path('homepage') }}" title="Към началната страница"><span class="sr-only">Начална страница</span><span></span></a>
+			</div>
+
+			{% block navlinks %}
+				<div class="sidebar-menu">
+				{{ navlinks|raw }}
+					{% if project_links is defined and project_links is not empty %}
+						{% include 'projects_toolbar.html.twig' %}
+					{% endif %}
+				</div>
+			{% endblock %}
+
+		{% endblock %}
+		</nav>
+
+	</div>
+
+	<footer id="footer" role="contentinfo">
+	{% block footer %}
+		<h2 class="sr-only">Допълнителна информация</h2>
+		{{ footer_links|raw }}
+	{% endblock %}
+	</footer>
+
+	<nav>
+	<a href="#main-content" id="goto-top-link" title="Към началото на страницата"><span class="fa fa-chevron-circle-up"></span><span class="sr-only">Към началото на страницата</span></a>
+	</nav>
+
+	<div id="env-{{ environment }}"></div>
+{% endblock body %}
+
+{% block javascripts %}
+	<script>
+		var _GLOBALS = {
+			scriptname: "{{ path('homepage') }}"
+		};
+	</script>
+	{%- macro local_asset_url(scripts) -%}
+		{{ asset(js_path ~ scripts|join(',')|replace({'/': '--'}) ~','~asset_version~'.js') }}
+	{%- endmacro -%}
+	{% from _self import local_asset_url %}
+
+	{% set scripts = [] %}
+	{% if script_library %}
+		<script src="{{ script_library }}"></script>
+	{% else %}
+		{% set scripts = ['vendor/js/jquery'] %}
+	{% endif %}
+	{% set scripts = scripts|merge(['vendor/js/jquery-cookie', 'jquery-myplugins', 'main']) %}
+
+	<script src="{{ local_asset_url(scripts) }}"></script>
+
+	<script src="{{ asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+	{% if js_extra is defined %}
+		<script src="{{ local_asset_url(js_extra) }}"></script>
+	{% endif %}
+
+	{% if inline_js is defined %}
+		<script>{{ inline_js|raw }}</script>
+	{% endif %}
+	{% block inline_js %}{% endblock %}
+	<script>
+		$.each(user_functions, function(i, func){
+			func();
+		});
+	</script>
+	{{ analytics_snippet|raw }}
+{% endblock %}

@@ -1,0 +1,39 @@
+<?php namespace App\Persistence;
+
+use App\Entity\Text;
+use App\Entity\TextLabelLog;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ *
+ */
+class TextLabelLogRepository extends EntityRepository {
+
+	public function __construct(ManagerRegistry $registry) {
+		parent::__construct($registry, TextLabelLog::class);
+	}
+
+	public function getAll($page = 1, $limit = 30) {
+		$query = $this->createDefaultQueryBuilder('log')->getQuery();
+		$this->setPagination($query, $page, $limit);
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
+		return $query->getArrayResult();
+	}
+
+	public function getForText(Text $text) {
+		$query = $this->createDefaultQueryBuilder('log')
+			->where('log.text = ?1')->setParameter(1, $text)
+			->getQuery();
+		$query->useResultCache(true, static::DEFAULT_CACHE_LIFETIME);
+		return $query->getArrayResult();
+	}
+
+	private function createDefaultQueryBuilder($alias = 'log') {
+		return $this->createQueryBuilder($alias)
+			->select($alias, 'text', 'label', 'user')
+			->leftJoin("$alias.text", 'text')
+			->leftJoin("$alias.label", 'label')
+			->leftJoin("$alias.user", 'user')
+			->addOrderBy("$alias.date", 'desc');
+	}
+}

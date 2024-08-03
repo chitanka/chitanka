@@ -1,0 +1,10 @@
+{% extends app.request.xmlHttpRequest ? 'base.htmlx.twig' : 'base.html.twig' %}
+
+{% block title %}
+	{% for author in authors %}
+		{{ author.name }}{{ loop.last ? ' – ' : ', ' }}
+	{% endfor %}
+	{{ book.title|dot2br|raw }}
+{% endblock %}
+
+{% block body book.contentAsHtml(asset('/'))|raw %}

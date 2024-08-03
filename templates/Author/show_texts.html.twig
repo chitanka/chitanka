@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% import 'link.html.twig' as link %}
+{% set title %}
+	<a class="selflink" itemprop="name" data-edit="{{ link.admin_person_edit(person) }}">{{ person.name }}</a>
+{% endset %}
+{% set subtitle = ('person.role.'~person.role)|trans %}
+{% block content %}
+	<div class="person-{{ person.slug }}">
+	{% if texts|length > 0 %}
+		<h2 id="author">Произведения</h2>
+	{% endif %}
+	{% for series in texts %}
+		{% include 'Author/texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
+	{% endfor %}
+	</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+<p>Здравейте!</p>
+
+<p>Ето какво беше добавено в „Моята библиотека“ през {{ ('month.'~date|date('n'))|trans }} {{ date|date('Y') }} г.:</p>
+
+{% for category, books in booksByCategory %}
+
+	<h3>{{ category }}</h3>
+	{% apply spaceless %}
+	<ul>
+	{% for book in books %}
+		<li>
+			<a href="http://chitanka.info/book/{{ book.id }}">„{{ book.title }}“</a>{{ book.subtitle is not empty ? ' (' ~ book.subtitle ~')' : '' }}{{ book.authors is not empty ? ' от ' ~ book.authorNames|join(', ') : '' }}
+		</li>
+	{% endfor %}
+	</ul>
+	{% endapply %}
+{% endfor %}
+
+{% if texts is not empty %}
+	<h3>Произведения, невключени в книги</h3>
+	{% apply spaceless %}
+	<ul>
+		{% for text in texts %}
+			<li>
+				<a href="http://chitanka.info/text/{{ text.id }}">„{{ text.title }}“</a>{{ text.subtitle is not empty ? ' (' ~ text.subtitle ~')' : '' }}{{ text.authors is not empty ? ' от ' ~ text.authorNames|join(', ') : '' }}
+			</li>
+		{% endfor %}
+	</ul>
+	{% endapply %}
+{% endif %}
+
+<p>Приятно четене!</p>
+
+<p>
+	Моята библиотека<br>
+	<a href="http://chitanka.info">chitanka.info</a>
+</p>
+
+<hr style="border-width: 5px 0 0 0; border-style: dotted; border-color: black">
+<p>Алтернативен начин да следите новото в библиотеката предлага страницата <a href="http://chitanka.info/new">„Новодобавено“</a>.</p>
+<p>Ако повече не желаете да получавате бюлетина, посетете страницата си за настройки в библиотеката и махнете отметката при опцията „Получаване на месечен бюлетин“.</p>
+<p>Абонаментът ви за месечния бюлетин ще бъде автоматично прекратен, ако повече от 24 месеца не сте влизали в библиотеката с име и парола.</p>

@@ -1,0 +1,24 @@
+{% extends 'layout.html.twig' %}
+
+{% import 'link.html.twig' as link %}
+{% set title %}Книги в категория „<a class="selflink" data-edit="{{ link.admin_category_edit(category) }}">{{ category.name }}</a>“{% endset %}
+{% block content %}
+
+	{% import 'helper.html.twig' as helper %}
+	{% import 'link.html.twig' as link %}
+	{% set breadcrumbItems = { (path('books')): 'Книги' } %}
+	{% for parent in parents %}
+		{% set breadcrumbItems = breadcrumbItems|merge({ (path('books_by_category', {'slug': parent.slug})) : parent.name }) %}
+	{% endfor %}
+	{% set currentBreadcrumbItem -%}
+		<a href="{{ path('books_by_category', {'slug': category.slug}) }}" data-edit="{{ link.admin_category_edit(category) }}">{{ category.name }}</a>
+		{{ helper.printNrOfItems(category.nrOfBooks) }}
+		{{ helper.printInfoTip(category.description) }}
+	{%- endset %}
+	{{ helper.printBreadcrumb( breadcrumbItems|merge({ '': currentBreadcrumbItem }) ) }}
+
+	{% include 'listSettings.html.twig' %}
+	{% include 'Book/list.html.twig' %}
+	{% include 'pager.html.twig' %}
+
+{% endblock %}

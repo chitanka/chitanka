@@ -1,0 +1,8 @@
+{% for type in types %}
+	<entry>
+		<title>{{ type }}</title>
+		<id>{{ helper.urn('texts_by_type', [type.code]) }}</id>
+		{{ helper.link(helper.path('texts_by_type', {'type': type.code})) }}
+		<content type="text">{{ 'tooltip.nr-of-texts-with-type'|trans({'%count%': type.nrOfTexts, '%type%': type.name}) }}</content>
+	</entry>
+{% endfor %}

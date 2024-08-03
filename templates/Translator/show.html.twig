@@ -1,0 +1,39 @@
+{% extends 'layout.html.twig' %}
+
+{% import 'link.html.twig' as link %}
+{% set title %}
+	<a class="selflink" itemprop="name" data-edit="{{ link.admin_person_edit(person) }}">{{ person.name }}</a>
+{% endset %}
+{% set subtitle = ('person.role.'~person.role)|trans %}
+{% block content %}
+
+	<div class="person-{{ person.slug }}">
+
+		<ul id="person-tabs" class="nav nav-tabs">
+			{% if texts_as_translator is not empty %}
+			<li><a href="#translations" data-toggle="tab"><span class="fa fa-edit"></span> Преводни произведения</a></li>
+			{% endif %}
+			<li><a href="#article" data-toggle="tab"><span class="fa fa-film"></span> Биография</a></li>
+		</ul>
+
+		<div class="tab-content">
+			{% if texts_as_translator is not empty %}
+			<div class="tab-pane" id="translations">
+				{% for series in texts_as_translator %}
+					{% include 'Translator/texts_list.html.twig' with {'series': series.data, 'texts': series.texts} %}
+				{% endfor %}
+			</div>
+			{% endif %}
+			<div class="tab-pane" id="article">
+				{% include 'Person/info.html.twig' %}
+			</div>
+		</div>
+
+	</div><!-- end class=person -->
+{% endblock %}
+
+{% block inline_js %}
+<script>
+	$("#person-tabs").find("a:first").tab('show');
+</script>
+{% endblock %}

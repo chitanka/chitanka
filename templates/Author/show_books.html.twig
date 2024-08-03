@@ -1,0 +1,15 @@
+{% extends 'layout.html.twig' %}
+
+{% import 'link.html.twig' as link %}
+{% set title %}
+	<a class="selflink" itemprop="name" data-edit="{{ link.admin_person_edit(person) }}">{{ person.name }}</a>
+{% endset %}
+{% set subtitle = ('person.role.'~person.role)|trans %}
+{% block content %}
+	<div class="person-{{ person.slug }}">
+	{% if books is defined %}
+		<h2 id="books">Книги</h2>
+		{% include 'Book/list.html.twig' %}
+	{% endif %}
+	</div>
+{% endblock %}

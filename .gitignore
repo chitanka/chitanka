@@ -1,22 +1,46 @@
-/app/config/parameters.yml
+/config/parameters.local.yaml
 /bin/
 !/bin/console
 !/bin/update
 !/bin/cc
 /update/*/
 /var/*/
-/var/
-/vendor/
-/web/content
-/web/cache/
-/web/tor/
-/web/todo/
-/web/bundles/
-/web/js/*.min.js
+/public/content
+/public/cache/
+/public/tor/
+/public/todo/
+/public/bundles/
+/public/js/*.min.js
 *.swp
 .last
 .lock
 /composer.phar
-.phpunit.result.cache
 !.gitignore
 !.gitkeep
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###

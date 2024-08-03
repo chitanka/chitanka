@@ -1,0 +1,243 @@
+{% macro year(text) %}
+	{% if text.year is empty %}
+		<a href="{{ path('suggest_info', {'id': text.id, 'type': 'orig_year'}) }}">????</a>
+	{% elseif text.year < 0 %}
+		{{ -1 * text.year }}{{ text.year2 > 0 ? '–' ~ text.year2 : '' }} пр.н.е.
+	{% else %}
+		<span itemprop="datePublished">{{ text.year }}</span>{{ text.year2 > 0 ? '–' ~ text.year2 : '' }}
+	{% endif %}
+{% endmacro %}
+
+{% macro transYear(text) %}
+	{% if text.transYear is empty %}
+		<a href="{{ path('suggest_info', {'id': text.id, 'type': 'trans_year'}) }}">????</a>
+	{% else %}
+		<span itemprop="datePublished">{{ text.transYear }}</span>
+	{% endif %}
+{% endmacro %}
+
+{% macro origTitle(text) %}
+	{% apply spaceless %}
+	{% if text.origTitle %}
+		{{ text.origTitle }}
+		{% if text.origSubtitle %}
+			({{ text.origSubtitle }})
+		{% endif %}
+	{% else %}
+		[не е въведено; <a href="{{ path('suggest_info', {'id': text.id, 'type': 'orig_title'}) }}">помогнете</a> за добавянето му]
+	{% endif %}
+	{% endapply %}
+{% endmacro %}
+
+{% macro translator(text) %}
+	{% import 'link.html.twig' as link %}
+	{% apply spaceless %}
+	{% if text.translators|length %}
+		<span itemprop="author">
+		{{ link.persons(text.translators) }}
+		</span>
+	{% else %}
+		[Няма данни за преводача; <a href="{{ path('suggest_info', {'id': text.id, 'type': 'translator'}) }}">помогнете</a> за добавянето му]
+	{% endif %}
+	{% endapply %}
+{% endmacro %}
+
+{% macro license(license) %}{% apply spaceless %}
+	{% if license.uri is empty %}
+		{{ license.fullname }}
+	{% else %}
+		<a href="{{ license.uri }}" rel="license">{{ license.fullname }}</a>
+	{% endif %}
+{% endapply %}{% endmacro %}
+
+{% macro rating(text) %}
+	<span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+		<meta itemprop="worstRating" content="1">
+		<meta itemprop="bestRating" content="6">
+		<meta itemprop="ratingValue" content="{{ text.rating }}">
+		<meta itemprop="ratingCount" content="{{ text.votes }}">
+		<a href="{{ path('text_ratings', {'id': text.id}) }}" title="Оценка: {{ text.rating|rating_format }} (× {{ text.votes }} {{ text.votes == 1 ? 'глас' : 'гласа' }})" class="rating" tabindex="-1"><span class="pie {{ text.rating|rating_class }}"></span><span class="sr-only">{{ text.rating|rating_format }}</span></a>
+	</span>
+{% endmacro %}
+
+{% macro rating_expanded(text) %}
+	{% if text.votes %}
+	<span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+		<meta itemprop="worstRating" content="1">
+		<meta itemprop="bestRating" content="6">
+		<a href="{{ path('text_ratings', {'id': text.id}) }}"><meta itemprop="ratingValue" content="{{ text.rating }}">{{ text.rating|rating_format }} (× <span itemprop="ratingCount">{{ text.votes }}</span> {{ text.votes == 1 ? 'глас' : 'гласа' }})</a>
+	</span>
+	{% else %}
+		няма
+	{% endif %}
+{% endmacro %}
+
+
+{% macro text_with_author(text, options) %}
+	{% import 'link.html.twig' as link %}
+<dl class="text-entity" itemscope itemtype="http://schema.org/CreativeWork" data-id="{{ text.id }}">
+	<dt>
+		<h4 class="text-title">
+		{{ options.prefix is defined ? options.prefix : '' }}
+		{% if text.series is defined and text.series is not empty %}
+			<a href="{{ path('series_show', {'slug': text.series.slug}) }}" title="{{ text.series.name }}">{{ text.series.name|acronym }}</a>:
+		{% endif %}
+		{{ link.text(text, options) }}
+		{{ _self.rating(text) }}
+		</h4>
+	</dt>
+	<dd class="tauthor" itemprop="author">{{ _self.author_list(text.authors) }}</dd>
+	<!--<dd class="extra">{#{{ _self.text_extra_info(text) }}#}</dd>-->
+	{% if options.download_links is defined %}
+		<dd class="download">{{ _self.download_links(text) }}</dd>
+	{% endif %}
+</dl>
+{% endmacro %}
+
+{% macro text_title_with_author(text) %}
+{% apply spaceless %}
+	{% import 'link.html.twig' as link %}
+	„{{ link.text(text) }}“ {{ _self.author_list(text.authors) }}
+{% endapply %}
+{% endmacro %}
+
+{% macro text(text, options) %}
+	{% import 'link.html.twig' as link %}
+<dl class="text-entity" itemscope itemtype="http://schema.org/CreativeWork" data-id="{{ text.id }}">
+	<dt>
+		<h4 class="text-title">
+		{{ options.prefix is defined ? options.prefix : '' }}
+		{% if options.sernr is defined and text.sernr %}{{ text.sernr }}.{% endif %}
+		{{ link.text(text, options) }}
+		{{ _self.rating(text) }}
+		</h4>
+	</dt>
+	<dd class="extra">{{ _self.text_extra_info(text) }}</dd>
+	{% if options.download_links is defined %}
+		<dd class="download">{{ _self.download_links(text) }}</dd>
+	{% endif %}
+</dl>
+{% endmacro %}
+
+
+{% macro text_extra_info(text) %}
+	{% if text.origTitle is not empty %}
+		<em>{{ text.origTitle }}</em>{% if text.year is not empty %}, {{ _self.text_year(text) }}{% endif %}
+	{% elseif text.year is not empty %}
+		{{ _self.text_year(text) }}
+	{% endif %}
+{% endmacro %}
+
+{% macro text_year(text) %}
+	<span itemprop="datePublished">{{ text.year }}</span>
+{% endmacro %}
+
+
+{% macro author_list(authors, prefix, format) %}
+	{% if authors|length == 1 %}
+		{{ prefix|default('от') }} {{ _self.author_link(authors[0], format) }}
+	{% elseif authors|length > 1 %}
+		{{ prefix|default('от') }} <ul class="simplelist">
+		{% for author in authors %}
+			<li>{{ _self.author_link(author, format) }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+{% endmacro %}
+
+{% macro author_link(author, format) %}
+	{% import 'link.html.twig' as link %}
+	{% apply spaceless %}
+	<span itemscope itemtype="http://schema.org/Person"><a href="{{ path('person_show', {'slug': author.slug, '_format': format|default('html')}) }}" data-edit="{{ link.admin_person_edit(author) }}" itemprop="name">{{ author.name }}</a></span>
+	{% endapply %}
+{% endmacro %}
+
+{% macro download_link(text, format, size) %}
+	{% apply spaceless %}
+	<a href="{{ path('text_show', {'id': text.id ~'-'~ text.slug, '_format': format}) }}" title="Сваляне във формат {{ format }}{% if size %} ({{ size }} KiB){% endif %}" class="btn btn-default btn-sm dl dl-sm dl-{{ format|replace({'.zip': ''}) }} action"><span class="sr-only">{{ format }}</span>{% if size %}<span class="sr-only filesize"> {{ size }} KiB</span>{% endif %}</a>
+	{% endapply %}
+{% endmacro %}
+
+{% macro bookmark_form(text, class) %}
+<form class="bookmark-form action-form {{ class|default('') }}" action="{{ path('text_bookmark', {'id': text.id}) }}" method="post" data-credentials="user">
+	<button type="submit" title="Добавяне в Избрани" class="action btn btn-default"><span class="sr-only">Избрани</span></button>
+</form>
+{% endmacro %}
+
+{% macro download_links(text) %}
+	<div class="btn-group dl-sm" role="group" aria-label="Връзки за сваляне">
+		{% if not text.blocked %}
+			{{ _self.bookmark_form(text) }}
+			{% for format in text.outputFormats %}
+				{{ _self.download_link(text, format) }}
+			{% endfor %}
+		{% else %}
+			<b class="btn btn-xs btn-danger" title="{{ text.removedNotice }}"><i class="fa fa-ban"></i><span class="sr-only">Забранено</span></b>
+		{% endif %}
+	</div>
+{% endmacro %}
+
+
+{% macro text_list_with_author(texts, options) %}
+	<ul class="superlist fa-ul">
+	{% for text in texts %}
+		<li class="title t-{{ text.type.code }}">
+			<span class="fa fa-li fa-folder" title="{{ text.type }}"></span>
+			{{ _self.text_with_author(text, options) }}
+		</li>
+	{% endfor %}
+	</ul>
+{% endmacro %}
+
+
+{% macro text_list(texts) %}
+	<ul class="superlist fa-ul">
+	{% for text in texts %}
+		<li class="title t-{{ text.type.code }}">
+			<span class="fa fa-li fa-folder" title="{{ text.type }}"></span>
+			{{ _self.text(text, {'sernr': 1, 'download_links': 1}) }}
+		</li>
+	{% endfor %}
+	</ul>
+{% endmacro %}
+
+
+{% macro toc(text, cur_part, is_full_text, text_id) %}
+	{% set prevlev = 0 %}
+	{% for header in text.headers %}
+		{{ _self.toc_item(header, prevlev, cur_part, text, is_full_text|default(false), text_id) }}
+		{% set prevlev = header.level %}
+	{% endfor %}
+
+	</li>
+	{{ '</ul></li>'|repeat(prevlev-1)|raw }}
+	</ul>
+{% endmacro %}
+
+{% macro toc_item(header, prevlev, cur_part, text, is_full_text, text_id) %}
+	{% if prevlev < header.level %}
+		<ul>{{ '<li><ul>'|repeat(header.level - 1 - prevlev)|raw }}
+	{% elseif prevlev > header.level %}
+		</li>{{ '</ul></li>'|repeat(prevlev - header.level)|raw }}
+	{% else %}
+		</li>
+	{% endif %}
+	<li>
+
+	{% if is_full_text %}
+		<a href="#l-{{ anchor_name(header.name) }}">{{ header.name }}</a>
+	{% else %}
+		{% if cur_part - 1 == header.nr %}
+			{% set rel = 'prev' %}
+		{% elseif cur_part + 1 == header.nr %}
+			{% set rel = 'next' %}
+		{% else %}
+			{% set rel = '' %}
+		{% endif %}
+		<a href="{{ path('text_show_part', {'id': text_id|default(text.id), 'part': header.nr}) }}#textstart" class="{{ cur_part == header.nr ? 'selected' : '' }}" rel="{{ rel }}">{{ header.name }}</a>
+	{% endif %}
+{% endmacro %}
+
+{% macro qrcode(text) %}
+	<a href="//bg.wikipedia.org/wiki/QR_%D0%BA%D0%BE%D0%B4" class="qrcode"><img src="{{ url('text_show', {'id': text.id ~'-'~ text.slug})|qrcode }}"></a>
+{% endmacro %}

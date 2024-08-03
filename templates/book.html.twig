@@ -1,0 +1,80 @@
+{% macro book(book) %}
+	{% import 'link.html.twig' as link %}
+	{% set uniqueId = 'book-card-' ~ random() %}
+	<article class="media book-media" aria-labelledby="{{ uniqueId }}" itemscope itemtype="http://schema.org/Book">
+		<div class="media-left">
+			<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}" class="booklink" tabindex="-1">
+				{{ _self.cover(book, 120) }}
+			</a>
+		</div>
+		<div class="media-body">
+			<h4 class="book-title" id="{{ uniqueId }}">
+			<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug}) }}"
+				class="booklink"
+				data-edit="{{ link.admin_book_edit(book) }}">
+				<i itemprop="name">{{ book.title }}</i>
+			</a>
+			{% if book.hasAnno %}
+				<span class="popover-trigger" data-content="{{ book.annotationAsXhtml|replace({'IMG_DIR_PREFIX': asset('/')}) }}"><span class="fa fa-info-circle"></span></span>
+			{% endif %}
+			</h4>
+			{% if book.subtitle is not empty %}
+				<div itemprop="alternativeHeadline">{{ book.subtitle|replace({'\\n': '<br>'})|raw }}</div>
+			{% endif %}
+
+			{% if book.authors|length %}
+				<div class="bookauthor" itemprop="author">{{ link.persons_comma(book.authors, book.lang) }}</div>
+			{% endif %}
+			{% if book.sequence is not empty %}
+				<div class="bookseq">{{ link.sequence(book.sequence) }}{% if book.seqnr is not empty and book.sequence.isSeqnrVisible %}, №&nbsp;{{ book.seqnr }}{% endif %}</div>
+			{% endif %}
+			{% if book.category is not empty %}
+				{% import 'helper.html.twig' as helper %}
+				<div class="bookcat">{{ link.category(book.category) }} {{ helper.printInfoTip(book.category.description) }}</div>
+			{% endif %}
+
+			<div class="download-links">{{ _self.download_links(book) }}</div>
+		</div>
+	</article>
+{% endmacro %}
+
+{% macro download_link(book, format) %}
+	{% apply spaceless %}
+	<a href="{{ path('book_show', {'id': book.id ~'-'~ book.slug, '_format': format}) }}" title="{{ format == 'pic' ? 'Преглед в галерия' : 'Сваляне във формат '~format }}" class="btn btn-default dl dl-{{ format|replace({'.zip': ''}) }} action {{ book.blocked ? 'hidden' : '' }}"><span class="sr-only">{{ format }}</span></a>
+	{% endapply %}
+{% endmacro %}
+
+{% macro download_links(book) %}
+	<div class="btn-group" role="group" aria-label="Връзки за сваляне">
+		{% for format in book.outputFormats %}
+			{{ _self.download_link(book, format) }}
+		{% endfor %}
+		{% if book.blocked %}
+			<span class="btn btn-danger" title="{{ book.removedNotice }}"><span class="fa fa-ban"></span><span class="sr-only">Забранена</span></span>
+		{% endif %}
+		{% if book.bibliomanId is not empty %}
+			<a href="{{ biblioman_url(book.bibliomanId) }}" target="_blank" class="btn btn-default dl biblioman-link" title="Запис за книгата в Библиоман"><span class="sr-only">Библиоман</span></a>
+		{% endif %}
+	</div>
+{% endmacro %}
+
+{% macro cover(book, width) %}
+	<div class="cover thumbnail" style="width: {{ width + 10 }}px">
+		<img class="media-object" src="{{ asset(book.hasCover ? cover(book.id, width) : cover(0, width, 'png')) }}" alt="Корица" itemprop="image" width="{{ width }}">
+	</div>
+{% endmacro %}
+
+{% macro cover_div(book, width) %}
+	<div class="cover thumbnail" style="width: {{ width + 10 }}px">
+		{% if book.hasCover %}
+			<a href="{{ asset(cover(book.id, 'max')) }}"><img class="media-object" src="{{ asset(cover(book.id, width)) }}" alt="Корица" itemprop="image" width="{{ width }}"></a>
+		{% else %}
+			<img class="media-object" src="{{ asset(cover(0, width, 'png')) }}" alt="Корица" itemprop="image" width="{{ width }}">
+		{% endif %}
+		<div class="download-links">{{ _self.download_links(book) }}</div>
+	</div>
+{% endmacro %}
+
+{% macro qrcode(book) %}
+	<a href="//bg.wikipedia.org/wiki/QR_%D0%BA%D0%BE%D0%B4" class="qrcode"><img src="{{ url('book_show', {'id': book.id ~'-'~ book.slug})|qrcode }}"></a>
+{% endmacro %}

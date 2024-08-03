@@ -1,0 +1,35 @@
+{% extends ea.templatePath('layout') %}
+
+{% block main %}
+	{% if book.bibliomanId %}
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card text-center">
+					<div class="card-header">Корица в Моята библиотека</div>
+					<div class="card-body">
+						<img src="{{ asset(book.hasCover ? cover(book.id, 300) : 'images/nocover.300.png') }}" alt="{{ book.id }}" width="300">
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="card text-center">
+					<div class="card-header">Корица в Библиоман</div>
+					<div class="card-body">
+						<img src="//biblioman.chitanka.info/books/{{ book.bibliomanId }}.cover?size=300" alt="{{ book.id }}" width="300">
+					</div>
+					<div class="card-footer">
+						<form action="{{ ea_url()
+								.setController('App\\Controller\\Admin\\BookCrudController')
+								.setAction('updateCover')
+								.setEntityId(book.id) }}" method="post">
+							<button class="btn btn-primary update_cover_link">
+								<span class="fa fa-image"></span>
+								Копиране на корицата от Библиоман
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}

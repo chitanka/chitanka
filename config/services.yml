@@ -1,0 +1,292 @@
+services:
+    app.entity_manager:
+        class: App\Entity\EntityManager
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    app.person.repository:
+        class: App\Entity\PersonRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments: [App:Person]
+
+    app.text.repository:
+        class: App\Entity\TextRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments: [App:Text]
+
+    repository.wiki_site:
+        class: App\Entity\WikiSiteRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments: [App:WikiSite]
+
+    wiki_reader:
+        class: App\Service\WikiReader
+        arguments: ["@mediawiki_client", "@repository.wiki_site"]
+
+    mediawiki_client:
+        class: App\Service\MediawikiClient
+        arguments: ["@buzz"]
+
+    rocketchat_client:
+        class: Chitanka\RocketChatClient
+        arguments: [%rocketchat.url%, %rocketchat.username%, %rocketchat.password%, %rocketchat.notifications_channel%]
+
+    admin.person:
+        class: App\Admin\PersonAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: admin.person }
+        arguments: [null, App\Entity\Person, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+            - [setRepository, ["@app.person.repository"]]
+
+    admin.book:
+        class: App\Admin\BookAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: admin.book }
+        arguments: [null, App\Entity\Book, App:Admin\Book]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+            - [setTextRepository, ["@app.text.repository"]]
+
+    admin.text:
+        class: App\Admin\TextAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: admin.text }
+        arguments: [null, App\Entity\Text, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.series:
+        class: App\Admin\SeriesAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: admin.series }
+        arguments: [null, App\Entity\Series, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.label:
+        class: App\Admin\LabelAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: admin.label }
+        arguments: [null, App\Entity\Label, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.category:
+        class: App\Admin\CategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: admin.category }
+        arguments: [null, App\Entity\Category, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.sequence:
+        class: App\Admin\SequenceAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: admin.sequence }
+        arguments: [null, App\Entity\Sequence, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.text_comment:
+        class: App\Admin\TextCommentAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_main, label: admin.text_comment }
+        arguments: [null, App\Entity\TextComment, App:Admin\TextComment]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.site_notice:
+        class: App\Admin\SiteNoticeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.site_notice }
+        arguments: [null, App\Entity\SiteNotice, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.external_site:
+        class: App\Admin\ExternalSiteAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.external_site }
+        arguments: [null, App\Entity\ExternalSite, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.wiki_site:
+        class: App\Admin\WikiSiteAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.wiki_site }
+        arguments: [null, App\Entity\WikiSite, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.question:
+        class: App\Admin\QuestionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.question }
+        arguments: [null, App\Entity\Question, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.country:
+        class: App\Admin\CountryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.country }
+        arguments: [null, App\Entity\Country, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.language:
+        class: App\Admin\LanguageAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.language }
+        arguments: [null, App\Entity\Language, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.license:
+        class: App\Admin\LicenseAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.license }
+        arguments: [null, App\Entity\License, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.book_link:
+        class: App\Admin\BookLinkAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_links, label: admin.book_link }
+        arguments: [null, App\Entity\BookLink, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.text_link:
+        class: App\Admin\TextLinkAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_links, label: admin.text_link }
+        arguments: [null, App\Entity\TextLink, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.text_type:
+        class: App\Admin\TextTypeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_secondary, label: admin.text_type }
+        arguments: [null, App\Entity\TextType, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.book_isbn:
+        class: App\Admin\BookIsbnAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_links, label: admin.book_isbn }
+        arguments: [null, App\Entity\BookIsbn, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.book_author:
+        class: App\Admin\BookAuthorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_links, label: admin.book_author }
+        arguments: [null, App\Entity\BookAuthor, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.text_author:
+        class: App\Admin\TextAuthorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_links, label: admin.text_author }
+        arguments: [null, App\Entity\TextAuthor, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.text_translator:
+        class: App\Admin\TextTranslatorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_links, label: admin.text_translator }
+        arguments: [null, App\Entity\TextTranslator, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.series_author:
+        class: App\Admin\SeriesAuthorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_links, label: admin.series_author }
+        arguments: [null, App\Entity\SeriesAuthor, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.work_entry:
+        class: App\Admin\WorkEntryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_intern, label: admin.work_entry }
+        arguments: [null, App\Entity\WorkEntry, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.user:
+        class: App\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_intern, label: admin.user }
+        arguments: [null, App\Entity\User, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+    admin.user_text_contrib:
+        class: App\Admin\UserTextContribAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: library_intern, label: admin.user_text_contrib }
+        arguments: [null, App\Entity\UserTextContrib, App:Admin\CRUD]
+        calls:
+            - [setMaxPerPage, [%admin_max_per_page%]]
+
+
+    twig.extension.chitanka:
+        class: App\Twig\Extension
+        tags:
+            - { name: twig.extension }
+        arguments: [%biblioman_url%]
+#    twig.extension.text:
+#        class: Twig_Extensions_Extension_Text
+#        tags:
+#            - { name: twig.extension }
+    twig.extension.debug:
+        class: Twig_Extension_Debug
+        tags:
+            - { name: twig.extension }
+
+    app.responder:
+        class: App\Service\Responder
+        arguments: ["@twig", "@app.entity_manager", %content_dir%, %use_http_cache%, %kernel.debug%]
+
+    kernel.listener:
+        class: App\Listener\KernelListener
+        arguments: ["@app.responder", "@app.entity_manager", "@security.token_storage"]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    doctrine.listener:
+        class: App\Listener\DoctrineListener
+        tags:
+            - { name: doctrine.dbal.default_event_listener }
+            #- { name: doctrine.common.event_listener }
+
+    feedback_form:
+        class: App\Form\Type\FeedbackType
+        tags:
+           -  { name: form.type }
+
+    text_rating_form:
+        class: App\Form\Type\TextRatingType
+        tags:
+           -  { name: form.type }
+
+    text_label_form:
+        class: App\Form\Type\TextLabelType
+        tags:
+           -  { name: form.type }
+
+    label_form:
+        class: App\Form\Type\LabelType
+        tags:
+           -  { name: form.type }

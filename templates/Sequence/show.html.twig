@@ -1,0 +1,30 @@
+{% extends 'layout.html.twig' %}
+
+{% import 'link.html.twig' as link %}
+{% set title %}
+	<a class="selflink" itemprop="name" data-edit="{{ link.admin_sequence_edit(sequence) }}">{{ sequence.name }}</a>
+{% endset %}
+{% set subtitle = 'издателска поредица' %}
+{% block content %}
+	{% import 'helper.html.twig' as helper %}
+	{% set currentBreadcrumItem -%}
+		{{ sequence.name }}
+		{% if sequence.publisher %}
+			({{ sequence.publisher }})
+		{% endif %}
+		{{ helper.printNrOfItems(sequence.nrOfBooks) }}
+	{%- endset %}
+	{{ helper.printBreadcrumb({
+		(path('sequences')): 'Издателски поредици',
+		(path('sequences_by_alpha', {'letter': sequence.name|first_char})): sequence.name|first_char,
+		'': currentBreadcrumItem
+	}) }}
+	{% if sequence.annotation is not empty %}
+		<div class="panel panel-info">
+			<div class="panel-body">
+				{{ sequence.annotation|raw }}
+			</div>
+		</div>
+	{% endif %}
+	{% include 'Book/list.html.twig' %}
+{% endblock %}

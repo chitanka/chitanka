@@ -1,0 +1,26 @@
+{% import 'link.html.twig' as link %}
+{% macro link(person, by) %}
+	<a href="{{ path('person_show', {'slug': person.slug}) }}" itemprop="url" data-edit="{{ link.admin_person_edit(person) }}">{{ person.name|name_format(by)|raw }}</a>
+{% endmacro %}
+
+<ul class="superlist">
+{% for author in persons %}
+	<li><dl itemscope itemtype="http://schema.org/Person">
+		{% if author.person is not empty %}
+			<dt>
+				{{ _self.link(author, by) }}
+				&rarr;
+				{{ _self.link(author.person, by) }}
+			</dt>
+		{% else %}
+			<dt>{{ _self.link(author, by) }}</dt>
+		{% endif %}
+		<dd class="orig-name">{{ author.origName ? author.origName|name_format(by)|raw : '—' }}</dd>
+	</dl></li>
+{% else %}
+	<li class="no-items">
+		{% import 'helper.html.twig' as helper %}
+		{{ helper.not_found('Няма намерени автори.') }}
+	</li>
+{% endfor %}
+</ul>
