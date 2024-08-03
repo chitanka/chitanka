@@ -2,7 +2,7 @@ chitanka.info core
 ==================
 
 Това е уеб софтуер, който задвижва [„Моята библиотека“](http://chitanka.info).
-Изграден е с помощта на Symfony3, Doctrine 2 и много други прекрасни свободни проекти.
+Изграден е с помощта на Symfony, Doctrine и много други прекрасни свободни проекти.
 
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/chitanka/chitanka/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/chitanka/chitanka/)
 
