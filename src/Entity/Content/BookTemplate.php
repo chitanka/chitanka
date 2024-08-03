@@ -185,8 +185,8 @@ class BookTemplate {
 		$converter = new SfbToHtmlConverter($template, $imgDir);
 		$content = $converter->convert()->getContent();
 		//$content = preg_replace('|<p>\n\{(\d+)\}\n</p>|', '{$1}', $content);
-		$content = preg_replace('#<h(\d)>\{(title|text|file):(\d+)\}</h\d>#', '<h$1 class="inner-text">{text:$3}</h$1>', $content);
-		$content = preg_replace('#<h(\d)>([^{].+)</h\d>#', '<h$1 class="inline-text">$2</h$1>', $content);
+		$content = preg_replace('#<h(\d)[^>]*>\{(title|text|file):(\d+)\}</h\d>#', '<h$1 class="inner-text">{text:$3}</h$1>', $content);
+		$content = preg_replace('#<h(\d)[^>]*>([^{].+)</h\d>#', '<h$1 class="inline-text">$2</h$1>', $content);
 		// remove comments
 		$content = preg_replace('/&lt;!--.+--&gt;/U', '', $content);
 		$content = strtr($content, ["<p>\n----\n</p>" => '<hr/>']);
