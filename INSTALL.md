@@ -6,7 +6,7 @@
 
 Ето какво ще ви е необходимо, за да пуснете софтуера на Моята библиотека — chitanka:
 
- - Уеб сървър: Apache с PHP (версия на PHP >= 5.6) или [nginx](http://nginx.org/) с [PHP-FPM](http://php-fpm.org/)
+ - Уеб сървър: Apache с PHP (версия на PHP >= 7.2.5) или [nginx](http://nginx.org/) с [PHP-FPM](http://php-fpm.org/)
  - MariaDB или MySQL сървър
 
 При Apache трябва да са включени модулите `rewrite`, `expires` и `headers`.
