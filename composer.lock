@@ -43,20 +43,23 @@
         },
         {
             "name": "chitanka/sfb-converter",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chitanka/sfb-converter.git",
-                "reference": "f5d20b81fd32aea513f2b419019cbc6b62b3f407"
+                "reference": "b0f8db604a2c814ff977aa2c8ae236d3f036f59a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chitanka/sfb-converter/zipball/f5d20b81fd32aea513f2b419019cbc6b62b3f407",
-                "reference": "f5d20b81fd32aea513f2b419019cbc6b62b3f407",
+                "url": "https://api.github.com/repos/chitanka/sfb-converter/zipball/b0f8db604a2c814ff977aa2c8ae236d3f036f59a",
+                "reference": "b0f8db604a2c814ff977aa2c8ae236d3f036f59a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0.0"
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5"
             },
             "type": "library",
             "autoload": {
@@ -81,9 +84,9 @@
             ],
             "support": {
                 "issues": "https://github.com/chitanka/sfb-converter/issues",
-                "source": "https://github.com/chitanka/sfb-converter/tree/2.0.1"
+                "source": "https://github.com/chitanka/sfb-converter/tree/2.0.2"
             },
-            "time": "2020-11-15T15:57:38+00:00"
+            "time": "2024-07-17T11:19:34+00:00"
         },
         {
             "name": "cypresslab/gitelephant",
@@ -10880,5 +10883,5 @@
     "platform-overrides": {
         "php": "7.2.12"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
