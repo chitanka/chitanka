@@ -13,6 +13,7 @@
 		"ext-iconv": "*",
 		"ext-intl": "*",
 		"ext-json": "*",
+		"ext-mysqlnd": "*",
 		"ext-xsl": "*",
 		"ext-zip": "*",
 		"ext-zlib": "*",

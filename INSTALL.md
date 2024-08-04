@@ -11,7 +11,7 @@
 
 При Apache трябва да са включени модулите `rewrite`, `expires` и `headers`.
 
-При PHP са нужни разширенията `gd`, `curl`, `intl`, `xsl` и `zip`.
+При PHP са нужни разширенията `mysqlnd`, `gd`, `curl`, `intl`, `xsl` и `zip`.
 
 
 # 2. Изтегляне
