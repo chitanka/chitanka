@@ -11,6 +11,12 @@
 /public/todo/
 /public/bundles/
 /public/js/*.min.js
+/web/content
+/web/cache/
+/web/tor/
+/web/todo/
+/web/bundles/
+/web/js/*.min.js
 *.swp
 .last
 .lock
