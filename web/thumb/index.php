@@ -51,9 +51,15 @@ function serveFile($file, $format) {
 	exit;
 }
 
+$supportedFormats = ['jpg', 'jpeg', 'png'];
+
 $query = ltrim($_SERVER['QUERY_STRING'], '/');
-$query = strtr($query, array('..' => '.'));
+$query = preg_replace('#\.+#', '.', $query);
 list($name, $width, $format) = explode('.', basename($query));
+if ( ! in_array($format, $supportedFormats)) {
+	header('HTTP/1.1 400 Image format not supported');
+	exit;
+}
 $contentPath = __DIR__.'/../content/';
 if (!file_exists($contentPath)) {
 	$contentPath = __DIR__.'/../../../chitanka-content/';
