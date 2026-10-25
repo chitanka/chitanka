@@ -1,5 +1,6 @@
 <?php namespace App\Controller;
 
+use App\Entity\User;
 use App\Service\WikiEngine;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,7 @@ class WikiController extends Controller {
 	}
 
 	public function saveAction(Request $request, string $contentDir) {
+		$this->assertUserHasEditRights();
 		$input = $request->request;
 		$wiki = $this->wikiEngine($contentDir);
 		$user = $this->getUser();
@@ -27,6 +29,7 @@ class WikiController extends Controller {
 	}
 
 	public function previewAction(Request $request) {
+		$this->assertUserHasEditRights();
 		return $this->asText(WikiEngine::markdownToHtml($request->request->get('content')), 'text/html');
 	}
 
@@ -45,5 +48,11 @@ class WikiController extends Controller {
 
 	private function renderBinaryFile(string $contentDir, $path) {
 		return new BinaryFileResponse($contentDir.'/'.$path);
+	}
+
+	private function assertUserHasEditRights() {
+		if ( ! $this->getUser()->inGroup(User::GROUP_EDIT_WIKI)) {
+			throw $this->createAccessDeniedException();
+		}
 	}
 }
