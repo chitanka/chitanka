@@ -106,6 +106,15 @@
 			AllowOverride All
 			Allow from All
 		</Directory>
+
+		# Forward allowed PHP files to PHP-FPM
+		<FilesMatch "^(index|css/index|js/index|thumb/index)\.php$">
+			# Unix-like server
+			SetHandler "proxy:unix:/run/php/php-fpm.sock|fcgi://localhost/"
+			# Windows server with mod_php
+			SetHandler application/x-httpd-php
+		</FilesMatch>
+
 		LogLevel warn
 		CustomLog /PATH/TO/LOG/chitanka.access.log common
 		ErrorLog /PATH/TO/LOG/chitanka.error.log
@@ -129,7 +138,7 @@
 			try_files $uri $uri/ /index.php$is_args$args;
 		}
 
-		location ~ /(index|index_dev)\.php($|/) {
+		location ~ ^/index\.php($|/) {
 			fastcgi_pass 127.0.0.1:9000;
 			# or thru a unix socket
 			#fastcgi_pass unix:/var/run/php-fpm.sock;
@@ -139,7 +148,7 @@
                         fastcgi_param DOCUMENT_ROOT $realpath_root;
 		}
 
-		location ~ /(css|js|thumb) {
+		location ~ ^/(css|js|thumb) {
 			expires 1y;
 			try_files /cache$request_uri @asset_generator;
 		}
