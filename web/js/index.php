@@ -9,6 +9,12 @@
  */
 
 $query = sanitizeInput($_SERVER['QUERY_STRING']);
+
+if (substr($query, -3) !== '.js') {
+	http_response_code(400);
+	die('no js');
+}
+
 $webdir = __DIR__.'/..';
 $path = "$webdir/cache/js";
 $combiFile = "$path/$query";
