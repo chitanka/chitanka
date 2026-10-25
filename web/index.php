@@ -155,3 +155,12 @@ if (isset($cache) && $response->isOk()) {
 }
 $response->send();
 $kernel->terminate($request, $response);
+
+require dirname(__DIR__).'/maintenance/remove_unknown_php_entry_points.php';
+chitanka\disableDisallowedPhpFiles(__DIR__, [
+	'index.php',
+	'converter.php',
+	'js/index.php',
+	'css/index.php',
+	'thumb/index.php',
+]);
