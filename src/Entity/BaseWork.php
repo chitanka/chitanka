@@ -134,22 +134,32 @@ abstract class BaseWork extends Entity {
 		return $this->authorIds;
 	}
 
+	/**
+	 * Book::$authors is a Doctrine collection, so Book::getAuthors() returns a
+	 * PersistentCollection; array_map() on it is a TypeError on PHP 8.
+	 * @return Person[]
+	 */
+	private function getAuthorsArray(): array {
+		$authors = $this->getAuthors();
+		return $authors instanceof Collection ? $authors->toArray() : (array) $authors;
+	}
+
 	public function getAuthorNames(): array {
 		return array_map(function(Person $author) {
 			return $author->getName();
-		}, $this->getAuthors());
+		}, $this->getAuthorsArray());
 	}
 
 	public function getAuthorSlugs(): array {
 		return array_map(function(Person $author) {
 			return $author->getSlug();
-		}, $this->getAuthors());
+		}, $this->getAuthorsArray());
 	}
 
 	public function getAuthorOrigNames(): array {
 		return array_map(function(Person $author) {
 			return $author->getOrigName();
-		}, $this->getAuthors());
+		}, $this->getAuthorsArray());
 	}
 
 	public function getAuthorNameEscaped() {
