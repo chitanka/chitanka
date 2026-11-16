@@ -365,15 +365,23 @@ class DownloadFile {
 	public static function setDlCache($textIds, $file, $format = '') {
 		$dbal = Setup::dbal();
 		$pk = self::getHashForTextIds($textIds, $format);
-		$dbal->executeUpdate('INSERT IGNORE '.DBT_DL_CACHE.' set id = '.$pk.', file = ?', [$file]);
+		// "INSERT IGNORE ... SET" is MySQL-only; SQLite spells it "INSERT OR IGNORE".
+		$ignore = $dbal->getDatabasePlatform()->getName() === 'sqlite' ? 'INSERT OR IGNORE INTO ' : 'INSERT IGNORE INTO ';
+		$dbal->executeUpdate($ignore.DBT_DL_CACHE.' (id, file) VALUES ('.$pk.', ?)', [$file]);
 		foreach ( (array) $textIds as $textId ) {
-			$dbal->executeUpdate('INSERT IGNORE '.DBT_DL_CACHE_TEXT.' set dc_id = '.$pk.', text_id = ?', [$textId]);
+			$dbal->executeUpdate($ignore.DBT_DL_CACHE_TEXT.' (dc_id, text_id) VALUES ('.$pk.', ?)', [$textId]);
 		}
 		return $file;
 	}
 
 	public static function getDlFileByHash(string $hash) {
-		return Setup::dbal()->fetchColumn("select file from ".DBT_DL_CACHE." where id = ?", [$hash]);
+		// $hash is a "0x" + 16 hex digit literal (getHashForTextIds). Bound as a
+		// parameter it is a string, which never equals the BIGINT id on SQLite;
+		// inlined it is an integer literal on both MySQL and SQLite.
+		if (!preg_match('/^0x[0-9a-f]{16}$/', $hash)) {
+			return false;
+		}
+		return Setup::dbal()->fetchColumn("select file from ".DBT_DL_CACHE." where id = $hash");
 	}
 
 	/**
